@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F7446970DB6B7EA00F9684A /* MainMenu.xib */; };
+		770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */; };
+		77C8280E06725ACE000B614F /* MunkiAdmin_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
+		F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* GradientBackgroundView.m */; };
+		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
+		F511D364125359D7007B52D5 /* ApplicationInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D363125359D7007B52D5 /* ApplicationInfoMO.m */; };
+		F511D366125359D8007B52D5 /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D365125359D7007B52D5 /* ApplicationMO.m */; };
+		F511D368125359D8007B52D5 /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D367125359D8007B52D5 /* CatalogInfoMO.m */; };
+		F511D36A125359D8007B52D5 /* CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D369125359D8007B52D5 /* CatalogMO.m */; };
+		F511D36C125359D8007B52D5 /* InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D36B125359D8007B52D5 /* InstallsItemMO.m */; };
+		F511D36E125359D8007B52D5 /* ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D36D125359D8007B52D5 /* ManifestInfoMO.m */; };
+		F511D370125359D9007B52D5 /* ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D36F125359D8007B52D5 /* ManifestMO.m */; };
+		F511D372125359D9007B52D5 /* PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D371125359D9007B52D5 /* PackageInfoMO.m */; };
+		F511D374125359D9007B52D5 /* PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D373125359D9007B52D5 /* PackageMO.m */; };
+		F511D376125359D9007B52D5 /* ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D375125359D9007B52D5 /* ReceiptMO.m */; };
+		F511D382125359DB007B52D5 /* _ApplicationInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D381125359DB007B52D5 /* _ApplicationInfoMO.m */; };
+		F511D384125359DB007B52D5 /* _ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D383125359DB007B52D5 /* _ApplicationMO.m */; };
+		F511D386125359DB007B52D5 /* _CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D385125359DB007B52D5 /* _CatalogInfoMO.m */; };
+		F511D388125359DB007B52D5 /* _CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D387125359DB007B52D5 /* _CatalogMO.m */; };
+		F511D38A125359DB007B52D5 /* _InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D389125359DB007B52D5 /* _InstallsItemMO.m */; };
+		F511D38C125359DC007B52D5 /* _ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D38B125359DB007B52D5 /* _ManifestInfoMO.m */; };
+		F511D38E125359DC007B52D5 /* _ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D38D125359DC007B52D5 /* _ManifestMO.m */; };
+		F511D390125359DC007B52D5 /* _PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D38F125359DC007B52D5 /* _PackageInfoMO.m */; };
+		F511D392125359DC007B52D5 /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D391125359DC007B52D5 /* _PackageMO.m */; };
+		F511D394125359DC007B52D5 /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F511D393125359DC007B52D5 /* _ReceiptMO.m */; };
+		F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */; };
+		F527FF1F10FC871B000B29B6 /* CatalogInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */; };
+		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
+		F5299AAC10FB75E00074CFEA /* open alt.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AAB10FB75E00074CFEA /* open alt.tiff */; };
+		F5299AB010FB76270074CFEA /* install.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AAF10FB76270074CFEA /* install.tiff */; };
+		F5299AB710FB76D20074CFEA /* archive.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB110FB76D20074CFEA /* archive.tiff */; };
+		F5299AB810FB76D20074CFEA /* copy doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB210FB76D20074CFEA /* copy doc.tiff */; };
+		F5299AB910FB76D20074CFEA /* edit.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB310FB76D20074CFEA /* edit.tiff */; };
+		F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB410FB76D20074CFEA /* refresh.tiff */; };
+		F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB510FB76D20074CFEA /* terminal.tiff */; };
+		F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB610FB76D20074CFEA /* trash.tiff */; };
+		F5299AD910FB78620074CFEA /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299AD810FB78620074CFEA /* MyCell.m */; };
+		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
+		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
+		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
+		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
+		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
+		F5F63381111824CC007CC030 /* catalogIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337E111824CC007CC030 /* catalogIcon2.png */; };
+		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
+		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
+		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2F7446980DB6B7EA00F9684A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
+		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
+		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
+		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
+		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsArrayController.h; sourceTree = "<group>"; };
+		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationsArrayController.m; sourceTree = "<group>"; };
+		F508522C11084C39001DAD73 /* GradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBackgroundView.h; sourceTree = "<group>"; };
+		F508522D11084C39001DAD73 /* GradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBackgroundView.m; sourceTree = "<group>"; };
+		F508526C11085A5A001DAD73 /* ManifestsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestsArrayController.h; sourceTree = "<group>"; };
+		F508526D11085A5A001DAD73 /* ManifestsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestsArrayController.m; sourceTree = "<group>"; };
+		F511D363125359D7007B52D5 /* ApplicationInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfoMO.m; sourceTree = "<group>"; };
+		F511D365125359D7007B52D5 /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
+		F511D367125359D8007B52D5 /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
+		F511D369125359D8007B52D5 /* CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogMO.m; sourceTree = "<group>"; };
+		F511D36B125359D8007B52D5 /* InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallsItemMO.m; sourceTree = "<group>"; };
+		F511D36D125359D8007B52D5 /* ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestInfoMO.m; sourceTree = "<group>"; };
+		F511D36F125359D8007B52D5 /* ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestMO.m; sourceTree = "<group>"; };
+		F511D371125359D9007B52D5 /* PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageInfoMO.m; sourceTree = "<group>"; };
+		F511D373125359D9007B52D5 /* PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageMO.m; sourceTree = "<group>"; };
+		F511D375125359D9007B52D5 /* ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiptMO.m; sourceTree = "<group>"; };
+		F511D377125359D9007B52D5 /* ApplicationInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationInfoMO.h; sourceTree = "<group>"; };
+		F511D378125359D9007B52D5 /* ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationMO.h; sourceTree = "<group>"; };
+		F511D379125359DA007B52D5 /* CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogInfoMO.h; sourceTree = "<group>"; };
+		F511D37A125359DA007B52D5 /* CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogMO.h; sourceTree = "<group>"; };
+		F511D37B125359DA007B52D5 /* InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallsItemMO.h; sourceTree = "<group>"; };
+		F511D37C125359DA007B52D5 /* ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestInfoMO.h; sourceTree = "<group>"; };
+		F511D37D125359DA007B52D5 /* ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestMO.h; sourceTree = "<group>"; };
+		F511D37E125359DA007B52D5 /* PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageInfoMO.h; sourceTree = "<group>"; };
+		F511D37F125359DA007B52D5 /* PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageMO.h; sourceTree = "<group>"; };
+		F511D380125359DA007B52D5 /* ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiptMO.h; sourceTree = "<group>"; };
+		F511D381125359DB007B52D5 /* _ApplicationInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationInfoMO.m; sourceTree = "<group>"; };
+		F511D383125359DB007B52D5 /* _ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationMO.m; sourceTree = "<group>"; };
+		F511D385125359DB007B52D5 /* _CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogInfoMO.m; sourceTree = "<group>"; };
+		F511D387125359DB007B52D5 /* _CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogMO.m; sourceTree = "<group>"; };
+		F511D389125359DB007B52D5 /* _InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemMO.m; sourceTree = "<group>"; };
+		F511D38B125359DB007B52D5 /* _ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestInfoMO.m; sourceTree = "<group>"; };
+		F511D38D125359DC007B52D5 /* _ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestMO.m; sourceTree = "<group>"; };
+		F511D38F125359DC007B52D5 /* _PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageInfoMO.m; sourceTree = "<group>"; };
+		F511D391125359DC007B52D5 /* _PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageMO.m; sourceTree = "<group>"; };
+		F511D393125359DC007B52D5 /* _ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ReceiptMO.m; sourceTree = "<group>"; };
+		F511D395125359DC007B52D5 /* _ApplicationInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationInfoMO.h; sourceTree = "<group>"; };
+		F511D396125359DD007B52D5 /* _ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationMO.h; sourceTree = "<group>"; };
+		F511D397125359DD007B52D5 /* _CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogInfoMO.h; sourceTree = "<group>"; };
+		F511D398125359DD007B52D5 /* _CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogMO.h; sourceTree = "<group>"; };
+		F511D399125359DD007B52D5 /* _InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _InstallsItemMO.h; sourceTree = "<group>"; };
+		F511D39A125359DD007B52D5 /* _ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestInfoMO.h; sourceTree = "<group>"; };
+		F511D39B125359DD007B52D5 /* _ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestMO.h; sourceTree = "<group>"; };
+		F511D39C125359DD007B52D5 /* _PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageInfoMO.h; sourceTree = "<group>"; };
+		F511D39D125359DD007B52D5 /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
+		F511D39E125359DE007B52D5 /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
+		F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogsArrayController.h; sourceTree = "<group>"; };
+		F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogsArrayController.m; sourceTree = "<group>"; };
+		F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogInfosArrayController.h; sourceTree = "<group>"; };
+		F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogInfosArrayController.m; sourceTree = "<group>"; };
+		F5299A5810FB6AB00074CFEA /* PackageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageArrayController.h; sourceTree = "<group>"; };
+		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
+		F5299AAB10FB75E00074CFEA /* open alt.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "open alt.tiff"; sourceTree = "<group>"; };
+		F5299AAF10FB76270074CFEA /* install.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = install.tiff; sourceTree = "<group>"; };
+		F5299AB110FB76D20074CFEA /* archive.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = archive.tiff; sourceTree = "<group>"; };
+		F5299AB210FB76D20074CFEA /* copy doc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "copy doc.tiff"; sourceTree = "<group>"; };
+		F5299AB310FB76D20074CFEA /* edit.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = edit.tiff; sourceTree = "<group>"; };
+		F5299AB410FB76D20074CFEA /* refresh.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = refresh.tiff; sourceTree = "<group>"; };
+		F5299AB510FB76D20074CFEA /* terminal.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = terminal.tiff; sourceTree = "<group>"; };
+		F5299AB610FB76D20074CFEA /* trash.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = trash.tiff; sourceTree = "<group>"; };
+		F5299AD710FB78620074CFEA /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
+		F5299AD810FB78620074CFEA /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
+		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
+		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
+		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
+		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
+		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
+		F5F6337E111824CC007CC030 /* catalogIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon2.png; sourceTree = "<group>"; };
+		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = manifestIcon2.png; sourceTree = "<group>"; };
+		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = packageIcon2.png; sourceTree = "<group>"; };
+		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon3.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F564873711B503830061B190 /* PreferencesController.h */,
+				F564873811B503830061B190 /* PreferencesController.m */,
+				F5299AD710FB78620074CFEA /* MyCell.h */,
+				F5299AD810FB78620074CFEA /* MyCell.m */,
+				77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */,
+				77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */,
+				F5299A5810FB6AB00074CFEA /* PackageArrayController.h */,
+				F5299A5910FB6AB00074CFEA /* PackageArrayController.m */,
+				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
+				F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */,
+				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
+				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
+				F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */,
+				F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */,
+				F508094D1105900E0058C7AC /* ApplicationsArrayController.h */,
+				F508094E1105900E0058C7AC /* ApplicationsArrayController.m */,
+				F508522C11084C39001DAD73 /* GradientBackgroundView.h */,
+				F508522D11084C39001DAD73 /* GradientBackgroundView.m */,
+				F508526C11085A5A001DAD73 /* ManifestsArrayController.h */,
+				F508526D11085A5A001DAD73 /* ManifestsArrayController.m */,
+				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
+				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77C82804067257F0000B614F /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* MunkiAdmin.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
+			isa = PBXGroup;
+			children = (
+				7756732906782D8800D1FEB8 /* Models */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = MunkiAdmin;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				F594407D10FF58E700E350E7 /* UserDefaults.plist */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F5F6339411182934007CC030 /* catalogIcon3.png */,
+				F5F6337E111824CC007CC030 /* catalogIcon2.png */,
+				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
+				F5F63380111824CC007CC030 /* packageIcon2.png */,
+				F5299AB110FB76D20074CFEA /* archive.tiff */,
+				F5299AB210FB76D20074CFEA /* copy doc.tiff */,
+				F5299AB310FB76D20074CFEA /* edit.tiff */,
+				F5299AB410FB76D20074CFEA /* refresh.tiff */,
+				F5299AB510FB76D20074CFEA /* terminal.tiff */,
+				F5299AB610FB76D20074CFEA /* trash.tiff */,
+				F5299AAF10FB76270074CFEA /* install.tiff */,
+				F5299AAB10FB75E00074CFEA /* open alt.tiff */,
+				8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
+				F564874811B504520061B190 /* Preferences.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7756732906782D8800D1FEB8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */,
+				F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				F511D363125359D7007B52D5 /* ApplicationInfoMO.m */,
+				F511D365125359D7007B52D5 /* ApplicationMO.m */,
+				F511D367125359D8007B52D5 /* CatalogInfoMO.m */,
+				F511D369125359D8007B52D5 /* CatalogMO.m */,
+				F511D36B125359D8007B52D5 /* InstallsItemMO.m */,
+				F511D36D125359D8007B52D5 /* ManifestInfoMO.m */,
+				F511D36F125359D8007B52D5 /* ManifestMO.m */,
+				F511D371125359D9007B52D5 /* PackageInfoMO.m */,
+				F511D373125359D9007B52D5 /* PackageMO.m */,
+				F511D375125359D9007B52D5 /* ReceiptMO.m */,
+				F511D377125359D9007B52D5 /* ApplicationInfoMO.h */,
+				F511D378125359D9007B52D5 /* ApplicationMO.h */,
+				F511D379125359DA007B52D5 /* CatalogInfoMO.h */,
+				F511D37A125359DA007B52D5 /* CatalogMO.h */,
+				F511D37B125359DA007B52D5 /* InstallsItemMO.h */,
+				F511D37C125359DA007B52D5 /* ManifestInfoMO.h */,
+				F511D37D125359DA007B52D5 /* ManifestMO.h */,
+				F511D37E125359DA007B52D5 /* PackageInfoMO.h */,
+				F511D37F125359DA007B52D5 /* PackageMO.h */,
+				F511D380125359DA007B52D5 /* ReceiptMO.h */,
+				F511D381125359DB007B52D5 /* _ApplicationInfoMO.m */,
+				F511D383125359DB007B52D5 /* _ApplicationMO.m */,
+				F511D385125359DB007B52D5 /* _CatalogInfoMO.m */,
+				F511D387125359DB007B52D5 /* _CatalogMO.m */,
+				F511D389125359DB007B52D5 /* _InstallsItemMO.m */,
+				F511D38B125359DB007B52D5 /* _ManifestInfoMO.m */,
+				F511D38D125359DC007B52D5 /* _ManifestMO.m */,
+				F511D38F125359DC007B52D5 /* _PackageInfoMO.m */,
+				F511D391125359DC007B52D5 /* _PackageMO.m */,
+				F511D393125359DC007B52D5 /* _ReceiptMO.m */,
+				F511D395125359DC007B52D5 /* _ApplicationInfoMO.h */,
+				F511D396125359DD007B52D5 /* _ApplicationMO.h */,
+				F511D397125359DD007B52D5 /* _CatalogInfoMO.h */,
+				F511D398125359DD007B52D5 /* _CatalogMO.h */,
+				F511D399125359DD007B52D5 /* _InstallsItemMO.h */,
+				F511D39A125359DD007B52D5 /* _ManifestInfoMO.h */,
+				F511D39B125359DD007B52D5 /* _ManifestMO.h */,
+				F511D39C125359DD007B52D5 /* _PackageInfoMO.h */,
+				F511D39D125359DD007B52D5 /* _PackageMO.h */,
+				F511D39E125359DE007B52D5 /* _ReceiptMO.h */,
+			);
+			path = MunkiAdmin_DataModel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* MunkiAdmin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26FC0A840875C7B200E6366F /* Build configuration list for PBXNativeTarget "MunkiAdmin" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MunkiAdmin;
+			productInstallPath = "$(HOME)/Applications";
+			productName = MunkiAdmin;
+			productReference = 8D1107320486CEB800E47090 /* MunkiAdmin.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "MunkiAdmin" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* MunkiAdmin */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* MunkiAdmin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */,
+				F5299AAC10FB75E00074CFEA /* open alt.tiff in Resources */,
+				F5299AB010FB76270074CFEA /* install.tiff in Resources */,
+				F5299AB710FB76D20074CFEA /* archive.tiff in Resources */,
+				F5299AB810FB76D20074CFEA /* copy doc.tiff in Resources */,
+				F5299AB910FB76D20074CFEA /* edit.tiff in Resources */,
+				F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */,
+				F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */,
+				F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */,
+				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
+				F5F63381111824CC007CC030 /* catalogIcon2.png in Resources */,
+				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
+				F5F63383111824CC007CC030 /* packageIcon2.png in Resources */,
+				F5F6339511182934007CC030 /* catalogIcon3.png in Resources */,
+				F564874911B504520061B190 /* Preferences.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				77C8280E06725ACE000B614F /* MunkiAdmin_AppDelegate.m in Sources */,
+				770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */,
+				F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */,
+				F5299AD910FB78620074CFEA /* MyCell.m in Sources */,
+				F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */,
+				F527FF1F10FC871B000B29B6 /* CatalogInfosArrayController.m in Sources */,
+				F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */,
+				F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */,
+				F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */,
+				F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */,
+				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,
+				F564873911B503830061B190 /* PreferencesController.m in Sources */,
+				F511D364125359D7007B52D5 /* ApplicationInfoMO.m in Sources */,
+				F511D366125359D8007B52D5 /* ApplicationMO.m in Sources */,
+				F511D368125359D8007B52D5 /* CatalogInfoMO.m in Sources */,
+				F511D36A125359D8007B52D5 /* CatalogMO.m in Sources */,
+				F511D36C125359D8007B52D5 /* InstallsItemMO.m in Sources */,
+				F511D36E125359D8007B52D5 /* ManifestInfoMO.m in Sources */,
+				F511D370125359D9007B52D5 /* ManifestMO.m in Sources */,
+				F511D372125359D9007B52D5 /* PackageInfoMO.m in Sources */,
+				F511D374125359D9007B52D5 /* PackageMO.m in Sources */,
+				F511D376125359D9007B52D5 /* ReceiptMO.m in Sources */,
+				F511D382125359DB007B52D5 /* _ApplicationInfoMO.m in Sources */,
+				F511D384125359DB007B52D5 /* _ApplicationMO.m in Sources */,
+				F511D386125359DB007B52D5 /* _CatalogInfoMO.m in Sources */,
+				F511D388125359DB007B52D5 /* _CatalogMO.m in Sources */,
+				F511D38A125359DB007B52D5 /* _InstallsItemMO.m in Sources */,
+				F511D38C125359DC007B52D5 /* _ManifestInfoMO.m in Sources */,
+				F511D38E125359DC007B52D5 /* _ManifestMO.m in Sources */,
+				F511D390125359DC007B52D5 /* _PackageInfoMO.m in Sources */,
+				F511D392125359DC007B52D5 /* _PackageMO.m in Sources */,
+				F511D394125359DC007B52D5 /* _ReceiptMO.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2F7446970DB6B7EA00F9684A /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F7446980DB6B7EA00F9684A /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26FC0A850875C7B200E6366F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Downloads/BWToolkit\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MunkiAdmin_Prefix.pch;
+				INFOPLIST_FILE = "MunkiAdmin-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MunkiAdmin;
+				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		26FC0A860875C7B200E6366F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MunkiAdmin_Prefix.pch;
+				INFOPLIST_FILE = "MunkiAdmin-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MunkiAdmin;
+				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		26FC0A890875C7B200E6366F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		26FC0A8A0875C7B200E6366F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26FC0A840875C7B200E6366F /* Build configuration list for PBXNativeTarget "MunkiAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26FC0A850875C7B200E6366F /* Debug */,
+				26FC0A860875C7B200E6366F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "MunkiAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26FC0A890875C7B200E6366F /* Debug */,
+				26FC0A8A0875C7B200E6366F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
