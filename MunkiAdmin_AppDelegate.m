@@ -15,6 +15,10 @@
 @dynamic defaults;
 @synthesize applicationsArrayController, allPackagesArrayController, manifestsArrayController;
 @synthesize manifestInfosArrayController;
+@synthesize managedInstallsArrayController;
+@synthesize managedUpdatesArrayController;
+@synthesize managedUninstallsArrayController;
+@synthesize optionalInstallsArrayController;
 @synthesize selectedViewDescr;
 @synthesize window;
 @synthesize progressPanel;
@@ -101,7 +105,7 @@
 		[moc deleteObject:anObject];
 	}
 	
-	for (id anObject in [self allObjectsForEntity:@"ApplicationInfo"]) {
+	for (id anObject in [self allObjectsForEntity:@"ApplicationProxy"]) {
 		[moc deleteObject:anObject];
 	}
 	
@@ -152,19 +156,6 @@
 
 - (void)checkMaxVersionsForCatalogs
 {	
-	/*for (ApplicationInfoMO *anAppInfo in [self allObjectsForEntity:@"ApplicationInfo"]) {
-	 ManifestMO *manifest = anAppInfo.manifest;
-	 NSArray *catalogInfos = [manifest.catalogInfos allObjects];
-	 NSMutableArray *enabledCatalogs = [[NSMutableArray alloc] init];
-	 for (CatalogInfoMO *aCatInfo in catalogInfos) {
-	 if ([aCatInfo isEnabledForManifestValue]) {
-	 [enabledCatalogs addObject:aCatInfo];
-	 }
-	 }
-	 
-	 NSPredicate *pkgs
-	 }*/
-	
 	for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
 		
 		NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"CatalogInfo" inManagedObjectContext:[self managedObjectContext]];
@@ -177,14 +168,6 @@
 		for (CatalogInfoMO *catInfo in fetchResults) {
 			//NSLog(@"%@:%@-%@", catInfo.catalog.title, catInfo.package.munki_name, catInfo.package.munki_version);
 		}
-		
-		/*for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
-		 
-		 }
-		 
-		 for (PackageMO *aPackage in [aCatalog.packages sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByName]]) {
-		 NSLog(@"%@:%@-%@", aCatalog.title, aPackage.munki_name, aPackage.munki_version);
-		 }*/
 	}
 }
 
@@ -318,6 +301,12 @@
 	
 	NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
 	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
+	
+	NSSortDescriptor *sortAppProxiesByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	[managedInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+	[managedUninstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+	[managedUpdatesArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+	[optionalInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -565,12 +554,27 @@
 		}
 		
 		for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
-			ApplicationInfoMO *newApplicationInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ApplicationInfo" inManagedObjectContext:moc];
 			[anApplication addManifestsObject:manifest];
-			newApplicationInfo.manifest = manifest;
-			newApplicationInfo.munki_name = anApplication.munki_name;
-			[anApplication addApplicationInfosObject:newApplicationInfo];
-			newApplicationInfo.isEnabledForManifestValue = NO;
+			
+			ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
+			newManagedInstall.manifest = manifest;
+			[anApplication addApplicationProxiesObject:newManagedInstall];
+			newManagedInstall.isEnabledValue = NO;
+			
+			ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];
+			newManagedUninstall.manifest = manifest;
+			[anApplication addApplicationProxiesObject:newManagedUninstall];
+			newManagedUninstall.isEnabledValue = NO;
+			
+			ManagedUpdateMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc];
+			newManagedUpdate.manifest = manifest;
+			[anApplication addApplicationProxiesObject:newManagedUpdate];
+			newManagedUpdate.isEnabledValue = NO;
+			
+			OptionalInstallMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc];
+			newOptionalInstall.manifest = manifest;
+			[anApplication addApplicationProxiesObject:newOptionalInstall];
+			newOptionalInstall.isEnabledValue = NO;
 		}
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
@@ -652,8 +656,8 @@
 - (void)enableAllPackagesForManifest
 {
 	ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-	for (ApplicationInfoMO *appInfo in [selectedManifest applicationInfos]) {
-		appInfo.isEnabledForManifestValue = YES;
+	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
+		managedInstall.isEnabledValue = YES;
 	}
 }
 
@@ -665,8 +669,8 @@
 - (void)disableAllPackagesForManifest
 {
 	ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-	for (ApplicationInfoMO *appInfo in [selectedManifest applicationInfos]) {
-		appInfo.isEnabledForManifestValue = NO;
+	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
+		managedInstall.isEnabledValue = NO;
 	}
 }
 
@@ -1106,6 +1110,8 @@
 	aNewPackage.munki_installer_item_location = (installer_item_location != nil) ? installer_item_location : @"";
 	NSNumber *installer_item_size = [properties objectForKey:@"installer_item_size"];
 	aNewPackage.munki_installer_item_size = (installer_item_size != nil) ? installer_item_size : [NSNumber numberWithInt:0];
+	NSString *installer_item_hash = [properties objectForKey:@"installer_item_hash"];
+	aNewPackage.munki_installer_item_hash = (installer_item_hash != nil) ? installer_item_hash : @"";
 	NSString *minimum_os_version = [properties objectForKey:@"minimum_os_version"];
 	aNewPackage.munki_minimum_os_version = (minimum_os_version != nil) ? minimum_os_version : @"";
 	NSString *uninstall_method = [properties objectForKey:@"uninstall_method"];
@@ -1365,35 +1371,49 @@
 			
 			// Parse manifests managed_installs array
 			NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
+			NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
+			NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
+			NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
+			
 			for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
-				ApplicationInfoMO *newApplicationInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ApplicationInfo" inManagedObjectContext:moc];
 				[anApplication addManifestsObject:manifest];
-				newApplicationInfo.manifest = manifest;
-				newApplicationInfo.munki_name = anApplication.munki_name;
-				[anApplication addApplicationInfosObject:newApplicationInfo];
 				
-				if ([managedInstalls containsObject:anApplication.munki_name]) {
-					newApplicationInfo.isEnabledForManifestValue = YES;
+				ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
+				newManagedInstall.manifest = manifest;
+				[anApplication addApplicationProxiesObject:newManagedInstall];
+				if ([managedInstalls containsObject:newManagedInstall.parentApplication.munki_name]) {
+					newManagedInstall.isEnabledValue = YES;
 				} else {
-					newApplicationInfo.isEnabledForManifestValue = NO;
+					newManagedInstall.isEnabledValue = NO;
+				}
+				
+				ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];
+				newManagedUninstall.manifest = manifest;
+				[anApplication addApplicationProxiesObject:newManagedUninstall];
+				if ([managedUninstalls containsObject:newManagedUninstall.parentApplication.munki_name]) {
+					newManagedUninstall.isEnabledValue = YES;
+				} else {
+					newManagedUninstall.isEnabledValue = NO;
+				}
+				
+				ManagedUpdateMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc];
+				newManagedUpdate.manifest = manifest;
+				[anApplication addApplicationProxiesObject:newManagedUpdate];
+				if ([managedUpdates containsObject:newManagedUpdate.parentApplication.munki_name]) {
+					newManagedUpdate.isEnabledValue = YES;
+				} else {
+					newManagedUpdate.isEnabledValue = NO;
+				}
+				
+				OptionalInstallMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc];
+				newOptionalInstall.manifest = manifest;
+				[anApplication addApplicationProxiesObject:newOptionalInstall];
+				if ([optionalInstalls containsObject:newOptionalInstall.parentApplication.munki_name]) {
+					newOptionalInstall.isEnabledValue = YES;
+				} else {
+					newOptionalInstall.isEnabledValue = NO;
 				}
 			}
-			
-			// Parse included_manifests array
-			/*NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];			
-			if (includedManifests != nil) {
-				for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
-					ManifestInfoMO *newManifestInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc];
-					newManifestInfo.manifest = aManifest;
-					[aManifest addIncludedManifestsObject:newManifestInfo];
-					
-					if ([includedManifests containsObject:aManifest.title]) {
-						newManifestInfo.isEnabledForManifestValue = YES;
-					} else {
-						newManifestInfo.isEnabledForManifestValue = NO;
-					}
-				}
-			}*/
 		}
 	}
 }

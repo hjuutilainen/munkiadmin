@@ -98,6 +98,7 @@
 									  self.munki_description, @"description",
 									  self.munki_display_name, @"display_name",
 									  self.munki_installed_size, @"installed_size",
+									  self.munki_installer_item_hash, @"installer_item_hash",
 									  self.munki_installer_item_location, @"installer_item_location",
 									  self.munki_installer_item_size, @"installer_item_size",
 									  self.munki_installer_type, @"installer_type",

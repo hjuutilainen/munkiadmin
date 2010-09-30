@@ -1,0 +1,38 @@
+// DO NOT EDIT. This file is machine-generated and constantly overwritten.
+// Make changes to OptionalInstallMO.m instead.
+
+#import "_OptionalInstallMO.h"
+
+@implementation OptionalInstallMOID
+@end
+
+@implementation _OptionalInstallMO
+
++ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
+	NSParameterAssert(moc_);
+	return [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc_];
+}
+
++ (NSString*)entityName {
+	return @"OptionalInstall";
+}
+
++ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
+	NSParameterAssert(moc_);
+	return [NSEntityDescription entityForName:@"OptionalInstall" inManagedObjectContext:moc_];
+}
+
+- (OptionalInstallMOID*)objectID {
+	return (OptionalInstallMOID*)[super objectID];
+}
+
+
+
+
+@dynamic manifest;
+
+	
+
+
+
+@end

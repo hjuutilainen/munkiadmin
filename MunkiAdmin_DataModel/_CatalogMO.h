@@ -6,8 +6,8 @@
 
 @class CatalogInfoMO;
 @class PackageMO;
-@class PackageInfoMO;
 @class ManifestMO;
+@class PackageInfoMO;
 
 
 
@@ -39,13 +39,13 @@
 
 
 
-@property (nonatomic, retain) NSSet* packageInfos;
-- (NSMutableSet*)packageInfosSet;
-
-
-
 @property (nonatomic, retain) NSSet* manifests;
 - (NSMutableSet*)manifestsSet;
+
+
+
+@property (nonatomic, retain) NSSet* packageInfos;
+- (NSMutableSet*)packageInfosSet;
 
 
 
@@ -63,15 +63,15 @@
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
 
-- (void)addPackageInfos:(NSSet*)value_;
-- (void)removePackageInfos:(NSSet*)value_;
-- (void)addPackageInfosObject:(PackageInfoMO*)value_;
-- (void)removePackageInfosObject:(PackageInfoMO*)value_;
-
 - (void)addManifests:(NSSet*)value_;
 - (void)removeManifests:(NSSet*)value_;
 - (void)addManifestsObject:(ManifestMO*)value_;
 - (void)removeManifestsObject:(ManifestMO*)value_;
+
+- (void)addPackageInfos:(NSSet*)value_;
+- (void)removePackageInfos:(NSSet*)value_;
+- (void)addPackageInfosObject:(PackageInfoMO*)value_;
+- (void)removePackageInfosObject:(PackageInfoMO*)value_;
 
 @end
 
@@ -93,13 +93,13 @@
 
 
 
-- (NSMutableSet*)primitivePackageInfos;
-- (void)setPrimitivePackageInfos:(NSMutableSet*)value;
-
-
-
 - (NSMutableSet*)primitiveManifests;
 - (void)setPrimitiveManifests:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitivePackageInfos;
+- (void)setPrimitivePackageInfos:(NSMutableSet*)value;
 
 
 @end

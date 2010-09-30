@@ -11,7 +11,10 @@
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "ApplicationMO.h"
-#import "ApplicationInfoMO.h"
+#import "ManagedInstallMO.h"
+#import "ManagedUninstallMO.h"
+#import "ManagedUpdateMO.h"
+#import "OptionalInstallMO.h"
 #import "ReceiptMO.h"
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
@@ -92,6 +95,7 @@
 	PackageArrayController *allPackagesArrayController;
 	ManifestsArrayController *manifestsArrayController;
 	NSArrayController *manifestInfosArrayController;
+	NSArrayController *managedInstallsArrayController, *managedUpdatesArrayController, *managedUninstallsArrayController, *optionalInstallsArrayController;
 }
 
 # pragma mark -
@@ -116,6 +120,10 @@
 @property (nonatomic, retain) IBOutlet PackageArrayController *allPackagesArrayController;
 @property (nonatomic, retain) IBOutlet ManifestsArrayController *manifestsArrayController;
 @property (nonatomic, retain) IBOutlet NSArrayController *manifestInfosArrayController;
+@property (nonatomic, retain) IBOutlet NSArrayController *managedInstallsArrayController;
+@property (nonatomic, retain) IBOutlet NSArrayController *managedUpdatesArrayController;
+@property (nonatomic, retain) IBOutlet NSArrayController *managedUninstallsArrayController;
+@property (nonatomic, retain) IBOutlet NSArrayController *optionalInstallsArrayController;
 @property (nonatomic, retain) IBOutlet NSWindow *window;
 @property (nonatomic, retain) IBOutlet NSWindow *progressPanel;
 @property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;

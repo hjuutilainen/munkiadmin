@@ -21,6 +21,7 @@
 
 
 
+
 @class NSObject;
 
 @class NSObject;
@@ -66,9 +67,9 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_minimum_os_version;
+@property (nonatomic, retain) NSString *munki_uninstall_method;
 
-//- (BOOL)validateMunki_minimum_os_version:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMunki_uninstall_method:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -78,9 +79,9 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_uninstall_method;
+@property (nonatomic, retain) NSString *munki_minimum_os_version;
 
-//- (BOOL)validateMunki_uninstall_method:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMunki_minimum_os_version:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -91,6 +92,12 @@
 - (void)setMunki_uninstallableValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_uninstallable:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_installer_item_hash;
+
+//- (BOOL)validateMunki_installer_item_hash:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -227,16 +234,16 @@
 - (void)setPrimitiveMunki_name:(NSString*)value;
 
 
-- (NSString*)primitiveMunki_minimum_os_version;
-- (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
+- (NSString*)primitiveMunki_uninstall_method;
+- (void)setPrimitiveMunki_uninstall_method:(NSString*)value;
 
 
 - (NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(NSString*)value;
 
 
-- (NSString*)primitiveMunki_uninstall_method;
-- (void)setPrimitiveMunki_uninstall_method:(NSString*)value;
+- (NSString*)primitiveMunki_minimum_os_version;
+- (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
 
 
 - (NSNumber*)primitiveMunki_uninstallable;
@@ -244,6 +251,10 @@
 
 - (BOOL)primitiveMunki_uninstallableValue;
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
+
+
+- (NSString*)primitiveMunki_installer_item_hash;
+- (void)setPrimitiveMunki_installer_item_hash:(NSString*)value;
 
 
 - (NSString*)primitiveMunki_display_name;

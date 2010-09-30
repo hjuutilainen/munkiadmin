@@ -43,24 +43,13 @@
 
 
 
-@dynamic catalogInfos;
+@dynamic managedInstalls;
 
 	
-- (NSMutableSet*)catalogInfosSet {
-	[self willAccessValueForKey:@"catalogInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"catalogInfos"];
-	[self didAccessValueForKey:@"catalogInfos"];
-	return result;
-}
-	
-
-@dynamic catalogs;
-
-	
-- (NSMutableSet*)catalogsSet {
-	[self willAccessValueForKey:@"catalogs"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"catalogs"];
-	[self didAccessValueForKey:@"catalogs"];
+- (NSMutableSet*)managedInstallsSet {
+	[self willAccessValueForKey:@"managedInstalls"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"managedInstalls"];
+	[self didAccessValueForKey:@"managedInstalls"];
 	return result;
 }
 	
@@ -76,24 +65,35 @@
 }
 	
 
-@dynamic manifestInfos;
+@dynamic catalogInfos;
 
 	
-- (NSMutableSet*)manifestInfosSet {
-	[self willAccessValueForKey:@"manifestInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"manifestInfos"];
-	[self didAccessValueForKey:@"manifestInfos"];
+- (NSMutableSet*)catalogInfosSet {
+	[self willAccessValueForKey:@"catalogInfos"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"catalogInfos"];
+	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
 }
 	
 
-@dynamic applicationInfos;
+@dynamic optionalInstalls;
 
 	
-- (NSMutableSet*)applicationInfosSet {
-	[self willAccessValueForKey:@"applicationInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"applicationInfos"];
-	[self didAccessValueForKey:@"applicationInfos"];
+- (NSMutableSet*)optionalInstallsSet {
+	[self willAccessValueForKey:@"optionalInstalls"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"optionalInstalls"];
+	[self didAccessValueForKey:@"optionalInstalls"];
+	return result;
+}
+	
+
+@dynamic catalogs;
+
+	
+- (NSMutableSet*)catalogsSet {
+	[self willAccessValueForKey:@"catalogs"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"catalogs"];
+	[self didAccessValueForKey:@"catalogs"];
 	return result;
 }
 	
@@ -105,6 +105,39 @@
 	[self willAccessValueForKey:@"includedManifests"];
 	NSMutableSet *result = [self mutableSetValueForKey:@"includedManifests"];
 	[self didAccessValueForKey:@"includedManifests"];
+	return result;
+}
+	
+
+@dynamic managedUninstalls;
+
+	
+- (NSMutableSet*)managedUninstallsSet {
+	[self willAccessValueForKey:@"managedUninstalls"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"managedUninstalls"];
+	[self didAccessValueForKey:@"managedUninstalls"];
+	return result;
+}
+	
+
+@dynamic managedUpdates;
+
+	
+- (NSMutableSet*)managedUpdatesSet {
+	[self willAccessValueForKey:@"managedUpdates"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"managedUpdates"];
+	[self didAccessValueForKey:@"managedUpdates"];
+	return result;
+}
+	
+
+@dynamic manifestInfos;
+
+	
+- (NSMutableSet*)manifestInfosSet {
+	[self willAccessValueForKey:@"manifestInfos"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"manifestInfos"];
+	[self didAccessValueForKey:@"manifestInfos"];
 	return result;
 }
 	

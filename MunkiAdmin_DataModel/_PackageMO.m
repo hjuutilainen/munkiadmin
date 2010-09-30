@@ -76,7 +76,7 @@
 
 
 
-@dynamic munki_minimum_os_version;
+@dynamic munki_uninstall_method;
 
 
 
@@ -90,7 +90,7 @@
 
 
 
-@dynamic munki_uninstall_method;
+@dynamic munki_minimum_os_version;
 
 
 
@@ -118,6 +118,13 @@
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_ {
 	[self setPrimitiveMunki_uninstallable:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic munki_installer_item_hash;
+
 
 
 

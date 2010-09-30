@@ -4,7 +4,7 @@
 #import <CoreData/CoreData.h>
 
 
-@class ApplicationInfoMO;
+@class ApplicationProxyMO;
 @class PackageMO;
 @class ManifestMO;
 
@@ -42,8 +42,8 @@
 
 
 
-@property (nonatomic, retain) NSSet* applicationInfos;
-- (NSMutableSet*)applicationInfosSet;
+@property (nonatomic, retain) NSSet* applicationProxies;
+- (NSMutableSet*)applicationProxiesSet;
 
 
 
@@ -61,10 +61,10 @@
 
 @interface _ApplicationMO (CoreDataGeneratedAccessors)
 
-- (void)addApplicationInfos:(NSSet*)value_;
-- (void)removeApplicationInfos:(NSSet*)value_;
-- (void)addApplicationInfosObject:(ApplicationInfoMO*)value_;
-- (void)removeApplicationInfosObject:(ApplicationInfoMO*)value_;
+- (void)addApplicationProxies:(NSSet*)value_;
+- (void)removeApplicationProxies:(NSSet*)value_;
+- (void)addApplicationProxiesObject:(ApplicationProxyMO*)value_;
+- (void)removeApplicationProxiesObject:(ApplicationProxyMO*)value_;
 
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
@@ -94,8 +94,8 @@
 
 
 
-- (NSMutableSet*)primitiveApplicationInfos;
-- (void)setPrimitiveApplicationInfos:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveApplicationProxies;
+- (void)setPrimitiveApplicationProxies:(NSMutableSet*)value;
 
 
 

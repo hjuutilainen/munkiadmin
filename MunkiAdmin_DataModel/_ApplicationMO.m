@@ -50,13 +50,13 @@
 
 
 
-@dynamic applicationInfos;
+@dynamic applicationProxies;
 
 	
-- (NSMutableSet*)applicationInfosSet {
-	[self willAccessValueForKey:@"applicationInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"applicationInfos"];
-	[self didAccessValueForKey:@"applicationInfos"];
+- (NSMutableSet*)applicationProxiesSet {
+	[self willAccessValueForKey:@"applicationProxies"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"applicationProxies"];
+	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
 }
 	
