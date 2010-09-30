@@ -14,6 +14,7 @@
 
 @dynamic defaults;
 @synthesize applicationsArrayController, allPackagesArrayController, manifestsArrayController;
+@synthesize manifestInfosArrayController;
 @synthesize selectedViewDescr;
 @synthesize window;
 @synthesize progressPanel;
@@ -314,6 +315,9 @@
 		
 	// Define default repository contents
 	self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgs", @"pkgsinfo", nil];
+	
+	NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

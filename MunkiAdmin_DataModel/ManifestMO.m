@@ -1,4 +1,5 @@
 #import "ManifestMO.h"
+#import "ManifestInfoMO.h"
 #import "CatalogInfoMO.h"
 #import "ApplicationInfoMO.h"
 

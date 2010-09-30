@@ -91,6 +91,7 @@
 	ApplicationsArrayController *applicationsArrayController;
 	PackageArrayController *allPackagesArrayController;
 	ManifestsArrayController *manifestsArrayController;
+	NSArrayController *manifestInfosArrayController;
 }
 
 # pragma mark -
@@ -114,6 +115,7 @@
 @property (nonatomic, retain) IBOutlet ApplicationsArrayController *applicationsArrayController;
 @property (nonatomic, retain) IBOutlet PackageArrayController *allPackagesArrayController;
 @property (nonatomic, retain) IBOutlet ManifestsArrayController *manifestsArrayController;
+@property (nonatomic, retain) IBOutlet NSArrayController *manifestInfosArrayController;
 @property (nonatomic, retain) IBOutlet NSWindow *window;
 @property (nonatomic, retain) IBOutlet NSWindow *progressPanel;
 @property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
