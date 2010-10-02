@@ -26,12 +26,14 @@
 
 - (NSDictionary *)dictValueForSave
 {
-	NSDictionary *returnDict = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.munki_filename, @"filename",
-								self.munki_installed_size, @"installed_size",
-								self.munki_packageid, @"packageid",
-								self.munki_version, @"version",
-								nil];
+	NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithCapacity:4];
+	
+	if (self.munki_filename != nil) [tmpDict setObject:self.munki_filename forKey:@"filename"];
+	if (self.munki_packageid != nil) [tmpDict setObject:self.munki_packageid forKey:@"packageid"];
+	if (self.munki_version != nil) [tmpDict setObject:self.munki_version forKey:@"version"];
+	if (self.munki_installed_size != nil) [tmpDict setObject:self.munki_installed_size forKey:@"installed_size"];
+	
+	NSDictionary *returnDict = [NSDictionary dictionaryWithDictionary:tmpDict];
 	return returnDict;
 }
 

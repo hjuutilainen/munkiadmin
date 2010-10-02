@@ -1,7 +1,7 @@
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
 #import "CatalogInfoMO.h"
-#import "ApplicationInfoMO.h"
+#import "ApplicationMO.h"
 #import "ManagedUpdateMO.h"
 #import "ManagedInstallMO.h"
 #import "ManagedUninstallMO.h"
