@@ -765,6 +765,10 @@
 						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
 						
 						PackageMO *newPkg = [self newPackageWithProperties:plist];
+						//PackageMO *newPkg = [self performSelectorOnMainThread:@selector(newPackageWithProperties:) withObject:plist waitUntilDone:YES];
+						[self performSelectorOnMainThread:@selector(groupPackage:) withObject:newPkg waitUntilDone:YES];
+						[self performSelectorOnMainThread:@selector(assimilatePackageProperties:) withObject:newPkg waitUntilDone:YES];
+						
 						self.subProgress = 0.7;
 						NSURL *pkginfoURL = [self.pkgsInfoURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", newPkg.munki_name, newPkg.munki_version]];
 						pkginfoURL = [pkginfoURL URLByAppendingPathExtension:@"plist"];
@@ -1202,40 +1206,79 @@
 		[fetchForCatalogs release];
 	}
 	
-	// Create "Applications" from packages which have the same munki_name property
-	for (ApplicationMO *anApplication in allApplications) {
-		if ([aNewPackage.munki_name isEqualToString:anApplication.munki_name]) {
-			//[anApplication addPackagesObject:aNewPackage];
-		}
-	}
+	return aNewPackage;
+}
+
+
+- (void)assimilatePackageProperties:(PackageMO *)aPkg
+{
+	// Fetch for Application objects
+	
+	NSManagedObjectContext *moc = [self managedObjectContext];
+	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
 	
 	NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 	[fetchForApplications setEntity:applicationEntityDescr];
-	NSPredicate *applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aNewPackage.munki_name];
+	NSPredicate *applicationTitlePredicate;
+	//if (strict) {
+	//	applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_display_name == %@", aPkg.munki_name, aPkg.munki_display_name];
+	//} else {
+		applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aPkg.munki_name];
+	//}
+	
+	[fetchForApplications setPredicate:applicationTitlePredicate];
+	
+	NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
+	if (numFoundApplications == 0) {
+		// No matching Applications found.
+		NSLog(@"Assimilator found zero matching Applications for package.");
+	} else if (numFoundApplications == 1) {
+		ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+		if ([existingApplication hasCommonDescription]) {
+			if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
+				aPkg.munki_description = [[existingApplication.packages anyObject] munki_description];
+			}
+		}
+		[existingApplication addPackagesObject:aPkg];
+		if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
+			aPkg.munki_display_name = existingApplication.munki_display_name;
+		}
+		
+	} else {
+		NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
+	}
+	
+	[fetchForApplications release];
+}
+
+- (void)groupPackage:(PackageMO *)aPkg
+{
+	NSManagedObjectContext *moc = [self managedObjectContext];
+	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+	
+	NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
+	[fetchForApplications setEntity:applicationEntityDescr];
+	NSPredicate *applicationTitlePredicate;
+	applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_display_name == %@", aPkg.munki_name, aPkg.munki_display_name];
+	
 	[fetchForApplications setPredicate:applicationTitlePredicate];
 	
 	NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
 	if (numFoundApplications == 0) {
 		ApplicationMO *aNewApplication = [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:moc];
-		aNewApplication.munki_display_name = aNewPackage.munki_display_name;
-		aNewApplication.munki_name = aNewPackage.munki_name;
-		aNewApplication.munki_description = aNewPackage.munki_description;
-		[aNewApplication addPackagesObject:aNewPackage];
+		aNewApplication.munki_display_name = aPkg.munki_display_name;
+		aNewApplication.munki_name = aPkg.munki_name;
+		aNewApplication.munki_description = aPkg.munki_description;
+		[aNewApplication addPackagesObject:aPkg];
 	} else if (numFoundApplications == 1) {
 		ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
-		if ([existingApplication hasCommonDescription]) {
-			aNewPackage.munki_description = [[existingApplication.packages anyObject] munki_description];
-		}
-		[existingApplication addPackagesObject:aNewPackage];
-		aNewPackage.munki_display_name = existingApplication.munki_display_name;
+		[existingApplication addPackagesObject:aPkg];
 		
 	} else {
 		NSLog(@"Found multiple Applications for package. This really shouldn't happen...");
 	}
-
-	[fetchForApplications release];
 	
-	return aNewPackage;
+	[fetchForApplications release];
 }
 
 - (void)scanCurrentRepoForPackages
@@ -1261,6 +1304,8 @@
 			[aPkgInfoFile getResourceValue:&filename forKey:NSURLLocalizedNameKey error:nil];
 			
 			PackageMO *aNewPackage = [self newPackageWithProperties:packageInfoDict];
+			[self groupPackage:aNewPackage];
+			
 			// Set other info
 			aNewPackage.packageInfoURL = aPkgInfoFile;
 			aNewPackage.packageURL = [self.pkgsURL URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
