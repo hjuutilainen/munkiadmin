@@ -6,6 +6,7 @@
 //
 
 #import "MunkiAdmin_AppDelegate.h"
+#import "PkginfoScanner.h"
 
 @implementation MunkiAdmin_AppDelegate
 
@@ -46,6 +47,7 @@
 @synthesize queueIsRunning;
 @synthesize progressIndicator;
 @synthesize currentStatusDescription;
+@synthesize queueStatusDescription;
 @synthesize subProgress;
 @synthesize defaultRepoContents;
 @synthesize selectedViewTag;
@@ -325,7 +327,7 @@
 
 - (void)checkOperations:(NSTimer *)timer
 {	
-	int numOp = [[self.operationQueue operations] count];
+	int numOp = [self.operationQueue operationCount];
 	
     if (numOp < 1) {
 		[timer invalidate];
@@ -336,7 +338,10 @@
 		[progressPanel close];
 		[progressIndicator stopAnimation:self];
 	} else {
-		double currentProgress = ([progressIndicator maxValue] - (double)numOp) + subProgress;
+		self.queueStatusDescription = [NSString stringWithFormat:@"%i remaining", numOp];
+		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
+		self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem currentJobDescription]];
+		double currentProgress = [progressIndicator maxValue] - (double)numOp;
 		[progressIndicator setDoubleValue:currentProgress];
 	}
 
@@ -362,6 +367,7 @@
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
 	[progressIndicator setDoubleValue:0.0];
+	[progressIndicator setMaxValue:[self.operationQueue operationCount]];
 	[progressIndicator startAnimation:self];
 	[self startOperationTimer];
 }
@@ -1052,9 +1058,10 @@
 			
 			[self scanCurrentRepoForCatalogs];
 			[self scanCurrentRepoForPackages];
-			[self scanCurrentRepoForManifests];
-			[self scanCurrentRepoForIncludedManifests];
+			//[self scanCurrentRepoForManifests];
+			//[self scanCurrentRepoForIncludedManifests];
 			//[self checkMaxVersionsForCatalogs];
+			[self showProgressPanel];
 		} else {
 			NSLog(@"Not a repo!");
 		}
@@ -1281,6 +1288,12 @@
 	[fetchForApplications release];
 }
 
+- (void)mergeChanges:(NSNotification*)notification
+{
+	//NSAssert([NSThread mainThread], @"Not on the main thread");
+	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+}
+
 - (void)scanCurrentRepoForPackages
 {
 	// Scan the current repo for already existing pkginfo files
@@ -1299,16 +1312,21 @@
 		NSNumber *isDir;
 		[aPkgInfoFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			NSDictionary *packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:aPkgInfoFile];
-			NSString *filename = nil;
-			[aPkgInfoFile getResourceValue:&filename forKey:NSURLLocalizedNameKey error:nil];
+			//NSDictionary *packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:aPkgInfoFile];
+			//NSString *filename = nil;
+			//[aPkgInfoFile getResourceValue:&filename forKey:NSURLLocalizedNameKey error:nil];
 			
-			PackageMO *aNewPackage = [self newPackageWithProperties:packageInfoDict];
-			[self groupPackage:aNewPackage];
+			//PackageMO *aNewPackage = [self newPackageWithProperties:packageInfoDict];
+			//[self groupPackage:aNewPackage];
 			
 			// Set other info
-			aNewPackage.packageInfoURL = aPkgInfoFile;
-			aNewPackage.packageURL = [self.pkgsURL URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+			//aNewPackage.packageInfoURL = aPkgInfoFile;
+			//aNewPackage.packageURL = [self.pkgsURL URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+			
+			PkginfoScanner *scanOp = [[PkginfoScanner alloc] initWithURL:aPkgInfoFile];
+			scanOp.delegate = self;
+			[self.operationQueue addOperation:scanOp];
+			
 		}
 	}
 }

@@ -82,6 +82,7 @@
 	NSOperationQueue *operationQueue;
 	BOOL queueIsRunning;
 	NSString *currentStatusDescription;
+	NSString *queueStatusDescription;
 	NSProgressIndicator *progressIndicator;
 	double subProgress;
 	
@@ -113,6 +114,7 @@
 @property BOOL queueIsRunning;
 @property double subProgress;
 @property (retain) NSString *currentStatusDescription;
+@property (retain) NSString *queueStatusDescription;
 
 # pragma mark -
 # pragma mark IBOutlet declarations
