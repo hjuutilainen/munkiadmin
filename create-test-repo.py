@@ -73,7 +73,7 @@ def newPackage(title):
 	pl = {	'name':						title,
 			'version':					version,
 			'display_name':				title,
-			'minimum_os_vers':			'10.5.0',
+			'minimum_os_version':			'10.5.0',
 			'description':				description,
 			'catalogs':					catalogs,
 			'installer_item_location':	pkgFilename,
@@ -194,6 +194,10 @@ def main(argv=None):
 		
 		for i in range(0, numManifests):
 			newManifest()
+			
+		mcProcess = ["/usr/local/munki/makecatalogs", output]
+		p = subprocess.Popen(mcProcess, bufsize=1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		(plist, err) = p.communicate()
 		
 	except Usage, err:
 		print >> sys.stderr, sys.argv[0].split("/")[-1] + ": " + str(err.msg)

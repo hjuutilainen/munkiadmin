@@ -83,6 +83,7 @@
 	BOOL queueIsRunning;
 	NSString *currentStatusDescription;
 	NSString *queueStatusDescription;
+	NSString *jobDescription;
 	NSProgressIndicator *progressIndicator;
 	double subProgress;
 	
@@ -115,6 +116,7 @@
 @property double subProgress;
 @property (retain) NSString *currentStatusDescription;
 @property (retain) NSString *queueStatusDescription;
+@property (retain) NSString *jobDescription;
 
 # pragma mark -
 # pragma mark IBOutlet declarations
@@ -194,7 +196,7 @@
 - (void)scanCurrentRepoForManifests;
 - (void)scanCurrentRepoForIncludedManifests;
 - (void)scanCurrentRepoForPackages;
-- (void)scanCurrentRepoForCatalogs;
+- (void)scanCurrentRepoForCatalogFiles;
 - (void)deleteAllManagedObjects;
 - (void)selectRepoAtURL:(NSURL *)newURL;
 - (void)writePackagePropertyListsToDisk;

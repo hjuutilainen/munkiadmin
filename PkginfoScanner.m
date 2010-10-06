@@ -6,6 +6,7 @@
 //
 
 #import "PkginfoScanner.h"
+#import "MunkiAdmin_AppDelegate.h"
 #import "PackageMO.h"
 #import "ReceiptMO.h"
 #import "CatalogMO.h"
@@ -19,6 +20,9 @@
 @synthesize fileName;
 @synthesize sourceURL;
 @synthesize delegate;
+@synthesize pkginfoKeyMappings;
+@synthesize receiptKeyMappings;
+@synthesize installsKeyMappings;
 
 - (NSUserDefaults *)defaults
 {
@@ -31,7 +35,56 @@
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
-		self.currentJobDescription = @"Initializing scan...";
+		self.currentJobDescription = @"Initializing pkginfo scan operaiton";
+		
+		// Define the munki keys we support
+		NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+		NSArray *pkginfoKeys = [NSArray arrayWithObjects:
+								@"name", 
+								@"display_name", 
+								@"description", 
+								@"installed_size", 
+								@"autoremove", 
+								@"installer_item_location", 
+								@"installer_item_size", 
+								@"installer_item_hash",
+								@"minimum_os_version",
+								@"uninstall_method",
+								@"uninstallable",
+								@"version",
+								@"installer_type",
+								nil];
+		for (NSString *pkginfoKey in pkginfoKeys) {
+			[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
+		}
+		self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
+		
+		// Receipt keys
+		NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+		NSArray *receiptKeys = [NSArray arrayWithObjects:
+								@"filename",
+								@"installed_size",
+								@"packageid",
+								@"version",
+								nil];
+		for (NSString *receiptKey in receiptKeys) {
+			[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
+		}
+		self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
+		
+		// Installs item keys
+		NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+		NSArray *installsKeys = [NSArray arrayWithObjects:
+								 @"CFBundleIdentifier",
+								 @"CFBundleName",
+								 @"CFBundleShortVersionString",
+								 @"path",
+								 @"type",
+								 nil];
+		for (NSString *installsKey in installsKeys) {
+			[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+		}
+		self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
 	}
 	return self;
 }
@@ -64,60 +117,11 @@
 		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		
-		// Define the keys we support
-		NSMutableDictionary *pkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *pkginfoKeys = [NSArray arrayWithObjects:
-								@"name", 
-								@"display_name", 
-								@"description", 
-								@"installed_size", 
-								@"autoremove", 
-								@"installer_item_location", 
-								@"installer_item_size", 
-								@"installer_item_hash",
-								@"minimum_os_version",
-								@"uninstall_method",
-								@"uninstallable",
-								@"version",
-								@"installer_type",
-								nil];
-		for (NSString *pkginfoKey in pkginfoKeys) {
-			[pkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
-		}
-		// Receipt keys
-		NSMutableDictionary *receiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *receiptKeys = [NSArray arrayWithObjects:
-								@"filename",
-								@"installed_size",
-								@"packageid",
-								@"version",
-								nil];
-		for (NSString *receiptKey in receiptKeys) {
-			[receiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
-		}
-		// Installs item keys
-		NSMutableDictionary *installsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *installsKeys = [NSArray arrayWithObjects:
-								 @"CFBundleIdentifier",
-								 @"CFBundleName",
-								 @"CFBundleShortVersionString",
-								 @"path",
-								 @"type",
-								 nil];
-		for (NSString *installsKey in installsKeys) {
-			[installsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
-		}
 		
 		
 		
-		
-		
-		
-		self.currentJobDescription = [NSString stringWithFormat:@"Reading %@", self.fileName];
-		
-		if ([self.defaults boolForKey:@"debug"]) {
-			NSLog(@"Reading pkginfo file: %@", [self.sourceURL relativePath]);
-		}
+		self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
 		
 		NSDictionary *packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
 		
@@ -127,57 +131,97 @@
 			PackageMO *aNewPackage = [[[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc] autorelease];
 			aNewPackage.packageInfoURL = self.sourceURL;
 			
-			
+			// =================================
 			// Get basic package properties
-			[pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			// =================================
+			self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading basic info for %@", self.fileName);
+			[self.pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 				id value = [packageInfoDict objectForKey:obj];
 				if (value != nil) {
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ --> %@: %@", self.fileName, obj, value);
+					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: %@", self.fileName, obj, value);
 					[aNewPackage setValue:value forKey:key];
 				} else {
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ --> %@: nil (skipped)", self.fileName, key);
+					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: nil (skipped)", self.fileName, key);
 				}
 			}];
 			aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
 			
+			// =================================
 			// Get "receipts" items
+			// =================================
 			NSArray *itemReceipts = [packageInfoDict objectForKey:@"receipts"];
 			[itemReceipts enumerateObjectsUsingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 				ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 				aNewReceipt.package = aNewPackage;
-				[receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[self.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [aReceipt objectForKey:obj];
 					if (value != nil) {
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@, receipt %i --> %@: %@", self.fileName, idx, obj, value);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %i --> %@: %@", self.fileName, idx, obj, value);
 						[aNewReceipt setValue:value forKey:key];
 					} else {
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@, receipt %i --> %@: nil (skipped)", self.fileName, idx, key);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %i --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
 			}];
 			
-			
+			// =================================
 			// Get "installs" items
+			// =================================
 			NSArray *installItems = [packageInfoDict objectForKey:@"installs"];
 			[installItems enumerateObjectsUsingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
 				InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
 				[aNewInstallsItem addPackagesObject:aNewPackage];
-				[installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[self.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anInstall objectForKey:obj];
 					if (value != nil) {
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@, installs item %i --> %@: %@", self.fileName, idx, obj, value);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %i --> %@: %@", self.fileName, idx, obj, value);
 						[aNewInstallsItem setValue:value forKey:key];
 					} else {
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@, installs item %i --> %@: nil (skipped)", self.fileName, idx, key);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %i --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
 			}];
 			
+			// =================================
 			// Get "catalogs" items
+			// =================================
 			NSArray *catalogs = [packageInfoDict objectForKey:@"catalogs"];
+			
+			self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Parsing catalogs for %@", self.fileName);
+			
+			// Loop through Catalog managed objects and create a relationship to current pkg
+			NSArray *allCatalogs;
+			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
+			[getAllCatalogs setEntity:catalogEntityDescr];
+			allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
+			[getAllCatalogs release];
+			
+			for (CatalogMO *aCatalog in allCatalogs) {
+				CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+				newCatalogInfo.package = aNewPackage;
+				newCatalogInfo.catalog.title = aCatalog.title;
+				
+				[aCatalog addPackagesObject:aNewPackage];
+				[aCatalog addCatalogInfosObject:newCatalogInfo];
+				
+				PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+				newPackageInfo.catalog = aCatalog;
+				newPackageInfo.title = [aNewPackage.munki_display_name stringByAppendingFormat:@" %@", aNewPackage.munki_version];
+				newPackageInfo.package = aNewPackage;
+				
+				if ([catalogs containsObject:aCatalog.title]) {
+					newCatalogInfo.isEnabledForPackageValue = YES;
+					newPackageInfo.isEnabledForCatalogValue = YES;
+				} else {
+					newCatalogInfo.isEnabledForPackageValue = NO;
+					newPackageInfo.isEnabledForCatalogValue = NO;
+				}
+			}
+			
+			// Loop through the "catalogs" key in pkginfo file
 			[catalogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				
-				
 				// Check if we already have a catalog with this name
 				NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
 				[fetchForCatalogs setEntity:catalogEntityDescr];
@@ -187,47 +231,81 @@
 				
 				NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
 				if (numFoundCatalogs == 0) {
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ catalogs item %i --> Name: %@ (new)", self.fileName, idx, obj);
-					//CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
-					CatalogMO *aNewCatalog = [[[CatalogMO alloc] initWithEntity:catalogEntityDescr insertIntoManagedObjectContext:moc] autorelease];
+					//NSLog(@"Creating a new catalog %@", aCatalog);
+					CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
 					aNewCatalog.title = obj;
 					[aNewCatalog addPackagesObject:aNewPackage];
-				} else if (numFoundCatalogs == 1) {
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ catalogs item %i --> Name: %@ (reused existing)", self.fileName, idx, obj);
-					CatalogMO *existingCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
-					[existingCatalog addPackagesObject:aNewPackage];
+					CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+					newCatalogInfo.package = aNewPackage;
+					newCatalogInfo.catalog.title = aNewCatalog.title;
+					newCatalogInfo.isEnabledForPackageValue = YES;
+					[aNewCatalog addCatalogInfosObject:newCatalogInfo];
 				}
 				[fetchForCatalogs release];
 			}];
 			
+			// =================================
 			// Get "requires" items
+			// =================================
 			NSArray *requires = [packageInfoDict objectForKey:@"requires"];
 			[requires enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %i --> Name: %@", self.fileName, idx, obj);
 			}];
 			
+			// =================================
 			// Get "update_for" items
+			// =================================
 			NSArray *update_for = [packageInfoDict objectForKey:@"update_for"];
 			[update_for enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %i --> Name: %@", self.fileName, idx, obj);
 			}];
+			
+			// =================================
+			// Group packages by "name" property
+			// =================================
+			NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+			
+			NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
+			[fetchForApplications setEntity:applicationEntityDescr];
+			NSPredicate *applicationTitlePredicate;
+			applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_display_name == %@", aNewPackage.munki_name, aNewPackage.munki_display_name];
+			
+			[fetchForApplications setPredicate:applicationTitlePredicate];
+			
+			NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
+			if (numFoundApplications == 0) {
+				ApplicationMO *aNewApplication = [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:moc];
+				aNewApplication.munki_display_name = aNewPackage.munki_display_name;
+				aNewApplication.munki_name = aNewPackage.munki_name;
+				aNewApplication.munki_description = aNewPackage.munki_description;
+				[aNewApplication addPackagesObject:aNewPackage];
+			} else if (numFoundApplications == 1) {
+				ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+				[existingApplication addPackagesObject:aNewPackage];
+				
+			} else {
+				NSLog(@"Found multiple Applications for package. This really shouldn't happen...");
+			}
+			
+			[fetchForApplications release];
+			
+			
 			
 			
 		} else {
 			NSLog(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
 		}
 
-		
+		// Save the context, this causes main app delegate to merge new items
 		NSError *error = nil;
-		
 		if (![moc save:&error]) {
 			[NSApp presentError:error];
 		}
 		
-		if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo:)]) {
-			[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo:) 
+		if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo)]) {
+			[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo) 
 											withObject:nil
-										 waitUntilDone:NO];
+										 waitUntilDone:YES];
 		}
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:self

@@ -7,6 +7,7 @@
 
 #import "MunkiAdmin_AppDelegate.h"
 #import "PkginfoScanner.h"
+#import "ManifestScanner.h"
 
 @implementation MunkiAdmin_AppDelegate
 
@@ -48,6 +49,7 @@
 @synthesize progressIndicator;
 @synthesize currentStatusDescription;
 @synthesize queueStatusDescription;
+@synthesize jobDescription;
 @synthesize subProgress;
 @synthesize defaultRepoContents;
 @synthesize selectedViewTag;
@@ -338,9 +340,16 @@
 		[progressPanel close];
 		[progressIndicator stopAnimation:self];
 	} else {
-		self.queueStatusDescription = [NSString stringWithFormat:@"%i remaining", numOp];
+		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp];
+		
 		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
-		self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem currentJobDescription]];
+		self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+		
+		if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
+			self.jobDescription = @"Scanning Packages";
+		} else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
+			self.jobDescription = @"Scanning Manifests";
+		}
 		double currentProgress = [progressIndicator maxValue] - (double)numOp;
 		[progressIndicator setDoubleValue:currentProgress];
 	}
@@ -947,7 +956,7 @@
 	allPackages = [moc executeFetchRequest:getAllPackages error:nil];
 	
 	for (PackageMO *aPackage in allPackages) {
-		
+				
 		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
 		NSMutableDictionary *mergedInfoDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
 		[mergedInfoDict addEntriesFromDictionary:[aPackage pkgInfoDictionary]];
@@ -1008,6 +1017,7 @@
 # pragma mark -
 # pragma mark Reading from the repository
 
+
 - (IBAction)openRepository:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
@@ -1056,9 +1066,11 @@
 			self.catalogsURL = [self.repoURL URLByAppendingPathComponent:@"catalogs"];
 			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
 			
-			[self scanCurrentRepoForCatalogs];
+			[self scanCurrentRepoForCatalogFiles];
+			
 			[self scanCurrentRepoForPackages];
-			//[self scanCurrentRepoForManifests];
+			
+			[self scanCurrentRepoForManifests];
 			//[self scanCurrentRepoForIncludedManifests];
 			//[self checkMaxVersionsForCatalogs];
 			[self showProgressPanel];
@@ -1288,9 +1300,14 @@
 	[fetchForApplications release];
 }
 
+- (void)scannerDidProcessPkginfo
+{
+	//[self arrangeCatalogs];
+}
+
 - (void)mergeChanges:(NSNotification*)notification
 {
-	//NSAssert([NSThread mainThread], @"Not on the main thread");
+	NSAssert([NSThread mainThread], @"Not on the main thread");
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
 }
 
@@ -1312,18 +1329,8 @@
 		NSNumber *isDir;
 		[aPkgInfoFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			//NSDictionary *packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:aPkgInfoFile];
-			//NSString *filename = nil;
-			//[aPkgInfoFile getResourceValue:&filename forKey:NSURLLocalizedNameKey error:nil];
 			
-			//PackageMO *aNewPackage = [self newPackageWithProperties:packageInfoDict];
-			//[self groupPackage:aNewPackage];
-			
-			// Set other info
-			//aNewPackage.packageInfoURL = aPkgInfoFile;
-			//aNewPackage.packageURL = [self.pkgsURL URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
-			
-			PkginfoScanner *scanOp = [[PkginfoScanner alloc] initWithURL:aPkgInfoFile];
+			PkginfoScanner *scanOp = [[[PkginfoScanner alloc] initWithURL:aPkgInfoFile] autorelease];
 			scanOp.delegate = self;
 			[self.operationQueue addOperation:scanOp];
 			
@@ -1331,7 +1338,7 @@
 	}
 }
 
-- (void)scanCurrentRepoForCatalogs
+- (void)scanCurrentRepoForCatalogFiles
 {
 	// Scan the current repo for already existing catalog files
 	// and create a new Catalog object for each of them
@@ -1371,6 +1378,10 @@
 			}
 		}
 	}
+	NSError *error = nil;
+	if (![moc save:&error]) {
+		[NSApp presentError:error];
+	}
 }
 
 
@@ -1395,15 +1406,11 @@
 		NSNumber *isDir;
 		[aManifestFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
+			
 			NSString *filename = nil;
 			[aManifestFile getResourceValue:&filename forKey:NSURLNameKey error:nil];
-			
-			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:aManifestFile];
-			
-			// Check if we already have a manifest with this name
 			NSFetchRequest *request = [[NSFetchRequest alloc] init];
 			[request setEntity:entityDescription];
-			
 			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
 			[request setPredicate:titlePredicate];
 			ManifestMO *manifest;
@@ -1415,69 +1422,16 @@
 			}
 			[request release];
 			
-			// Parse manifests catalog array
-			NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
-			for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
-				CatalogInfoMO *newCatalogInfo;
-				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-				newCatalogInfo.catalog.title = aCatalog.title;
-				[aCatalog addManifestsObject:manifest];
-				newCatalogInfo.manifest = manifest;
-				[aCatalog addCatalogInfosObject:newCatalogInfo];
-				
-				if ([catalogs containsObject:aCatalog.title]) {
-					newCatalogInfo.isEnabledForManifestValue = YES;
-				} else {
-					newCatalogInfo.isEnabledForManifestValue = NO;
-				}
-			}
-			
-			// Parse manifests managed_installs array
-			NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
-			NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
-			NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
-			NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
-			
-			for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
-				[anApplication addManifestsObject:manifest];
-				
-				ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
-				newManagedInstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedInstall];
-				if ([managedInstalls containsObject:newManagedInstall.parentApplication.munki_name]) {
-					newManagedInstall.isEnabledValue = YES;
-				} else {
-					newManagedInstall.isEnabledValue = NO;
-				}
-				
-				ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];
-				newManagedUninstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedUninstall];
-				if ([managedUninstalls containsObject:newManagedUninstall.parentApplication.munki_name]) {
-					newManagedUninstall.isEnabledValue = YES;
-				} else {
-					newManagedUninstall.isEnabledValue = NO;
-				}
-				
-				ManagedUpdateMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc];
-				newManagedUpdate.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedUpdate];
-				if ([managedUpdates containsObject:newManagedUpdate.parentApplication.munki_name]) {
-					newManagedUpdate.isEnabledValue = YES;
-				} else {
-					newManagedUpdate.isEnabledValue = NO;
-				}
-				
-				OptionalInstallMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc];
-				newOptionalInstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newOptionalInstall];
-				if ([optionalInstalls containsObject:newOptionalInstall.parentApplication.munki_name]) {
-					newOptionalInstall.isEnabledValue = YES;
-				} else {
-					newOptionalInstall.isEnabledValue = NO;
-				}
-			}
 		}
+	}
+	NSError *error = nil;
+	if (![moc save:&error]) {
+		[NSApp presentError:error];
+	}
+	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
+		ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL] autorelease];
+		scanOp.delegate = self;
+		[self.operationQueue addOperation:scanOp];
 	}
 }
 
@@ -1532,32 +1486,30 @@
 			
 			// Parse manifests included_manifests array
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
-			//if (includedManifests != nil) {
-				for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
-					
-					ManifestInfoMO *newManifestInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc];
-					newManifestInfo.parentManifest = aManifest;
-					newManifestInfo.manifest = manifest;
-					
-					if ([self.defaults boolForKey:@"debug"]) {
-						NSLog(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
-					}
-					
-					if (includedManifests == nil) {
-						newManifestInfo.isEnabledForManifestValue = NO;
-					} else if ([includedManifests containsObject:aManifest.title]) {
-						newManifestInfo.isEnabledForManifestValue = YES;
-					} else {
-						newManifestInfo.isEnabledForManifestValue = NO;
-					}
-					if (manifest != aManifest) {
-						newManifestInfo.isAvailableForEditingValue = YES;
-					} else {
-						newManifestInfo.isAvailableForEditingValue = NO;
-					}
-
+			for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
+				
+				ManifestInfoMO *newManifestInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc];
+				newManifestInfo.parentManifest = aManifest;
+				newManifestInfo.manifest = manifest;
+				
+				if ([self.defaults boolForKey:@"debug"]) {
+					NSLog(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
 				}
-			//}
+				
+				if (includedManifests == nil) {
+					newManifestInfo.isEnabledForManifestValue = NO;
+				} else if ([includedManifests containsObject:aManifest.title]) {
+					newManifestInfo.isEnabledForManifestValue = YES;
+				} else {
+					newManifestInfo.isEnabledForManifestValue = NO;
+				}
+				if (manifest != aManifest) {
+					newManifestInfo.isAvailableForEditingValue = YES;
+				} else {
+					newManifestInfo.isAvailableForEditingValue = NO;
+				}
+				
+			}
 		}
 	}
 }

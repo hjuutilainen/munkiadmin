@@ -1,14 +1,15 @@
 //
-//  PkginfoScanner.h
+//  ManifestScanner.h
 //  MunkiAdmin
 //
-//  Created by Hannes Juutilainen on 5.10.2010.
+//  Created by Hannes Juutilainen on 6.10.2010.
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ManifestMO.h"
+#import "ManifestInfoMO.h"
 
-
-@interface PkginfoScanner : NSOperation {
+@interface ManifestScanner : NSOperation {
 	
 	NSString *currentJobDescription;
 	NSString *fileName;

@@ -58,6 +58,7 @@
 		F5326B04125B192200AF967C /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5326B03125B192200AF967C /* _PackageMO.m */; };
 		F5326B06125B192200AF967C /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5326B05125B192200AF967C /* _ReceiptMO.m */; };
 		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
+		F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */; };
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
@@ -164,6 +165,8 @@
 		F5326B14125B192500AF967C /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
 		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
+		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestScanner.h; sourceTree = "<group>"; };
+		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestScanner.m; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -215,6 +218,8 @@
 				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
 				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
 				F53269A2125AF75C00AF967C /* PkginfoScanner.m */,
+				F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */,
+				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -490,6 +495,7 @@
 				F5326B02125B192100AF967C /* _PackageInfoMO.m in Sources */,
 				F5326B04125B192200AF967C /* _PackageMO.m in Sources */,
 				F5326B06125B192200AF967C /* _ReceiptMO.m in Sources */,
+				F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
