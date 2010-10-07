@@ -11,6 +11,7 @@
 
 
 
+
 @interface CatalogInfoMOID : NSManagedObjectID {}
 @end
 
@@ -39,6 +40,16 @@
 - (void)setIsEnabledForPackageValue:(BOOL)value_;
 
 //- (BOOL)validateIsEnabledForPackage:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSNumber *originalIndex;
+
+@property int originalIndexValue;
+- (int)originalIndexValue;
+- (void)setOriginalIndexValue:(int)value_;
+
+//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -78,6 +89,13 @@
 
 - (BOOL)primitiveIsEnabledForPackageValue;
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_;
+
+
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+
+- (int)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int)value_;
 
 
 

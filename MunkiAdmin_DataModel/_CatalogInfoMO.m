@@ -81,6 +81,32 @@
 
 
 
+@dynamic originalIndex;
+
+
+
+- (int)originalIndexValue {
+	NSNumber *result = [self originalIndex];
+	return [result intValue];
+}
+
+- (void)setOriginalIndexValue:(int)value_ {
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+}
+
+- (int)primitiveOriginalIndexValue {
+	NSNumber *result = [self primitiveOriginalIndex];
+	return [result intValue];
+}
+
+- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
 @dynamic manifest;
 
 	

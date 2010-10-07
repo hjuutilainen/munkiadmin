@@ -35,7 +35,7 @@
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
-		self.currentJobDescription = @"Initializing pkginfo scan operaiton";
+		self.currentJobDescription = @"Initializing pkginfo scan operation";
 		
 		// Define the munki keys we support
 		NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
@@ -130,6 +130,7 @@
 			//PackageMO *aNewPackage = [NSEntityDescription insertNewObjectForEntityForName:@"Package" inManagedObjectContext:moc];
 			PackageMO *aNewPackage = [[[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc] autorelease];
 			aNewPackage.packageInfoURL = self.sourceURL;
+			aNewPackage.originalPkginfo = packageInfoDict;
 			
 			// =================================
 			// Get basic package properties
@@ -213,9 +214,11 @@
 				
 				if ([catalogs containsObject:aCatalog.title]) {
 					newCatalogInfo.isEnabledForPackageValue = YES;
+					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:aCatalog.title];
 					newPackageInfo.isEnabledForCatalogValue = YES;
 				} else {
 					newCatalogInfo.isEnabledForPackageValue = NO;
+					newCatalogInfo.originalIndexValue = 10000;
 					newPackageInfo.isEnabledForCatalogValue = NO;
 				}
 			}
@@ -239,6 +242,7 @@
 					newCatalogInfo.package = aNewPackage;
 					newCatalogInfo.catalog.title = aNewCatalog.title;
 					newCatalogInfo.isEnabledForPackageValue = YES;
+					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:obj];
 					[aNewCatalog addCatalogInfosObject:newCatalogInfo];
 				}
 				[fetchForCatalogs release];

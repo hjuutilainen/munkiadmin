@@ -97,6 +97,13 @@
 
 
 
+@dynamic originalPkginfo;
+
+
+
+
+
+
 @dynamic munki_uninstallable;
 
 

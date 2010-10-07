@@ -44,7 +44,7 @@
 	return tempArray;
 }
 
-- (NSArray *)enabledManifests
+- (NSArray *)enabledIncludedManifests
 {
 	NSPredicate *enabledPredicate = [NSPredicate predicateWithFormat:@"isEnabledForManifest == TRUE"];
 	NSArray *tempArray = [[self.includedManifests allObjects] filteredArrayUsingPredicate:enabledPredicate];
@@ -75,9 +75,10 @@
 	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
 	
 	if (self.catalogInfos != nil) {
-		NSSortDescriptor *sortCatalogsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+		NSSortDescriptor *sortCatalogsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+		NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 		NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
-		for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortCatalogsByTitle]]) {
+		for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortCatalogsByTitle,nil]]) {
 			if (([catalogInfo isEnabledForManifestValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
 				[catalogs addObject:[[catalogInfo catalog] title]];
 			}
@@ -85,8 +86,7 @@
 		[tmpDict setObject:catalogs forKey:@"catalogs"];
 	}
 	
-	
-	NSSortDescriptor *sortApplicationsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	NSSortDescriptor *sortApplicationsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
 	
 	if ([[self enabledManagedInstalls] count] > 0) {
 		NSMutableArray *managedInstalls = [NSMutableArray arrayWithCapacity:[self.managedInstalls count]];
@@ -96,6 +96,10 @@
 			}
 		}
 		[tmpDict setObject:managedInstalls forKey:@"managed_installs"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"managed_installs"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"managed_installs"];
+		}
 	}
 	
 	if ([[self enabledManagedUninstalls] count] > 0) {
@@ -106,6 +110,10 @@
 			}
 		}
 		[tmpDict setObject:managedUninstalls forKey:@"managed_uninstalls"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"managed_uninstalls"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"managed_uninstalls"];
+		}
 	}
 	
 	if ([[self enabledManagedUpdates] count] > 0) {
@@ -116,6 +124,10 @@
 			}
 		}
 		[tmpDict setObject:managedUpdates forKey:@"managed_updates"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"managed_updates"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"managed_updates"];
+		}
 	}
 	
 	if ([[self enabledOptionalInstalls] count] > 0) {
@@ -126,10 +138,14 @@
 			}
 		}
 		[tmpDict setObject:optionalInstalls forKey:@"optional_installs"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"optional_installs"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"optional_installs"];
+		}
 	}
 	
-	if ([[self enabledManifests] count] > 0) {
-		NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	if ([[self enabledIncludedManifests] count] > 0) {
+		NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
 		NSMutableArray *includedManifests = [NSMutableArray arrayWithCapacity:[self.includedManifests count]];
 		for (ManifestInfoMO *manifestInfo in [self.includedManifests sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]]) {
 			if (([manifestInfo isEnabledForManifestValue]) && (![includedManifests containsObject:[[manifestInfo parentManifest] title]])) {
@@ -137,6 +153,10 @@
 			}
 		}
 		[tmpDict setObject:includedManifests forKey:@"included_manifests"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"included_manifests"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"included_manifests"];
+		}
 	}
 	
 	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];

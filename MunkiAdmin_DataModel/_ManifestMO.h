@@ -4,16 +4,17 @@
 #import <CoreData/CoreData.h>
 
 
-@class ManagedInstallMO;
 @class ApplicationMO;
-@class CatalogInfoMO;
+@class ManagedInstallMO;
+@class ManagedUninstallMO;
 @class OptionalInstallMO;
 @class CatalogMO;
 @class ManifestInfoMO;
-@class ManagedUninstallMO;
 @class ManagedUpdateMO;
 @class ManifestInfoMO;
+@class CatalogInfoMO;
 
+@class NSObject;
 
 @class NSObject;
 
@@ -25,6 +26,12 @@
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ManifestMOID*)objectID;
+
+
+
+@property (nonatomic, retain) NSObject *originalManifest;
+
+//- (BOOL)validateOriginalManifest:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -41,18 +48,18 @@
 
 
 
-@property (nonatomic, retain) NSSet* managedInstalls;
-- (NSMutableSet*)managedInstallsSet;
-
-
-
 @property (nonatomic, retain) NSSet* applications;
 - (NSMutableSet*)applicationsSet;
 
 
 
-@property (nonatomic, retain) NSSet* catalogInfos;
-- (NSMutableSet*)catalogInfosSet;
+@property (nonatomic, retain) NSSet* managedInstalls;
+- (NSMutableSet*)managedInstallsSet;
+
+
+
+@property (nonatomic, retain) NSSet* managedUninstalls;
+- (NSMutableSet*)managedUninstallsSet;
 
 
 
@@ -71,11 +78,6 @@
 
 
 
-@property (nonatomic, retain) NSSet* managedUninstalls;
-- (NSMutableSet*)managedUninstallsSet;
-
-
-
 @property (nonatomic, retain) NSSet* managedUpdates;
 - (NSMutableSet*)managedUpdatesSet;
 
@@ -86,24 +88,29 @@
 
 
 
+@property (nonatomic, retain) NSSet* catalogInfos;
+- (NSMutableSet*)catalogInfosSet;
+
+
+
 @end
 
 @interface _ManifestMO (CoreDataGeneratedAccessors)
-
-- (void)addManagedInstalls:(NSSet*)value_;
-- (void)removeManagedInstalls:(NSSet*)value_;
-- (void)addManagedInstallsObject:(ManagedInstallMO*)value_;
-- (void)removeManagedInstallsObject:(ManagedInstallMO*)value_;
 
 - (void)addApplications:(NSSet*)value_;
 - (void)removeApplications:(NSSet*)value_;
 - (void)addApplicationsObject:(ApplicationMO*)value_;
 - (void)removeApplicationsObject:(ApplicationMO*)value_;
 
-- (void)addCatalogInfos:(NSSet*)value_;
-- (void)removeCatalogInfos:(NSSet*)value_;
-- (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
-- (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
+- (void)addManagedInstalls:(NSSet*)value_;
+- (void)removeManagedInstalls:(NSSet*)value_;
+- (void)addManagedInstallsObject:(ManagedInstallMO*)value_;
+- (void)removeManagedInstallsObject:(ManagedInstallMO*)value_;
+
+- (void)addManagedUninstalls:(NSSet*)value_;
+- (void)removeManagedUninstalls:(NSSet*)value_;
+- (void)addManagedUninstallsObject:(ManagedUninstallMO*)value_;
+- (void)removeManagedUninstallsObject:(ManagedUninstallMO*)value_;
 
 - (void)addOptionalInstalls:(NSSet*)value_;
 - (void)removeOptionalInstalls:(NSSet*)value_;
@@ -120,11 +127,6 @@
 - (void)addIncludedManifestsObject:(ManifestInfoMO*)value_;
 - (void)removeIncludedManifestsObject:(ManifestInfoMO*)value_;
 
-- (void)addManagedUninstalls:(NSSet*)value_;
-- (void)removeManagedUninstalls:(NSSet*)value_;
-- (void)addManagedUninstallsObject:(ManagedUninstallMO*)value_;
-- (void)removeManagedUninstallsObject:(ManagedUninstallMO*)value_;
-
 - (void)addManagedUpdates:(NSSet*)value_;
 - (void)removeManagedUpdates:(NSSet*)value_;
 - (void)addManagedUpdatesObject:(ManagedUpdateMO*)value_;
@@ -135,9 +137,18 @@
 - (void)addManifestInfosObject:(ManifestInfoMO*)value_;
 - (void)removeManifestInfosObject:(ManifestInfoMO*)value_;
 
+- (void)addCatalogInfos:(NSSet*)value_;
+- (void)removeCatalogInfos:(NSSet*)value_;
+- (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
+- (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
+
 @end
 
 @interface _ManifestMO (CoreDataGeneratedPrimitiveAccessors)
+
+- (NSObject*)primitiveOriginalManifest;
+- (void)setPrimitiveOriginalManifest:(NSObject*)value;
+
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
@@ -149,18 +160,18 @@
 
 
 
-- (NSMutableSet*)primitiveManagedInstalls;
-- (void)setPrimitiveManagedInstalls:(NSMutableSet*)value;
-
-
-
 - (NSMutableSet*)primitiveApplications;
 - (void)setPrimitiveApplications:(NSMutableSet*)value;
 
 
 
-- (NSMutableSet*)primitiveCatalogInfos;
-- (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveManagedInstalls;
+- (void)setPrimitiveManagedInstalls:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveManagedUninstalls;
+- (void)setPrimitiveManagedUninstalls:(NSMutableSet*)value;
 
 
 
@@ -179,11 +190,6 @@
 
 
 
-- (NSMutableSet*)primitiveManagedUninstalls;
-- (void)setPrimitiveManagedUninstalls:(NSMutableSet*)value;
-
-
-
 - (NSMutableSet*)primitiveManagedUpdates;
 - (void)setPrimitiveManagedUpdates:(NSMutableSet*)value;
 
@@ -191,6 +197,11 @@
 
 - (NSMutableSet*)primitiveManifestInfos;
 - (void)setPrimitiveManifestInfos:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveCatalogInfos;
+- (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
 
 
 @end

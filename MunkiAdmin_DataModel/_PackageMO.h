@@ -18,6 +18,7 @@
 
 
 
+@class NSObject;
 
 
 
@@ -82,6 +83,12 @@
 @property (nonatomic, retain) NSString *munki_minimum_os_version;
 
 //- (BOOL)validateMunki_minimum_os_version:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSObject *originalPkginfo;
+
+//- (BOOL)validateOriginalPkginfo:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -244,6 +251,10 @@
 
 - (NSString*)primitiveMunki_minimum_os_version;
 - (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
+
+
+- (NSObject*)primitiveOriginalPkginfo;
+- (void)setPrimitiveOriginalPkginfo:(NSObject*)value;
 
 
 - (NSNumber*)primitiveMunki_uninstallable;

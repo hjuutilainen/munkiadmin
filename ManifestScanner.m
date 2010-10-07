@@ -104,6 +104,8 @@
 			}
 			[request release];
 			
+			manifest.originalManifest = manifestInfoDict;
+			
 			// Parse manifests catalog array
 			NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
 			
@@ -123,10 +125,13 @@
 				
 				if (catalogs == nil) {
 					newCatalogInfo.isEnabledForManifestValue = NO;
+					newCatalogInfo.originalIndexValue = 1000;
 				} else if ([catalogs containsObject:aCatalog.title]) {
 					newCatalogInfo.isEnabledForManifestValue = YES;
+					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:aCatalog.title];
 				} else {
 					newCatalogInfo.isEnabledForManifestValue = NO;
+					newCatalogInfo.originalIndexValue = 1000;
 				}
 			}
 			

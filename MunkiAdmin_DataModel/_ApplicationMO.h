@@ -4,9 +4,9 @@
 #import <CoreData/CoreData.h>
 
 
-@class ManifestMO;
-@class PackageMO;
 @class ApplicationProxyMO;
+@class PackageMO;
+@class ManifestMO;
 
 
 
@@ -42,8 +42,8 @@
 
 
 
-@property (nonatomic, retain) NSSet* manifests;
-- (NSMutableSet*)manifestsSet;
+@property (nonatomic, retain) NSSet* applicationProxies;
+- (NSMutableSet*)applicationProxiesSet;
 
 
 
@@ -52,8 +52,8 @@
 
 
 
-@property (nonatomic, retain) NSSet* applicationProxies;
-- (NSMutableSet*)applicationProxiesSet;
+@property (nonatomic, retain) NSSet* manifests;
+- (NSMutableSet*)manifestsSet;
 
 
 
@@ -61,20 +61,20 @@
 
 @interface _ApplicationMO (CoreDataGeneratedAccessors)
 
-- (void)addManifests:(NSSet*)value_;
-- (void)removeManifests:(NSSet*)value_;
-- (void)addManifestsObject:(ManifestMO*)value_;
-- (void)removeManifestsObject:(ManifestMO*)value_;
+- (void)addApplicationProxies:(NSSet*)value_;
+- (void)removeApplicationProxies:(NSSet*)value_;
+- (void)addApplicationProxiesObject:(ApplicationProxyMO*)value_;
+- (void)removeApplicationProxiesObject:(ApplicationProxyMO*)value_;
 
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
 
-- (void)addApplicationProxies:(NSSet*)value_;
-- (void)removeApplicationProxies:(NSSet*)value_;
-- (void)addApplicationProxiesObject:(ApplicationProxyMO*)value_;
-- (void)removeApplicationProxiesObject:(ApplicationProxyMO*)value_;
+- (void)addManifests:(NSSet*)value_;
+- (void)removeManifests:(NSSet*)value_;
+- (void)addManifestsObject:(ManifestMO*)value_;
+- (void)removeManifestsObject:(ManifestMO*)value_;
 
 @end
 
@@ -94,8 +94,8 @@
 
 
 
-- (NSMutableSet*)primitiveManifests;
-- (void)setPrimitiveManifests:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveApplicationProxies;
+- (void)setPrimitiveApplicationProxies:(NSMutableSet*)value;
 
 
 
@@ -104,8 +104,8 @@
 
 
 
-- (NSMutableSet*)primitiveApplicationProxies;
-- (void)setPrimitiveApplicationProxies:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveManifests;
+- (void)setPrimitiveManifests:(NSMutableSet*)value;
 
 
 @end

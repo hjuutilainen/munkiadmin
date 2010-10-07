@@ -8,6 +8,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 #import "PkginfoScanner.h"
 #import "ManifestScanner.h"
+#import "MunkiOperation.h"
 
 @implementation MunkiAdmin_AppDelegate
 
@@ -334,7 +335,8 @@
     if (numOp < 1) {
 		[timer invalidate];
 		self.queueIsRunning = NO;
-		self.currentStatusDescription = @"Done";
+		self.jobDescription = @"Done";
+		self.currentStatusDescription = @"--";
 		[progressIndicator setDoubleValue:[progressIndicator maxValue]];
 		[NSApp endSheet:progressPanel];
 		[progressPanel close];
@@ -343,15 +345,32 @@
 		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp];
 		
 		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
-		self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-		
 		if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
+			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
 			self.jobDescription = @"Scanning Packages";
 		} else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
+			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
 			self.jobDescription = @"Scanning Manifests";
+		} else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
+			NSString *munkiCommand = [firstOpItem command];
+			if ([munkiCommand isEqualToString:@"makecatalogs"]) {
+				self.jobDescription = @"Running makecatalogs";
+				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
+			} else if ([munkiCommand isEqualToString:@"makepkginfo"]) {
+				self.jobDescription = @"Running makepkginfo";
+				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
+			}
 		}
-		double currentProgress = [progressIndicator maxValue] - (double)numOp;
-		[progressIndicator setDoubleValue:currentProgress];
+		if (numOp == 1) {
+			[progressIndicator setIndeterminate:YES];
+			[progressIndicator startAnimation:self];
+		} else {
+			[progressIndicator setIndeterminate:NO];
+			double currentProgress = [progressIndicator maxValue] - (double)numOp;
+			[progressIndicator setDoubleValue:currentProgress];
+		}
+
+		
 	}
 
 }
@@ -905,31 +924,12 @@
 	
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
-		NSBlockOperation *theOp = [NSBlockOperation blockOperationWithBlock: ^{
-			self.queueIsRunning = YES;
-			self.subProgress = 0.1;
-			self.currentStatusDescription = @"Running makecatalogs";
-			NSTask *makecatalogsTask = [[[NSTask alloc] init] autorelease];
-			NSPipe *makecatalogsPipe = [NSPipe pipe];
-			NSFileHandle *filehandle = [makecatalogsPipe fileHandleForReading];
-			self.subProgress = 0.2;
-			
-			NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"];
-			[makecatalogsTask setLaunchPath:launchPath];
-			[makecatalogsTask setArguments:[NSArray arrayWithObject:[self.repoURL relativePath]]];
-			[makecatalogsTask setStandardOutput:makecatalogsPipe];
-			[makecatalogsTask launch];
-			self.subProgress = 0.3;
-			
-			NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
-			self.subProgress = 0.6;
-			
-			NSString *makecatalogsResults;
-			makecatalogsResults = [[[NSString alloc] initWithData:makecatalogsTaskData encoding:NSUTF8StringEncoding] autorelease];
-			self.subProgress = 0.9;
-		}];
+		
+		MunkiOperation *op = [MunkiOperation makecatalogsOperationWithTarget:self.repoURL];
+		op.delegate = self;
+		[self.operationQueue addOperation:op];
 		[self showProgressPanel];
-		[self.operationQueue addOperation:theOp];
+		
 	} else {
 		NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
 	}
@@ -937,7 +937,11 @@
 
 - (IBAction)updateCatalogs:sender
 {
-	[self updateCatalogs];
+	//[self updateCatalogs];
+	MunkiOperation *op = [[[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil] autorelease];
+	op.delegate = self;
+	[self.operationQueue addOperation:op];
+	[self showProgressPanel];
 }
 
 
@@ -958,16 +962,24 @@
 	for (PackageMO *aPackage in allPackages) {
 				
 		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
+		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+		
 		NSMutableDictionary *mergedInfoDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
 		[mergedInfoDict addEntriesFromDictionary:[aPackage pkgInfoDictionary]];
+		NSArray *sortedNewKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
-		if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-			if ([self.defaults boolForKey:@"debug"]) {
-				NSLog(@"Changes detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
-			}
-			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:NO];
+		if ([sortedOriginalKeys isEqualToArray:sortedNewKeys]) {
+			NSLog(@"Key arrays are equal!");
 		} else {
-			//NSLog(@"No changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+			NSLog(@"Key arrays not equal");
+			if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
+				if ([self.defaults boolForKey:@"debug"]) {
+					NSLog(@"Changes detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
+				}
+				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:NO];
+			} else {
+				//NSLog(@"No changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+			}
 		}
 	}
 	[getAllPackages release];

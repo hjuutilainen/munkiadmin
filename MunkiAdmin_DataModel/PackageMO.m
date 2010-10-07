@@ -46,9 +46,68 @@
 
 - (NSDictionary *)pkgInfoDictionary
 {
-	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
+	
+	// Define the munki keys we support
+	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSArray *pkginfoKeys = [NSArray arrayWithObjects:
+							@"name", 
+							@"display_name", 
+							@"description", 
+							@"installed_size", 
+							@"autoremove", 
+							@"installer_item_location", 
+							@"installer_item_size", 
+							@"installer_item_hash",
+							@"minimum_os_version",
+							@"uninstall_method",
+							@"uninstallable",
+							@"version",
+							@"installer_type",
+							nil];
+	for (NSString *pkginfoKey in pkginfoKeys) {
+		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
+	}
+	
+	// Receipt keys
+	NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSArray *receiptKeys = [NSArray arrayWithObjects:
+							@"filename",
+							@"installed_size",
+							@"packageid",
+							@"version",
+							nil];
+	for (NSString *receiptKey in receiptKeys) {
+		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
+	}
+	
+	// Installs item keys
+	NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSArray *installsKeys = [NSArray arrayWithObjects:
+							 @"CFBundleIdentifier",
+							 @"CFBundleName",
+							 @"CFBundleShortVersionString",
+							 @"path",
+							 @"type",
+							 nil];
+	for (NSString *installsKey in installsKeys) {
+		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+	}
+	
+	[newPkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		id value = [self valueForKey:key];
+		if (value != nil) {
+			[tmpDict setValue:value forKey:obj];
+		} else {
+
+		}
+	}];
+	
+	NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	
 	NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
-	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByTitle]]) {
+	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortByTitle, nil]]) {
 		if (([catalogInfo isEnabledForPackageValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
 			[catalogs addObject:[[catalogInfo catalog] title]];
 		}
@@ -62,55 +121,51 @@
 		}
 	}
 	
-	NSSortDescriptor *sortByPackageID = [[[NSSortDescriptor alloc] initWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	if ([catalogs count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"catalogs"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"catalogs"];
+		}
+	} else {
+		[tmpDict setObject:catalogs forKey:@"catalogs"];
+	}
+	
+	
+	NSSortDescriptor *sortByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByFilename = [NSSortDescriptor sortDescriptorWithKey:@"munki_filename" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSArray *receiptSorters = [NSArray arrayWithObjects:sortByPackageID, sortByFilename, sortByVersion, nil];
+	
 	NSMutableArray *receipts = [NSMutableArray arrayWithCapacity:[self.receipts count]];
-	for (ReceiptMO *aReceipt in [self.receipts sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByPackageID]]) {
+	for (ReceiptMO *aReceipt in [self.receipts sortedArrayUsingDescriptors:receiptSorters]) {
 		[receipts addObject:[aReceipt dictValueForSave]];
 	}
-	
-	NSSortDescriptor *sortByCFBundleIdentifier = [[[NSSortDescriptor alloc] initWithKey:@"munki_CFBundleIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
-	NSSortDescriptor *sortByPath = [[[NSSortDescriptor alloc] initWithKey:@"munki_path" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
-	NSMutableArray *installs = [NSMutableArray arrayWithCapacity:[self.installsItems count]];
-	for (InstallsItemMO *anInstallsItem in [self.installsItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByCFBundleIdentifier, sortByPath, nil]]) {
-		[installs addObject:[anInstallsItem dictValueForSave]];
+	if ([receipts count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"receipts"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"receipts"];
+		}
+	} else {
+		[tmpDict setObject:receipts forKey:@"receipts"];
 	}
 	
-	/*
-	// Trying to combine the ApplicationMO and PackageMO descriptions
-	NSString *combinedDescription;
-	BOOL descrAreEqual = [self.munki_description isEqualToString:self.parentApplication.munki_description];
-	BOOL parentDescIsEmpty = [self.parentApplication.munki_description isEqualToString:@""];
-	BOOL pkgDescIsEmpty = [self.munki_description isEqualToString:@""];
+	NSSortDescriptor *sortByCFBundleIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByCFBundleName = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleName" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByCFBundleShortVersionString = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleShortVersionString" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSArray *installsSorters = [NSArray arrayWithObjects:sortByCFBundleIdentifier, sortByPath, sortByCFBundleName, sortByCFBundleShortVersionString, nil];
 	
-	if (descrAreEqual) {
-		combinedDescription = self.munki_description;
-	} else if (pkgDescIsEmpty && !parentDescIsEmpty) {
-		combinedDescription = self.parentApplication.munki_description;
-	} else if (!pkgDescIsEmpty && parentDescIsEmpty) {
-		combinedDescription = self.munki_description;
-	} else if (!pkgDescIsEmpty && !parentDescIsEmpty && !descrAreEqual) {
-		combinedDescription = self.munki_description;
-	}*/
+	NSMutableArray *installs = [NSMutableArray arrayWithCapacity:[self.installsItems count]];
+	for (InstallsItemMO *anInstallsItem in [self.installsItems sortedArrayUsingDescriptors:installsSorters]) {
+		[installs addObject:[anInstallsItem dictValueForSave]];
+	}
+	if ([installs count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"installs"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"installs"];
+		}
+	} else {
+		[tmpDict setObject:installs forKey:@"installs"];
+	}
 	
-	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithObjectsAndKeys:
-									  self.munki_autoremove, @"autoremove",
-									  catalogs, @"catalogs",
-									  self.munki_description, @"description",
-									  self.munki_display_name, @"display_name",
-									  self.munki_installed_size, @"installed_size",
-									  self.munki_installer_item_hash, @"installer_item_hash",
-									  self.munki_installer_item_location, @"installer_item_location",
-									  self.munki_installer_item_size, @"installer_item_size",
-									  self.munki_installer_type, @"installer_type",
-									  installs, @"installs",
-									  self.munki_minimum_os_version, @"minimum_os_version",
-									  self.munki_name, @"name",
-									  receipts, @"receipts",
-									  self.munki_uninstall_method, @"uninstall_method",
-									  self.munki_uninstallable, @"uninstallable",
-									  self.munki_version, @"version",
-									  nil];
-		
+	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];
 	return infoDictInMemory;
 }
 
