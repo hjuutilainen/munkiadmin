@@ -224,28 +224,17 @@
 
 
 
-@dynamic receipts;
-
-	
-- (NSMutableSet*)receiptsSet {
-	[self willAccessValueForKey:@"receipts"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"receipts"];
-	[self didAccessValueForKey:@"receipts"];
-	return result;
-}
-	
-
 @dynamic parentApplication;
 
 	
 
-@dynamic catalogInfos;
+@dynamic packageInfos;
 
 	
-- (NSMutableSet*)catalogInfosSet {
-	[self willAccessValueForKey:@"catalogInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"catalogInfos"];
-	[self didAccessValueForKey:@"catalogInfos"];
+- (NSMutableSet*)packageInfosSet {
+	[self willAccessValueForKey:@"packageInfos"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"packageInfos"];
+	[self didAccessValueForKey:@"packageInfos"];
 	return result;
 }
 	
@@ -272,13 +261,35 @@
 }
 	
 
-@dynamic packageInfos;
+@dynamic receipts;
 
 	
-- (NSMutableSet*)packageInfosSet {
-	[self willAccessValueForKey:@"packageInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"packageInfos"];
-	[self didAccessValueForKey:@"packageInfos"];
+- (NSMutableSet*)receiptsSet {
+	[self willAccessValueForKey:@"receipts"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"receipts"];
+	[self didAccessValueForKey:@"receipts"];
+	return result;
+}
+	
+
+@dynamic itemsToCopy;
+
+	
+- (NSMutableSet*)itemsToCopySet {
+	[self willAccessValueForKey:@"itemsToCopy"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"itemsToCopy"];
+	[self didAccessValueForKey:@"itemsToCopy"];
+	return result;
+}
+	
+
+@dynamic catalogInfos;
+
+	
+- (NSMutableSet*)catalogInfosSet {
+	[self willAccessValueForKey:@"catalogInfos"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"catalogInfos"];
+	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
 }
 	

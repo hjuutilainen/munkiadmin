@@ -4,6 +4,7 @@
 #import "PackageInfoMO.h"
 #import "ReceiptMO.h"
 #import "InstallsItemMO.h"
+#import "ItemToCopyMO.h"
 
 @implementation PackageMO
 
@@ -34,6 +35,10 @@
     return keyPaths;
 }
 
+- (NSUserDefaults *)defaults
+{
+	return [NSUserDefaults standardUserDefaults];
+}
 
 - (NSDictionary *)dictValue
 {
@@ -50,48 +55,26 @@
 	
 	// Define the munki keys we support
 	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-	NSArray *pkginfoKeys = [NSArray arrayWithObjects:
-							@"name", 
-							@"display_name", 
-							@"description", 
-							@"installed_size", 
-							@"autoremove", 
-							@"installer_item_location", 
-							@"installer_item_size", 
-							@"installer_item_hash",
-							@"minimum_os_version",
-							@"uninstall_method",
-							@"uninstallable",
-							@"version",
-							@"installer_type",
-							nil];
-	for (NSString *pkginfoKey in pkginfoKeys) {
+	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
 		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
 	}
 	
 	// Receipt keys
 	NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-	NSArray *receiptKeys = [NSArray arrayWithObjects:
-							@"filename",
-							@"installed_size",
-							@"packageid",
-							@"version",
-							nil];
-	for (NSString *receiptKey in receiptKeys) {
+	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
 		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 	}
 	
 	// Installs item keys
 	NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-	NSArray *installsKeys = [NSArray arrayWithObjects:
-							 @"CFBundleIdentifier",
-							 @"CFBundleName",
-							 @"CFBundleShortVersionString",
-							 @"path",
-							 @"type",
-							 nil];
-	for (NSString *installsKey in installsKeys) {
+	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
 		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+	}
+	
+	// items_to_copy keys
+	NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
+		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
 	
 	[newPkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -163,6 +146,24 @@
 		}
 	} else {
 		[tmpDict setObject:installs forKey:@"installs"];
+	}
+	
+	NSSortDescriptor *sortByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortBySourceItem = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByUser = [NSSortDescriptor sortDescriptorWithKey:@"munki_user" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByGroup = [NSSortDescriptor sortDescriptorWithKey:@"munki_group" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSArray *itemsToCopySorters = [NSArray arrayWithObjects:sortByDestPath, sortBySourceItem, sortByUser, sortByGroup, nil];
+	
+	NSMutableArray *itemsToCopyItems = [NSMutableArray arrayWithCapacity:[self.itemsToCopy count]];
+	for (ItemToCopyMO *anItemToCopy in [self.itemsToCopy sortedArrayUsingDescriptors:itemsToCopySorters]) {
+		[itemsToCopyItems addObject:[anItemToCopy dictValueForSave]];
+	}
+	if ([itemsToCopyItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"items_to_copy"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"items_to_copy"];
+		}
+	} else {
+		[tmpDict setObject:itemsToCopyItems forKey:@"items_to_copy"];
 	}
 	
 	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];

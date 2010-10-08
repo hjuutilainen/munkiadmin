@@ -17,6 +17,7 @@
 	NSDictionary *pkginfoKeyMappings;
 	NSDictionary *receiptKeyMappings;
 	NSDictionary *installsKeyMappings;
+	NSDictionary *itemsToCopyKeyMappings;
 }
 
 - (id)initWithURL:(NSURL *)src;
@@ -28,6 +29,7 @@
 @property (retain) NSDictionary *pkginfoKeyMappings;
 @property (retain) NSDictionary *receiptKeyMappings;
 @property (retain) NSDictionary *installsKeyMappings;
+@property (retain) NSDictionary *itemsToCopyKeyMappings;
 
 
 @end

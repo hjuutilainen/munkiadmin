@@ -60,6 +60,9 @@
 	
 	} else if ([type isEqualToString:@"receipt"]) {
 		img = [wp iconForFileType:@"pkg"];
+	
+	} else if ([type isEqualToString:@"itemtocopy"]) {
+		img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericDocumentIcon)];
 	}
 	
 	return img;

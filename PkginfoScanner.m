@@ -12,6 +12,7 @@
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "InstallsItemMO.h"
+#import "ItemToCopyMO.h"
 
 
 @implementation PkginfoScanner
@@ -23,6 +24,7 @@
 @synthesize pkginfoKeyMappings;
 @synthesize receiptKeyMappings;
 @synthesize installsKeyMappings;
+@synthesize itemsToCopyKeyMappings;
 
 - (NSUserDefaults *)defaults
 {
@@ -39,52 +41,31 @@
 		
 		// Define the munki keys we support
 		NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *pkginfoKeys = [NSArray arrayWithObjects:
-								@"name", 
-								@"display_name", 
-								@"description", 
-								@"installed_size", 
-								@"autoremove", 
-								@"installer_item_location", 
-								@"installer_item_size", 
-								@"installer_item_hash",
-								@"minimum_os_version",
-								@"uninstall_method",
-								@"uninstallable",
-								@"version",
-								@"installer_type",
-								nil];
-		for (NSString *pkginfoKey in pkginfoKeys) {
+		for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
 			[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
 		}
 		self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
 		
 		// Receipt keys
 		NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *receiptKeys = [NSArray arrayWithObjects:
-								@"filename",
-								@"installed_size",
-								@"packageid",
-								@"version",
-								nil];
-		for (NSString *receiptKey in receiptKeys) {
+		for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
 			[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 		}
 		self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
 		
 		// Installs item keys
 		NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		NSArray *installsKeys = [NSArray arrayWithObjects:
-								 @"CFBundleIdentifier",
-								 @"CFBundleName",
-								 @"CFBundleShortVersionString",
-								 @"path",
-								 @"type",
-								 nil];
-		for (NSString *installsKey in installsKeys) {
+		for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
 			[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
 		}
 		self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
+		
+		// items_to_copy keys
+		NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+		for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
+			[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
+		}
+		self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
 	}
 	return self;
 }
@@ -183,6 +164,25 @@
 					}
 				}];
 			}];
+			
+			// =================================
+			// Get "items_to_copy" items
+			// =================================
+			NSArray *itemsToCopy = [packageInfoDict objectForKey:@"items_to_copy"];
+			[itemsToCopy enumerateObjectsUsingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
+				ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
+				aNewItemToCopy.package = aNewPackage;
+				[self.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+					id value = [anItemToCopy objectForKey:obj];
+					if (value != nil) {
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %i --> %@: %@", self.fileName, idx, obj, value);
+						[aNewItemToCopy setValue:value forKey:key];
+					} else {
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %i --> %@: nil (skipped)", self.fileName, idx, key);
+					}
+				}];
+			}];
+			
 			
 			// =================================
 			// Get "catalogs" items

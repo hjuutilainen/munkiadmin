@@ -968,14 +968,13 @@
 		[mergedInfoDict addEntriesFromDictionary:[aPackage pkgInfoDictionary]];
 		NSArray *sortedNewKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
-		if ([sortedOriginalKeys isEqualToArray:sortedNewKeys]) {
-			NSLog(@"Key arrays are equal!");
+		if (![sortedOriginalKeys isEqualToArray:sortedNewKeys]) {
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Key arrays differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:NO];
 		} else {
-			NSLog(@"Key arrays not equal");
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"No changes in key array %@. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
 			if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-				if ([self.defaults boolForKey:@"debug"]) {
-					NSLog(@"Changes detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
-				}
+				if ([self.defaults boolForKey:@"debug"]) NSLog(@"Differing values detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
 				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:NO];
 			} else {
 				//NSLog(@"No changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);

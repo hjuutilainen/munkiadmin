@@ -2,6 +2,45 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>itemsToCopyKeys</key>
+	<array>
+		<string>destination_path</string>
+		<string>group</string>
+		<string>mode</string>
+		<string>source_item</string>
+		<string>user</string>
+	</array>
+	<key>installsKeys</key>
+	<array>
+		<string>CFBundleIdentifier</string>
+		<string>CFBundleName</string>
+		<string>CFBundleShortVersionString</string>
+		<string>path</string>
+		<string>type</string>
+	</array>
+	<key>receiptKeys</key>
+	<array>
+		<string>filename</string>
+		<string>installed_size</string>
+		<string>packageid</string>
+		<string>version</string>
+	</array>
+	<key>pkginfoKeys</key>
+	<array>
+		<string>name</string>
+		<string>display_name</string>
+		<string>description</string>
+		<string>installed_size</string>
+		<string>autoremove</string>
+		<string>installer_item_location</string>
+		<string>installer_item_size</string>
+		<string>installer_item_hash</string>
+		<string>minimum_os_version</string>
+		<string>uninstall_method</string>
+		<string>uninstallable</string>
+		<string>version</string>
+		<string>installer_type</string>
+	</array>
 	<key>makepkginfoPath</key>
 	<string>/usr/local/munki/makepkginfo</string>
 	<key>debug</key>

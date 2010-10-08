@@ -4,12 +4,13 @@
 #import <CoreData/CoreData.h>
 
 
-@class ReceiptMO;
 @class ApplicationMO;
-@class CatalogInfoMO;
+@class PackageInfoMO;
 @class CatalogMO;
 @class InstallsItemMO;
-@class PackageInfoMO;
+@class ReceiptMO;
+@class ItemToCopyMO;
+@class CatalogInfoMO;
 
 
 
@@ -159,18 +160,13 @@
 
 
 
-@property (nonatomic, retain) NSSet* receipts;
-- (NSMutableSet*)receiptsSet;
-
-
-
 @property (nonatomic, retain) ApplicationMO* parentApplication;
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, retain) NSSet* catalogInfos;
-- (NSMutableSet*)catalogInfosSet;
+@property (nonatomic, retain) NSSet* packageInfos;
+- (NSMutableSet*)packageInfosSet;
 
 
 
@@ -184,8 +180,18 @@
 
 
 
-@property (nonatomic, retain) NSSet* packageInfos;
-- (NSMutableSet*)packageInfosSet;
+@property (nonatomic, retain) NSSet* receipts;
+- (NSMutableSet*)receiptsSet;
+
+
+
+@property (nonatomic, retain) NSSet* itemsToCopy;
+- (NSMutableSet*)itemsToCopySet;
+
+
+
+@property (nonatomic, retain) NSSet* catalogInfos;
+- (NSMutableSet*)catalogInfosSet;
 
 
 
@@ -193,15 +199,10 @@
 
 @interface _PackageMO (CoreDataGeneratedAccessors)
 
-- (void)addReceipts:(NSSet*)value_;
-- (void)removeReceipts:(NSSet*)value_;
-- (void)addReceiptsObject:(ReceiptMO*)value_;
-- (void)removeReceiptsObject:(ReceiptMO*)value_;
-
-- (void)addCatalogInfos:(NSSet*)value_;
-- (void)removeCatalogInfos:(NSSet*)value_;
-- (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
-- (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
+- (void)addPackageInfos:(NSSet*)value_;
+- (void)removePackageInfos:(NSSet*)value_;
+- (void)addPackageInfosObject:(PackageInfoMO*)value_;
+- (void)removePackageInfosObject:(PackageInfoMO*)value_;
 
 - (void)addCatalogs:(NSSet*)value_;
 - (void)removeCatalogs:(NSSet*)value_;
@@ -213,10 +214,20 @@
 - (void)addInstallsItemsObject:(InstallsItemMO*)value_;
 - (void)removeInstallsItemsObject:(InstallsItemMO*)value_;
 
-- (void)addPackageInfos:(NSSet*)value_;
-- (void)removePackageInfos:(NSSet*)value_;
-- (void)addPackageInfosObject:(PackageInfoMO*)value_;
-- (void)removePackageInfosObject:(PackageInfoMO*)value_;
+- (void)addReceipts:(NSSet*)value_;
+- (void)removeReceipts:(NSSet*)value_;
+- (void)addReceiptsObject:(ReceiptMO*)value_;
+- (void)removeReceiptsObject:(ReceiptMO*)value_;
+
+- (void)addItemsToCopy:(NSSet*)value_;
+- (void)removeItemsToCopy:(NSSet*)value_;
+- (void)addItemsToCopyObject:(ItemToCopyMO*)value_;
+- (void)removeItemsToCopyObject:(ItemToCopyMO*)value_;
+
+- (void)addCatalogInfos:(NSSet*)value_;
+- (void)removeCatalogInfos:(NSSet*)value_;
+- (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
+- (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
 
 @end
 
@@ -304,18 +315,13 @@
 
 
 
-- (NSMutableSet*)primitiveReceipts;
-- (void)setPrimitiveReceipts:(NSMutableSet*)value;
-
-
-
 - (ApplicationMO*)primitiveParentApplication;
 - (void)setPrimitiveParentApplication:(ApplicationMO*)value;
 
 
 
-- (NSMutableSet*)primitiveCatalogInfos;
-- (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
+- (NSMutableSet*)primitivePackageInfos;
+- (void)setPrimitivePackageInfos:(NSMutableSet*)value;
 
 
 
@@ -329,8 +335,18 @@
 
 
 
-- (NSMutableSet*)primitivePackageInfos;
-- (void)setPrimitivePackageInfos:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveReceipts;
+- (void)setPrimitiveReceipts:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveItemsToCopy;
+- (void)setPrimitiveItemsToCopy:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveCatalogInfos;
+- (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
 
 
 @end
