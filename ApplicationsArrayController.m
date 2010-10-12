@@ -14,7 +14,7 @@
 {
 	[super awakeFromNib];
 	
-	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentApplication.munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
 	[self setSortDescriptors:[NSArray arrayWithObject:sortByTitle]];
 	
 	// Reload the table view when packages change

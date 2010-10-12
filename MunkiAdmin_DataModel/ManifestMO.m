@@ -74,7 +74,7 @@
 {
 	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
 	
-	if (self.catalogInfos != nil) {
+	if ([[self enabledCatalogs] count] > 0) {
 		NSSortDescriptor *sortCatalogsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
 		NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 		NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
@@ -84,6 +84,10 @@
 			}
 		}
 		[tmpDict setObject:catalogs forKey:@"catalogs"];
+	} else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"catalogs"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"catalogs"];
+		}
 	}
 	
 	NSSortDescriptor *sortApplicationsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];

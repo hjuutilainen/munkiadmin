@@ -181,7 +181,7 @@
 
 // Creates a new PackageMO managed object with the given properties
 // This is called primarily from |scanCurrentRepoForPackages|
-- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties;
+//- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties;
 
 // Returns all managed objects for provided entity
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;

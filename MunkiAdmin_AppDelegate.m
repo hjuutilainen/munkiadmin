@@ -104,48 +104,15 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Deleting all managed objects (in-memory)");
 	}
+	
 	NSManagedObjectContext *moc = [self managedObjectContext];
-	
-	for (id anObject in [self allObjectsForEntity:@"Application"]) {
-		[moc deleteObject:anObject];
+	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
+		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
+		NSLog(@"Deleting %i objects from entity: %@", [allObjects count], [entDescr name]);
+		for (id anObject in allObjects) {
+			[moc deleteObject:anObject];
+		}
 	}
-	
-	for (id anObject in [self allObjectsForEntity:@"ApplicationProxy"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"Catalog"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"CatalogInfo"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"InstallsItem"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"Manifest"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"ManifestInfo"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"Package"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"PackageInfo"]) {
-		[moc deleteObject:anObject];
-	}
-	
-	for (id anObject in [self allObjectsForEntity:@"Receipt"]) {
-		[moc deleteObject:anObject];
-	}
-	
 	[moc processPendingChanges];
 }
 
@@ -283,7 +250,7 @@
 	[mainSegmentedControl setImage:packagesIcon forSegment:0];
 	[mainSegmentedControl setImage:catalogsIcon forSegment:1];
 	[mainSegmentedControl setImage:manifestsIcon forSegment:2];
-		
+	
 	[mainTabView setDelegate:self];
 	[mainSplitView setDelegate:self];
 	
@@ -304,6 +271,7 @@
 	// Define default repository contents
 	self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgs", @"pkgsinfo", nil];
 	
+	// Set sort descriptors for array controllers
 	NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
 	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
 	
@@ -333,6 +301,7 @@
 	int numOp = [self.operationQueue operationCount];
 	
     if (numOp < 1) {
+		// There are no more operations in queue
 		[timer invalidate];
 		self.queueIsRunning = NO;
 		self.jobDescription = @"Done";
@@ -341,26 +310,11 @@
 		[NSApp endSheet:progressPanel];
 		[progressPanel close];
 		[progressIndicator stopAnimation:self];
-	} else {
+	}
+	
+	else {
+		// Update progress
 		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp];
-		
-		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
-		if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
-			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-			self.jobDescription = @"Scanning Packages";
-		} else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
-			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-			self.jobDescription = @"Scanning Manifests";
-		} else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
-			NSString *munkiCommand = [firstOpItem command];
-			if ([munkiCommand isEqualToString:@"makecatalogs"]) {
-				self.jobDescription = @"Running makecatalogs";
-				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
-			} else if ([munkiCommand isEqualToString:@"makepkginfo"]) {
-				self.jobDescription = @"Running makepkginfo";
-				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
-			}
-		}
 		if (numOp == 1) {
 			[progressIndicator setIndeterminate:YES];
 			[progressIndicator startAnimation:self];
@@ -369,10 +323,37 @@
 			double currentProgress = [progressIndicator maxValue] - (double)numOp;
 			[progressIndicator setDoubleValue:currentProgress];
 		}
-
 		
+		// Get the currently running operation
+		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
+		
+		// Running item is PkginfoScanner
+		if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
+			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+			self.jobDescription = @"Scanning Packages";
+		}
+		
+		// Running item is ManifestScanner
+		else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
+			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+			self.jobDescription = @"Scanning Manifests";
+		}
+		
+		// Running item is MunkiOperation
+		else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
+			NSString *munkiCommand = [firstOpItem command];
+			if ([munkiCommand isEqualToString:@"makecatalogs"]) {
+				self.jobDescription = @"Running makecatalogs";
+				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
+			} else if ([munkiCommand isEqualToString:@"makepkginfo"]) {
+				self.jobDescription = @"Running makepkginfo";
+				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
+			} else if ([munkiCommand isEqualToString:@"installsitem"]) {
+				self.jobDescription = @"Running makepkginfo";
+				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
+			}
+		}
 	}
-
 }
 
 - (void)startOperationTimer
@@ -735,6 +716,94 @@
 	}
 }
 
+- (void)assimilatePackageProperties:(NSDictionary *)aPkgProps
+{
+	// Fetch for Application objects
+	NSManagedObjectContext *moc = [self managedObjectContext];
+	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+	
+	NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
+	[fetchForPackage setEntity:packageEntityDescr];
+	NSPredicate *pkgPredicate = [NSPredicate predicateWithFormat:
+								 @"munki_name == %@ AND munki_display_name == %@ AND munki_version == %@",
+								 [aPkgProps valueForKey:@"name"],
+								 [aPkgProps valueForKey:@"display_name"],
+								 [aPkgProps valueForKey:@"version"]];
+	[fetchForPackage setPredicate:pkgPredicate];
+	NSUInteger numFoundPkgs = [moc countForFetchRequest:fetchForPackage error:nil];
+	if (numFoundPkgs == 1) {
+		
+		PackageMO *aPkg = [[moc executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+		
+		NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
+		[fetchForApplications setEntity:applicationEntityDescr];
+		NSPredicate *applicationTitlePredicate;
+		applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aPkg.munki_name];
+		
+		[fetchForApplications setPredicate:applicationTitlePredicate];
+		
+		NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
+		if (numFoundApplications == 0) {
+			// No matching Applications found.
+			NSLog(@"Assimilator found zero matching Applications for package.");
+		} else if (numFoundApplications == 1) {
+			ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+			if ([existingApplication hasCommonDescription]) {
+				if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
+					aPkg.munki_description = [[existingApplication.packages anyObject] munki_description];
+				}
+			}
+			[existingApplication addPackagesObject:aPkg];
+			if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
+				aPkg.munki_display_name = existingApplication.munki_display_name;
+			}
+			
+		} else {
+			NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
+		}
+		[fetchForApplications release];
+	}
+	else {
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %i results found for package search", numFoundPkgs);
+	}
+
+	[fetchForPackage release];
+}
+
+
+- (void)makepkginfoDidFinish:(NSDictionary *)pkginfoPlist
+{
+	// Callback from makepkginfo
+	// Create a scanner job but run it without an operation queue
+	PkginfoScanner *scanOp = [PkginfoScanner scannerWithDictionary:pkginfoPlist];
+	scanOp.canModify = YES;
+	scanOp.delegate = self;
+	[scanOp start];
+}
+
+- (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
+{
+	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
+	if (installsItemProps != nil) {
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
+		for (PackageMO *aPackage in selectedPackages) {
+			InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:self.managedObjectContext];
+			newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
+			newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
+			newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
+			newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
+			newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
+			newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
+			[aPackage addInstallsItemsObject:newInstallsItem];
+		}
+	} else {
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
+	}
+
+}
+
 
 - (IBAction)addNewPackage:sender
 {
@@ -743,93 +812,18 @@
 	}
 	
 	if ([self makepkginfoInstalled]) {
-	
 		NSArray *filesToAdd = [self chooseFiles];
 		if (filesToAdd) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %i files to repository", [filesToAdd count]);
-			[progressIndicator setMaxValue:(double)[filesToAdd count]];
-			[self showProgressPanel];
-		}
-		for (NSURL *fileToAdd in filesToAdd) {
-			if (fileToAdd != nil) {
-				
-				NSBlockOperation *theOp = [NSBlockOperation blockOperationWithBlock: ^{
-					self.subProgress = 0.1;
-					NSTask *makepkginfoTask = [[[NSTask alloc] init] autorelease];
-					NSPipe *makepkginfoPipe = [NSPipe pipe];
-					NSFileHandle *filehandle = [makepkginfoPipe fileHandleForReading];
-					self.subProgress = 0.2;
-					
-					self.currentStatusDescription = [NSString stringWithFormat:@"%@: Running makepkginfo", [[fileToAdd relativePath] lastPathComponent]];
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
-					
-					NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
-					[makepkginfoTask setLaunchPath:launchPath];
-					[makepkginfoTask setArguments:[NSArray arrayWithObject:[fileToAdd relativePath]]];
-					[makepkginfoTask setStandardOutput:makepkginfoPipe];
-					[makepkginfoTask launch];
-					self.subProgress = 0.3;
-					
-					NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
-					self.subProgress = 0.4;
-					
-					NSString *error;
-					NSPropertyListFormat format;
-					id plist;
-					self.subProgress = 0.5;
-					
-					self.currentStatusDescription = [NSString stringWithFormat:@"%@: Parsing command output", [[fileToAdd relativePath] lastPathComponent]];
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
-					plist = [NSPropertyListSerialization propertyListFromData:makepkginfoTaskData
-															 mutabilityOption:NSPropertyListImmutable
-																	   format:&format
-															 errorDescription:&error];
-					self.subProgress = 0.6;
-					
-					if (!plist) {
-						self.subProgress = 0.9;
-						if ([self.defaults boolForKey:@"debug"]) {
-							NSLog(@"%@", [error description]);
-							[error release];
-						}
-						
-					} else {
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-						self.currentStatusDescription = [NSString stringWithFormat:@"%@: Creating new package", [[fileToAdd relativePath] lastPathComponent]];
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
-						
-						PackageMO *newPkg = [self newPackageWithProperties:plist];
-						//PackageMO *newPkg = [self performSelectorOnMainThread:@selector(newPackageWithProperties:) withObject:plist waitUntilDone:YES];
-						[self performSelectorOnMainThread:@selector(groupPackage:) withObject:newPkg waitUntilDone:YES];
-						[self performSelectorOnMainThread:@selector(assimilatePackageProperties:) withObject:newPkg waitUntilDone:YES];
-						
-						self.subProgress = 0.7;
-						NSURL *pkginfoURL = [self.pkgsInfoURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", newPkg.munki_name, newPkg.munki_version]];
-						pkginfoURL = [pkginfoURL URLByAppendingPathExtension:@"plist"];
-						newPkg.packageInfoURL = pkginfoURL;
-						
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"pkginfoURL: %@", [(NSURL *)newPkg.packageInfoURL relativePath]);
-						NSURL *destinationURL = [self.pkgsURL URLByAppendingPathComponent:[fileToAdd lastPathComponent]];
-						newPkg.packageURL = destinationURL;
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"packageURL: %@", [(NSURL *)newPkg.packageURL relativePath]);
-						
-						self.subProgress = 0.8;
-						self.currentStatusDescription = [NSString stringWithFormat:@"%@: Copying item to repository", [[fileToAdd relativePath] lastPathComponent]];
-						if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
-						
-						NSError *copyError = nil;
-						if ([[NSFileManager defaultManager] copyItemAtURL:fileToAdd toURL:destinationURL error:&copyError]) {
-							self.subProgress = 0.9;
-							if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copied package to repository");
-						} else {
-							if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copy failed: %@", [copyError localizedDescription]);
-						}
-					}
-				}];
-				
-				[self.operationQueue addOperation:theOp];
-				
+			
+			for (NSURL *fileToAdd in filesToAdd) {
+				if (fileToAdd != nil) {
+					MunkiOperation *theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+					theOp.delegate = self;
+					[self.operationQueue addOperation:theOp];
+				}
 			}
+			[self showProgressPanel];
 		}
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
@@ -841,60 +835,21 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%s", _cmd);
 	}
-	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
-	NSArray *filesToAdd = [self chooseFiles];
-	if (filesToAdd) {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %i installs items", [filesToAdd count]);
-		[self showProgressPanel];
-	}
-	for (NSURL *fileToAdd in filesToAdd) {
-		if (fileToAdd != nil) {
-			
-			NSBlockOperation *theOp = [NSBlockOperation blockOperationWithBlock: ^{
-				
-				NSArray *selection = [[[NSArray alloc] initWithArray:selectedPackages] autorelease];
-				NSTask *makepkginfoTask = [[[NSTask alloc] init] autorelease];
-				NSPipe *makepkginfoPipe = [NSPipe pipe];
-				NSFileHandle *filehandle = [makepkginfoPipe fileHandleForReading];;
-				
-				[makepkginfoTask setLaunchPath:@"/usr/local/munki/makepkginfo"];
-				[makepkginfoTask setArguments:[NSArray arrayWithObjects:@"--file", [fileToAdd relativePath], nil]];
-				[makepkginfoTask setStandardOutput:makepkginfoPipe];
-				[makepkginfoTask launch];
-				
-				NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
-				
-				NSString *error;
-				NSPropertyListFormat format;
-				id plist;
-				
-				plist = [NSPropertyListSerialization propertyListFromData:makepkginfoTaskData
-														 mutabilityOption:NSPropertyListImmutable
-																   format:&format
-														 errorDescription:&error];
-				if (!plist) {
-					if ([self.defaults boolForKey:@"debug"]) {
-						NSLog(@"%@", [error description]);
-						[error release];
-					}
-				} else {
-					if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-					for (PackageMO *aPackage in selection) {
-						InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:self.managedObjectContext];
-						NSDictionary *installsItemProps = [[plist objectForKey:@"installs"] objectAtIndex:0];
-						newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
-						newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
-						newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
-						newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
-						newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
-						newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
-						[aPackage addInstallsItemsObject:newInstallsItem];
-					}
-					
+	if ([self makepkginfoInstalled]) {
+		NSArray *filesToAdd = [self chooseFiles];
+		if (filesToAdd) {
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %i installs items", [filesToAdd count]);
+			for (NSURL *fileToAdd in filesToAdd) {
+				if (fileToAdd != nil) {
+					MunkiOperation *theOp = [MunkiOperation installsItemFromURL:fileToAdd];
+					theOp.delegate = self;
+					[self.operationQueue addOperation:theOp];
 				}
-			}];
-			[self.operationQueue addOperation:theOp];
+			}
+			[self showProgressPanel];
 		}
+	} else {
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
 	}
 }
 
@@ -1092,7 +1047,7 @@
 }
 
 
-- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties
+/*- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties
 {
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
@@ -1237,10 +1192,10 @@
 	}
 	
 	return aNewPackage;
-}
+}*/
 
 
-- (void)assimilatePackageProperties:(PackageMO *)aPkg
+/*- (void)assimilatePackageProperties:(PackageMO *)aPkg
 {
 	// Fetch for Application objects
 	
@@ -1279,7 +1234,7 @@
 	}
 	
 	[fetchForApplications release];
-}
+}*/
 
 - (void)groupPackage:(PackageMO *)aPkg
 {
@@ -1340,8 +1295,7 @@
 		NSNumber *isDir;
 		[aPkgInfoFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			
-			PkginfoScanner *scanOp = [[[PkginfoScanner alloc] initWithURL:aPkgInfoFile] autorelease];
+			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:aPkgInfoFile];
 			scanOp.delegate = self;
 			[self.operationQueue addOperation:scanOp];
 			

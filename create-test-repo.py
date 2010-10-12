@@ -18,6 +18,8 @@ import string
 numPackages = 100
 numCatalogs = 10
 numManifests = 10
+maxPackagesPerManifest = 50
+maxCatalogsPerManifest = 2
 
 words = open('/usr/share/dict/words').readlines()
 appNames = []
@@ -63,7 +65,9 @@ def newPackage(title):
 	# Add random catalogs
 	catalogs = []
 	for j in range(0, random.randint(1, numCatalogs)):
-		catalogs.append(random.choice(catalogTitles))
+		randCat = random.choice(catalogTitles)
+		if not randCat in catalogs:
+			catalogs.append(randCat)
 	# Random Description
 	descrWords = []
 	for i in range(0, random.randint(1, 50)):
@@ -96,15 +100,21 @@ def newManifest():
 	# Add random catalogs
 	catalogs = []
 	for j in range(0, random.randint(1, numCatalogs)):
-		catalogs.append(random.choice(catalogTitles))
+		randCat = random.choice(catalogTitles)
+		if not randCat in catalogs:
+			catalogs.append(randCat)
 	# Add random managed installs
 	managedInstalls = []
-	for j in range(0, random.randint(1, numPackages)):
-		managedInstalls.append(random.choice(packageTitles))
+	for j in range(0, random.randint(1, maxPackagesPerManifest)):
+		randInstall = random.choice(packageTitles)
+		if not randInstall in managedInstalls:
+			managedInstalls.append(randInstall)
 	# Add random managed uninstalls
 	managedUninstalls = []
-	for j in range(0, random.randint(1, numPackages)):
-		managedUninstalls.append(random.choice(packageTitles))
+	for j in range(0, random.randint(1, maxPackagesPerManifest)):
+		randUninstall = random.choice(packageTitles)
+		if not randUninstall in managedUninstalls:
+			managedUninstalls.append(randUninstall)
 	pl = {	'catalogs':				catalogs,
 			'managed_installs':		managedInstalls,
 			'managed_uninstalls':	managedUninstalls,

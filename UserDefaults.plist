@@ -44,7 +44,7 @@
 	<key>makepkginfoPath</key>
 	<string>/usr/local/munki/makepkginfo</string>
 	<key>debug</key>
-	<true/>
+	<false/>
 	<key>debugLogAllProperties</key>
 	<false/>
 	<key>makecatalogsPath</key>
@@ -61,9 +61,19 @@
 	<true/>
 	<key>CopyAppDescriptionToPackages</key>
 	<true/>
+	<key>CopyPkgsToRepo</key>
+	<true/>
 	<key>UseExistingDescriptionForPackages</key>
 	<true/>
 	<key>UseExistingDisplayNameForPackages</key>
 	<true/>
+	<key>items_to_copyUseDefaults</key>
+	<true/>
+	<key>items_to_copyOwner</key>
+	<string>root</string>
+	<key>items_to_copyGroup</key>
+	<string>admin</string>
+	<key>items_to_copyMode</key>
+	<string>og-w</string>
 </dict>
 </plist>

@@ -112,10 +112,31 @@
 			NSArray *allCatalogs;
 			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
 			[getAllCatalogs setEntity:catalogEntityDescr];
+			[getAllCatalogs setIncludesSubentities:NO];
 			allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
 			[getAllCatalogs release];
 			
-			for (CatalogMO *aCatalog in allCatalogs) {
+			[allCatalogs enumerateObjectsUsingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
+				CatalogInfoMO *newCatalogInfo;
+				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+				newCatalogInfo.catalog.title = [aCatalog title];
+				[aCatalog addManifestsObject:manifest];
+				newCatalogInfo.manifest = manifest;
+				[aCatalog addCatalogInfosObject:newCatalogInfo];
+				
+				if (catalogs == nil) {
+					newCatalogInfo.isEnabledForManifestValue = NO;
+					newCatalogInfo.originalIndexValue = 1000;
+				} else if ([catalogs containsObject:[aCatalog title]]) {
+					newCatalogInfo.isEnabledForManifestValue = YES;
+					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:[aCatalog title]];
+				} else {
+					newCatalogInfo.isEnabledForManifestValue = NO;
+					newCatalogInfo.originalIndexValue = 1000;
+				}
+			}];
+			
+			/*for (CatalogMO *aCatalog in allCatalogs) {
 				CatalogInfoMO *newCatalogInfo;
 				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
 				newCatalogInfo.catalog.title = aCatalog.title;
@@ -133,7 +154,7 @@
 					newCatalogInfo.isEnabledForManifestValue = NO;
 					newCatalogInfo.originalIndexValue = 1000;
 				}
-			}
+			}*/
 			
 			// Parse manifests managed_installs array
 			NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];

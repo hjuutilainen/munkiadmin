@@ -16,23 +16,28 @@
 @synthesize delegate;
 
 
-- (NSUserDefaults *)defaults
-{
-	return [NSUserDefaults standardUserDefaults];
-}
-
 + (id)makecatalogsOperationWithTarget:(NSURL *)target
 {
 	return [[[self alloc] initWithCommand:@"makecatalogs" targetURL:target arguments:nil] autorelease];
 }
 
++ (id)makepkginfoOperationWithSource:(NSURL *)sourceFile
+{
+	return [[[self alloc] initWithCommand:@"makepkginfo" targetURL:sourceFile arguments:nil] autorelease];
+}
+
++ (id)installsItemFromURL:(NSURL *)sourceFile
+{
+	return [[[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:[NSArray arrayWithObject:@"--file"]] autorelease];
+}
+
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args
 {
 	if (self = [super init]) {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing munki operation");
 		self.command = cmd;
 		self.targetURL = target;
 		self.arguments = args;
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing munki operation: %@, target: %@", self.command, [self.targetURL relativePath]);
 		//self.currentJobDescription = @"Initializing pkginfo scan operaiton";
 		
 	}
@@ -44,6 +49,11 @@
 	[targetURL release];
 	[arguments release];
 	[super dealloc];
+}
+
+- (NSUserDefaults *)defaults
+{
+	return [NSUserDefaults standardUserDefaults];
 }
 
 - (NSString *)makeCatalogs
@@ -65,6 +75,49 @@
 	return makecatalogsResults;
 }
 
+- (NSDictionary *)makepkginfo
+{
+	NSTask *makepkginfoTask = [[[NSTask alloc] init] autorelease];
+	NSPipe *makepkginfoPipe = [NSPipe pipe];
+	NSFileHandle *filehandle = [makepkginfoPipe fileHandleForReading];
+	
+	NSArray *newArguments;
+	if ([self.command isEqualToString:@"makepkginfo"]) {
+		newArguments = [NSArray arrayWithObject:[self.targetURL relativePath]];
+	} else if ([self.command isEqualToString:@"installsitem"]) {
+		newArguments = [NSArray arrayWithObjects:@"--file", [self.targetURL relativePath], nil];
+	}
+	
+	NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
+	[makepkginfoTask setLaunchPath:launchPath];
+	[makepkginfoTask setArguments:newArguments];
+	[makepkginfoTask setStandardOutput:makepkginfoPipe];
+	[makepkginfoTask launch];
+	
+	NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
+	
+	NSString *error;
+	NSPropertyListFormat format;
+	id plist;
+	plist = [NSPropertyListSerialization propertyListFromData:makepkginfoTaskData
+											 mutabilityOption:NSPropertyListImmutable
+													   format:&format
+											 errorDescription:&error];
+	
+	if (!plist) {
+		if ([self.defaults boolForKey:@"debug"]) {
+			NSLog(@"MunkiOperation:makepkginfo:error:%@", [error description]);
+			[error release];
+		}
+		return nil;
+	}
+	
+	else {
+		return (NSDictionary *)plist;
+	}
+	
+}
+
 
 -(void)main {
 	@try {
@@ -72,23 +125,31 @@
 		
 		if ([self.command isEqualToString:@"makecatalogs"]) {
 			NSString *results = [self makeCatalogs];
-			//if ([self.defaults boolForKey:@"debug"]) NSLog(@"makecatalogs: %@", results);
-		} else if ([self.command isEqualToString:@"makepkginfo"]) {
-			//
-		} else {
-			NSLog(@"Command not recognized: %@", self.command);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
 		}
-
 		
+		else if ([self.command isEqualToString:@"makepkginfo"]) {
+			NSDictionary *pkginfo = [self makepkginfo];
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+			if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
+				[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:) 
+												withObject:pkginfo
+											 waitUntilDone:NO];
+			}
+		}
 		
-		//self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
-		//if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
+		else if ([self.command isEqualToString:@"installsitem"]) {
+			NSDictionary *pkginfo = [self makepkginfo];
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+			if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
+				[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:) 
+												withObject:pkginfo
+											 waitUntilDone:YES];
+			}
+		}
 		
-		
-		if ([self.delegate respondsToSelector:@selector(munkiOperationDidFinish:)]) {
-			[self.delegate performSelectorOnMainThread:@selector(munkiOperationDidFinish:) 
-											withObject:nil
-										 waitUntilDone:YES];
+		else {
+			NSLog(@"Command not recognized: %@", self.command);
 		}
 		
 		[pool release];

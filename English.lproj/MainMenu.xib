@@ -11,10 +11,12 @@
 			<string key="NS.object.0">804</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="1636"/>
-			<integer value="81"/>
-			<integer value="1618"/>
 			<integer value="1405"/>
+			<integer value="1614"/>
+			<integer value="1636"/>
+			<integer value="1618"/>
+			<integer value="81"/>
+			<integer value="1607"/>
 			<integer value="1318"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -2359,7 +2361,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="533813080">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTabView" id="221731399">
@@ -3127,7 +3129,7 @@
 							<object class="NSTabViewItem" id="167231870">
 								<string key="NSIdentifier">Item 2</string>
 								<object class="NSView" key="NSView" id="657141111">
-									<reference key="NSNextResponder" ref="221731399"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="978534888">
@@ -3494,7 +3496,6 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {421, 491}}</string>
-									<reference key="NSSuperview" ref="221731399"/>
 								</object>
 								<string key="NSLabel">Installs</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -3503,7 +3504,7 @@
 							<object class="NSTabViewItem" id="56080061">
 								<string key="NSIdentifier">Item 3</string>
 								<object class="NSView" key="NSView" id="836866325">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="221731399"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="226719595">
@@ -3699,7 +3700,7 @@
 											<object class="NSTextFieldCell" key="NSCell" id="769223987">
 												<int key="NSCellFlags">68288064</int>
 												<int key="NSCellFlags2">71304192</int>
-												<string key="NSContents">User:</string>
+												<string key="NSContents">Owner:</string>
 												<reference key="NSSupport" ref="778817628"/>
 												<reference key="NSControlView" ref="906295013"/>
 												<reference key="NSBackgroundColor" ref="662118857"/>
@@ -3816,6 +3817,7 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {421, 491}}</string>
+									<reference key="NSSuperview" ref="221731399"/>
 								</object>
 								<string key="NSLabel">Items to Copy</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -3833,17 +3835,18 @@
 								<reference key="NSTabView" ref="221731399"/>
 							</object>
 						</array>
-						<reference key="NSSelectedTabViewItem" ref="167231870"/>
+						<reference key="NSSelectedTabViewItem" ref="56080061"/>
 						<reference key="NSFont" ref="26"/>
 						<int key="NSTvFlags">134217728</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<array class="NSMutableArray" key="NSSubviews">
-							<reference ref="657141111"/>
+							<reference ref="836866325"/>
 						</array>
 					</object>
 				</array>
 				<string key="NSFrameSize">{467, 544}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="178993455">
@@ -8706,6 +8709,14 @@
 					</object>
 					<int key="connectionID">1843</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">createNewCatalogAction:</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="511629352"/>
+					</object>
+					<int key="connectionID">1847</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -12881,7 +12892,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1846</int>
+			<int key="maxID">1847</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -13196,6 +13207,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">MyCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">MunkiOperation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

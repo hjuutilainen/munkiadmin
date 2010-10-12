@@ -20,17 +20,71 @@
 @synthesize currentJobDescription;
 @synthesize fileName;
 @synthesize sourceURL;
+@synthesize sourceDict;
 @synthesize delegate;
 @synthesize pkginfoKeyMappings;
 @synthesize receiptKeyMappings;
 @synthesize installsKeyMappings;
 @synthesize itemsToCopyKeyMappings;
+@synthesize canModify;
 
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];
 }
 
++ (id)scannerWithURL:(NSURL *)url
+{
+	return [[[self alloc] initWithURL:url] autorelease];
+}
+
++ (id)scannerWithDictionary:(NSDictionary *)dict
+{
+	return [[[self alloc] initWithDictionary:dict] autorelease];
+}
+
+- (void)setupMappings
+{
+	// Define the munki keys we support
+	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
+		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
+	}
+	self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
+	
+	// Receipt keys
+	NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
+		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
+	}
+	self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
+	
+	// Installs item keys
+	NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
+		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+	}
+	self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
+	
+	// items_to_copy keys
+	NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
+		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
+	}
+	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
+}
+
+- (id)initWithDictionary:(NSDictionary *)dict
+{
+	if (self = [super init]) {
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
+		self.sourceDict = dict;
+		self.fileName = [self.sourceDict valueForKey:@"name"];
+		self.currentJobDescription = @"Initializing pkginfo scan operation";
+		[self setupMappings];
+	}
+	return self;
+}
 
 - (id)initWithURL:(NSURL *)src {
 	if (self = [super init]) {
@@ -38,34 +92,7 @@
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
 		self.currentJobDescription = @"Initializing pkginfo scan operation";
-		
-		// Define the munki keys we support
-		NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
-			[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
-		}
-		self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
-		
-		// Receipt keys
-		NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
-			[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
-		}
-		self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
-		
-		// Installs item keys
-		NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
-			[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
-		}
-		self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
-		
-		// items_to_copy keys
-		NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-		for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
-			[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
-		}
-		self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
+		[self setupMappings];
 	}
 	return self;
 }
@@ -74,6 +101,7 @@
 	[fileName release];
 	[currentJobDescription release];
 	[sourceURL release];
+	[sourceDict release];
 	[super dealloc];
 }
 
@@ -97,20 +125,27 @@
 												   object:moc];
 		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
-		
+		NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
 		
 		
 		
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
 		
-		NSDictionary *packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
+		NSDictionary *packageInfoDict;
+		if (self.sourceURL != nil) {
+			packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
+		} else if (self.sourceDict != nil) {
+			packageInfoDict = self.sourceDict;
+		} else {
+			packageInfoDict = nil;
+		}
 		
 		if (packageInfoDict != nil) {
 			
 			//PackageMO *aNewPackage = [NSEntityDescription insertNewObjectForEntityForName:@"Package" inManagedObjectContext:moc];
 			PackageMO *aNewPackage = [[[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc] autorelease];
-			aNewPackage.packageInfoURL = self.sourceURL;
+
 			aNewPackage.originalPkginfo = packageInfoDict;
 			
 			// =================================
@@ -128,6 +163,13 @@
 				}
 			}];
 			aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+			if (self.sourceURL != nil) {
+				aNewPackage.packageInfoURL = self.sourceURL;
+			} else {
+				NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", aNewPackage.munki_name, aNewPackage.munki_version]];
+				newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
+				aNewPackage.packageInfoURL = newPkginfoURL;
+			}
 			
 			// =================================
 			// Get "receipts" items
@@ -181,6 +223,11 @@
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %i --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
+				if ([self.defaults boolForKey:@"items_to_copyUseDefaults"] && self.canModify) {
+					aNewItemToCopy.munki_user = [self.defaults stringForKey:@"items_to_copyOwner"];
+					aNewItemToCopy.munki_group = [self.defaults stringForKey:@"items_to_copyGroup"];
+					aNewItemToCopy.munki_mode = [self.defaults stringForKey:@"items_to_copyMode"];
+				}
 			}];
 			
 			
@@ -244,6 +291,12 @@
 					newCatalogInfo.isEnabledForPackageValue = YES;
 					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:obj];
 					[aNewCatalog addCatalogInfosObject:newCatalogInfo];
+					
+					PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+					newPackageInfo.catalog = aNewCatalog;
+					newPackageInfo.title = [aNewPackage.munki_display_name stringByAppendingFormat:@" %@", aNewPackage.munki_version];
+					newPackageInfo.package = aNewPackage;
+					newPackageInfo.isEnabledForCatalogValue = YES;
 				}
 				[fetchForCatalogs release];
 			}];
@@ -264,11 +317,47 @@
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %i --> Name: %@", self.fileName, idx, obj);
 			}];
 			
+			
+			// =====================================
+			// Assimilate with existing
+			// This is done only when adding new items to repo
+			// =====================================
+			if (self.canModify) {
+				NSFetchRequest *fetchForApplicationsLoose = [[NSFetchRequest alloc] init];
+				[fetchForApplicationsLoose setEntity:applicationEntityDescr];
+				NSPredicate *applicationTitlePredicateLoose;
+				applicationTitlePredicateLoose = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aNewPackage.munki_name];
+				
+				[fetchForApplicationsLoose setPredicate:applicationTitlePredicateLoose];
+				
+				NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplicationsLoose error:nil];
+				if (numFoundApplications == 0) {
+					// No matching Applications found.
+					NSLog(@"Assimilator found zero matching Applications for package.");
+				} else if (numFoundApplications == 1) {
+					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
+					if ([existingApplication hasCommonDescription]) {
+						if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
+							aNewPackage.munki_description = [[existingApplication.packages anyObject] munki_description];
+						}
+					}
+					[existingApplication addPackagesObject:aNewPackage];
+					if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
+						aNewPackage.munki_display_name = existingApplication.munki_display_name;
+					}
+					
+				} else {
+					NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
+					for (ApplicationMO *app in [moc executeFetchRequest:fetchForApplicationsLoose error:nil]) {
+						NSLog(@"%@", app.munki_name);
+					}
+				}
+				[fetchForApplicationsLoose release];
+			}
+			
 			// =================================
 			// Group packages by "name" property
 			// =================================
-			NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-			
 			NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 			[fetchForApplications setEntity:applicationEntityDescr];
 			NSPredicate *applicationTitlePredicate;
@@ -292,8 +381,6 @@
 			}
 			
 			[fetchForApplications release];
-			
-			
 			
 			
 		} else {

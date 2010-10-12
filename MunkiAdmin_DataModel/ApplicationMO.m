@@ -50,8 +50,18 @@
 		subtitle = [NSString stringWithFormat:@"%@  (%i packages)", [self latestVersion], [self.packages count]];
 	}
 	
+	NSString *title;
+	if (self.munki_display_name != nil) {
+		title = self.munki_display_name;
+	} else if ((self.munki_name != nil)) {
+		title = self.munki_name;
+	} else {
+		title = @"--";
+	}
+
+	
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			self.munki_display_name, @"title",
+			title, @"title",
 			subtitle, @"subtitle",
 			@"application", @"type",
 			nil];
