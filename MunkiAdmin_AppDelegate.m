@@ -108,7 +108,7 @@
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
 		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
-		NSLog(@"Deleting %i objects from entity: %@", [allObjects count], [entDescr name]);
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %i objects from entity: %@", [allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
