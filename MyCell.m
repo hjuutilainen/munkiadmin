@@ -36,10 +36,14 @@
 	NSString *type = [[self objectValue] valueForKey:@"type"];
 	
 	if ([type isEqualToString:@"application"]) {
-		NSString *appPath = [wp fullPathForApplication:[[self objectValue] valueForKey:@"title"]];
-		if (appPath != nil) img = [wp iconForFile:appPath];
-		else img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
+		//NSString *appPath = [wp fullPathForApplication:[[self objectValue] valueForKey:@"title"]];
+		//if (appPath != nil) img = [wp iconForFile:appPath];
+		//else img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
+		img = [NSImage imageNamed:@"packageIcon2"];
 	
+	} else if ([type isEqualToString:@"applications"]) {
+		img = [NSImage imageNamed:@"packagesMultipleIcon2"];
+		
 	} else if ([type isEqualToString:@"catalog"]) {
 		img = [NSImage imageNamed:@"catalogIcon3"];
 		

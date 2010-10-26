@@ -34,6 +34,7 @@
 	// ------------------
     NSWindow *window;
 	NSWindow *progressPanel;
+	NSWindow *addItemsWindow;
 	NSTabView *mainTabView;
 	NSTableView *applicationTableView;
 	NSSplitView *mainSplitView;
@@ -130,6 +131,7 @@
 @property (nonatomic, retain) IBOutlet NSArrayController *optionalInstallsArrayController;
 @property (nonatomic, retain) IBOutlet NSWindow *window;
 @property (nonatomic, retain) IBOutlet NSWindow *progressPanel;
+@property (nonatomic, retain) IBOutlet NSWindow *addItemsWindow;
 @property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic, retain) IBOutlet NSTabView *mainTabView;
 @property (nonatomic, retain) IBOutlet NSTextField *newManifestCustomView;
@@ -166,6 +168,8 @@
 - (IBAction)createNewRepository:sender;
 - (IBAction)createNewManifestAction:sender;
 - (IBAction)createNewCatalogAction:sender;
+- (IBAction)openAddItemsWindowAction:sender;
+- (IBAction)cancelAddItemsAction:sender;
 - (IBAction)addNewPackage:sender;
 - (IBAction)addNewInstallsItem:sender;
 - (IBAction)didSelectSegment:sender;

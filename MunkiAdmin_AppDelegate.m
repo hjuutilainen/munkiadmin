@@ -25,6 +25,7 @@
 @synthesize selectedViewDescr;
 @synthesize window;
 @synthesize progressPanel;
+@synthesize addItemsWindow;
 @synthesize mainTabView;
 @synthesize mainSplitView;
 @synthesize sourceViewPlaceHolder;
@@ -801,6 +802,20 @@
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
 	}
+
+}
+
+- (IBAction)openAddItemsWindowAction:sender
+{
+	[NSApp beginSheet:addItemsWindow 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+
+- (IBAction)cancelAddItemsAction:sender
+{
+	[NSApp endSheet:addItemsWindow];
+	[addItemsWindow close];
 
 }
 
