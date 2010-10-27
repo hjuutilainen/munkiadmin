@@ -86,17 +86,21 @@
 		}
 	}];
 	
-	NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	
+	// ==========
+	// catalogs
+	// ==========
+	NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 	
 	NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
-	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortByTitle, nil]]) {
+	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortByCatalogTitle, nil]]) {
 		if (([catalogInfo isEnabledForPackageValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
 			[catalogs addObject:[[catalogInfo catalog] title]];
 		}
 	}
 	
-	for (PackageInfoMO *packageInfo in [self.packageInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByTitle]]) {
+	for (PackageInfoMO *packageInfo in [self.packageInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByCatalogTitle]]) {
 		if (([packageInfo isEnabledForCatalogValue]) && (![catalogs containsObject:[packageInfo.catalog title]])) {
 			[catalogs addObject:[packageInfo.catalog title]];
 		} else if ((![packageInfo isEnabledForCatalogValue]) && ([catalogs containsObject:[packageInfo.catalog title]])) {
@@ -113,6 +117,48 @@
 	}
 	
 	
+	// ==========
+	// update_for
+	// ==========
+	NSSortDescriptor *sortUpdateForItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortUpdateForItemsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSMutableArray *updateForItems = [NSMutableArray arrayWithCapacity:[self.updateFor count]];
+	for (PackageInfoMO *updateForItem in [self.updateFor sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortUpdateForItemsByOrigIndex, sortUpdateForItemsByTitle, nil]]) {
+		if (![updateForItems containsObject:[updateForItem title]]) {
+			[updateForItems addObject:[updateForItem title]];
+		}
+	}
+	if ([updateForItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"update_for"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"update_for"];
+		}
+	} else {
+		[tmpDict setObject:updateForItems forKey:@"update_for"];
+	}
+	
+	
+	// ==========
+	// requires
+	// ==========
+	NSSortDescriptor *sortRequiresItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortRequiresByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSMutableArray *requiresItems = [NSMutableArray arrayWithCapacity:[self.requirements count]];
+	for (PackageInfoMO *requiresItem in [self.requirements sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortRequiresByOrigIndex, sortRequiresItemsByTitle, nil]]) {
+		if (![requiresItems containsObject:[requiresItem title]]) {
+			[requiresItems addObject:[requiresItem title]];
+		}
+	}
+	if ([requiresItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"requires"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"requires"];
+		}
+	} else {
+		[tmpDict setObject:requiresItems forKey:@"requires"];
+	}
+	
+	// ==========
+	// receipts
+	// ==========
 	NSSortDescriptor *sortByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByFilename = [NSSortDescriptor sortDescriptorWithKey:@"munki_filename" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -130,6 +176,10 @@
 		[tmpDict setObject:receipts forKey:@"receipts"];
 	}
 	
+	
+	// ==========
+	// installs
+	// ==========
 	NSSortDescriptor *sortByCFBundleIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByCFBundleName = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleName" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -148,6 +198,10 @@
 		[tmpDict setObject:installs forKey:@"installs"];
 	}
 	
+	
+	// =============
+	// items_to_copy
+	// =============
 	NSSortDescriptor *sortByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortBySourceItem = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByUser = [NSSortDescriptor sortDescriptorWithKey:@"munki_user" ascending:YES selector:@selector(localizedStandardCompare:)];

@@ -4,8 +4,11 @@
 #import <CoreData/CoreData.h>
 
 
-@class PackageMO;
 @class CatalogMO;
+@class PackageMO;
+@class PackageMO;
+@class PackageMO;
+
 
 
 
@@ -31,10 +34,30 @@
 
 
 
+@property (nonatomic, retain) NSNumber *originalIndex;
+
+@property int originalIndexValue;
+- (int)originalIndexValue;
+- (void)setOriginalIndexValue:(int)value_;
+
+//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+
+
+
 @property (nonatomic, retain) NSString *title;
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
 
+
+
+
+@property (nonatomic, retain) CatalogMO* catalog;
+//- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) PackageMO* requiredPackage;
+//- (BOOL)validateRequiredPackage:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -43,8 +66,8 @@
 
 
 
-@property (nonatomic, retain) CatalogMO* catalog;
-//- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, retain) PackageMO* updateForPackage;
+//- (BOOL)validateUpdateForPackage:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -63,9 +86,26 @@
 - (void)setPrimitiveIsEnabledForCatalogValue:(BOOL)value_;
 
 
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+
+- (int)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int)value_;
+
+
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
 
+
+
+
+- (CatalogMO*)primitiveCatalog;
+- (void)setPrimitiveCatalog:(CatalogMO*)value;
+
+
+
+- (PackageMO*)primitiveRequiredPackage;
+- (void)setPrimitiveRequiredPackage:(PackageMO*)value;
 
 
 
@@ -74,8 +114,8 @@
 
 
 
-- (CatalogMO*)primitiveCatalog;
-- (void)setPrimitiveCatalog:(CatalogMO*)value;
+- (PackageMO*)primitiveUpdateForPackage;
+- (void)setPrimitiveUpdateForPackage:(PackageMO*)value;
 
 
 @end

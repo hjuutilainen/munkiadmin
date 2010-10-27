@@ -90,14 +90,33 @@
 
 
 
+@dynamic munki_forced_install;
+
+
+
+- (BOOL)munki_forced_installValue {
+	NSNumber *result = [self munki_forced_install];
+	return [result boolValue];
+}
+
+- (void)setMunki_forced_installValue:(BOOL)value_ {
+	[self setMunki_forced_install:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_forced_installValue {
+	NSNumber *result = [self primitiveMunki_forced_install];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_forced_installValue:(BOOL)value_ {
+	[self setPrimitiveMunki_forced_install:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
 @dynamic munki_minimum_os_version;
-
-
-
-
-
-
-@dynamic originalPkginfo;
 
 
 
@@ -144,6 +163,13 @@
 
 
 
+@dynamic originalPkginfo;
+
+
+
+
+
+
 @dynamic munki_installer_type;
 
 
@@ -153,6 +179,32 @@
 
 @dynamic packageURL;
 
+
+
+
+
+
+@dynamic munki_forced_uninstall;
+
+
+
+- (BOOL)munki_forced_uninstallValue {
+	NSNumber *result = [self munki_forced_uninstall];
+	return [result boolValue];
+}
+
+- (void)setMunki_forced_uninstallValue:(BOOL)value_ {
+	[self setMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_forced_uninstallValue {
+	NSNumber *result = [self primitiveMunki_forced_uninstall];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_ {
+	[self setPrimitiveMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
+}
 
 
 
@@ -239,6 +291,17 @@
 }
 	
 
+@dynamic updateFor;
+
+	
+- (NSMutableSet*)updateForSet {
+	[self willAccessValueForKey:@"updateFor"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"updateFor"];
+	[self didAccessValueForKey:@"updateFor"];
+	return result;
+}
+	
+
 @dynamic catalogs;
 
 	
@@ -257,6 +320,17 @@
 	[self willAccessValueForKey:@"installsItems"];
 	NSMutableSet *result = [self mutableSetValueForKey:@"installsItems"];
 	[self didAccessValueForKey:@"installsItems"];
+	return result;
+}
+	
+
+@dynamic requirements;
+
+	
+- (NSMutableSet*)requirementsSet {
+	[self willAccessValueForKey:@"requirements"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"requirements"];
+	[self didAccessValueForKey:@"requirements"];
 	return result;
 }
 	

@@ -307,6 +307,11 @@
 			NSArray *requires = [packageInfoDict objectForKey:@"requires"];
 			[requires enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %i --> Name: %@", self.fileName, idx, obj);
+				PackageInfoMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+				newRequiredPkgInfo.title = obj;
+				newRequiredPkgInfo.originalIndexValue = idx;
+				newRequiredPkgInfo.requiredPackage = aNewPackage;
+				[aNewPackage addRequirementsObject:newRequiredPkgInfo];
 			}];
 			
 			// =================================
@@ -315,6 +320,11 @@
 			NSArray *update_for = [packageInfoDict objectForKey:@"update_for"];
 			[update_for enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %i --> Name: %@", self.fileName, idx, obj);
+				PackageInfoMO *newUpdateForPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+				newUpdateForPkgInfo.title = obj;
+				newUpdateForPkgInfo.originalIndexValue = idx;
+				newUpdateForPkgInfo.updateForPackage = aNewPackage;
+				[aNewPackage addUpdateForObject:newUpdateForPkgInfo];
 			}];
 			
 			

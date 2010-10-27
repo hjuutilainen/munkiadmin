@@ -16,5 +16,14 @@
     return keyPaths;
 }
 
+- (NSDictionary *)dictValue
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			self.title, @"title",
+			@"", @"subtitle",
+			@"package", @"type",
+			nil];
+}
+
 
 @end
