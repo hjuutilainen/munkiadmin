@@ -171,7 +171,7 @@
 			for (ApplicationMO *anApplication in allApplications) {
 				[anApplication addManifestsObject:manifest];
 				
-				ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
+				/*ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
 				newManagedInstall.manifest = manifest;
 				[anApplication addApplicationProxiesObject:newManagedInstall];
 				if (managedInstalls == nil) {
@@ -180,6 +180,17 @@
 					newManagedInstall.isEnabledValue = YES;
 				} else {
 					newManagedInstall.isEnabledValue = NO;
+				}*/
+				
+				if (managedInstalls == nil) {
+					//newManagedInstall.isEnabledValue = NO;
+				} else if ([managedInstalls containsObject:anApplication.munki_name]) {
+					ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
+					newManagedInstall.manifest = manifest;
+					[anApplication addApplicationProxiesObject:newManagedInstall];
+					newManagedInstall.isEnabledValue = YES;
+				} else {
+					//newManagedInstall.isEnabledValue = NO;
 				}
 				
 				ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];

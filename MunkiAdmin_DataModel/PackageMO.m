@@ -5,6 +5,7 @@
 #import "ReceiptMO.h"
 #import "InstallsItemMO.h"
 #import "ItemToCopyMO.h"
+#import "StringObjectMO.h"
 
 @implementation PackageMO
 
@@ -123,7 +124,7 @@
 	NSSortDescriptor *sortUpdateForItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortUpdateForItemsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 	NSMutableArray *updateForItems = [NSMutableArray arrayWithCapacity:[self.updateFor count]];
-	for (PackageInfoMO *updateForItem in [self.updateFor sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortUpdateForItemsByOrigIndex, sortUpdateForItemsByTitle, nil]]) {
+	for (StringObjectMO *updateForItem in [self.updateFor sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortUpdateForItemsByOrigIndex, sortUpdateForItemsByTitle, nil]]) {
 		if (![updateForItems containsObject:[updateForItem title]]) {
 			[updateForItems addObject:[updateForItem title]];
 		}
@@ -143,7 +144,7 @@
 	NSSortDescriptor *sortRequiresItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortRequiresByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 	NSMutableArray *requiresItems = [NSMutableArray arrayWithCapacity:[self.requirements count]];
-	for (PackageInfoMO *requiresItem in [self.requirements sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortRequiresByOrigIndex, sortRequiresItemsByTitle, nil]]) {
+	for (StringObjectMO *requiresItem in [self.requirements sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortRequiresByOrigIndex, sortRequiresItemsByTitle, nil]]) {
 		if (![requiresItems containsObject:[requiresItem title]]) {
 			[requiresItems addObject:[requiresItem title]];
 		}

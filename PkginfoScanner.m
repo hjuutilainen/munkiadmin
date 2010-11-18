@@ -13,6 +13,7 @@
 #import "CatalogInfoMO.h"
 #import "InstallsItemMO.h"
 #import "ItemToCopyMO.h"
+#import "StringObjectMO.h"
 
 
 @implementation PkginfoScanner
@@ -307,10 +308,15 @@
 			NSArray *requires = [packageInfoDict objectForKey:@"requires"];
 			[requires enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %i --> Name: %@", self.fileName, idx, obj);
-				PackageInfoMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+				/*PackageInfoMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
 				newRequiredPkgInfo.originalIndexValue = idx;
 				newRequiredPkgInfo.requiredPackage = aNewPackage;
+				[aNewPackage addRequirementsObject:newRequiredPkgInfo];*/
+				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+				newRequiredPkgInfo.title = obj;
+				newRequiredPkgInfo.typeString = @"package";
+				newRequiredPkgInfo.originalIndexValue = idx;
 				[aNewPackage addRequirementsObject:newRequiredPkgInfo];
 			}];
 			
@@ -320,11 +326,16 @@
 			NSArray *update_for = [packageInfoDict objectForKey:@"update_for"];
 			[update_for enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %i --> Name: %@", self.fileName, idx, obj);
-				PackageInfoMO *newUpdateForPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+				/*PackageInfoMO *newUpdateForPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
 				newUpdateForPkgInfo.title = obj;
 				newUpdateForPkgInfo.originalIndexValue = idx;
 				newUpdateForPkgInfo.updateForPackage = aNewPackage;
-				[aNewPackage addUpdateForObject:newUpdateForPkgInfo];
+				[aNewPackage addUpdateForObject:newUpdateForPkgInfo];*/
+				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+				newRequiredPkgInfo.title = obj;
+				newRequiredPkgInfo.typeString = @"package";
+				newRequiredPkgInfo.originalIndexValue = idx;
+				[aNewPackage addUpdateForObject:newRequiredPkgInfo];
 			}];
 			
 			

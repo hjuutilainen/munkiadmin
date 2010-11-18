@@ -13,36 +13,6 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		F50739F71278035600AF7B19 /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F50739F61278035600AF7B19 /* ApplicationMO.m */; };
-		F50739F91278035600AF7B19 /* ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F50739F81278035600AF7B19 /* ApplicationProxyMO.m */; };
-		F50739FB1278035600AF7B19 /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F50739FA1278035600AF7B19 /* CatalogInfoMO.m */; };
-		F50739FD1278035700AF7B19 /* CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F50739FC1278035600AF7B19 /* CatalogMO.m */; };
-		F50739FF1278035700AF7B19 /* InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F50739FE1278035700AF7B19 /* InstallsItemMO.m */; };
-		F5073A011278035700AF7B19 /* ItemToCopyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A001278035700AF7B19 /* ItemToCopyMO.m */; };
-		F5073A031278035700AF7B19 /* ManagedInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A021278035700AF7B19 /* ManagedInstallMO.m */; };
-		F5073A051278035700AF7B19 /* ManagedUninstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A041278035700AF7B19 /* ManagedUninstallMO.m */; };
-		F5073A071278035800AF7B19 /* ManagedUpdateMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A061278035700AF7B19 /* ManagedUpdateMO.m */; };
-		F5073A091278035800AF7B19 /* ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A081278035800AF7B19 /* ManifestInfoMO.m */; };
-		F5073A0B1278035800AF7B19 /* ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A0A1278035800AF7B19 /* ManifestMO.m */; };
-		F5073A0D1278035800AF7B19 /* OptionalInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A0C1278035800AF7B19 /* OptionalInstallMO.m */; };
-		F5073A0F1278035800AF7B19 /* PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A0E1278035800AF7B19 /* PackageInfoMO.m */; };
-		F5073A111278035900AF7B19 /* PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A101278035800AF7B19 /* PackageMO.m */; };
-		F5073A131278035900AF7B19 /* ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A121278035900AF7B19 /* ReceiptMO.m */; };
-		F5073A241278035B00AF7B19 /* _ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A231278035B00AF7B19 /* _ApplicationMO.m */; };
-		F5073A261278035B00AF7B19 /* _ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A251278035B00AF7B19 /* _ApplicationProxyMO.m */; };
-		F5073A281278035B00AF7B19 /* _CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A271278035B00AF7B19 /* _CatalogInfoMO.m */; };
-		F5073A2A1278035C00AF7B19 /* _CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A291278035C00AF7B19 /* _CatalogMO.m */; };
-		F5073A2C1278035C00AF7B19 /* _InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A2B1278035C00AF7B19 /* _InstallsItemMO.m */; };
-		F5073A2E1278035C00AF7B19 /* _ItemToCopyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A2D1278035C00AF7B19 /* _ItemToCopyMO.m */; };
-		F5073A301278035C00AF7B19 /* _ManagedInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A2F1278035C00AF7B19 /* _ManagedInstallMO.m */; };
-		F5073A321278035C00AF7B19 /* _ManagedUninstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A311278035C00AF7B19 /* _ManagedUninstallMO.m */; };
-		F5073A341278035D00AF7B19 /* _ManagedUpdateMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A331278035C00AF7B19 /* _ManagedUpdateMO.m */; };
-		F5073A361278035D00AF7B19 /* _ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A351278035D00AF7B19 /* _ManifestInfoMO.m */; };
-		F5073A381278035D00AF7B19 /* _ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A371278035D00AF7B19 /* _ManifestMO.m */; };
-		F5073A3A1278035D00AF7B19 /* _OptionalInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A391278035D00AF7B19 /* _OptionalInstallMO.m */; };
-		F5073A3C1278035D00AF7B19 /* _PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A3B1278035D00AF7B19 /* _PackageInfoMO.m */; };
-		F5073A3E1278035E00AF7B19 /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A3D1278035D00AF7B19 /* _PackageMO.m */; };
-		F5073A401278035E00AF7B19 /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5073A3F1278035E00AF7B19 /* _ReceiptMO.m */; };
 		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
 		F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* GradientBackgroundView.m */; };
 		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
@@ -66,6 +36,38 @@
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
+		F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC877129546E200B68F4F /* ApplicationMO.m */; };
+		F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */; };
+		F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */; };
+		F5DFC87E129546E300B68F4F /* CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87D129546E300B68F4F /* CatalogMO.m */; };
+		F5DFC880129546E300B68F4F /* InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87F129546E300B68F4F /* InstallsItemMO.m */; };
+		F5DFC882129546E300B68F4F /* ItemToCopyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC881129546E300B68F4F /* ItemToCopyMO.m */; };
+		F5DFC884129546E300B68F4F /* ManagedInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC883129546E300B68F4F /* ManagedInstallMO.m */; };
+		F5DFC886129546E400B68F4F /* ManagedUninstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC885129546E400B68F4F /* ManagedUninstallMO.m */; };
+		F5DFC888129546E400B68F4F /* ManagedUpdateMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC887129546E400B68F4F /* ManagedUpdateMO.m */; };
+		F5DFC88A129546E400B68F4F /* ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC889129546E400B68F4F /* ManifestInfoMO.m */; };
+		F5DFC88C129546E400B68F4F /* ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC88B129546E400B68F4F /* ManifestMO.m */; };
+		F5DFC88E129546E400B68F4F /* OptionalInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC88D129546E400B68F4F /* OptionalInstallMO.m */; };
+		F5DFC890129546E500B68F4F /* PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC88F129546E500B68F4F /* PackageInfoMO.m */; };
+		F5DFC892129546E500B68F4F /* PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC891129546E500B68F4F /* PackageMO.m */; };
+		F5DFC894129546E500B68F4F /* ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC893129546E500B68F4F /* ReceiptMO.m */; };
+		F5DFC896129546E500B68F4F /* StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC895129546E500B68F4F /* StringObjectMO.m */; };
+		F5DFC8A8129546E800B68F4F /* _ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8A7129546E800B68F4F /* _ApplicationMO.m */; };
+		F5DFC8AA129546E800B68F4F /* _ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8A9129546E800B68F4F /* _ApplicationProxyMO.m */; };
+		F5DFC8AC129546E800B68F4F /* _CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8AB129546E800B68F4F /* _CatalogInfoMO.m */; };
+		F5DFC8AE129546E900B68F4F /* _CatalogMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8AD129546E900B68F4F /* _CatalogMO.m */; };
+		F5DFC8B0129546E900B68F4F /* _InstallsItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8AF129546E900B68F4F /* _InstallsItemMO.m */; };
+		F5DFC8B2129546E900B68F4F /* _ItemToCopyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8B1129546E900B68F4F /* _ItemToCopyMO.m */; };
+		F5DFC8B4129546E900B68F4F /* _ManagedInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8B3129546E900B68F4F /* _ManagedInstallMO.m */; };
+		F5DFC8B6129546EA00B68F4F /* _ManagedUninstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8B5129546EA00B68F4F /* _ManagedUninstallMO.m */; };
+		F5DFC8B8129546EA00B68F4F /* _ManagedUpdateMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8B7129546EA00B68F4F /* _ManagedUpdateMO.m */; };
+		F5DFC8BA129546EA00B68F4F /* _ManifestInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8B9129546EA00B68F4F /* _ManifestInfoMO.m */; };
+		F5DFC8BC129546EB00B68F4F /* _ManifestMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8BB129546EB00B68F4F /* _ManifestMO.m */; };
+		F5DFC8BE129546EB00B68F4F /* _OptionalInstallMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8BD129546EB00B68F4F /* _OptionalInstallMO.m */; };
+		F5DFC8C0129546EB00B68F4F /* _PackageInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8BF129546EB00B68F4F /* _PackageInfoMO.m */; };
+		F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C1129546EB00B68F4F /* _PackageMO.m */; };
+		F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */; };
+		F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */; };
 		F5F63381111824CC007CC030 /* catalogIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337E111824CC007CC030 /* catalogIcon2.png */; };
 		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
@@ -87,66 +89,6 @@
 		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F50739F61278035600AF7B19 /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
-		F50739F81278035600AF7B19 /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
-		F50739FA1278035600AF7B19 /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
-		F50739FC1278035600AF7B19 /* CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogMO.m; sourceTree = "<group>"; };
-		F50739FE1278035700AF7B19 /* InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallsItemMO.m; sourceTree = "<group>"; };
-		F5073A001278035700AF7B19 /* ItemToCopyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemToCopyMO.m; sourceTree = "<group>"; };
-		F5073A021278035700AF7B19 /* ManagedInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedInstallMO.m; sourceTree = "<group>"; };
-		F5073A041278035700AF7B19 /* ManagedUninstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedUninstallMO.m; sourceTree = "<group>"; };
-		F5073A061278035700AF7B19 /* ManagedUpdateMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedUpdateMO.m; sourceTree = "<group>"; };
-		F5073A081278035800AF7B19 /* ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestInfoMO.m; sourceTree = "<group>"; };
-		F5073A0A1278035800AF7B19 /* ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestMO.m; sourceTree = "<group>"; };
-		F5073A0C1278035800AF7B19 /* OptionalInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OptionalInstallMO.m; sourceTree = "<group>"; };
-		F5073A0E1278035800AF7B19 /* PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageInfoMO.m; sourceTree = "<group>"; };
-		F5073A101278035800AF7B19 /* PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageMO.m; sourceTree = "<group>"; };
-		F5073A121278035900AF7B19 /* ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiptMO.m; sourceTree = "<group>"; };
-		F5073A141278035900AF7B19 /* ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationMO.h; sourceTree = "<group>"; };
-		F5073A151278035900AF7B19 /* ApplicationProxyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationProxyMO.h; sourceTree = "<group>"; };
-		F5073A161278035900AF7B19 /* CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogInfoMO.h; sourceTree = "<group>"; };
-		F5073A171278035900AF7B19 /* CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogMO.h; sourceTree = "<group>"; };
-		F5073A181278035900AF7B19 /* InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallsItemMO.h; sourceTree = "<group>"; };
-		F5073A191278035A00AF7B19 /* ItemToCopyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemToCopyMO.h; sourceTree = "<group>"; };
-		F5073A1A1278035A00AF7B19 /* ManagedInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedInstallMO.h; sourceTree = "<group>"; };
-		F5073A1B1278035A00AF7B19 /* ManagedUninstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedUninstallMO.h; sourceTree = "<group>"; };
-		F5073A1C1278035A00AF7B19 /* ManagedUpdateMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedUpdateMO.h; sourceTree = "<group>"; };
-		F5073A1D1278035A00AF7B19 /* ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestInfoMO.h; sourceTree = "<group>"; };
-		F5073A1E1278035A00AF7B19 /* ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestMO.h; sourceTree = "<group>"; };
-		F5073A1F1278035A00AF7B19 /* OptionalInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionalInstallMO.h; sourceTree = "<group>"; };
-		F5073A201278035B00AF7B19 /* PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageInfoMO.h; sourceTree = "<group>"; };
-		F5073A211278035B00AF7B19 /* PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageMO.h; sourceTree = "<group>"; };
-		F5073A221278035B00AF7B19 /* ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiptMO.h; sourceTree = "<group>"; };
-		F5073A231278035B00AF7B19 /* _ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationMO.m; sourceTree = "<group>"; };
-		F5073A251278035B00AF7B19 /* _ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationProxyMO.m; sourceTree = "<group>"; };
-		F5073A271278035B00AF7B19 /* _CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogInfoMO.m; sourceTree = "<group>"; };
-		F5073A291278035C00AF7B19 /* _CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogMO.m; sourceTree = "<group>"; };
-		F5073A2B1278035C00AF7B19 /* _InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemMO.m; sourceTree = "<group>"; };
-		F5073A2D1278035C00AF7B19 /* _ItemToCopyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ItemToCopyMO.m; sourceTree = "<group>"; };
-		F5073A2F1278035C00AF7B19 /* _ManagedInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedInstallMO.m; sourceTree = "<group>"; };
-		F5073A311278035C00AF7B19 /* _ManagedUninstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedUninstallMO.m; sourceTree = "<group>"; };
-		F5073A331278035C00AF7B19 /* _ManagedUpdateMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedUpdateMO.m; sourceTree = "<group>"; };
-		F5073A351278035D00AF7B19 /* _ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestInfoMO.m; sourceTree = "<group>"; };
-		F5073A371278035D00AF7B19 /* _ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestMO.m; sourceTree = "<group>"; };
-		F5073A391278035D00AF7B19 /* _OptionalInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _OptionalInstallMO.m; sourceTree = "<group>"; };
-		F5073A3B1278035D00AF7B19 /* _PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageInfoMO.m; sourceTree = "<group>"; };
-		F5073A3D1278035D00AF7B19 /* _PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageMO.m; sourceTree = "<group>"; };
-		F5073A3F1278035E00AF7B19 /* _ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ReceiptMO.m; sourceTree = "<group>"; };
-		F5073A411278035E00AF7B19 /* _ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationMO.h; sourceTree = "<group>"; };
-		F5073A421278035E00AF7B19 /* _ApplicationProxyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationProxyMO.h; sourceTree = "<group>"; };
-		F5073A431278035E00AF7B19 /* _CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogInfoMO.h; sourceTree = "<group>"; };
-		F5073A441278035E00AF7B19 /* _CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogMO.h; sourceTree = "<group>"; };
-		F5073A451278035E00AF7B19 /* _InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _InstallsItemMO.h; sourceTree = "<group>"; };
-		F5073A461278035E00AF7B19 /* _ItemToCopyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ItemToCopyMO.h; sourceTree = "<group>"; };
-		F5073A471278035F00AF7B19 /* _ManagedInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedInstallMO.h; sourceTree = "<group>"; };
-		F5073A481278035F00AF7B19 /* _ManagedUninstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedUninstallMO.h; sourceTree = "<group>"; };
-		F5073A491278035F00AF7B19 /* _ManagedUpdateMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedUpdateMO.h; sourceTree = "<group>"; };
-		F5073A4A1278035F00AF7B19 /* _ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestInfoMO.h; sourceTree = "<group>"; };
-		F5073A4B1278035F00AF7B19 /* _ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestMO.h; sourceTree = "<group>"; };
-		F5073A4C1278035F00AF7B19 /* _OptionalInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _OptionalInstallMO.h; sourceTree = "<group>"; };
-		F5073A4D1278036000AF7B19 /* _PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageInfoMO.h; sourceTree = "<group>"; };
-		F5073A4E1278036000AF7B19 /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
-		F5073A4F1278036000AF7B19 /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsArrayController.h; sourceTree = "<group>"; };
 		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationsArrayController.m; sourceTree = "<group>"; };
 		F508522C11084C39001DAD73 /* GradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBackgroundView.h; sourceTree = "<group>"; };
@@ -182,6 +124,70 @@
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
+		F5DFC877129546E200B68F4F /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
+		F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
+		F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
+		F5DFC87D129546E300B68F4F /* CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogMO.m; sourceTree = "<group>"; };
+		F5DFC87F129546E300B68F4F /* InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallsItemMO.m; sourceTree = "<group>"; };
+		F5DFC881129546E300B68F4F /* ItemToCopyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemToCopyMO.m; sourceTree = "<group>"; };
+		F5DFC883129546E300B68F4F /* ManagedInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedInstallMO.m; sourceTree = "<group>"; };
+		F5DFC885129546E400B68F4F /* ManagedUninstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedUninstallMO.m; sourceTree = "<group>"; };
+		F5DFC887129546E400B68F4F /* ManagedUpdateMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManagedUpdateMO.m; sourceTree = "<group>"; };
+		F5DFC889129546E400B68F4F /* ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestInfoMO.m; sourceTree = "<group>"; };
+		F5DFC88B129546E400B68F4F /* ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestMO.m; sourceTree = "<group>"; };
+		F5DFC88D129546E400B68F4F /* OptionalInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OptionalInstallMO.m; sourceTree = "<group>"; };
+		F5DFC88F129546E500B68F4F /* PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageInfoMO.m; sourceTree = "<group>"; };
+		F5DFC891129546E500B68F4F /* PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageMO.m; sourceTree = "<group>"; };
+		F5DFC893129546E500B68F4F /* ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReceiptMO.m; sourceTree = "<group>"; };
+		F5DFC895129546E500B68F4F /* StringObjectMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StringObjectMO.m; sourceTree = "<group>"; };
+		F5DFC897129546E500B68F4F /* ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationMO.h; sourceTree = "<group>"; };
+		F5DFC898129546E600B68F4F /* ApplicationProxyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationProxyMO.h; sourceTree = "<group>"; };
+		F5DFC899129546E600B68F4F /* CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogInfoMO.h; sourceTree = "<group>"; };
+		F5DFC89A129546E600B68F4F /* CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatalogMO.h; sourceTree = "<group>"; };
+		F5DFC89B129546E600B68F4F /* InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallsItemMO.h; sourceTree = "<group>"; };
+		F5DFC89C129546E600B68F4F /* ItemToCopyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemToCopyMO.h; sourceTree = "<group>"; };
+		F5DFC89D129546E600B68F4F /* ManagedInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedInstallMO.h; sourceTree = "<group>"; };
+		F5DFC89E129546E600B68F4F /* ManagedUninstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedUninstallMO.h; sourceTree = "<group>"; };
+		F5DFC89F129546E700B68F4F /* ManagedUpdateMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagedUpdateMO.h; sourceTree = "<group>"; };
+		F5DFC8A0129546E700B68F4F /* ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestInfoMO.h; sourceTree = "<group>"; };
+		F5DFC8A1129546E700B68F4F /* ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestMO.h; sourceTree = "<group>"; };
+		F5DFC8A2129546E700B68F4F /* OptionalInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionalInstallMO.h; sourceTree = "<group>"; };
+		F5DFC8A3129546E700B68F4F /* PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageInfoMO.h; sourceTree = "<group>"; };
+		F5DFC8A4129546E700B68F4F /* PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageMO.h; sourceTree = "<group>"; };
+		F5DFC8A5129546E700B68F4F /* ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReceiptMO.h; sourceTree = "<group>"; };
+		F5DFC8A6129546E700B68F4F /* StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringObjectMO.h; sourceTree = "<group>"; };
+		F5DFC8A7129546E800B68F4F /* _ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationMO.m; sourceTree = "<group>"; };
+		F5DFC8A9129546E800B68F4F /* _ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ApplicationProxyMO.m; sourceTree = "<group>"; };
+		F5DFC8AB129546E800B68F4F /* _CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogInfoMO.m; sourceTree = "<group>"; };
+		F5DFC8AD129546E900B68F4F /* _CatalogMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _CatalogMO.m; sourceTree = "<group>"; };
+		F5DFC8AF129546E900B68F4F /* _InstallsItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemMO.m; sourceTree = "<group>"; };
+		F5DFC8B1129546E900B68F4F /* _ItemToCopyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ItemToCopyMO.m; sourceTree = "<group>"; };
+		F5DFC8B3129546E900B68F4F /* _ManagedInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedInstallMO.m; sourceTree = "<group>"; };
+		F5DFC8B5129546EA00B68F4F /* _ManagedUninstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedUninstallMO.m; sourceTree = "<group>"; };
+		F5DFC8B7129546EA00B68F4F /* _ManagedUpdateMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManagedUpdateMO.m; sourceTree = "<group>"; };
+		F5DFC8B9129546EA00B68F4F /* _ManifestInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestInfoMO.m; sourceTree = "<group>"; };
+		F5DFC8BB129546EB00B68F4F /* _ManifestMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ManifestMO.m; sourceTree = "<group>"; };
+		F5DFC8BD129546EB00B68F4F /* _OptionalInstallMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _OptionalInstallMO.m; sourceTree = "<group>"; };
+		F5DFC8BF129546EB00B68F4F /* _PackageInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageInfoMO.m; sourceTree = "<group>"; };
+		F5DFC8C1129546EB00B68F4F /* _PackageMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _PackageMO.m; sourceTree = "<group>"; };
+		F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _ReceiptMO.m; sourceTree = "<group>"; };
+		F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _StringObjectMO.m; sourceTree = "<group>"; };
+		F5DFC8C7129546EC00B68F4F /* _ApplicationMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationMO.h; sourceTree = "<group>"; };
+		F5DFC8C8129546EC00B68F4F /* _ApplicationProxyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ApplicationProxyMO.h; sourceTree = "<group>"; };
+		F5DFC8C9129546ED00B68F4F /* _CatalogInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogInfoMO.h; sourceTree = "<group>"; };
+		F5DFC8CA129546ED00B68F4F /* _CatalogMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _CatalogMO.h; sourceTree = "<group>"; };
+		F5DFC8CB129546ED00B68F4F /* _InstallsItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _InstallsItemMO.h; sourceTree = "<group>"; };
+		F5DFC8CC129546ED00B68F4F /* _ItemToCopyMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ItemToCopyMO.h; sourceTree = "<group>"; };
+		F5DFC8CD129546ED00B68F4F /* _ManagedInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedInstallMO.h; sourceTree = "<group>"; };
+		F5DFC8CE129546ED00B68F4F /* _ManagedUninstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedUninstallMO.h; sourceTree = "<group>"; };
+		F5DFC8CF129546ED00B68F4F /* _ManagedUpdateMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManagedUpdateMO.h; sourceTree = "<group>"; };
+		F5DFC8D0129546EE00B68F4F /* _ManifestInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestInfoMO.h; sourceTree = "<group>"; };
+		F5DFC8D1129546EE00B68F4F /* _ManifestMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ManifestMO.h; sourceTree = "<group>"; };
+		F5DFC8D2129546EE00B68F4F /* _OptionalInstallMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _OptionalInstallMO.h; sourceTree = "<group>"; };
+		F5DFC8D3129546EE00B68F4F /* _PackageInfoMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageInfoMO.h; sourceTree = "<group>"; };
+		F5DFC8D4129546EE00B68F4F /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
+		F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
+		F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _StringObjectMO.h; sourceTree = "<group>"; };
 		F5F6337E111824CC007CC030 /* catalogIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon2.png; sourceTree = "<group>"; };
 		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = manifestIcon2.png; sourceTree = "<group>"; };
 		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = packageIcon2.png; sourceTree = "<group>"; };
@@ -331,66 +337,70 @@
 		F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				F50739F61278035600AF7B19 /* ApplicationMO.m */,
-				F50739F81278035600AF7B19 /* ApplicationProxyMO.m */,
-				F50739FA1278035600AF7B19 /* CatalogInfoMO.m */,
-				F50739FC1278035600AF7B19 /* CatalogMO.m */,
-				F50739FE1278035700AF7B19 /* InstallsItemMO.m */,
-				F5073A001278035700AF7B19 /* ItemToCopyMO.m */,
-				F5073A021278035700AF7B19 /* ManagedInstallMO.m */,
-				F5073A041278035700AF7B19 /* ManagedUninstallMO.m */,
-				F5073A061278035700AF7B19 /* ManagedUpdateMO.m */,
-				F5073A081278035800AF7B19 /* ManifestInfoMO.m */,
-				F5073A0A1278035800AF7B19 /* ManifestMO.m */,
-				F5073A0C1278035800AF7B19 /* OptionalInstallMO.m */,
-				F5073A0E1278035800AF7B19 /* PackageInfoMO.m */,
-				F5073A101278035800AF7B19 /* PackageMO.m */,
-				F5073A121278035900AF7B19 /* ReceiptMO.m */,
-				F5073A141278035900AF7B19 /* ApplicationMO.h */,
-				F5073A151278035900AF7B19 /* ApplicationProxyMO.h */,
-				F5073A161278035900AF7B19 /* CatalogInfoMO.h */,
-				F5073A171278035900AF7B19 /* CatalogMO.h */,
-				F5073A181278035900AF7B19 /* InstallsItemMO.h */,
-				F5073A191278035A00AF7B19 /* ItemToCopyMO.h */,
-				F5073A1A1278035A00AF7B19 /* ManagedInstallMO.h */,
-				F5073A1B1278035A00AF7B19 /* ManagedUninstallMO.h */,
-				F5073A1C1278035A00AF7B19 /* ManagedUpdateMO.h */,
-				F5073A1D1278035A00AF7B19 /* ManifestInfoMO.h */,
-				F5073A1E1278035A00AF7B19 /* ManifestMO.h */,
-				F5073A1F1278035A00AF7B19 /* OptionalInstallMO.h */,
-				F5073A201278035B00AF7B19 /* PackageInfoMO.h */,
-				F5073A211278035B00AF7B19 /* PackageMO.h */,
-				F5073A221278035B00AF7B19 /* ReceiptMO.h */,
-				F5073A231278035B00AF7B19 /* _ApplicationMO.m */,
-				F5073A251278035B00AF7B19 /* _ApplicationProxyMO.m */,
-				F5073A271278035B00AF7B19 /* _CatalogInfoMO.m */,
-				F5073A291278035C00AF7B19 /* _CatalogMO.m */,
-				F5073A2B1278035C00AF7B19 /* _InstallsItemMO.m */,
-				F5073A2D1278035C00AF7B19 /* _ItemToCopyMO.m */,
-				F5073A2F1278035C00AF7B19 /* _ManagedInstallMO.m */,
-				F5073A311278035C00AF7B19 /* _ManagedUninstallMO.m */,
-				F5073A331278035C00AF7B19 /* _ManagedUpdateMO.m */,
-				F5073A351278035D00AF7B19 /* _ManifestInfoMO.m */,
-				F5073A371278035D00AF7B19 /* _ManifestMO.m */,
-				F5073A391278035D00AF7B19 /* _OptionalInstallMO.m */,
-				F5073A3B1278035D00AF7B19 /* _PackageInfoMO.m */,
-				F5073A3D1278035D00AF7B19 /* _PackageMO.m */,
-				F5073A3F1278035E00AF7B19 /* _ReceiptMO.m */,
-				F5073A411278035E00AF7B19 /* _ApplicationMO.h */,
-				F5073A421278035E00AF7B19 /* _ApplicationProxyMO.h */,
-				F5073A431278035E00AF7B19 /* _CatalogInfoMO.h */,
-				F5073A441278035E00AF7B19 /* _CatalogMO.h */,
-				F5073A451278035E00AF7B19 /* _InstallsItemMO.h */,
-				F5073A461278035E00AF7B19 /* _ItemToCopyMO.h */,
-				F5073A471278035F00AF7B19 /* _ManagedInstallMO.h */,
-				F5073A481278035F00AF7B19 /* _ManagedUninstallMO.h */,
-				F5073A491278035F00AF7B19 /* _ManagedUpdateMO.h */,
-				F5073A4A1278035F00AF7B19 /* _ManifestInfoMO.h */,
-				F5073A4B1278035F00AF7B19 /* _ManifestMO.h */,
-				F5073A4C1278035F00AF7B19 /* _OptionalInstallMO.h */,
-				F5073A4D1278036000AF7B19 /* _PackageInfoMO.h */,
-				F5073A4E1278036000AF7B19 /* _PackageMO.h */,
-				F5073A4F1278036000AF7B19 /* _ReceiptMO.h */,
+				F5DFC877129546E200B68F4F /* ApplicationMO.m */,
+				F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */,
+				F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */,
+				F5DFC87D129546E300B68F4F /* CatalogMO.m */,
+				F5DFC87F129546E300B68F4F /* InstallsItemMO.m */,
+				F5DFC881129546E300B68F4F /* ItemToCopyMO.m */,
+				F5DFC883129546E300B68F4F /* ManagedInstallMO.m */,
+				F5DFC885129546E400B68F4F /* ManagedUninstallMO.m */,
+				F5DFC887129546E400B68F4F /* ManagedUpdateMO.m */,
+				F5DFC889129546E400B68F4F /* ManifestInfoMO.m */,
+				F5DFC88B129546E400B68F4F /* ManifestMO.m */,
+				F5DFC88D129546E400B68F4F /* OptionalInstallMO.m */,
+				F5DFC88F129546E500B68F4F /* PackageInfoMO.m */,
+				F5DFC891129546E500B68F4F /* PackageMO.m */,
+				F5DFC893129546E500B68F4F /* ReceiptMO.m */,
+				F5DFC895129546E500B68F4F /* StringObjectMO.m */,
+				F5DFC897129546E500B68F4F /* ApplicationMO.h */,
+				F5DFC898129546E600B68F4F /* ApplicationProxyMO.h */,
+				F5DFC899129546E600B68F4F /* CatalogInfoMO.h */,
+				F5DFC89A129546E600B68F4F /* CatalogMO.h */,
+				F5DFC89B129546E600B68F4F /* InstallsItemMO.h */,
+				F5DFC89C129546E600B68F4F /* ItemToCopyMO.h */,
+				F5DFC89D129546E600B68F4F /* ManagedInstallMO.h */,
+				F5DFC89E129546E600B68F4F /* ManagedUninstallMO.h */,
+				F5DFC89F129546E700B68F4F /* ManagedUpdateMO.h */,
+				F5DFC8A0129546E700B68F4F /* ManifestInfoMO.h */,
+				F5DFC8A1129546E700B68F4F /* ManifestMO.h */,
+				F5DFC8A2129546E700B68F4F /* OptionalInstallMO.h */,
+				F5DFC8A3129546E700B68F4F /* PackageInfoMO.h */,
+				F5DFC8A4129546E700B68F4F /* PackageMO.h */,
+				F5DFC8A5129546E700B68F4F /* ReceiptMO.h */,
+				F5DFC8A6129546E700B68F4F /* StringObjectMO.h */,
+				F5DFC8A7129546E800B68F4F /* _ApplicationMO.m */,
+				F5DFC8A9129546E800B68F4F /* _ApplicationProxyMO.m */,
+				F5DFC8AB129546E800B68F4F /* _CatalogInfoMO.m */,
+				F5DFC8AD129546E900B68F4F /* _CatalogMO.m */,
+				F5DFC8AF129546E900B68F4F /* _InstallsItemMO.m */,
+				F5DFC8B1129546E900B68F4F /* _ItemToCopyMO.m */,
+				F5DFC8B3129546E900B68F4F /* _ManagedInstallMO.m */,
+				F5DFC8B5129546EA00B68F4F /* _ManagedUninstallMO.m */,
+				F5DFC8B7129546EA00B68F4F /* _ManagedUpdateMO.m */,
+				F5DFC8B9129546EA00B68F4F /* _ManifestInfoMO.m */,
+				F5DFC8BB129546EB00B68F4F /* _ManifestMO.m */,
+				F5DFC8BD129546EB00B68F4F /* _OptionalInstallMO.m */,
+				F5DFC8BF129546EB00B68F4F /* _PackageInfoMO.m */,
+				F5DFC8C1129546EB00B68F4F /* _PackageMO.m */,
+				F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */,
+				F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */,
+				F5DFC8C7129546EC00B68F4F /* _ApplicationMO.h */,
+				F5DFC8C8129546EC00B68F4F /* _ApplicationProxyMO.h */,
+				F5DFC8C9129546ED00B68F4F /* _CatalogInfoMO.h */,
+				F5DFC8CA129546ED00B68F4F /* _CatalogMO.h */,
+				F5DFC8CB129546ED00B68F4F /* _InstallsItemMO.h */,
+				F5DFC8CC129546ED00B68F4F /* _ItemToCopyMO.h */,
+				F5DFC8CD129546ED00B68F4F /* _ManagedInstallMO.h */,
+				F5DFC8CE129546ED00B68F4F /* _ManagedUninstallMO.h */,
+				F5DFC8CF129546ED00B68F4F /* _ManagedUpdateMO.h */,
+				F5DFC8D0129546EE00B68F4F /* _ManifestInfoMO.h */,
+				F5DFC8D1129546EE00B68F4F /* _ManifestMO.h */,
+				F5DFC8D2129546EE00B68F4F /* _OptionalInstallMO.h */,
+				F5DFC8D3129546EE00B68F4F /* _PackageInfoMO.h */,
+				F5DFC8D4129546EE00B68F4F /* _PackageMO.h */,
+				F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */,
+				F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */,
 			);
 			path = MunkiAdmin_DataModel;
 			sourceTree = "<group>";
@@ -488,36 +498,38 @@
 				F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */,
 				F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */,
-				F50739F71278035600AF7B19 /* ApplicationMO.m in Sources */,
-				F50739F91278035600AF7B19 /* ApplicationProxyMO.m in Sources */,
-				F50739FB1278035600AF7B19 /* CatalogInfoMO.m in Sources */,
-				F50739FD1278035700AF7B19 /* CatalogMO.m in Sources */,
-				F50739FF1278035700AF7B19 /* InstallsItemMO.m in Sources */,
-				F5073A011278035700AF7B19 /* ItemToCopyMO.m in Sources */,
-				F5073A031278035700AF7B19 /* ManagedInstallMO.m in Sources */,
-				F5073A051278035700AF7B19 /* ManagedUninstallMO.m in Sources */,
-				F5073A071278035800AF7B19 /* ManagedUpdateMO.m in Sources */,
-				F5073A091278035800AF7B19 /* ManifestInfoMO.m in Sources */,
-				F5073A0B1278035800AF7B19 /* ManifestMO.m in Sources */,
-				F5073A0D1278035800AF7B19 /* OptionalInstallMO.m in Sources */,
-				F5073A0F1278035800AF7B19 /* PackageInfoMO.m in Sources */,
-				F5073A111278035900AF7B19 /* PackageMO.m in Sources */,
-				F5073A131278035900AF7B19 /* ReceiptMO.m in Sources */,
-				F5073A241278035B00AF7B19 /* _ApplicationMO.m in Sources */,
-				F5073A261278035B00AF7B19 /* _ApplicationProxyMO.m in Sources */,
-				F5073A281278035B00AF7B19 /* _CatalogInfoMO.m in Sources */,
-				F5073A2A1278035C00AF7B19 /* _CatalogMO.m in Sources */,
-				F5073A2C1278035C00AF7B19 /* _InstallsItemMO.m in Sources */,
-				F5073A2E1278035C00AF7B19 /* _ItemToCopyMO.m in Sources */,
-				F5073A301278035C00AF7B19 /* _ManagedInstallMO.m in Sources */,
-				F5073A321278035C00AF7B19 /* _ManagedUninstallMO.m in Sources */,
-				F5073A341278035D00AF7B19 /* _ManagedUpdateMO.m in Sources */,
-				F5073A361278035D00AF7B19 /* _ManifestInfoMO.m in Sources */,
-				F5073A381278035D00AF7B19 /* _ManifestMO.m in Sources */,
-				F5073A3A1278035D00AF7B19 /* _OptionalInstallMO.m in Sources */,
-				F5073A3C1278035D00AF7B19 /* _PackageInfoMO.m in Sources */,
-				F5073A3E1278035E00AF7B19 /* _PackageMO.m in Sources */,
-				F5073A401278035E00AF7B19 /* _ReceiptMO.m in Sources */,
+				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
+				F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */,
+				F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */,
+				F5DFC87E129546E300B68F4F /* CatalogMO.m in Sources */,
+				F5DFC880129546E300B68F4F /* InstallsItemMO.m in Sources */,
+				F5DFC882129546E300B68F4F /* ItemToCopyMO.m in Sources */,
+				F5DFC884129546E300B68F4F /* ManagedInstallMO.m in Sources */,
+				F5DFC886129546E400B68F4F /* ManagedUninstallMO.m in Sources */,
+				F5DFC888129546E400B68F4F /* ManagedUpdateMO.m in Sources */,
+				F5DFC88A129546E400B68F4F /* ManifestInfoMO.m in Sources */,
+				F5DFC88C129546E400B68F4F /* ManifestMO.m in Sources */,
+				F5DFC88E129546E400B68F4F /* OptionalInstallMO.m in Sources */,
+				F5DFC890129546E500B68F4F /* PackageInfoMO.m in Sources */,
+				F5DFC892129546E500B68F4F /* PackageMO.m in Sources */,
+				F5DFC894129546E500B68F4F /* ReceiptMO.m in Sources */,
+				F5DFC896129546E500B68F4F /* StringObjectMO.m in Sources */,
+				F5DFC8A8129546E800B68F4F /* _ApplicationMO.m in Sources */,
+				F5DFC8AA129546E800B68F4F /* _ApplicationProxyMO.m in Sources */,
+				F5DFC8AC129546E800B68F4F /* _CatalogInfoMO.m in Sources */,
+				F5DFC8AE129546E900B68F4F /* _CatalogMO.m in Sources */,
+				F5DFC8B0129546E900B68F4F /* _InstallsItemMO.m in Sources */,
+				F5DFC8B2129546E900B68F4F /* _ItemToCopyMO.m in Sources */,
+				F5DFC8B4129546E900B68F4F /* _ManagedInstallMO.m in Sources */,
+				F5DFC8B6129546EA00B68F4F /* _ManagedUninstallMO.m in Sources */,
+				F5DFC8B8129546EA00B68F4F /* _ManagedUpdateMO.m in Sources */,
+				F5DFC8BA129546EA00B68F4F /* _ManifestInfoMO.m in Sources */,
+				F5DFC8BC129546EB00B68F4F /* _ManifestMO.m in Sources */,
+				F5DFC8BE129546EB00B68F4F /* _OptionalInstallMO.m in Sources */,
+				F5DFC8C0129546EB00B68F4F /* _PackageInfoMO.m in Sources */,
+				F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */,
+				F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */,
+				F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

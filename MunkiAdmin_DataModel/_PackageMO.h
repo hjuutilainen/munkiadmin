@@ -6,10 +6,10 @@
 
 @class ApplicationMO;
 @class PackageInfoMO;
-@class PackageInfoMO;
+@class StringObjectMO;
 @class CatalogMO;
 @class InstallsItemMO;
-@class PackageInfoMO;
+@class StringObjectMO;
 @class ReceiptMO;
 @class ItemToCopyMO;
 @class CatalogInfoMO;
@@ -240,8 +240,8 @@
 
 - (void)addUpdateFor:(NSSet*)value_;
 - (void)removeUpdateFor:(NSSet*)value_;
-- (void)addUpdateForObject:(PackageInfoMO*)value_;
-- (void)removeUpdateForObject:(PackageInfoMO*)value_;
+- (void)addUpdateForObject:(StringObjectMO*)value_;
+- (void)removeUpdateForObject:(StringObjectMO*)value_;
 
 - (void)addCatalogs:(NSSet*)value_;
 - (void)removeCatalogs:(NSSet*)value_;
@@ -255,8 +255,8 @@
 
 - (void)addRequirements:(NSSet*)value_;
 - (void)removeRequirements:(NSSet*)value_;
-- (void)addRequirementsObject:(PackageInfoMO*)value_;
-- (void)removeRequirementsObject:(PackageInfoMO*)value_;
+- (void)addRequirementsObject:(StringObjectMO*)value_;
+- (void)removeRequirementsObject:(StringObjectMO*)value_;
 
 - (void)addReceipts:(NSSet*)value_;
 - (void)removeReceipts:(NSSet*)value_;

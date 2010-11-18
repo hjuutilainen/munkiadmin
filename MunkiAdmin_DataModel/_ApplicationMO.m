@@ -50,13 +50,13 @@
 
 
 
-@dynamic manifests;
+@dynamic applicationProxies;
 
 	
-- (NSMutableSet*)manifestsSet {
-	[self willAccessValueForKey:@"manifests"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
-	[self didAccessValueForKey:@"manifests"];
+- (NSMutableSet*)applicationProxiesSet {
+	[self willAccessValueForKey:@"applicationProxies"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"applicationProxies"];
+	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
 }
 	
@@ -72,13 +72,13 @@
 }
 	
 
-@dynamic applicationProxies;
+@dynamic manifests;
 
 	
-- (NSMutableSet*)applicationProxiesSet {
-	[self willAccessValueForKey:@"applicationProxies"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"applicationProxies"];
-	[self didAccessValueForKey:@"applicationProxies"];
+- (NSMutableSet*)manifestsSet {
+	[self willAccessValueForKey:@"manifests"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
+	[self didAccessValueForKey:@"manifests"];
 	return result;
 }
 	

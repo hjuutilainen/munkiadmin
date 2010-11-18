@@ -55,6 +55,13 @@
 
 
 
+@dynamic title;
+
+
+
+
+
+
 @dynamic originalIndex;
 
 
@@ -81,26 +88,11 @@
 
 
 
-@dynamic title;
-
-
-
-
-
-
-@dynamic catalog;
-
-	
-
-@dynamic requiredPackage;
-
-	
-
 @dynamic package;
 
 	
 
-@dynamic updateForPackage;
+@dynamic catalog;
 
 	
 
