@@ -281,6 +281,7 @@
 	[managedUninstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
 	[managedUpdatesArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
 	[optionalInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+	
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
