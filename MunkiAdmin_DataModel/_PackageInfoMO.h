@@ -59,6 +59,7 @@
 
 
 
+
 @end
 
 @interface _PackageInfoMO (CoreDataGeneratedAccessors)

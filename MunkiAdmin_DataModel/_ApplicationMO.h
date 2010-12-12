@@ -57,6 +57,7 @@
 
 
 
+
 @end
 
 @interface _ApplicationMO (CoreDataGeneratedAccessors)

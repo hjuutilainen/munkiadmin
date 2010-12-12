@@ -58,6 +58,17 @@
 }
 	
 
+@dynamic manifests;
+
+	
+- (NSMutableSet*)manifestsSet {
+	[self willAccessValueForKey:@"manifests"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
+	[self didAccessValueForKey:@"manifests"];
+	return result;
+}
+	
+
 @dynamic packageInfos;
 
 	
@@ -69,16 +80,7 @@
 }
 	
 
-@dynamic manifests;
 
-	
-- (NSMutableSet*)manifestsSet {
-	[self willAccessValueForKey:@"manifests"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
-	[self didAccessValueForKey:@"manifests"];
-	return result;
-}
-	
 
 
 

@@ -55,6 +55,7 @@
 
 
 
+
 @end
 
 @interface _StringObjectMO (CoreDataGeneratedAccessors)

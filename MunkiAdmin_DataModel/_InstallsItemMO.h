@@ -66,6 +66,7 @@
 
 
 
+
 @end
 
 @interface _InstallsItemMO (CoreDataGeneratedAccessors)

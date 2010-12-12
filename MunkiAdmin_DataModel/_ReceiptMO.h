@@ -56,6 +56,7 @@
 
 
 
+
 @end
 
 @interface _ReceiptMO (CoreDataGeneratedAccessors)

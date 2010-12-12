@@ -69,6 +69,7 @@
 
 
 
+
 @end
 
 @interface _CatalogInfoMO (CoreDataGeneratedAccessors)

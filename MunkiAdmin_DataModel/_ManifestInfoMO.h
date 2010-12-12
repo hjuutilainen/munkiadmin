@@ -52,6 +52,7 @@
 
 
 
+
 @end
 
 @interface _ManifestInfoMO (CoreDataGeneratedAccessors)

@@ -24,6 +24,7 @@
 
 
 
+
 @end
 
 @interface _ManagedInstallMO (CoreDataGeneratedAccessors)

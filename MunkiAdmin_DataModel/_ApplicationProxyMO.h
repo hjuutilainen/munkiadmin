@@ -35,6 +35,7 @@
 
 
 
+
 @end
 
 @interface _ApplicationProxyMO (CoreDataGeneratedAccessors)
