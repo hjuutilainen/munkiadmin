@@ -11,8 +11,9 @@
 			<string key="NS.object.0">804</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="1049"/>
 			<integer value="1632"/>
+			<integer value="1046"/>
+			<integer value="842"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1877,7 +1878,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="758628174">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSCustomView" id="52205011">
@@ -2008,32 +2009,6 @@
 												<bool key="NSIsEditable">YES</bool>
 												<reference key="NSTableView" ref="267818175"/>
 											</object>
-											<object class="NSTableColumn" id="298060852">
-												<double key="NSWidth">214</double>
-												<double key="NSMinWidth">40</double>
-												<double key="NSMaxWidth">1000</double>
-												<object class="NSTableHeaderCell" key="NSHeaderCell">
-													<int key="NSCellFlags">75628096</int>
-													<int key="NSCellFlags2">2048</int>
-													<string key="NSContents">Display Name</string>
-													<reference key="NSSupport" ref="26"/>
-													<reference key="NSBackgroundColor" ref="875013531"/>
-													<reference key="NSTextColor" ref="252515629"/>
-												</object>
-												<object class="NSTextFieldCell" key="NSDataCell" id="643024926">
-													<int key="NSCellFlags">337772096</int>
-													<int key="NSCellFlags2">2048</int>
-													<string key="NSContents">Text Cell</string>
-													<reference key="NSSupport" ref="778817628"/>
-													<reference key="NSControlView" ref="267818175"/>
-													<reference key="NSBackgroundColor" ref="716466411"/>
-													<reference key="NSTextColor" ref="352760621"/>
-												</object>
-												<int key="NSResizingMask">3</int>
-												<bool key="NSIsResizeable">YES</bool>
-												<bool key="NSIsEditable">YES</bool>
-												<reference key="NSTableView" ref="267818175"/>
-											</object>
 											<object class="NSTableColumn" id="898771277">
 												<double key="NSWidth">206</double>
 												<double key="NSMinWidth">10</double>
@@ -2052,6 +2027,32 @@
 													<reference key="NSTextColor" ref="252515629"/>
 												</object>
 												<object class="NSTextFieldCell" key="NSDataCell" id="304825520">
+													<int key="NSCellFlags">337772096</int>
+													<int key="NSCellFlags2">2048</int>
+													<string key="NSContents">Text Cell</string>
+													<reference key="NSSupport" ref="778817628"/>
+													<reference key="NSControlView" ref="267818175"/>
+													<reference key="NSBackgroundColor" ref="716466411"/>
+													<reference key="NSTextColor" ref="352760621"/>
+												</object>
+												<int key="NSResizingMask">3</int>
+												<bool key="NSIsResizeable">YES</bool>
+												<bool key="NSIsEditable">YES</bool>
+												<reference key="NSTableView" ref="267818175"/>
+											</object>
+											<object class="NSTableColumn" id="298060852">
+												<double key="NSWidth">214</double>
+												<double key="NSMinWidth">40</double>
+												<double key="NSMaxWidth">1000</double>
+												<object class="NSTableHeaderCell" key="NSHeaderCell">
+													<int key="NSCellFlags">75628096</int>
+													<int key="NSCellFlags2">2048</int>
+													<string key="NSContents">Display Name</string>
+													<reference key="NSSupport" ref="26"/>
+													<reference key="NSBackgroundColor" ref="875013531"/>
+													<reference key="NSTextColor" ref="252515629"/>
+												</object>
+												<object class="NSTextFieldCell" key="NSDataCell" id="643024926">
 													<int key="NSCellFlags">337772096</int>
 													<int key="NSCellFlags2">2048</int>
 													<string key="NSContents">Text Cell</string>
@@ -2131,6 +2132,7 @@
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="548828781"/>
 								<string key="NSAction">_doScroller:</string>
+								<double key="NSCurValue">0.0013089005235602095</double>
 								<double key="NSPercent">0.99869281045751634</double>
 							</object>
 							<object class="NSClipView" id="741485500">
@@ -2161,6 +2163,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{764, 544}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="71043129">
@@ -2344,7 +2347,7 @@
 							<object class="NSTabViewItem" id="939719980">
 								<string key="NSIdentifier">1</string>
 								<object class="NSView" key="NSView" id="696570399">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="221731399"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSTextField" id="468947343">
@@ -2610,6 +2613,25 @@
 														<object class="NSTextView" id="578822001">
 															<reference key="NSNextResponder" ref="597377161"/>
 															<int key="NSvFlags">2322</int>
+															<set class="NSMutableSet" key="NSDragTypes">
+																<string>Apple HTML pasteboard type</string>
+																<string>Apple PDF pasteboard type</string>
+																<string>Apple PICT pasteboard type</string>
+																<string>Apple PNG pasteboard type</string>
+																<string>Apple URL pasteboard type</string>
+																<string>CorePasteboardFlavorType 0x6D6F6F76</string>
+																<string>NSColor pasteboard type</string>
+																<string>NSFilenamesPboardType</string>
+																<string>NSStringPboardType</string>
+																<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
+																<string>NeXT RTFD pasteboard type</string>
+																<string>NeXT Rich Text Format v1.0 pasteboard type</string>
+																<string>NeXT TIFF v4.0 pasteboard type</string>
+																<string>NeXT font pasteboard type</string>
+																<string>NeXT ruler pasteboard type</string>
+																<string>WebURLsWithTitlesPboardType</string>
+																<string>public.url</string>
+															</set>
 															<string key="NSFrame">{{0, 66}, {252, 14}}</string>
 															<reference key="NSSuperview" ref="597377161"/>
 															<object class="NSTextContainer" key="NSTextContainer" id="860572253">
@@ -2800,6 +2822,7 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {421, 491}}</string>
+									<reference key="NSSuperview" ref="221731399"/>
 								</object>
 								<string key="NSLabel">Info</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -2808,7 +2831,7 @@
 							<object class="NSTabViewItem" id="865594505">
 								<string key="NSIdentifier">2</string>
 								<object class="NSView" key="NSView" id="495780607">
-									<reference key="NSNextResponder" ref="221731399"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSTextField" id="723737393">
@@ -3156,7 +3179,6 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {421, 491}}</string>
-									<reference key="NSSuperview" ref="221731399"/>
 								</object>
 								<string key="NSLabel">Receipts</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -3223,7 +3245,7 @@
 															<reference key="NSBackgroundColor" ref="494091941"/>
 															<reference key="NSGridColor" ref="747406927"/>
 															<double key="NSRowHeight">40</double>
-															<int key="NSTvFlags">-767557632</int>
+															<int key="NSTvFlags">-633339904</int>
 															<reference key="NSDelegate"/>
 															<reference key="NSDataSource"/>
 															<int key="NSColumnAutoresizingStyle">4</int>
@@ -3598,7 +3620,7 @@
 															<reference key="NSBackgroundColor" ref="494091941"/>
 															<reference key="NSGridColor" ref="747406927"/>
 															<double key="NSRowHeight">40</double>
-															<int key="NSTvFlags">-767557632</int>
+															<int key="NSTvFlags">-633339904</int>
 															<reference key="NSDelegate"/>
 															<reference key="NSDataSource"/>
 															<int key="NSColumnAutoresizingStyle">4</int>
@@ -4005,7 +4027,7 @@
 																			<reference key="NSBackgroundColor" ref="494091941"/>
 																			<reference key="NSGridColor" ref="747406927"/>
 																			<double key="NSRowHeight">18</double>
-																			<int key="NSTvFlags">-767557632</int>
+																			<int key="NSTvFlags">-633339904</int>
 																			<reference key="NSDelegate"/>
 																			<reference key="NSDataSource"/>
 																			<int key="NSColumnAutoresizingStyle">4</int>
@@ -4179,7 +4201,7 @@
 																			<reference key="NSBackgroundColor" ref="494091941"/>
 																			<reference key="NSGridColor" ref="747406927"/>
 																			<double key="NSRowHeight">18</double>
-																			<int key="NSTvFlags">-767557632</int>
+																			<int key="NSTvFlags">-633339904</int>
 																			<reference key="NSDelegate"/>
 																			<reference key="NSDataSource"/>
 																			<int key="NSColumnAutoresizingStyle">4</int>
@@ -4261,13 +4283,13 @@
 								<reference key="NSTabView" ref="221731399"/>
 							</object>
 						</array>
-						<reference key="NSSelectedTabViewItem" ref="865594505"/>
+						<reference key="NSSelectedTabViewItem" ref="939719980"/>
 						<reference key="NSFont" ref="26"/>
 						<int key="NSTvFlags">134217728</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<array class="NSMutableArray" key="NSSubviews">
-							<reference ref="495780607"/>
+							<reference ref="696570399"/>
 						</array>
 					</object>
 				</array>
