@@ -11,8 +11,8 @@
 			<string key="NS.object.0">804</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="1632"/>
 			<integer value="1046"/>
+			<integer value="1718"/>
 			<integer value="842"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -1599,6 +1599,24 @@
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
+			<object class="NSArrayController" id="933347976">
+				<array class="NSMutableArray" key="NSDeclaredKeys">
+					<string>parentApplication.dictValue</string>
+					<string>isEnabled</string>
+				</array>
+				<string key="NSObjectClassName">M</string>
+				<bool key="NSEditable">YES</bool>
+				<bool key="NSAutomaticallyPreparesContent">YES</bool>
+				<object class="_NSManagedProxy" key="_NSManagedProxy">
+					<string key="NSEntityName">ManagedUninstall</string>
+				</object>
+				<bool key="_NSIsUsingManagedProxy">YES</bool>
+				<bool key="NSPreservesSelection">YES</bool>
+				<bool key="NSSelectsInsertedObjects">YES</bool>
+				<bool key="NSFilterRestrictsInsertion">YES</bool>
+				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
+			</object>
 			<object class="NSArrayController" id="652970617">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
 					<string>parentApplication.dictValue</string>
@@ -1627,24 +1645,6 @@
 				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">ManagedUpdate</string>
-				</object>
-				<bool key="_NSIsUsingManagedProxy">YES</bool>
-				<bool key="NSPreservesSelection">YES</bool>
-				<bool key="NSSelectsInsertedObjects">YES</bool>
-				<bool key="NSFilterRestrictsInsertion">YES</bool>
-				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
-				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
-			</object>
-			<object class="NSArrayController" id="933347976">
-				<array class="NSMutableArray" key="NSDeclaredKeys">
-					<string>parentApplication.dictValue</string>
-					<string>isEnabled</string>
-				</array>
-				<string key="NSObjectClassName">M</string>
-				<bool key="NSEditable">YES</bool>
-				<bool key="NSAutomaticallyPreparesContent">YES</bool>
-				<object class="_NSManagedProxy" key="_NSManagedProxy">
-					<string key="NSEntityName">ManagedUninstall</string>
 				</object>
 				<bool key="_NSIsUsingManagedProxy">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
@@ -4830,7 +4830,7 @@
 							<object class="NSTabViewItem" id="414292665">
 								<string key="NSIdentifier">1</string>
 								<object class="NSView" key="NSView" id="830504845">
-									<reference key="NSNextResponder" ref="605528391"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="766213607">
@@ -4969,7 +4969,6 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
-									<reference key="NSSuperview" ref="605528391"/>
 								</object>
 								<string key="NSLabel">Installs</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -5272,7 +5271,7 @@
 							<object class="NSTabViewItem" id="1043811614">
 								<string key="NSIdentifier">Item 5</string>
 								<object class="NSView" key="NSView" id="749841467">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="605528391"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="472988834">
@@ -5411,6 +5410,7 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
+									<reference key="NSSuperview" ref="605528391"/>
 								</object>
 								<string key="NSLabel">Updates</string>
 								<reference key="NSColor" ref="662118857"/>
@@ -5709,13 +5709,13 @@
 								<reference key="NSTabView" ref="605528391"/>
 							</object>
 						</array>
-						<reference key="NSSelectedTabViewItem" ref="414292665"/>
+						<reference key="NSSelectedTabViewItem" ref="1043811614"/>
 						<reference key="NSFont" ref="26"/>
 						<int key="NSTvFlags">134217728</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<array class="NSMutableArray" key="NSSubviews">
-							<reference ref="830504845"/>
+							<reference ref="749841467"/>
 						</array>
 					</object>
 				</array>
@@ -8791,14 +8791,6 @@
 					<int key="connectionID">1617</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="28263520"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1622</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">enableAllPackagesForManifestAction:</string>
 						<reference key="source" ref="612578685"/>
@@ -8872,14 +8864,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="906777063"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1659</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">manifestsDetailView</string>
 						<reference key="source" ref="612578685"/>
 						<reference key="destination" ref="570538513"/>
@@ -8901,14 +8885,6 @@
 						</object>
 					</object>
 					<int key="connectionID">1662</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="273383240"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1673</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -9079,14 +9055,6 @@
 					<int key="connectionID">1700</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="417698661"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1709</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.parentApplication.dictValue</string>
 						<reference key="source" ref="787552732"/>
@@ -9151,14 +9119,6 @@
 					<int key="connectionID">1717</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="359172012"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1726</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.parentApplication.dictValue</string>
 						<reference key="source" ref="833420338"/>
@@ -9189,14 +9149,6 @@
 						</object>
 					</object>
 					<int key="connectionID">1730</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">menu</string>
-						<reference key="source" ref="33548281"/>
-						<reference key="destination" ref="684951282"/>
-					</object>
-					<int key="connectionID">1741</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -9805,6 +9757,38 @@
 						<reference key="destination" ref="342801108"/>
 					</object>
 					<int key="connectionID">2020</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="212692914"/>
+						<reference key="destination" ref="906777063"/>
+					</object>
+					<int key="connectionID">2027</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="933347976"/>
+						<reference key="destination" ref="417698661"/>
+					</object>
+					<int key="connectionID">2028</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="652970617"/>
+						<reference key="destination" ref="33548281"/>
+					</object>
+					<int key="connectionID">2029</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="521975385"/>
+						<reference key="destination" ref="359172012"/>
+					</object>
+					<int key="connectionID">2030</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -14067,6 +14051,7 @@
 				<object class="NSAffineTransform" key="1649.IBViewBoundsToFrameTransform">
 					<bytes key="NSTransformStruct">P4AAAL+AAABBiAAAw+kAAA</bytes>
 				</object>
+				<string key="1650.CustomClassName">ManifestItemTableView</string>
 				<string key="1650.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1651.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1652.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -14088,7 +14073,9 @@
 				<string key="1671.CustomClassName">MyCell</string>
 				<string key="1671.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1672.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1690.CustomClassName">ManifestItemArrayController</string>
 				<string key="1690.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1697.CustomClassName">ManifestItemArrayController</string>
 				<string key="1697.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1701.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="1701.IBViewBoundsToFrameTransform">
@@ -14096,17 +14083,20 @@
 				</object>
 				<string key="1702.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1703.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1704.CustomClassName">ManifestItemTableView</string>
 				<string key="1704.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1705.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1706.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1707.CustomClassName">MyCell</string>
 				<string key="1707.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1708.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1714.CustomClassName">ManifestItemArrayController</string>
 				<string key="1714.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1718.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="1718.IBViewBoundsToFrameTransform">
 					<bytes key="NSTransformStruct">P4AAAL+AAABBiAAAw+6AAA</bytes>
 				</object>
+				<string key="1719.CustomClassName">ManifestItemTableView</string>
 				<string key="1719.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1720.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1721.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -14121,12 +14111,14 @@
 				</object>
 				<string key="1732.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1734.CustomClassName">ManifestItemTableView</string>
 				<string key="1734.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1735.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1736.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1737.CustomClassName">MyCell</string>
 				<string key="1737.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1738.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1742.CustomClassName">ManifestItemArrayController</string>
 				<string key="1742.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1752.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="1752.IBViewBoundsToFrameTransform">
@@ -14636,7 +14628,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">2026</int>
+			<int key="maxID">2030</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -14681,6 +14673,33 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">GradientBackgroundView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ManifestItemArrayController</string>
+					<string key="superclassName">NSArrayController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">tableView</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">tableView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">tableView</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">ManifestItemArrayController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ManifestItemTableView</string>
+					<string key="superclassName">NSTableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">ManifestItemTableView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
