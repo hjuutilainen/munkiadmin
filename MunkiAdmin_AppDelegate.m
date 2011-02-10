@@ -108,11 +108,15 @@
 	
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
-		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		//NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
+		NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %i objects from entity: %@", [allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
+		[allObjects release];
+		[pool release];
 	}
 	[moc processPendingChanges];
 }
@@ -122,7 +126,8 @@
 	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
-	NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	//NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray *fetchResults = [[[NSArray alloc] initWithArray:[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil]] autorelease];
 	[fetchRequest release];
 	return fetchResults;
 }
@@ -1807,8 +1812,8 @@
 	{
 		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
 	}
-	[sourceViewPlaceHolder displayIfNeeded];
-	[detailViewPlaceHolder displayIfNeeded];
+	//[sourceViewPlaceHolder display];
+	//[detailViewPlaceHolder display];
 }
 
 - (void)changeItemView
@@ -1824,12 +1829,13 @@
 	[busyGear setStyle:NSProgressIndicatorSpinningStyle];
 	[busyGear startAnimation:self];
 	[detailViewPlaceHolder addSubview:busyGear];
-	[detailViewPlaceHolder displayIfNeeded];
+	//[detailViewPlaceHolder display];
 	
 	[detailViewPlaceHolder addSubview:currentDetailView];
 	[sourceViewPlaceHolder addSubview:currentSourceView];
 	
 	[busyGear removeFromSuperview];
+	[busyGear release];
 	
 	[currentDetailView setFrame:[[currentDetailView superview] frame]];
 	[currentSourceView setFrame:[[currentSourceView superview] frame]];

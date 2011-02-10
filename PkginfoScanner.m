@@ -47,32 +47,36 @@
 - (void)setupMappings
 {
 	// Define the munki keys we support
-	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newPkginfoKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
 		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
 	}
 	self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
+	[newPkginfoKeyMappings release];
 	
 	// Receipt keys
-	NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
 		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 	}
 	self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
+	[newReceiptKeyMappings release];
 	
 	// Installs item keys
-	NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
 		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
 	}
 	self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
+	[newInstallsKeyMappings release];
 	
 	// items_to_copy keys
-	NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
 	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
+	[newItemsToCopyKeyMappings release];
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict
@@ -103,6 +107,12 @@
 	[currentJobDescription release];
 	[sourceURL release];
 	[sourceDict release];
+	[delegate release];
+	[pkginfoKeyMappings release];
+	[receiptKeyMappings release];
+	[installsKeyMappings release];
+	[itemsToCopyKeyMappings release];
+
 	[super dealloc];
 }
 

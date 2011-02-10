@@ -46,6 +46,10 @@
 	[fileName release];
 	[currentJobDescription release];
 	[sourceURL release];
+	[delegate release];
+	[pkginfoKeyMappings release];
+	[receiptKeyMappings release];
+	[installsKeyMappings release];
 	[super dealloc];
 }
 

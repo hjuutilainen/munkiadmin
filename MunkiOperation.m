@@ -48,6 +48,7 @@
 	[command release];
 	[targetURL release];
 	[arguments release];
+	[delegate release];
 	[super dealloc];
 }
 
