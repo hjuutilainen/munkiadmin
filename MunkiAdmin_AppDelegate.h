@@ -99,7 +99,12 @@
 	ManifestsArrayController *manifestsArrayController;
 	NSArrayController *manifestInfosArrayController;
 	NSArrayController *managedInstallsArrayController, *managedUpdatesArrayController, *managedUninstallsArrayController, *optionalInstallsArrayController;
+    NSArrayController *installsItemsArrayController;
+    NSArrayController *itemsToCopyArrayController;
 }
+
+@property (assign) IBOutlet NSArrayController *installsItemsArrayController;
+@property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
 
 # pragma mark -
 # pragma mark Variable declarations

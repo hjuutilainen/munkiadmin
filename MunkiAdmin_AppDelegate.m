@@ -11,6 +11,8 @@
 #import "MunkiOperation.h"
 
 @implementation MunkiAdmin_AppDelegate
+@synthesize installsItemsArrayController;
+@synthesize itemsToCopyArrayController;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -286,6 +288,13 @@
 	[managedUninstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
 	[managedUpdatesArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
 	[optionalInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+    
+    NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES];
+    [installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
+    
+    NSSortDescriptor *sortItemsToCopyByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES];
+    NSSortDescriptor *sortItemsToCopyBySource = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES];
+    [itemsToCopyArrayController setSortDescriptors:[NSArray arrayWithObjects:sortItemsToCopyByDestPath, sortItemsToCopyBySource, nil]];
 	
 }
 
