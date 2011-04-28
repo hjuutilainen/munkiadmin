@@ -280,14 +280,17 @@
 	self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgs", @"pkgsinfo", nil];
 	
 	// Set sort descriptors for array controllers
-	NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	//NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+    NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
 	
-	NSSortDescriptor *sortAppProxiesByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
-	[managedInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
-	[managedUninstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
-	[managedUpdatesArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
-	[optionalInstallsArrayController setSortDescriptors:[NSArray arrayWithObject:sortAppProxiesByTitle]];
+    NSSortDescriptor *sortAppProxiesByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortAppProxiesByDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *appSorters = [NSArray arrayWithObjects:sortAppProxiesByDisplayName, sortAppProxiesByTitle, nil];
+	[managedInstallsArrayController setSortDescriptors:appSorters];
+	[managedUninstallsArrayController setSortDescriptors:appSorters];
+	[managedUpdatesArrayController setSortDescriptors:appSorters];
+	[optionalInstallsArrayController setSortDescriptors:appSorters];
     
     NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES];
     [installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
