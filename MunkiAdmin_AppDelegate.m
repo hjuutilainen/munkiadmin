@@ -280,7 +280,6 @@
 	self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgs", @"pkgsinfo", nil];
 	
 	// Set sort descriptors for array controllers
-	//NSSortDescriptor *sortManifestsByTitle = [[[NSSortDescriptor alloc] initWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
     NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
 	
@@ -1307,6 +1306,9 @@
 - (void)mergeChanges:(NSNotification*)notification
 {
 	NSAssert([NSThread mainThread], @"Not on the main thread");
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"Merging changes in main thread");
+	}
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
 }
 

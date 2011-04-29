@@ -81,7 +81,7 @@
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
 		self.sourceDict = dict;
 		self.fileName = [self.sourceDict valueForKey:@"name"];
@@ -92,7 +92,7 @@
 }
 
 - (id)initWithURL:(NSURL *)src {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
@@ -192,10 +192,10 @@
 				[self.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [aReceipt objectForKey:obj];
 					if (value != nil) {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %i --> %@: %@", self.fileName, idx, obj, value);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: %@", self.fileName, idx, obj, value);
 						[aNewReceipt setValue:value forKey:key];
 					} else {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %i --> %@: nil (skipped)", self.fileName, idx, key);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
 			}];
@@ -210,10 +210,10 @@
 				[self.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anInstall objectForKey:obj];
 					if (value != nil) {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %i --> %@: %@", self.fileName, idx, obj, value);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: %@", self.fileName, idx, obj, value);
 						[aNewInstallsItem setValue:value forKey:key];
 					} else {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %i --> %@: nil (skipped)", self.fileName, idx, key);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
 			}];
@@ -228,10 +228,10 @@
 				[self.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anItemToCopy objectForKey:obj];
 					if (value != nil) {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %i --> %@: %@", self.fileName, idx, obj, value);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: %@", self.fileName, idx, obj, value);
 						[aNewItemToCopy setValue:value forKey:key];
 					} else {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %i --> %@: nil (skipped)", self.fileName, idx, key);
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: nil (skipped)", self.fileName, idx, key);
 					}
 				}];
 				if ([self.defaults boolForKey:@"items_to_copyUseDefaults"] && self.canModify) {
@@ -317,12 +317,7 @@
 			// =================================
 			NSArray *requires = [packageInfoDict objectForKey:@"requires"];
 			[requires enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %i --> Name: %@", self.fileName, idx, obj);
-				/*PackageInfoMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-				newRequiredPkgInfo.title = obj;
-				newRequiredPkgInfo.originalIndexValue = idx;
-				newRequiredPkgInfo.requiredPackage = aNewPackage;
-				[aNewPackage addRequirementsObject:newRequiredPkgInfo];*/
+				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %lu --> Name: %@", self.fileName, idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
 				newRequiredPkgInfo.typeString = @"package";
@@ -335,12 +330,7 @@
 			// =================================
 			NSArray *update_for = [packageInfoDict objectForKey:@"update_for"];
 			[update_for enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %i --> Name: %@", self.fileName, idx, obj);
-				/*PackageInfoMO *newUpdateForPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-				newUpdateForPkgInfo.title = obj;
-				newUpdateForPkgInfo.originalIndexValue = idx;
-				newUpdateForPkgInfo.updateForPackage = aNewPackage;
-				[aNewPackage addUpdateForObject:newUpdateForPkgInfo];*/
+				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %lu --> Name: %@", self.fileName, idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
 				newRequiredPkgInfo.typeString = @"package";
@@ -358,7 +348,7 @@
 				[fetchForApplicationsLoose setEntity:applicationEntityDescr];
 				NSPredicate *applicationTitlePredicateLoose;
 				applicationTitlePredicateLoose = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aNewPackage.munki_name];
-				
+                
 				[fetchForApplicationsLoose setPredicate:applicationTitlePredicateLoose];
 				
 				NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplicationsLoose error:nil];
@@ -367,15 +357,22 @@
 					NSLog(@"Assimilator found zero matching Applications for package.");
 				} else if (numFoundApplications == 1) {
 					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
+                    
+                    NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO];
+                    PackageMO *latestPackage = [[[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]] objectAtIndex:0];
+                    
 					if ([existingApplication hasCommonDescription]) {
 						if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
-							aNewPackage.munki_description = [[existingApplication.packages anyObject] munki_description];
+							aNewPackage.munki_description = [latestPackage munki_description];
 						}
 					}
 					[existingApplication addPackagesObject:aNewPackage];
 					if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
 						aNewPackage.munki_display_name = existingApplication.munki_display_name;
 					}
+                    if ([self.defaults boolForKey:@"UseExistingMinOSVersionForPackages"]) {
+                        aNewPackage.munki_minimum_os_version = [latestPackage munki_minimum_os_version];
+                    }
 					
 				} else {
 					NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");

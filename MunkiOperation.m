@@ -33,7 +33,7 @@
 
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args
 {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.command = cmd;
 		self.targetURL = target;
 		self.arguments = args;

@@ -2,14 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>itemsToCopyKeys</key>
-	<array>
-		<string>destination_path</string>
-		<string>group</string>
-		<string>mode</string>
-		<string>source_item</string>
-		<string>user</string>
-	</array>
+	<key>addPackageLastDir</key>
+	<string>/</string>
+	<key>CopyAppDescriptionToPackages</key>
+	<true/>
+	<key>CopyPkgsToRepo</key>
+	<true/>
+	<key>debug</key>
+	<true/>
+	<key>debugLogAllProperties</key>
+	<false/>
 	<key>installsKeys</key>
 	<array>
 		<string>md5checksum</string>
@@ -19,13 +21,28 @@
 		<string>path</string>
 		<string>type</string>
 	</array>
-	<key>receiptKeys</key>
+	<key>items_to_copyGroup</key>
+	<string>admin</string>
+	<key>items_to_copyMode</key>
+	<string>og-w</string>
+	<key>items_to_copyOwner</key>
+	<string>root</string>
+	<key>items_to_copyUseDefaults</key>
+	<true/>
+	<key>itemsToCopyKeys</key>
 	<array>
-		<string>filename</string>
-		<string>installed_size</string>
-		<string>packageid</string>
-		<string>version</string>
+		<string>destination_path</string>
+		<string>group</string>
+		<string>mode</string>
+		<string>source_item</string>
+		<string>user</string>
 	</array>
+	<key>makecatalogsPath</key>
+	<string>/usr/local/munki/makecatalogs</string>
+	<key>makepkginfoPath</key>
+	<string>/usr/local/munki/makepkginfo</string>
+	<key>openRepositoryLastDir</key>
+	<string>/</string>
 	<key>pkginfoKeys</key>
 	<array>
 		<string>name</string>
@@ -45,39 +62,24 @@
 		<string>forced_install</string>
 		<string>forced_uninstall</string>
 	</array>
-	<key>makepkginfoPath</key>
-	<string>/usr/local/munki/makepkginfo</string>
-	<key>debug</key>
-	<true/>
-	<key>debugLogAllProperties</key>
-	<false/>
-	<key>makecatalogsPath</key>
-	<string>/usr/local/munki/makecatalogs</string>
-	<key>openRepositoryLastDir</key>
-	<string>/</string>
-	<key>addPackageLastDir</key>
-	<string>/</string>
-	<key>UpdatePkginfosOnSave</key>
+	<key>receiptKeys</key>
+	<array>
+		<string>filename</string>
+		<string>installed_size</string>
+		<string>packageid</string>
+		<string>version</string>
+	</array>
+	<key>UpdateCatalogsOnSave</key>
 	<true/>
 	<key>UpdateManifestsOnSave</key>
 	<true/>
-	<key>UpdateCatalogsOnSave</key>
-	<true/>
-	<key>CopyAppDescriptionToPackages</key>
-	<true/>
-	<key>CopyPkgsToRepo</key>
+	<key>UpdatePkginfosOnSave</key>
 	<true/>
 	<key>UseExistingDescriptionForPackages</key>
 	<true/>
 	<key>UseExistingDisplayNameForPackages</key>
 	<true/>
-	<key>items_to_copyUseDefaults</key>
+	<key>UseExistingMinOSVersionForPackages</key>
 	<true/>
-	<key>items_to_copyOwner</key>
-	<string>root</string>
-	<key>items_to_copyGroup</key>
-	<string>admin</string>
-	<key>items_to_copyMode</key>
-	<string>og-w</string>
 </dict>
 </plist>

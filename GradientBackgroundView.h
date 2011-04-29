@@ -22,7 +22,7 @@
 @property BOOL drawTopLine;
 @property BOOL drawLeftLine;
 @property BOOL drawRightLine;
-@property (retain) NSGradient *fillGradient;
-@property (retain) NSColor *lineColor;
+@property (nonatomic, copy) NSGradient *fillGradient;
+@property (nonatomic, copy) NSColor *lineColor;
 
 @end
