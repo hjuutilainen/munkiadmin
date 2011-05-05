@@ -147,16 +147,22 @@
 
 @interface _ManifestMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSObject*)primitiveOriginalManifest;
 - (void)setPrimitiveOriginalManifest:(NSObject*)value;
+
+
 
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
 
 
+
+
 - (NSObject*)primitiveManifestURL;
 - (void)setPrimitiveManifestURL:(NSObject*)value;
+
 
 
 

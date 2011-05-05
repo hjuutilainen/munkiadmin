@@ -68,24 +68,34 @@
 
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSString*)primitiveMunki_group;
 - (void)setPrimitiveMunki_group:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_destination_path;
 - (void)setPrimitiveMunki_destination_path:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_mode;
 - (void)setPrimitiveMunki_mode:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_user;
 - (void)setPrimitiveMunki_user:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_source_item;
 - (void)setPrimitiveMunki_source_item:(NSString*)value;
+
 
 
 

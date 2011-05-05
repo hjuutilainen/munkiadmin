@@ -44,11 +44,13 @@
 
 @interface _ApplicationProxyMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveIsEnabled;
 - (void)setPrimitiveIsEnabled:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledValue;
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_;
+
 
 
 

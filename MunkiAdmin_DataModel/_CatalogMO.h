@@ -78,8 +78,10 @@
 
 @interface _CatalogMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
+
 
 
 

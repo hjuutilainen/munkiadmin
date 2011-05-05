@@ -285,11 +285,14 @@
 
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveMunki_uninstallable;
 - (void)setPrimitiveMunki_uninstallable:(NSNumber*)value;
 
 - (BOOL)primitiveMunki_uninstallableValue;
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
+
+
 
 
 - (NSNumber*)primitiveMunki_installer_item_size;
@@ -299,8 +302,12 @@
 - (void)setPrimitiveMunki_installer_item_sizeValue:(long long)value_;
 
 
+
+
 - (NSString*)primitiveMunki_display_name;
 - (void)setPrimitiveMunki_display_name:(NSString*)value;
+
+
 
 
 - (NSNumber*)primitiveMunki_forced_uninstall;
@@ -310,20 +317,30 @@
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
 
 
+
+
 - (NSObject*)primitivePackageInfoURL;
 - (void)setPrimitivePackageInfoURL:(NSObject*)value;
+
+
 
 
 - (NSString*)primitiveMunki_installer_item_location;
 - (void)setPrimitiveMunki_installer_item_location:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_installer_type;
 - (void)setPrimitiveMunki_installer_type:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_receipts;
 - (void)setPrimitiveMunki_receipts:(NSString*)value;
+
+
 
 
 - (NSNumber*)primitiveMunki_installed_size;
@@ -333,20 +350,30 @@
 - (void)setPrimitiveMunki_installed_sizeValue:(long long)value_;
 
 
+
+
 - (NSString*)primitiveMunki_package_path;
 - (void)setPrimitiveMunki_package_path:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_installer_item_hash;
 - (void)setPrimitiveMunki_installer_item_hash:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_uninstall_method;
 - (void)setPrimitiveMunki_uninstall_method:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(NSString*)value;
+
+
 
 
 - (NSNumber*)primitiveMunki_forced_install;
@@ -356,6 +383,8 @@
 - (void)setPrimitiveMunki_forced_installValue:(BOOL)value_;
 
 
+
+
 - (NSNumber*)primitiveMunki_autoremove;
 - (void)setPrimitiveMunki_autoremove:(NSNumber*)value;
 
@@ -363,24 +392,35 @@
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_;
 
 
+
+
 - (NSString*)primitiveMunki_description;
 - (void)setPrimitiveMunki_description:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_minimum_os_version;
 - (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_name;
 - (void)setPrimitiveMunki_name:(NSString*)value;
+
+
 
 
 - (NSObject*)primitivePackageURL;
 - (void)setPrimitivePackageURL:(NSObject*)value;
 
 
+
+
 - (NSObject*)primitiveOriginalPkginfo;
 - (void)setPrimitiveOriginalPkginfo:(NSObject*)value;
+
 
 
 

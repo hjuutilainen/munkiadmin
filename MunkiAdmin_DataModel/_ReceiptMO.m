@@ -26,6 +26,17 @@
 	return (ReceiptMOID*)[super objectID];
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+	if ([key isEqualToString:@"munki_installed_sizeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_installed_size"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+
+	return keyPaths;
+}
+
 
 
 
@@ -50,6 +61,13 @@
 - (void)setPrimitiveMunki_installed_sizeValue:(long long)value_ {
 	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic munki_name;
+
 
 
 

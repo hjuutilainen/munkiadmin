@@ -958,6 +958,25 @@
 		if (![sortedOriginalKeys isEqualToArray:sortedNewKeys]) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Key arrays differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
 			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:NO];
+            
+            NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
+            NSSet *newKeysSet = [NSSet setWithArray:sortedNewKeys];
+            
+            // Determine which items were removed
+            NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
+            [removedItems minusSet:newKeysSet];
+            
+            // Determine which items were added
+            NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
+            [addedItems minusSet:originalKeysSet];
+            
+            for (NSString *aKey in [removedItems allObjects]) {
+                NSLog(@"Removed key %@", aKey);
+            }
+            for (NSString *aKey in [addedItems allObjects]) {
+                NSLog(@"Added key %@", aKey);
+            }
+            
 		} else {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"No changes in key array %@. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
 			if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {

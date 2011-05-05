@@ -26,6 +26,25 @@
 	return (CatalogInfoMOID*)[super objectID];
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+	if ([key isEqualToString:@"isEnabledForManifestValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForManifest"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"isEnabledForPackageValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForPackage"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"originalIndexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+
+	return keyPaths;
+}
+
 
 
 

@@ -78,11 +78,14 @@
 
 @interface _CatalogInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveIsEnabledForManifest;
 - (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
+
+
 
 
 - (NSNumber*)primitiveIsEnabledForPackage;
@@ -92,11 +95,14 @@
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_;
 
 
+
+
 - (NSNumber*)primitiveOriginalIndex;
 - (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int)value_;
+
 
 
 

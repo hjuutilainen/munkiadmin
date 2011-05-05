@@ -26,10 +26,38 @@
 	return (InstallsItemMOID*)[super objectID];
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+
+	return keyPaths;
+}
+
+
+
+
+@dynamic munki_md5checksum;
+
+
+
+
+
+
+@dynamic munki_minosversion;
+
+
+
 
 
 
 @dynamic munki_CFBundleShortVersionString;
+
+
+
+
+
+
+@dynamic munki_CFBundleName;
 
 
 
@@ -44,20 +72,6 @@
 
 
 @dynamic munki_CFBundleIdentifier;
-
-
-
-
-
-
-@dynamic munki_md5checksum;
-
-
-
-
-
-
-@dynamic munki_CFBundleName;
 
 
 

@@ -11,6 +11,7 @@
 
 
 
+
 @interface ReceiptMOID : NSManagedObjectID {}
 @end
 
@@ -29,6 +30,12 @@
 - (void)setMunki_installed_sizeValue:(long long)value_;
 
 //- (BOOL)validateMunki_installed_size:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_name;
+
+//- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -65,6 +72,7 @@
 
 @interface _ReceiptMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveMunki_installed_size;
 - (void)setPrimitiveMunki_installed_size:(NSNumber*)value;
 
@@ -72,16 +80,29 @@
 - (void)setPrimitiveMunki_installed_sizeValue:(long long)value_;
 
 
+
+
+- (NSString*)primitiveMunki_name;
+- (void)setPrimitiveMunki_name:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_packageid;
 - (void)setPrimitiveMunki_packageid:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_filename;
 - (void)setPrimitiveMunki_filename:(NSString*)value;
+
 
 
 

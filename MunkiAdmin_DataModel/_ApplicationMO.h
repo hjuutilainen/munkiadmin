@@ -81,16 +81,22 @@
 
 @interface _ApplicationMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSString*)primitiveMunki_description;
 - (void)setPrimitiveMunki_description:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_display_name;
 - (void)setPrimitiveMunki_display_name:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveMunki_name;
 - (void)setPrimitiveMunki_name:(NSString*)value;
+
 
 
 

@@ -64,6 +64,7 @@
 
 @interface _StringObjectMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveOriginalIndex;
 - (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
@@ -71,12 +72,17 @@
 - (void)setPrimitiveOriginalIndexValue:(int)value_;
 
 
+
+
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
 
 
+
+
 - (NSString*)primitiveTypeString;
 - (void)setPrimitiveTypeString:(NSString*)value;
+
 
 
 

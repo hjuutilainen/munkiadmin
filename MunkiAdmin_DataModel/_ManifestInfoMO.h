@@ -61,6 +61,7 @@
 
 @interface _ManifestInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
+
 - (NSNumber*)primitiveIsEnabledForManifest;
 - (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
 
@@ -68,11 +69,14 @@
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
 
 
+
+
 - (NSNumber*)primitiveIsAvailableForEditing;
 - (void)setPrimitiveIsAvailableForEditing:(NSNumber*)value;
 
 - (BOOL)primitiveIsAvailableForEditingValue;
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_;
+
 
 
 

@@ -13,6 +13,7 @@
 
 
 
+
 @interface InstallsItemMOID : NSManagedObjectID {}
 @end
 
@@ -24,9 +25,27 @@
 
 
 
+@property (nonatomic, retain) NSString *munki_md5checksum;
+
+//- (BOOL)validateMunki_md5checksum:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_minosversion;
+
+//- (BOOL)validateMunki_minosversion:(id*)value_ error:(NSError**)error_;
+
+
+
 @property (nonatomic, retain) NSString *munki_CFBundleShortVersionString;
 
 //- (BOOL)validateMunki_CFBundleShortVersionString:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_CFBundleName;
+
+//- (BOOL)validateMunki_CFBundleName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -39,18 +58,6 @@
 @property (nonatomic, retain) NSString *munki_CFBundleIdentifier;
 
 //- (BOOL)validateMunki_CFBundleIdentifier:(id*)value_ error:(NSError**)error_;
-
-
-
-@property (nonatomic, retain) NSString *munki_md5checksum;
-
-//- (BOOL)validateMunki_md5checksum:(id*)value_ error:(NSError**)error_;
-
-
-
-@property (nonatomic, retain) NSString *munki_CFBundleName;
-
-//- (BOOL)validateMunki_CFBundleName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -80,28 +87,46 @@
 
 @interface _InstallsItemMO (CoreDataGeneratedPrimitiveAccessors)
 
+
+- (NSString*)primitiveMunki_md5checksum;
+- (void)setPrimitiveMunki_md5checksum:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_minosversion;
+- (void)setPrimitiveMunki_minosversion:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_CFBundleShortVersionString;
 - (void)setPrimitiveMunki_CFBundleShortVersionString:(NSString*)value;
 
 
-- (NSString*)primitiveMunki_path;
-- (void)setPrimitiveMunki_path:(NSString*)value;
-
-
-- (NSString*)primitiveMunki_CFBundleIdentifier;
-- (void)setPrimitiveMunki_CFBundleIdentifier:(NSString*)value;
-
-
-- (NSString*)primitiveMunki_md5checksum;
-- (void)setPrimitiveMunki_md5checksum:(NSString*)value;
 
 
 - (NSString*)primitiveMunki_CFBundleName;
 - (void)setPrimitiveMunki_CFBundleName:(NSString*)value;
 
 
+
+
+- (NSString*)primitiveMunki_path;
+- (void)setPrimitiveMunki_path:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_CFBundleIdentifier;
+- (void)setPrimitiveMunki_CFBundleIdentifier:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_type;
 - (void)setPrimitiveMunki_type:(NSString*)value;
+
 
 
 
