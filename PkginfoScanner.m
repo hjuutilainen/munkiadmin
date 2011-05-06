@@ -91,7 +91,8 @@
 	return self;
 }
 
-- (id)initWithURL:(NSURL *)src {
+- (id)initWithURL:(NSURL *)src
+{
 	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
 		self.sourceURL = src;
@@ -102,7 +103,8 @@
 	return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
 	[fileName release];
 	[currentJobDescription release];
 	[sourceURL release];
@@ -124,7 +126,8 @@
 }
 
 
--(void)main {
+-(void)main
+{
 	@try {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
@@ -357,19 +360,25 @@
 					NSLog(@"Assimilator found zero matching Applications for package.");
 				} else if (numFoundApplications == 1) {
 					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
+                    [existingApplication addPackagesObject:aNewPackage];
                     
+                    // Get the latest package for comparison
                     NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO];
                     PackageMO *latestPackage = [[[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]] objectAtIndex:0];
                     
+                    // If the existing matching packages have common description, use it with the new package
 					if ([existingApplication hasCommonDescription]) {
 						if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
 							aNewPackage.munki_description = [latestPackage munki_description];
 						}
 					}
-					[existingApplication addPackagesObject:aNewPackage];
+					
+                    // Set the display name
 					if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
 						aNewPackage.munki_display_name = existingApplication.munki_display_name;
 					}
+                    
+                    // Set the minimum OS version
                     if ([self.defaults boolForKey:@"UseExistingMinOSVersionForPackages"]) {
                         aNewPackage.munki_minimum_os_version = [latestPackage munki_minimum_os_version];
                     }

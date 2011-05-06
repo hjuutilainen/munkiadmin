@@ -113,7 +113,7 @@
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		//NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
 		NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %i objects from entity: %@", [allObjects count], [entDescr name]);
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", [allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
@@ -241,7 +241,7 @@
 - (void)awakeFromNib
 {	
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s: Setting up the app", _cmd);
+		NSLog(@"%@: Setting up the app", _cmd);
 	}
 	
 	// Configure segmented control
@@ -783,7 +783,7 @@
 		[fetchForApplications release];
 	}
 	else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %i results found for package search", numFoundPkgs);
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %lu results found for package search", numFoundPkgs);
 	}
 
 	[fetchForPackage release];
@@ -846,7 +846,7 @@
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFiles];
 		if (filesToAdd) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %i files to repository", [filesToAdd count]);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", [filesToAdd count]);
 			
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
@@ -870,7 +870,7 @@
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFiles];
 		if (filesToAdd) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %i installs items", [filesToAdd count]);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", [filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
 					MunkiOperation *theOp = [MunkiOperation installsItemFromURL:fileToAdd];
