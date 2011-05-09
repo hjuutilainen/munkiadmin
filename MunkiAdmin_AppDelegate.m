@@ -241,7 +241,7 @@
 - (void)awakeFromNib
 {	
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@: Setting up the app", _cmd);
+		NSLog(@"%s: Setting up the app", _cmd);
 	}
 	
 	// Configure segmented control
