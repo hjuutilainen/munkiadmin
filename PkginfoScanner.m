@@ -360,7 +360,6 @@
 					NSLog(@"Assimilator found zero matching Applications for package.");
 				} else if (numFoundApplications == 1) {
 					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
-                    [existingApplication addPackagesObject:aNewPackage];
                     
                     // Get the latest package for comparison
                     NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO];
@@ -382,6 +381,8 @@
                     if ([self.defaults boolForKey:@"UseExistingMinOSVersionForPackages"]) {
                         aNewPackage.munki_minimum_os_version = [latestPackage munki_minimum_os_version];
                     }
+                    
+                    [existingApplication addPackagesObject:aNewPackage];
 					
 				} else {
 					NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
