@@ -9,8 +9,8 @@
 @class StringObjectMO;
 @class CatalogMO;
 @class InstallsItemMO;
-@class StringObjectMO;
 @class ReceiptMO;
+@class StringObjectMO;
 @class ItemToCopyMO;
 @class CatalogInfoMO;
 
@@ -18,7 +18,12 @@
 
 
 
+
 @class NSObject;
+
+
+
+
 
 
 
@@ -46,13 +51,9 @@
 
 
 
-@property (nonatomic, retain) NSNumber *munki_uninstallable;
+@property (nonatomic, retain) NSString *munki_postinstall_script;
 
-@property BOOL munki_uninstallableValue;
-- (BOOL)munki_uninstallableValue;
-- (void)setMunki_uninstallableValue:(BOOL)value_;
-
-//- (BOOL)validateMunki_uninstallable:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMunki_postinstall_script:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -63,6 +64,16 @@
 - (void)setMunki_installer_item_sizeValue:(long long)value_;
 
 //- (BOOL)validateMunki_installer_item_size:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSNumber *munki_uninstallable;
+
+@property BOOL munki_uninstallableValue;
+- (BOOL)munki_uninstallableValue;
+- (void)setMunki_uninstallableValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_uninstallable:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -88,6 +99,12 @@
 
 
 
+@property (nonatomic, retain) NSString *munki_preinstall_script;
+
+//- (BOOL)validateMunki_preinstall_script:(id*)value_ error:(NSError**)error_;
+
+
+
 @property (nonatomic, retain) NSString *munki_installer_item_location;
 
 //- (BOOL)validateMunki_installer_item_location:(id*)value_ error:(NSError**)error_;
@@ -103,6 +120,22 @@
 @property (nonatomic, retain) NSString *munki_receipts;
 
 //- (BOOL)validateMunki_receipts:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_uninstall_script;
+
+//- (BOOL)validateMunki_uninstall_script:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSNumber *munki_unattended_uninstall;
+
+@property BOOL munki_unattended_uninstallValue;
+- (BOOL)munki_unattended_uninstallValue;
+- (void)setMunki_unattended_uninstallValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_unattended_uninstall:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -134,12 +167,6 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_version;
-
-//- (BOOL)validateMunki_version:(id*)value_ error:(NSError**)error_;
-
-
-
 @property (nonatomic, retain) NSNumber *munki_forced_install;
 
 @property BOOL munki_forced_installValue;
@@ -147,6 +174,12 @@
 - (void)setMunki_forced_installValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_forced_install:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSString *munki_version;
+
+//- (BOOL)validateMunki_version:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -160,9 +193,9 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_description;
+@property (nonatomic, retain) NSString *munki_name;
 
-//- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -172,21 +205,31 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_name;
+@property (nonatomic, retain) NSString *munki_description;
 
-//- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, retain) NSObject *packageURL;
+@property (nonatomic, retain) NSNumber *munki_unattended_install;
 
-//- (BOOL)validatePackageURL:(id*)value_ error:(NSError**)error_;
+@property BOOL munki_unattended_installValue;
+- (BOOL)munki_unattended_installValue;
+- (void)setMunki_unattended_installValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_unattended_install:(id*)value_ error:(NSError**)error_;
 
 
 
 @property (nonatomic, retain) NSObject *originalPkginfo;
 
 //- (BOOL)validateOriginalPkginfo:(id*)value_ error:(NSError**)error_;
+
+
+
+@property (nonatomic, retain) NSObject *packageURL;
+
+//- (BOOL)validatePackageURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -216,13 +259,13 @@
 
 
 
-@property (nonatomic, retain) NSSet* requirements;
-- (NSMutableSet*)requirementsSet;
-
-
-
 @property (nonatomic, retain) NSSet* receipts;
 - (NSMutableSet*)receiptsSet;
+
+
+
+@property (nonatomic, retain) NSSet* requirements;
+- (NSMutableSet*)requirementsSet;
 
 
 
@@ -261,15 +304,15 @@
 - (void)addInstallsItemsObject:(InstallsItemMO*)value_;
 - (void)removeInstallsItemsObject:(InstallsItemMO*)value_;
 
-- (void)addRequirements:(NSSet*)value_;
-- (void)removeRequirements:(NSSet*)value_;
-- (void)addRequirementsObject:(StringObjectMO*)value_;
-- (void)removeRequirementsObject:(StringObjectMO*)value_;
-
 - (void)addReceipts:(NSSet*)value_;
 - (void)removeReceipts:(NSSet*)value_;
 - (void)addReceiptsObject:(ReceiptMO*)value_;
 - (void)removeReceiptsObject:(ReceiptMO*)value_;
+
+- (void)addRequirements:(NSSet*)value_;
+- (void)removeRequirements:(NSSet*)value_;
+- (void)addRequirementsObject:(StringObjectMO*)value_;
+- (void)removeRequirementsObject:(StringObjectMO*)value_;
 
 - (void)addItemsToCopy:(NSSet*)value_;
 - (void)removeItemsToCopy:(NSSet*)value_;
@@ -286,11 +329,8 @@
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveMunki_uninstallable;
-- (void)setPrimitiveMunki_uninstallable:(NSNumber*)value;
-
-- (BOOL)primitiveMunki_uninstallableValue;
-- (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
+- (NSString*)primitiveMunki_postinstall_script;
+- (void)setPrimitiveMunki_postinstall_script:(NSString*)value;
 
 
 
@@ -300,6 +340,15 @@
 
 - (long long)primitiveMunki_installer_item_sizeValue;
 - (void)setPrimitiveMunki_installer_item_sizeValue:(long long)value_;
+
+
+
+
+- (NSNumber*)primitiveMunki_uninstallable;
+- (void)setPrimitiveMunki_uninstallable:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_uninstallableValue;
+- (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
 
 
 
@@ -325,6 +374,12 @@
 
 
 
+- (NSString*)primitiveMunki_preinstall_script;
+- (void)setPrimitiveMunki_preinstall_script:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_installer_item_location;
 - (void)setPrimitiveMunki_installer_item_location:(NSString*)value;
 
@@ -339,6 +394,21 @@
 
 - (NSString*)primitiveMunki_receipts;
 - (void)setPrimitiveMunki_receipts:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_uninstall_script;
+- (void)setPrimitiveMunki_uninstall_script:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveMunki_unattended_uninstall;
+- (void)setPrimitiveMunki_unattended_uninstall:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_unattended_uninstallValue;
+- (void)setPrimitiveMunki_unattended_uninstallValue:(BOOL)value_;
 
 
 
@@ -370,17 +440,17 @@
 
 
 
-- (NSString*)primitiveMunki_version;
-- (void)setPrimitiveMunki_version:(NSString*)value;
-
-
-
-
 - (NSNumber*)primitiveMunki_forced_install;
 - (void)setPrimitiveMunki_forced_install:(NSNumber*)value;
 
 - (BOOL)primitiveMunki_forced_installValue;
 - (void)setPrimitiveMunki_forced_installValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveMunki_version;
+- (void)setPrimitiveMunki_version:(NSString*)value;
 
 
 
@@ -394,8 +464,8 @@
 
 
 
-- (NSString*)primitiveMunki_description;
-- (void)setPrimitiveMunki_description:(NSString*)value;
+- (NSString*)primitiveMunki_name;
+- (void)setPrimitiveMunki_name:(NSString*)value;
 
 
 
@@ -406,20 +476,29 @@
 
 
 
-- (NSString*)primitiveMunki_name;
-- (void)setPrimitiveMunki_name:(NSString*)value;
+- (NSString*)primitiveMunki_description;
+- (void)setPrimitiveMunki_description:(NSString*)value;
 
 
 
 
-- (NSObject*)primitivePackageURL;
-- (void)setPrimitivePackageURL:(NSObject*)value;
+- (NSNumber*)primitiveMunki_unattended_install;
+- (void)setPrimitiveMunki_unattended_install:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_unattended_installValue;
+- (void)setPrimitiveMunki_unattended_installValue:(BOOL)value_;
 
 
 
 
 - (NSObject*)primitiveOriginalPkginfo;
 - (void)setPrimitiveOriginalPkginfo:(NSObject*)value;
+
+
+
+
+- (NSObject*)primitivePackageURL;
+- (void)setPrimitivePackageURL:(NSObject*)value;
 
 
 
@@ -450,13 +529,13 @@
 
 
 
-- (NSMutableSet*)primitiveRequirements;
-- (void)setPrimitiveRequirements:(NSMutableSet*)value;
-
-
-
 - (NSMutableSet*)primitiveReceipts;
 - (void)setPrimitiveReceipts:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveRequirements;
+- (void)setPrimitiveRequirements:(NSMutableSet*)value;
 
 
 

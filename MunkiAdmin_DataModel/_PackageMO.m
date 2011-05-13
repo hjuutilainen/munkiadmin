@@ -29,16 +29,20 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"munki_uninstallableValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"munki_uninstallable"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
 	if ([key isEqualToString:@"munki_installer_item_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installer_item_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
+	if ([key isEqualToString:@"munki_uninstallableValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_uninstallable"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"munki_forced_uninstallValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_forced_uninstall"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"munki_unattended_uninstallValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_unattended_uninstall"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 	if ([key isEqualToString:@"munki_installed_sizeValue"]) {
@@ -53,6 +57,10 @@
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_autoremove"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
+	if ([key isEqualToString:@"munki_unattended_installValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_unattended_install"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 
 	return keyPaths;
 }
@@ -60,27 +68,8 @@
 
 
 
-@dynamic munki_uninstallable;
+@dynamic munki_postinstall_script;
 
-
-
-- (BOOL)munki_uninstallableValue {
-	NSNumber *result = [self munki_uninstallable];
-	return [result boolValue];
-}
-
-- (void)setMunki_uninstallableValue:(BOOL)value_ {
-	[self setMunki_uninstallable:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitiveMunki_uninstallableValue {
-	NSNumber *result = [self primitiveMunki_uninstallable];
-	return [result boolValue];
-}
-
-- (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_ {
-	[self setPrimitiveMunki_uninstallable:[NSNumber numberWithBool:value_]];
-}
 
 
 
@@ -106,6 +95,32 @@
 
 - (void)setPrimitiveMunki_installer_item_sizeValue:(long long)value_ {
 	[self setPrimitiveMunki_installer_item_size:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic munki_uninstallable;
+
+
+
+- (BOOL)munki_uninstallableValue {
+	NSNumber *result = [self munki_uninstallable];
+	return [result boolValue];
+}
+
+- (void)setMunki_uninstallableValue:(BOOL)value_ {
+	[self setMunki_uninstallable:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_uninstallableValue {
+	NSNumber *result = [self primitiveMunki_uninstallable];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_ {
+	[self setPrimitiveMunki_uninstallable:[NSNumber numberWithBool:value_]];
 }
 
 
@@ -152,6 +167,13 @@
 
 
 
+@dynamic munki_preinstall_script;
+
+
+
+
+
+
 @dynamic munki_installer_item_location;
 
 
@@ -168,6 +190,39 @@
 
 @dynamic munki_receipts;
 
+
+
+
+
+
+@dynamic munki_uninstall_script;
+
+
+
+
+
+
+@dynamic munki_unattended_uninstall;
+
+
+
+- (BOOL)munki_unattended_uninstallValue {
+	NSNumber *result = [self munki_unattended_uninstall];
+	return [result boolValue];
+}
+
+- (void)setMunki_unattended_uninstallValue:(BOOL)value_ {
+	[self setMunki_unattended_uninstall:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_unattended_uninstallValue {
+	NSNumber *result = [self primitiveMunki_unattended_uninstall];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_unattended_uninstallValue:(BOOL)value_ {
+	[self setPrimitiveMunki_unattended_uninstall:[NSNumber numberWithBool:value_]];
+}
 
 
 
@@ -220,13 +275,6 @@
 
 
 
-@dynamic munki_version;
-
-
-
-
-
-
 @dynamic munki_forced_install;
 
 
@@ -248,6 +296,13 @@
 - (void)setPrimitiveMunki_forced_installValue:(BOOL)value_ {
 	[self setPrimitiveMunki_forced_install:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic munki_version;
+
 
 
 
@@ -279,7 +334,7 @@
 
 
 
-@dynamic munki_description;
+@dynamic munki_name;
 
 
 
@@ -293,7 +348,40 @@
 
 
 
-@dynamic munki_name;
+@dynamic munki_description;
+
+
+
+
+
+
+@dynamic munki_unattended_install;
+
+
+
+- (BOOL)munki_unattended_installValue {
+	NSNumber *result = [self munki_unattended_install];
+	return [result boolValue];
+}
+
+- (void)setMunki_unattended_installValue:(BOOL)value_ {
+	[self setMunki_unattended_install:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_unattended_installValue {
+	NSNumber *result = [self primitiveMunki_unattended_install];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_unattended_installValue:(BOOL)value_ {
+	[self setPrimitiveMunki_unattended_install:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic originalPkginfo;
 
 
 
@@ -301,13 +389,6 @@
 
 
 @dynamic packageURL;
-
-
-
-
-
-
-@dynamic originalPkginfo;
 
 
 
@@ -362,17 +443,6 @@
 }
 	
 
-@dynamic requirements;
-
-	
-- (NSMutableSet*)requirementsSet {
-	[self willAccessValueForKey:@"requirements"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"requirements"];
-	[self didAccessValueForKey:@"requirements"];
-	return result;
-}
-	
-
 @dynamic receipts;
 
 	
@@ -380,6 +450,17 @@
 	[self willAccessValueForKey:@"receipts"];
 	NSMutableSet *result = [self mutableSetValueForKey:@"receipts"];
 	[self didAccessValueForKey:@"receipts"];
+	return result;
+}
+	
+
+@dynamic requirements;
+
+	
+- (NSMutableSet*)requirementsSet {
+	[self willAccessValueForKey:@"requirements"];
+	NSMutableSet *result = [self mutableSetValueForKey:@"requirements"];
+	[self didAccessValueForKey:@"requirements"];
 	return result;
 }
 	
