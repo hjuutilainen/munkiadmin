@@ -65,7 +65,7 @@
 - (IBAction)openPreferencesAction:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
 	[preferencesController showWindow:self];
@@ -241,7 +241,7 @@
 - (void)awakeFromNib
 {	
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s: Setting up the app", _cmd);
+		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
 	
 	// Configure segmented control
@@ -303,7 +303,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	NSURL *tempURL = [self chooseRepositoryFolder];
 	if (tempURL != nil)
@@ -377,7 +377,7 @@
 - (void)startOperationTimer
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	NSTimer *operationTimer;
@@ -462,7 +462,7 @@
 - (void)deleteSelectedManifests
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	NSArray *selectedManifests = [manifestsArrayController selectedObjects];
@@ -500,7 +500,7 @@
 - (void)deleteSelectedPackages
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
@@ -547,7 +547,7 @@
 - (void)createNewManifest
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	// Configure the dialog
@@ -624,7 +624,7 @@
 - (void)createNewCatalog
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	// Configure the dialog
@@ -715,7 +715,7 @@
 - (IBAction)createNewRepository:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	NSURL *newRepoURL = [self showSavePanel];
@@ -840,7 +840,7 @@
 - (IBAction)addNewPackage:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	if ([self makepkginfoInstalled]) {
@@ -865,7 +865,7 @@
 - (IBAction)addNewInstallsItem:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFiles];
@@ -906,7 +906,7 @@
 - (void)updateCatalogs
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	// Run makecatalogs against the current repo
@@ -1024,7 +1024,7 @@
 - (IBAction)writeChangesToDisk:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	[self writePackagePropertyListsToDisk];
 	[self writeManifestPropertyListsToDisk];
@@ -1038,7 +1038,7 @@
 - (IBAction)openRepository:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	NSURL *tempURL = [self chooseRepositoryFolder];
 	if (tempURL != nil) {
@@ -1049,7 +1049,7 @@
 - (IBAction)reloadRepositoryAction:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%s", _cmd);
+		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
 	[self selectRepoAtURL:self.repoURL];
@@ -1579,7 +1579,7 @@
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSAssert(NO, @"Managed object model is nil");
-        NSLog(@"%@:%s No model to generate a store from", [self class], _cmd);
+        NSLog(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
         return nil;
     }
 
@@ -1655,7 +1655,7 @@
     NSError *error = nil;
     
     if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%s unable to commit editing before saving", [self class], _cmd);
+        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
     }
 
     if (![[self managedObjectContext] save:&error]) {
@@ -1691,7 +1691,7 @@
     if (!managedObjectContext) return NSTerminateNow;
 
     if (![managedObjectContext commitEditing]) {
-        NSLog(@"%@:%s unable to commit editing to terminate", [self class], _cmd);
+        NSLog(@"%@:%@ unable to commit editing to terminate", [self class], NSStringFromSelector(_cmd));
         return NSTerminateCancel;
     }
 
