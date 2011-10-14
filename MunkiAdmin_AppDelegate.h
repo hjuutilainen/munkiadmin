@@ -46,7 +46,7 @@
 	NSView *catalogsDetailView;
 	NSView *packagesDetailView;
 	NSView *manifestsDetailView;
-	NSTextField *newManifestCustomView;
+	NSTextField *createNewManifestCustomView;
 	
 	// The current master and detail view
 	// that we are displaying
@@ -101,10 +101,12 @@
 	NSArrayController *managedInstallsArrayController, *managedUpdatesArrayController, *managedUninstallsArrayController, *optionalInstallsArrayController;
     NSArrayController *installsItemsArrayController;
     NSArrayController *itemsToCopyArrayController;
+    NSArrayController *receiptsArrayController;
 }
 
 @property (assign) IBOutlet NSArrayController *installsItemsArrayController;
 @property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
+@property (assign) IBOutlet NSArrayController *receiptsArrayController;
 
 # pragma mark -
 # pragma mark Variable declarations
@@ -139,7 +141,7 @@
 @property (nonatomic, retain) IBOutlet NSWindow *addItemsWindow;
 @property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
 @property (nonatomic, retain) IBOutlet NSTabView *mainTabView;
-@property (nonatomic, retain) IBOutlet NSTextField *newManifestCustomView;
+@property (nonatomic, retain) IBOutlet NSTextField *createNewManifestCustomView;
 @property (nonatomic, retain) IBOutlet NSView *detailViewPlaceHolder;
 @property (nonatomic, retain) IBOutlet NSView *sourceViewPlaceHolder;
 @property (nonatomic, retain) IBOutlet NSView *catalogsListView;

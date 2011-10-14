@@ -25,8 +25,8 @@
         self.drawLeftLine = NO;
         self.drawRightLine = NO;
         self.lineColor = [NSColor grayColor];
-		self.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedRed:0.714 green:0.753 blue:0.812 alpha:1.0] 
-													  endingColor:[NSColor colorWithCalibratedRed:0.796 green:0.824 blue:0.867 alpha:1.0]];
+		self.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedRed:0.714 green:0.753 blue:0.812 alpha:1.0] 
+													  endingColor:[NSColor colorWithCalibratedRed:0.796 green:0.824 blue:0.867 alpha:1.0]] autorelease];
     }
     return self;
 }

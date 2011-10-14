@@ -19,7 +19,9 @@
 
 
 
+
 @property (nonatomic, retain) NSNumber *isEnabled;
+
 
 @property BOOL isEnabledValue;
 - (BOOL)isEnabledValue;
@@ -30,7 +32,9 @@
 
 
 
+
 @property (nonatomic, retain) ApplicationMO* parentApplication;
+
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 
 

@@ -22,7 +22,9 @@
 
 
 
+
 @property (nonatomic, retain) NSNumber *originalIndex;
+
 
 @property int originalIndexValue;
 - (int)originalIndexValue;
@@ -32,25 +34,33 @@
 
 
 
+
 @property (nonatomic, retain) NSString *title;
+
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) NSString *typeString;
+
 
 //- (BOOL)validateTypeString:(id*)value_ error:(NSError**)error_;
 
 
 
 
+
 @property (nonatomic, retain) PackageMO* requiresReference;
+
 //- (BOOL)validateRequiresReference:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) PackageMO* updateForReference;
+
 //- (BOOL)validateUpdateForReference:(id*)value_ error:(NSError**)error_;
 
 

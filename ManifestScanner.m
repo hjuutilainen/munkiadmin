@@ -142,7 +142,6 @@
 				}
 			}];
 			
-            
 			// Parse manifests managed_installs array
 			NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
 			NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
@@ -208,7 +207,7 @@
 			}];
 			
 			
-			
+            
 			// Parse manifests included_manifests array
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
 			

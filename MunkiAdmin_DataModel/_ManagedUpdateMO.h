@@ -19,7 +19,9 @@
 
 
 
+
 @property (nonatomic, retain) ManifestMO* manifest;
+
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 

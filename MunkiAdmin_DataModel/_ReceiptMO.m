@@ -40,6 +40,13 @@
 
 
 
+@dynamic munki_filename;
+
+
+
+
+
+
 @dynamic munki_installed_size;
 
 
@@ -81,13 +88,6 @@
 
 
 @dynamic munki_version;
-
-
-
-
-
-
-@dynamic munki_filename;
 
 
 

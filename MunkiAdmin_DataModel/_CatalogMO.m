@@ -48,19 +48,8 @@
 	
 - (NSMutableSet*)catalogInfosSet {
 	[self willAccessValueForKey:@"catalogInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"catalogInfos"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogInfos"];
 	[self didAccessValueForKey:@"catalogInfos"];
-	return result;
-}
-	
-
-@dynamic packages;
-
-	
-- (NSMutableSet*)packagesSet {
-	[self willAccessValueForKey:@"packages"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"packages"];
-	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 	
@@ -70,7 +59,7 @@
 	
 - (NSMutableSet*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
 	[self didAccessValueForKey:@"manifests"];
 	return result;
 }
@@ -81,8 +70,19 @@
 	
 - (NSMutableSet*)packageInfosSet {
 	[self willAccessValueForKey:@"packageInfos"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"packageInfos"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packageInfos"];
 	[self didAccessValueForKey:@"packageInfos"];
+	return result;
+}
+	
+
+@dynamic packages;
+
+	
+- (NSMutableSet*)packagesSet {
+	[self willAccessValueForKey:@"packages"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 	

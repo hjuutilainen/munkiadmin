@@ -21,17 +21,9 @@
 
 
 
-@property (nonatomic, retain) NSNumber *isEnabledForManifest;
-
-@property BOOL isEnabledForManifestValue;
-- (BOOL)isEnabledForManifestValue;
-- (void)setIsEnabledForManifestValue:(BOOL)value_;
-
-//- (BOOL)validateIsEnabledForManifest:(id*)value_ error:(NSError**)error_;
-
-
 
 @property (nonatomic, retain) NSNumber *isAvailableForEditing;
+
 
 @property BOOL isAvailableForEditingValue;
 - (BOOL)isAvailableForEditingValue;
@@ -42,12 +34,28 @@
 
 
 
+@property (nonatomic, retain) NSNumber *isEnabledForManifest;
+
+
+@property BOOL isEnabledForManifestValue;
+- (BOOL)isEnabledForManifestValue;
+- (void)setIsEnabledForManifestValue:(BOOL)value_;
+
+//- (BOOL)validateIsEnabledForManifest:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, retain) ManifestMO* manifest;
+
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) ManifestMO* parentManifest;
+
 //- (BOOL)validateParentManifest:(id*)value_ error:(NSError**)error_;
 
 
@@ -62,20 +70,20 @@
 @interface _ManifestInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveIsEnabledForManifest;
-- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
-
-- (BOOL)primitiveIsEnabledForManifestValue;
-- (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
-
-
-
-
 - (NSNumber*)primitiveIsAvailableForEditing;
 - (void)setPrimitiveIsAvailableForEditing:(NSNumber*)value;
 
 - (BOOL)primitiveIsAvailableForEditingValue;
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveIsEnabledForManifest;
+- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
+
+- (BOOL)primitiveIsEnabledForManifestValue;
+- (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
 
 
 

@@ -13,6 +13,7 @@
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
 @synthesize itemsToCopyArrayController;
+@synthesize receiptsArrayController;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -32,7 +33,7 @@
 @synthesize mainSplitView;
 @synthesize sourceViewPlaceHolder;
 @synthesize detailViewPlaceHolder;
-@synthesize newManifestCustomView;
+@synthesize createNewManifestCustomView;
 @synthesize applicationsDetailView;
 @synthesize applicationsListView;
 @synthesize applicationTableView;
@@ -297,6 +298,10 @@
     NSSortDescriptor *sortItemsToCopyByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES];
     NSSortDescriptor *sortItemsToCopyBySource = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES];
     [itemsToCopyArrayController setSortDescriptors:[NSArray arrayWithObjects:sortItemsToCopyByDestPath, sortItemsToCopyBySource, nil]];
+    
+    NSSortDescriptor *sortReceiptsByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES];
+    NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
+    [receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
 	
 }
 
@@ -561,11 +566,11 @@
 	//[theIcon setScalesWhenResized:NO];
 	//[alert setIcon:theIcon];
     [alert setShowsSuppressionButton:NO];
-    [alert setAccessoryView:newManifestCustomView];
+    [alert setAccessoryView:createNewManifestCustomView];
 	
 	// Make the accessory view first responder
 	[alert layout];
-	[[alert window] makeFirstResponder:newManifestCustomView];
+	[[alert window] makeFirstResponder:createNewManifestCustomView];
 	
 	// Display the dialog and act accordingly
     NSInteger result = [alert runModal];
@@ -573,7 +578,7 @@
 		NSManagedObjectContext *moc = [self managedObjectContext];
         ManifestMO *manifest;
 		manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-		manifest.title = [newManifestCustomView stringValue];
+		manifest.title = [createNewManifestCustomView stringValue];
 		manifest.manifestURL = [self.manifestsURL URLByAppendingPathComponent:manifest.title];
 		
 		for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
@@ -1068,7 +1073,7 @@
 		NSAlert *theAlert = [NSAlert alertWithError:dirReadError];
 		[theAlert runModal];
 	} else {
-		BOOL isRepo;
+		BOOL isRepo = NO;
 		for (NSString *repoItem in self.defaultRepoContents) {
 			if (![selectedDirContents containsObject:repoItem]) {
 				isRepo = NO;

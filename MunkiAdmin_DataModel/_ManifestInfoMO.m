@@ -29,43 +29,17 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"isEnabledForManifestValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForManifest"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
 	if ([key isEqualToString:@"isAvailableForEditingValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isAvailableForEditing"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"isEnabledForManifestValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic isEnabledForManifest;
-
-
-
-- (BOOL)isEnabledForManifestValue {
-	NSNumber *result = [self isEnabledForManifest];
-	return [result boolValue];
-}
-
-- (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitiveIsEnabledForManifestValue {
-	NSNumber *result = [self primitiveIsEnabledForManifest];
-	return [result boolValue];
-}
-
-- (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
-}
-
 
 
 
@@ -90,6 +64,32 @@
 
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_ {
 	[self setPrimitiveIsAvailableForEditing:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic isEnabledForManifest;
+
+
+
+- (BOOL)isEnabledForManifestValue {
+	NSNumber *result = [self isEnabledForManifest];
+	return [result boolValue];
+}
+
+- (void)setIsEnabledForManifestValue:(BOOL)value_ {
+	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsEnabledForManifestValue {
+	NSNumber *result = [self primitiveIsEnabledForManifest];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
+	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
 }
 
 

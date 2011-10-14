@@ -87,7 +87,9 @@
 		newArguments = [NSArray arrayWithObject:[self.targetURL relativePath]];
 	} else if ([self.command isEqualToString:@"installsitem"]) {
 		newArguments = [NSArray arrayWithObjects:@"--file", [self.targetURL relativePath], nil];
-	}
+	} else {
+        return nil;
+    }
 	
 	NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
 	[makepkginfoTask setLaunchPath:launchPath];

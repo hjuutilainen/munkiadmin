@@ -4,9 +4,9 @@
 #import <CoreData/CoreData.h>
 
 
+@class CatalogMO;
 @class ManifestMO;
 @class PackageMO;
-@class CatalogMO;
 
 
 
@@ -23,7 +23,9 @@
 
 
 
+
 @property (nonatomic, retain) NSNumber *isEnabledForManifest;
+
 
 @property BOOL isEnabledForManifestValue;
 - (BOOL)isEnabledForManifestValue;
@@ -33,7 +35,9 @@
 
 
 
+
 @property (nonatomic, retain) NSNumber *isEnabledForPackage;
+
 
 @property BOOL isEnabledForPackageValue;
 - (BOOL)isEnabledForPackageValue;
@@ -43,7 +47,9 @@
 
 
 
+
 @property (nonatomic, retain) NSNumber *originalIndex;
+
 
 @property int originalIndexValue;
 - (int)originalIndexValue;
@@ -54,18 +60,24 @@
 
 
 
+
+@property (nonatomic, retain) CatalogMO* catalog;
+
+//- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) ManifestMO* manifest;
+
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) PackageMO* package;
+
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
-
-
-
-@property (nonatomic, retain) CatalogMO* catalog;
-//- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -107,6 +119,11 @@
 
 
 
+- (CatalogMO*)primitiveCatalog;
+- (void)setPrimitiveCatalog:(CatalogMO*)value;
+
+
+
 - (ManifestMO*)primitiveManifest;
 - (void)setPrimitiveManifest:(ManifestMO*)value;
 
@@ -114,11 +131,6 @@
 
 - (PackageMO*)primitivePackage;
 - (void)setPrimitivePackage:(PackageMO*)value;
-
-
-
-- (CatalogMO*)primitiveCatalog;
-- (void)setPrimitiveCatalog:(CatalogMO*)value;
 
 
 @end

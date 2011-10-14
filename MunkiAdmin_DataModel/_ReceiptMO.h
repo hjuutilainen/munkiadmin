@@ -23,7 +23,17 @@
 
 
 
+
+@property (nonatomic, retain) NSString *munki_filename;
+
+
+//- (BOOL)validateMunki_filename:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSNumber *munki_installed_size;
+
 
 @property long long munki_installed_sizeValue;
 - (long long)munki_installed_sizeValue;
@@ -33,32 +43,34 @@
 
 
 
+
 @property (nonatomic, retain) NSString *munki_name;
+
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) NSString *munki_packageid;
+
 
 //- (BOOL)validateMunki_packageid:(id*)value_ error:(NSError**)error_;
 
 
 
+
 @property (nonatomic, retain) NSString *munki_version;
+
 
 //- (BOOL)validateMunki_version:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, retain) NSString *munki_filename;
-
-//- (BOOL)validateMunki_filename:(id*)value_ error:(NSError**)error_;
-
-
 
 
 @property (nonatomic, retain) PackageMO* package;
+
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 
 
@@ -71,6 +83,12 @@
 @end
 
 @interface _ReceiptMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveMunki_filename;
+- (void)setPrimitiveMunki_filename:(NSString*)value;
+
+
 
 
 - (NSNumber*)primitiveMunki_installed_size;
@@ -96,12 +114,6 @@
 
 - (NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveMunki_filename;
-- (void)setPrimitiveMunki_filename:(NSString*)value;
 
 
 

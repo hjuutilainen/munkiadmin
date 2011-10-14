@@ -70,13 +70,6 @@
 
 
 
-@dynamic title;
-
-
-
-
-
-
 @dynamic originalIndex;
 
 
@@ -103,11 +96,18 @@
 
 
 
-@dynamic package;
+@dynamic title;
+
+
+
+
+
+
+@dynamic catalog;
 
 	
 
-@dynamic catalog;
+@dynamic package;
 
 	
 

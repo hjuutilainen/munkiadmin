@@ -62,19 +62,8 @@
 	
 - (NSMutableSet*)applicationProxiesSet {
 	[self willAccessValueForKey:@"applicationProxies"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"applicationProxies"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"applicationProxies"];
 	[self didAccessValueForKey:@"applicationProxies"];
-	return result;
-}
-	
-
-@dynamic packages;
-
-	
-- (NSMutableSet*)packagesSet {
-	[self willAccessValueForKey:@"packages"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"packages"];
-	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 	
@@ -84,8 +73,19 @@
 	
 - (NSMutableSet*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"manifests"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
 	[self didAccessValueForKey:@"manifests"];
+	return result;
+}
+	
+
+@dynamic packages;
+
+	
+- (NSMutableSet*)packagesSet {
+	[self willAccessValueForKey:@"packages"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 	

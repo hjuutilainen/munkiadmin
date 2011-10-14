@@ -78,13 +78,76 @@
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
 	
+    // ==================================================
+    // Compose the pkginfo dictionary from current values
+    // ==================================================
 	[newPkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		id value = [self valueForKey:key];
-		if (value != nil) {
-			[tmpDict setValue:value forKey:obj];
-		} else {
-
-		}
+        id value = [self valueForKey:key];
+        if (value != nil) {
+            
+            // ===========================================================
+            // Work around for writing boolean values to property lists
+            // We need <false/> or <true/> instead of <integer>1</integer>
+            // ===========================================================
+            if ([key isEqualToString:@"munki_autoremove"]) {
+                if (self.munki_autoremoveValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
+            
+            // =====================================
+            // forced_install --> unattended_install
+            // =====================================
+            else if ([key isEqualToString:@"munki_forced_install"]) {
+                if (self.munki_forced_installValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:@"unattended_install"];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:@"unattended_install"];
+                }
+            }
+            // =========================================
+            // forced_uninstall --> unattended_uninstall
+            // =========================================
+            else if ([key isEqualToString:@"munki_forced_uninstall"]) {
+                if (self.munki_forced_uninstallValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:@"unattended_uninstall"];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:@"unattended_uninstall"];
+                }
+            }
+            else if ([key isEqualToString:@"munki_unattended_install"]) {
+                if (self.munki_unattended_installValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
+            else if ([key isEqualToString:@"munki_unattended_uninstall"]) {
+                if (self.munki_unattended_uninstallValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
+            else if ([key isEqualToString:@"munki_uninstallable"]) {
+                if (self.munki_uninstallableValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
+            // =====================================================
+            // For everything else just write the values as they are
+            // =====================================================
+            else {
+                [tmpDict setValue:value forKey:obj];
+            }
+        }
+        else {
+            //NSLog(@"Got nil value for key: %@", [obj description]);
+        }
 	}];
 	
 	

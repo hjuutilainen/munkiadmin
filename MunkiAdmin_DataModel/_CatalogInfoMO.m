@@ -126,15 +126,15 @@
 
 
 
+@dynamic catalog;
+
+	
+
 @dynamic manifest;
 
 	
 
 @dynamic package;
-
-	
-
-@dynamic catalog;
 
 	
 

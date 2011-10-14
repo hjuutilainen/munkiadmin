@@ -71,6 +71,8 @@
         prefsView = generalView;
     } else if ([sender isEqualToString:@"Munki"]) {
         prefsView = munkiView;
+    } else {
+        prefsView = munkiView;
     }
 	
     NSView *tempView = [[NSView alloc] initWithFrame:[[myWindow contentView] frame]];

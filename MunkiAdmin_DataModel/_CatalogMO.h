@@ -5,9 +5,9 @@
 
 
 @class CatalogInfoMO;
-@class PackageMO;
 @class ManifestMO;
 @class PackageInfoMO;
+@class PackageMO;
 
 
 
@@ -22,30 +22,40 @@
 
 
 
+
 @property (nonatomic, retain) NSString *title;
+
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
 
 
 
 
+
 @property (nonatomic, retain) NSSet* catalogInfos;
+
 - (NSMutableSet*)catalogInfosSet;
 
 
 
-@property (nonatomic, retain) NSSet* packages;
-- (NSMutableSet*)packagesSet;
-
-
 
 @property (nonatomic, retain) NSSet* manifests;
+
 - (NSMutableSet*)manifestsSet;
 
 
 
+
 @property (nonatomic, retain) NSSet* packageInfos;
+
 - (NSMutableSet*)packageInfosSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* packages;
+
+- (NSMutableSet*)packagesSet;
 
 
 
@@ -59,11 +69,6 @@
 - (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
 - (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
 
-- (void)addPackages:(NSSet*)value_;
-- (void)removePackages:(NSSet*)value_;
-- (void)addPackagesObject:(PackageMO*)value_;
-- (void)removePackagesObject:(PackageMO*)value_;
-
 - (void)addManifests:(NSSet*)value_;
 - (void)removeManifests:(NSSet*)value_;
 - (void)addManifestsObject:(ManifestMO*)value_;
@@ -73,6 +78,11 @@
 - (void)removePackageInfos:(NSSet*)value_;
 - (void)addPackageInfosObject:(PackageInfoMO*)value_;
 - (void)removePackageInfosObject:(PackageInfoMO*)value_;
+
+- (void)addPackages:(NSSet*)value_;
+- (void)removePackages:(NSSet*)value_;
+- (void)addPackagesObject:(PackageMO*)value_;
+- (void)removePackagesObject:(PackageMO*)value_;
 
 @end
 
@@ -91,11 +101,6 @@
 
 
 
-- (NSMutableSet*)primitivePackages;
-- (void)setPrimitivePackages:(NSMutableSet*)value;
-
-
-
 - (NSMutableSet*)primitiveManifests;
 - (void)setPrimitiveManifests:(NSMutableSet*)value;
 
@@ -103,6 +108,11 @@
 
 - (NSMutableSet*)primitivePackageInfos;
 - (void)setPrimitivePackageInfos:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitivePackages;
+- (void)setPrimitivePackages:(NSMutableSet*)value;
 
 
 @end

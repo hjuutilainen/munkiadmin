@@ -36,14 +36,14 @@
 
 
 
-@dynamic munki_group;
-
-
-
-
-
-
 @dynamic munki_destination_path;
+
+
+
+
+
+
+@dynamic munki_group;
 
 
 
@@ -57,14 +57,14 @@
 
 
 
-@dynamic munki_user;
-
-
-
-
-
-
 @dynamic munki_source_item;
+
+
+
+
+
+
+@dynamic munki_user;
 
 
 

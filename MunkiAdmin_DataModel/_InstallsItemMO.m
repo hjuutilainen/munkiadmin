@@ -36,6 +36,27 @@
 
 
 
+@dynamic munki_CFBundleIdentifier;
+
+
+
+
+
+
+@dynamic munki_CFBundleName;
+
+
+
+
+
+
+@dynamic munki_CFBundleShortVersionString;
+
+
+
+
+
+
 @dynamic munki_md5checksum;
 
 
@@ -50,28 +71,7 @@
 
 
 
-@dynamic munki_CFBundleShortVersionString;
-
-
-
-
-
-
-@dynamic munki_CFBundleName;
-
-
-
-
-
-
 @dynamic munki_path;
-
-
-
-
-
-
-@dynamic munki_CFBundleIdentifier;
 
 
 
@@ -90,7 +90,7 @@
 	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-	NSMutableSet *result = [self mutableSetValueForKey:@"packages"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }

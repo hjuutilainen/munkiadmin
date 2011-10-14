@@ -23,38 +23,50 @@
 
 
 
-@property (nonatomic, retain) NSString *munki_group;
-
-//- (BOOL)validateMunki_group:(id*)value_ error:(NSError**)error_;
-
-
 
 @property (nonatomic, retain) NSString *munki_destination_path;
+
 
 //- (BOOL)validateMunki_destination_path:(id*)value_ error:(NSError**)error_;
 
 
 
+
+@property (nonatomic, retain) NSString *munki_group;
+
+
+//- (BOOL)validateMunki_group:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSString *munki_mode;
+
 
 //- (BOOL)validateMunki_mode:(id*)value_ error:(NSError**)error_;
 
 
 
-@property (nonatomic, retain) NSString *munki_user;
-
-//- (BOOL)validateMunki_user:(id*)value_ error:(NSError**)error_;
-
-
 
 @property (nonatomic, retain) NSString *munki_source_item;
+
 
 //- (BOOL)validateMunki_source_item:(id*)value_ error:(NSError**)error_;
 
 
 
 
+@property (nonatomic, retain) NSString *munki_user;
+
+
+//- (BOOL)validateMunki_user:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, retain) PackageMO* package;
+
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 
 
@@ -69,14 +81,14 @@
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveMunki_group;
-- (void)setPrimitiveMunki_group:(NSString*)value;
-
-
-
-
 - (NSString*)primitiveMunki_destination_path;
 - (void)setPrimitiveMunki_destination_path:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_group;
+- (void)setPrimitiveMunki_group:(NSString*)value;
 
 
 
@@ -87,14 +99,14 @@
 
 
 
-- (NSString*)primitiveMunki_user;
-- (void)setPrimitiveMunki_user:(NSString*)value;
-
-
-
-
 - (NSString*)primitiveMunki_source_item;
 - (void)setPrimitiveMunki_source_item:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_user;
+- (void)setPrimitiveMunki_user:(NSString*)value;
 
 
 

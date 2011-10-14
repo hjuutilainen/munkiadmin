@@ -32,14 +32,14 @@
 
 - (void)setCheckedAll:(NSNumber *)newValue {
     if (newValue != checkedAll) {
-		self.checkedDisplayName = [newValue copy];
-		self.checkedLocation = [newValue copy];
-		self.checkedDescription = [newValue copy];
-		self.checkedVersion = [newValue copy];
-		self.checkedName = [newValue copy];
-		self.checkedInstallerType = [newValue copy];
-		self.checkedUninstallMethod = [newValue copy];
-        checkedAll = [newValue copy];
+		self.checkedDisplayName = newValue;
+		self.checkedLocation = newValue;
+		self.checkedDescription = newValue;
+		self.checkedVersion = newValue;
+		self.checkedName = newValue;
+		self.checkedInstallerType = newValue;
+		self.checkedUninstallMethod = newValue;
+        checkedAll = newValue;
     }
 }
 
