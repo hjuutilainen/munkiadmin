@@ -29,6 +29,10 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"originalIndexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 
 	return keyPaths;
 }
@@ -80,6 +84,32 @@
 
 @dynamic munki_type;
 
+
+
+
+
+
+@dynamic originalIndex;
+
+
+
+- (int)originalIndexValue {
+	NSNumber *result = [self originalIndex];
+	return [result intValue];
+}
+
+- (void)setOriginalIndexValue:(int)value_ {
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+}
+
+- (int)primitiveOriginalIndexValue {
+	NSNumber *result = [self primitiveOriginalIndex];
+	return [result intValue];
+}
+
+- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+}
 
 
 

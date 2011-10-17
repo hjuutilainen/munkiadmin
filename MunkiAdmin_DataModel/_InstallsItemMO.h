@@ -14,6 +14,7 @@
 
 
 
+
 @interface InstallsItemMOID : NSManagedObjectID {}
 @end
 
@@ -82,6 +83,18 @@
 
 
 
+@property (nonatomic, retain) NSNumber *originalIndex;
+
+
+@property int originalIndexValue;
+- (int)originalIndexValue;
+- (void)setOriginalIndexValue:(int)value_;
+
+//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @property (nonatomic, retain) NSSet* packages;
 
@@ -142,6 +155,15 @@
 
 - (NSString*)primitiveMunki_type;
 - (void)setPrimitiveMunki_type:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+
+- (int)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int)value_;
 
 
 

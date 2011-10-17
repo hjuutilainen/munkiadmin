@@ -33,6 +33,10 @@
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installed_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
+	if ([key isEqualToString:@"originalIndexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 
 	return keyPaths;
 }
@@ -89,6 +93,32 @@
 
 @dynamic munki_version;
 
+
+
+
+
+
+@dynamic originalIndex;
+
+
+
+- (int)originalIndexValue {
+	NSNumber *result = [self originalIndex];
+	return [result intValue];
+}
+
+- (void)setOriginalIndexValue:(int)value_ {
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+}
+
+- (int)primitiveOriginalIndexValue {
+	NSNumber *result = [self primitiveOriginalIndex];
+	return [result intValue];
+}
+
+- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+}
 
 
 

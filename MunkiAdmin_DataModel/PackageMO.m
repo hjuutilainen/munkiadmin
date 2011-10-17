@@ -253,7 +253,8 @@
 	NSSortDescriptor *sortByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByFilename = [NSSortDescriptor sortDescriptorWithKey:@"munki_filename" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSArray *receiptSorters = [NSArray arrayWithObjects:sortByPackageID, sortByFilename, sortByVersion, nil];
+    NSSortDescriptor *sortReceiptsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSArray *receiptSorters = [NSArray arrayWithObjects:sortReceiptsByOrigIndex, sortByPackageID, sortByFilename, sortByVersion, nil];
 	
 	NSMutableArray *receipts = [NSMutableArray arrayWithCapacity:[self.receipts count]];
 	for (ReceiptMO *aReceipt in [self.receipts sortedArrayUsingDescriptors:receiptSorters]) {
@@ -275,7 +276,8 @@
 	NSSortDescriptor *sortByPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByCFBundleName = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleName" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByCFBundleShortVersionString = [NSSortDescriptor sortDescriptorWithKey:@"munki_CFBundleShortVersionString" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSArray *installsSorters = [NSArray arrayWithObjects:sortByCFBundleIdentifier, sortByPath, sortByCFBundleName, sortByCFBundleShortVersionString, nil];
+    NSSortDescriptor *sortInstallsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSArray *installsSorters = [NSArray arrayWithObjects:sortInstallsByOrigIndex, sortByCFBundleIdentifier, sortByPath, sortByCFBundleName, sortByCFBundleShortVersionString, nil];
 	
 	NSMutableArray *installs = [NSMutableArray arrayWithCapacity:[self.installsItems count]];
 	for (InstallsItemMO *anInstallsItem in [self.installsItems sortedArrayUsingDescriptors:installsSorters]) {
