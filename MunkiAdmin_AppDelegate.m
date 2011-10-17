@@ -975,11 +975,13 @@
             NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
             [addedItems minusSet:originalKeysSet];
             
-            for (NSString *aKey in [removedItems allObjects]) {
-                NSLog(@"Removed key %@", aKey);
-            }
-            for (NSString *aKey in [addedItems allObjects]) {
-                NSLog(@"Added key %@", aKey);
+            if ([self.defaults boolForKey:@"debug"]) {
+                for (NSString *aKey in [removedItems allObjects]) {
+                    NSLog(@"Removed key %@ from %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+                }
+                for (NSString *aKey in [addedItems allObjects]) {
+                    NSLog(@"Added key %@ to %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+                }
             }
             
 		} else {

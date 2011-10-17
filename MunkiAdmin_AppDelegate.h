@@ -19,6 +19,7 @@
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
 #import "InstallsItemMO.h"
+#import "InstallerChoicesItemMO.h"
 #import "PreferencesController.h"
 
 @class ApplicationsArrayController;

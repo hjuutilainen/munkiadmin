@@ -18,6 +18,7 @@
 	NSDictionary *pkginfoKeyMappings;
 	NSDictionary *receiptKeyMappings;
 	NSDictionary *installsKeyMappings;
+    NSDictionary *installerChoicesKeyMappings;
 	NSDictionary *itemsToCopyKeyMappings;
 	BOOL canModify;
 }
@@ -35,6 +36,7 @@
 @property (retain) NSDictionary *pkginfoKeyMappings;
 @property (retain) NSDictionary *receiptKeyMappings;
 @property (retain) NSDictionary *installsKeyMappings;
+@property (retain) NSDictionary *installerChoicesKeyMappings;
 @property (retain) NSDictionary *itemsToCopyKeyMappings;
 @property BOOL canModify;
 

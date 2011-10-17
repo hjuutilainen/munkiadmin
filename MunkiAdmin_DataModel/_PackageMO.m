@@ -233,6 +233,13 @@
 
 
 
+@dynamic munki_maximum_os_version;
+
+
+
+
+
+
 @dynamic munki_minimum_os_version;
 
 
@@ -261,7 +268,21 @@
 
 
 
+@dynamic munki_postuninstall_script;
+
+
+
+
+
+
 @dynamic munki_preinstall_script;
+
+
+
+
+
+
+@dynamic munki_preuninstall_script;
 
 
 
@@ -367,6 +388,13 @@
 
 
 
+@dynamic munki_uninstaller_item_location;
+
+
+
+
+
+
 @dynamic munki_version;
 
 
@@ -395,6 +423,17 @@
 
 
 
+@dynamic blockingApplications;
+
+	
+- (NSMutableSet*)blockingApplicationsSet {
+	[self willAccessValueForKey:@"blockingApplications"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"blockingApplications"];
+	[self didAccessValueForKey:@"blockingApplications"];
+	return result;
+}
+	
+
 @dynamic catalogInfos;
 
 	
@@ -413,6 +452,17 @@
 	[self willAccessValueForKey:@"catalogs"];
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogs"];
 	[self didAccessValueForKey:@"catalogs"];
+	return result;
+}
+	
+
+@dynamic installerChoicesItems;
+
+	
+- (NSMutableSet*)installerChoicesItemsSet {
+	[self willAccessValueForKey:@"installerChoicesItems"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"installerChoicesItems"];
+	[self didAccessValueForKey:@"installerChoicesItems"];
 	return result;
 }
 	

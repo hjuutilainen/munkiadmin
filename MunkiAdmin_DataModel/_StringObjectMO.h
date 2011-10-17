@@ -6,6 +6,7 @@
 
 @class PackageMO;
 @class PackageMO;
+@class PackageMO;
 
 
 
@@ -52,6 +53,13 @@
 
 
 
+@property (nonatomic, retain) PackageMO* blockingApplicationReference;
+
+//- (BOOL)validateBlockingApplicationReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) PackageMO* requiresReference;
 
 //- (BOOL)validateRequiresReference:(id*)value_ error:(NSError**)error_;
@@ -94,6 +102,11 @@
 - (void)setPrimitiveTypeString:(NSString*)value;
 
 
+
+
+
+- (PackageMO*)primitiveBlockingApplicationReference;
+- (void)setPrimitiveBlockingApplicationReference:(PackageMO*)value;
 
 
 

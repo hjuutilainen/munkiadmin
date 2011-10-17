@@ -80,6 +80,10 @@
 
 
 
+@dynamic blockingApplicationReference;
+
+	
+
 @dynamic requiresReference;
 
 	

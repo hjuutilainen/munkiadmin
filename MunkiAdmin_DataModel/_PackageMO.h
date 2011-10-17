@@ -4,8 +4,10 @@
 #import <CoreData/CoreData.h>
 
 
+@class StringObjectMO;
 @class CatalogInfoMO;
 @class CatalogMO;
+@class InstallerChoicesItemMO;
 @class InstallsItemMO;
 @class ItemToCopyMO;
 @class PackageInfoMO;
@@ -13,6 +15,10 @@
 @class ReceiptMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
+
+
+
 
 
 
@@ -152,6 +158,14 @@
 
 
 
+@property (nonatomic, retain) NSString *munki_maximum_os_version;
+
+
+//- (BOOL)validateMunki_maximum_os_version:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSString *munki_minimum_os_version;
 
 
@@ -184,10 +198,26 @@
 
 
 
+@property (nonatomic, retain) NSString *munki_postuninstall_script;
+
+
+//- (BOOL)validateMunki_postuninstall_script:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSString *munki_preinstall_script;
 
 
 //- (BOOL)validateMunki_preinstall_script:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString *munki_preuninstall_script;
+
+
+//- (BOOL)validateMunki_preuninstall_script:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -252,6 +282,14 @@
 
 
 
+@property (nonatomic, retain) NSString *munki_uninstaller_item_location;
+
+
+//- (BOOL)validateMunki_uninstaller_item_location:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSString *munki_version;
 
 
@@ -285,6 +323,13 @@
 
 
 
+@property (nonatomic, retain) NSSet* blockingApplications;
+
+- (NSMutableSet*)blockingApplicationsSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
@@ -295,6 +340,13 @@
 @property (nonatomic, retain) NSSet* catalogs;
 
 - (NSMutableSet*)catalogsSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* installerChoicesItems;
+
+- (NSMutableSet*)installerChoicesItemsSet;
 
 
 
@@ -352,6 +404,11 @@
 
 @interface _PackageMO (CoreDataGeneratedAccessors)
 
+- (void)addBlockingApplications:(NSSet*)value_;
+- (void)removeBlockingApplications:(NSSet*)value_;
+- (void)addBlockingApplicationsObject:(StringObjectMO*)value_;
+- (void)removeBlockingApplicationsObject:(StringObjectMO*)value_;
+
 - (void)addCatalogInfos:(NSSet*)value_;
 - (void)removeCatalogInfos:(NSSet*)value_;
 - (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
@@ -361,6 +418,11 @@
 - (void)removeCatalogs:(NSSet*)value_;
 - (void)addCatalogsObject:(CatalogMO*)value_;
 - (void)removeCatalogsObject:(CatalogMO*)value_;
+
+- (void)addInstallerChoicesItems:(NSSet*)value_;
+- (void)removeInstallerChoicesItems:(NSSet*)value_;
+- (void)addInstallerChoicesItemsObject:(InstallerChoicesItemMO*)value_;
+- (void)removeInstallerChoicesItemsObject:(InstallerChoicesItemMO*)value_;
 
 - (void)addInstallsItems:(NSSet*)value_;
 - (void)removeInstallsItems:(NSSet*)value_;
@@ -472,6 +534,12 @@
 
 
 
+- (NSString*)primitiveMunki_maximum_os_version;
+- (void)setPrimitiveMunki_maximum_os_version:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_minimum_os_version;
 - (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
 
@@ -496,8 +564,20 @@
 
 
 
+- (NSString*)primitiveMunki_postuninstall_script;
+- (void)setPrimitiveMunki_postuninstall_script:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_preinstall_script;
 - (void)setPrimitiveMunki_preinstall_script:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_preuninstall_script;
+- (void)setPrimitiveMunki_preuninstall_script:(NSString*)value;
 
 
 
@@ -547,6 +627,12 @@
 
 
 
+- (NSString*)primitiveMunki_uninstaller_item_location;
+- (void)setPrimitiveMunki_uninstaller_item_location:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(NSString*)value;
 
@@ -572,6 +658,11 @@
 
 
 
+- (NSMutableSet*)primitiveBlockingApplications;
+- (void)setPrimitiveBlockingApplications:(NSMutableSet*)value;
+
+
+
 - (NSMutableSet*)primitiveCatalogInfos;
 - (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
 
@@ -579,6 +670,11 @@
 
 - (NSMutableSet*)primitiveCatalogs;
 - (void)setPrimitiveCatalogs:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveInstallerChoicesItems;
+- (void)setPrimitiveInstallerChoicesItems:(NSMutableSet*)value;
 
 
 

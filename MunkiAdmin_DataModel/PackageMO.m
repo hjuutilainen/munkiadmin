@@ -4,6 +4,7 @@
 #import "PackageInfoMO.h"
 #import "ReceiptMO.h"
 #import "InstallsItemMO.h"
+#import "InstallerChoicesItemMO.h"
 #import "ItemToCopyMO.h"
 #import "StringObjectMO.h"
 
@@ -76,6 +77,12 @@
 	NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
 	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
+	}
+    
+    // installer_choices_xml
+    NSMutableDictionary *newInstallerChoicesKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
+		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
 	}
 	
     // ==================================================
@@ -219,6 +226,26 @@
 	} else {
 		[tmpDict setObject:requiresItems forKey:@"requires"];
 	}
+    
+    
+    // ==========
+	// blocking_applications
+	// ==========
+	NSSortDescriptor *sortBlockingItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortBlockingByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSMutableArray *blockingApplicationsItems = [NSMutableArray arrayWithCapacity:[self.blockingApplications count]];
+	for (StringObjectMO *blockingItem in [self.blockingApplications sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortBlockingItemsByTitle, sortBlockingByOrigIndex, nil]]) {
+		if (![blockingApplicationsItems containsObject:[blockingItem title]]) {
+			[blockingApplicationsItems addObject:[blockingItem title]];
+		}
+	}
+	if ([blockingApplicationsItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"blocking_applications"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"blocking_applications"];
+		}
+	} else {
+		[tmpDict setObject:blockingApplicationsItems forKey:@"blocking_applications"];
+	}
 	
 	// ==========
 	// receipts
@@ -284,6 +311,27 @@
 		[tmpDict setObject:itemsToCopyItems forKey:@"items_to_copy"];
 	}
 	
+    
+    // ======================
+	// installer_choices_xml
+	// ======================
+	NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSArray *installerChoicesSorters = [NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil];
+	
+	NSMutableArray *installerItems = [NSMutableArray arrayWithCapacity:[self.installerChoicesItems count]];
+    for (InstallerChoicesItemMO *aChoice in [self.installerChoicesItems sortedArrayUsingDescriptors:installerChoicesSorters]) {
+        [installerItems addObject:[aChoice dictValueForSave]];
+    }
+	if ([installerItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"installer_choices_xml"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"installer_choices_xml"];
+		}
+	} else {
+		[tmpDict setObject:installerItems forKey:@"installer_choices_xml"];
+	}
+    
+    
 	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];
 	return infoDictInMemory;
 }

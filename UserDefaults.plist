@@ -56,16 +56,20 @@
 		<string>installer_item_location</string>
 		<string>installer_item_size</string>
 		<string>installer_type</string>
+		<string>maximum_os_version</string>
 		<string>minimum_os_version</string>
 		<string>name</string>
 		<string>package_path</string>
 		<string>postinstall_script</string>
+		<string>postuninstall_script</string>
 		<string>preinstall_script</string>
+		<string>preuninstall_script</string>
 		<string>unattended_install</string>
 		<string>unattended_uninstall</string>
-		<string>uninstallable</string>
 		<string>uninstall_method</string>
 		<string>uninstall_script</string>
+		<string>uninstaller_item_location</string>
+		<string>uninstallable</string>
 		<string>version</string>
 	</array>
 	<key>receiptKeys</key>
@@ -88,5 +92,11 @@
 	<true/>
 	<key>UseExistingMinOSVersionForPackages</key>
 	<true/>
+	<key>installerChoicesKeys</key>
+	<array>
+		<string>attributeSetting</string>
+		<string>choiceAttribute</string>
+		<string>choiceIdentifier</string>
+	</array>
 </dict>
 </plist>

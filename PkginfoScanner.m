@@ -12,6 +12,7 @@
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "InstallsItemMO.h"
+#import "InstallerChoicesItemMO.h"
 #import "ItemToCopyMO.h"
 #import "StringObjectMO.h"
 
@@ -27,6 +28,7 @@
 @synthesize receiptKeyMappings;
 @synthesize installsKeyMappings;
 @synthesize itemsToCopyKeyMappings;
+@synthesize installerChoicesKeyMappings;
 @synthesize canModify;
 
 - (NSUserDefaults *)defaults
@@ -77,6 +79,14 @@
 	}
 	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
 	[newItemsToCopyKeyMappings release];
+    
+    // installer_choices_xml
+    NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
+		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
+	}
+	self.installerChoicesKeyMappings = (NSDictionary *)newInstallerChoicesKeyMappings;
+	[newInstallerChoicesKeyMappings release];
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict
@@ -243,6 +253,24 @@
 					aNewItemToCopy.munki_mode = [self.defaults stringForKey:@"items_to_copyMode"];
 				}
 			}];
+            
+            // =================================
+			// Get "installer_choices_xml" items
+			// =================================
+			NSArray *installerChoices = [packageInfoDict objectForKey:@"installer_choices_xml"];
+			[installerChoices enumerateObjectsUsingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
+				InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
+				aNewInstallerChoice.package = aNewPackage;
+				[self.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+					id value = [aChoice objectForKey:obj];
+					if (value != nil) {
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: %@", self.fileName, idx, obj, value);
+						[aNewInstallerChoice setValue:value forKey:key];
+					} else {
+						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: nil (skipped)", self.fileName, idx, key);
+					}
+				}];
+			}];
 			
 			
 			// =================================
@@ -339,6 +367,19 @@
 				newRequiredPkgInfo.typeString = @"package";
 				newRequiredPkgInfo.originalIndexValue = idx;
 				[aNewPackage addUpdateForObject:newRequiredPkgInfo];
+			}];
+            
+            // =================================
+			// Get "blocking_applications" items
+			// =================================
+			NSArray *blocking_applications = [packageInfoDict objectForKey:@"blocking_applications"];
+			[blocking_applications enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, idx, obj);
+				StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+				newBlockingApplication.title = obj;
+				newBlockingApplication.typeString = @"package";
+				newBlockingApplication.originalIndexValue = idx;
+				[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 			}];
 			
 			
