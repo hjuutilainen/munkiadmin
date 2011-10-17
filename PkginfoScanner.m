@@ -190,7 +190,9 @@
 			if (self.sourceURL != nil) {
 				aNewPackage.packageInfoURL = self.sourceURL;
 			} else {
-				NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", aNewPackage.munki_name, aNewPackage.munki_version]];
+                NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+                NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
+                NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
 				newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
 				aNewPackage.packageInfoURL = newPkginfoURL;
 			}
