@@ -242,6 +242,7 @@
 			[itemsToCopy enumerateObjectsUsingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 				ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 				aNewItemToCopy.package = aNewPackage;
+                aNewItemToCopy.originalIndexValue = idx;
 				[self.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anItemToCopy objectForKey:obj];
 					if (value != nil) {
@@ -265,6 +266,7 @@
 			[installerChoices enumerateObjectsUsingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 				InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 				aNewInstallerChoice.package = aNewPackage;
+                aNewInstallerChoice.originalIndexValue = idx;
 				[self.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [aChoice objectForKey:obj];
 					if (value != nil) {
@@ -392,6 +394,7 @@
 			// This is done only when adding new items to repo
 			// =====================================
 			if (self.canModify) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Assimilating %@", self.fileName);
 				NSFetchRequest *fetchForApplicationsLoose = [[NSFetchRequest alloc] init];
 				[fetchForApplicationsLoose setEntity:applicationEntityDescr];
 				NSPredicate *applicationTitlePredicateLoose;
@@ -413,6 +416,7 @@
                     // If the existing matching packages have common description, use it with the new package
 					if ([existingApplication hasCommonDescription]) {
 						if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
+                            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Assimilating Descriptions: %@", self.fileName);
 							aNewPackage.munki_description = [latestPackage munki_description];
 						}
 					}
@@ -455,6 +459,8 @@
 				aNewApplication.munki_name = aNewPackage.munki_name;
 				aNewApplication.munki_description = aNewPackage.munki_description;
 				[aNewApplication addPackagesObject:aNewPackage];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewApplication.munki_description: \"%@\"", aNewApplication.munki_description);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewPackage.munki_description: \"%@\"", aNewPackage.munki_description);
 			} else if (numFoundApplications == 1) {
 				ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
 				[existingApplication addPackagesObject:aNewPackage];

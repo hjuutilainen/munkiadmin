@@ -299,7 +299,8 @@
 	NSSortDescriptor *sortBySourceItem = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByUser = [NSSortDescriptor sortDescriptorWithKey:@"munki_user" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByGroup = [NSSortDescriptor sortDescriptorWithKey:@"munki_group" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSArray *itemsToCopySorters = [NSArray arrayWithObjects:sortByDestPath, sortBySourceItem, sortByUser, sortByGroup, nil];
+    NSSortDescriptor *sortItemsToCopyByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSArray *itemsToCopySorters = [NSArray arrayWithObjects:sortItemsToCopyByOrigIndex, sortByDestPath, sortBySourceItem, sortByUser, sortByGroup, nil];
 	
 	NSMutableArray *itemsToCopyItems = [NSMutableArray arrayWithCapacity:[self.itemsToCopy count]];
 	for (ItemToCopyMO *anItemToCopy in [self.itemsToCopy sortedArrayUsingDescriptors:itemsToCopySorters]) {
@@ -319,7 +320,8 @@
 	// ======================
 	NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSArray *installerChoicesSorters = [NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil];
+    NSSortDescriptor *sortChoicesByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSArray *installerChoicesSorters = [NSArray arrayWithObjects:sortChoicesByOrigIndex, sortByChoiceIdentifier, sortByChoiceAttribute, nil];
 	
 	NSMutableArray *installerItems = [NSMutableArray arrayWithCapacity:[self.installerChoicesItems count]];
     for (InstallerChoicesItemMO *aChoice in [self.installerChoicesItems sortedArrayUsingDescriptors:installerChoicesSorters]) {

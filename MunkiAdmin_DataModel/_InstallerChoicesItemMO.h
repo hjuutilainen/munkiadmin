@@ -10,6 +10,7 @@
 
 
 
+
 @interface InstallerChoicesItemMOID : NSManagedObjectID {}
 @end
 
@@ -50,6 +51,18 @@
 
 
 
+@property (nonatomic, retain) NSNumber *originalIndex;
+
+
+@property int originalIndexValue;
+- (int)originalIndexValue;
+- (void)setOriginalIndexValue:(int)value_;
+
+//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @property (nonatomic, retain) PackageMO* package;
 
@@ -84,6 +97,15 @@
 
 - (NSString*)primitiveMunki_choiceIdentifier;
 - (void)setPrimitiveMunki_choiceIdentifier:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+
+- (int)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int)value_;
 
 
 
