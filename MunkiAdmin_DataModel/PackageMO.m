@@ -315,8 +315,8 @@
     // ======================
 	// installer_choices_xml
 	// ======================
-	NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSArray *installerChoicesSorters = [NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil];
 	
 	NSMutableArray *installerItems = [NSMutableArray arrayWithCapacity:[self.installerChoicesItems count]];
