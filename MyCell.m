@@ -59,6 +59,9 @@
 	} else if ([type isEqualToString:@"manifest"]) {
 		img = [NSImage imageNamed:@"manifestIcon2"];
 	
+	} else if ([type isEqualToString:@"includedManifest"]) {
+		img = [NSImage imageNamed:@"manifestIcon2"];
+        
 	} else if ([type isEqualToString:@"installsitem"]) {
 		img = [wp iconForFile:[[self objectValue] valueForKey:@"title"]];
 	
@@ -67,6 +70,18 @@
 	
 	} else if ([type isEqualToString:@"itemtocopy"]) {
 		img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericDocumentIcon)];
+	
+    } else if ([type isEqualToString:@"managedInstall"]) {
+		img = [NSImage imageNamed:@"packageIcon2"];
+	
+    } else if ([type isEqualToString:@"managedUninstall"]) {
+		img = [NSImage imageNamed:@"packageIcon2"];
+	
+    } else if ([type isEqualToString:@"managedUpdate"]) {
+		img = [NSImage imageNamed:@"packageIcon2"];
+	
+    } else if ([type isEqualToString:@"optionalInstall"]) {
+		img = [NSImage imageNamed:@"packageIcon2"];
 	}
 	
 	return img;

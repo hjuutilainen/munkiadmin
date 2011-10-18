@@ -5,6 +5,11 @@
 
 
 @class PackageMO;
+@class ManifestMO;
+@class ManifestMO;
+@class ManifestMO;
+@class ManifestMO;
+@class ManifestMO;
 @class PackageMO;
 @class PackageMO;
 
@@ -60,6 +65,41 @@
 
 
 
+@property (nonatomic, retain) ManifestMO* managedInstallReference;
+
+//- (BOOL)validateManagedInstallReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ManifestMO* managedUninstallReference;
+
+//- (BOOL)validateManagedUninstallReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ManifestMO* managedUpdateReference;
+
+//- (BOOL)validateManagedUpdateReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ManifestMO* manifestReference;
+
+//- (BOOL)validateManifestReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ManifestMO* optionalInstallReference;
+
+//- (BOOL)validateOptionalInstallReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) PackageMO* requiresReference;
 
 //- (BOOL)validateRequiresReference:(id*)value_ error:(NSError**)error_;
@@ -73,6 +113,8 @@
 
 
 
+
+@property (nonatomic, readonly) NSArray *packagesWithSameTitle;
 
 @end
 
@@ -107,6 +149,31 @@
 
 - (PackageMO*)primitiveBlockingApplicationReference;
 - (void)setPrimitiveBlockingApplicationReference:(PackageMO*)value;
+
+
+
+- (ManifestMO*)primitiveManagedInstallReference;
+- (void)setPrimitiveManagedInstallReference:(ManifestMO*)value;
+
+
+
+- (ManifestMO*)primitiveManagedUninstallReference;
+- (void)setPrimitiveManagedUninstallReference:(ManifestMO*)value;
+
+
+
+- (ManifestMO*)primitiveManagedUpdateReference;
+- (void)setPrimitiveManagedUpdateReference:(ManifestMO*)value;
+
+
+
+- (ManifestMO*)primitiveManifestReference;
+- (void)setPrimitiveManifestReference:(ManifestMO*)value;
+
+
+
+- (ManifestMO*)primitiveOptionalInstallReference;
+- (void)setPrimitiveOptionalInstallReference:(ManifestMO*)value;
 
 
 

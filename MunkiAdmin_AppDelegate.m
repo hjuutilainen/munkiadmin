@@ -9,11 +9,14 @@
 #import "PkginfoScanner.h"
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
+#import "ManifestDetailView.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
 @synthesize itemsToCopyArrayController;
 @synthesize receiptsArrayController;
+@synthesize pkgsForAddingArrayController;
+@synthesize pkgGroupsForAddingArrayController;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -245,6 +248,8 @@
 		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
 	
+    manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
+    
 	// Configure segmented control
 	NSWorkspace *wp = [NSWorkspace sharedWorkspace];
 	[mainSegmentedControl setSegmentCount:3];
@@ -827,18 +832,46 @@
 
 }
 
-- (IBAction)openAddItemsWindowAction:sender
+
+/*- (IBAction)openAddItemsWindowAction:sender
 {
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] initWithCapacity:[[selectedManifest managedInstallsFaster] count]];
+    
+    for (StringObjectMO *aStringO in [selectedManifest managedInstallsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aStringO.title];
+        //NSLog(@"%@", [newPredicate description]);
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [pkgsForAddingArrayController setFilterPredicate:compPred];
+    
 	[NSApp beginSheet:addItemsWindow 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+       modalForWindow:self.window 
+        modalDelegate:nil 
+	   didEndSelector:nil 
+          contextInfo:nil];
+}*/
+
+- (IBAction)processAddItemsAction:sender
+{
+    for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
+		for (PackageMO *aPackage in [pkgsForAddingArrayController selectedObjects]) {
+            StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+            newManagedInstall.title = aPackage.munki_name;
+            newManagedInstall.typeString = @"managedInstall";
+            //newManagedInstall.originalIndexValue = idx;
+            [selectedManifest addManagedInstallsFasterObject:newManagedInstall];
+		}
+	}
+	[NSApp endSheet:addItemsWindow];
+	[addItemsWindow close];
 }
 
 - (IBAction)cancelAddItemsAction:sender
 {
 	[NSApp endSheet:addItemsWindow];
 	[addItemsWindow close];
-
 }
 
 
@@ -865,6 +898,25 @@
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
 	}
+}
+
+- (IBAction)addNewManagedInstallAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aManagedInstall in [selectedManifest managedInstallsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [pkgsForAddingArrayController setFilterPredicate:compPred];
+    [pkgGroupsForAddingArrayController setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:addItemsWindow 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
 }
 
 - (IBAction)addNewInstallsItem:sender
@@ -1782,7 +1834,7 @@
 		case 3:
 			if (currentSourceView != manifestsListView) {
 				self.selectedViewDescr = @"Manifests";
-				currentDetailView = manifestsDetailView;
+				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[mainSegmentedControl setSelectedSegment:2];
 				[self changeItemView];
@@ -1815,7 +1867,7 @@
 		case 2:
 			if (currentSourceView != manifestsListView) {
 				self.selectedViewDescr = @"Manifests";
-				currentDetailView = manifestsDetailView;
+				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[self changeItemView];
 			}

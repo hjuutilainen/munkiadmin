@@ -1,9 +1,7 @@
 #import "_StringObjectMO.h"
 
-@interface StringObjectMO : _StringObjectMO {
-	NSDictionary *dictValue;
-}
+@interface StringObjectMO : _StringObjectMO {}
 
-@property (readonly) NSDictionary *dictValue;
+- (NSDictionary *)dictValue;
 
 @end

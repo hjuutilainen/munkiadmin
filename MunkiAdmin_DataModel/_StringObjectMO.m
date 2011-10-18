@@ -84,6 +84,26 @@
 
 	
 
+@dynamic managedInstallReference;
+
+	
+
+@dynamic managedUninstallReference;
+
+	
+
+@dynamic managedUpdateReference;
+
+	
+
+@dynamic manifestReference;
+
+	
+
+@dynamic optionalInstallReference;
+
+	
+
 @dynamic requiresReference;
 
 	
@@ -93,6 +113,8 @@
 	
 
 
+
+@dynamic packagesWithSameTitle;
 
 
 

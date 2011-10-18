@@ -20,12 +20,14 @@
 #import "ManifestInfoMO.h"
 #import "InstallsItemMO.h"
 #import "InstallerChoicesItemMO.h"
+#import "StringObjectMO.h"
 #import "PreferencesController.h"
 
 @class ApplicationsArrayController;
 @class PackageArrayController;
 @class ManifestsArrayController;
 @class PreferencesController;
+@class ManifestDetailView;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -47,6 +49,7 @@
 	NSView *catalogsDetailView;
 	NSView *packagesDetailView;
 	NSView *manifestsDetailView;
+    ManifestDetailView *manifestDetailViewController;
 	NSTextField *createNewManifestCustomView;
 	
 	// The current master and detail view
@@ -103,11 +106,15 @@
     NSArrayController *installsItemsArrayController;
     NSArrayController *itemsToCopyArrayController;
     NSArrayController *receiptsArrayController;
+    PackageArrayController *pkgsForAddingArrayController;
+    ApplicationsArrayController *pkgGroupsForAddingArrayController;
 }
 
 @property (assign) IBOutlet NSArrayController *installsItemsArrayController;
 @property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
 @property (assign) IBOutlet NSArrayController *receiptsArrayController;
+@property (assign) IBOutlet PackageArrayController *pkgsForAddingArrayController;
+@property (assign) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
 
 # pragma mark -
 # pragma mark Variable declarations
@@ -187,6 +194,8 @@
 - (IBAction)deleteSelectedPackagesAction:sender;
 - (IBAction)enableAllPackagesForManifestAction:sender;
 - (IBAction)disableAllPackagesForManifestAction:sender;
+
+- (IBAction)addNewManagedInstallAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods

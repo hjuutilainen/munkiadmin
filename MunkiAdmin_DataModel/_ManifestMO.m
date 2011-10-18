@@ -101,6 +101,17 @@
 }
 	
 
+@dynamic includedManifestsFaster;
+
+	
+- (NSMutableSet*)includedManifestsFasterSet {
+	[self willAccessValueForKey:@"includedManifestsFaster"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"includedManifestsFaster"];
+	[self didAccessValueForKey:@"includedManifestsFaster"];
+	return result;
+}
+	
+
 @dynamic managedInstalls;
 
 	
@@ -108,6 +119,17 @@
 	[self willAccessValueForKey:@"managedInstalls"];
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstalls"];
 	[self didAccessValueForKey:@"managedInstalls"];
+	return result;
+}
+	
+
+@dynamic managedInstallsFaster;
+
+	
+- (NSMutableSet*)managedInstallsFasterSet {
+	[self willAccessValueForKey:@"managedInstallsFaster"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstallsFaster"];
+	[self didAccessValueForKey:@"managedInstallsFaster"];
 	return result;
 }
 	
@@ -123,6 +145,17 @@
 }
 	
 
+@dynamic managedUninstallsFaster;
+
+	
+- (NSMutableSet*)managedUninstallsFasterSet {
+	[self willAccessValueForKey:@"managedUninstallsFaster"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUninstallsFaster"];
+	[self didAccessValueForKey:@"managedUninstallsFaster"];
+	return result;
+}
+	
+
 @dynamic managedUpdates;
 
 	
@@ -130,6 +163,17 @@
 	[self willAccessValueForKey:@"managedUpdates"];
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdates"];
 	[self didAccessValueForKey:@"managedUpdates"];
+	return result;
+}
+	
+
+@dynamic managedUpdatesFaster;
+
+	
+- (NSMutableSet*)managedUpdatesFasterSet {
+	[self willAccessValueForKey:@"managedUpdatesFaster"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdatesFaster"];
+	[self didAccessValueForKey:@"managedUpdatesFaster"];
 	return result;
 }
 	
@@ -152,6 +196,17 @@
 	[self willAccessValueForKey:@"optionalInstalls"];
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstalls"];
 	[self didAccessValueForKey:@"optionalInstalls"];
+	return result;
+}
+	
+
+@dynamic optionalInstallsFaster;
+
+	
+- (NSMutableSet*)optionalInstallsFasterSet {
+	[self willAccessValueForKey:@"optionalInstallsFaster"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstallsFaster"];
+	[self didAccessValueForKey:@"optionalInstallsFaster"];
 	return result;
 }
 	

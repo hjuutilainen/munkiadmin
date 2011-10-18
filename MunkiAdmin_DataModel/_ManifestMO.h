@@ -8,11 +8,16 @@
 @class CatalogInfoMO;
 @class CatalogMO;
 @class ManifestInfoMO;
+@class StringObjectMO;
 @class ManagedInstallMO;
+@class StringObjectMO;
 @class ManagedUninstallMO;
+@class StringObjectMO;
 @class ManagedUpdateMO;
+@class StringObjectMO;
 @class ManifestInfoMO;
 @class OptionalInstallMO;
+@class StringObjectMO;
 
 @class NSObject;
 @class NSObject;
@@ -83,9 +88,23 @@
 
 
 
+@property (nonatomic, retain) NSSet* includedManifestsFaster;
+
+- (NSMutableSet*)includedManifestsFasterSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* managedInstalls;
 
 - (NSMutableSet*)managedInstallsSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* managedInstallsFaster;
+
+- (NSMutableSet*)managedInstallsFasterSet;
 
 
 
@@ -97,9 +116,23 @@
 
 
 
+@property (nonatomic, retain) NSSet* managedUninstallsFaster;
+
+- (NSMutableSet*)managedUninstallsFasterSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* managedUpdates;
 
 - (NSMutableSet*)managedUpdatesSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* managedUpdatesFaster;
+
+- (NSMutableSet*)managedUpdatesFasterSet;
 
 
 
@@ -114,6 +147,13 @@
 @property (nonatomic, retain) NSSet* optionalInstalls;
 
 - (NSMutableSet*)optionalInstallsSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* optionalInstallsFaster;
+
+- (NSMutableSet*)optionalInstallsFasterSet;
 
 
 
@@ -142,20 +182,40 @@
 - (void)addIncludedManifestsObject:(ManifestInfoMO*)value_;
 - (void)removeIncludedManifestsObject:(ManifestInfoMO*)value_;
 
+- (void)addIncludedManifestsFaster:(NSSet*)value_;
+- (void)removeIncludedManifestsFaster:(NSSet*)value_;
+- (void)addIncludedManifestsFasterObject:(StringObjectMO*)value_;
+- (void)removeIncludedManifestsFasterObject:(StringObjectMO*)value_;
+
 - (void)addManagedInstalls:(NSSet*)value_;
 - (void)removeManagedInstalls:(NSSet*)value_;
 - (void)addManagedInstallsObject:(ManagedInstallMO*)value_;
 - (void)removeManagedInstallsObject:(ManagedInstallMO*)value_;
+
+- (void)addManagedInstallsFaster:(NSSet*)value_;
+- (void)removeManagedInstallsFaster:(NSSet*)value_;
+- (void)addManagedInstallsFasterObject:(StringObjectMO*)value_;
+- (void)removeManagedInstallsFasterObject:(StringObjectMO*)value_;
 
 - (void)addManagedUninstalls:(NSSet*)value_;
 - (void)removeManagedUninstalls:(NSSet*)value_;
 - (void)addManagedUninstallsObject:(ManagedUninstallMO*)value_;
 - (void)removeManagedUninstallsObject:(ManagedUninstallMO*)value_;
 
+- (void)addManagedUninstallsFaster:(NSSet*)value_;
+- (void)removeManagedUninstallsFaster:(NSSet*)value_;
+- (void)addManagedUninstallsFasterObject:(StringObjectMO*)value_;
+- (void)removeManagedUninstallsFasterObject:(StringObjectMO*)value_;
+
 - (void)addManagedUpdates:(NSSet*)value_;
 - (void)removeManagedUpdates:(NSSet*)value_;
 - (void)addManagedUpdatesObject:(ManagedUpdateMO*)value_;
 - (void)removeManagedUpdatesObject:(ManagedUpdateMO*)value_;
+
+- (void)addManagedUpdatesFaster:(NSSet*)value_;
+- (void)removeManagedUpdatesFaster:(NSSet*)value_;
+- (void)addManagedUpdatesFasterObject:(StringObjectMO*)value_;
+- (void)removeManagedUpdatesFasterObject:(StringObjectMO*)value_;
 
 - (void)addManifestInfos:(NSSet*)value_;
 - (void)removeManifestInfos:(NSSet*)value_;
@@ -166,6 +226,11 @@
 - (void)removeOptionalInstalls:(NSSet*)value_;
 - (void)addOptionalInstallsObject:(OptionalInstallMO*)value_;
 - (void)removeOptionalInstallsObject:(OptionalInstallMO*)value_;
+
+- (void)addOptionalInstallsFaster:(NSSet*)value_;
+- (void)removeOptionalInstallsFaster:(NSSet*)value_;
+- (void)addOptionalInstallsFasterObject:(StringObjectMO*)value_;
+- (void)removeOptionalInstallsFasterObject:(StringObjectMO*)value_;
 
 @end
 
@@ -211,8 +276,18 @@
 
 
 
+- (NSMutableSet*)primitiveIncludedManifestsFaster;
+- (void)setPrimitiveIncludedManifestsFaster:(NSMutableSet*)value;
+
+
+
 - (NSMutableSet*)primitiveManagedInstalls;
 - (void)setPrimitiveManagedInstalls:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveManagedInstallsFaster;
+- (void)setPrimitiveManagedInstallsFaster:(NSMutableSet*)value;
 
 
 
@@ -221,8 +296,18 @@
 
 
 
+- (NSMutableSet*)primitiveManagedUninstallsFaster;
+- (void)setPrimitiveManagedUninstallsFaster:(NSMutableSet*)value;
+
+
+
 - (NSMutableSet*)primitiveManagedUpdates;
 - (void)setPrimitiveManagedUpdates:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveManagedUpdatesFaster;
+- (void)setPrimitiveManagedUpdatesFaster:(NSMutableSet*)value;
 
 
 
@@ -233,6 +318,11 @@
 
 - (NSMutableSet*)primitiveOptionalInstalls;
 - (void)setPrimitiveOptionalInstalls:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveOptionalInstallsFaster;
+- (void)setPrimitiveOptionalInstallsFaster:(NSMutableSet*)value;
 
 
 @end

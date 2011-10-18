@@ -14,6 +14,7 @@
 #import "ManagedUninstallMO.h"
 #import "ManagedUpdateMO.h"
 #import "OptionalInstallMO.h"
+#import "StringObjectMO.h"
 
 @implementation ManifestScanner
 
@@ -72,11 +73,7 @@
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:moc];
 		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-		//NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
-		NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-		
-		
 		
 		
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
@@ -110,9 +107,10 @@
 			
 			manifest.originalManifest = manifestInfoDict;
 			
-			// Parse manifests catalog array
+            // =================================
+			// Get "catalogs" items
+            // =================================
 			NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
-			
 			NSArray *allCatalogs;
 			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
 			[getAllCatalogs setEntity:catalogEntityDescr];
@@ -142,76 +140,78 @@
 				}
 			}];
 			
-			// Parse manifests managed_installs array
-			NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
-			NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
-			NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
-			NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
-			
-			NSArray *allApplications;
-			NSFetchRequest *getAllApplications = [[NSFetchRequest alloc] init];
-			[getAllApplications setEntity:applicationEntityDescr];
-            [getAllApplications setReturnsObjectsAsFaults:NO];
-            [getAllApplications setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"manifests", @"applicationProxies", nil]];
-			allApplications = [moc executeFetchRequest:getAllApplications error:nil];
-			[getAllApplications release];
-			
-            [allApplications enumerateObjectsUsingBlock:^(id anApplication, NSUInteger idx, BOOL *stop) {
-				[anApplication addManifestsObject:manifest];
-                
-                NSString *tempAppName = [anApplication munki_name];
-				
-				ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
-				newManagedInstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedInstall];
-				if (managedInstalls == nil) {
-					newManagedInstall.isEnabledValue = NO;
-				} else if ([managedInstalls containsObject:tempAppName]) {
-					newManagedInstall.isEnabledValue = YES;
-				} else {
-					newManagedInstall.isEnabledValue = NO;
-				}
-				
-				ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];
-				newManagedUninstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedUninstall];
-				if (managedUninstalls == nil) {
-					newManagedUninstall.isEnabledValue = NO;
-				} else if ([managedUninstalls containsObject:tempAppName]) {
-					newManagedUninstall.isEnabledValue = YES;
-				} else {
-					newManagedUninstall.isEnabledValue = NO;
-				}
-				
-				ManagedUpdateMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc];
-				newManagedUpdate.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newManagedUpdate];
-				if (managedUpdates == nil) {
-					newManagedUpdate.isEnabledValue = NO;
-				} else if ([managedUpdates containsObject:tempAppName]) {
-					newManagedUpdate.isEnabledValue = YES;
-				} else {
-					newManagedUpdate.isEnabledValue = NO;
-				}
-				
-				OptionalInstallMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc];
-				newOptionalInstall.manifest = manifest;
-				[anApplication addApplicationProxiesObject:newOptionalInstall];
-				if (optionalInstalls == nil) {
-					newOptionalInstall.isEnabledValue = NO;
-				} else if ([optionalInstalls containsObject:tempAppName]) {
-					newOptionalInstall.isEnabledValue = YES;
-				} else {
-					newOptionalInstall.isEnabledValue = NO;
-				}
-			}];
-			
 			
             
-			// Parse manifests included_manifests array
-			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
+            // =================================
+			// Get "managed_installs" items
+			// =================================
+            NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
+            [managedInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, idx, obj);
+                StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedInstall.title = (NSString *)obj;
+                newManagedInstall.typeString = @"managedInstall";
+                newManagedInstall.originalIndexValue = idx;
+                [manifest addManagedInstallsFasterObject:newManagedInstall];
+            }];
+            
+            
+            // =================================
+			// Get "managed_uninstalls" items
+			// =================================
+            NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
+            [managedUninstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, idx, obj);
+                StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedUninstall.title = (NSString *)obj;
+                newManagedUninstall.typeString = @"managedUninstall";
+                newManagedUninstall.originalIndexValue = idx;
+                [manifest addManagedUninstallsFasterObject:newManagedUninstall];
+            }];
+            
+            
+            // =================================
+			// Get "managed_updates" items
+			// =================================
+            NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
+            [managedUpdates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, idx, obj);
+                StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedUpdate.title = (NSString *)obj;
+                newManagedUpdate.typeString = @"managedUpdate";
+                newManagedUpdate.originalIndexValue = idx;
+                [manifest addManagedUpdatesFasterObject:newManagedUpdate];
+            }];
 			
-			NSArray *allManifests;
+            
+            // =================================
+			// Get "optional_installs" items
+			// =================================
+            NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
+			[optionalInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, idx, obj);
+                StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newOptionalInstall.title = (NSString *)obj;
+                newOptionalInstall.typeString = @"optionalInstall";
+                newOptionalInstall.originalIndexValue = idx;
+                [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+            }];
+            
+            
+            // =================================
+			// Get "included_manifests" items
+			// =================================
+			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
+            [includedManifests enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, idx, obj);
+                StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newIncludedManifest.title = (NSString *)obj;
+                newIncludedManifest.typeString = @"includedManifest";
+                newIncludedManifest.originalIndexValue = idx;
+                [manifest addIncludedManifestsFasterObject:newIncludedManifest];
+            }];
+			
+			/*NSArray *allManifests;
 			NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
 			[getAllManifests setEntity:manifestEntityDescr];
             [getAllManifests setReturnsObjectsAsFaults:NO];
@@ -241,8 +241,7 @@
 				} else {
 					newManifestInfo.isAvailableForEditingValue = NO;
 				}
-				
-			}];
+			}];*/
 			
 		} else {
 			NSLog(@"Can't read manifest file %@", [self.sourceURL relativePath]);

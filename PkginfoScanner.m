@@ -459,8 +459,8 @@
 				aNewApplication.munki_name = aNewPackage.munki_name;
 				aNewApplication.munki_description = aNewPackage.munki_description;
 				[aNewApplication addPackagesObject:aNewPackage];
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewApplication.munki_description: \"%@\"", aNewApplication.munki_description);
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewPackage.munki_description: \"%@\"", aNewPackage.munki_description);
+                //if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewApplication.munki_description: \"%@\"", aNewApplication.munki_description);
+                //if ([self.defaults boolForKey:@"debug"]) NSLog(@"aNewPackage.munki_description: \"%@\"", aNewPackage.munki_description);
 			} else if (numFoundApplications == 1) {
 				ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
 				[existingApplication addPackagesObject:aNewPackage];
