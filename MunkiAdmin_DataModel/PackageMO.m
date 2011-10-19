@@ -345,4 +345,9 @@
 	return [self.munki_display_name stringByAppendingFormat:@" - version %@", self.munki_version];
 }
 
+- (NSString *)titleWithVersion
+{
+    return [NSString stringWithFormat:@"%@-%@", self.munki_name, self.munki_version];
+}
+
 @end

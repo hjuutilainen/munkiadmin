@@ -28,6 +28,7 @@
 @class ManifestsArrayController;
 @class PreferencesController;
 @class ManifestDetailView;
+@class AddItemsWindow;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -50,6 +51,8 @@
 	NSView *packagesDetailView;
 	NSView *manifestsDetailView;
     ManifestDetailView *manifestDetailViewController;
+    AddItemsWindow *addItemsWindowController;
+    NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
 	
 	// The current master and detail view
@@ -133,6 +136,7 @@
 @property (retain) NSString *currentStatusDescription;
 @property (retain) NSString *queueStatusDescription;
 @property (retain) NSString *jobDescription;
+@property (retain) NSString *addItemsType;
 
 # pragma mark -
 # pragma mark IBOutlet declarations
@@ -196,6 +200,9 @@
 - (IBAction)disableAllPackagesForManifestAction:sender;
 
 - (IBAction)addNewManagedInstallAction:(id)sender;
+- (IBAction)addNewManagedUninstallAction:(id)sender;
+- (IBAction)addNewManagedUpdateAction:(id)sender;
+- (IBAction)addNewOptionalInstallAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods

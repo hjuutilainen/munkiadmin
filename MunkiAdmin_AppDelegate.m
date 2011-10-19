@@ -10,6 +10,7 @@
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
 #import "ManifestDetailView.h"
+#import "AddItemsWindow.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -17,6 +18,7 @@
 @synthesize receiptsArrayController;
 @synthesize pkgsForAddingArrayController;
 @synthesize pkgGroupsForAddingArrayController;
+@synthesize addItemsType;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -249,6 +251,8 @@
 	}
 	
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
+    addItemsWindowController = [[AddItemsWindow alloc] initWithWindowNibName:@"AddItemsWindow"];
+    
     
 	// Configure segmented control
 	NSWorkspace *wp = [NSWorkspace sharedWorkspace];
@@ -853,25 +857,169 @@
           contextInfo:nil];
 }*/
 
+- (IBAction)addNewManagedInstallAction:(id)sender
+{
+    self.addItemsType = @"managedInstall";
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aManagedInstall in [selectedManifest managedInstallsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+
+- (IBAction)addNewManagedUninstallAction:(id)sender
+{
+    self.addItemsType = @"managedUninstall";
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aManagedUninstall in [selectedManifest managedUninstallsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUninstall.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+- (IBAction)addNewManagedUpdateAction:(id)sender
+{
+    self.addItemsType = @"managedUpdate";
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aManagedUpdate in [selectedManifest managedUpdatesFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUpdate.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+- (IBAction)addNewOptionalInstallAction:(id)sender
+{
+    self.addItemsType = @"optionalInstall";
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *anOptionalInstall in [selectedManifest optionalInstallsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", anOptionalInstall.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+
+
 - (IBAction)processAddItemsAction:sender
 {
+    NSString *selectedTabViewLabel = [[[addItemsWindowController tabView] selectedTabViewItem] label];
     for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
-		for (PackageMO *aPackage in [pkgsForAddingArrayController selectedObjects]) {
-            StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
-            newManagedInstall.title = aPackage.munki_name;
-            newManagedInstall.typeString = @"managedInstall";
-            //newManagedInstall.originalIndexValue = idx;
-            [selectedManifest addManagedInstallsFasterObject:newManagedInstall];
-		}
+        
+        if ([selectedTabViewLabel isEqualToString:@"Grouped"]) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Grouped mode");
+            for (ApplicationMO *anApp in [[addItemsWindowController groupedPkgsArrayController] selectedObjects]) {
+                StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+                newItem.title = anApp.munki_name;
+                
+                if ([self.addItemsType isEqualToString:@"managedInstall"]) {
+                    newItem.typeString = @"managedInstall";
+                    [selectedManifest addManagedInstallsFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
+                    newItem.typeString = @"managedUninstall";
+                    [selectedManifest addManagedUninstallsFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
+                    newItem.typeString = @"managedUpdate";
+                    [selectedManifest addManagedUpdatesFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
+                    newItem.typeString = @"optionalInstall";
+                    [selectedManifest addOptionalInstallsFasterObject:newItem];
+                }
+            }
+        } else if ([selectedTabViewLabel isEqualToString:@"Individual"]) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Individual mode");
+            for (PackageMO *aPackage in [[addItemsWindowController individualPkgsArrayController] selectedObjects]) {
+                StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+                NSString *newTitle = [NSString stringWithFormat:@"%@-%@", aPackage.munki_name, aPackage.munki_version];
+                newItem.title = newTitle;
+                
+                if ([self.addItemsType isEqualToString:@"managedInstall"]) {
+                    newItem.typeString = @"managedInstall";
+                    [selectedManifest addManagedInstallsFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
+                    newItem.typeString = @"managedUninstall";
+                    [selectedManifest addManagedUninstallsFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
+                    newItem.typeString = @"managedUpdate";
+                    [selectedManifest addManagedUpdatesFasterObject:newItem];
+                }
+                else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
+                    newItem.typeString = @"optionalInstall";
+                    [selectedManifest addOptionalInstallsFasterObject:newItem];
+                }
+            }
+        } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Custom mode");
+            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+            NSString *newTitle = [[addItemsWindowController customValueTextField] stringValue];
+            newItem.title = newTitle;
+            
+            if ([self.addItemsType isEqualToString:@"managedInstall"]) {
+                newItem.typeString = @"managedInstall";
+                [selectedManifest addManagedInstallsFasterObject:newItem];
+            }
+            else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
+                newItem.typeString = @"managedUninstall";
+                [selectedManifest addManagedUninstallsFasterObject:newItem];
+            }
+            else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
+                newItem.typeString = @"managedUpdate";
+                [selectedManifest addManagedUpdatesFasterObject:newItem];
+            }
+            else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
+                newItem.typeString = @"optionalInstall";
+                [selectedManifest addOptionalInstallsFasterObject:newItem];
+            }
+        }
 	}
-	[NSApp endSheet:addItemsWindow];
-	[addItemsWindow close];
+	[NSApp endSheet:[addItemsWindowController window]];
+	[[addItemsWindowController window] close];
 }
 
 - (IBAction)cancelAddItemsAction:sender
 {
-	[NSApp endSheet:addItemsWindow];
-	[addItemsWindow close];
+	[NSApp endSheet:[addItemsWindowController window]];
+	[[addItemsWindowController window] close];
 }
 
 
@@ -900,24 +1048,6 @@
 	}
 }
 
-- (IBAction)addNewManagedInstallAction:(id)sender
-{
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
-    
-    for (StringObjectMO *aManagedInstall in [selectedManifest managedInstallsFaster]) {
-        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
-        [tempPredicates addObject:newPredicate];
-    }
-    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [pkgsForAddingArrayController setFilterPredicate:compPred];
-    [pkgGroupsForAddingArrayController setFilterPredicate:compPred];
-    [tempPredicates release];
-    
-    [NSApp beginSheet:addItemsWindow 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
-}
 
 - (IBAction)addNewInstallsItem:sender
 {

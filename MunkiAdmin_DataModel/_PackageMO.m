@@ -423,6 +423,13 @@
 
 
 
+@dynamic titleWithVersion;
+
+
+
+
+
+
 @dynamic blockingApplications;
 
 	

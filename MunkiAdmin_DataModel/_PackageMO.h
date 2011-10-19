@@ -46,6 +46,7 @@
 @class NSObject;
 @class NSObject;
 
+
 @interface PackageMOID : NSManagedObjectID {}
 @end
 
@@ -318,6 +319,14 @@
 
 
 //- (BOOL)validatePackageURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString *titleWithVersion;
+
+
+//- (BOOL)validateTitleWithVersion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -653,6 +662,12 @@
 
 - (NSObject*)primitivePackageURL;
 - (void)setPrimitivePackageURL:(NSObject*)value;
+
+
+
+
+- (NSString*)primitiveTitleWithVersion;
+- (void)setPrimitiveTitleWithVersion:(NSString*)value;
 
 
 
