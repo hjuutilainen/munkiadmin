@@ -596,7 +596,7 @@
 			newCatalogInfo.isEnabledForManifestValue = NO;
 		}
 		
-		for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
+		/*for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
 			[anApplication addManifestsObject:manifest];
 			
 			ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
@@ -618,7 +618,7 @@
 			newOptionalInstall.manifest = manifest;
 			[anApplication addApplicationProxiesObject:newOptionalInstall];
 			newOptionalInstall.isEnabledValue = NO;
-		}
+		}*/
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
         
