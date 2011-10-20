@@ -298,10 +298,35 @@
 	[mainTabView setDelegate:self];
 	[mainSplitView setDelegate:self];
 	
-	self.selectedViewTag = 0;
-	self.selectedViewDescr = @"Packages";
-	currentDetailView = packagesDetailView;
-	currentSourceView = packagesListView;
+	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
+		self.selectedViewTag = 0;
+		self.selectedViewDescr = @"Packages";
+		currentDetailView = packagesDetailView;
+		currentSourceView = packagesListView;
+		[mainSegmentedControl setSelectedSegment:0];
+	}
+	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
+		self.selectedViewTag = 1;
+		self.selectedViewDescr = @"Catalogs";
+		currentDetailView = catalogsDetailView;
+		currentSourceView = catalogsListView;
+		[mainSegmentedControl setSelectedSegment:1];
+	}
+	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
+		self.selectedViewTag = 2;
+		self.selectedViewDescr = @"Manifests";
+		currentDetailView = [manifestDetailViewController view];
+		currentSourceView = manifestsListView;
+		[mainSegmentedControl setSelectedSegment:2];
+	}
+	else {
+		self.selectedViewTag = 0;
+		self.selectedViewDescr = @"Packages";
+		currentDetailView = packagesDetailView;
+		currentSourceView = packagesListView;
+		[mainSegmentedControl setSelectedSegment:0];
+	}
+	
 	[self changeItemView];
 	
 	[self.window center];
@@ -345,9 +370,10 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	NSURL *tempURL = [self chooseRepositoryFolder];
-	if (tempURL != nil)
-		[self selectRepoAtURL:tempURL];
+	//NSURL *tempURL = [self chooseRepositoryFolder];
+	//if (tempURL != nil) {
+		//[self selectRepoAtURL:tempURL];
+	//}
 }
 
 
