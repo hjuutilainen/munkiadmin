@@ -54,6 +54,7 @@
     AddItemsWindow *addItemsWindowController;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
+    NSView *makepkginfoOptionsView;
 	
 	// The current master and detail view
 	// that we are displaying
@@ -118,6 +119,7 @@
 @property (assign) IBOutlet NSArrayController *receiptsArrayController;
 @property (assign) IBOutlet PackageArrayController *pkgsForAddingArrayController;
 @property (assign) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
+@property (assign) IBOutlet NSView *makepkginfoOptionsView;
 
 # pragma mark -
 # pragma mark Variable declarations
@@ -187,7 +189,7 @@
 - (IBAction)createNewRepository:sender;
 - (IBAction)createNewManifestAction:sender;
 - (IBAction)createNewCatalogAction:sender;
-- (IBAction)openAddItemsWindowAction:sender;
+//- (IBAction)openAddItemsWindowAction:sender;
 - (IBAction)cancelAddItemsAction:sender;
 - (IBAction)addNewPackage:sender;
 - (IBAction)addNewInstallsItem:sender;

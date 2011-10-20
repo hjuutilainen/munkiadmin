@@ -19,6 +19,7 @@
 @synthesize pkgsForAddingArrayController;
 @synthesize pkgGroupsForAddingArrayController;
 @synthesize addItemsType;
+@synthesize makepkginfoOptionsView;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -228,6 +229,31 @@
 		return nil;
 	}
 }
+
+
+- (NSArray *)chooseFilesForMakepkginfo
+{
+	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+	openPanel.title = @"Select a File";
+	openPanel.allowsMultipleSelection = YES;
+	openPanel.canChooseDirectories = NO;
+	openPanel.canChooseFiles = YES;
+	openPanel.resolvesAliases = YES;
+    
+    [openPanel setAccessoryView:self.makepkginfoOptionsView];
+	
+	// Make the accessory view first responder
+	//[openPanel layout];
+	//[[openPanel window] makeFirstResponder:createNewManifestCustomView];
+	
+	if ([openPanel runModal] == NSOKButton)
+	{
+		return [openPanel URLs];
+	} else {
+		return nil;
+	}
+}
+
 
 - (NSURL *)showSavePanel
 {
@@ -1030,7 +1056,7 @@
 	}
 	
 	if ([self makepkginfoInstalled]) {
-		NSArray *filesToAdd = [self chooseFiles];
+		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
 		if (filesToAdd) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", [filesToAdd count]);
 			
