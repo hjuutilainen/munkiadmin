@@ -17,6 +17,7 @@
 	IBOutlet NSWindow *myWindow;
 	IBOutlet NSView *generalView;
 	IBOutlet NSView *munkiView;
+    IBOutlet NSView *advancedView;
 
 }
 

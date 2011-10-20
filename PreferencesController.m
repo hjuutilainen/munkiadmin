@@ -37,6 +37,18 @@
     [munkiItem setAction:@selector(switchViews:)];
     [items setObject:munkiItem forKey:@"Munki"];
     [munkiItem release];
+    
+    
+    NSToolbarItem *advancedItem;
+	advancedItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Advanced"];
+    [advancedItem setPaletteLabel:@"Advanced"];
+    [advancedItem setLabel:@"Advanced"];
+    [advancedItem setToolTip:@"Advanced options."];
+    [advancedItem setImage:[NSImage imageNamed:@"NSAdvanced"]];
+    [advancedItem setTarget:self];
+    [advancedItem setAction:@selector(switchViews:)];
+    [items setObject:advancedItem forKey:@"Advanced"];
+    [advancedItem release];
 	
     //any other items you want to add, do so here.
     //after you are done, just do all the toolbar stuff.
@@ -71,6 +83,8 @@
         prefsView = generalView;
     } else if ([sender isEqualToString:@"Munki"]) {
         prefsView = munkiView;
+    } else if ([sender isEqualToString:@"Advanced"]) {
+        prefsView = advancedView;
     } else {
         prefsView = munkiView;
     }
@@ -104,7 +118,7 @@
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)theToolbar
 {
-    return [NSArray arrayWithObjects:@"General", @"Munki", @"Appearance", nil];
+    return [NSArray arrayWithObjects:@"General", @"Munki", @"Advanced", nil];
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers: (NSToolbar *)toolbar
