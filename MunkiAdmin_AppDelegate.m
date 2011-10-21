@@ -120,7 +120,7 @@
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		//NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
 		NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", [allObjects count], [entDescr name]);
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
@@ -169,7 +169,7 @@
 	openPanel.resolvesAliases = YES;
 	openPanel.directoryURL = [NSURL URLWithString:[self.defaults stringForKey:@"openRepositoryLastDir"]];
 	
-	if ([openPanel runModal] == NSOKButton)
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		NSString *lastPath = [[[openPanel URLs] objectAtIndex:0] relativePath];
 		[self.defaults setValue:lastPath forKey:@"openRepositoryLastDir"];
@@ -188,7 +188,7 @@
 	openPanel.canChooseFiles = NO;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSOKButton)
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [openPanel URLs];
 	} else {
@@ -205,7 +205,7 @@
 	openPanel.canChooseFiles = YES;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSOKButton)
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [[openPanel URLs] objectAtIndex:0];
 	} else {
@@ -222,7 +222,7 @@
 	openPanel.canChooseFiles = YES;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSOKButton)
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [openPanel URLs];
 	} else {
@@ -246,7 +246,7 @@
 	//[openPanel layout];
 	//[[openPanel window] makeFirstResponder:createNewManifestCustomView];
 	
-	if ([openPanel runModal] == NSOKButton)
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [openPanel URLs];
 	} else {
@@ -259,7 +259,7 @@
 {
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = @"New Repository";
-	if ([savePanel runModal] == NSOKButton)
+	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [savePanel URL];
 	} else {
@@ -370,10 +370,27 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	//NSURL *tempURL = [self chooseRepositoryFolder];
-	//if (tempURL != nil) {
-		//[self selectRepoAtURL:tempURL];
-	//}
+    
+    // Select a repository
+    if ([self.defaults integerForKey:@"startupWhatToDo"] == 1) {
+        NSURL *tempURL = [self chooseRepositoryFolder];
+        if (tempURL != nil) {
+            [self selectRepoAtURL:tempURL];
+        }
+    }
+    
+    // Open previous repository
+    else if ([self.defaults integerForKey:@"startupWhatToDo"] == 2) {
+        NSURL *tempURL = [self.defaults URLForKey:@"selectedRepositoryPath"];
+        if (tempURL != nil) {
+            [self selectRepoAtURL:tempURL];
+        }
+    }
+    // Do nothing
+    else if ([self.defaults integerForKey:@"startupWhatToDo"] == 0) {
+        
+    }
+	
 }
 
 
@@ -652,30 +669,6 @@
 			newCatalogInfo.isEnabledForManifestValue = NO;
 		}
 		
-		/*for (ApplicationMO *anApplication in [self allObjectsForEntity:@"Application"]) {
-			[anApplication addManifestsObject:manifest];
-			
-			ManagedInstallMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedInstall" inManagedObjectContext:moc];
-			newManagedInstall.manifest = manifest;
-			[anApplication addApplicationProxiesObject:newManagedInstall];
-			newManagedInstall.isEnabledValue = NO;
-			
-			ManagedUninstallMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc];
-			newManagedUninstall.manifest = manifest;
-			[anApplication addApplicationProxiesObject:newManagedUninstall];
-			newManagedUninstall.isEnabledValue = NO;
-			
-			ManagedUpdateMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc];
-			newManagedUpdate.manifest = manifest;
-			[anApplication addApplicationProxiesObject:newManagedUpdate];
-			newManagedUpdate.isEnabledValue = NO;
-			
-			OptionalInstallMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc];
-			newOptionalInstall.manifest = manifest;
-			[anApplication addApplicationProxiesObject:newOptionalInstall];
-			newOptionalInstall.isEnabledValue = NO;
-		}*/
-		
     } else if ( result == NSAlertSecondButtonReturn ) {
         
     }
@@ -849,7 +842,7 @@
 		[fetchForApplications release];
 	}
 	else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %lu results found for package search", numFoundPkgs);
+		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %lu results found for package search", (unsigned long)numFoundPkgs);
 	}
 
 	[fetchForPackage release];
@@ -1084,7 +1077,7 @@
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
 		if (filesToAdd) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", [filesToAdd count]);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", (unsigned long)[filesToAdd count]);
 			
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
@@ -1109,7 +1102,7 @@
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFiles];
 		if (filesToAdd) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", [filesToAdd count]);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
 					MunkiOperation *theOp = [MunkiOperation installsItemFromURL:fileToAdd];
@@ -1323,210 +1316,26 @@
 			self.pkgsInfoURL = [self.repoURL URLByAppendingPathComponent:@"pkgsinfo"];
 			self.catalogsURL = [self.repoURL URLByAppendingPathComponent:@"catalogs"];
 			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
+            
+            [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
 			
 			[self scanCurrentRepoForCatalogFiles];
-			
 			[self scanCurrentRepoForPackages];
-			
 			[self scanCurrentRepoForManifests];
-			//[self scanCurrentRepoForIncludedManifests];
-			//[self checkMaxVersionsForCatalogs];
-			[self showProgressPanel];
+			
+            [self showProgressPanel];
 		} else {
 			NSLog(@"Not a repo!");
+            NSAlert *notRepoAlert = [NSAlert alertWithMessageText:@"Invalid repository"
+                                                    defaultButton:@"OK"
+                                                  alternateButton:@""
+                                                      otherButton:@""
+                                        informativeTextWithFormat:@"Munki repositories usually contain subdirectories for catalogs, manifests and pkginfo files."];
+            [notRepoAlert runModal];
 		}
 	}
 }
 
-
-/*- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties
-{
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-	NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
-	
-	// Get all Catalog managed objects for later use
-	NSArray *allCatalogs;
-	NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
-	[getAllCatalogs setEntity:catalogEntityDescr];
-	allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-	[getAllCatalogs release];
-	
-	// Get all Application managed objects for later use
-	NSArray *allApplications;
-	NSFetchRequest *getAllApplications = [[NSFetchRequest alloc] init];
-	[getAllApplications setEntity:applicationEntityDescr];
-	allApplications = [moc executeFetchRequest:getAllApplications error:nil];
-	[getAllApplications release];
-	
-	// Get all Manifest managed objects for later use
-	NSArray *allManifests;
-	NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
-	[getAllManifests setEntity:manifestEntityDescr];
-	allManifests = [moc executeFetchRequest:getAllManifests error:nil];
-	[getAllManifests release];
-
-	
-	PackageMO *aNewPackage = [NSEntityDescription insertNewObjectForEntityForName:@"Package" inManagedObjectContext:moc];
-	
-	// Get standard munki attributes from the property list file
-	NSString *name = [properties objectForKey:@"name"];
-	if (name != nil) {
-		aNewPackage.munki_name = [properties objectForKey:@"name"];
-	} else {
-		NSLog(@"Key \"name\" not found in package properties. Can't continue.");
-		return nil;
-	}
-	
-	NSString *display_name = [properties objectForKey:@"display_name"];
-	aNewPackage.munki_display_name = (display_name != nil) ? display_name : aNewPackage.munki_name;
-	NSString *description = [properties objectForKey:@"description"];
-	aNewPackage.munki_description = (description != nil) ? description : @"";
-	NSNumber *installer_size = [properties objectForKey:@"installed_size"];
-	aNewPackage.munki_installed_size = (installer_size != nil) ? installer_size : [NSNumber numberWithInt:0];
-	NSNumber *autoremove = [properties objectForKey:@"autoremove"];
-	aNewPackage.munki_autoremove = (autoremove != nil) ? autoremove : [NSNumber numberWithBool:NO];
-	NSString *installer_item_location = [properties objectForKey:@"installer_item_location"];
-	aNewPackage.munki_installer_item_location = (installer_item_location != nil) ? installer_item_location : @"";
-	NSNumber *installer_item_size = [properties objectForKey:@"installer_item_size"];
-	aNewPackage.munki_installer_item_size = (installer_item_size != nil) ? installer_item_size : [NSNumber numberWithInt:0];
-	NSString *installer_item_hash = [properties objectForKey:@"installer_item_hash"];
-	aNewPackage.munki_installer_item_hash = (installer_item_hash != nil) ? installer_item_hash : @"";
-	NSString *minimum_os_version = [properties objectForKey:@"minimum_os_version"];
-	aNewPackage.munki_minimum_os_version = (minimum_os_version != nil) ? minimum_os_version : @"";
-	NSString *uninstall_method = [properties objectForKey:@"uninstall_method"];
-	aNewPackage.munki_uninstall_method = (uninstall_method != nil) ? uninstall_method : @"";
-	NSNumber *uninstallable = [properties objectForKey:@"uninstallable"];
-	aNewPackage.munki_uninstallable = (uninstallable != nil) ? uninstallable : [NSNumber numberWithBool:NO];
-	NSString *version = [properties objectForKey:@"version"];
-	aNewPackage.munki_version = (version != nil) ? version : @"";
-	NSString *installer_type = [properties objectForKey:@"installer_type"];
-	aNewPackage.munki_installer_type = (installer_type != nil) ? installer_type : @"";
-	
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Creating a new package object with name: %@, version: %@", name, version);
-	}
-	if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
-		NSLog(@"Creating a new package object with properties: %@", [properties description]);
-	}
-	
-	// Get receipts
-	NSArray *itemReceipts = [properties objectForKey:@"receipts"];
-	for (NSDictionary *aReceipt in itemReceipts) {
-		ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
-		aNewReceipt.munki_filename = [aReceipt objectForKey:@"filename"];
-		aNewReceipt.munki_installed_size = [aReceipt objectForKey:@"installed_size"];
-		aNewReceipt.munki_packageid = [aReceipt objectForKey:@"packageid"];
-		aNewReceipt.munki_version = [aReceipt objectForKey:@"version"];
-		aNewReceipt.package = aNewPackage;
-	}
-	
-	// Get installs items
-	NSArray *installItems = [properties objectForKey:@"installs"];
-	for (NSDictionary *anInstall in installItems) {
-		InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
-		aNewInstallsItem.munki_CFBundleIdentifier = [anInstall objectForKey:@"CFBundleIdentifier"];
-		aNewInstallsItem.munki_CFBundleName = [anInstall objectForKey:@"CFBundleName"];
-		aNewInstallsItem.munki_CFBundleShortVersionString = [anInstall objectForKey:@"CFBundleShortVersionString"];
-		aNewInstallsItem.munki_path = [anInstall objectForKey:@"path"];
-		aNewInstallsItem.munki_type = [anInstall objectForKey:@"type"];
-		[aNewInstallsItem addPackagesObject:aNewPackage];
-	}
-	
-	// Get catalogs
-	NSArray *catalogs = [properties objectForKey:@"catalogs"];
-	
-	// Loop through Catalog managed objects
-	for (CatalogMO *aCatalog in allCatalogs) {
-		CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-		newCatalogInfo.package = aNewPackage;
-		newCatalogInfo.catalog.title = aCatalog.title;
-		
-		[aCatalog addPackagesObject:aNewPackage];
-		[aCatalog addCatalogInfosObject:newCatalogInfo];
-		
-		PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-		newPackageInfo.catalog = aCatalog;
-		newPackageInfo.title = [aNewPackage.munki_display_name stringByAppendingFormat:@" %@", aNewPackage.munki_version];
-		newPackageInfo.package = aNewPackage;
-		
-		if ([catalogs containsObject:aCatalog.title]) {
-			newCatalogInfo.isEnabledForPackageValue = YES;
-			newPackageInfo.isEnabledForCatalogValue = YES;
-		} else {
-			newCatalogInfo.isEnabledForPackageValue = NO;
-			newPackageInfo.isEnabledForCatalogValue = NO;
-		}
-	}
-	
-	for (NSString *aCatalog in catalogs) {
-		// Check if we already have a catalog with this name
-		NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
-		[fetchForCatalogs setEntity:catalogEntityDescr];
-		
-		NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title like[cd] %@", aCatalog];
-		[fetchForCatalogs setPredicate:catalogTitlePredicate];
-		
-		NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
-		if (numFoundCatalogs == 0) {
-			//NSLog(@"Creating a new catalog %@", aCatalog);
-			CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
-			aNewCatalog.title = aCatalog;
-			[aNewCatalog addPackagesObject:aNewPackage];
-			CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-			newCatalogInfo.package = aNewPackage;
-			newCatalogInfo.catalog.title = aNewCatalog.title;
-			newCatalogInfo.isEnabledForPackageValue = YES;
-			[aNewCatalog addCatalogInfosObject:newCatalogInfo];
-		}
-		[fetchForCatalogs release];
-	}
-	
-	return aNewPackage;
-}*/
-
-
-/*- (void)assimilatePackageProperties:(PackageMO *)aPkg
-{
-	// Fetch for Application objects
-	
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-	
-	NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
-	[fetchForApplications setEntity:applicationEntityDescr];
-	NSPredicate *applicationTitlePredicate;
-	//if (strict) {
-	//	applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_display_name == %@", aPkg.munki_name, aPkg.munki_display_name];
-	//} else {
-		applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aPkg.munki_name];
-	//}
-	
-	[fetchForApplications setPredicate:applicationTitlePredicate];
-	
-	NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
-	if (numFoundApplications == 0) {
-		// No matching Applications found.
-		NSLog(@"Assimilator found zero matching Applications for package.");
-	} else if (numFoundApplications == 1) {
-		ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
-		if ([existingApplication hasCommonDescription]) {
-			if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
-				aPkg.munki_description = [[existingApplication.packages anyObject] munki_description];
-			}
-		}
-		[existingApplication addPackagesObject:aPkg];
-		if ([self.defaults boolForKey:@"UseExistingDisplayNameForPackages"]) {
-			aPkg.munki_display_name = existingApplication.munki_display_name;
-		}
-		
-	} else {
-		NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
-	}
-	
-	[fetchForApplications release];
-}*/
 
 - (void)groupPackage:(PackageMO *)aPkg
 {

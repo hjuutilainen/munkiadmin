@@ -147,7 +147,7 @@
 			// =================================
             NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
             [managedInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, idx, obj);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedInstall.title = (NSString *)obj;
                 newManagedInstall.typeString = @"managedInstall";
@@ -161,7 +161,7 @@
 			// =================================
             NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
             [managedUninstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, idx, obj);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedUninstall.title = (NSString *)obj;
                 newManagedUninstall.typeString = @"managedUninstall";
@@ -175,7 +175,7 @@
 			// =================================
             NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
             [managedUpdates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, idx, obj);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedUpdate.title = (NSString *)obj;
                 newManagedUpdate.typeString = @"managedUpdate";
@@ -189,7 +189,7 @@
 			// =================================
             NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
 			[optionalInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, idx, obj);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newOptionalInstall.title = (NSString *)obj;
                 newOptionalInstall.typeString = @"optionalInstall";
@@ -203,7 +203,7 @@
 			// =================================
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
             [includedManifests enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, idx, obj);
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newIncludedManifest.title = (NSString *)obj;
                 newIncludedManifest.typeString = @"includedManifest";
