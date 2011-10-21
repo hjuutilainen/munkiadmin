@@ -78,8 +78,8 @@
 		F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */; };
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
 		FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */; };
-		FEABB248144EB39B0006BDE8 /* AddItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* AddItemsWindow.m */; };
-		FEABB24A144EB3AF0006BDE8 /* AddItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* AddItemsWindow.xib */; };
+		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
+		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */; };
 		FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */; };
 /* End PBXBuildFile section */
@@ -213,9 +213,9 @@
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerChoicesItemMO.m; sourceTree = "<group>"; };
-		FEABB246144EB39B0006BDE8 /* AddItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddItemsWindow.h; sourceTree = "<group>"; };
-		FEABB247144EB39B0006BDE8 /* AddItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddItemsWindow.m; sourceTree = "<group>"; };
-		FEABB249144EB3AF0006BDE8 /* AddItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddItemsWindow.xib; sourceTree = "<group>"; };
+		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
+		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
+		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
 		FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestDetailView.h; sourceTree = "<group>"; };
 		FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestDetailView.m; sourceTree = "<group>"; };
 		FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ManifestDetailView.xib; sourceTree = "<group>"; };
@@ -447,9 +447,9 @@
 				FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */,
 				FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */,
 				FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */,
-				FEABB246144EB39B0006BDE8 /* AddItemsWindow.h */,
-				FEABB247144EB39B0006BDE8 /* AddItemsWindow.m */,
-				FEABB249144EB3AF0006BDE8 /* AddItemsWindow.xib */,
+				FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */,
+				FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */,
+				FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -525,7 +525,7 @@
 				F564874911B504520061B190 /* Preferences.xib in Resources */,
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */,
-				FEABB24A144EB3AF0006BDE8 /* AddItemsWindow.xib in Resources */,
+				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,7 +590,7 @@
 				FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */,
 				FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */,
 				FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */,
-				FEABB248144EB39B0006BDE8 /* AddItemsWindow.m in Sources */,
+				FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

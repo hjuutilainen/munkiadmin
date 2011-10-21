@@ -28,7 +28,7 @@
 @class ManifestsArrayController;
 @class PreferencesController;
 @class ManifestDetailView;
-@class AddItemsWindow;
+@class SelectPkginfoItemsWindow;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -51,7 +51,7 @@
 	NSView *packagesDetailView;
 	NSView *manifestsDetailView;
     ManifestDetailView *manifestDetailViewController;
-    AddItemsWindow *addItemsWindowController;
+    SelectPkginfoItemsWindow *addItemsWindowController;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;

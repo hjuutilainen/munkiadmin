@@ -10,7 +10,7 @@
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
 #import "ManifestDetailView.h"
-#import "AddItemsWindow.h"
+#import "SelectPkginfoItemsWindow.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -277,7 +277,7 @@
 	}
 	
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
-    addItemsWindowController = [[AddItemsWindow alloc] initWithWindowNibName:@"AddItemsWindow"];
+    addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     
     
 	// Configure segmented control
