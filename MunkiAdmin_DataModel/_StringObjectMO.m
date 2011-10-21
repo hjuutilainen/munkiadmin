@@ -114,6 +114,8 @@
 
 
 
+@dynamic manifestsWithSameTitle;
+
 @dynamic packagesWithSameTitle;
 
 

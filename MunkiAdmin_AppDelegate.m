@@ -11,6 +11,7 @@
 #import "MunkiOperation.h"
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
+#import "SelectManifestItemsWindow.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -278,6 +279,7 @@
 	
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
+    selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     
     
 	// Configure segmented control
@@ -902,6 +904,26 @@
           contextInfo:nil];
 }*/
 
+- (IBAction)addNewNestedManifestAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aNestedManifest in [selectedManifest includedManifestsFaster]) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
+    [tempPredicates addObject:denySelfPred];
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [[selectManifestsWindowController manifestsArrayController] setFilterPredicate:compPred];
+    [tempPredicates release];
+    
+    [NSApp beginSheet:[selectManifestsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+}
+
 - (IBAction)addNewManagedInstallAction:(id)sender
 {
     self.addItemsType = @"managedInstall";
@@ -978,6 +1000,31 @@
     [NSApp beginSheet:[addItemsWindowController window] 
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
+}
+
+- (IBAction)processAddNestedManifestAction:(id)sender
+{
+    NSString *selectedTabViewLabel = [[[selectManifestsWindowController tabView] selectedTabViewItem] label];
+    for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
+        if ([selectedTabViewLabel isEqualToString:@"Existing"]) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding nested manifest in Existing mode");
+            for (ManifestMO *aManifest in [[selectManifestsWindowController manifestsArrayController] selectedObjects]) {
+                StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+                newItem.title = aManifest.title;
+                newItem.typeString = @"includedManifest";
+                [selectedManifest addIncludedManifestsFasterObject:newItem];
+            }
+        } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding nested manifest in Custom mode");
+            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
+            NSString *newTitle = [[selectManifestsWindowController customValueTextField] stringValue];
+            newItem.title = newTitle;
+            newItem.typeString = @"includedManifest";
+            [selectedManifest addIncludedManifestsFasterObject:newItem];
+        }
+    }
+    [NSApp endSheet:[selectManifestsWindowController window]];
+	[[selectManifestsWindowController window] close];
 }
 
 
@@ -1067,6 +1114,12 @@
 	[[addItemsWindowController window] close];
 }
 
+
+- (IBAction)cancelAddNestedManifestsAction:sender
+{
+	[NSApp endSheet:[selectManifestsWindowController window]];
+	[[selectManifestsWindowController window] close];
+}
 
 - (IBAction)addNewPackage:sender
 {

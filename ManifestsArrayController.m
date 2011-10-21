@@ -14,7 +14,7 @@
 {
 	[super awakeFromNib];
 	
-	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
 }
 

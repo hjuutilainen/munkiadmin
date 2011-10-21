@@ -114,6 +114,8 @@
 
 
 
+@property (nonatomic, readonly) NSArray *manifestsWithSameTitle;
+
 @property (nonatomic, readonly) NSArray *packagesWithSameTitle;
 
 @end

@@ -55,15 +55,36 @@
 
 - (NSDictionary *)dictValue
 {
-	NSString *subtitle;
-	if ([self.applications count] == 0) {
+	NSString *subtitle = @"";
+	/*if ([self.applications count] == 0) {
 		subtitle = @"No applications";
 	} else if ([self.applications count] == 1) {
 		subtitle = @"1 application included";
 	} else {
 		subtitle = [NSString stringWithFormat:@"%i managed installs", [[self enabledManagedInstalls] count]];
-	}
+	}*/
+    
+    if ([self.managedInstallsFaster count] > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%i installs, ", [self.managedInstallsFaster count]];
+    }
+    if ([self.managedUninstallsFaster count] > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%i uninstalls, ", [self.managedUninstallsFaster count]];
+    }
+    if ([self.optionalInstallsFaster count] > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%i optional installs, ", [self.optionalInstallsFaster count]];
+    }
+    if ([self.managedUpdatesFaster count] > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%i updates, ", [self.managedUpdatesFaster count]];
+    }
+    if ([self.includedManifestsFaster count] > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%i nested manifests", [self.includedManifestsFaster count]];
+    }
 	
+    if ([subtitle isEqualToString:@""]) {
+        subtitle = @"Empty";
+    }
+    subtitle = [subtitle stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+    
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			self.title, @"title",
 			subtitle, @"subtitle",
