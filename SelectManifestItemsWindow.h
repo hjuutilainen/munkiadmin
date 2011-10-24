@@ -8,18 +8,22 @@
 #import <Cocoa/Cocoa.h>
 #import "GradientBackgroundView.h"
 
-@interface SelectManifestItemsWindow : NSWindowController {
+@interface SelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
     GradientBackgroundView *existingSearchBgView;
     GradientBackgroundView *customValueBgView;
     NSTextField *customValueTextField;
     NSTabView *tabView;
     NSArrayController *manifestsArrayController;
+    NSSearchField *existingSearchField;
+    NSPredicate *originalPredicate;
 }
 
+@property (copy) NSPredicate *originalPredicate;
 @property (assign) IBOutlet GradientBackgroundView *existingSearchBgView;
 @property (assign) IBOutlet GradientBackgroundView *customValueBgView;
 @property (assign) IBOutlet NSTextField *customValueTextField;
 @property (assign) IBOutlet NSTabView *tabView;
 @property (assign) IBOutlet NSArrayController *manifestsArrayController;
+@property (assign) IBOutlet NSSearchField *existingSearchField;
 
 @end

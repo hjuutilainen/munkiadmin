@@ -906,6 +906,10 @@
 
 - (IBAction)addNewNestedManifestAction:(id)sender
 {
+    [NSApp beginSheet:[selectManifestsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
@@ -916,17 +920,19 @@
     NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
     [tempPredicates addObject:denySelfPred];
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [[selectManifestsWindowController manifestsArrayController] setFilterPredicate:compPred];
+    //[[selectManifestsWindowController manifestsArrayController] setFilterPredicate:compPred];
+    [selectManifestsWindowController setOriginalPredicate:compPred];
     [tempPredicates release];
-    
-    [NSApp beginSheet:[selectManifestsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
 }
 
 - (IBAction)addNewManagedInstallAction:(id)sender
 {
     self.addItemsType = @"managedInstall";
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
@@ -938,15 +944,16 @@
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
-    
-    [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
 }
 
 - (IBAction)addNewManagedUninstallAction:(id)sender
 {
     self.addItemsType = @"managedUninstall";
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
@@ -958,14 +965,15 @@
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
-    
-    [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
 }
 - (IBAction)addNewManagedUpdateAction:(id)sender
 {
     self.addItemsType = @"managedUpdate";
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
@@ -977,14 +985,15 @@
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
-    
-    [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
 }
 - (IBAction)addNewOptionalInstallAction:(id)sender
 {
     self.addItemsType = @"optionalInstall";
+    
+    [NSApp beginSheet:[addItemsWindowController window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
@@ -996,10 +1005,6 @@
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
-    
-    [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
 }
 
 - (IBAction)processAddNestedManifestAction:(id)sender

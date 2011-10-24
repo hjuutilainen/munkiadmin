@@ -8,11 +8,14 @@
 #import "SelectManifestItemsWindow.h"
 
 @implementation SelectManifestItemsWindow
+
+@dynamic originalPredicate;
 @synthesize existingSearchBgView;
 @synthesize customValueBgView;
 @synthesize customValueTextField;
 @synthesize tabView;
 @synthesize manifestsArrayController;
+@synthesize existingSearchField;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -22,6 +25,13 @@
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [originalPredicate release];
+    [manifestsArrayController release];
+    [super dealloc];
 }
 
 - (void)windowDidLoad
@@ -38,6 +48,41 @@
                                                                     endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
     self.customValueBgView.drawBottomLine = YES;
     self.customValueBgView.lineColor = [NSColor grayColor];
+    
+    [existingSearchField setDelegate:self];
+    
+    [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
+}
+
+
+- (NSPredicate *)originalPredicate
+{
+    return originalPredicate;
+}
+
+- (void)setOriginalPredicate:(NSPredicate *)newPredicate {
+    if (originalPredicate != newPredicate) {
+        [originalPredicate release];
+        originalPredicate = [newPredicate copy];
+        [self.manifestsArrayController setFilterPredicate:originalPredicate];
+    }
+}
+
+
+- (void)controlTextDidBeginEditing:(NSNotification *)aNotification
+{
+    //NSLog(@"controlTextDidBeginEditing");
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    if ([[self.existingSearchField stringValue] isEqualToString:@""]) {
+        [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
+    } else {
+        NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@", [self.existingSearchField stringValue]];
+        NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.originalPredicate, nil]];
+        [self.manifestsArrayController setFilterPredicate:merged];
+    }
 }
 
 @end

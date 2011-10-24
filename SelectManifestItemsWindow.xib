@@ -344,6 +344,31 @@
 												<int key="NSvFlags">266</int>
 												<object class="NSMutableArray" key="NSSubviews">
 													<bool key="EncodedWithXMLCoder">YES</bool>
+													<object class="NSTextField" id="584772838">
+														<reference key="NSNextResponder" ref="800187935"/>
+														<int key="NSvFlags">268</int>
+														<string key="NSFrame">{{17, 11}, {290, 17}}</string>
+														<reference key="NSSuperview" ref="800187935"/>
+														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="165025105"/>
+														<string key="NSReuseIdentifierKey">_NS:3944</string>
+														<bool key="NSEnabled">YES</bool>
+														<object class="NSTextFieldCell" key="NSCell" id="282590803">
+															<int key="NSCellFlags">68288064</int>
+															<int key="NSCellFlags2">272630784</int>
+															<string key="NSContents">Label</string>
+															<reference key="NSSupport" ref="502174331"/>
+															<string key="NSCellIdentifier">_NS:3944</string>
+															<reference key="NSControlView" ref="584772838"/>
+															<object class="NSColor" key="NSBackgroundColor" id="4822016">
+																<int key="NSColorSpace">6</int>
+																<string key="NSCatalogName">System</string>
+																<string key="NSColorName">controlColor</string>
+																<reference key="NSColor" ref="307696695"/>
+															</object>
+															<reference key="NSTextColor" ref="557445630"/>
+														</object>
+													</object>
 													<object class="NSSearchField" id="165025105">
 														<reference key="NSNextResponder" ref="800187935"/>
 														<int key="NSvFlags">265</int>
@@ -418,7 +443,7 @@
 												<string key="NSFrame">{{-1, 444}, {472, 38}}</string>
 												<reference key="NSSuperview" ref="239884254"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="165025105"/>
+												<reference key="NSNextKeyView" ref="584772838"/>
 												<string key="NSReuseIdentifierKey">_NS:1192</string>
 												<string key="NSClassName">GradientBackgroundView</string>
 											</object>
@@ -429,12 +454,7 @@
 										<reference key="NSNextKeyView" ref="800187935"/>
 									</object>
 									<string key="NSLabel">Existing</string>
-									<object class="NSColor" key="NSColor" id="4822016">
-										<int key="NSColorSpace">6</int>
-										<string key="NSCatalogName">System</string>
-										<string key="NSColorName">controlColor</string>
-										<reference key="NSColor" ref="307696695"/>
-									</object>
+									<reference key="NSColor" ref="4822016"/>
 									<reference key="NSTabView" ref="100646500"/>
 								</object>
 								<object class="NSTabViewItem" id="720143494">
@@ -449,7 +469,6 @@
 												<int key="NSvFlags">298</int>
 												<string key="NSFrame">{{113, 230}, {290, 22}}</string>
 												<reference key="NSSuperview" ref="1035811594"/>
-												<reference key="NSNextKeyView" ref="369747566"/>
 												<string key="NSReuseIdentifierKey">_NS:903</string>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="820788994">
@@ -564,11 +583,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">existingSearchField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="165025105"/>
+					</object>
+					<int key="connectionID">56</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">manifestsArrayController</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="802429639"/>
 					</object>
-					<int key="connectionID">50</int>
+					<int key="connectionID">57</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -628,32 +655,23 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">predicate: filterPredicate</string>
-						<reference key="source" ref="165025105"/>
+						<string key="label">displayPatternValue1: arrangedObjects.@count</string>
+						<reference key="source" ref="584772838"/>
 						<reference key="destination" ref="802429639"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="165025105"/>
+							<reference key="NSSource" ref="584772838"/>
 							<reference key="NSDestination" ref="802429639"/>
-							<string key="NSLabel">predicate: filterPredicate</string>
-							<string key="NSBinding">predicate</string>
-							<string key="NSKeyPath">filterPredicate</string>
+							<string key="NSLabel">displayPatternValue1: arrangedObjects.@count</string>
+							<string key="NSBinding">displayPatternValue1</string>
+							<string key="NSKeyPath">arrangedObjects.@count</string>
 							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSDisplayName</string>
-									<string>NSPredicateFormat</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>Title</string>
-									<string>title contains[cd] $value</string>
-								</object>
+								<string key="NS.key.0">NSDisplayPattern</string>
+								<string key="NS.object.0">Available manifests: %{value1}@</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">53</int>
+					<int key="connectionID">64</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -783,6 +801,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="165025105"/>
+							<reference ref="584772838"/>
 						</object>
 						<reference key="parent" ref="239884254"/>
 					</object>
@@ -906,6 +925,20 @@
 						<reference key="object" ref="224819083"/>
 						<reference key="parent" ref="328763890"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">58</int>
+						<reference key="object" ref="584772838"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="282590803"/>
+						</object>
+						<reference key="parent" ref="800187935"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">59</int>
+						<reference key="object" ref="282590803"/>
+						<reference key="parent" ref="584772838"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -949,6 +982,8 @@
 					<string>40.IBSegmentedControlInspectorSelectedSegmentMetadataKey</string>
 					<string>41.IBPluginDependency</string>
 					<string>42.IBPluginDependency</string>
+					<string>58.IBPluginDependency</string>
+					<string>59.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
@@ -1002,6 +1037,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1016,7 +1053,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">55</int>
+			<int key="maxID">64</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1047,6 +1084,7 @@
 							<string>customValueBgView</string>
 							<string>customValueTextField</string>
 							<string>existingSearchBgView</string>
+							<string>existingSearchField</string>
 							<string>manifestsArrayController</string>
 							<string>tabView</string>
 						</object>
@@ -1055,6 +1093,7 @@
 							<string>GradientBackgroundView</string>
 							<string>NSTextField</string>
 							<string>GradientBackgroundView</string>
+							<string>NSSearchField</string>
 							<string>NSArrayController</string>
 							<string>NSTabView</string>
 						</object>
@@ -1066,6 +1105,7 @@
 							<string>customValueBgView</string>
 							<string>customValueTextField</string>
 							<string>existingSearchBgView</string>
+							<string>existingSearchField</string>
 							<string>manifestsArrayController</string>
 							<string>tabView</string>
 						</object>
@@ -1082,6 +1122,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">existingSearchBgView</string>
 								<string key="candidateClassName">GradientBackgroundView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">existingSearchField</string>
+								<string key="candidateClassName">NSSearchField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">manifestsArrayController</string>
