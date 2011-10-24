@@ -1017,6 +1017,7 @@
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 newItem.title = aManifest.title;
                 newItem.typeString = @"includedManifest";
+                newItem.indexInNestedManifestValue = [selectedManifest.includedManifestsFaster count];
                 [selectedManifest addIncludedManifestsFasterObject:newItem];
             }
         } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
@@ -1025,6 +1026,7 @@
             NSString *newTitle = [[selectManifestsWindowController customValueTextField] stringValue];
             newItem.title = newTitle;
             newItem.typeString = @"includedManifest";
+            newItem.indexInNestedManifestValue = [selectedManifest.includedManifestsFaster count];
             [selectedManifest addIncludedManifestsFasterObject:newItem];
         }
     }
