@@ -239,7 +239,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="459059165"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="465133055">
 														<int key="NSCellFlags">-2080244224</int>
@@ -420,7 +419,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="427522403"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="1005437030">
 														<int key="NSCellFlags">-2080244224</int>
@@ -593,7 +591,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="407575700"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="877626915">
 														<int key="NSCellFlags">-2080244224</int>
@@ -766,7 +763,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="992120573"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="924179530">
 														<int key="NSCellFlags">-2080244224</int>
@@ -928,7 +924,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
-													<reference key="NSNextKeyView"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -1296,6 +1291,14 @@
 					<int key="connectionID">110</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nestedManifestsTableView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="484631154"/>
+					</object>
+					<int key="connectionID">222</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">addNewManagedInstallAction:</string>
 						<reference key="source" ref="1003"/>
@@ -1414,6 +1417,22 @@
 						</object>
 					</object>
 					<int key="connectionID">103</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="484631154"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">223</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="484631154"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">224</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2655,7 +2674,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">221</int>
+			<int key="maxID">224</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2703,6 +2722,7 @@
 						<string key="managedInstallsController">NSArrayController</string>
 						<string key="managedUninstallsController">NSArrayController</string>
 						<string key="managedUpdatesController">NSArrayController</string>
+						<string key="nestedManifestsTableView">NSTableView</string>
 						<string key="optionalInstallsController">NSArrayController</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -2725,6 +2745,10 @@
 						<object class="IBToOneOutletInfo" key="managedUpdatesController">
 							<string key="name">managedUpdatesController</string>
 							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="nestedManifestsTableView">
+							<string key="name">nestedManifestsTableView</string>
+							<string key="candidateClassName">NSTableView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="optionalInstallsController">
 							<string key="name">optionalInstallsController</string>

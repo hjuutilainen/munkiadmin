@@ -208,6 +208,7 @@
                 newIncludedManifest.title = (NSString *)obj;
                 newIncludedManifest.typeString = @"includedManifest";
                 newIncludedManifest.originalIndexValue = idx;
+                newIncludedManifest.indexInNestedManifestValue = idx;
                 [manifest addIncludedManifestsFasterObject:newIncludedManifest];
             }];
 			

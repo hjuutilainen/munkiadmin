@@ -17,6 +17,7 @@
 
 
 
+
 @interface StringObjectMOID : NSManagedObjectID {}
 @end
 
@@ -25,6 +26,18 @@
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (StringObjectMOID*)objectID;
+
+
+
+
+@property (nonatomic, retain) NSNumber *indexInNestedManifest;
+
+
+@property int indexInNestedManifestValue;
+- (int)indexInNestedManifestValue;
+- (void)setIndexInNestedManifestValue:(int)value_;
+
+//- (BOOL)validateIndexInNestedManifest:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -125,6 +138,15 @@
 @end
 
 @interface _StringObjectMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveIndexInNestedManifest;
+- (void)setPrimitiveIndexInNestedManifest:(NSNumber*)value;
+
+- (int)primitiveIndexInNestedManifestValue;
+- (void)setPrimitiveIndexInNestedManifestValue:(int)value_;
+
+
 
 
 - (NSNumber*)primitiveOriginalIndex;

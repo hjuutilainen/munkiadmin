@@ -249,9 +249,10 @@
 			[tmpDict setObject:[NSArray array] forKey:@"included_manifests"];
 		}
 	}*/
+    NSSortDescriptor *sortByIndexInNestedManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInNestedManifest" ascending:YES selector:@selector(compare:)];
     if ([self.includedManifestsFaster count] > 0) {
         NSMutableArray *includedManifests = [NSMutableArray arrayWithCapacity:[self.includedManifestsFaster count]];
-		for (StringObjectMO *includedManifest in [self.includedManifestsFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]]) {
+		for (StringObjectMO *includedManifest in [self.includedManifestsFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndexInNestedManifest, sortByTitle, nil]]) {
             [includedManifests addObject:includedManifest.title];
 		}
         [tmpDict setObject:includedManifests forKey:@"included_manifests"];
