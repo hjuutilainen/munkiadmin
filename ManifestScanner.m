@@ -130,13 +130,16 @@
 				
 				if (catalogs == nil) {
 					newCatalogInfo.isEnabledForManifestValue = NO;
-					newCatalogInfo.originalIndexValue = 1000;
+					newCatalogInfo.originalIndexValue = 0;
+                    newCatalogInfo.indexInManifestValue = 0;
 				} else if ([catalogs containsObject:catalogTitle]) {
 					newCatalogInfo.isEnabledForManifestValue = YES;
 					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:catalogTitle];
+                    newCatalogInfo.indexInManifestValue = [catalogs indexOfObject:catalogTitle];
 				} else {
 					newCatalogInfo.isEnabledForManifestValue = NO;
-					newCatalogInfo.originalIndexValue = 1000;
+					newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
+                    newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
 				}
 			}];
 			

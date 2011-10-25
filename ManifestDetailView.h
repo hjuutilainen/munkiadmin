@@ -15,6 +15,7 @@
     NSArrayController *catalogsController;
     NSArrayController *includedManifestsController;
     NSTableView *nestedManifestsTableView;
+    NSTableView *catalogsTableView;
 }
 
 @property (assign) IBOutlet NSArrayController *managedInstallsController;
@@ -24,6 +25,7 @@
 @property (assign) IBOutlet NSArrayController *catalogsController;
 @property (assign) IBOutlet NSArrayController *includedManifestsController;
 @property (assign) IBOutlet NSTableView *nestedManifestsTableView;
+@property (assign) IBOutlet NSTableView *catalogsTableView;
 
 
 @end

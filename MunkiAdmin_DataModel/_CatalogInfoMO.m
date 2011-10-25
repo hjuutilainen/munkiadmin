@@ -29,6 +29,10 @@
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"indexInManifestValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"indexInManifest"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"isEnabledForManifestValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -44,6 +48,32 @@
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic indexInManifest;
+
+
+
+- (int)indexInManifestValue {
+	NSNumber *result = [self indexInManifest];
+	return [result intValue];
+}
+
+- (void)setIndexInManifestValue:(int)value_ {
+	[self setIndexInManifest:[NSNumber numberWithInt:value_]];
+}
+
+- (int)primitiveIndexInManifestValue {
+	NSNumber *result = [self primitiveIndexInManifest];
+	return [result intValue];
+}
+
+- (void)setPrimitiveIndexInManifestValue:(int)value_ {
+	[self setPrimitiveIndexInManifest:[NSNumber numberWithInt:value_]];
+}
+
 
 
 

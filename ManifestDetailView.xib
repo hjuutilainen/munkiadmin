@@ -52,7 +52,7 @@
 						<string key="NSFrame">{{13, 10}, {779, 523}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1026205250"/>
+						<reference key="NSNextKeyView" ref="963743439"/>
 						<array class="NSMutableArray" key="NSTabViewItems">
 							<object class="NSTabViewItem" id="133922317">
 								<string key="NSIdentifier">1</string>
@@ -796,7 +796,7 @@
 							<object class="NSTabViewItem" id="1015024562">
 								<string key="NSIdentifier">2</string>
 								<object class="NSView" key="NSView" id="963743439">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="212067794"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="13419997">
@@ -812,6 +812,7 @@
 															<int key="NSvFlags">4352</int>
 															<string key="NSFrameSize">{723, 460}</string>
 															<reference key="NSSuperview" ref="358667418"/>
+															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="78568288"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="_NSCornerView" key="NSCornerView">
@@ -904,6 +905,7 @@
 													</array>
 													<string key="NSFrame">{{1, 1}, {723, 460}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="438998185"/>
 													<reference key="NSDocView" ref="438998185"/>
 													<reference key="NSBGColor" ref="879843702"/>
@@ -914,6 +916,7 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="359764760"/>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -924,6 +927,8 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
+													<reference key="NSWindow"/>
+													<reference key="NSNextKeyView"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -932,6 +937,7 @@
 											</array>
 											<string key="NSFrame">{{17, 17}, {725, 462}}</string>
 											<reference key="NSSuperview" ref="963743439"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="358667418"/>
 											<int key="NSsFlags">133682</int>
 											<reference key="NSVScroller" ref="78568288"/>
@@ -941,6 +947,8 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
+									<reference key="NSSuperview" ref="212067794"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="13419997"/>
 								</object>
 								<string key="NSLabel">Catalogs</string>
@@ -950,7 +958,7 @@
 							<object class="NSTabViewItem" id="26137867">
 								<string key="NSIdentifier">Item 2</string>
 								<object class="NSView" key="NSView" id="1026205250">
-									<reference key="NSNextResponder" ref="212067794"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="954655831">
@@ -966,7 +974,6 @@
 															<int key="NSvFlags">4352</int>
 															<string key="NSFrameSize">{723, 436}</string>
 															<reference key="NSSuperview" ref="654480195"/>
-															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="532963535"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="_NSCornerView" key="NSCornerView">
@@ -1022,7 +1029,6 @@
 													</array>
 													<string key="NSFrame">{{1, 1}, {723, 436}}</string>
 													<reference key="NSSuperview" ref="954655831"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="484631154"/>
 													<reference key="NSDocView" ref="484631154"/>
 													<reference key="NSBGColor" ref="879843702"/>
@@ -1033,7 +1039,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 													<reference key="NSSuperview" ref="954655831"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="191709709"/>
 													<reference key="NSTarget" ref="954655831"/>
 													<string key="NSAction">_doScroller:</string>
@@ -1045,7 +1050,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 76}, {143, 15}}</string>
 													<reference key="NSSuperview" ref="954655831"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="1070903424"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="954655831"/>
@@ -1055,7 +1059,6 @@
 											</array>
 											<string key="NSFrame">{{17, 41}, {725, 438}}</string>
 											<reference key="NSSuperview" ref="1026205250"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="654480195"/>
 											<int key="NSsFlags">133682</int>
 											<reference key="NSVScroller" ref="1070903424"/>
@@ -1072,7 +1075,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{2, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="191709709"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="884726659"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="1028265611">
@@ -1095,8 +1097,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="191709709"/>
-													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="490680572">
 														<int key="NSCellFlags">-2080244224</int>
@@ -1116,14 +1116,11 @@
 											</array>
 											<string key="NSFrame">{{17, 17}, {725, 25}}</string>
 											<reference key="NSSuperview" ref="1026205250"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="469023040"/>
 											<string key="NSClassName">GradientButtonBarView</string>
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
-									<reference key="NSSuperview" ref="212067794"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="954655831"/>
 								</object>
 								<string key="NSLabel">Nested Manifests</string>
@@ -1131,13 +1128,13 @@
 								<reference key="NSTabView" ref="212067794"/>
 							</object>
 						</array>
-						<reference key="NSSelectedTabViewItem" ref="26137867"/>
+						<reference key="NSSelectedTabViewItem" ref="1015024562"/>
 						<reference key="NSFont" ref="26"/>
 						<int key="NSTvFlags">134217728</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<array class="NSMutableArray" key="NSSubviews">
-							<reference ref="1026205250"/>
+							<reference ref="963743439"/>
 						</array>
 					</object>
 				</array>
@@ -1299,6 +1296,14 @@
 					<int key="connectionID">222</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">catalogsTableView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="438998185"/>
+					</object>
+					<int key="connectionID">225</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">addNewManagedInstallAction:</string>
 						<reference key="source" ref="1003"/>
@@ -1385,6 +1390,22 @@
 						</object>
 					</object>
 					<int key="connectionID">150</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="438998185"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">226</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="438998185"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">227</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2674,7 +2695,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">224</int>
+			<int key="maxID">227</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2718,6 +2739,7 @@
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="catalogsController">NSArrayController</string>
+						<string key="catalogsTableView">NSTableView</string>
 						<string key="includedManifestsController">NSArrayController</string>
 						<string key="managedInstallsController">NSArrayController</string>
 						<string key="managedUninstallsController">NSArrayController</string>
@@ -2729,6 +2751,10 @@
 						<object class="IBToOneOutletInfo" key="catalogsController">
 							<string key="name">catalogsController</string>
 							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="catalogsTableView">
+							<string key="name">catalogsTableView</string>
+							<string key="candidateClassName">NSTableView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="includedManifestsController">
 							<string key="name">includedManifestsController</string>

@@ -12,6 +12,7 @@
 
 
 
+
 @interface CatalogInfoMOID : NSManagedObjectID {}
 @end
 
@@ -20,6 +21,18 @@
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (CatalogInfoMOID*)objectID;
+
+
+
+
+@property (nonatomic, retain) NSNumber *indexInManifest;
+
+
+@property int indexInManifestValue;
+- (int)indexInManifestValue;
+- (void)setIndexInManifestValue:(int)value_;
+
+//- (BOOL)validateIndexInManifest:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -89,6 +102,15 @@
 @end
 
 @interface _CatalogInfoMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveIndexInManifest;
+- (void)setPrimitiveIndexInManifest:(NSNumber*)value;
+
+- (int)primitiveIndexInManifestValue;
+- (void)setPrimitiveIndexInManifestValue:(int)value_;
+
+
 
 
 - (NSNumber*)primitiveIsEnabledForManifest;
