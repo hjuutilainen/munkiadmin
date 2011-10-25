@@ -17,14 +17,15 @@ Requirements:
 -------------
 
 Building:
-- mogenerator + Xmo'd installed
 - Xcode
-- 10.6 SDK
+- 10.6 SDK (builds fine with 10.7 too)
+- mogenerator + Xmo'd only if you're planning to make changes to the xcdatamodel file
 
 Running the app:
-- Mac OS X 10.6.x
+- Mac OS X 10.6 or later
 - munki tools installed in default location (/usr/local/munki/)
-- Code is _not_ considered stable and production ready. If you wan't to run this on a production repo, make sure your backups are current.
+
+Code is _not_ considered stable and production ready. If you wan't to run this on a production repo, make sure your backups are current or you have some other methods for going back in time. I'm using git version control on my test repos so I'll always know what was changed.
 
 
 Thanks to:
