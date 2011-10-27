@@ -94,6 +94,7 @@
 
 - (NSDictionary *)manifestInfoDictionary
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
 	
     // =====================
@@ -119,12 +120,20 @@
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     
+    
     // =====================
     // managed_installs
     // =====================
+    NSArray *managedInstallsSorters;
+    if ([defaults boolForKey:@"sortManagedInstallsByTitle"]) {
+        managedInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        managedInstallsSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
+    
     if ([self.managedInstallsFaster count] > 0) {
         NSMutableArray *managedInstalls = [NSMutableArray arrayWithCapacity:[self.managedInstallsFaster count]];
-		for (StringObjectMO *managedInstall in [self.managedInstallsFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]]) {
+		for (StringObjectMO *managedInstall in [self.managedInstallsFaster sortedArrayUsingDescriptors:managedInstallsSorters]) {
             [managedInstalls addObject:managedInstall.title];
 		}
         [tmpDict setObject:managedInstalls forKey:@"managed_installs"];
@@ -138,9 +147,15 @@
     // =====================
     // managed_uninstalls
     // =====================
+    NSArray *managedUninstallsSorters;
+    if ([defaults boolForKey:@"sortManagedUninstallsByTitle"]) {
+        managedUninstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        managedUninstallsSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
     if ([self.managedUninstallsFaster count] > 0) {
         NSMutableArray *managedUninstalls = [NSMutableArray arrayWithCapacity:[self.managedUninstallsFaster count]];
-		for (StringObjectMO *managedUninstall in [self.managedUninstallsFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]]) {
+		for (StringObjectMO *managedUninstall in [self.managedUninstallsFaster sortedArrayUsingDescriptors:managedUninstallsSorters]) {
             [managedUninstalls addObject:managedUninstall.title];
 		}
         [tmpDict setObject:managedUninstalls forKey:@"managed_uninstalls"];
@@ -154,9 +169,15 @@
     // =====================
     // managed_updates
     // =====================
+    NSArray *managedUpdatesSorters;
+    if ([defaults boolForKey:@"sortManagedUpdatesByTitle"]) {
+        managedUpdatesSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        managedUpdatesSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
     if ([self.managedUpdatesFaster count] > 0) {
         NSMutableArray *managedUpdates = [NSMutableArray arrayWithCapacity:[self.managedUpdatesFaster count]];
-		for (StringObjectMO *managedUpdate in [self.managedUpdatesFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]]) {
+		for (StringObjectMO *managedUpdate in [self.managedUpdatesFaster sortedArrayUsingDescriptors:managedUpdatesSorters]) {
             [managedUpdates addObject:managedUpdate.title];
 		}
         [tmpDict setObject:managedUpdates forKey:@"managed_updates"];
@@ -170,9 +191,15 @@
     // =====================
     // optional_installs
     // =====================
+    NSArray *optionalInstallsSorters;
+    if ([defaults boolForKey:@"sortOptionalInstallsByTitle"]) {
+        optionalInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        optionalInstallsSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
     if ([self.optionalInstallsFaster count] > 0) {
         NSMutableArray *optionalInstalls = [NSMutableArray arrayWithCapacity:[self.optionalInstallsFaster count]];
-		for (StringObjectMO *optionalInstall in [self.optionalInstallsFaster sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]]) {
+		for (StringObjectMO *optionalInstall in [self.optionalInstallsFaster sortedArrayUsingDescriptors:optionalInstallsSorters]) {
             [optionalInstalls addObject:optionalInstall.title];
 		}
         [tmpDict setObject:optionalInstalls forKey:@"optional_installs"];
