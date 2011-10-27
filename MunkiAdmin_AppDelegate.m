@@ -9,6 +9,7 @@
 #import "PkginfoScanner.h"
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
+#import "FileCopyOperation.h"
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
@@ -115,20 +116,24 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Deleting all managed objects (in-memory)");
 	}
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    
+	[moc processPendingChanges];
+    [[moc undoManager] disableUndoRegistration];
 	
-	NSManagedObjectContext *moc = [self managedObjectContext];
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		//NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
-		NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
+		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
+		//NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
-		[allObjects release];
+		//[allObjects release];
 		[pool release];
 	}
 	[moc processPendingChanges];
+    [[moc undoManager] enableUndoRegistration];
 }
 
 - (NSArray *)allObjectsForEntity:(NSString *)entityName
@@ -136,8 +141,8 @@
 	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
-	//NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-	NSArray *fetchResults = [[[NSArray alloc] initWithArray:[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil]] autorelease];
+	NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	//NSArray *fetchResults = [[[NSArray alloc] initWithArray:[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil]] autorelease];
 	[fetchRequest release];
 	return fetchResults;
 }
@@ -417,45 +422,55 @@
 	
 	else {
 		// Update progress
-		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp];
+		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp - 1];
 		if (numOp == 1) {
 			[progressIndicator setIndeterminate:YES];
 			[progressIndicator startAnimation:self];
 		} else {
 			[progressIndicator setIndeterminate:NO];
-			double currentProgress = [progressIndicator maxValue] - (double)numOp;
+			double currentProgress = [progressIndicator maxValue] - (double)numOp + 1;
 			[progressIndicator setDoubleValue:currentProgress];
 		}
 		
 		// Get the currently running operation
-		id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
-		
-		// Running item is PkginfoScanner
-		if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
-			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-			self.jobDescription = @"Scanning Packages";
-		}
-		
-		// Running item is ManifestScanner
-		else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
-			self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-			self.jobDescription = @"Scanning Manifests";
-		}
-		
-		// Running item is MunkiOperation
-		else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
-			NSString *munkiCommand = [firstOpItem command];
-			if ([munkiCommand isEqualToString:@"makecatalogs"]) {
-				self.jobDescription = @"Running makecatalogs";
-				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
-			} else if ([munkiCommand isEqualToString:@"makepkginfo"]) {
-				self.jobDescription = @"Running makepkginfo";
-				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
-			} else if ([munkiCommand isEqualToString:@"installsitem"]) {
-				self.jobDescription = @"Running makepkginfo";
-				self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
-			}
-		}
+		//id firstOpItem = [[self.operationQueue operations] objectAtIndex:0];
+        
+        for (id firstOpItem in [self.operationQueue operations]) {
+            if ([firstOpItem isExecuting]) {
+                // Running item is PkginfoScanner
+                if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+                    self.jobDescription = @"Scanning Packages";
+                }
+                
+                // Running item is ManifestScanner
+                else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+                    self.jobDescription = @"Scanning Manifests";
+                }
+                
+                // Running item is MunkiOperation
+                else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
+                    NSString *munkiCommand = [firstOpItem command];
+                    if ([munkiCommand isEqualToString:@"makecatalogs"]) {
+                        self.jobDescription = @"Running makecatalogs";
+                        self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] relativePath]];
+                    } else if ([munkiCommand isEqualToString:@"makepkginfo"]) {
+                        self.jobDescription = @"Running makepkginfo";
+                        self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
+                    } else if ([munkiCommand isEqualToString:@"installsitem"]) {
+                        self.jobDescription = @"Running makepkginfo";
+                        self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem targetURL] lastPathComponent]];
+                    }
+                }
+                
+                // Running item is MunkiOperation
+                else if ([firstOpItem isKindOfClass:[FileCopyOperation class]]) {
+                    self.jobDescription = @"Copying";
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem sourceURL] lastPathComponent]];
+                }
+            }
+        }
 	}
 }
 
@@ -1141,7 +1156,25 @@
 			
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
-					MunkiOperation *theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                    MunkiOperation *theOp;
+                    
+                    if (![[fileToAdd relativePath] hasPrefix:[self.repoURL relativePath]]) {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
+                        if ([self.defaults boolForKey:@"CopyPkgsToRepo"]) {
+                            NSURL *newTarget = [self.pkgsURL URLByAppendingPathComponent:[[fileToAdd relativePath] lastPathComponent]];
+                            FileCopyOperation *copyOp = [FileCopyOperation copySourceURL:fileToAdd toTargetURL:newTarget];
+                            copyOp.delegate = self;
+                            theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
+                            [theOp addDependency:copyOp];
+                            [self.operationQueue addOperation:copyOp];
+                        } else {
+                            theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                        }
+                        
+                    } else {
+                        theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                    }
+                    
 					theOp.delegate = self;
 					[self.operationQueue addOperation:theOp];
 				}

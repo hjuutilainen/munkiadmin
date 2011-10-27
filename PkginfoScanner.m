@@ -124,7 +124,7 @@
 	[receiptKeyMappings release];
 	[installsKeyMappings release];
 	[itemsToCopyKeyMappings release];
-
+    
 	[super dealloc];
 }
 
@@ -152,25 +152,17 @@
 		NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
 		
 		
-		
-		self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
-		
-		NSDictionary *packageInfoDict;
 		if (self.sourceURL != nil) {
-			packageInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
-		} else if (self.sourceDict != nil) {
-			packageInfoDict = self.sourceDict;
-		} else {
-			packageInfoDict = nil;
+            self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
+            self.sourceDict = [[NSDictionary alloc] initWithContentsOfURL:self.sourceURL];
 		}
 		
-		if (packageInfoDict != nil) {
+		if (self.sourceDict != nil) {
 			
-			//PackageMO *aNewPackage = [NSEntityDescription insertNewObjectForEntityForName:@"Package" inManagedObjectContext:moc];
 			PackageMO *aNewPackage = [[[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc] autorelease];
 
-			aNewPackage.originalPkginfo = packageInfoDict;
+			aNewPackage.originalPkginfo = self.sourceDict;
 			
 			// =================================
 			// Get basic package properties
@@ -178,7 +170,7 @@
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading basic info for %@", self.fileName);
 			[self.pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-				id value = [packageInfoDict objectForKey:obj];
+				id value = [self.sourceDict objectForKey:obj];
 				if (value != nil) {
 					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: %@", self.fileName, obj, value);
 					[aNewPackage setValue:value forKey:key];
@@ -200,7 +192,7 @@
 			// =================================
 			// Get "receipts" items
 			// =================================
-			NSArray *itemReceipts = [packageInfoDict objectForKey:@"receipts"];
+			NSArray *itemReceipts = [self.sourceDict objectForKey:@"receipts"];
 			[itemReceipts enumerateObjectsUsingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 				ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 				aNewReceipt.package = aNewPackage;
@@ -219,7 +211,7 @@
 			// =================================
 			// Get "installs" items
 			// =================================
-			NSArray *installItems = [packageInfoDict objectForKey:@"installs"];
+			NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
 			[installItems enumerateObjectsUsingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
 				InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
 				[aNewInstallsItem addPackagesObject:aNewPackage];
@@ -238,7 +230,7 @@
 			// =================================
 			// Get "items_to_copy" items
 			// =================================
-			NSArray *itemsToCopy = [packageInfoDict objectForKey:@"items_to_copy"];
+			NSArray *itemsToCopy = [self.sourceDict objectForKey:@"items_to_copy"];
 			[itemsToCopy enumerateObjectsUsingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 				ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 				aNewItemToCopy.package = aNewPackage;
@@ -262,7 +254,7 @@
             // =================================
 			// Get "installer_choices_xml" items
 			// =================================
-			NSArray *installerChoices = [packageInfoDict objectForKey:@"installer_choices_xml"];
+			NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
 			[installerChoices enumerateObjectsUsingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 				InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 				aNewInstallerChoice.package = aNewPackage;
@@ -282,7 +274,7 @@
 			// =================================
 			// Get "catalogs" items
 			// =================================
-			NSArray *catalogs = [packageInfoDict objectForKey:@"catalogs"];
+			NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
 			
 			self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Parsing catalogs for %@", self.fileName);
@@ -352,7 +344,7 @@
 			// =================================
 			// Get "requires" items
 			// =================================
-			NSArray *requires = [packageInfoDict objectForKey:@"requires"];
+			NSArray *requires = [self.sourceDict objectForKey:@"requires"];
 			[requires enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -365,7 +357,7 @@
 			// =================================
 			// Get "update_for" items
 			// =================================
-			NSArray *update_for = [packageInfoDict objectForKey:@"update_for"];
+			NSArray *update_for = [self.sourceDict objectForKey:@"update_for"];
 			[update_for enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -378,7 +370,7 @@
             // =================================
 			// Get "blocking_applications" items
 			// =================================
-			NSArray *blocking_applications = [packageInfoDict objectForKey:@"blocking_applications"];
+			NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
 			[blocking_applications enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -475,7 +467,7 @@
 		} else {
 			NSLog(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
 		}
-
+        
 		// Save the context, this causes main app delegate to merge new items
 		NSError *error = nil;
 		if (![moc save:&error]) {
@@ -491,7 +483,8 @@
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:NSManagedObjectContextDidSaveNotification
 													  object:moc];
-		[moc release], moc = nil;
+		
+        [moc release], moc = nil;
 		[pool release];
 	}
 	@catch(...) {

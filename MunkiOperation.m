@@ -128,12 +128,14 @@
 		
 		if ([self.command isEqualToString:@"makecatalogs"]) {
 			NSString *results = [self makeCatalogs];
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makecatalogs");
+			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
 		}
 		
 		else if ([self.command isEqualToString:@"makepkginfo"]) {
 			NSDictionary *pkginfo = [self makepkginfo];
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo");
+			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 			if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
 				[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:) 
 												withObject:pkginfo
@@ -143,7 +145,8 @@
 		
 		else if ([self.command isEqualToString:@"installsitem"]) {
 			NSDictionary *pkginfo = [self makepkginfo];
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:installsitem");
+			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 			if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
 				[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:) 
 												withObject:pkginfo

@@ -37,7 +37,7 @@
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing manifest operation");
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
-		self.currentJobDescription = @"Initializing pkginfo scan operaiton";
+		self.currentJobDescription = @"Initializing pkginfo scan operation";
 		
 	}
 	return self;
