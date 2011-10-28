@@ -76,6 +76,8 @@
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
 		F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */; };
+		FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1C6B77145A797D00BC815F /* PackageNameEditor.m */; };
+		FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */; };
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
 		FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */; };
 		FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */; };
@@ -212,6 +214,9 @@
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon3.png; sourceTree = "<group>"; };
 		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiOperation.h; sourceTree = "<group>"; };
 		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiOperation.m; sourceTree = "<group>"; };
+		FE1C6B76145A797D00BC815F /* PackageNameEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageNameEditor.h; sourceTree = "<group>"; };
+		FE1C6B77145A797D00BC815F /* PackageNameEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageNameEditor.m; sourceTree = "<group>"; };
+		FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PackageNameEditor.xib; sourceTree = "<group>"; };
 		FE781B9F144C0CCE0089E941 /* _InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
@@ -463,6 +468,9 @@
 				FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */,
 				FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */,
 				FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */,
+				FE1C6B76145A797D00BC815F /* PackageNameEditor.h */,
+				FE1C6B77145A797D00BC815F /* PackageNameEditor.m */,
+				FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -540,6 +548,7 @@
 				FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
 				FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */,
+				FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,6 +616,7 @@
 				FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */,
 				FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */,
 				FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */,
+				FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

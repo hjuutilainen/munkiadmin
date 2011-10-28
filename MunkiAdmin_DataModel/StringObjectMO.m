@@ -1,5 +1,6 @@
 #import "StringObjectMO.h"
 #import "PackageMO.h"
+#import "ApplicationMO.h"
 
 @implementation StringObjectMO
 
@@ -19,8 +20,18 @@
             subtitle = [NSString stringWithFormat:@"%i matching packages (%@)", numPkgs, latestVersion];
         }
     }
+    
+    NSString *newTitle;
+    if (self.originalApplication != nil) {
+        newTitle = self.originalApplication.munki_name;
+    } else if (self.originalPackage != nil) {
+        newTitle = self.title;
+    } else {
+        newTitle = self.title;
+    }
+    
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			self.title, @"title",
+			newTitle, @"title",
             self.typeString, @"type",
             subtitle, @"subtitle",
 			nil];

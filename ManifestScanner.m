@@ -74,6 +74,8 @@
 												   object:moc];
 		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
+        NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+        NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		
 		
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
@@ -156,6 +158,27 @@
                 newManagedInstall.typeString = @"managedInstall";
                 newManagedInstall.originalIndexValue = idx;
                 [manifest addManagedInstallsFasterObject:newManagedInstall];
+                
+                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+                [getApplication setEntity:applicationEntityDescr];
+                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedInstall.title];
+                [getApplication setPredicate:appPred];
+                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+                    newManagedInstall.originalApplication = [apps objectAtIndex:0];
+                } else {
+                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
+                    [getPackage setEntity:packageEntityDescr];
+                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedInstall.title];
+                    [getPackage setPredicate:pkgPred];
+                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
+                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
+                        newManagedInstall.originalPackage = [pkgs objectAtIndex:0];
+                    }
+                    [getPackage release];
+                }
+                [getApplication release];
+                
             }];
             
             
@@ -170,6 +193,26 @@
                 newManagedUninstall.typeString = @"managedUninstall";
                 newManagedUninstall.originalIndexValue = idx;
                 [manifest addManagedUninstallsFasterObject:newManagedUninstall];
+                
+                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+                [getApplication setEntity:applicationEntityDescr];
+                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedUninstall.title];
+                [getApplication setPredicate:appPred];
+                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+                    newManagedUninstall.originalApplication = [apps objectAtIndex:0];
+                } else {
+                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
+                    [getPackage setEntity:packageEntityDescr];
+                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedUninstall.title];
+                    [getPackage setPredicate:pkgPred];
+                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
+                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
+                        newManagedUninstall.originalPackage = [pkgs objectAtIndex:0];
+                    }
+                    [getPackage release];
+                }
+                [getApplication release];
             }];
             
             
@@ -184,6 +227,26 @@
                 newManagedUpdate.typeString = @"managedUpdate";
                 newManagedUpdate.originalIndexValue = idx;
                 [manifest addManagedUpdatesFasterObject:newManagedUpdate];
+                
+                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+                [getApplication setEntity:applicationEntityDescr];
+                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedUpdate.title];
+                [getApplication setPredicate:appPred];
+                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+                    newManagedUpdate.originalApplication = [apps objectAtIndex:0];
+                } else {
+                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
+                    [getPackage setEntity:packageEntityDescr];
+                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedUpdate.title];
+                    [getPackage setPredicate:pkgPred];
+                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
+                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
+                        newManagedUpdate.originalPackage = [pkgs objectAtIndex:0];
+                    }
+                    [getPackage release];
+                }
+                [getApplication release];
             }];
 			
             
@@ -198,6 +261,26 @@
                 newOptionalInstall.typeString = @"optionalInstall";
                 newOptionalInstall.originalIndexValue = idx;
                 [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                
+                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+                [getApplication setEntity:applicationEntityDescr];
+                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newOptionalInstall.title];
+                [getApplication setPredicate:appPred];
+                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+                    newOptionalInstall.originalApplication = [apps objectAtIndex:0];
+                } else {
+                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
+                    [getPackage setEntity:packageEntityDescr];
+                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newOptionalInstall.title];
+                    [getPackage setPredicate:pkgPred];
+                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
+                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
+                        newOptionalInstall.originalPackage = [pkgs objectAtIndex:0];
+                    }
+                    [getPackage release];
+                }
+                [getApplication release];
             }];
             
             

@@ -30,6 +30,7 @@
 @class ManifestDetailView;
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
+@class PackageNameEditor;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -54,6 +55,7 @@
     ManifestDetailView *manifestDetailViewController;
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;
+    PackageNameEditor *packageNameEditor;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;
@@ -198,6 +200,7 @@
 - (IBAction)didSelectSegment:sender;
 - (IBAction)selectViewAction:sender;
 - (IBAction)renameSelectedManifestAction:sender;
+- (IBAction)renameSelectedPackagesAction:sender;
 - (IBAction)deleteSelectedManifestsAction:sender;
 - (IBAction)deleteSelectedPackagesAction:sender;
 - (IBAction)enableAllPackagesForManifestAction:sender;

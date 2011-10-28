@@ -15,6 +15,7 @@
 @class ReceiptMO;
 @class StringObjectMO;
 @class StringObjectMO;
+@class StringObjectMO;
 
 
 
@@ -395,6 +396,13 @@
 
 
 
+@property (nonatomic, retain) NSSet* referencingStringObjects;
+
+- (NSMutableSet*)referencingStringObjectsSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* requirements;
 
 - (NSMutableSet*)requirementsSet;
@@ -452,6 +460,11 @@
 - (void)removeReceipts:(NSSet*)value_;
 - (void)addReceiptsObject:(ReceiptMO*)value_;
 - (void)removeReceiptsObject:(ReceiptMO*)value_;
+
+- (void)addReferencingStringObjects:(NSSet*)value_;
+- (void)removeReferencingStringObjects:(NSSet*)value_;
+- (void)addReferencingStringObjectsObject:(StringObjectMO*)value_;
+- (void)removeReferencingStringObjectsObject:(StringObjectMO*)value_;
 
 - (void)addRequirements:(NSSet*)value_;
 - (void)removeRequirements:(NSSet*)value_;
@@ -715,6 +728,11 @@
 
 - (NSMutableSet*)primitiveReceipts;
 - (void)setPrimitiveReceipts:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveReferencingStringObjects;
+- (void)setPrimitiveReferencingStringObjects:(NSMutableSet*)value;
 
 
 

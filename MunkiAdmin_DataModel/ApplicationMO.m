@@ -64,10 +64,10 @@
 	}
 	
 	NSString *title;
-	if (self.munki_display_name != nil) {
-		title = self.munki_display_name;
-	} else if ((self.munki_name != nil)) {
+	if (self.munki_name != nil) {
 		title = self.munki_name;
+	} else if ((self.munki_display_name != nil)) {
+        title = self.munki_display_name;
 	} else {
 		title = @"--";
 	}

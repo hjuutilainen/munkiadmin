@@ -10,6 +10,8 @@
 @class ManifestMO;
 @class ManifestMO;
 @class ManifestMO;
+@class ApplicationMO;
+@class PackageMO;
 @class PackageMO;
 @class PackageMO;
 
@@ -113,6 +115,20 @@
 
 
 
+@property (nonatomic, retain) ApplicationMO* originalApplication;
+
+//- (BOOL)validateOriginalApplication:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) PackageMO* originalPackage;
+
+//- (BOOL)validateOriginalPackage:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) PackageMO* requiresReference;
 
 //- (BOOL)validateRequiresReference:(id*)value_ error:(NSError**)error_;
@@ -198,6 +214,16 @@
 
 - (ManifestMO*)primitiveOptionalInstallReference;
 - (void)setPrimitiveOptionalInstallReference:(ManifestMO*)value;
+
+
+
+- (ApplicationMO*)primitiveOriginalApplication;
+- (void)setPrimitiveOriginalApplication:(ApplicationMO*)value;
+
+
+
+- (PackageMO*)primitiveOriginalPackage;
+- (void)setPrimitiveOriginalPackage:(PackageMO*)value;
 
 
 

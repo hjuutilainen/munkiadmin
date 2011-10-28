@@ -522,6 +522,17 @@
 }
 	
 
+@dynamic referencingStringObjects;
+
+	
+- (NSMutableSet*)referencingStringObjectsSet {
+	[self willAccessValueForKey:@"referencingStringObjects"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
+	[self didAccessValueForKey:@"referencingStringObjects"];
+	return result;
+}
+	
+
 @dynamic requirements;
 
 	

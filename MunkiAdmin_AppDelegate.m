@@ -13,6 +13,7 @@
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
+#import "PackageNameEditor.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -285,6 +286,7 @@
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
+    packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     
     
 	// Configure segmented control
@@ -556,6 +558,9 @@
 
 - (IBAction)renameSelectedManifestAction:sender
 {
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
 	[self renameSelectedManifest];
 }
 
@@ -594,7 +599,126 @@
 
 - (IBAction)deleteSelectedManifestsAction:sender
 {
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
 	[self deleteSelectedManifests];
+}
+
+- (IBAction)processRenamePackagesAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
+    NSString *newName = [packageNameEditor changedName];
+    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming to: %@", newName);
+    
+    
+    for (PackageMO *selectedPackage in [allPackagesArrayController selectedObjects]) {
+        if ([packageNameEditor shouldRenameAll]) {
+            // Get the current app
+            ApplicationMO *currentApp = selectedPackage.parentApplication;
+            
+            // Check for existing ApplicationMO with the same title
+            NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+            [getApplication setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:self.managedObjectContext]];
+            NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newName];
+            [getApplication setPredicate:appPred];
+            if ([self.managedObjectContext countForFetchRequest:getApplication error:nil] > 0) {
+                // Application object exists with the new name so use it
+                NSArray *apps = [self.managedObjectContext executeFetchRequest:getApplication error:nil];
+                ApplicationMO *app = [apps objectAtIndex:0];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Found ApplicationMO: %@", app.munki_name);
+                selectedPackage.munki_name = newName;
+                selectedPackage.parentApplication = app;
+            } else {
+                // No existing application objects with this name so just rename it
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming ApplicationMO %@ to %@", currentApp.munki_name, newName);
+                currentApp.munki_name = newName;
+                selectedPackage.munki_name = newName;
+                selectedPackage.parentApplication = currentApp; // Shouldn't need this...
+            }
+            [getApplication release];
+            
+            // Get sibling packages
+            NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
+            [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
+            NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", currentApp];
+            [getSiblings setPredicate:siblingPred];
+            if ([self.managedObjectContext countForFetchRequest:getSiblings error:nil] > 0) {
+                NSArray *siblingPackages = [self.managedObjectContext executeFetchRequest:getSiblings error:nil];
+                for (PackageMO *aSibling in siblingPackages) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming sibling %@ to %@", aSibling.munki_name, newName);
+                    aSibling.munki_name = newName;
+                    aSibling.parentApplication = selectedPackage.parentApplication;
+                }
+            } else {
+                
+            }
+            [getSiblings release];
+            
+            for (StringObjectMO *i in [selectedPackage referencingStringObjects]) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, selectedPackage.titleWithVersion);
+                i.title = selectedPackage.titleWithVersion;
+                [self.managedObjectContext refreshObject:i mergeChanges:YES];
+                
+            }
+            for (StringObjectMO *i in [selectedPackage.parentApplication referencingStringObjects]) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, selectedPackage.parentApplication.munki_name);
+                i.title = selectedPackage.parentApplication.munki_name;
+                [self.managedObjectContext refreshObject:i mergeChanges:YES];
+                
+            }
+
+        } else {
+            selectedPackage.munki_name = newName;
+            for (StringObjectMO *i in [selectedPackage referencingStringObjects]) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, selectedPackage.titleWithVersion);
+                i.title = selectedPackage.titleWithVersion;
+                [self.managedObjectContext refreshObject:i mergeChanges:YES];
+                
+            }
+            for (StringObjectMO *i in [selectedPackage.parentApplication referencingStringObjects]) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, selectedPackage.parentApplication.munki_name);
+                i.title = selectedPackage.parentApplication.munki_name;
+                [self.managedObjectContext refreshObject:i mergeChanges:YES];
+                
+            }
+        }
+    }
+    [NSApp endSheet:[packageNameEditor window]];
+	[[packageNameEditor window] close];
+}
+
+- (IBAction)cancelRenamePackagesAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [NSApp endSheet:[packageNameEditor window]];
+	[[packageNameEditor window] close];
+}
+
+- (void)renameSelectedPackages
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+	
+	//NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	//NSManagedObjectContext *moc = [self managedObjectContext];
+    
+    [NSApp beginSheet:[packageNameEditor window] 
+	   modalForWindow:self.window modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    NSArray *selTitles = [[allPackagesArrayController selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    [packageNameEditor setChangedName:[selTitles objectAtIndex:0]];
+}
+
+- (IBAction)renameSelectedPackagesAction:sender
+{
+    [self renameSelectedPackages];
 }
 
 - (void)deleteSelectedPackages
@@ -1060,6 +1184,7 @@
             for (ApplicationMO *anApp in [[addItemsWindowController groupedPkgsArrayController] selectedObjects]) {
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 newItem.title = anApp.munki_name;
+                newItem.originalApplication = anApp;
                 
                 if ([self.addItemsType isEqualToString:@"managedInstall"]) {
                     newItem.typeString = @"managedInstall";
@@ -1084,6 +1209,7 @@
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 NSString *newTitle = [NSString stringWithFormat:@"%@-%@", aPackage.munki_name, aPackage.munki_version];
                 newItem.title = newTitle;
+                newItem.originalPackage = aPackage;
                 
                 if ([self.addItemsType isEqualToString:@"managedInstall"]) {
                     newItem.typeString = @"managedInstall";

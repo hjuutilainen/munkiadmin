@@ -7,6 +7,7 @@
 @class ApplicationProxyMO;
 @class ManifestMO;
 @class PackageMO;
+@class StringObjectMO;
 
 
 
@@ -70,6 +71,13 @@
 
 
 
+@property (nonatomic, retain) NSSet* referencingStringObjects;
+
+- (NSMutableSet*)referencingStringObjectsSet;
+
+
+
+
 @end
 
 @interface _ApplicationMO (CoreDataGeneratedAccessors)
@@ -88,6 +96,11 @@
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
+
+- (void)addReferencingStringObjects:(NSSet*)value_;
+- (void)removeReferencingStringObjects:(NSSet*)value_;
+- (void)addReferencingStringObjectsObject:(StringObjectMO*)value_;
+- (void)removeReferencingStringObjectsObject:(StringObjectMO*)value_;
 
 @end
 
@@ -125,6 +138,11 @@
 
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveReferencingStringObjects;
+- (void)setPrimitiveReferencingStringObjects:(NSMutableSet*)value;
 
 
 @end

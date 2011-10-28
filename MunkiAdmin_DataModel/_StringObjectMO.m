@@ -134,6 +134,14 @@
 
 	
 
+@dynamic originalApplication;
+
+	
+
+@dynamic originalPackage;
+
+	
+
 @dynamic requiresReference;
 
 	
