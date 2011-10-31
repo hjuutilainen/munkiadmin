@@ -483,7 +483,7 @@
 	}
 	
 	NSTimer *operationTimer;
-	operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+	operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													  target:self
 													selector:@selector(checkOperations:)
 													userInfo:nil

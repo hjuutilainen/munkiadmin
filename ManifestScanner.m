@@ -9,6 +9,7 @@
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "ApplicationMO.h"
+#import "PackageMO.h"
 #import "ApplicationProxyMO.h"
 #import "ManagedInstallMO.h"
 #import "ManagedUninstallMO.h"
@@ -61,6 +62,28 @@
 								   waitUntilDone:YES];
 }
 
+- (id)matchingObjectForString:(NSString *)aString
+{
+    NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
+    NSUInteger foundIndex = [apps indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        return [appPred evaluateWithObject:obj];
+    }];
+    
+    if (foundIndex != NSNotFound) {
+        return [apps objectAtIndex:foundIndex];
+    } else {
+        NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", aString];
+        NSUInteger foundPkgIndex = [packages indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [pkgPred evaluateWithObject:obj];
+        }];
+        if (foundPkgIndex != NSNotFound) {
+            return [packages objectAtIndex:foundPkgIndex];
+        } else {
+            return nil;
+        }
+    }
+}
+
 
 -(void)main {
 	@try {
@@ -68,6 +91,7 @@
 		
 		NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
 		[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
+        [moc setUndoManager:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(contextDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
@@ -108,6 +132,22 @@
 			[request release];
 			
 			manifest.originalManifest = manifestInfoDict;
+            
+            // Get all application objects for later use
+            NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
+            [getApplications setEntity:applicationEntityDescr];
+            [getApplications setReturnsObjectsAsFaults:NO];
+            [getApplications setIncludesSubentities:NO];
+            apps = [moc executeFetchRequest:getApplications error:nil];
+            [getApplications release];
+            
+            // Get all packages for later use
+            NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
+            [getPackages setEntity:packageEntityDescr];
+            [getPackages setReturnsObjectsAsFaults:NO];
+            [getPackages setIncludesSubentities:NO];
+            packages = [moc executeFetchRequest:getPackages error:nil];
+            [getPackages release];
 			
             // =================================
 			// Get "catalogs" items
@@ -117,11 +157,11 @@
 			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
 			[getAllCatalogs setEntity:catalogEntityDescr];
 			[getAllCatalogs setReturnsObjectsAsFaults:NO];
-            [getAllCatalogs setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"catalogInfos", @"manifests", @"packageInfos", nil]];
+            //[getAllCatalogs setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"catalogInfos", @"manifests", @"packageInfos", nil]];
             allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
 			[getAllCatalogs release];
 			
-			[allCatalogs enumerateObjectsUsingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
+			[allCatalogs enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
                 NSString *catalogTitle = [aCatalog title];
 				CatalogInfoMO *newCatalogInfo;
 				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -150,145 +190,116 @@
             // =================================
 			// Get "managed_installs" items
 			// =================================
+            NSDate *startTime = [NSDate date];
             NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
-            [managedInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedInstall.title = (NSString *)obj;
                 newManagedInstall.typeString = @"managedInstall";
                 newManagedInstall.originalIndexValue = idx;
-                [manifest addManagedInstallsFasterObject:newManagedInstall];
+                newManagedInstall.manifestReference = manifest;
+                //[manifest addManagedInstallsFasterObject:newManagedInstall];
                 
-                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
-                [getApplication setEntity:applicationEntityDescr];
-                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedInstall.title];
-                [getApplication setPredicate:appPred];
-                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
-                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-                    newManagedInstall.originalApplication = [apps objectAtIndex:0];
-                } else {
-                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
-                    [getPackage setEntity:packageEntityDescr];
-                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedInstall.title];
-                    [getPackage setPredicate:pkgPred];
-                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
-                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
-                        newManagedInstall.originalPackage = [pkgs objectAtIndex:0];
-                    }
-                    [getPackage release];
+                id matchingObject = [self matchingObjectForString:(NSString *)obj];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    newManagedInstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    newManagedInstall.originalPackage = matchingObject;
                 }
-                [getApplication release];
-                
+                [pool drain];
             }];
+            NSDate *now = [NSDate date];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
             
             
             // =================================
 			// Get "managed_uninstalls" items
 			// =================================
+            startTime = [NSDate date];
             NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
-            [managedUninstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedUninstall.title = (NSString *)obj;
                 newManagedUninstall.typeString = @"managedUninstall";
                 newManagedUninstall.originalIndexValue = idx;
-                [manifest addManagedUninstallsFasterObject:newManagedUninstall];
+                newManagedUninstall.manifestReference = manifest;
+                //[manifest addManagedUninstallsFasterObject:newManagedUninstall];
                 
-                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
-                [getApplication setEntity:applicationEntityDescr];
-                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedUninstall.title];
-                [getApplication setPredicate:appPred];
-                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
-                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-                    newManagedUninstall.originalApplication = [apps objectAtIndex:0];
-                } else {
-                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
-                    [getPackage setEntity:packageEntityDescr];
-                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedUninstall.title];
-                    [getPackage setPredicate:pkgPred];
-                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
-                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
-                        newManagedUninstall.originalPackage = [pkgs objectAtIndex:0];
-                    }
-                    [getPackage release];
+                id matchingObject = [self matchingObjectForString:(NSString *)obj];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    newManagedUninstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    newManagedUninstall.originalPackage = matchingObject;
                 }
-                [getApplication release];
+                [pool drain];
             }];
+            now = [NSDate date];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_uninstalls took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
             
             
             // =================================
 			// Get "managed_updates" items
 			// =================================
+            startTime = [NSDate date];
             NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
-            [managedUpdates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newManagedUpdate.title = (NSString *)obj;
                 newManagedUpdate.typeString = @"managedUpdate";
                 newManagedUpdate.originalIndexValue = idx;
-                [manifest addManagedUpdatesFasterObject:newManagedUpdate];
+                newManagedUpdate.manifestReference = manifest;
+                //[manifest addManagedUpdatesFasterObject:newManagedUpdate];
                 
-                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
-                [getApplication setEntity:applicationEntityDescr];
-                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newManagedUpdate.title];
-                [getApplication setPredicate:appPred];
-                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
-                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-                    newManagedUpdate.originalApplication = [apps objectAtIndex:0];
-                } else {
-                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
-                    [getPackage setEntity:packageEntityDescr];
-                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newManagedUpdate.title];
-                    [getPackage setPredicate:pkgPred];
-                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
-                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
-                        newManagedUpdate.originalPackage = [pkgs objectAtIndex:0];
-                    }
-                    [getPackage release];
+                id matchingObject = [self matchingObjectForString:(NSString *)obj];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    newManagedUpdate.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    newManagedUpdate.originalPackage = matchingObject;
                 }
-                [getApplication release];
+                [pool drain];
             }];
-			
+			now = [NSDate date];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_updates took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+            
             
             // =================================
 			// Get "optional_installs" items
 			// =================================
+            startTime = [NSDate date];
             NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
-			[optionalInstalls enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			[optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newOptionalInstall.title = (NSString *)obj;
                 newOptionalInstall.typeString = @"optionalInstall";
                 newOptionalInstall.originalIndexValue = idx;
-                [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                newOptionalInstall.manifestReference = manifest;
+                //[manifest addOptionalInstallsFasterObject:newOptionalInstall];
                 
-                NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
-                [getApplication setEntity:applicationEntityDescr];
-                NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newOptionalInstall.title];
-                [getApplication setPredicate:appPred];
-                if ([moc countForFetchRequest:getApplication error:nil] > 0) {
-                    NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-                    newOptionalInstall.originalApplication = [apps objectAtIndex:0];
-                } else {
-                    NSFetchRequest *getPackage = [[NSFetchRequest alloc] init];
-                    [getPackage setEntity:packageEntityDescr];
-                    NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", newOptionalInstall.title];
-                    [getPackage setPredicate:pkgPred];
-                    if ([moc countForFetchRequest:getPackage error:nil] > 0) {
-                        NSArray *pkgs = [moc executeFetchRequest:getPackage error:nil];
-                        newOptionalInstall.originalPackage = [pkgs objectAtIndex:0];
-                    }
-                    [getPackage release];
+                id matchingObject = [self matchingObjectForString:(NSString *)obj];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    newOptionalInstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    newOptionalInstall.originalPackage = matchingObject;
                 }
-                [getApplication release];
+                [pool drain];
             }];
+            now = [NSDate date];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
             
             
             // =================================
 			// Get "included_manifests" items
 			// =================================
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
-            [includedManifests enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [includedManifests enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newIncludedManifest.title = (NSString *)obj;
@@ -297,38 +308,6 @@
                 newIncludedManifest.indexInNestedManifestValue = idx;
                 [manifest addIncludedManifestsFasterObject:newIncludedManifest];
             }];
-			
-			/*NSArray *allManifests;
-			NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
-			[getAllManifests setEntity:manifestEntityDescr];
-            [getAllManifests setReturnsObjectsAsFaults:NO];
-            [getAllManifests setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"manifestInfos", @"includedManifests", nil]];
-			allManifests = [moc executeFetchRequest:getAllManifests error:nil];
-			[getAllManifests release];
-			
-            [allManifests enumerateObjectsUsingBlock:^(id aManifest, NSUInteger idx, BOOL *stop) {
-                NSString *manifestTitle = [aManifest title];
-				ManifestInfoMO *newManifestInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc];
-				newManifestInfo.parentManifest = aManifest;
-				newManifestInfo.manifest = manifest;
-				
-				if ([self.defaults boolForKey:@"debug"]) {
-					NSLog(@"Linking nested manifest %@ -> %@", manifest.title, manifestTitle);
-				}
-				
-				if (includedManifests == nil) {
-					newManifestInfo.isEnabledForManifestValue = NO;
-				} else if ([includedManifests containsObject:manifestTitle]) {
-					newManifestInfo.isEnabledForManifestValue = YES;
-				} else {
-					newManifestInfo.isEnabledForManifestValue = NO;
-				}
-				if (manifest != aManifest) {
-					newManifestInfo.isAvailableForEditingValue = YES;
-				} else {
-					newManifestInfo.isAvailableForEditingValue = NO;
-				}
-			}];*/
 			
 		} else {
 			NSLog(@"Can't read manifest file %@", [self.sourceURL relativePath]);
@@ -350,7 +329,7 @@
 														name:NSManagedObjectContextDidSaveNotification
 													  object:moc];
 		[moc release], moc = nil;
-		[pool release];
+		[pool drain];
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.

@@ -18,6 +18,9 @@
 	NSDictionary *pkginfoKeyMappings;
 	NSDictionary *receiptKeyMappings;
 	NSDictionary *installsKeyMappings;
+    
+    NSArray *apps;
+    NSArray *packages;
 }
 
 - (id)initWithURL:(NSURL *)src;
