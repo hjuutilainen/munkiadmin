@@ -193,7 +193,7 @@
 			// Get "receipts" items
 			// =================================
 			NSArray *itemReceipts = [self.sourceDict objectForKey:@"receipts"];
-			[itemReceipts enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
+			[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 				ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 				aNewReceipt.package = aNewPackage;
                 aNewReceipt.originalIndexValue = idx;
@@ -212,7 +212,7 @@
 			// Get "installs" items
 			// =================================
 			NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
-			[installItems enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
+			[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
 				InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
 				[aNewInstallsItem addPackagesObject:aNewPackage];
                 aNewInstallsItem.originalIndexValue = idx;
@@ -231,7 +231,7 @@
 			// Get "items_to_copy" items
 			// =================================
 			NSArray *itemsToCopy = [self.sourceDict objectForKey:@"items_to_copy"];
-			[itemsToCopy enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
+			[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 				ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 				aNewItemToCopy.package = aNewPackage;
                 aNewItemToCopy.originalIndexValue = idx;
@@ -255,7 +255,7 @@
 			// Get "installer_choices_xml" items
 			// =================================
 			NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
-			[installerChoices enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
+			[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 				InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 				aNewInstallerChoice.package = aNewPackage;
                 aNewInstallerChoice.originalIndexValue = idx;
@@ -346,7 +346,7 @@
 			// Get "requires" items
 			// =================================
 			NSArray *requires = [self.sourceDict objectForKey:@"requires"];
-			[requires enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			[requires enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
@@ -359,7 +359,7 @@
 			// Get "update_for" items
 			// =================================
 			NSArray *update_for = [self.sourceDict objectForKey:@"update_for"];
-			[update_for enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			[update_for enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
@@ -372,7 +372,7 @@
 			// Get "blocking_applications" items
 			// =================================
 			NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
-			[blocking_applications enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			[blocking_applications enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newBlockingApplication.title = obj;

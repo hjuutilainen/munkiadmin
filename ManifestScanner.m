@@ -136,16 +136,16 @@
             // Get all application objects for later use
             NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
             [getApplications setEntity:applicationEntityDescr];
-            [getApplications setReturnsObjectsAsFaults:NO];
-            [getApplications setIncludesSubentities:NO];
+            //[getApplications setReturnsObjectsAsFaults:NO];
+            //[getApplications setIncludesSubentities:NO];
             apps = [moc executeFetchRequest:getApplications error:nil];
             [getApplications release];
             
             // Get all packages for later use
             NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
             [getPackages setEntity:packageEntityDescr];
-            [getPackages setReturnsObjectsAsFaults:NO];
-            [getPackages setIncludesSubentities:NO];
+            //[getPackages setReturnsObjectsAsFaults:NO];
+            //[getPackages setIncludesSubentities:NO];
             packages = [moc executeFetchRequest:getPackages error:nil];
             [getPackages release];
 			
@@ -161,7 +161,7 @@
             allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
 			[getAllCatalogs release];
 			
-			[allCatalogs enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
+			[allCatalogs enumerateObjectsWithOptions:0 usingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
                 NSString *catalogTitle = [aCatalog title];
 				CatalogInfoMO *newCatalogInfo;
 				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -199,8 +199,7 @@
                 newManagedInstall.title = (NSString *)obj;
                 newManagedInstall.typeString = @"managedInstall";
                 newManagedInstall.originalIndexValue = idx;
-                newManagedInstall.manifestReference = manifest;
-                //[manifest addManagedInstallsFasterObject:newManagedInstall];
+                [manifest addManagedInstallsFasterObject:newManagedInstall];
                 
                 id matchingObject = [self matchingObjectForString:(NSString *)obj];
                 if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
@@ -226,8 +225,7 @@
                 newManagedUninstall.title = (NSString *)obj;
                 newManagedUninstall.typeString = @"managedUninstall";
                 newManagedUninstall.originalIndexValue = idx;
-                newManagedUninstall.manifestReference = manifest;
-                //[manifest addManagedUninstallsFasterObject:newManagedUninstall];
+                [manifest addManagedUninstallsFasterObject:newManagedUninstall];
                 
                 id matchingObject = [self matchingObjectForString:(NSString *)obj];
                 if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
@@ -253,8 +251,7 @@
                 newManagedUpdate.title = (NSString *)obj;
                 newManagedUpdate.typeString = @"managedUpdate";
                 newManagedUpdate.originalIndexValue = idx;
-                newManagedUpdate.manifestReference = manifest;
-                //[manifest addManagedUpdatesFasterObject:newManagedUpdate];
+                [manifest addManagedUpdatesFasterObject:newManagedUpdate];
                 
                 id matchingObject = [self matchingObjectForString:(NSString *)obj];
                 if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
@@ -280,8 +277,7 @@
                 newOptionalInstall.title = (NSString *)obj;
                 newOptionalInstall.typeString = @"optionalInstall";
                 newOptionalInstall.originalIndexValue = idx;
-                newOptionalInstall.manifestReference = manifest;
-                //[manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                [manifest addOptionalInstallsFasterObject:newOptionalInstall];
                 
                 id matchingObject = [self matchingObjectForString:(NSString *)obj];
                 if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
@@ -329,7 +325,7 @@
 														name:NSManagedObjectContextDidSaveNotification
 													  object:moc];
 		[moc release], moc = nil;
-		[pool drain];
+		[pool release];
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.
