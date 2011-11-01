@@ -19,7 +19,7 @@
 	[self setSortDescriptors:[NSArray arrayWithObjects:sortByMunkiName, sortByVersion, nil]];
 	
 	// Reload the table view when catalogs change
-	[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForCatalog" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
+	//[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForCatalog" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
 	
 }
 

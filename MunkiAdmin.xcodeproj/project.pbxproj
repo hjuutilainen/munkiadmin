@@ -87,6 +87,7 @@
 		FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */; };
 		FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */; };
+		FEEBE375145FC5750004791A /* RelationshipScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEBE374145FC5750004791A /* RelationshipScanner.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -232,6 +233,8 @@
 		FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestDetailView.h; sourceTree = "<group>"; };
 		FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestDetailView.m; sourceTree = "<group>"; };
 		FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ManifestDetailView.xib; sourceTree = "<group>"; };
+		FEEBE373145FC5750004791A /* RelationshipScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelationshipScanner.h; sourceTree = "<group>"; };
+		FEEBE374145FC5750004791A /* RelationshipScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelationshipScanner.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +286,8 @@
 				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
 				FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */,
 				FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */,
+				FEEBE373145FC5750004791A /* RelationshipScanner.h */,
+				FEEBE374145FC5750004791A /* RelationshipScanner.m */,
 				FEABB23F144EB0D40006BDE8 /* View Controllers */,
 				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
 				F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */,
@@ -617,6 +622,7 @@
 				FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */,
 				FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */,
 				FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */,
+				FEEBE375145FC5750004791A /* RelationshipScanner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

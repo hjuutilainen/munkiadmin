@@ -18,7 +18,7 @@
 	[self setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
 	
 	// Reload the table view when catalogs change
-	[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForManifest" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
+	//[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForManifest" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
 	
 }
 

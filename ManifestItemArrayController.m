@@ -55,7 +55,7 @@
 	[tableView setMenu:theMenu];
 	
 	// Reload the table view when contents change
-	[self addObserver:self forKeyPath:@"arrangedObjects" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
+	//[self addObserver:self forKeyPath:@"arrangedObjects" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
 	
 }
 

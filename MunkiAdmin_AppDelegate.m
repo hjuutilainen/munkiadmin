@@ -9,6 +9,7 @@
 #import "PkginfoScanner.h"
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
+#import "RelationshipScanner.h"
 #import "FileCopyOperation.h"
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
@@ -470,6 +471,12 @@
                 else if ([firstOpItem isKindOfClass:[FileCopyOperation class]]) {
                     self.jobDescription = @"Copying";
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem sourceURL] lastPathComponent]];
+                }
+                
+                // Running item is MunkiOperation
+                else if ([firstOpItem isKindOfClass:[RelationshipScanner class]]) {
+                    self.jobDescription = @"Organizing package relationships";
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem currentJobDescription]];
                 }
             }
         }
@@ -1591,6 +1598,14 @@
 	//[self arrangeCatalogs];
 }
 
+- (void)relationshipScannerDidFinish
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [allPackagesArrayController rearrangeObjects];
+}
+
 - (void)mergeChanges:(NSNotification*)notification
 {
 	NSAssert([NSThread mainThread], @"Not on the main thread");
@@ -1611,6 +1626,9 @@
 	
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
+    
+    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    packageRelationships.delegate = self;
 
 	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
 	for (NSURL *aPkgInfoFile in pkgsInfoDirEnum)
@@ -1620,10 +1638,12 @@
 		if (![isDir boolValue]) {
 			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:aPkgInfoFile];
 			scanOp.delegate = self;
+            [packageRelationships addDependency:scanOp];
 			[self.operationQueue addOperation:scanOp];
 			
 		}
 	}
+    [self.operationQueue addOperation:packageRelationships];
 }
 
 - (void)scanCurrentRepoForCatalogFiles
@@ -1716,11 +1736,16 @@
 	if (![moc save:&error]) {
 		[NSApp presentError:error];
 	}
+    
+    RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+    manifestRelationships.delegate = self;
 	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
 		ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL] autorelease];
 		scanOp.delegate = self;
+        [manifestRelationships addDependency:scanOp];
 		[self.operationQueue addOperation:scanOp];
 	}
+    [self.operationQueue addOperation:manifestRelationships];
 }
 
 - (void)scanCurrentRepoForIncludedManifests

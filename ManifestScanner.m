@@ -38,7 +38,7 @@
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing manifest operation");
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
-		self.currentJobDescription = @"Initializing pkginfo scan operation";
+		self.currentJobDescription = @"Initializing manifest scan operation";
 		
 	}
 	return self;
@@ -64,7 +64,7 @@
 
 - (id)matchingObjectForString:(NSString *)aString
 {
-    NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
+    /*NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
     NSUInteger foundIndex = [apps indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         return [appPred evaluateWithObject:obj];
     }];
@@ -81,7 +81,8 @@
         } else {
             return nil;
         }
-    }
+    }*/
+    return nil;
 }
 
 
@@ -96,10 +97,10 @@
 												 selector:@selector(contextDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:moc];
-		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+		//NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
-        NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-        NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+        //NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+        //NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		
 		
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
@@ -134,25 +135,25 @@
 			manifest.originalManifest = manifestInfoDict;
             
             // Get all application objects for later use
-            NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
-            [getApplications setEntity:applicationEntityDescr];
+            //NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
+            //[getApplications setEntity:applicationEntityDescr];
             //[getApplications setReturnsObjectsAsFaults:NO];
             //[getApplications setIncludesSubentities:NO];
-            apps = [moc executeFetchRequest:getApplications error:nil];
-            [getApplications release];
+            //apps = [moc executeFetchRequest:getApplications error:nil];
+            //[getApplications release];
             
             // Get all packages for later use
-            NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
-            [getPackages setEntity:packageEntityDescr];
+            //NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
+            //[getPackages setEntity:packageEntityDescr];
             //[getPackages setReturnsObjectsAsFaults:NO];
             //[getPackages setIncludesSubentities:NO];
-            packages = [moc executeFetchRequest:getPackages error:nil];
-            [getPackages release];
+            //packages = [moc executeFetchRequest:getPackages error:nil];
+            //[getPackages release];
 			
             // =================================
 			// Get "catalogs" items
             // =================================
-			NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
+			/*NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
 			NSArray *allCatalogs;
 			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
 			[getAllCatalogs setEntity:catalogEntityDescr];
@@ -183,7 +184,7 @@
 					newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
                     newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
 				}
-			}];
+			}];*/
 			
 			
             
@@ -201,12 +202,6 @@
                 newManagedInstall.originalIndexValue = idx;
                 [manifest addManagedInstallsFasterObject:newManagedInstall];
                 
-                id matchingObject = [self matchingObjectForString:(NSString *)obj];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
-                    newManagedInstall.originalApplication = matchingObject;
-                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
-                    newManagedInstall.originalPackage = matchingObject;
-                }
                 [pool drain];
             }];
             NSDate *now = [NSDate date];
@@ -227,12 +222,6 @@
                 newManagedUninstall.originalIndexValue = idx;
                 [manifest addManagedUninstallsFasterObject:newManagedUninstall];
                 
-                id matchingObject = [self matchingObjectForString:(NSString *)obj];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
-                    newManagedUninstall.originalApplication = matchingObject;
-                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
-                    newManagedUninstall.originalPackage = matchingObject;
-                }
                 [pool drain];
             }];
             now = [NSDate date];
@@ -253,12 +242,6 @@
                 newManagedUpdate.originalIndexValue = idx;
                 [manifest addManagedUpdatesFasterObject:newManagedUpdate];
                 
-                id matchingObject = [self matchingObjectForString:(NSString *)obj];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
-                    newManagedUpdate.originalApplication = matchingObject;
-                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
-                    newManagedUpdate.originalPackage = matchingObject;
-                }
                 [pool drain];
             }];
 			now = [NSDate date];
@@ -279,12 +262,6 @@
                 newOptionalInstall.originalIndexValue = idx;
                 [manifest addOptionalInstallsFasterObject:newOptionalInstall];
                 
-                id matchingObject = [self matchingObjectForString:(NSString *)obj];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
-                    newOptionalInstall.originalApplication = matchingObject;
-                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
-                    newOptionalInstall.originalPackage = matchingObject;
-                }
                 [pool drain];
             }];
             now = [NSDate date];

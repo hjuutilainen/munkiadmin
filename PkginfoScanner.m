@@ -142,12 +142,14 @@
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
 		NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
+        [moc setUndoManager:nil];
+        [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 		[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(contextDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:moc];
-		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+		//NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
 		
@@ -274,7 +276,7 @@
 			// =================================
 			// Get "catalogs" items
 			// =================================
-			NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
+			/*NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
 			
 			self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Parsing catalogs for %@", self.fileName);
@@ -340,7 +342,7 @@
 					newPackageInfo.isEnabledForCatalogValue = YES;
 				}
 				[fetchForCatalogs release];
-			}];
+			}];*/
 			
 			// =================================
 			// Get "requires" items

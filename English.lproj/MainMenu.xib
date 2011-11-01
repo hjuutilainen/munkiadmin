@@ -591,7 +591,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{760, 400}</string>
 				<object class="NSView" key="NSWindowView" id="823886803">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSSplitView" id="405229024">
@@ -611,7 +611,6 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{256, 0}, {604, 600}}</string>
 									<reference key="NSSuperview" ref="405229024"/>
-									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
@@ -623,7 +622,6 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{860, 600}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="405229024"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -1468,11 +1466,11 @@
 					<string>munki_forced_uninstall</string>
 				</array>
 				<bool key="NSEditable">YES</bool>
-				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">Package</string>
 				</object>
 				<bool key="_NSIsUsingManagedProxy">YES</bool>
+				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
@@ -1515,11 +1513,8 @@
 					<string key="NSEntityName">Catalog</string>
 				</object>
 				<bool key="_NSIsUsingManagedProxy">YES</bool>
-				<bool key="NSPreservesSelection">YES</bool>
-				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
-				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSArrayController" id="348094108">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
@@ -2397,7 +2392,6 @@
 						<string key="NSFrame">{{13, 10}, {522, 529}}</string>
 						<reference key="NSSuperview" ref="533813080"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="696570399"/>
 						<array class="NSMutableArray" key="NSTabViewItems">
 							<object class="NSTabViewItem" id="939719980">
 								<string key="NSIdentifier">1</string>
@@ -2720,7 +2714,7 @@
 															<string key="NSFrameSize">{348, 14}</string>
 															<reference key="NSSuperview" ref="597377161"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="522062643"/>
+															<reference key="NSNextKeyView" ref="34699892"/>
 															<object class="NSTextContainer" key="NSTextContainer" id="860572253">
 																<object class="NSLayoutManager" key="NSLayoutManager">
 																	<object class="NSTextStorage" key="NSTextStorage">
@@ -2818,7 +2812,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 													<string key="NSFrame">{{334, 1}, {15, 214}}</string>
 													<reference key="NSSuperview" ref="1007532524"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView"/>
 													<reference key="NSTarget" ref="1007532524"/>
 													<string key="NSAction">_doScroller:</string>
 													<double key="NSCurValue">1</double>
@@ -2841,7 +2834,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<string key="NSFrame">{{135, 17}, {350, 216}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="34699892"/>
+											<reference key="NSNextKeyView" ref="597377161"/>
 											<int key="NSsFlags">133138</int>
 											<reference key="NSVScroller" ref="522062643"/>
 											<reference key="NSHScroller" ref="34699892"/>
@@ -3698,7 +3691,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">290</int>
 											<string key="NSFrame">{{159, 17}, {326, 22}}</string>
 											<reference key="NSSuperview" ref="657141111"/>
-											<reference key="NSNextKeyView"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="818826760">
 												<int key="NSCellFlags">-1804468671</int>
@@ -6100,11 +6092,9 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSTextField" id="360992312">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<string key="NSFrameSize">{350, 22}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView"/>
 				<bool key="NSEnabled">YES</bool>
 				<object class="NSTextFieldCell" key="NSCell" id="1073579779">
 					<int key="NSCellFlags">-1804468671</int>
@@ -6764,7 +6754,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSCustomView" id="172961840">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSBox" id="528426229">
@@ -6853,7 +6843,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 				</array>
 				<string key="NSFrameSize">{540, 118}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="752281849"/>
 				<string key="NSReuseIdentifierKey">_NS:1192</string>
 				<string key="NSClassName">NSView</string>
