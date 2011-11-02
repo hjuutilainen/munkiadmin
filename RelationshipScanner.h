@@ -11,7 +11,7 @@
     NSString *currentJobDescription;
 	NSString *fileName;
 	id delegate;
-    NSUInteger operationMode;
+    NSInteger operationMode;
     
     NSArray *allApplications;
     NSArray *allPackages;
@@ -21,9 +21,9 @@
 
 + (id)pkginfoScanner;
 + (id)manifestScanner;
-- (id)initWithMode:(NSUInteger)mode;
+- (id)initWithMode:(NSInteger)mode;
 
-@property NSUInteger operationMode;
+@property NSInteger operationMode;
 @property (retain) NSString *currentJobDescription;
 @property (retain) NSString *fileName;
 @property (retain) id delegate;

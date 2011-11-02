@@ -591,7 +591,7 @@
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{760, 400}</string>
 				<object class="NSView" key="NSWindowView" id="823886803">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSSplitView" id="405229024">
@@ -611,6 +611,7 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{256, 0}, {604, 600}}</string>
 									<reference key="NSSuperview" ref="405229024"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
@@ -622,6 +623,7 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{860, 600}</string>
+					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="405229024"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
@@ -1466,6 +1468,7 @@
 					<string>munki_forced_uninstall</string>
 				</array>
 				<bool key="NSEditable">YES</bool>
+				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">Package</string>
 				</object>
@@ -1513,8 +1516,12 @@
 					<string key="NSEntityName">Catalog</string>
 				</object>
 				<bool key="_NSIsUsingManagedProxy">YES</bool>
+				<bool key="NSAvoidsEmptySelection">YES</bool>
+				<bool key="NSPreservesSelection">YES</bool>
+				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSArrayController" id="348094108">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
@@ -1695,6 +1702,7 @@
 					<string>catalog.dictValue</string>
 				</array>
 				<bool key="NSEditable">YES</bool>
+				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">CatalogInfo</string>
 				</object>
@@ -2383,7 +2391,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="533813080">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTabView" id="221731399">
@@ -2391,7 +2399,6 @@
 						<int key="NSvFlags">18</int>
 						<string key="NSFrame">{{13, 10}, {522, 529}}</string>
 						<reference key="NSSuperview" ref="533813080"/>
-						<reference key="NSWindow"/>
 						<array class="NSMutableArray" key="NSTabViewItems">
 							<object class="NSTabViewItem" id="939719980">
 								<string key="NSIdentifier">1</string>
@@ -2404,7 +2411,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 463}, {277, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="1068283670"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="136956159">
@@ -2428,7 +2434,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{85, 465}, {45, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="468947343"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="195494390">
@@ -2446,7 +2451,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 433}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="600164591"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="296686437">
@@ -2465,7 +2469,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{35, 435}, {95, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="229049707"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="805697081">
@@ -2483,7 +2486,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 403}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="889364569"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="450383022">
@@ -2502,7 +2504,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{35, 405}, {95, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="673405232"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="713273712">
@@ -2520,7 +2521,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 373}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="557288366"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="732251797">
@@ -2539,7 +2539,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{35, 375}, {95, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="339891195"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="455531105">
@@ -2557,7 +2556,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 343}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="486729149"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="619992539">
@@ -2576,7 +2574,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{14, 345}, {116, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="148535258"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="495437310">
@@ -2594,7 +2591,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 271}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="752277610"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="669151076">
@@ -2613,7 +2609,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{14, 273}, {116, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="237073582"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="127165107">
@@ -2631,7 +2626,6 @@
 											<int key="NSvFlags">266</int>
 											<string key="NSFrame">{{135, 241}, {350, 22}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="660525238"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="214337648">
@@ -2650,7 +2644,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{14, 243}, {116, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="1019348806"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="989038946">
@@ -2668,7 +2661,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{14, 216}, {116, 17}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="1007532524"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="602156684">
@@ -2713,7 +2705,6 @@
 															</set>
 															<string key="NSFrameSize">{348, 14}</string>
 															<reference key="NSSuperview" ref="597377161"/>
-															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="34699892"/>
 															<object class="NSTextContainer" key="NSTextContainer" id="860572253">
 																<object class="NSLayoutManager" key="NSLayoutManager">
@@ -2776,7 +2767,6 @@
 													</array>
 													<string key="NSFrame">{{1, 1}, {348, 214}}</string>
 													<reference key="NSSuperview" ref="1007532524"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="578822001"/>
 													<reference key="NSDocView" ref="578822001"/>
 													<reference key="NSBGColor" ref="494091941"/>
@@ -2811,7 +2801,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 													<int key="NSvFlags">256</int>
 													<string key="NSFrame">{{334, 1}, {15, 214}}</string>
 													<reference key="NSSuperview" ref="1007532524"/>
-													<reference key="NSWindow"/>
 													<reference key="NSTarget" ref="1007532524"/>
 													<string key="NSAction">_doScroller:</string>
 													<double key="NSCurValue">1</double>
@@ -2822,7 +2811,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{-100, -100}, {87, 18}}</string>
 													<reference key="NSSuperview" ref="1007532524"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="597377161"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="1007532524"/>
@@ -2833,7 +2821,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											</array>
 											<string key="NSFrame">{{135, 17}, {350, 216}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="597377161"/>
 											<int key="NSsFlags">133138</int>
 											<reference key="NSVScroller" ref="522062643"/>
@@ -2845,7 +2832,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{133, 319}, {99, 18}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="109927141"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="1038080831">
@@ -2869,7 +2855,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{133, 299}, {137, 18}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="217884884"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="200345619">
@@ -2893,7 +2878,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{274, 299}, {154, 18}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="204019194"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="13166711">
@@ -2917,7 +2901,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{274, 319}, {104, 18}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="826964682"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="464633432">
@@ -2941,7 +2924,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 											<int key="NSvFlags">265</int>
 											<string key="NSFrame">{{414, 456}, {77, 32}}</string>
 											<reference key="NSSuperview" ref="696570399"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="174144058"/>
 											<string key="NSReuseIdentifierKey">_NS:687</string>
 											<bool key="NSEnabled">YES</bool>
@@ -2963,7 +2945,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 									</array>
 									<string key="NSFrame">{{10, 25}, {502, 491}}</string>
 									<reference key="NSSuperview" ref="221731399"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="1063612522"/>
 								</object>
 								<string key="NSLabel">Info</string>
@@ -4562,8 +4543,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					</object>
 				</array>
 				<string key="NSFrameSize">{548, 544}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="221731399"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -7627,20 +7606,20 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<int key="connectionID">2126</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">managedObjectContext: managedObjectContext</string>
-						<reference key="source" ref="1057353844"/>
-						<reference key="destination" ref="612578685"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1057353844"/>
-							<reference key="NSDestination" ref="612578685"/>
-							<string key="NSLabel">managedObjectContext: managedObjectContext</string>
-							<string key="NSBinding">managedObjectContext</string>
-							<string key="NSKeyPath">managedObjectContext</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">packageInfosArrayController</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="334444238"/>
 					</object>
-					<int key="connectionID">535</int>
+					<int key="connectionID">2133</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">allCatalogsArrayController</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="787095192"/>
+					</object>
+					<int key="connectionID">2134</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -7673,6 +7652,22 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="destination" ref="342870020"/>
 					</object>
 					<int key="connectionID">1501</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">managedObjectContext: managedObjectContext</string>
+						<reference key="source" ref="1057353844"/>
+						<reference key="destination" ref="612578685"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1057353844"/>
+							<reference key="NSDestination" ref="612578685"/>
+							<string key="NSLabel">managedObjectContext: managedObjectContext</string>
+							<string key="NSBinding">managedObjectContext</string>
+							<string key="NSKeyPath">managedObjectContext</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">2129</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -7917,10 +7912,14 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<string key="NSLabel">value: arrangedObjects.dictValue</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">arrangedObjects.dictValue</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSConditionallySetsEditable</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">954</int>
+					<int key="connectionID">2132</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -14332,523 +14331,9 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">2128</int>
+			<int key="maxID">2134</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">ApplicationsArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">applicationsTableView</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">applicationsTableView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">applicationsTableView</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ApplicationsArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CatalogInfosArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CatalogInfosArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CatalogsArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CatalogsArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GradientBackgroundView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GradientBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GradientButtonBarView</string>
-					<string key="superclassName">GradientBackgroundView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GradientButtonBarView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ManifestItemArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">tableView</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">tableView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ManifestItemArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ManifestItemTableView</string>
-					<string key="superclassName">NSTableView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ManifestItemTableView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ManifestsArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ManifestsArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MunkiAdmin_AppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addNewInstallsItem:">id</string>
-						<string key="addNewManagedInstallAction:">id</string>
-						<string key="addNewManagedUninstallAction:">id</string>
-						<string key="addNewManagedUpdateAction:">id</string>
-						<string key="addNewOptionalInstallAction:">id</string>
-						<string key="addNewPackage:">id</string>
-						<string key="cancelAddItemsAction:">id</string>
-						<string key="cancelOperationsAction:">id</string>
-						<string key="createNewCatalogAction:">id</string>
-						<string key="createNewManifestAction:">id</string>
-						<string key="createNewRepository:">id</string>
-						<string key="deleteSelectedManifestsAction:">id</string>
-						<string key="deleteSelectedPackagesAction:">id</string>
-						<string key="didSelectSegment:">id</string>
-						<string key="disableAllPackagesForManifestAction:">id</string>
-						<string key="enableAllPackagesForManifestAction:">id</string>
-						<string key="openPreferencesAction:">id</string>
-						<string key="openRepository:">id</string>
-						<string key="propagateAppDescriptionToVersions:">id</string>
-						<string key="reloadRepositoryAction:">id</string>
-						<string key="renameSelectedManifestAction:">id</string>
-						<string key="renameSelectedPackagesAction:">id</string>
-						<string key="saveAction:">id</string>
-						<string key="selectViewAction:">id</string>
-						<string key="updateCatalogs:">id</string>
-						<string key="writeChangesToDisk:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addNewInstallsItem:">
-							<string key="name">addNewInstallsItem:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addNewManagedInstallAction:">
-							<string key="name">addNewManagedInstallAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addNewManagedUninstallAction:">
-							<string key="name">addNewManagedUninstallAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addNewManagedUpdateAction:">
-							<string key="name">addNewManagedUpdateAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addNewOptionalInstallAction:">
-							<string key="name">addNewOptionalInstallAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addNewPackage:">
-							<string key="name">addNewPackage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelAddItemsAction:">
-							<string key="name">cancelAddItemsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelOperationsAction:">
-							<string key="name">cancelOperationsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createNewCatalogAction:">
-							<string key="name">createNewCatalogAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createNewManifestAction:">
-							<string key="name">createNewManifestAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createNewRepository:">
-							<string key="name">createNewRepository:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSelectedManifestsAction:">
-							<string key="name">deleteSelectedManifestsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSelectedPackagesAction:">
-							<string key="name">deleteSelectedPackagesAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="didSelectSegment:">
-							<string key="name">didSelectSegment:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="disableAllPackagesForManifestAction:">
-							<string key="name">disableAllPackagesForManifestAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="enableAllPackagesForManifestAction:">
-							<string key="name">enableAllPackagesForManifestAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openPreferencesAction:">
-							<string key="name">openPreferencesAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openRepository:">
-							<string key="name">openRepository:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="propagateAppDescriptionToVersions:">
-							<string key="name">propagateAppDescriptionToVersions:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="reloadRepositoryAction:">
-							<string key="name">reloadRepositoryAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="renameSelectedManifestAction:">
-							<string key="name">renameSelectedManifestAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="renameSelectedPackagesAction:">
-							<string key="name">renameSelectedPackagesAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveAction:">
-							<string key="name">saveAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectViewAction:">
-							<string key="name">selectViewAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateCatalogs:">
-							<string key="name">updateCatalogs:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="writeChangesToDisk:">
-							<string key="name">writeChangesToDisk:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addItemsWindow">NSWindow</string>
-						<string key="allPackagesArrayController">PackageArrayController</string>
-						<string key="applicationTableView">NSTableView</string>
-						<string key="applicationsArrayController">ApplicationsArrayController</string>
-						<string key="applicationsDetailView">NSView</string>
-						<string key="applicationsListView">NSView</string>
-						<string key="catalogsDetailView">NSView</string>
-						<string key="catalogsListView">NSView</string>
-						<string key="createNewManifestCustomView">NSTextField</string>
-						<string key="detailViewPlaceHolder">NSView</string>
-						<string key="installsItemsArrayController">NSArrayController</string>
-						<string key="itemsToCopyArrayController">NSArrayController</string>
-						<string key="mainSegmentedControl">NSSegmentedControl</string>
-						<string key="mainSplitView">NSSplitView</string>
-						<string key="mainTabView">NSTabView</string>
-						<string key="makepkginfoOptionsView">NSView</string>
-						<string key="managedInstallsArrayController">NSArrayController</string>
-						<string key="managedUninstallsArrayController">NSArrayController</string>
-						<string key="managedUpdatesArrayController">NSArrayController</string>
-						<string key="manifestInfosArrayController">NSArrayController</string>
-						<string key="manifestsArrayController">ManifestsArrayController</string>
-						<string key="manifestsDetailView">NSView</string>
-						<string key="manifestsListView">NSView</string>
-						<string key="optionalInstallsArrayController">NSArrayController</string>
-						<string key="packagesDetailView">NSView</string>
-						<string key="packagesListView">NSView</string>
-						<string key="pkgGroupsForAddingArrayController">ApplicationsArrayController</string>
-						<string key="pkgsForAddingArrayController">PackageArrayController</string>
-						<string key="progressIndicator">NSProgressIndicator</string>
-						<string key="progressPanel">NSWindow</string>
-						<string key="receiptsArrayController">NSArrayController</string>
-						<string key="sourceViewPlaceHolder">NSView</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addItemsWindow">
-							<string key="name">addItemsWindow</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="allPackagesArrayController">
-							<string key="name">allPackagesArrayController</string>
-							<string key="candidateClassName">PackageArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="applicationTableView">
-							<string key="name">applicationTableView</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="applicationsArrayController">
-							<string key="name">applicationsArrayController</string>
-							<string key="candidateClassName">ApplicationsArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="applicationsDetailView">
-							<string key="name">applicationsDetailView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="applicationsListView">
-							<string key="name">applicationsListView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="catalogsDetailView">
-							<string key="name">catalogsDetailView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="catalogsListView">
-							<string key="name">catalogsListView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="createNewManifestCustomView">
-							<string key="name">createNewManifestCustomView</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="detailViewPlaceHolder">
-							<string key="name">detailViewPlaceHolder</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="installsItemsArrayController">
-							<string key="name">installsItemsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="itemsToCopyArrayController">
-							<string key="name">itemsToCopyArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainSegmentedControl">
-							<string key="name">mainSegmentedControl</string>
-							<string key="candidateClassName">NSSegmentedControl</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainSplitView">
-							<string key="name">mainSplitView</string>
-							<string key="candidateClassName">NSSplitView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainTabView">
-							<string key="name">mainTabView</string>
-							<string key="candidateClassName">NSTabView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="makepkginfoOptionsView">
-							<string key="name">makepkginfoOptionsView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="managedInstallsArrayController">
-							<string key="name">managedInstallsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="managedUninstallsArrayController">
-							<string key="name">managedUninstallsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="managedUpdatesArrayController">
-							<string key="name">managedUpdatesArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="manifestInfosArrayController">
-							<string key="name">manifestInfosArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="manifestsArrayController">
-							<string key="name">manifestsArrayController</string>
-							<string key="candidateClassName">ManifestsArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="manifestsDetailView">
-							<string key="name">manifestsDetailView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="manifestsListView">
-							<string key="name">manifestsListView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="optionalInstallsArrayController">
-							<string key="name">optionalInstallsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="packagesDetailView">
-							<string key="name">packagesDetailView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="packagesListView">
-							<string key="name">packagesListView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pkgGroupsForAddingArrayController">
-							<string key="name">pkgGroupsForAddingArrayController</string>
-							<string key="candidateClassName">ApplicationsArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pkgsForAddingArrayController">
-							<string key="name">pkgsForAddingArrayController</string>
-							<string key="candidateClassName">PackageArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="progressIndicator">
-							<string key="name">progressIndicator</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="progressPanel">
-							<string key="name">progressPanel</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="receiptsArrayController">
-							<string key="name">receiptsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sourceViewPlaceHolder">
-							<string key="name">sourceViewPlaceHolder</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MunkiAdmin_AppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MyCell</string>
-					<string key="superclassName">NSTextFieldCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MyCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSDocument</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="printDocument:">id</string>
-						<string key="revertDocumentToSaved:">id</string>
-						<string key="runPageLayout:">id</string>
-						<string key="saveDocument:">id</string>
-						<string key="saveDocumentAs:">id</string>
-						<string key="saveDocumentTo:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="printDocument:">
-							<string key="name">printDocument:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="revertDocumentToSaved:">
-							<string key="name">revertDocumentToSaved:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="runPageLayout:">
-							<string key="name">runPageLayout:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocument:">
-							<string key="name">saveDocument:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocumentAs:">
-							<string key="name">saveDocumentAs:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocumentTo:">
-							<string key="name">saveDocumentTo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSDocument.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PackageArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addPrefiXSuffixAction:">id</string>
-						<string key="closeModifyWindow:">id</string>
-						<string key="showModifyWindow:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addPrefiXSuffixAction:">
-							<string key="name">addPrefiXSuffixAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="closeModifyWindow:">
-							<string key="name">closeModifyWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showModifyWindow:">
-							<string key="name">showModifyWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addPrefixSuffixCustomView">NSView</string>
-						<string key="addPrefixSuffixWindow">NSWindow</string>
-						<string key="prefixTextField">NSTextField</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addPrefixSuffixCustomView">
-							<string key="name">addPrefixSuffixCustomView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="addPrefixSuffixWindow">
-							<string key="name">addPrefixSuffixWindow</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="prefixTextField">
-							<string key="name">prefixTextField</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/PackageArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PackageInfosArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">catalogsTableView</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">catalogsTableView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">catalogsTableView</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/PackageInfosArrayController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">

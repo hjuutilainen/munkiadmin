@@ -41,7 +41,7 @@
 	return [[[self alloc] initWithMode:1] autorelease];
 }
 
-- (id)initWithMode:(NSUInteger)mode {
+- (id)initWithMode:(NSInteger)mode {
 	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing relationship operation");
 		self.operationMode = mode;
@@ -213,9 +213,9 @@
         [NSApp presentError:error];
     }
     
-    if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish)]) {
-        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish) 
-                                        withObject:nil
+    if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:) 
+                                        withObject:@"manifests"
                                      waitUntilDone:YES];
     }
     
@@ -293,9 +293,9 @@
         [NSApp presentError:error];
     }
     
-    if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish)]) {
-        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish) 
-                                        withObject:nil
+    if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
+        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:) 
+                                        withObject:@"pkgs"
                                      waitUntilDone:YES];
     }
     

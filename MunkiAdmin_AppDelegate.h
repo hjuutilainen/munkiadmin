@@ -22,6 +22,8 @@
 #import "InstallerChoicesItemMO.h"
 #import "StringObjectMO.h"
 #import "PreferencesController.h"
+#import "PackageInfosArrayController.h"
+#import "CatalogsArrayController.h"
 
 @class ApplicationsArrayController;
 @class PackageArrayController;
@@ -59,6 +61,8 @@
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;
+    PackageInfosArrayController *packageInfosArrayController;
+    CatalogsArrayController *allCatalogsArrayController;
 	
 	// The current master and detail view
 	// that we are displaying
@@ -124,6 +128,8 @@
 @property (assign) IBOutlet PackageArrayController *pkgsForAddingArrayController;
 @property (assign) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
 @property (assign) IBOutlet NSView *makepkginfoOptionsView;
+@property (assign) IBOutlet PackageInfosArrayController *packageInfosArrayController;
+@property (assign) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
 # pragma mark -
 # pragma mark Variable declarations

@@ -24,6 +24,8 @@
 @synthesize pkgGroupsForAddingArrayController;
 @synthesize addItemsType;
 @synthesize makepkginfoOptionsView;
+@synthesize packageInfosArrayController;
+@synthesize allCatalogsArrayController;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
@@ -1520,8 +1522,15 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Selecting repo: %@", [newURL relativePath]);
 	}
-	[self deleteAllManagedObjects];
-	NSError *dirReadError = nil;
+    [self deleteAllManagedObjects];
+    
+    [self.allCatalogsArrayController setManagedObjectContext:nil];
+    [self.applicationsArrayController setManagedObjectContext:nil];
+    [self.packageInfosArrayController setManagedObjectContext:nil];
+    [self.allPackagesArrayController setManagedObjectContext:nil];
+    [self.manifestsArrayController setManagedObjectContext:nil];
+        
+    NSError *dirReadError = nil;
 	NSArray *selectedDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[newURL relativePath] error:&dirReadError];
 	
 	if (selectedDirContents == nil) {
@@ -1598,12 +1607,46 @@
 	//[self arrangeCatalogs];
 }
 
-- (void)relationshipScannerDidFinish
+- (void)relationshipScannerDidFinish:(NSString *)mode
 {
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    [allPackagesArrayController rearrangeObjects];
+    if ([mode isEqualToString:@"pkgs"]) {
+
+        
+    } else if ([mode isEqualToString:@"manifests"]) {
+        [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.allPackagesArrayController setEntityName:@"Package"];
+        if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
+            [self.allPackagesArrayController setSelectionIndex:0];
+        }
+        [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.packageInfosArrayController setEntityName:@"PackageInfo"];
+        if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.packageInfosArrayController setAutomaticallyPreparesContent:YES];
+            [self.packageInfosArrayController setSelectionIndex:0];
+        }
+        [self.manifestsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.manifestsArrayController setEntityName:@"Manifest"];
+        if (![self.manifestsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
+            [self.manifestsArrayController setSelectionIndex:0];
+        }
+        [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.applicationsArrayController setEntityName:@"Application"];
+        if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
+            [self.applicationsArrayController setSelectionIndex:0];
+        }
+        [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.allCatalogsArrayController setEntityName:@"Catalog"];
+        if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
+            [self.allCatalogsArrayController setSelectionIndex:0];
+        }
+    }
 }
 
 - (void)mergeChanges:(NSNotification*)notification

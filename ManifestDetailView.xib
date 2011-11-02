@@ -52,7 +52,6 @@
 						<string key="NSFrame">{{13, 10}, {779, 523}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="963743439"/>
 						<array class="NSMutableArray" key="NSTabViewItems">
 							<object class="NSTabViewItem" id="133922317">
 								<string key="NSIdentifier">1</string>
@@ -928,7 +927,6 @@
 													<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -2827,6 +2825,7 @@
 						<string key="propagateAppDescriptionToVersions:">id</string>
 						<string key="reloadRepositoryAction:">id</string>
 						<string key="renameSelectedManifestAction:">id</string>
+						<string key="renameSelectedPackagesAction:">id</string>
 						<string key="saveAction:">id</string>
 						<string key="selectViewAction:">id</string>
 						<string key="updateCatalogs:">id</string>
@@ -2915,6 +2914,10 @@
 						</object>
 						<object class="IBActionInfo" key="renameSelectedManifestAction:">
 							<string key="name">renameSelectedManifestAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="renameSelectedPackagesAction:">
+							<string key="name">renameSelectedPackagesAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="saveAction:">

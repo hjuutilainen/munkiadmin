@@ -64,7 +64,7 @@
 
 - (id)matchingObjectForString:(NSString *)aString
 {
-    /*NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
+    NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
     NSUInteger foundIndex = [apps indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         return [appPred evaluateWithObject:obj];
     }];
@@ -81,10 +81,31 @@
         } else {
             return nil;
         }
-    }*/
-    return nil;
+    }
 }
 
+
+- (ManifestMO *)matchingManifestForString:(NSString *)title inMoc:(NSManagedObjectContext *)moc
+{
+    // Get all application objects for later use
+    NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
+    [getManifests setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
+    [getManifests setReturnsObjectsAsFaults:NO];
+    [getManifests setIncludesSubentities:NO];
+    NSArray *manifests = [moc executeFetchRequest:getManifests error:nil];
+    [getManifests release];
+    
+    NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", title];
+    NSUInteger foundIndex = [manifests indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        return [titlePredicate evaluateWithObject:obj];
+    }];
+    
+    if (foundIndex != NSNotFound) {
+        return [manifests objectAtIndex:foundIndex];
+    } else {
+        return nil;
+    }
+}
 
 -(void)main {
 	@try {
@@ -97,11 +118,6 @@
 												 selector:@selector(contextDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:moc];
-		//NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-		NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
-        //NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-        //NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
-		
 		
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading manifest %@", [self.sourceURL relativePath]);
@@ -111,27 +127,43 @@
 			
 			NSString *filename = nil;
 			[self.sourceURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
-						
-			// Check if we already have a manifest with this name
-			NSFetchRequest *request = [[NSFetchRequest alloc] init];
+            
+            /*ManifestMO *manifest;
+            manifest = [self matchingManifestForString:filename inMoc:moc];
+			if (manifest == nil) {
+                manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
+				manifest.title = filename;
+				manifest.manifestURL = self.sourceURL;
+            }*/
+            
+            // Check if we already have a manifest with this name
+			
+            NSFetchRequest *request = [[NSFetchRequest alloc] init];
+            NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 			[request setEntity:manifestEntityDescr];
+            [request setReturnsObjectsAsFaults:NO];
+            [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"managedInstallsFaster", @"managedUninstallsFaster", @"managedUpdatesFaster", @"optionalInstallsFaster", nil]];
 			
 			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
+            
 			[request setPredicate:titlePredicate];
-			ManifestMO *manifest;
-			NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
-			if (foundItems == 0) {
+			[request setReturnsObjectsAsFaults:NO];
+            ManifestMO *manifest;
+            //NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
+            NSArray *foundItems = [moc executeFetchRequest:request error:nil];
+			if ([foundItems count] == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = filename;
 				manifest.manifestURL = self.sourceURL;
 			} else {
-				manifest = [[moc executeFetchRequest:request error:nil] objectAtIndex:0];
+				manifest = [foundItems objectAtIndex:0];
 				if ([self.defaults boolForKey:@"debug"]) {
 					NSLog(@"Found existing manifest %@", manifest.title);
 				}
 			}
 			[request release];
 			
+            
 			manifest.originalManifest = manifestInfoDict;
             
             // Get all application objects for later use
@@ -272,7 +304,7 @@
 			// Get "included_manifests" items
 			// =================================
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
-            [includedManifests enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
                 StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
                 newIncludedManifest.title = (NSString *)obj;
