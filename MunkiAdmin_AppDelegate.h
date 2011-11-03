@@ -103,6 +103,7 @@
 	NSString *jobDescription;
 	NSProgressIndicator *progressIndicator;
 	double subProgress;
+    NSTimer *operationTimer;
 	
 	NSUserDefaults *defaults;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;

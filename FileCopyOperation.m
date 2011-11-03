@@ -19,7 +19,7 @@
 	return [NSUserDefaults standardUserDefaults];
 }
 
-+ (id)copySourceURL:(NSURL *)src toTargetURL:(NSURL *)target
++ (id)fileCopySourceURL:(NSURL *)src toTargetURL:(NSURL *)target
 {
 	return [[[self alloc] initWithSourceURL:src targetURL:target] autorelease];
 }

@@ -490,8 +490,6 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	
-	NSTimer *operationTimer;
 	operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													  target:self
 													selector:@selector(checkOperations:)
@@ -1297,7 +1295,7 @@
                         if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
                         if ([self.defaults boolForKey:@"CopyPkgsToRepo"]) {
                             NSURL *newTarget = [self.pkgsURL URLByAppendingPathComponent:[[fileToAdd relativePath] lastPathComponent]];
-                            FileCopyOperation *copyOp = [FileCopyOperation copySourceURL:fileToAdd toTargetURL:newTarget];
+                            FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
                             copyOp.delegate = self;
                             theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
                             [theOp addDependency:copyOp];

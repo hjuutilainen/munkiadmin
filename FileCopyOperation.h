@@ -15,7 +15,7 @@
 	id delegate;
 }
 
-+ (id)copySourceURL:(NSURL *)src toTargetURL:(NSURL *)target;
++ (id)fileCopySourceURL:(NSURL *)src toTargetURL:(NSURL *)target;
 - (id)initWithSourceURL:(NSURL *)src targetURL:(NSURL *)target;
 
 @property (retain) NSString *currentJobDescription;
