@@ -258,29 +258,32 @@
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %i/%i", idx+1, [self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
+        NSArray *existingCatalogTitles = [currentPackage.catalogInfos valueForKeyPath:@"catalog.title"];
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;
         
         for (CatalogMO *aCatalog in self.allCatalogs) {
-            CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-            newCatalogInfo.package = currentPackage;
-            newCatalogInfo.catalog.title = aCatalog.title;
-            
-            [aCatalog addPackagesObject:currentPackage];
-            [aCatalog addCatalogInfosObject:newCatalogInfo];
-            
-            PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-            newPackageInfo.catalog = aCatalog;
-            newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
-            newPackageInfo.package = currentPackage;
-            
-            if ([[originalPkginfo objectForKey:@"catalogs"] containsObject:aCatalog.title]) {
-                newCatalogInfo.isEnabledForPackageValue = YES;
-                newCatalogInfo.originalIndexValue = [[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title];
-                newPackageInfo.isEnabledForCatalogValue = YES;
-            } else {
-                newCatalogInfo.isEnabledForPackageValue = NO;
-                newCatalogInfo.originalIndexValue = 10000;
-                newPackageInfo.isEnabledForCatalogValue = NO;
+            if (![existingCatalogTitles containsObject:aCatalog.title]) {
+                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                newCatalogInfo.package = currentPackage;
+                newCatalogInfo.catalog.title = aCatalog.title;
+                
+                [aCatalog addPackagesObject:currentPackage];
+                [aCatalog addCatalogInfosObject:newCatalogInfo];
+                
+                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                newPackageInfo.catalog = aCatalog;
+                newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
+                newPackageInfo.package = currentPackage;
+                
+                if ([[originalPkginfo objectForKey:@"catalogs"] containsObject:aCatalog.title]) {
+                    newCatalogInfo.isEnabledForPackageValue = YES;
+                    newCatalogInfo.originalIndexValue = [[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title];
+                    newPackageInfo.isEnabledForCatalogValue = YES;
+                } else {
+                    newCatalogInfo.isEnabledForPackageValue = NO;
+                    newCatalogInfo.originalIndexValue = 10000;
+                    newPackageInfo.isEnabledForCatalogValue = NO;
+                }
             }
         }
     }];

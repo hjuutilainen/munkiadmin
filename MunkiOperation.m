@@ -139,7 +139,7 @@
 			if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
 				[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:) 
 												withObject:pkginfo
-											 waitUntilDone:NO];
+											 waitUntilDone:YES];
 			}
 		}
 		

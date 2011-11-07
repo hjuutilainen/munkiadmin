@@ -1287,6 +1287,9 @@
 		if (filesToAdd) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", (unsigned long)[filesToAdd count]);
 			
+            RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+            packageRelationships.delegate = self;
+            
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
                     MunkiOperation *theOp;
@@ -1307,11 +1310,12 @@
                     } else {
                         theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
                     }
-                    
+                    [packageRelationships addDependency:theOp];
 					theOp.delegate = self;
 					[self.operationQueue addOperation:theOp];
 				}
 			}
+            [self.operationQueue addOperation:packageRelationships];
 			[self showProgressPanel];
 		}
 	} else {
