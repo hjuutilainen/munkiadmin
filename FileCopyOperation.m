@@ -50,8 +50,8 @@
 -(void)main {
 	@try {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-        //NSFileManager *fm = [NSFileManager defaultManager];
-        NSFileManager *fm = [[NSFileManager alloc] init];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        //NSFileManager *fm = [[NSFileManager alloc] init];
         [fm setDelegate:self];
         NSError *copyError = nil;
         

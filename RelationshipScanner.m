@@ -101,6 +101,8 @@
 
 - (void)scanManifests
 {
+    // Configure the context
+    
     NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
     [moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
     [moc setUndoManager:nil];
@@ -113,38 +115,42 @@
     NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
     
-    // Get all manifest objects for later use
+    
+    // Get some objects for later use
+    
     NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
     [getManifests setEntity:manifestEntityDescr];
     self.allManifests = [moc executeFetchRequest:getManifests error:nil];
     [getManifests release];
-    
-    // Get all application objects for later use
+
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
     self.allApplications = [moc executeFetchRequest:getApplications error:nil];
     [getApplications release];
-    
-    // Get all catalogs
+
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
     [getAllCatalogs release];
-    
-    // Get all packages for later use
+
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
     [getPackages release];
+    
+    
+    // Loop through all known manifest objects
+    // and configure contents for each
     
     [self.allManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %i/%i", idx+1, [self.allManifests count]];
         ManifestMO *currentManifest = (ManifestMO *)obj;
         NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
         
-        // =================================
-        // Get "catalogs" items
-        // =================================
+        
+        // Loop through all known catalog objects and configure
+        // them for this manifest
+        
         NSArray *catalogs = [originalManifestDict objectForKey:@"catalogs"];
         for (CatalogMO *aCatalog in self.allCatalogs) {
             NSString *catalogTitle = [aCatalog title];
@@ -169,6 +175,11 @@
                 newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
             }
         }
+        
+        
+        // StringObjects are created during the initial manifest scan.
+        // Now loop through them and link them to an existing
+        // PackageMO or ApplicationMO object
         
         for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
             id matchingObject = [self matchingAppOrPkgForString:aManagedInstall.title];
@@ -204,10 +215,8 @@
         }
     }];
     
-    
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
-    // Save the context, this causes main app delegate to merge new items
     NSError *error = nil;
     if (![moc save:&error]) {
         [NSApp presentError:error];
@@ -229,6 +238,8 @@
 
 - (void)scanPkginfos
 {
+    // Configure the context
+    
     NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
     [moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
     [moc setUndoManager:nil];
@@ -240,14 +251,15 @@
     NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
     
-    // Get all packages for later use
+    
+    // Get some objects for later use
+    
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
     [getPackages release];
-    
-    // Get all catalogs
+
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
@@ -260,7 +272,11 @@
         PackageMO *currentPackage = (PackageMO *)obj;
         NSArray *existingCatalogTitles = [currentPackage.catalogInfos valueForKeyPath:@"catalog.title"];
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;
+        NSArray *catalogsFromPkginfo = [originalPkginfo objectForKey:@"catalogs"];
         
+
+        // Loop through the catalog objects we already know about
+
         for (CatalogMO *aCatalog in self.allCatalogs) {
             if (![existingCatalogTitles containsObject:aCatalog.title]) {
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -286,11 +302,72 @@
                 }
             }
         }
+        
+
+        // Loop through the "catalogs" key in the original pkginfo
+        // and create new catalog objects if necessary
+
+        [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            
+            NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
+            [fetchForCatalogs setEntity:catalogEntityDescr];
+            
+            NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", obj];
+            [fetchForCatalogs setPredicate:catalogTitlePredicate];
+            
+            NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
+            
+
+            // There is an item in catalogs array which does not
+            // yet have it's own CatalogMO object.
+            // Create it and add dependencies for it
+
+            if (numFoundCatalogs == 0) {
+                CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
+                aNewCatalog.title = obj;
+                [aNewCatalog addPackagesObject:currentPackage];
+                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                newCatalogInfo.package = currentPackage;
+                newCatalogInfo.catalog.title = aNewCatalog.title;
+                newCatalogInfo.isEnabledForPackageValue = YES;
+                newCatalogInfo.originalIndexValue = [catalogsFromPkginfo indexOfObject:obj];
+                [aNewCatalog addCatalogInfosObject:newCatalogInfo];
+                
+                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                newPackageInfo.catalog = aNewCatalog;
+                newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
+                newPackageInfo.package = currentPackage;
+                newPackageInfo.isEnabledForCatalogValue = YES;
+            }
+            
+            
+            // Found one (or more) existing CatalogMO objects with this name.
+            // Use the first one and create dependencies if needed
+            
+            else {
+                CatalogMO *foundCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
+                
+                if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:obj]) {
+                    [foundCatalog addPackagesObject:currentPackage];
+                    CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                    newCatalogInfo.package = currentPackage;
+                    newCatalogInfo.catalog.title = foundCatalog.title;
+                    newCatalogInfo.isEnabledForPackageValue = YES;
+                    newCatalogInfo.originalIndexValue = [catalogsFromPkginfo indexOfObject:obj];
+                    [foundCatalog addCatalogInfosObject:newCatalogInfo];
+                    PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                    newPackageInfo.catalog = foundCatalog;
+                    newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
+                    newPackageInfo.package = currentPackage;
+                    newPackageInfo.isEnabledForCatalogValue = YES;
+                }
+            }
+            [fetchForCatalogs release];
+        }];
     }];
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
-    // Save the context, this causes main app delegate to merge new items
     NSError *error = nil;
     if (![moc save:&error]) {
         [NSApp presentError:error];
