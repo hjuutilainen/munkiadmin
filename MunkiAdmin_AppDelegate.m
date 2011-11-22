@@ -249,7 +249,7 @@
 	openPanel.canChooseDirectories = NO;
 	openPanel.canChooseFiles = YES;
 	openPanel.resolvesAliases = YES;
-    
+    openPanel.directoryURL = self.pkgsURL;
     [openPanel setAccessoryView:self.makepkginfoOptionsView];
 	
 	// Make the accessory view first responder
@@ -259,6 +259,20 @@
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [openPanel URLs];
+	} else {
+		return nil;
+	}
+}
+
+
+- (NSURL *)showSavePanelForPkginfo:(NSString *)fileName
+{
+	NSSavePanel *savePanel = [NSSavePanel savePanel];
+	savePanel.nameFieldStringValue = fileName;
+    savePanel.directoryURL = self.pkgsInfoURL;
+	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+	{
+		return [savePanel URL];
 	} else {
 		return nil;
 	}
@@ -1000,11 +1014,26 @@
 - (void)makepkginfoDidFinish:(NSDictionary *)pkginfoPlist
 {
 	// Callback from makepkginfo
-	// Create a scanner job but run it without an operation queue
-	PkginfoScanner *scanOp = [PkginfoScanner scannerWithDictionary:pkginfoPlist];
-	scanOp.canModify = YES;
-	scanOp.delegate = self;
-	[scanOp start];
+    
+    // Create a name for the new pkginfo item
+    NSString *name = [pkginfoPlist objectForKey:@"name"];
+    NSString *version = [pkginfoPlist objectForKey:@"version"];
+    NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, version];
+    NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:@"plist"];
+    
+    // Ask the user to save
+    NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
+    
+    // Write the pkginfo to disk and add it to our datastore
+    BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:YES];
+    if (saved) {
+        // Create a scanner job but run it without an operation queue
+        PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
+        scanOp.canModify = YES;
+        scanOp.delegate = self;
+        [scanOp start];
+    }
 }
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
