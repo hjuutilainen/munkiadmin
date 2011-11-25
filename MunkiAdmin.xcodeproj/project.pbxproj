@@ -71,7 +71,6 @@
 		F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C1129546EB00B68F4F /* _PackageMO.m */; };
 		F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */; };
 		F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */; };
-		F5F63381111824CC007CC030 /* catalogIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337E111824CC007CC030 /* catalogIcon2.png */; };
 		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
@@ -132,12 +131,12 @@
 		F5299AB610FB76D20074CFEA /* trash.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = trash.tiff; sourceTree = "<group>"; };
 		F5299AD710FB78620074CFEA /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
 		F5299AD810FB78620074CFEA /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
-		F53269A1125AF75C00AF967C /* PkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoScanner.h; sourceTree = "<group>"; };
-		F53269A2125AF75C00AF967C /* PkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoScanner.m; sourceTree = "<group>"; };
+		F53269A1125AF75C00AF967C /* PkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PkginfoScanner.h; path = "Operation Subclasses/PkginfoScanner.h"; sourceTree = "<group>"; };
+		F53269A2125AF75C00AF967C /* PkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoScanner.m; path = "Operation Subclasses/PkginfoScanner.m"; sourceTree = "<group>"; };
 		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
 		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
-		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestScanner.h; sourceTree = "<group>"; };
-		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestScanner.m; sourceTree = "<group>"; };
+		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestScanner.h; path = "Operation Subclasses/ManifestScanner.h"; sourceTree = "<group>"; };
+		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestScanner.m; path = "Operation Subclasses/ManifestScanner.m"; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -210,12 +209,11 @@
 		F5DFC8D4129546EE00B68F4F /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
 		F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _StringObjectMO.h; sourceTree = "<group>"; };
-		F5F6337E111824CC007CC030 /* catalogIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon2.png; sourceTree = "<group>"; };
 		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = manifestIcon2.png; sourceTree = "<group>"; };
 		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = packageIcon2.png; sourceTree = "<group>"; };
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catalogIcon3.png; sourceTree = "<group>"; };
-		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiOperation.h; sourceTree = "<group>"; };
-		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiOperation.m; sourceTree = "<group>"; };
+		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiOperation.h; path = "Operation Subclasses/MunkiOperation.h"; sourceTree = "<group>"; };
+		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiOperation.m; path = "Operation Subclasses/MunkiOperation.m"; sourceTree = "<group>"; };
 		FE1C6B76145A797D00BC815F /* PackageNameEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageNameEditor.h; sourceTree = "<group>"; };
 		FE1C6B77145A797D00BC815F /* PackageNameEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageNameEditor.m; sourceTree = "<group>"; };
 		FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PackageNameEditor.xib; sourceTree = "<group>"; };
@@ -223,8 +221,8 @@
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerChoicesItemMO.m; sourceTree = "<group>"; };
-		FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCopyOperation.h; sourceTree = "<group>"; };
-		FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCopyOperation.m; sourceTree = "<group>"; };
+		FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCopyOperation.h; path = "Operation Subclasses/FileCopyOperation.h"; sourceTree = "<group>"; };
+		FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileCopyOperation.m; path = "Operation Subclasses/FileCopyOperation.m"; sourceTree = "<group>"; };
 		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
 		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
 		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
@@ -235,8 +233,8 @@
 		FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestDetailView.m; sourceTree = "<group>"; };
 		FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ManifestDetailView.xib; sourceTree = "<group>"; };
 		FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = MunkiAdmin.icns; sourceTree = "<group>"; };
-		FEEBE373145FC5750004791A /* RelationshipScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelationshipScanner.h; sourceTree = "<group>"; };
-		FEEBE374145FC5750004791A /* RelationshipScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelationshipScanner.m; sourceTree = "<group>"; };
+		FEEBE373145FC5750004791A /* RelationshipScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelationshipScanner.h; path = "Operation Subclasses/RelationshipScanner.h"; sourceTree = "<group>"; };
+		FEEBE374145FC5750004791A /* RelationshipScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RelationshipScanner.m; path = "Operation Subclasses/RelationshipScanner.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +252,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FEB749F7147F98F3004EC366 /* Operations */,
 				F564873711B503830061B190 /* PreferencesController.h */,
 				F564873811B503830061B190 /* PreferencesController.m */,
 				F5299AD710FB78620074CFEA /* MyCell.h */,
@@ -282,17 +281,7 @@
 				F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */,
 				F50AC6E212BA04360069EB00 /* ManifestItemTableView.h */,
 				F50AC6E312BA04360069EB00 /* ManifestItemTableView.m */,
-				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
-				F53269A2125AF75C00AF967C /* PkginfoScanner.m */,
-				F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */,
-				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
-				FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */,
-				FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */,
-				FEEBE373145FC5750004791A /* RelationshipScanner.h */,
-				FEEBE374145FC5750004791A /* RelationshipScanner.m */,
 				FEABB23F144EB0D40006BDE8 /* View Controllers */,
-				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
-				F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -352,7 +341,6 @@
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
 				F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */,
 				F5F6339411182934007CC030 /* catalogIcon3.png */,
-				F5F6337E111824CC007CC030 /* catalogIcon2.png */,
 				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
 				F5F63380111824CC007CC030 /* packageIcon2.png */,
 				F5299AB110FB76D20074CFEA /* archive.tiff */,
@@ -483,6 +471,23 @@
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
+		FEB749F7147F98F3004EC366 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
+				F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */,
+				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
+				F53269A2125AF75C00AF967C /* PkginfoScanner.m */,
+				F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */,
+				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
+				FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */,
+				FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */,
+				FEEBE373145FC5750004791A /* RelationshipScanner.h */,
+				FEEBE374145FC5750004791A /* RelationshipScanner.m */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -547,7 +552,6 @@
 				F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */,
 				F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
-				F5F63381111824CC007CC030 /* catalogIcon2.png in Resources */,
 				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
 				F5F63383111824CC007CC030 /* packageIcon2.png in Resources */,
 				F5F6339511182934007CC030 /* catalogIcon3.png in Resources */,
