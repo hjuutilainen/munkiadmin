@@ -83,7 +83,7 @@
 		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
 		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
 		FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */; };
-		FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */; };
+		FEC30F2214516392006747F6 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectPkginfoItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */; };
 		FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */; };
 		FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */ = {isa = PBXBuildFile; fileRef = FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */; };
@@ -214,24 +214,24 @@
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon3.png; path = Graphics/catalogIcon3.png; sourceTree = "<group>"; };
 		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiOperation.h; path = "NSOperation Subclasses/MunkiOperation.h"; sourceTree = "<group>"; };
 		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiOperation.m; path = "NSOperation Subclasses/MunkiOperation.m"; sourceTree = "<group>"; };
-		FE1C6B76145A797D00BC815F /* PackageNameEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageNameEditor.h; sourceTree = "<group>"; };
-		FE1C6B77145A797D00BC815F /* PackageNameEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageNameEditor.m; sourceTree = "<group>"; };
-		FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PackageNameEditor.xib; sourceTree = "<group>"; };
+		FE1C6B76145A797D00BC815F /* PackageNameEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageNameEditor.h; path = Views/PackageNameEditor.h; sourceTree = "<group>"; };
+		FE1C6B77145A797D00BC815F /* PackageNameEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageNameEditor.m; path = Views/PackageNameEditor.m; sourceTree = "<group>"; };
+		FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PackageNameEditor.xib; path = Views/PackageNameEditor.xib; sourceTree = "<group>"; };
 		FE781B9F144C0CCE0089E941 /* _InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCopyOperation.h; path = "NSOperation Subclasses/FileCopyOperation.h"; sourceTree = "<group>"; };
 		FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileCopyOperation.m; path = "NSOperation Subclasses/FileCopyOperation.m"; sourceTree = "<group>"; };
-		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
-		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
-		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
-		FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectManifestItemsWindow.h; sourceTree = "<group>"; };
-		FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectManifestItemsWindow.m; sourceTree = "<group>"; };
-		FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectManifestItemsWindow.xib; sourceTree = "<group>"; };
-		FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestDetailView.h; sourceTree = "<group>"; };
-		FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestDetailView.m; sourceTree = "<group>"; };
-		FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ManifestDetailView.xib; sourceTree = "<group>"; };
+		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectPkginfoItemsWindow.h; path = Views/SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
+		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectPkginfoItemsWindow.m; path = Views/SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
+		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SelectPkginfoItemsWindow.xib; path = Views/SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
+		FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectManifestItemsWindow.h; path = Views/SelectManifestItemsWindow.h; sourceTree = "<group>"; };
+		FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectManifestItemsWindow.m; path = Views/SelectManifestItemsWindow.m; sourceTree = "<group>"; };
+		FEC30F2114516392006747F6 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SelectPkginfoItemsWindow.xib; path = Views/SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
+		FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestDetailView.h; path = Views/ManifestDetailView.h; sourceTree = "<group>"; };
+		FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestDetailView.m; path = Views/ManifestDetailView.m; sourceTree = "<group>"; };
+		FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ManifestDetailView.xib; path = Views/ManifestDetailView.xib; sourceTree = "<group>"; };
 		FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = MunkiAdmin.icns; path = Graphics/MunkiAdmin.icns; sourceTree = "<group>"; };
 		FEEBE373145FC5750004791A /* RelationshipScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RelationshipScanner.h; path = "NSOperation Subclasses/RelationshipScanner.h"; sourceTree = "<group>"; };
 		FEEBE374145FC5750004791A /* RelationshipScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RelationshipScanner.m; path = "NSOperation Subclasses/RelationshipScanner.m"; sourceTree = "<group>"; };
@@ -460,7 +460,7 @@
 				FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */,
 				FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */,
 				FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */,
-				FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */,
+				FEC30F2114516392006747F6 /* SelectPkginfoItemsWindow.xib */,
 				FE1C6B76145A797D00BC815F /* PackageNameEditor.h */,
 				FE1C6B77145A797D00BC815F /* PackageNameEditor.m */,
 				FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */,
@@ -567,7 +567,7 @@
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
-				FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */,
+				FEC30F2214516392006747F6 /* SelectPkginfoItemsWindow.xib in Resources */,
 				FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 			);
