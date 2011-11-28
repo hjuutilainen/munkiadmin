@@ -1033,6 +1033,26 @@
         scanOp.canModify = YES;
         scanOp.delegate = self;
         [scanOp start];
+        
+        // Select the newly created package
+        NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
+        [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
+        NSPredicate *pkgPred;
+        pkgPred = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_version == %@", name, version];
+        
+        [fetchForPackage setPredicate:pkgPred];
+        
+        NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
+        if (numFoundPkgs == 0) {
+            
+        } else if (numFoundPkgs == 1) {
+            PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+            [self.allPackagesArrayController setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
+        } else {
+
+        }
+        
+        [fetchForPackage release];
     }
 }
 
