@@ -536,13 +536,14 @@
 - (void)renameSelectedManifest
 {
 	ManifestMO *selMan = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-	
+	NSString *oldTitle = selMan.title;
+    
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Rename"];
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:@"Rename Manifest"];
-    [alert setInformativeText:[NSString stringWithFormat:@"Rename %@ to:", selMan.title]];
+    [alert setInformativeText:[NSString stringWithFormat:@"Rename manifest \"%@\" to:", selMan.title]];
     [alert setAlertStyle:NSInformationalAlertStyle];
     [alert setShowsSuppressionButton:NO];
 	
@@ -568,6 +569,23 @@
 			if ([[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
 				selMan.manifestURL = newURL;
 				selMan.title = newTitle;
+                
+                // Rename other references (this might be a nested manifest)
+                NSFetchRequest *getReferencingManifests = [[NSFetchRequest alloc] init];
+                [getReferencingManifests setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext]];
+                NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString == %@", oldTitle, @"includedManifest"];
+                [getReferencingManifests setPredicate:referencingPred];
+                if ([self.managedObjectContext countForFetchRequest:getReferencingManifests error:nil] > 0) {
+                    NSArray *referencingObjects = [self.managedObjectContext executeFetchRequest:getReferencingManifests error:nil];
+                    for (StringObjectMO *aReference in referencingObjects) {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming reference from manifest: %@", aReference.manifestReference.title);
+                        aReference.title = newTitle;
+                    }
+                } else {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+                }
+                [getReferencingManifests release];
+                
 			} else {
 				NSLog(@"Failed to rename manifest on disk");
 			}
@@ -583,6 +601,68 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	[self renameSelectedManifest];
+}
+
+- (void)duplicateSelectedManifest
+{
+    ManifestMO *selMan = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+	
+	// Configure the dialog
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"Duplicate"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:@"Duplicate Manifest"];
+    [alert setInformativeText:[NSString stringWithFormat:@"Duplicate %@ to:", selMan.title]];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setShowsSuppressionButton:NO];
+	
+	NSRect textRect = NSMakeRect(0, 0, 350, 22);
+	NSTextField *textField=[[NSTextField alloc] initWithFrame:textRect];
+	[textField setStringValue:selMan.title];
+    [alert setAccessoryView:textField];
+	
+	// Make the accessory view first responder
+	[alert layout];
+	[[alert window] makeFirstResponder:textField];
+	
+	// Display the dialog
+    NSInteger result = [alert runModal];
+	if (result == NSAlertFirstButtonReturn) {
+		NSString *newTitle = [textField stringValue];
+		if (![newTitle isEqualToString:selMan.title]) {
+			if ([self.defaults boolForKey:@"debug"]) {
+				NSLog(@"Duplicating %@ to %@", selMan.title, newTitle);
+			}
+			NSURL *currentURL = (NSURL *)selMan.manifestURL;
+			NSURL *newURL = [[(NSURL *)selMan.manifestURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newTitle];
+			if ([[NSFileManager defaultManager] copyItemAtURL:currentURL toURL:newURL error:nil]) {
+                
+                RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+                manifestRelationships.delegate = self;
+                
+                ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:newURL] autorelease];
+                scanOp.delegate = self;
+                [manifestRelationships addDependency:scanOp];
+                [self.operationQueue addOperation:scanOp];
+                [self.operationQueue addOperation:manifestRelationships];
+                
+                [self showProgressPanel];
+			} else {
+				NSLog(@"Failed to copy manifest on disk");
+			}
+		}
+	}
+	[textField release];
+	[alert release];
+    
+}
+
+- (IBAction)duplicateSelectedManifestAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [self duplicateSelectedManifest];
 }
 
 - (void)deleteSelectedManifests

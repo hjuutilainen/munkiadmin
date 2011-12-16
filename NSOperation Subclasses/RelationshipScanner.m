@@ -148,31 +148,42 @@
         NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
         
         
+        NSArray *existingCatalogTitles = [[currentManifest.catalogInfos valueForKeyPath:@"catalog.title"] allObjects];
+        NSArray *newCatalogTitles = [self.allCatalogs valueForKeyPath:@"title"];
+        
         // Loop through all known catalog objects and configure
         // them for this manifest
         
-        NSArray *catalogs = [originalManifestDict objectForKey:@"catalogs"];
-        for (CatalogMO *aCatalog in self.allCatalogs) {
-            NSString *catalogTitle = [aCatalog title];
-            CatalogInfoMO *newCatalogInfo;
-            newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-            newCatalogInfo.catalog.title = catalogTitle;
-            [aCatalog addManifestsObject:currentManifest];
-            newCatalogInfo.manifest = currentManifest;
-            [aCatalog addCatalogInfosObject:newCatalogInfo];
+        if (![existingCatalogTitles isEqualToArray:newCatalogTitles]) {
             
-            if (catalogs == nil) {
-                newCatalogInfo.isEnabledForManifestValue = NO;
-                newCatalogInfo.originalIndexValue = 0;
-                newCatalogInfo.indexInManifestValue = 0;
-            } else if ([catalogs containsObject:catalogTitle]) {
-                newCatalogInfo.isEnabledForManifestValue = YES;
-                newCatalogInfo.originalIndexValue = [catalogs indexOfObject:catalogTitle];
-                newCatalogInfo.indexInManifestValue = [catalogs indexOfObject:catalogTitle];
-            } else {
-                newCatalogInfo.isEnabledForManifestValue = NO;
-                newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
-                newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
+            // Delete the old catalogs
+            for (CatalogInfoMO *aCatInfo in currentManifest.catalogInfos) {
+                [moc deleteObject:aCatInfo];
+            }
+            
+            NSArray *catalogs = [originalManifestDict objectForKey:@"catalogs"];
+            for (CatalogMO *aCatalog in self.allCatalogs) {
+                NSString *catalogTitle = [aCatalog title];
+                CatalogInfoMO *newCatalogInfo;
+                newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                newCatalogInfo.catalog.title = catalogTitle;
+                [aCatalog addManifestsObject:currentManifest];
+                newCatalogInfo.manifest = currentManifest;
+                [aCatalog addCatalogInfosObject:newCatalogInfo];
+                
+                if (catalogs == nil) {
+                    newCatalogInfo.isEnabledForManifestValue = NO;
+                    newCatalogInfo.originalIndexValue = 0;
+                    newCatalogInfo.indexInManifestValue = 0;
+                } else if ([catalogs containsObject:catalogTitle]) {
+                    newCatalogInfo.isEnabledForManifestValue = YES;
+                    newCatalogInfo.originalIndexValue = [catalogs indexOfObject:catalogTitle];
+                    newCatalogInfo.indexInManifestValue = [catalogs indexOfObject:catalogTitle];
+                } else {
+                    newCatalogInfo.isEnabledForManifestValue = NO;
+                    newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
+                    newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
+                }
             }
         }
         

@@ -206,6 +206,7 @@
 - (IBAction)addNewInstallsItem:sender;
 - (IBAction)didSelectSegment:sender;
 - (IBAction)selectViewAction:sender;
+- (IBAction)duplicateSelectedManifestAction:(id)sender;
 - (IBAction)renameSelectedManifestAction:sender;
 - (IBAction)renameSelectedPackagesAction:sender;
 - (IBAction)deleteSelectedManifestsAction:sender;
