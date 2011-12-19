@@ -15,6 +15,7 @@
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
 #import "PackageNameEditor.h"
+#import "AdvancedPackageEditor.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -304,6 +305,7 @@
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     
     
 	// Configure segmented control
@@ -1178,6 +1180,33 @@
 	   didEndSelector:nil 
           contextInfo:nil];
 }*/
+
+- (IBAction)cancelPackageGetInfoAction:(id)sender
+{
+	[NSApp endSheet:[advancedPackageEditor window]];
+	[[advancedPackageEditor window] close];
+}
+
+- (IBAction)processPackageGetInfoAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [NSApp endSheet:[advancedPackageEditor window]];
+	[[advancedPackageEditor window] close];
+}
+
+- (IBAction)getInfoAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [advancedPackageEditor setDefaultValuesFromPackage:[[allPackagesArrayController selectedObjects] objectAtIndex:0]];
+    [NSApp runModalForWindow:[advancedPackageEditor window]];
+    //[NSApp beginSheet:[advancedPackageEditor window] 
+	//   modalForWindow:self.window modalDelegate:nil 
+	//   didEndSelector:nil contextInfo:nil];
+}
 
 - (IBAction)addNewNestedManifestAction:(id)sender
 {

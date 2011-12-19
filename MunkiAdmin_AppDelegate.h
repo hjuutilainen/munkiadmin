@@ -33,6 +33,7 @@
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
 @class PackageNameEditor;
+@class AdvancedPackageEditor;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -58,6 +59,7 @@
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;
     PackageNameEditor *packageNameEditor;
+    AdvancedPackageEditor *advancedPackageEditor;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;
@@ -218,6 +220,7 @@
 - (IBAction)addNewManagedUninstallAction:(id)sender;
 - (IBAction)addNewManagedUpdateAction:(id)sender;
 - (IBAction)addNewOptionalInstallAction:(id)sender;
+- (IBAction)getInfoAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
