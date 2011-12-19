@@ -3,6 +3,22 @@
 
 #import "_CatalogInfoMO.h"
 
+const struct CatalogInfoMOAttributes CatalogInfoMOAttributes = {
+	.indexInManifest = @"indexInManifest",
+	.isEnabledForManifest = @"isEnabledForManifest",
+	.isEnabledForPackage = @"isEnabledForPackage",
+	.originalIndex = @"originalIndex",
+};
+
+const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
+	.catalog = @"catalog",
+	.manifest = @"manifest",
+	.package = @"package",
+};
+
+const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
+};
+
 @implementation CatalogInfoMOID
 @end
 

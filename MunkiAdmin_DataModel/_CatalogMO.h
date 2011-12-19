@@ -4,6 +4,20 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct CatalogMOAttributes {
+	 NSString *title;
+} CatalogMOAttributes;
+
+extern const struct CatalogMORelationships {
+	 NSString *catalogInfos;
+	 NSString *manifests;
+	 NSString *packageInfos;
+	 NSString *packages;
+} CatalogMORelationships;
+
+extern const struct CatalogMOFetchedProperties {
+} CatalogMOFetchedProperties;
+
 @class CatalogInfoMO;
 @class ManifestMO;
 @class PackageInfoMO;

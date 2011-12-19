@@ -3,6 +3,16 @@
 
 #import "_ManagedUpdateMO.h"
 
+const struct ManagedUpdateMOAttributes ManagedUpdateMOAttributes = {
+};
+
+const struct ManagedUpdateMORelationships ManagedUpdateMORelationships = {
+	.manifest = @"manifest",
+};
+
+const struct ManagedUpdateMOFetchedProperties ManagedUpdateMOFetchedProperties = {
+};
+
 @implementation ManagedUpdateMOID
 @end
 

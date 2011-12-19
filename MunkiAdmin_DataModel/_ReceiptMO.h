@@ -4,6 +4,22 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ReceiptMOAttributes {
+	 NSString *munki_filename;
+	 NSString *munki_installed_size;
+	 NSString *munki_name;
+	 NSString *munki_packageid;
+	 NSString *munki_version;
+	 NSString *originalIndex;
+} ReceiptMOAttributes;
+
+extern const struct ReceiptMORelationships {
+	 NSString *package;
+} ReceiptMORelationships;
+
+extern const struct ReceiptMOFetchedProperties {
+} ReceiptMOFetchedProperties;
+
 @class PackageMO;
 
 

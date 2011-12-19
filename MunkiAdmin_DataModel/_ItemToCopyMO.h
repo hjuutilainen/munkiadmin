@@ -4,6 +4,22 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ItemToCopyMOAttributes {
+	 NSString *munki_destination_path;
+	 NSString *munki_group;
+	 NSString *munki_mode;
+	 NSString *munki_source_item;
+	 NSString *munki_user;
+	 NSString *originalIndex;
+} ItemToCopyMOAttributes;
+
+extern const struct ItemToCopyMORelationships {
+	 NSString *package;
+} ItemToCopyMORelationships;
+
+extern const struct ItemToCopyMOFetchedProperties {
+} ItemToCopyMOFetchedProperties;
+
 @class PackageMO;
 
 

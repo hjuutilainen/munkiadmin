@@ -4,6 +4,58 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct PackageMOAttributes {
+	 NSString *munki_autoremove;
+	 NSString *munki_description;
+	 NSString *munki_display_name;
+	 NSString *munki_force_install_after_date;
+	 NSString *munki_forced_install;
+	 NSString *munki_forced_uninstall;
+	 NSString *munki_installed_size;
+	 NSString *munki_installer_item_hash;
+	 NSString *munki_installer_item_location;
+	 NSString *munki_installer_item_size;
+	 NSString *munki_installer_type;
+	 NSString *munki_maximum_os_version;
+	 NSString *munki_minimum_os_version;
+	 NSString *munki_name;
+	 NSString *munki_package_path;
+	 NSString *munki_postinstall_script;
+	 NSString *munki_postuninstall_script;
+	 NSString *munki_preinstall_script;
+	 NSString *munki_preuninstall_script;
+	 NSString *munki_receipts;
+	 NSString *munki_unattended_install;
+	 NSString *munki_unattended_uninstall;
+	 NSString *munki_uninstall_method;
+	 NSString *munki_uninstall_script;
+	 NSString *munki_uninstallable;
+	 NSString *munki_uninstaller_item_location;
+	 NSString *munki_version;
+	 NSString *originalPkginfo;
+	 NSString *packageInfoURL;
+	 NSString *packageURL;
+	 NSString *titleWithVersion;
+} PackageMOAttributes;
+
+extern const struct PackageMORelationships {
+	 NSString *blockingApplications;
+	 NSString *catalogInfos;
+	 NSString *catalogs;
+	 NSString *installerChoicesItems;
+	 NSString *installsItems;
+	 NSString *itemsToCopy;
+	 NSString *packageInfos;
+	 NSString *parentApplication;
+	 NSString *receipts;
+	 NSString *referencingStringObjects;
+	 NSString *requirements;
+	 NSString *updateFor;
+} PackageMORelationships;
+
+extern const struct PackageMOFetchedProperties {
+} PackageMOFetchedProperties;
+
 @class StringObjectMO;
 @class CatalogInfoMO;
 @class CatalogMO;
@@ -16,6 +68,7 @@
 @class StringObjectMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
 
 
 
@@ -84,6 +137,14 @@
 
 
 //- (BOOL)validateMunki_display_name:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *munki_force_install_after_date;
+
+
+//- (BOOL)validateMunki_force_install_after_date:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -498,6 +559,12 @@
 
 - (NSString*)primitiveMunki_display_name;
 - (void)setPrimitiveMunki_display_name:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveMunki_force_install_after_date;
+- (void)setPrimitiveMunki_force_install_after_date:(NSDate*)value;
 
 
 

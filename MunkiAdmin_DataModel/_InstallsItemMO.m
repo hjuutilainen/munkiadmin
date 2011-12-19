@@ -3,6 +3,24 @@
 
 #import "_InstallsItemMO.h"
 
+const struct InstallsItemMOAttributes InstallsItemMOAttributes = {
+	.munki_CFBundleIdentifier = @"munki_CFBundleIdentifier",
+	.munki_CFBundleName = @"munki_CFBundleName",
+	.munki_CFBundleShortVersionString = @"munki_CFBundleShortVersionString",
+	.munki_md5checksum = @"munki_md5checksum",
+	.munki_minosversion = @"munki_minosversion",
+	.munki_path = @"munki_path",
+	.munki_type = @"munki_type",
+	.originalIndex = @"originalIndex",
+};
+
+const struct InstallsItemMORelationships InstallsItemMORelationships = {
+	.packages = @"packages",
+};
+
+const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
+};
+
 @implementation InstallsItemMOID
 @end
 
@@ -120,7 +138,9 @@
 	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+  
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }

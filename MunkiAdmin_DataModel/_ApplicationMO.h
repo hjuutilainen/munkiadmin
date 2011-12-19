@@ -4,6 +4,22 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ApplicationMOAttributes {
+	 NSString *munki_description;
+	 NSString *munki_display_name;
+	 NSString *munki_name;
+} ApplicationMOAttributes;
+
+extern const struct ApplicationMORelationships {
+	 NSString *applicationProxies;
+	 NSString *manifests;
+	 NSString *packages;
+	 NSString *referencingStringObjects;
+} ApplicationMORelationships;
+
+extern const struct ApplicationMOFetchedProperties {
+} ApplicationMOFetchedProperties;
+
 @class ApplicationProxyMO;
 @class ManifestMO;
 @class PackageMO;

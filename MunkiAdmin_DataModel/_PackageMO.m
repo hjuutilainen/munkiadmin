@@ -3,6 +3,58 @@
 
 #import "_PackageMO.h"
 
+const struct PackageMOAttributes PackageMOAttributes = {
+	.munki_autoremove = @"munki_autoremove",
+	.munki_description = @"munki_description",
+	.munki_display_name = @"munki_display_name",
+	.munki_force_install_after_date = @"munki_force_install_after_date",
+	.munki_forced_install = @"munki_forced_install",
+	.munki_forced_uninstall = @"munki_forced_uninstall",
+	.munki_installed_size = @"munki_installed_size",
+	.munki_installer_item_hash = @"munki_installer_item_hash",
+	.munki_installer_item_location = @"munki_installer_item_location",
+	.munki_installer_item_size = @"munki_installer_item_size",
+	.munki_installer_type = @"munki_installer_type",
+	.munki_maximum_os_version = @"munki_maximum_os_version",
+	.munki_minimum_os_version = @"munki_minimum_os_version",
+	.munki_name = @"munki_name",
+	.munki_package_path = @"munki_package_path",
+	.munki_postinstall_script = @"munki_postinstall_script",
+	.munki_postuninstall_script = @"munki_postuninstall_script",
+	.munki_preinstall_script = @"munki_preinstall_script",
+	.munki_preuninstall_script = @"munki_preuninstall_script",
+	.munki_receipts = @"munki_receipts",
+	.munki_unattended_install = @"munki_unattended_install",
+	.munki_unattended_uninstall = @"munki_unattended_uninstall",
+	.munki_uninstall_method = @"munki_uninstall_method",
+	.munki_uninstall_script = @"munki_uninstall_script",
+	.munki_uninstallable = @"munki_uninstallable",
+	.munki_uninstaller_item_location = @"munki_uninstaller_item_location",
+	.munki_version = @"munki_version",
+	.originalPkginfo = @"originalPkginfo",
+	.packageInfoURL = @"packageInfoURL",
+	.packageURL = @"packageURL",
+	.titleWithVersion = @"titleWithVersion",
+};
+
+const struct PackageMORelationships PackageMORelationships = {
+	.blockingApplications = @"blockingApplications",
+	.catalogInfos = @"catalogInfos",
+	.catalogs = @"catalogs",
+	.installerChoicesItems = @"installerChoicesItems",
+	.installsItems = @"installsItems",
+	.itemsToCopy = @"itemsToCopy",
+	.packageInfos = @"packageInfos",
+	.parentApplication = @"parentApplication",
+	.receipts = @"receipts",
+	.referencingStringObjects = @"referencingStringObjects",
+	.requirements = @"requirements",
+	.updateFor = @"updateFor",
+};
+
+const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
+};
+
 @implementation PackageMOID
 @end
 
@@ -102,6 +154,13 @@
 
 
 @dynamic munki_display_name;
+
+
+
+
+
+
+@dynamic munki_force_install_after_date;
 
 
 
@@ -435,7 +494,9 @@
 	
 - (NSMutableSet*)blockingApplicationsSet {
 	[self willAccessValueForKey:@"blockingApplications"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"blockingApplications"];
+  
 	[self didAccessValueForKey:@"blockingApplications"];
 	return result;
 }
@@ -446,7 +507,9 @@
 	
 - (NSMutableSet*)catalogInfosSet {
 	[self willAccessValueForKey:@"catalogInfos"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogInfos"];
+  
 	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
 }
@@ -457,7 +520,9 @@
 	
 - (NSMutableSet*)catalogsSet {
 	[self willAccessValueForKey:@"catalogs"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogs"];
+  
 	[self didAccessValueForKey:@"catalogs"];
 	return result;
 }
@@ -468,7 +533,9 @@
 	
 - (NSMutableSet*)installerChoicesItemsSet {
 	[self willAccessValueForKey:@"installerChoicesItems"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"installerChoicesItems"];
+  
 	[self didAccessValueForKey:@"installerChoicesItems"];
 	return result;
 }
@@ -479,7 +546,9 @@
 	
 - (NSMutableSet*)installsItemsSet {
 	[self willAccessValueForKey:@"installsItems"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"installsItems"];
+  
 	[self didAccessValueForKey:@"installsItems"];
 	return result;
 }
@@ -490,7 +559,9 @@
 	
 - (NSMutableSet*)itemsToCopySet {
 	[self willAccessValueForKey:@"itemsToCopy"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"itemsToCopy"];
+  
 	[self didAccessValueForKey:@"itemsToCopy"];
 	return result;
 }
@@ -501,7 +572,9 @@
 	
 - (NSMutableSet*)packageInfosSet {
 	[self willAccessValueForKey:@"packageInfos"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packageInfos"];
+  
 	[self didAccessValueForKey:@"packageInfos"];
 	return result;
 }
@@ -516,7 +589,9 @@
 	
 - (NSMutableSet*)receiptsSet {
 	[self willAccessValueForKey:@"receipts"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"receipts"];
+  
 	[self didAccessValueForKey:@"receipts"];
 	return result;
 }
@@ -527,7 +602,9 @@
 	
 - (NSMutableSet*)referencingStringObjectsSet {
 	[self willAccessValueForKey:@"referencingStringObjects"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
+  
 	[self didAccessValueForKey:@"referencingStringObjects"];
 	return result;
 }
@@ -538,7 +615,9 @@
 	
 - (NSMutableSet*)requirementsSet {
 	[self willAccessValueForKey:@"requirements"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"requirements"];
+  
 	[self didAccessValueForKey:@"requirements"];
 	return result;
 }
@@ -549,7 +628,9 @@
 	
 - (NSMutableSet*)updateForSet {
 	[self willAccessValueForKey:@"updateFor"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"updateFor"];
+  
 	[self didAccessValueForKey:@"updateFor"];
 	return result;
 }

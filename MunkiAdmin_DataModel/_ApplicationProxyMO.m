@@ -3,6 +3,17 @@
 
 #import "_ApplicationProxyMO.h"
 
+const struct ApplicationProxyMOAttributes ApplicationProxyMOAttributes = {
+	.isEnabled = @"isEnabled",
+};
+
+const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
+	.parentApplication = @"parentApplication",
+};
+
+const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProperties = {
+};
+
 @implementation ApplicationProxyMOID
 @end
 

@@ -4,6 +4,31 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct StringObjectMOAttributes {
+	 NSString *indexInNestedManifest;
+	 NSString *originalIndex;
+	 NSString *title;
+	 NSString *typeString;
+} StringObjectMOAttributes;
+
+extern const struct StringObjectMORelationships {
+	 NSString *blockingApplicationReference;
+	 NSString *managedInstallReference;
+	 NSString *managedUninstallReference;
+	 NSString *managedUpdateReference;
+	 NSString *manifestReference;
+	 NSString *optionalInstallReference;
+	 NSString *originalApplication;
+	 NSString *originalPackage;
+	 NSString *requiresReference;
+	 NSString *updateForReference;
+} StringObjectMORelationships;
+
+extern const struct StringObjectMOFetchedProperties {
+	 NSString *manifestsWithSameTitle;
+	 NSString *packagesWithSameTitle;
+} StringObjectMOFetchedProperties;
+
 @class PackageMO;
 @class ManifestMO;
 @class ManifestMO;

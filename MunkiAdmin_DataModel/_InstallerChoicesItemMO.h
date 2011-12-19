@@ -4,6 +4,20 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct InstallerChoicesItemMOAttributes {
+	 NSString *munki_attributeSetting;
+	 NSString *munki_choiceAttribute;
+	 NSString *munki_choiceIdentifier;
+	 NSString *originalIndex;
+} InstallerChoicesItemMOAttributes;
+
+extern const struct InstallerChoicesItemMORelationships {
+	 NSString *package;
+} InstallerChoicesItemMORelationships;
+
+extern const struct InstallerChoicesItemMOFetchedProperties {
+} InstallerChoicesItemMOFetchedProperties;
+
 @class PackageMO;
 
 

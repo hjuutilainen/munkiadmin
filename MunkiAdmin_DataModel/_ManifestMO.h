@@ -4,6 +4,32 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ManifestMOAttributes {
+	 NSString *manifestURL;
+	 NSString *originalManifest;
+	 NSString *title;
+} ManifestMOAttributes;
+
+extern const struct ManifestMORelationships {
+	 NSString *applications;
+	 NSString *catalogInfos;
+	 NSString *catalogs;
+	 NSString *includedManifests;
+	 NSString *includedManifestsFaster;
+	 NSString *managedInstalls;
+	 NSString *managedInstallsFaster;
+	 NSString *managedUninstalls;
+	 NSString *managedUninstallsFaster;
+	 NSString *managedUpdates;
+	 NSString *managedUpdatesFaster;
+	 NSString *manifestInfos;
+	 NSString *optionalInstalls;
+	 NSString *optionalInstallsFaster;
+} ManifestMORelationships;
+
+extern const struct ManifestMOFetchedProperties {
+} ManifestMOFetchedProperties;
+
 @class ApplicationMO;
 @class CatalogInfoMO;
 @class CatalogMO;

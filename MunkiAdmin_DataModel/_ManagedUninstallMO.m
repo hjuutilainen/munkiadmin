@@ -3,6 +3,16 @@
 
 #import "_ManagedUninstallMO.h"
 
+const struct ManagedUninstallMOAttributes ManagedUninstallMOAttributes = {
+};
+
+const struct ManagedUninstallMORelationships ManagedUninstallMORelationships = {
+	.manifest = @"manifest",
+};
+
+const struct ManagedUninstallMOFetchedProperties ManagedUninstallMOFetchedProperties = {
+};
+
 @implementation ManagedUninstallMOID
 @end
 

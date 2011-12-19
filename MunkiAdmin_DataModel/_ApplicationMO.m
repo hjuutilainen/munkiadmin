@@ -3,6 +3,22 @@
 
 #import "_ApplicationMO.h"
 
+const struct ApplicationMOAttributes ApplicationMOAttributes = {
+	.munki_description = @"munki_description",
+	.munki_display_name = @"munki_display_name",
+	.munki_name = @"munki_name",
+};
+
+const struct ApplicationMORelationships ApplicationMORelationships = {
+	.applicationProxies = @"applicationProxies",
+	.manifests = @"manifests",
+	.packages = @"packages",
+	.referencingStringObjects = @"referencingStringObjects",
+};
+
+const struct ApplicationMOFetchedProperties ApplicationMOFetchedProperties = {
+};
+
 @implementation ApplicationMOID
 @end
 
@@ -62,7 +78,9 @@
 	
 - (NSMutableSet*)applicationProxiesSet {
 	[self willAccessValueForKey:@"applicationProxies"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"applicationProxies"];
+  
 	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
 }
@@ -73,7 +91,9 @@
 	
 - (NSMutableSet*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
+  
 	[self didAccessValueForKey:@"manifests"];
 	return result;
 }
@@ -84,7 +104,9 @@
 	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+  
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
@@ -95,7 +117,9 @@
 	
 - (NSMutableSet*)referencingStringObjectsSet {
 	[self willAccessValueForKey:@"referencingStringObjects"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
+  
 	[self didAccessValueForKey:@"referencingStringObjects"];
 	return result;
 }

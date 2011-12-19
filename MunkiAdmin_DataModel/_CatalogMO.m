@@ -3,6 +3,20 @@
 
 #import "_CatalogMO.h"
 
+const struct CatalogMOAttributes CatalogMOAttributes = {
+	.title = @"title",
+};
+
+const struct CatalogMORelationships CatalogMORelationships = {
+	.catalogInfos = @"catalogInfos",
+	.manifests = @"manifests",
+	.packageInfos = @"packageInfos",
+	.packages = @"packages",
+};
+
+const struct CatalogMOFetchedProperties CatalogMOFetchedProperties = {
+};
+
 @implementation CatalogMOID
 @end
 
@@ -48,7 +62,9 @@
 	
 - (NSMutableSet*)catalogInfosSet {
 	[self willAccessValueForKey:@"catalogInfos"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogInfos"];
+  
 	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
 }
@@ -59,7 +75,9 @@
 	
 - (NSMutableSet*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
+  
 	[self didAccessValueForKey:@"manifests"];
 	return result;
 }
@@ -70,7 +88,9 @@
 	
 - (NSMutableSet*)packageInfosSet {
 	[self willAccessValueForKey:@"packageInfos"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packageInfos"];
+  
 	[self didAccessValueForKey:@"packageInfos"];
 	return result;
 }
@@ -81,7 +101,9 @@
 	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
+  
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+  
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }

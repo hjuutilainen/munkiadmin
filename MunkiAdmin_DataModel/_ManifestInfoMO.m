@@ -3,6 +3,19 @@
 
 #import "_ManifestInfoMO.h"
 
+const struct ManifestInfoMOAttributes ManifestInfoMOAttributes = {
+	.isAvailableForEditing = @"isAvailableForEditing",
+	.isEnabledForManifest = @"isEnabledForManifest",
+};
+
+const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
+	.manifest = @"manifest",
+	.parentManifest = @"parentManifest",
+};
+
+const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
+};
+
 @implementation ManifestInfoMOID
 @end
 

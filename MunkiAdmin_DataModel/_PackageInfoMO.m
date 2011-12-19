@@ -3,6 +3,20 @@
 
 #import "_PackageInfoMO.h"
 
+const struct PackageInfoMOAttributes PackageInfoMOAttributes = {
+	.isEnabledForCatalog = @"isEnabledForCatalog",
+	.originalIndex = @"originalIndex",
+	.title = @"title",
+};
+
+const struct PackageInfoMORelationships PackageInfoMORelationships = {
+	.catalog = @"catalog",
+	.package = @"package",
+};
+
+const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
+};
+
 @implementation PackageInfoMOID
 @end
 

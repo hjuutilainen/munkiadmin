@@ -3,6 +3,22 @@
 
 #import "_ItemToCopyMO.h"
 
+const struct ItemToCopyMOAttributes ItemToCopyMOAttributes = {
+	.munki_destination_path = @"munki_destination_path",
+	.munki_group = @"munki_group",
+	.munki_mode = @"munki_mode",
+	.munki_source_item = @"munki_source_item",
+	.munki_user = @"munki_user",
+	.originalIndex = @"originalIndex",
+};
+
+const struct ItemToCopyMORelationships ItemToCopyMORelationships = {
+	.package = @"package",
+};
+
+const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
+};
+
 @implementation ItemToCopyMOID
 @end
 

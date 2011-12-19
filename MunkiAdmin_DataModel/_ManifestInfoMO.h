@@ -4,6 +4,19 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ManifestInfoMOAttributes {
+	 NSString *isAvailableForEditing;
+	 NSString *isEnabledForManifest;
+} ManifestInfoMOAttributes;
+
+extern const struct ManifestInfoMORelationships {
+	 NSString *manifest;
+	 NSString *parentManifest;
+} ManifestInfoMORelationships;
+
+extern const struct ManifestInfoMOFetchedProperties {
+} ManifestInfoMOFetchedProperties;
+
 @class ManifestMO;
 @class ManifestMO;
 

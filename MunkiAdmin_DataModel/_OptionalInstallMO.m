@@ -3,6 +3,16 @@
 
 #import "_OptionalInstallMO.h"
 
+const struct OptionalInstallMOAttributes OptionalInstallMOAttributes = {
+};
+
+const struct OptionalInstallMORelationships OptionalInstallMORelationships = {
+	.manifest = @"manifest",
+};
+
+const struct OptionalInstallMOFetchedProperties OptionalInstallMOFetchedProperties = {
+};
+
 @implementation OptionalInstallMOID
 @end
 

@@ -4,6 +4,16 @@
 #import <CoreData/CoreData.h>
 #import "ApplicationProxyMO.h"
 
+extern const struct ManagedInstallMOAttributes {
+} ManagedInstallMOAttributes;
+
+extern const struct ManagedInstallMORelationships {
+	 NSString *manifest;
+} ManagedInstallMORelationships;
+
+extern const struct ManagedInstallMOFetchedProperties {
+} ManagedInstallMOFetchedProperties;
+
 @class ManifestMO;
 
 

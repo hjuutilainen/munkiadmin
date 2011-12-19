@@ -3,6 +3,31 @@
 
 #import "_StringObjectMO.h"
 
+const struct StringObjectMOAttributes StringObjectMOAttributes = {
+	.indexInNestedManifest = @"indexInNestedManifest",
+	.originalIndex = @"originalIndex",
+	.title = @"title",
+	.typeString = @"typeString",
+};
+
+const struct StringObjectMORelationships StringObjectMORelationships = {
+	.blockingApplicationReference = @"blockingApplicationReference",
+	.managedInstallReference = @"managedInstallReference",
+	.managedUninstallReference = @"managedUninstallReference",
+	.managedUpdateReference = @"managedUpdateReference",
+	.manifestReference = @"manifestReference",
+	.optionalInstallReference = @"optionalInstallReference",
+	.originalApplication = @"originalApplication",
+	.originalPackage = @"originalPackage",
+	.requiresReference = @"requiresReference",
+	.updateForReference = @"updateForReference",
+};
+
+const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
+	.manifestsWithSameTitle = @"manifestsWithSameTitle",
+	.packagesWithSameTitle = @"packagesWithSameTitle",
+};
+
 @implementation StringObjectMOID
 @end
 

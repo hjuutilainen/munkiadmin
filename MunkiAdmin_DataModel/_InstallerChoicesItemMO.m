@@ -3,6 +3,20 @@
 
 #import "_InstallerChoicesItemMO.h"
 
+const struct InstallerChoicesItemMOAttributes InstallerChoicesItemMOAttributes = {
+	.munki_attributeSetting = @"munki_attributeSetting",
+	.munki_choiceAttribute = @"munki_choiceAttribute",
+	.munki_choiceIdentifier = @"munki_choiceIdentifier",
+	.originalIndex = @"originalIndex",
+};
+
+const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelationships = {
+	.package = @"package",
+};
+
+const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetchedProperties = {
+};
+
 @implementation InstallerChoicesItemMOID
 @end
 

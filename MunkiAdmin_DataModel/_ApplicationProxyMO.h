@@ -4,6 +4,17 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct ApplicationProxyMOAttributes {
+	 NSString *isEnabled;
+} ApplicationProxyMOAttributes;
+
+extern const struct ApplicationProxyMORelationships {
+	 NSString *parentApplication;
+} ApplicationProxyMORelationships;
+
+extern const struct ApplicationProxyMOFetchedProperties {
+} ApplicationProxyMOFetchedProperties;
+
 @class ApplicationMO;
 
 

@@ -3,6 +3,22 @@
 
 #import "_ReceiptMO.h"
 
+const struct ReceiptMOAttributes ReceiptMOAttributes = {
+	.munki_filename = @"munki_filename",
+	.munki_installed_size = @"munki_installed_size",
+	.munki_name = @"munki_name",
+	.munki_packageid = @"munki_packageid",
+	.munki_version = @"munki_version",
+	.originalIndex = @"originalIndex",
+};
+
+const struct ReceiptMORelationships ReceiptMORelationships = {
+	.package = @"package",
+};
+
+const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
+};
+
 @implementation ReceiptMOID
 @end
 

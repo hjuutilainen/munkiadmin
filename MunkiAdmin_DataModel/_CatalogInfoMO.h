@@ -4,6 +4,22 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct CatalogInfoMOAttributes {
+	 NSString *indexInManifest;
+	 NSString *isEnabledForManifest;
+	 NSString *isEnabledForPackage;
+	 NSString *originalIndex;
+} CatalogInfoMOAttributes;
+
+extern const struct CatalogInfoMORelationships {
+	 NSString *catalog;
+	 NSString *manifest;
+	 NSString *package;
+} CatalogInfoMORelationships;
+
+extern const struct CatalogInfoMOFetchedProperties {
+} CatalogInfoMOFetchedProperties;
+
 @class CatalogMO;
 @class ManifestMO;
 @class PackageMO;

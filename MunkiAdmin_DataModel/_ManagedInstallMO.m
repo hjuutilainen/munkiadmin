@@ -3,6 +3,16 @@
 
 #import "_ManagedInstallMO.h"
 
+const struct ManagedInstallMOAttributes ManagedInstallMOAttributes = {
+};
+
+const struct ManagedInstallMORelationships ManagedInstallMORelationships = {
+	.manifest = @"manifest",
+};
+
+const struct ManagedInstallMOFetchedProperties ManagedInstallMOFetchedProperties = {
+};
+
 @implementation ManagedInstallMOID
 @end
 

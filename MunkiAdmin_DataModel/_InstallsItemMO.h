@@ -4,6 +4,24 @@
 #import <CoreData/CoreData.h>
 
 
+extern const struct InstallsItemMOAttributes {
+	 NSString *munki_CFBundleIdentifier;
+	 NSString *munki_CFBundleName;
+	 NSString *munki_CFBundleShortVersionString;
+	 NSString *munki_md5checksum;
+	 NSString *munki_minosversion;
+	 NSString *munki_path;
+	 NSString *munki_type;
+	 NSString *originalIndex;
+} InstallsItemMOAttributes;
+
+extern const struct InstallsItemMORelationships {
+	 NSString *packages;
+} InstallsItemMORelationships;
+
+extern const struct InstallsItemMOFetchedProperties {
+} InstallsItemMOFetchedProperties;
+
 @class PackageMO;
 
 

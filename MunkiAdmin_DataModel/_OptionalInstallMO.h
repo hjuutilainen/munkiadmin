@@ -4,6 +4,16 @@
 #import <CoreData/CoreData.h>
 #import "ApplicationProxyMO.h"
 
+extern const struct OptionalInstallMOAttributes {
+} OptionalInstallMOAttributes;
+
+extern const struct OptionalInstallMORelationships {
+	 NSString *manifest;
+} OptionalInstallMORelationships;
+
+extern const struct OptionalInstallMOFetchedProperties {
+} OptionalInstallMOFetchedProperties;
+
 @class ManifestMO;
 
 
