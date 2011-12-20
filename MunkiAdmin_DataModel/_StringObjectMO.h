@@ -21,6 +21,7 @@ extern const struct StringObjectMORelationships {
 	 NSString *originalApplication;
 	 NSString *originalPackage;
 	 NSString *requiresReference;
+	 NSString *supportedArchitectureReference;
 	 NSString *updateForReference;
 } StringObjectMORelationships;
 
@@ -36,6 +37,7 @@ extern const struct StringObjectMOFetchedProperties {
 @class ManifestMO;
 @class ManifestMO;
 @class ApplicationMO;
+@class PackageMO;
 @class PackageMO;
 @class PackageMO;
 @class PackageMO;
@@ -161,6 +163,13 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) PackageMO* supportedArchitectureReference;
+
+//- (BOOL)validateSupportedArchitectureReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) PackageMO* updateForReference;
 
 //- (BOOL)validateUpdateForReference:(id*)value_ error:(NSError**)error_;
@@ -254,6 +263,11 @@ extern const struct StringObjectMOFetchedProperties {
 
 - (PackageMO*)primitiveRequiresReference;
 - (void)setPrimitiveRequiresReference:(PackageMO*)value;
+
+
+
+- (PackageMO*)primitiveSupportedArchitectureReference;
+- (void)setPrimitiveSupportedArchitectureReference:(PackageMO*)value;
 
 
 

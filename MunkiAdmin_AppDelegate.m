@@ -1192,6 +1192,35 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    PackageMO *selectedPkg = [[allPackagesArrayController selectedObjects] objectAtIndex:0];
+    selectedPkg.munki_autoremove = advancedPackageEditor.temp_autoremove;
+    selectedPkg.munki_description = advancedPackageEditor.temp_description;
+    selectedPkg.munki_display_name = advancedPackageEditor.temp_display_name;
+    selectedPkg.munki_force_install_after_date = advancedPackageEditor.temp_force_install_after_date;
+    selectedPkg.munki_installed_size = advancedPackageEditor.temp_installed_size;
+    selectedPkg.munki_installer_item_hash = advancedPackageEditor.temp_installer_item_hash;
+    selectedPkg.munki_installer_item_location = advancedPackageEditor.temp_installer_item_location;
+    selectedPkg.munki_installer_item_size = advancedPackageEditor.temp_installer_item_size;
+    selectedPkg.munki_installer_type = advancedPackageEditor.temp_installer_type;
+    selectedPkg.munki_maximum_os_version = advancedPackageEditor.temp_maximum_os_version;
+    selectedPkg.munki_minimum_os_version = advancedPackageEditor.temp_minimum_os_version;
+//    selectedPkg.munki_ = advancedPackageEditor.temp_name;
+    selectedPkg.munki_package_path = advancedPackageEditor.temp_package_path;
+    selectedPkg.munki_postinstall_script = advancedPackageEditor.temp_postinstall_script;
+    selectedPkg.munki_postuninstall_script = advancedPackageEditor.temp_postuninstall_script;
+    selectedPkg.munki_preinstall_script = advancedPackageEditor.temp_preinstall_script;
+    selectedPkg.munki_preuninstall_script = advancedPackageEditor.temp_preuninstall_script;
+    selectedPkg.munki_RestartAction = advancedPackageEditor.temp_RestartAction;
+//    selectedPkg.munki_ = advancedPackageEditor.temp_supported_architectures;
+    selectedPkg.munki_suppress_bundle_relocation = advancedPackageEditor.temp_suppress_bundle_relocation;
+    selectedPkg.munki_unattended_install = advancedPackageEditor.temp_unattended_install;
+    selectedPkg.munki_unattended_uninstall = advancedPackageEditor.temp_unattended_uninstall;
+    selectedPkg.munki_uninstall_method = advancedPackageEditor.temp_uninstall_method;
+    selectedPkg.munki_uninstall_script = advancedPackageEditor.temp_uninstall_script;
+    selectedPkg.munki_uninstaller_item_location = advancedPackageEditor.temp_uninstaller_item_location;
+    selectedPkg.munki_uninstallable = advancedPackageEditor.temp_uninstallable;
+    selectedPkg.munki_version = advancedPackageEditor.temp_version;
+    
     [NSApp endSheet:[advancedPackageEditor window]];
 	[[advancedPackageEditor window] close];
 }
@@ -1202,6 +1231,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     [advancedPackageEditor setDefaultValuesFromPackage:[[allPackagesArrayController selectedObjects] objectAtIndex:0]];
+    [[advancedPackageEditor window] center];
     [NSApp runModalForWindow:[advancedPackageEditor window]];
     //[NSApp beginSheet:[advancedPackageEditor window] 
 	//   modalForWindow:self.window modalDelegate:nil 

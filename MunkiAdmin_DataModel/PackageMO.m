@@ -124,6 +124,10 @@
                     [tmpDict setValue:(id)kCFBooleanFalse forKey:@"unattended_uninstall"];
                 }
             }
+            
+            // =========================================
+            // Other boolean values
+            // =========================================
             else if ([key isEqualToString:@"munki_unattended_install"]) {
                 if (self.munki_unattended_installValue) {
                     [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
@@ -145,6 +149,14 @@
                     [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
+            else if ([key isEqualToString:@"munki_suppress_bundle_relocation"]) {
+                if (self.munki_suppress_bundle_relocationValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
+            
             // =====================================================
             // For everything else just write the values as they are
             // =====================================================
@@ -228,9 +240,9 @@
 	}
     
     
-    // ==========
+    // =====================
 	// blocking_applications
-	// ==========
+    // =====================
 	NSSortDescriptor *sortBlockingItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortBlockingByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
 	NSMutableArray *blockingApplicationsItems = [NSMutableArray arrayWithCapacity:[self.blockingApplications count]];
@@ -246,10 +258,31 @@
 	} else {
 		[tmpDict setObject:blockingApplicationsItems forKey:@"blocking_applications"];
 	}
+    
+    
+    // =======================
+	// supported_architectures
+	// =======================
+	NSSortDescriptor *sortArchItemsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortArchByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	NSMutableArray *supportedArchitecturesItems = [NSMutableArray arrayWithCapacity:[self.supportedArchitectures count]];
+	for (StringObjectMO *supportedArch in [self.supportedArchitectures sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortArchItemsByTitle, sortArchByOrigIndex, nil]]) {
+		if (![supportedArchitecturesItems containsObject:[supportedArch title]]) {
+			[supportedArchitecturesItems addObject:[supportedArch title]];
+		}
+	}
+	if ([supportedArchitecturesItems count] == 0) {
+		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"supported_architectures"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"supported_architectures"];
+		}
+	} else {
+		[tmpDict setObject:supportedArchitecturesItems forKey:@"supported_architectures"];
+	}
+    
 	
-	// ==========
+    // ========
 	// receipts
-	// ==========
+    // ========
 	NSSortDescriptor *sortByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByFilename = [NSSortDescriptor sortDescriptorWithKey:@"munki_filename" ascending:YES selector:@selector(localizedStandardCompare:)];
 	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];

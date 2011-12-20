@@ -20,6 +20,7 @@ const struct StringObjectMORelationships StringObjectMORelationships = {
 	.originalApplication = @"originalApplication",
 	.originalPackage = @"originalPackage",
 	.requiresReference = @"requiresReference",
+	.supportedArchitectureReference = @"supportedArchitectureReference",
 	.updateForReference = @"updateForReference",
 };
 
@@ -168,6 +169,10 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 	
 
 @dynamic requiresReference;
+
+	
+
+@dynamic supportedArchitectureReference;
 
 	
 

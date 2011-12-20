@@ -4,6 +4,7 @@
 #import "_PackageMO.h"
 
 const struct PackageMOAttributes PackageMOAttributes = {
+	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
 	.munki_description = @"munki_description",
 	.munki_display_name = @"munki_display_name",
@@ -24,6 +25,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_preinstall_script = @"munki_preinstall_script",
 	.munki_preuninstall_script = @"munki_preuninstall_script",
 	.munki_receipts = @"munki_receipts",
+	.munki_suppress_bundle_relocation = @"munki_suppress_bundle_relocation",
 	.munki_unattended_install = @"munki_unattended_install",
 	.munki_unattended_uninstall = @"munki_unattended_uninstall",
 	.munki_uninstall_method = @"munki_uninstall_method",
@@ -49,6 +51,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.receipts = @"receipts",
 	.referencingStringObjects = @"referencingStringObjects",
 	.requirements = @"requirements",
+	.supportedArchitectures = @"supportedArchitectures",
 	.updateFor = @"updateFor",
 };
 
@@ -101,6 +104,10 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installer_item_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
+	if ([key isEqualToString:@"munki_suppress_bundle_relocationValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_suppress_bundle_relocation"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"munki_unattended_installValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_unattended_install"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -116,6 +123,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic munki_RestartAction;
+
+
 
 
 
@@ -350,6 +364,32 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 @dynamic munki_receipts;
 
+
+
+
+
+
+@dynamic munki_suppress_bundle_relocation;
+
+
+
+- (BOOL)munki_suppress_bundle_relocationValue {
+	NSNumber *result = [self munki_suppress_bundle_relocation];
+	return [result boolValue];
+}
+
+- (void)setMunki_suppress_bundle_relocationValue:(BOOL)value_ {
+	[self setMunki_suppress_bundle_relocation:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_suppress_bundle_relocationValue {
+	NSNumber *result = [self primitiveMunki_suppress_bundle_relocation];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_suppress_bundle_relocationValue:(BOOL)value_ {
+	[self setPrimitiveMunki_suppress_bundle_relocation:[NSNumber numberWithBool:value_]];
+}
 
 
 
@@ -619,6 +659,19 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"requirements"];
   
 	[self didAccessValueForKey:@"requirements"];
+	return result;
+}
+	
+
+@dynamic supportedArchitectures;
+
+	
+- (NSMutableSet*)supportedArchitecturesSet {
+	[self willAccessValueForKey:@"supportedArchitectures"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"supportedArchitectures"];
+  
+	[self didAccessValueForKey:@"supportedArchitectures"];
 	return result;
 }
 	

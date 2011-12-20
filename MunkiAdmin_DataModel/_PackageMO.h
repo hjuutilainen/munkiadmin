@@ -5,6 +5,7 @@
 
 
 extern const struct PackageMOAttributes {
+	 NSString *munki_RestartAction;
 	 NSString *munki_autoremove;
 	 NSString *munki_description;
 	 NSString *munki_display_name;
@@ -25,6 +26,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_preinstall_script;
 	 NSString *munki_preuninstall_script;
 	 NSString *munki_receipts;
+	 NSString *munki_suppress_bundle_relocation;
 	 NSString *munki_unattended_install;
 	 NSString *munki_unattended_uninstall;
 	 NSString *munki_uninstall_method;
@@ -50,6 +52,7 @@ extern const struct PackageMORelationships {
 	 NSString *receipts;
 	 NSString *referencingStringObjects;
 	 NSString *requirements;
+	 NSString *supportedArchitectures;
 	 NSString *updateFor;
 } PackageMORelationships;
 
@@ -68,6 +71,9 @@ extern const struct PackageMOFetchedProperties {
 @class StringObjectMO;
 @class StringObjectMO;
 @class StringObjectMO;
+@class StringObjectMO;
+
+
 
 
 
@@ -109,6 +115,14 @@ extern const struct PackageMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (PackageMOID*)objectID;
+
+
+
+
+@property (nonatomic, retain) NSString *munki_RestartAction;
+
+
+//- (BOOL)validateMunki_RestartAction:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -293,6 +307,18 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) NSNumber *munki_suppress_bundle_relocation;
+
+
+@property BOOL munki_suppress_bundle_relocationValue;
+- (BOOL)munki_suppress_bundle_relocationValue;
+- (void)setMunki_suppress_bundle_relocationValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_suppress_bundle_relocation:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) NSNumber *munki_unattended_install;
 
 
@@ -471,6 +497,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) NSSet* supportedArchitectures;
+
+- (NSMutableSet*)supportedArchitecturesSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* updateFor;
 
 - (NSMutableSet*)updateForSet;
@@ -532,6 +565,11 @@ extern const struct PackageMOFetchedProperties {
 - (void)addRequirementsObject:(StringObjectMO*)value_;
 - (void)removeRequirementsObject:(StringObjectMO*)value_;
 
+- (void)addSupportedArchitectures:(NSSet*)value_;
+- (void)removeSupportedArchitectures:(NSSet*)value_;
+- (void)addSupportedArchitecturesObject:(StringObjectMO*)value_;
+- (void)removeSupportedArchitecturesObject:(StringObjectMO*)value_;
+
 - (void)addUpdateFor:(NSSet*)value_;
 - (void)removeUpdateFor:(NSSet*)value_;
 - (void)addUpdateForObject:(StringObjectMO*)value_;
@@ -540,6 +578,12 @@ extern const struct PackageMOFetchedProperties {
 @end
 
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveMunki_RestartAction;
+- (void)setPrimitiveMunki_RestartAction:(NSString*)value;
+
+
 
 
 - (NSNumber*)primitiveMunki_autoremove;
@@ -677,6 +721,15 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+- (NSNumber*)primitiveMunki_suppress_bundle_relocation;
+- (void)setPrimitiveMunki_suppress_bundle_relocation:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_suppress_bundle_relocationValue;
+- (void)setPrimitiveMunki_suppress_bundle_relocationValue:(BOOL)value_;
+
+
+
+
 - (NSNumber*)primitiveMunki_unattended_install;
 - (void)setPrimitiveMunki_unattended_install:(NSNumber*)value;
 
@@ -805,6 +858,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveRequirements;
 - (void)setPrimitiveRequirements:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveSupportedArchitectures;
+- (void)setPrimitiveSupportedArchitectures:(NSMutableSet*)value;
 
 
 

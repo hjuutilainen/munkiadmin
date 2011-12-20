@@ -76,9 +76,9 @@
     self.temp_postuninstall_script = aPackage.munki_postuninstall_script;
     self.temp_preinstall_script = aPackage.munki_preinstall_script;
     self.temp_preuninstall_script = aPackage.munki_preuninstall_script;
-//    self.temp_RestartAction = aPackage.munki_RestartAction;
+    self.temp_RestartAction = aPackage.munki_RestartAction;
 //    self.temp_supported_architectures = aPackage.munki_supported_architectures;
-//    self.temp_suppress_bundle_relocation = aPackage.
+    self.temp_suppress_bundle_relocation = aPackage.munki_suppress_bundle_relocation;
     self.temp_unattended_install = aPackage.munki_unattended_install;
     self.temp_unattended_uninstall = aPackage.munki_unattended_uninstall;
     self.temp_uninstall_method = aPackage.munki_uninstall_method;

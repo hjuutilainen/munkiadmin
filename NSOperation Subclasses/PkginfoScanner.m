@@ -382,6 +382,19 @@
 				newBlockingApplication.originalIndexValue = idx;
 				[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 			}];
+            
+            // =================================
+			// Get "supported_architectures" items
+			// =================================
+			NSArray *supported_architectures = [self.sourceDict objectForKey:@"supported_architectures"];
+			[supported_architectures enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
+				StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+				newSupportedArchitecture.title = obj;
+				newSupportedArchitecture.typeString = @"architecture";
+				newSupportedArchitecture.originalIndexValue = idx;
+				[aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
+			}];
 			
 			
 			// =====================================

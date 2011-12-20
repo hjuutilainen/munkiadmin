@@ -30,7 +30,7 @@
     NSString    *temp_preuninstall_script;
     NSString    *temp_RestartAction;
     NSString    *temp_supported_architectures;
-    NSString    *temp_suppress_bundle_relocation;
+    NSNumber    *temp_suppress_bundle_relocation;
     NSNumber    *temp_unattended_install;
     NSNumber    *temp_unattended_uninstall;
     NSString    *temp_uninstall_method;
@@ -64,7 +64,7 @@
 @property (retain) NSString    *temp_preuninstall_script;
 @property (retain) NSString    *temp_RestartAction;
 @property (retain) NSString    *temp_supported_architectures;
-@property (retain) NSString    *temp_suppress_bundle_relocation;
+@property (retain) NSNumber    *temp_suppress_bundle_relocation;
 @property (retain) NSNumber    *temp_unattended_install;
 @property (retain) NSNumber    *temp_unattended_uninstall;
 @property (retain) NSString    *temp_uninstall_method;
