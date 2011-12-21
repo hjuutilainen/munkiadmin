@@ -108,20 +108,20 @@
             // forced_install --> unattended_install
             // =====================================
             else if ([key isEqualToString:@"munki_forced_install"]) {
-                if (self.munki_forced_installValue) {
-                    [tmpDict setValue:(id)kCFBooleanTrue forKey:@"unattended_install"];
+                if (self.munki_unattended_installValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
                 } else {
-                    [tmpDict setValue:(id)kCFBooleanFalse forKey:@"unattended_install"];
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
             // =========================================
             // forced_uninstall --> unattended_uninstall
             // =========================================
             else if ([key isEqualToString:@"munki_forced_uninstall"]) {
-                if (self.munki_forced_uninstallValue) {
-                    [tmpDict setValue:(id)kCFBooleanTrue forKey:@"unattended_uninstall"];
+                if (self.munki_unattended_uninstallValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
                 } else {
-                    [tmpDict setValue:(id)kCFBooleanFalse forKey:@"unattended_uninstall"];
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
             
