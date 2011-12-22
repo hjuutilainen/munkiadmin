@@ -375,7 +375,7 @@
 	[progressIndicator setUsesThreadedAnimation:YES];
 		
 	// Define default repository contents
-	self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgs", @"pkgsinfo", nil];
+    self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgsinfo", nil];
 	
 	// Set sort descriptors for array controllers
     NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -1496,7 +1496,8 @@
                     
                     if (![[fileToAdd relativePath] hasPrefix:[self.repoURL relativePath]]) {
                         if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
-                        if ([self.defaults boolForKey:@"CopyPkgsToRepo"]) {
+                        if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) && 
+                            ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])){
                             NSURL *newTarget = [self.pkgsURL URLByAppendingPathComponent:[[fileToAdd relativePath] lastPathComponent]];
                             FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
                             copyOp.delegate = self;
