@@ -85,6 +85,15 @@
 	[preferencesController showWindow:self];
 }
 
+- (IBAction)showPkginfoInFinderAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    NSURL *selectedURL = (NSURL *)[[[allPackagesArrayController selectedObjects] objectAtIndex:0] packageInfoURL];
+    [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+}
+
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];

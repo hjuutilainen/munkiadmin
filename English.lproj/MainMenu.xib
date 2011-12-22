@@ -821,13 +821,32 @@
 								<object class="NSMenuItem" id="894185002">
 									<reference key="NSMenu" ref="960517776"/>
 									<string key="NSTitle">Import Packages...</string>
-									<string key="NSKeyEquiv">i</string>
+									<string key="NSKeyEquiv">I</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="447667071"/>
 									<reference key="NSMixedImage" ref="611454628"/>
 								</object>
 								<object class="NSMenuItem" id="700146992">
+									<reference key="NSMenu" ref="960517776"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="447667071"/>
+									<reference key="NSMixedImage" ref="611454628"/>
+								</object>
+								<object class="NSMenuItem" id="709533449">
+									<reference key="NSMenu" ref="960517776"/>
+									<string key="NSTitle">Get Package Info</string>
+									<string key="NSKeyEquiv">i</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="447667071"/>
+									<reference key="NSMixedImage" ref="611454628"/>
+								</object>
+								<object class="NSMenuItem" id="257319705">
 									<reference key="NSMenu" ref="960517776"/>
 									<bool key="NSIsDisabled">YES</bool>
 									<bool key="NSIsSeparator">YES</bool>
@@ -6662,6 +6681,24 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="NSOnImage" ref="447667071"/>
 						<reference key="NSMixedImage" ref="611454628"/>
 					</object>
+					<object class="NSMenuItem" id="567114170">
+						<reference key="NSMenu" ref="639755226"/>
+						<string key="NSTitle">Show in Finder</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="447667071"/>
+						<reference key="NSMixedImage" ref="611454628"/>
+					</object>
+					<object class="NSMenuItem" id="322690127">
+						<reference key="NSMenu" ref="639755226"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="447667071"/>
+						<reference key="NSMixedImage" ref="611454628"/>
+					</object>
 					<object class="NSMenuItem" id="684212493">
 						<reference key="NSMenu" ref="639755226"/>
 						<string key="NSTitle">Import Packages...</string>
@@ -7687,6 +7724,22 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="destination" ref="602829308"/>
 					</object>
 					<int key="connectionID">2138</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">getInfoAction:</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="709533449"/>
+					</object>
+					<int key="connectionID">2143</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showPkginfoInFinderAction:</string>
+						<reference key="source" ref="612578685"/>
+						<reference key="destination" ref="567114170"/>
+					</object>
+					<int key="connectionID">2146</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -10122,6 +10175,8 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="302915637"/>
 							<reference ref="560232801"/>
 							<reference ref="269784546"/>
+							<reference ref="257319705"/>
+							<reference ref="709533449"/>
 						</array>
 						<reference key="parent" ref="842783111"/>
 					</object>
@@ -12369,6 +12424,8 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="684212493"/>
 							<reference ref="838318233"/>
 							<reference ref="602829308"/>
+							<reference ref="567114170"/>
+							<reference ref="322690127"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Packages List Menu</string>
@@ -13735,6 +13792,26 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<reference key="object" ref="602829308"/>
 						<reference key="parent" ref="639755226"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2141</int>
+						<reference key="object" ref="257319705"/>
+						<reference key="parent" ref="960517776"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2142</int>
+						<reference key="object" ref="709533449"/>
+						<reference key="parent" ref="960517776"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2144</int>
+						<reference key="object" ref="567114170"/>
+						<reference key="parent" ref="639755226"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2145</int>
+						<reference key="object" ref="322690127"/>
+						<reference key="parent" ref="639755226"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -14256,6 +14333,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string key="2125.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2135.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2137.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2141.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2142.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2144.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2145.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="241.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="242.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="243.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -14412,7 +14493,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">2140</int>
+			<int key="maxID">2146</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -14532,6 +14613,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="renameSelectedPackagesAction:">id</string>
 						<string key="saveAction:">id</string>
 						<string key="selectViewAction:">id</string>
+						<string key="showPkginfoInFinderAction:">id</string>
 						<string key="updateCatalogs:">id</string>
 						<string key="writeChangesToDisk:">id</string>
 					</dictionary>
@@ -14638,6 +14720,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						</object>
 						<object class="IBActionInfo" key="selectViewAction:">
 							<string key="name">selectViewAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showPkginfoInFinderAction:">
+							<string key="name">showPkginfoInFinderAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateCatalogs:">

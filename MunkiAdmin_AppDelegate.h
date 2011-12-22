@@ -221,6 +221,7 @@
 - (IBAction)addNewManagedUpdateAction:(id)sender;
 - (IBAction)addNewOptionalInstallAction:(id)sender;
 - (IBAction)getInfoAction:(id)sender;
+- (IBAction)showPkginfoInFinderAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
