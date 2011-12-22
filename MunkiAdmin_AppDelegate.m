@@ -1603,6 +1603,10 @@
 	
 	for (PackageMO *aPackage in allPackages) {
         
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+        }
+        
         /*
          Note!
          
@@ -1628,6 +1632,11 @@
         // ===========================================
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
+        NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"force_install_after_date",
+                                 @"maximum_os_version",
+                                 @"minimum_os_version",
+                                 nil];
         
         // Determine which keys were removed
         NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
@@ -1639,10 +1648,15 @@
         
         if ([self.defaults boolForKey:@"debug"]) {
             for (NSString *aKey in [removedItems allObjects]) {
-                NSLog(@"Removed key %@ from %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+                if (![keysToDelete containsObject:aKey]) {
+                    NSLog(@"Key change: \"%@\" found in original pkginfo. Keeping it.", aKey);
+                } else {
+                    NSLog(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
+                }
+                
             }
             for (NSString *aKey in [addedItems allObjects]) {
-                NSLog(@"Added key %@ to %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+                NSLog(@"Key change: \"%@\" added by MunkiAdmin", aKey);
             }
         }
         
@@ -1658,11 +1672,6 @@
         // ===========================================
         // Remove keys that were deleted by user
         // ===========================================
-        NSArray *keysToDelete = [NSArray arrayWithObjects:
-                                 @"force_install_after_date",
-                                 @"maximum_os_version",
-                                 @"minimum_os_version",
-                                 nil];
         for (NSString *aKey in keysToDelete) {
             if (([infoDictFromPackage valueForKey:aKey] == nil) && 
                 ([infoDictOnDisk valueForKey:aKey] != nil)) {
@@ -1676,7 +1685,7 @@
         // ===========================================
         NSArray *sortedMergedKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Key arrays differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
 			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 		}
         
@@ -1684,17 +1693,17 @@
         // Check for value changes
         // ===========================================
         else {
-			if ([self.defaults boolForKey:@"debug"]) {
-                NSLog(@"No changes in key array %@. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-            }
+			/*if ([self.defaults boolForKey:@"debug"]) {
+                NSLog(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+            }*/
             if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
 				if ([self.defaults boolForKey:@"debug"]) {
-                    NSLog(@"Differing values detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
+                    NSLog(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
                 }
 				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 			} else {
 				if ([self.defaults boolForKey:@"debug"]) {
-                    NSLog(@"No value changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+                    NSLog(@"No changes detected");
                 }
 			}
 		}
