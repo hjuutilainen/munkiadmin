@@ -1196,7 +1196,6 @@
     selectedPkg.munki_autoremove = advancedPackageEditor.temp_autoremove;
     selectedPkg.munki_description = advancedPackageEditor.temp_description;
     selectedPkg.munki_display_name = advancedPackageEditor.temp_display_name;
-    selectedPkg.munki_force_install_after_date = advancedPackageEditor.temp_force_install_after_date;
     selectedPkg.munki_installed_size = advancedPackageEditor.temp_installed_size;
     selectedPkg.munki_installer_item_hash = advancedPackageEditor.temp_installer_item_hash;
     selectedPkg.munki_installer_item_location = advancedPackageEditor.temp_installer_item_location;
@@ -1204,14 +1203,12 @@
     selectedPkg.munki_installer_type = advancedPackageEditor.temp_installer_type;
     selectedPkg.munki_maximum_os_version = advancedPackageEditor.temp_maximum_os_version;
     selectedPkg.munki_minimum_os_version = advancedPackageEditor.temp_minimum_os_version;
-//    selectedPkg.munki_ = advancedPackageEditor.temp_name;
     selectedPkg.munki_package_path = advancedPackageEditor.temp_package_path;
     selectedPkg.munki_postinstall_script = advancedPackageEditor.temp_postinstall_script;
     selectedPkg.munki_postuninstall_script = advancedPackageEditor.temp_postuninstall_script;
     selectedPkg.munki_preinstall_script = advancedPackageEditor.temp_preinstall_script;
     selectedPkg.munki_preuninstall_script = advancedPackageEditor.temp_preuninstall_script;
     selectedPkg.munki_RestartAction = advancedPackageEditor.temp_RestartAction;
-//    selectedPkg.munki_ = advancedPackageEditor.temp_supported_architectures;
     selectedPkg.munki_suppress_bundle_relocation = advancedPackageEditor.temp_suppress_bundle_relocation;
     selectedPkg.munki_unattended_install = advancedPackageEditor.temp_unattended_install;
     selectedPkg.munki_unattended_uninstall = advancedPackageEditor.temp_unattended_uninstall;
@@ -1220,6 +1217,12 @@
     selectedPkg.munki_uninstaller_item_location = advancedPackageEditor.temp_uninstaller_item_location;
     selectedPkg.munki_uninstallable = advancedPackageEditor.temp_uninstallable;
     selectedPkg.munki_version = advancedPackageEditor.temp_version;
+    
+    if (advancedPackageEditor.temp_force_install_after_date_enabled) {
+        selectedPkg.munki_force_install_after_date = advancedPackageEditor.temp_force_install_after_date;
+    } else {
+        selectedPkg.munki_force_install_after_date = nil;
+    }
     
     [NSApp endSheet:[advancedPackageEditor window]];
 	[[advancedPackageEditor window] close];
@@ -1590,52 +1593,109 @@
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 	
+    // ===========================================
 	// Get all packages and check them for changes
+    // ===========================================
 	NSArray *allPackages;
 	NSFetchRequest *getAllPackages = [[NSFetchRequest alloc] init];
 	[getAllPackages setEntity:packageEntityDescr];
 	allPackages = [moc executeFetchRequest:getAllPackages error:nil];
 	
 	for (PackageMO *aPackage in allPackages) {
-				
+        
+        /*
+         Note!
+         
+         Pkginfo files might contain custom keys added
+         by the user or not yet supported by MunkiAdmin. 
+         We need to be extra careful not to touch those.
+        */
+        
+        // ===========================================
+        // Read the current pkginfo from disk
+        // ===========================================
 		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        
+        // ===========================================
+        // Get the PackageMO as a dictionary
+        // ===========================================
+        NSDictionary *infoDictFromPackage = [aPackage pkgInfoDictionary];
+		NSArray *sortedPackageKeys = [[infoDictFromPackage allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
+        // ===========================================
+        // Check for differences in key arrays and log them
+        // ===========================================
+        NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
+        NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
+        
+        // Determine which keys were removed
+        NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
+        [removedItems minusSet:newKeysSet];
+        
+        // Determine which keys were added
+        NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
+        [addedItems minusSet:originalKeysSet];
+        
+        if ([self.defaults boolForKey:@"debug"]) {
+            for (NSString *aKey in [removedItems allObjects]) {
+                NSLog(@"Removed key %@ from %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+            }
+            for (NSString *aKey in [addedItems allObjects]) {
+                NSLog(@"Added key %@ to %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+            }
+        }
+        
+        // ===========================================
+        // Create a new dictionary by merging
+        // the original and the new one.
+        // 
+        // This will be written to disk
+        // ===========================================
 		NSMutableDictionary *mergedInfoDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
 		[mergedInfoDict addEntriesFromDictionary:[aPackage pkgInfoDictionary]];
-		NSArray *sortedNewKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
-		
-		if (![sortedOriginalKeys isEqualToArray:sortedNewKeys]) {
+        
+        // ===========================================
+        // Remove keys that were deleted by user
+        // ===========================================
+        NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"force_install_after_date",
+                                 @"maximum_os_version",
+                                 @"minimum_os_version",
+                                 nil];
+        for (NSString *aKey in keysToDelete) {
+            if (([infoDictFromPackage valueForKey:aKey] == nil) && 
+                ([infoDictOnDisk valueForKey:aKey] != nil)) {
+                [mergedInfoDict removeObjectForKey:aKey];
+            }
+        }
+        
+        // ===========================================
+        // Key arrays already differ.
+        // User has added new information
+        // ===========================================
+        NSArray *sortedMergedKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Key arrays differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
 			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
-            
-            NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
-            NSSet *newKeysSet = [NSSet setWithArray:sortedNewKeys];
-            
-            // Determine which items were removed
-            NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
-            [removedItems minusSet:newKeysSet];
-            
-            // Determine which items were added
-            NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
-            [addedItems minusSet:originalKeysSet];
-            
-            if ([self.defaults boolForKey:@"debug"]) {
-                for (NSString *aKey in [removedItems allObjects]) {
-                    NSLog(@"Removed key %@ from %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-                }
-                for (NSString *aKey in [addedItems allObjects]) {
-                    NSLog(@"Added key %@ to %@", aKey, [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-                }
+		}
+        
+        // ===========================================
+        // Check for value changes
+        // ===========================================
+        else {
+			if ([self.defaults boolForKey:@"debug"]) {
+                NSLog(@"No changes in key array %@. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
             }
-            
-		} else {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"No changes in key array %@. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-			if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-				if ([self.defaults boolForKey:@"debug"]) NSLog(@"Differing values detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
+            if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
+				if ([self.defaults boolForKey:@"debug"]) {
+                    NSLog(@"Differing values detected in %@. Writing new pkginfo", [(NSURL *)aPackage.packageInfoURL relativePath]);
+                }
 				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 			} else {
-				//NSLog(@"No changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+				if ([self.defaults boolForKey:@"debug"]) {
+                    NSLog(@"No value changes detected in %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+                }
 			}
 		}
 	}

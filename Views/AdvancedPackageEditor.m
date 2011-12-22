@@ -14,6 +14,7 @@
 @synthesize temp_description;
 @synthesize temp_display_name;
 @synthesize temp_force_install_after_date;
+@synthesize temp_force_install_after_date_enabled;
 @synthesize temp_installed_size;
 @synthesize temp_installer_item_hash;
 @synthesize temp_installer_item_location;
@@ -61,7 +62,6 @@
     self.temp_autoremove = aPackage.munki_autoremove;
     self.temp_description = aPackage.munki_description;
     self.temp_display_name = aPackage.munki_display_name;
-    self.temp_force_install_after_date = aPackage.munki_force_install_after_date;
     self.temp_installed_size = aPackage.munki_installed_size;
     self.temp_installer_item_hash = aPackage.munki_installer_item_hash;
     self.temp_installer_item_location = aPackage.munki_installer_item_location;
@@ -84,6 +84,33 @@
     self.temp_uninstaller_item_location = aPackage.munki_uninstaller_item_location;
     self.temp_uninstallable = aPackage.munki_uninstallable;
     self.temp_version = aPackage.munki_version;
+    
+    if (aPackage.munki_force_install_after_date == nil) {
+        
+        /*
+         Package doesn't have a forced date.
+         Set the default date to something meaningful (now + 7 days)
+         in case the user decides to enable it
+         */
+        
+        NSDate *now = [NSDate date];
+        NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+        NSDateComponents *dateComponents = [gregorian components:( NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:now];
+        [dateComponents setMinute:0];
+        [dateComponents setSecond:0];
+        NSDate *normalizedDate = [gregorian dateFromComponents:dateComponents];
+        
+        NSDateComponents *offsetComponents = [[[NSDateComponents alloc] init] autorelease];
+        [offsetComponents setDay:7];
+        NSDate *newDate = [gregorian dateByAddingComponents:offsetComponents toDate:normalizedDate options:0];
+        
+        self.temp_force_install_after_date = newDate;
+        self.temp_force_install_after_date_enabled = NO;
+        
+    } else {
+        self.temp_force_install_after_date_enabled = YES;
+        self.temp_force_install_after_date = aPackage.munki_force_install_after_date;
+    }
 
 }
 

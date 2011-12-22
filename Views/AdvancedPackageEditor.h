@@ -15,6 +15,7 @@
     NSString    *temp_description;
     NSString    *temp_display_name;
     NSDate      *temp_force_install_after_date;
+    BOOL        temp_force_install_after_date_enabled;
     NSNumber    *temp_installed_size;
     NSString    *temp_installer_item_hash;
     NSString    *temp_installer_item_location;
@@ -48,6 +49,7 @@
 @property (retain) NSString    *temp_description;
 @property (retain) NSString    *temp_display_name;
 @property (retain) NSDate      *temp_force_install_after_date;
+@property BOOL                  temp_force_install_after_date_enabled;
 @property (retain) NSNumber    *temp_installed_size;
 @property (retain) NSString    *temp_installer_item_hash;
 @property (retain) NSString    *temp_installer_item_location;
