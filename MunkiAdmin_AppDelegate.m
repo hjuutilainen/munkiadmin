@@ -1106,44 +1106,54 @@
 {
 	// Callback from makepkginfo
     
-    // Create a name for the new pkginfo item
-    NSString *name = [pkginfoPlist objectForKey:@"name"];
-    NSString *version = [pkginfoPlist objectForKey:@"version"];
-    NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, version];
-    NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:@"plist"];
-    
-    // Ask the user to save
-    NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
-    
-    // Write the pkginfo to disk and add it to our datastore
-    BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:YES];
-    if (saved) {
-        // Create a scanner job but run it without an operation queue
-        PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
-        scanOp.canModify = YES;
-        scanOp.delegate = self;
-        [scanOp start];
+    if (pkginfoPlist) {
+        // Create a name for the new pkginfo item
+        NSString *name = [pkginfoPlist objectForKey:@"name"];
+        NSString *version = [pkginfoPlist objectForKey:@"version"];
+        NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+        NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, version];
+        NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:@"plist"];
         
-        // Select the newly created package
-        NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
-        [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
-        NSPredicate *pkgPred;
-        pkgPred = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_version == %@", name, version];
+        // Ask the user to save
+        NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
         
-        [fetchForPackage setPredicate:pkgPred];
-        
-        NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
-        if (numFoundPkgs == 0) {
+        // Write the pkginfo to disk and add it to our datastore
+        BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:YES];
+        if (saved) {
+            // Create a scanner job but run it without an operation queue
+            PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
+            scanOp.canModify = YES;
+            scanOp.delegate = self;
+            [scanOp start];
             
-        } else if (numFoundPkgs == 1) {
-            PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-            [self.allPackagesArrayController setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
-        } else {
-
+            // Select the newly created package
+            NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
+            [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
+            NSPredicate *pkgPred;
+            pkgPred = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_version == %@", name, version];
+            
+            [fetchForPackage setPredicate:pkgPred];
+            
+            NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
+            if (numFoundPkgs == 0) {
+                
+            } else if (numFoundPkgs == 1) {
+                PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+                [self.allPackagesArrayController setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
+            } else {
+                
+            }
+            
+            [fetchForPackage release];
         }
-        
-        [fetchForPackage release];
+    } else {
+        NSLog(@"makepkginfo failed!");
+        NSAlert *makepkginfoFailedAlert = [NSAlert alertWithMessageText:@"Invalid pkginfo"
+                                                          defaultButton:@"OK"
+                                                        alternateButton:@""
+                                                            otherButton:@""
+                                              informativeTextWithFormat:@"Failed to create a pkginfo."];
+        [makepkginfoFailedAlert runModal];
     }
 }
 
