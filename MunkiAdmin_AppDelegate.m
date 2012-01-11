@@ -1223,19 +1223,66 @@
     selectedPkg.munki_maximum_os_version = advancedPackageEditor.temp_maximum_os_version;
     selectedPkg.munki_minimum_os_version = advancedPackageEditor.temp_minimum_os_version;
     selectedPkg.munki_package_path = advancedPackageEditor.temp_package_path;
-    selectedPkg.munki_postinstall_script = advancedPackageEditor.temp_postinstall_script;
-    selectedPkg.munki_postuninstall_script = advancedPackageEditor.temp_postuninstall_script;
-    selectedPkg.munki_preinstall_script = advancedPackageEditor.temp_preinstall_script;
-    selectedPkg.munki_preuninstall_script = advancedPackageEditor.temp_preuninstall_script;
     selectedPkg.munki_RestartAction = advancedPackageEditor.temp_RestartAction;
     selectedPkg.munki_suppress_bundle_relocation = advancedPackageEditor.temp_suppress_bundle_relocation;
     selectedPkg.munki_unattended_install = advancedPackageEditor.temp_unattended_install;
     selectedPkg.munki_unattended_uninstall = advancedPackageEditor.temp_unattended_uninstall;
     selectedPkg.munki_uninstall_method = advancedPackageEditor.temp_uninstall_method;
-    selectedPkg.munki_uninstall_script = advancedPackageEditor.temp_uninstall_script;
     selectedPkg.munki_uninstaller_item_location = advancedPackageEditor.temp_uninstaller_item_location;
     selectedPkg.munki_uninstallable = advancedPackageEditor.temp_uninstallable;
     selectedPkg.munki_version = advancedPackageEditor.temp_version;
+    
+    // Scripts
+    if (advancedPackageEditor.temp_preinstall_script_enabled) {
+        if (advancedPackageEditor.temp_preinstall_script) {
+            selectedPkg.munki_preinstall_script = advancedPackageEditor.temp_preinstall_script;
+        } else {
+            selectedPkg.munki_preinstall_script = @"";
+        }
+    } else {
+        selectedPkg.munki_preinstall_script = nil;
+    }
+    
+    if (advancedPackageEditor.temp_postinstall_script_enabled) {
+        if (advancedPackageEditor.temp_postinstall_script) {
+            selectedPkg.munki_postinstall_script = advancedPackageEditor.temp_postinstall_script;
+        } else {
+            selectedPkg.munki_postinstall_script = @"";
+        }
+    } else {
+        selectedPkg.munki_postinstall_script = nil;
+    }
+    
+    if (advancedPackageEditor.temp_postuninstall_script_enabled) {
+        if (advancedPackageEditor.temp_postuninstall_script) {
+            selectedPkg.munki_postuninstall_script = advancedPackageEditor.temp_postuninstall_script;
+        } else {
+            selectedPkg.munki_postuninstall_script = @"";
+        }
+    } else {
+        selectedPkg.munki_postuninstall_script = nil;
+    }
+    
+    if (advancedPackageEditor.temp_preuninstall_script_enabled) {
+        if (advancedPackageEditor.temp_preuninstall_script) {
+            selectedPkg.munki_preuninstall_script = advancedPackageEditor.temp_preuninstall_script;
+        } else {
+            selectedPkg.munki_preuninstall_script = @"";
+        }
+    } else {
+        selectedPkg.munki_preuninstall_script = nil;
+    }
+    
+    if (advancedPackageEditor.temp_uninstall_script_enabled) {
+        if (advancedPackageEditor.temp_uninstall_script) {
+            selectedPkg.munki_uninstall_script = advancedPackageEditor.temp_uninstall_script;
+        } else {
+            selectedPkg.munki_uninstall_script = @"";
+        }
+    } else {
+        selectedPkg.munki_uninstall_script = nil;
+    }
+    
     
     if (advancedPackageEditor.temp_force_install_after_date_enabled) {
         selectedPkg.munki_force_install_after_date = advancedPackageEditor.temp_force_install_after_date;
@@ -1654,6 +1701,11 @@
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
                                  @"force_install_after_date",
+                                 @"preinstall_script",
+                                 @"preuninstall_script",
+                                 @"postinstall_script",
+                                 @"postuninstall_script",
+                                 @"uninstall_script",
                                  @"maximum_os_version",
                                  @"minimum_os_version",
                                  nil];

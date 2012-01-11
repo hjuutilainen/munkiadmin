@@ -25,15 +25,20 @@
     NSString    *temp_minimum_os_version;
     NSString    *temp_name;
     NSString    *temp_package_path;
+    BOOL        temp_postinstall_script_enabled;
     NSString    *temp_postinstall_script;
+    BOOL        temp_postuninstall_script_enabled;
     NSString    *temp_postuninstall_script;
+    BOOL        temp_preinstall_script_enabled;
     NSString    *temp_preinstall_script;
+    BOOL        temp_preuninstall_script_enabled;
     NSString    *temp_preuninstall_script;
     NSString    *temp_RestartAction;
     NSNumber    *temp_suppress_bundle_relocation;
     NSNumber    *temp_unattended_install;
     NSNumber    *temp_unattended_uninstall;
     NSString    *temp_uninstall_method;
+    BOOL        temp_uninstall_script_enabled;
     NSString    *temp_uninstall_script;
     NSString    *temp_uninstaller_item_location;
     NSNumber    *temp_uninstallable;
@@ -45,11 +50,16 @@
 
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 
+@property BOOL                  temp_force_install_after_date_enabled;
+@property BOOL                  temp_postinstall_script_enabled;
+@property BOOL                  temp_postuninstall_script_enabled;
+@property BOOL                  temp_preinstall_script_enabled;
+@property BOOL                  temp_preuninstall_script_enabled;
+@property BOOL                  temp_uninstall_script_enabled;
 @property (retain) NSNumber    *temp_autoremove;
 @property (retain) NSString    *temp_description;
 @property (retain) NSString    *temp_display_name;
 @property (retain) NSDate      *temp_force_install_after_date;
-@property BOOL                  temp_force_install_after_date_enabled;
 @property (retain) NSNumber    *temp_installed_size;
 @property (retain) NSString    *temp_installer_item_hash;
 @property (retain) NSString    *temp_installer_item_location;

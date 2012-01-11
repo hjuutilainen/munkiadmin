@@ -10,6 +10,11 @@
 @implementation AdvancedPackageEditor
 @synthesize forceInstallDatePicker;
 
+@synthesize temp_preinstall_script_enabled;
+@synthesize temp_preuninstall_script_enabled;
+@synthesize temp_postinstall_script_enabled;
+@synthesize temp_postuninstall_script_enabled;
+@synthesize temp_uninstall_script_enabled;
 @synthesize temp_autoremove;
 @synthesize temp_description;
 @synthesize temp_display_name;
@@ -71,19 +76,49 @@
     self.temp_minimum_os_version = aPackage.munki_minimum_os_version;
     self.temp_name = aPackage.munki_name;
     self.temp_package_path = aPackage.munki_package_path;
-    self.temp_postinstall_script = aPackage.munki_postinstall_script;
-    self.temp_postuninstall_script = aPackage.munki_postuninstall_script;
-    self.temp_preinstall_script = aPackage.munki_preinstall_script;
-    self.temp_preuninstall_script = aPackage.munki_preuninstall_script;
     self.temp_RestartAction = aPackage.munki_RestartAction;
     self.temp_suppress_bundle_relocation = aPackage.munki_suppress_bundle_relocation;
     self.temp_unattended_install = aPackage.munki_unattended_install;
     self.temp_unattended_uninstall = aPackage.munki_unattended_uninstall;
     self.temp_uninstall_method = aPackage.munki_uninstall_method;
-    self.temp_uninstall_script = aPackage.munki_uninstall_script;
     self.temp_uninstaller_item_location = aPackage.munki_uninstaller_item_location;
     self.temp_uninstallable = aPackage.munki_uninstallable;
     self.temp_version = aPackage.munki_version;
+    
+    if (aPackage.munki_postinstall_script == nil) {
+        self.temp_postinstall_script_enabled = NO;
+    } else {
+        self.temp_postinstall_script_enabled = YES;
+        self.temp_postinstall_script = aPackage.munki_postinstall_script;
+    }
+    
+    if (aPackage.munki_postuninstall_script == nil) {
+        self.temp_postuninstall_script_enabled = NO;
+    } else {
+        self.temp_postuninstall_script_enabled = YES;
+        self.temp_postuninstall_script = aPackage.munki_postuninstall_script;
+    }
+    
+    if (aPackage.munki_preinstall_script == nil) {
+        self.temp_preinstall_script_enabled = NO;
+    } else {
+        self.temp_preinstall_script_enabled = YES;
+        self.temp_preinstall_script = aPackage.munki_preinstall_script;
+    }
+    
+    if (aPackage.munki_preuninstall_script == nil) {
+        self.temp_preuninstall_script_enabled = NO;
+    } else {
+        self.temp_preuninstall_script_enabled = YES;
+        self.temp_preuninstall_script = aPackage.munki_preuninstall_script;
+    }
+    
+    if (aPackage.munki_uninstall_script == nil) {
+        self.temp_uninstall_script_enabled = NO;
+    } else {
+        self.temp_uninstall_script_enabled = YES;
+        self.temp_uninstall_script = aPackage.munki_uninstall_script;
+    }
     
     if (aPackage.munki_force_install_after_date == nil) {
         
