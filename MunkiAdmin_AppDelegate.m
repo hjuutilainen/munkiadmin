@@ -314,7 +314,7 @@
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
-    advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
+    //advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     
     
 	// Configure segmented control
@@ -1180,118 +1180,14 @@
 }
 
 
-/*- (IBAction)openAddItemsWindowAction:sender
-{
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    NSMutableArray *tempPredicates = [[NSMutableArray alloc] initWithCapacity:[[selectedManifest managedInstallsFaster] count]];
-    
-    for (StringObjectMO *aStringO in [selectedManifest managedInstallsFaster]) {
-        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aStringO.title];
-        //NSLog(@"%@", [newPredicate description]);
-        [tempPredicates addObject:newPredicate];
-    }
-    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [pkgsForAddingArrayController setFilterPredicate:compPred];
-    
-	[NSApp beginSheet:addItemsWindow 
-       modalForWindow:self.window 
-        modalDelegate:nil 
-	   didEndSelector:nil 
-          contextInfo:nil];
-}*/
-
-- (IBAction)cancelPackageGetInfoAction:(id)sender
-{
-	[NSApp endSheet:[advancedPackageEditor window]];
-	[[advancedPackageEditor window] close];
-}
-
-- (IBAction)processPackageGetInfoAction:(id)sender
+- (void)editSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    PackageMO *selectedPkg = [[allPackagesArrayController selectedObjects] objectAtIndex:0];
-    selectedPkg.munki_autoremove = advancedPackageEditor.temp_autoremove;
-    selectedPkg.munki_description = advancedPackageEditor.temp_description;
-    selectedPkg.munki_display_name = advancedPackageEditor.temp_display_name;
-    selectedPkg.munki_installed_size = advancedPackageEditor.temp_installed_size;
-    selectedPkg.munki_installer_item_hash = advancedPackageEditor.temp_installer_item_hash;
-    selectedPkg.munki_installer_item_location = advancedPackageEditor.temp_installer_item_location;
-    selectedPkg.munki_installer_item_size = advancedPackageEditor.temp_installer_item_size;
-    selectedPkg.munki_installer_type = advancedPackageEditor.temp_installer_type;
-    selectedPkg.munki_maximum_os_version = advancedPackageEditor.temp_maximum_os_version;
-    selectedPkg.munki_minimum_os_version = advancedPackageEditor.temp_minimum_os_version;
-    selectedPkg.munki_package_path = advancedPackageEditor.temp_package_path;
-    selectedPkg.munki_RestartAction = advancedPackageEditor.temp_RestartAction;
-    selectedPkg.munki_suppress_bundle_relocation = advancedPackageEditor.temp_suppress_bundle_relocation;
-    selectedPkg.munki_unattended_install = advancedPackageEditor.temp_unattended_install;
-    selectedPkg.munki_unattended_uninstall = advancedPackageEditor.temp_unattended_uninstall;
-    selectedPkg.munki_uninstall_method = advancedPackageEditor.temp_uninstall_method;
-    selectedPkg.munki_uninstaller_item_location = advancedPackageEditor.temp_uninstaller_item_location;
-    selectedPkg.munki_uninstallable = advancedPackageEditor.temp_uninstallable;
-    selectedPkg.munki_version = advancedPackageEditor.temp_version;
-    
-    // Scripts
-    if (advancedPackageEditor.temp_preinstall_script_enabled) {
-        if (advancedPackageEditor.temp_preinstall_script) {
-            selectedPkg.munki_preinstall_script = advancedPackageEditor.temp_preinstall_script;
-        } else {
-            selectedPkg.munki_preinstall_script = @"";
-        }
-    } else {
-        selectedPkg.munki_preinstall_script = nil;
-    }
-    
-    if (advancedPackageEditor.temp_postinstall_script_enabled) {
-        if (advancedPackageEditor.temp_postinstall_script) {
-            selectedPkg.munki_postinstall_script = advancedPackageEditor.temp_postinstall_script;
-        } else {
-            selectedPkg.munki_postinstall_script = @"";
-        }
-    } else {
-        selectedPkg.munki_postinstall_script = nil;
-    }
-    
-    if (advancedPackageEditor.temp_postuninstall_script_enabled) {
-        if (advancedPackageEditor.temp_postuninstall_script) {
-            selectedPkg.munki_postuninstall_script = advancedPackageEditor.temp_postuninstall_script;
-        } else {
-            selectedPkg.munki_postuninstall_script = @"";
-        }
-    } else {
-        selectedPkg.munki_postuninstall_script = nil;
-    }
-    
-    if (advancedPackageEditor.temp_preuninstall_script_enabled) {
-        if (advancedPackageEditor.temp_preuninstall_script) {
-            selectedPkg.munki_preuninstall_script = advancedPackageEditor.temp_preuninstall_script;
-        } else {
-            selectedPkg.munki_preuninstall_script = @"";
-        }
-    } else {
-        selectedPkg.munki_preuninstall_script = nil;
-    }
-    
-    if (advancedPackageEditor.temp_uninstall_script_enabled) {
-        if (advancedPackageEditor.temp_uninstall_script) {
-            selectedPkg.munki_uninstall_script = advancedPackageEditor.temp_uninstall_script;
-        } else {
-            selectedPkg.munki_uninstall_script = @"";
-        }
-    } else {
-        selectedPkg.munki_uninstall_script = nil;
-    }
-    
-    
-    if (advancedPackageEditor.temp_force_install_after_date_enabled) {
-        selectedPkg.munki_force_install_after_date = advancedPackageEditor.temp_force_install_after_date;
-    } else {
-        selectedPkg.munki_force_install_after_date = nil;
-    }
-    
-    [NSApp endSheet:[advancedPackageEditor window]];
-	[[advancedPackageEditor window] close];
+    [[[self managedObjectContext] undoManager] endUndoGrouping];
+    if (returnCode == NSOKButton) return;
+    [[[self managedObjectContext] undoManager] undo];
 }
 
 - (IBAction)getInfoAction:(id)sender
@@ -1299,12 +1195,17 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    [advancedPackageEditor setDefaultValuesFromPackage:[[allPackagesArrayController selectedObjects] objectAtIndex:0]];
-    [[advancedPackageEditor window] center];
-    [NSApp runModalForWindow:[advancedPackageEditor window]];
-    //[NSApp beginSheet:[advancedPackageEditor window] 
-	//   modalForWindow:self.window modalDelegate:nil 
-	//   didEndSelector:nil contextInfo:nil];
+    
+    PackageMO *object = [[allPackagesArrayController selectedObjects] lastObject];
+    if (!object) return;
+    SEL endSelector = @selector(editSheetDidEnd:returnCode:object:);
+    [[[self managedObjectContext] undoManager] beginUndoGrouping];
+    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
+    [AdvancedPackageEditor editSheetForWindow:window
+                                    delegate:self
+                                 endSelector:endSelector
+                                      package:object];
+    
 }
 
 - (IBAction)addNewNestedManifestAction:(id)sender
@@ -1700,14 +1601,28 @@
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"description",
+                                 @"display_name",
                                  @"force_install_after_date",
+                                 @"installed_size",
+                                 @"installer_item_hash",
+                                 @"installer_item_location",
+                                 @"installer_item_size",
+                                 @"installer_type",
+                                 @"installer_item_size",
+                                 @"installer_item_size",
+                                 @"maximum_os_version",
+                                 @"minimum_os_version",
+                                 @"package_path",
                                  @"preinstall_script",
                                  @"preuninstall_script",
                                  @"postinstall_script",
                                  @"postuninstall_script",
+                                 @"RestartAction",
+                                 @"uninstall_method",
+                                 @"uninstaller_item_location",
                                  @"uninstall_script",
-                                 @"maximum_os_version",
-                                 @"minimum_os_version",
+                                 @"version",
                                  nil];
         
         // Determine which keys were removed
@@ -2032,6 +1947,7 @@
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
+    [[moc undoManager] disableUndoRegistration];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 	
 	NSDirectoryEnumerator *catalogsDirEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
@@ -2064,6 +1980,7 @@
 	if (![moc save:&error]) {
 		[NSApp presentError:error];
 	}
+    [[moc undoManager] enableUndoRegistration];
 }
 
 
@@ -2079,6 +1996,7 @@
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
+    [[moc undoManager] disableUndoRegistration];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
 	
@@ -2110,6 +2028,7 @@
 	if (![moc save:&error]) {
 		[NSApp presentError:error];
 	}
+    [[moc undoManager] enableUndoRegistration];
     
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
@@ -2133,6 +2052,7 @@
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
+    [[moc undoManager] disableUndoRegistration];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
 	
@@ -2199,6 +2119,7 @@
 			}
 		}
 	}
+    [[moc undoManager] enableUndoRegistration];
 }
 
 # pragma mark -

@@ -4,7 +4,8 @@
 
 }
 
-
 - (NSDictionary *)pkgInfoDictionary;
+- (NSString *)titleWithVersion;
+- (NSString *)formattedTitle;
 
 @end

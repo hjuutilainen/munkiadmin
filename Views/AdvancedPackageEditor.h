@@ -7,24 +7,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "PackageMO.h"
+#import "StringObjectMO.h"
 
 @interface AdvancedPackageEditor : NSWindowController {
     NSDatePicker *forceInstallDatePicker;
+    NSTabView *mainTabView;
     
-    NSNumber    *temp_autoremove;
-    NSString    *temp_description;
-    NSString    *temp_display_name;
     NSDate      *temp_force_install_after_date;
     BOOL        temp_force_install_after_date_enabled;
-    NSNumber    *temp_installed_size;
-    NSString    *temp_installer_item_hash;
-    NSString    *temp_installer_item_location;
-    NSNumber    *temp_installer_item_size;
-    NSString    *temp_installer_type;
-    NSString    *temp_maximum_os_version;
-    NSString    *temp_minimum_os_version;
-    NSString    *temp_name;
-    NSString    *temp_package_path;
     BOOL        temp_postinstall_script_enabled;
     NSString    *temp_postinstall_script;
     BOOL        temp_postuninstall_script_enabled;
@@ -33,22 +23,33 @@
     NSString    *temp_preinstall_script;
     BOOL        temp_preuninstall_script_enabled;
     NSString    *temp_preuninstall_script;
-    NSString    *temp_RestartAction;
-    NSNumber    *temp_suppress_bundle_relocation;
-    NSNumber    *temp_unattended_install;
-    NSNumber    *temp_unattended_uninstall;
-    NSString    *temp_uninstall_method;
     BOOL        temp_uninstall_script_enabled;
     NSString    *temp_uninstall_script;
-    NSString    *temp_uninstaller_item_location;
-    NSNumber    *temp_uninstallable;
-    NSString    *temp_version;
+    
+    NSUndoManager *undoManager;
+    PackageMO *pkginfoToEdit;
+    NSObjectController *pkgController;
+    
+    NSArrayController *installsItemsController;
+    NSArrayController *receiptsArrayController;
+    NSArrayController *itemsToCopyArrayController;
 
 }
 
++ (void)editSheetForWindow:(id)window delegate:(id)delegate endSelector:(SEL)selector package:(PackageMO *)object;
+- (IBAction)addInstallsItemFromDiskAction:(id)sender;
+- (IBAction)saveAction:(id)sender;
+- (IBAction)cancelAction:(id)sender;
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage;
 
+@property (assign) PackageMO *pkginfoToEdit;
+
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
+@property (assign) IBOutlet NSTabView *mainTabView;
+@property (assign) IBOutlet NSArrayController *installsItemsController;
+@property (assign) IBOutlet NSObjectController *pkgController;
+@property (assign) IBOutlet NSArrayController *receiptsArrayController;
+@property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;
@@ -56,31 +57,11 @@
 @property BOOL                  temp_preinstall_script_enabled;
 @property BOOL                  temp_preuninstall_script_enabled;
 @property BOOL                  temp_uninstall_script_enabled;
-@property (retain) NSNumber    *temp_autoremove;
-@property (retain) NSString    *temp_description;
-@property (retain) NSString    *temp_display_name;
 @property (retain) NSDate      *temp_force_install_after_date;
-@property (retain) NSNumber    *temp_installed_size;
-@property (retain) NSString    *temp_installer_item_hash;
-@property (retain) NSString    *temp_installer_item_location;
-@property (retain) NSNumber    *temp_installer_item_size;
-@property (retain) NSString    *temp_installer_type;
-@property (retain) NSString    *temp_maximum_os_version;
-@property (retain) NSString    *temp_minimum_os_version;
-@property (retain) NSString    *temp_name;
-@property (retain) NSString    *temp_package_path;
 @property (retain) NSString    *temp_postinstall_script;
 @property (retain) NSString    *temp_postuninstall_script;
 @property (retain) NSString    *temp_preinstall_script;
 @property (retain) NSString    *temp_preuninstall_script;
-@property (retain) NSString    *temp_RestartAction;
-@property (retain) NSNumber    *temp_suppress_bundle_relocation;
-@property (retain) NSNumber    *temp_unattended_install;
-@property (retain) NSNumber    *temp_unattended_uninstall;
-@property (retain) NSString    *temp_uninstall_method;
 @property (retain) NSString    *temp_uninstall_script;
-@property (retain) NSString    *temp_uninstaller_item_location;
-@property (retain) NSNumber    *temp_uninstallable;
-@property (retain) NSString    *temp_version;
 
 @end

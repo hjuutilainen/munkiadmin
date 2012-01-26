@@ -226,6 +226,9 @@
 # pragma mark -
 # pragma mark Helper methods
 
+- (BOOL)makepkginfoInstalled;
+- (BOOL)makecatalogsInstalled;
+
 // Creates a new PackageMO managed object with the given properties
 // This is called primarily from |scanCurrentRepoForPackages|
 //- (PackageMO *)newPackageWithProperties:(NSDictionary *)properties;
