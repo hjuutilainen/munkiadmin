@@ -14,4 +14,6 @@
 
 }
 
+@property (assign) IBOutlet id catalogsTableView;
+
 @end
