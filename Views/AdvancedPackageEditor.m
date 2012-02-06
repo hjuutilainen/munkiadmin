@@ -33,25 +33,6 @@
 
 @synthesize pkginfoToEdit;
 
-+ (void)editSheetForWindow:(id)window delegate:(id)delegate endSelector:(SEL)selector package:(PackageMO *)object;
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    AdvancedPackageEditor *controller;
-    controller = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
-    
-    [controller setPkginfoToEdit:object];
-    
-    
-    
-    
-    [NSApp beginSheet:[controller window] 
-       modalForWindow:window 
-        modalDelegate:delegate 
-       didEndSelector:selector 
-          contextInfo:object];
-}
 
 - (NSUndoManager*)windowWillReturnUndoManager:(NSWindow*)window
 {

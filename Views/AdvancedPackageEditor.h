@@ -36,7 +36,6 @@
 
 }
 
-+ (void)editSheetForWindow:(id)window delegate:(id)delegate endSelector:(SEL)selector package:(PackageMO *)object;
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;

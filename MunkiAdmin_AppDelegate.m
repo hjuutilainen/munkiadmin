@@ -314,7 +314,7 @@
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
-    //advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
+    advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     
     
 	// Configure segmented control
@@ -1198,13 +1198,17 @@
     
     PackageMO *object = [[allPackagesArrayController selectedObjects] lastObject];
     if (!object) return;
-    SEL endSelector = @selector(editSheetDidEnd:returnCode:object:);
+    
     [[[self managedObjectContext] undoManager] beginUndoGrouping];
     [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
-    [AdvancedPackageEditor editSheetForWindow:window
-                                    delegate:self
-                                 endSelector:endSelector
-                                      package:object];
+        
+    [advancedPackageEditor setPkginfoToEdit:object];
+    
+    [NSApp beginSheet:[advancedPackageEditor window] 
+       modalForWindow:self.window 
+        modalDelegate:self 
+       didEndSelector:@selector(editSheetDidEnd:returnCode:object:) 
+          contextInfo:object];
     
 }
 
