@@ -149,7 +149,7 @@
 												 selector:@selector(contextDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
 												   object:moc];
-		//NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+		NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 		NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 		NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
 		
@@ -276,73 +276,21 @@
 			// =================================
 			// Get "catalogs" items
 			// =================================
-			/*NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
-			
-			self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Parsing catalogs for %@", self.fileName);
-			
-			// Loop through Catalog managed objects and create a relationship to current pkg
-			NSArray *allCatalogs;
-			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
-			[getAllCatalogs setEntity:catalogEntityDescr];
-            [getAllCatalogs setReturnsObjectsAsFaults:NO];
-			allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-			[getAllCatalogs release];
-			
-			for (CatalogMO *aCatalog in allCatalogs) {
-				CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-				newCatalogInfo.package = aNewPackage;
-				newCatalogInfo.catalog.title = aCatalog.title;
-				
-				[aCatalog addPackagesObject:aNewPackage];
-				[aCatalog addCatalogInfosObject:newCatalogInfo];
-				
-				PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-				newPackageInfo.catalog = aCatalog;
-				newPackageInfo.title = [aNewPackage.munki_display_name stringByAppendingFormat:@" %@", aNewPackage.munki_version];
-				newPackageInfo.package = aNewPackage;
-				
-				if ([catalogs containsObject:aCatalog.title]) {
-					newCatalogInfo.isEnabledForPackageValue = YES;
-					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:aCatalog.title];
-					newPackageInfo.isEnabledForCatalogValue = YES;
-				} else {
-					newCatalogInfo.isEnabledForPackageValue = NO;
-					newCatalogInfo.originalIndexValue = 10000;
-					newPackageInfo.isEnabledForCatalogValue = NO;
-				}
-			}
-			
-			// Loop through the "catalogs" key in pkginfo file
+            self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
+			NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
 			[catalogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				// Check if we already have a catalog with this name
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ catalogs item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
 				[fetchForCatalogs setEntity:catalogEntityDescr];
-				
 				NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", obj];
 				[fetchForCatalogs setPredicate:catalogTitlePredicate];
-				
 				NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
 				if (numFoundCatalogs == 0) {
-					//NSLog(@"Creating a new catalog %@", aCatalog);
 					CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
 					aNewCatalog.title = obj;
-					[aNewCatalog addPackagesObject:aNewPackage];
-					CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-					newCatalogInfo.package = aNewPackage;
-					newCatalogInfo.catalog.title = aNewCatalog.title;
-					newCatalogInfo.isEnabledForPackageValue = YES;
-					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:obj];
-					[aNewCatalog addCatalogInfosObject:newCatalogInfo];
-					
-					PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-					newPackageInfo.catalog = aNewCatalog;
-					newPackageInfo.title = [aNewPackage.munki_display_name stringByAppendingFormat:@" %@", aNewPackage.munki_version];
-					newPackageInfo.package = aNewPackage;
-					newPackageInfo.isEnabledForCatalogValue = YES;
 				}
 				[fetchForCatalogs release];
-			}];*/
+			}];
 			
 			// =================================
 			// Get "requires" items
