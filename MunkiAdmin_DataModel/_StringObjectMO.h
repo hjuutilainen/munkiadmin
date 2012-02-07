@@ -13,10 +13,15 @@ extern const struct StringObjectMOAttributes {
 
 extern const struct StringObjectMORelationships {
 	 NSString *blockingApplicationReference;
+	 NSString *includedManifestConditionalReference;
+	 NSString *managedInstallConditionalReference;
 	 NSString *managedInstallReference;
+	 NSString *managedUninstallConditionalReference;
 	 NSString *managedUninstallReference;
+	 NSString *managedUpdateConditionalReference;
 	 NSString *managedUpdateReference;
 	 NSString *manifestReference;
+	 NSString *optionalInstallConditionalReference;
 	 NSString *optionalInstallReference;
 	 NSString *originalApplication;
 	 NSString *originalPackage;
@@ -31,10 +36,15 @@ extern const struct StringObjectMOFetchedProperties {
 } StringObjectMOFetchedProperties;
 
 @class PackageMO;
+@class ConditionalItemMO;
+@class ConditionalItemMO;
+@class ManifestMO;
+@class ConditionalItemMO;
+@class ManifestMO;
+@class ConditionalItemMO;
 @class ManifestMO;
 @class ManifestMO;
-@class ManifestMO;
-@class ManifestMO;
+@class ConditionalItemMO;
 @class ManifestMO;
 @class ApplicationMO;
 @class PackageMO;
@@ -107,6 +117,20 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) ConditionalItemMO* includedManifestConditionalReference;
+
+//- (BOOL)validateIncludedManifestConditionalReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ConditionalItemMO* managedInstallConditionalReference;
+
+//- (BOOL)validateManagedInstallConditionalReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) ManifestMO* managedInstallReference;
 
 //- (BOOL)validateManagedInstallReference:(id*)value_ error:(NSError**)error_;
@@ -114,9 +138,23 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) ConditionalItemMO* managedUninstallConditionalReference;
+
+//- (BOOL)validateManagedUninstallConditionalReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, retain) ManifestMO* managedUninstallReference;
 
 //- (BOOL)validateManagedUninstallReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ConditionalItemMO* managedUpdateConditionalReference;
+
+//- (BOOL)validateManagedUpdateConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -131,6 +169,13 @@ extern const struct StringObjectMOFetchedProperties {
 @property (nonatomic, retain) ManifestMO* manifestReference;
 
 //- (BOOL)validateManifestReference:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) ConditionalItemMO* optionalInstallConditionalReference;
+
+//- (BOOL)validateOptionalInstallConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -226,13 +271,33 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
+- (ConditionalItemMO*)primitiveIncludedManifestConditionalReference;
+- (void)setPrimitiveIncludedManifestConditionalReference:(ConditionalItemMO*)value;
+
+
+
+- (ConditionalItemMO*)primitiveManagedInstallConditionalReference;
+- (void)setPrimitiveManagedInstallConditionalReference:(ConditionalItemMO*)value;
+
+
+
 - (ManifestMO*)primitiveManagedInstallReference;
 - (void)setPrimitiveManagedInstallReference:(ManifestMO*)value;
 
 
 
+- (ConditionalItemMO*)primitiveManagedUninstallConditionalReference;
+- (void)setPrimitiveManagedUninstallConditionalReference:(ConditionalItemMO*)value;
+
+
+
 - (ManifestMO*)primitiveManagedUninstallReference;
 - (void)setPrimitiveManagedUninstallReference:(ManifestMO*)value;
+
+
+
+- (ConditionalItemMO*)primitiveManagedUpdateConditionalReference;
+- (void)setPrimitiveManagedUpdateConditionalReference:(ConditionalItemMO*)value;
 
 
 
@@ -243,6 +308,11 @@ extern const struct StringObjectMOFetchedProperties {
 
 - (ManifestMO*)primitiveManifestReference;
 - (void)setPrimitiveManifestReference:(ManifestMO*)value;
+
+
+
+- (ConditionalItemMO*)primitiveOptionalInstallConditionalReference;
+- (void)setPrimitiveOptionalInstallConditionalReference:(ConditionalItemMO*)value;
 
 
 

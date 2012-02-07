@@ -7,6 +7,7 @@
 #import "ManagedUninstallMO.h"
 #import "OptionalInstallMO.h"
 #import "StringObjectMO.h"
+#import "ConditionalItemMO.h"
 
 @implementation ManifestMO
 
@@ -225,7 +226,23 @@
 			[tmpDict setObject:[NSArray array] forKey:@"included_manifests"];
 		}
 	}
-	
+    
+    
+	// =====================
+    // conditional_items
+    // =====================
+    if ([self.conditionalItems count] > 0) {
+        NSMutableArray *conditionalItems = [NSMutableArray arrayWithCapacity:[self.conditionalItems count]];
+		for (ConditionalItemMO *conditionalItem in [self.conditionalItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByIndex]]) {
+            [conditionalItems addObject:[conditionalItem dictValueForSave]];
+		}
+        [tmpDict setObject:conditionalItems forKey:@"conditional_items"];
+    } else {
+		if ([(NSDictionary *)self.originalManifest objectForKey:@"conditional_items"] != nil) {
+			[tmpDict setObject:[NSArray array] forKey:@"conditional_items"];
+		}
+	}
+    
 	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];
 	
 	return infoDictInMemory;

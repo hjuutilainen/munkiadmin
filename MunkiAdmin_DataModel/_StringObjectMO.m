@@ -12,10 +12,15 @@ const struct StringObjectMOAttributes StringObjectMOAttributes = {
 
 const struct StringObjectMORelationships StringObjectMORelationships = {
 	.blockingApplicationReference = @"blockingApplicationReference",
+	.includedManifestConditionalReference = @"includedManifestConditionalReference",
+	.managedInstallConditionalReference = @"managedInstallConditionalReference",
 	.managedInstallReference = @"managedInstallReference",
+	.managedUninstallConditionalReference = @"managedUninstallConditionalReference",
 	.managedUninstallReference = @"managedUninstallReference",
+	.managedUpdateConditionalReference = @"managedUpdateConditionalReference",
 	.managedUpdateReference = @"managedUpdateReference",
 	.manifestReference = @"manifestReference",
+	.optionalInstallConditionalReference = @"optionalInstallConditionalReference",
 	.optionalInstallReference = @"optionalInstallReference",
 	.originalApplication = @"originalApplication",
 	.originalPackage = @"originalPackage",
@@ -140,11 +145,27 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 
 	
 
+@dynamic includedManifestConditionalReference;
+
+	
+
+@dynamic managedInstallConditionalReference;
+
+	
+
 @dynamic managedInstallReference;
 
 	
 
+@dynamic managedUninstallConditionalReference;
+
+	
+
 @dynamic managedUninstallReference;
+
+	
+
+@dynamic managedUpdateConditionalReference;
 
 	
 
@@ -153,6 +174,10 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 	
 
 @dynamic manifestReference;
+
+	
+
+@dynamic optionalInstallConditionalReference;
 
 	
 

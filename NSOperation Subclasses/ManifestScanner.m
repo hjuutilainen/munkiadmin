@@ -16,6 +16,7 @@
 #import "ManagedUpdateMO.h"
 #import "OptionalInstallMO.h"
 #import "StringObjectMO.h"
+#import "ConditionalItemMO.h"
 
 @implementation ManifestScanner
 
@@ -82,6 +83,76 @@
             return nil;
         }
     }
+}
+
+- (void)conditionalItemsFrom:(NSArray *)items parent:(ConditionalItemMO *)parent manifest:(ManifestMO *)manifest context:(NSManagedObjectContext *)moc
+{
+    [items enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *condition = [(NSDictionary *)obj objectForKey:@"condition"];
+        ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+        newConditionalItem.munki_condition = condition;
+        newConditionalItem.manifest = manifest;
+        newConditionalItem.originalIndexValue = idx;
+        if (parent) {
+            newConditionalItem.parent = parent;
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ Nested conditional_item %lu --> Condition: %@", manifest.title, idx, condition);
+        } else {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item %lu --> Condition: %@", manifest.title, idx, condition);
+        }
+        
+        NSArray *managedInstalls = [(NSDictionary *)obj objectForKey:@"managed_installs"];
+        [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item --> managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+            StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newManagedInstall.title = (NSString *)obj;
+            newManagedInstall.typeString = @"managedInstall";
+            newManagedInstall.originalIndexValue = idx;
+            [newConditionalItem addManagedInstallsObject:newManagedInstall];
+        }];
+        NSArray *managedUninstalls = [(NSDictionary *)obj objectForKey:@"managed_uninstalls"];
+        [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item --> managed_uninstalls item %lu --> Name: %@", manifest.title, idx, obj);
+            StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newManagedUninstall.title = (NSString *)obj;
+            newManagedUninstall.typeString = @"managedUninstall";
+            newManagedUninstall.originalIndexValue = idx;
+            [newConditionalItem addManagedUninstallsObject:newManagedUninstall];
+        }];
+        NSArray *managedUpdates = [(NSDictionary *)obj objectForKey:@"managed_updates"];
+        [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item --> managed_updates item %lu --> Name: %@", manifest.title, idx, obj);
+            StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newManagedUpdate.title = (NSString *)obj;
+            newManagedUpdate.typeString = @"managedUpdate";
+            newManagedUpdate.originalIndexValue = idx;
+            [newConditionalItem addManagedUpdatesObject:newManagedUpdate];
+        }];
+        NSArray *optionalInstalls = [(NSDictionary *)obj objectForKey:@"optional_installs"];
+        [optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item --> optional_installs item %lu --> Name: %@", manifest.title, idx, obj);
+            StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newOptionalInstall.title = (NSString *)obj;
+            newOptionalInstall.typeString = @"optionalInstall";
+            newOptionalInstall.originalIndexValue = idx;
+            [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
+        }];
+        NSArray *includedManifests = [(NSDictionary *)obj objectForKey:@"included_manifests"];
+        [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ conditional_item --> included_manifests item %lu --> Name: %@", manifest.title, idx, obj);
+            StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newIncludedManifest.title = (NSString *)obj;
+            newIncludedManifest.typeString = @"includedManifest";
+            newIncludedManifest.originalIndexValue = idx;
+            newIncludedManifest.indexInNestedManifestValue = idx;
+            [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
+        }];
+        
+        // If there are nested conditional items, loop through them with this same function
+        NSArray *conditionalItems = [(NSDictionary *)obj objectForKey:@"conditional_items"];
+        if (conditionalItems) {
+            [self conditionalItemsFrom:conditionalItems parent:newConditionalItem manifest:manifest context:moc];
+        }
+    }];
 }
 
 
@@ -313,6 +384,16 @@
                 newIncludedManifest.indexInNestedManifestValue = idx;
                 [manifest addIncludedManifestsFasterObject:newIncludedManifest];
             }];
+            
+            
+            // =================================
+			// Get "conditional_items"
+			// =================================
+            startTime = [NSDate date];
+			NSArray *conditionalItems = [manifestInfoDict objectForKey:@"conditional_items"];
+            [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:moc];
+            now = [NSDate date];
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
 			
 		} else {
 			NSLog(@"Can't read manifest file %@", [self.sourceURL relativePath]);
@@ -340,5 +421,6 @@
 		// Do not rethrow exceptions.
 	}
 }
+
 
 @end

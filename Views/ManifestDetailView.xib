@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
+		<string key="IBDocument.SystemVersion">11D50</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<string key="IBDocument.AppKitVersion">1138.32</string>
+		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">1938</string>
@@ -52,6 +52,7 @@
 						<string key="NSFrame">{{13, 10}, {779, 523}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="536364070"/>
 						<array class="NSMutableArray" key="NSTabViewItems">
 							<object class="NSTabViewItem" id="133922317">
 								<string key="NSIdentifier">1</string>
@@ -238,6 +239,7 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="459059165"/>
+													<reference key="NSNextKeyView" ref="212067794"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="465133055">
 														<int key="NSCellFlags">-2080244224</int>
@@ -795,7 +797,7 @@
 							<object class="NSTabViewItem" id="1015024562">
 								<string key="NSIdentifier">2</string>
 								<object class="NSView" key="NSView" id="963743439">
-									<reference key="NSNextResponder" ref="212067794"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSScrollView" id="13419997">
@@ -811,7 +813,6 @@
 															<int key="NSvFlags">4352</int>
 															<string key="NSFrameSize">{723, 460}</string>
 															<reference key="NSSuperview" ref="358667418"/>
-															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="78568288"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="_NSCornerView" key="NSCornerView">
@@ -904,7 +905,6 @@
 													</array>
 													<string key="NSFrame">{{1, 1}, {723, 460}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="438998185"/>
 													<reference key="NSDocView" ref="438998185"/>
 													<reference key="NSBGColor" ref="879843702"/>
@@ -915,7 +915,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
-													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="359764760"/>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -926,7 +925,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
-													<reference key="NSWindow"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -935,7 +933,6 @@
 											</array>
 											<string key="NSFrame">{{17, 17}, {725, 462}}</string>
 											<reference key="NSSuperview" ref="963743439"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="358667418"/>
 											<int key="NSsFlags">133682</int>
 											<reference key="NSVScroller" ref="78568288"/>
@@ -945,8 +942,6 @@
 										</object>
 									</array>
 									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
-									<reference key="NSSuperview" ref="212067794"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="13419997"/>
 								</object>
 								<string key="NSLabel">Catalogs</string>
@@ -1095,6 +1090,7 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="191709709"/>
+													<reference key="NSNextKeyView" ref="212067794"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="490680572">
 														<int key="NSCellFlags">-2080244224</int>
@@ -1125,14 +1121,27 @@
 								<reference key="NSColor" ref="719664359"/>
 								<reference key="NSTabView" ref="212067794"/>
 							</object>
+							<object class="NSTabViewItem" id="614210764">
+								<object class="NSView" key="NSView" id="536364070">
+									<reference key="NSNextResponder" ref="212067794"/>
+									<int key="NSvFlags">256</int>
+									<string key="NSFrame">{{10, 25}, {759, 485}}</string>
+									<reference key="NSSuperview" ref="212067794"/>
+									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
+								</object>
+								<string key="NSLabel">Conditional</string>
+								<reference key="NSColor" ref="719664359"/>
+								<reference key="NSTabView" ref="212067794"/>
+							</object>
 						</array>
-						<reference key="NSSelectedTabViewItem" ref="1015024562"/>
+						<reference key="NSSelectedTabViewItem" ref="614210764"/>
 						<reference key="NSFont" ref="26"/>
 						<int key="NSTvFlags">134217728</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<array class="NSMutableArray" key="NSSubviews">
-							<reference ref="963743439"/>
+							<reference ref="536364070"/>
 						</array>
 					</object>
 				</array>
@@ -1926,6 +1935,7 @@
 							<reference ref="26137867"/>
 							<reference ref="1015024562"/>
 							<reference ref="133922317"/>
+							<reference ref="614210764"/>
 						</array>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -2501,6 +2511,19 @@
 						<reference key="object" ref="490680572"/>
 						<reference key="parent" ref="884726659"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">228</int>
+						<reference key="object" ref="614210764"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="536364070"/>
+						</array>
+						<reference key="parent" ref="212067794"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">229</int>
+						<reference key="object" ref="536364070"/>
+						<reference key="parent" ref="614210764"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -2622,6 +2645,8 @@
 				</object>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="228.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="229.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2693,7 +2718,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">227</int>
+			<int key="maxID">229</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2827,7 +2852,9 @@
 						<string key="deleteSelectedPackagesAction:">id</string>
 						<string key="didSelectSegment:">id</string>
 						<string key="disableAllPackagesForManifestAction:">id</string>
+						<string key="duplicateSelectedManifestAction:">id</string>
 						<string key="enableAllPackagesForManifestAction:">id</string>
+						<string key="getInfoAction:">id</string>
 						<string key="openPreferencesAction:">id</string>
 						<string key="openRepository:">id</string>
 						<string key="propagateAppDescriptionToVersions:">id</string>
@@ -2836,6 +2863,7 @@
 						<string key="renameSelectedPackagesAction:">id</string>
 						<string key="saveAction:">id</string>
 						<string key="selectViewAction:">id</string>
+						<string key="showPkginfoInFinderAction:">id</string>
 						<string key="updateCatalogs:">id</string>
 						<string key="writeChangesToDisk:">id</string>
 					</dictionary>
@@ -2900,8 +2928,16 @@
 							<string key="name">disableAllPackagesForManifestAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="duplicateSelectedManifestAction:">
+							<string key="name">duplicateSelectedManifestAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="enableAllPackagesForManifestAction:">
 							<string key="name">enableAllPackagesForManifestAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="getInfoAction:">
+							<string key="name">getInfoAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="openPreferencesAction:">
@@ -2934,6 +2970,10 @@
 						</object>
 						<object class="IBActionInfo" key="selectViewAction:">
 							<string key="name">selectViewAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showPkginfoInFinderAction:">
+							<string key="name">showPkginfoInFinderAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateCatalogs:">

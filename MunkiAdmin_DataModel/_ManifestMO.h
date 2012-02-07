@@ -14,6 +14,7 @@ extern const struct ManifestMORelationships {
 	 NSString *applications;
 	 NSString *catalogInfos;
 	 NSString *catalogs;
+	 NSString *conditionalItems;
 	 NSString *includedManifests;
 	 NSString *includedManifestsFaster;
 	 NSString *managedInstalls;
@@ -33,6 +34,7 @@ extern const struct ManifestMOFetchedProperties {
 @class ApplicationMO;
 @class CatalogInfoMO;
 @class CatalogMO;
+@class ConditionalItemMO;
 @class ManifestInfoMO;
 @class StringObjectMO;
 @class ManagedInstallMO;
@@ -103,6 +105,13 @@ extern const struct ManifestMOFetchedProperties {
 @property (nonatomic, retain) NSSet* catalogs;
 
 - (NSMutableSet*)catalogsSet;
+
+
+
+
+@property (nonatomic, retain) NSSet* conditionalItems;
+
+- (NSMutableSet*)conditionalItemsSet;
 
 
 
@@ -203,6 +212,11 @@ extern const struct ManifestMOFetchedProperties {
 - (void)addCatalogsObject:(CatalogMO*)value_;
 - (void)removeCatalogsObject:(CatalogMO*)value_;
 
+- (void)addConditionalItems:(NSSet*)value_;
+- (void)removeConditionalItems:(NSSet*)value_;
+- (void)addConditionalItemsObject:(ConditionalItemMO*)value_;
+- (void)removeConditionalItemsObject:(ConditionalItemMO*)value_;
+
 - (void)addIncludedManifests:(NSSet*)value_;
 - (void)removeIncludedManifests:(NSSet*)value_;
 - (void)addIncludedManifestsObject:(ManifestInfoMO*)value_;
@@ -294,6 +308,11 @@ extern const struct ManifestMOFetchedProperties {
 
 - (NSMutableSet*)primitiveCatalogs;
 - (void)setPrimitiveCatalogs:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveConditionalItems;
+- (void)setPrimitiveConditionalItems:(NSMutableSet*)value;
 
 
 

@@ -77,6 +77,8 @@
 		F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */; };
 		FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1C6B77145A797D00BC815F /* PackageNameEditor.m */; };
 		FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */; };
+		FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */; };
+		FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */; };
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
 		FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */; };
 		FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */; };
@@ -219,6 +221,10 @@
 		FE1C6B76145A797D00BC815F /* PackageNameEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageNameEditor.h; path = Views/PackageNameEditor.h; sourceTree = "<group>"; };
 		FE1C6B77145A797D00BC815F /* PackageNameEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageNameEditor.m; path = Views/PackageNameEditor.m; sourceTree = "<group>"; };
 		FE1C6B7A145A7A0300BC815F /* PackageNameEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PackageNameEditor.xib; path = Views/PackageNameEditor.xib; sourceTree = "<group>"; };
+		FE679A4914E1110F0047A9EE /* _ConditionalItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ConditionalItemMO.h; sourceTree = "<group>"; };
+		FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ConditionalItemMO.m; sourceTree = "<group>"; };
+		FE679A4B14E1110F0047A9EE /* ConditionalItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConditionalItemMO.h; sourceTree = "<group>"; };
+		FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConditionalItemMO.m; sourceTree = "<group>"; };
 		FE781B9F144C0CCE0089E941 /* _InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
@@ -382,6 +388,10 @@
 		F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				FE679A4914E1110F0047A9EE /* _ConditionalItemMO.h */,
+				FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */,
+				FE679A4B14E1110F0047A9EE /* ConditionalItemMO.h */,
+				FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */,
 				F5DFC8C7129546EC00B68F4F /* _ApplicationMO.h */,
 				F5DFC8A7129546E800B68F4F /* _ApplicationMO.m */,
 				F5DFC8C8129546EC00B68F4F /* _ApplicationProxyMO.h */,
@@ -666,6 +676,8 @@
 				FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */,
 				FEEBE375145FC5750004791A /* RelationshipScanner.m in Sources */,
 				FEED6894149F3A44006ABA1E /* AdvancedPackageEditor.m in Sources */,
+				FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */,
+				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

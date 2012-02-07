@@ -13,6 +13,7 @@ const struct ManifestMORelationships ManifestMORelationships = {
 	.applications = @"applications",
 	.catalogInfos = @"catalogInfos",
 	.catalogs = @"catalogs",
+	.conditionalItems = @"conditionalItems",
 	.includedManifests = @"includedManifests",
 	.includedManifestsFaster = @"includedManifestsFaster",
 	.managedInstalls = @"managedInstalls",
@@ -118,6 +119,19 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogs"];
   
 	[self didAccessValueForKey:@"catalogs"];
+	return result;
+}
+	
+
+@dynamic conditionalItems;
+
+	
+- (NSMutableSet*)conditionalItemsSet {
+	[self willAccessValueForKey:@"conditionalItems"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"conditionalItems"];
+  
+	[self didAccessValueForKey:@"conditionalItems"];
 	return result;
 }
 	
