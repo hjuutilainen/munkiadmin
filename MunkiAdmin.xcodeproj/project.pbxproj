@@ -84,6 +84,8 @@
 		FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */; };
 		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
 		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
+		FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */; };
+		FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */; };
 		FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */; };
 		FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */; };
@@ -234,6 +236,9 @@
 		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectPkginfoItemsWindow.h; path = Views/SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
 		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectPkginfoItemsWindow.m; path = Views/SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
 		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SelectPkginfoItemsWindow.xib; path = Views/SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
+		FEAC7C1D14E3F65B00487016 /* PredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PredicateEditor.h; path = Views/PredicateEditor.h; sourceTree = "<group>"; };
+		FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PredicateEditor.m; path = Views/PredicateEditor.m; sourceTree = "<group>"; };
+		FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PredicateEditor.xib; path = Views/PredicateEditor.xib; sourceTree = "<group>"; };
 		FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectManifestItemsWindow.h; path = Views/SelectManifestItemsWindow.h; sourceTree = "<group>"; };
 		FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SelectManifestItemsWindow.m; path = Views/SelectManifestItemsWindow.m; sourceTree = "<group>"; };
 		FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SelectManifestItemsWindow.xib; path = Views/SelectManifestItemsWindow.xib; sourceTree = "<group>"; };
@@ -482,6 +487,9 @@
 				FEED6892149F3A44006ABA1E /* AdvancedPackageEditor.h */,
 				FEED6893149F3A44006ABA1E /* AdvancedPackageEditor.m */,
 				FEED6896149F3A7E006ABA1E /* AdvancedPackageEditor.xib */,
+				FEAC7C1D14E3F65B00487016 /* PredicateEditor.h */,
+				FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */,
+				FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -590,6 +598,7 @@
 				FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 				FEED6897149F3A7E006ABA1E /* AdvancedPackageEditor.xib in Resources */,
+				FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +687,7 @@
 				FEED6894149F3A44006ABA1E /* AdvancedPackageEditor.m in Sources */,
 				FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */,
 				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,
+				FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

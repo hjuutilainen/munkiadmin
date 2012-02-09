@@ -35,6 +35,7 @@
 @class SelectManifestItemsWindow;
 @class PackageNameEditor;
 @class AdvancedPackageEditor;
+@class PredicateEditor;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -61,6 +62,7 @@
     SelectManifestItemsWindow *selectManifestsWindowController;
     PackageNameEditor *packageNameEditor;
     AdvancedPackageEditor *advancedPackageEditor;
+    PredicateEditor *predicateEditor;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;
