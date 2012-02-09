@@ -124,7 +124,6 @@
 - (NSDictionary *)dictValueForSave
 {
 	NSDictionary *returnDict = [NSDictionary dictionaryWithDictionary:[self singleLevelDictionary:self]];
-    NSLog(@"%@", returnDict);
 	return returnDict;
 }
 

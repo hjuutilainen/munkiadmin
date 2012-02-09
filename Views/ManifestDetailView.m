@@ -21,6 +21,7 @@
 @synthesize includedManifestsController;
 @synthesize nestedManifestsTableView;
 @synthesize catalogsTableView;
+@synthesize conditionalItemsController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,10 +43,30 @@
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
-    [self.managedInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
-    [self.managedUpdatesController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
-    [self.managedUninstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
-    [self.optionalInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedInstallsByTitle"]) {
+        [self.managedInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    } else {
+        [self.managedInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedUpdatesByTitle"]) {
+        [self.managedUpdatesController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    } else {
+        [self.managedUpdatesController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedUninstallsByTitle"]) {
+        [self.managedUninstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    } else {
+        [self.managedUninstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortOptionalInstallsByTitle"]) {
+        [self.optionalInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    } else {
+        [self.optionalInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+    }
     
     NSSortDescriptor *sortByIndexInNestedManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInNestedManifest" ascending:YES selector:@selector(compare:)];
     [self.includedManifestsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndexInNestedManifest, sortByTitle, nil]];
@@ -53,6 +74,9 @@
     NSSortDescriptor *sortByIndexInManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortCatalogsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.catalogsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndexInManifest, sortCatalogsByTitle, nil]];
+    
+    NSSortDescriptor *sortByCondition = [NSSortDescriptor sortDescriptorWithKey:@"munki_condition" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.conditionalItemsController setSortDescriptors:[NSArray arrayWithObjects:sortByCondition, nil]];
 }
 
 

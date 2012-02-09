@@ -541,8 +541,7 @@
 	[self.operationQueue cancelAllOperations];
 }
 
-# pragma mark -
-# pragma mark Modifying the repository
+# pragma mark - Modifying manifests
 
 - (void)renameSelectedManifest
 {
@@ -717,6 +716,62 @@
 	[self deleteSelectedManifests];
 }
 
+- (void)createNewManifest
+{
+	if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+	
+	// Configure the dialog
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"Create"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:@"New Manifest"];
+    [alert setInformativeText:@"Create a new manifest with title:"];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+	//NSImage *theIcon = [NSImage imageNamed:@"manifestIcon2"];
+	//[theIcon setScalesWhenResized:NO];
+	//[alert setIcon:theIcon];
+    [alert setShowsSuppressionButton:NO];
+    [alert setAccessoryView:createNewManifestCustomView];
+	
+	// Make the accessory view first responder
+	[alert layout];
+	[[alert window] makeFirstResponder:createNewManifestCustomView];
+	
+	// Display the dialog and act accordingly
+    NSInteger result = [alert runModal];
+    if (result == NSAlertFirstButtonReturn) {
+		NSManagedObjectContext *moc = [self managedObjectContext];
+        ManifestMO *manifest;
+		manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
+		manifest.title = [createNewManifestCustomView stringValue];
+		manifest.manifestURL = [self.manifestsURL URLByAppendingPathComponent:manifest.title];
+		
+		for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
+			CatalogInfoMO *newCatalogInfo;
+			newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+			newCatalogInfo.catalog.title = aCatalog.title;
+			[aCatalog addManifestsObject:manifest];
+			newCatalogInfo.manifest = manifest;
+			[aCatalog addCatalogInfosObject:newCatalogInfo];
+			newCatalogInfo.isEnabledForManifestValue = NO;
+		}
+		
+    } else if ( result == NSAlertSecondButtonReturn ) {
+        
+    }
+    [alert release];
+}
+
+- (IBAction)createNewManifestAction:sender
+{
+	[self createNewManifest];
+}
+
+
+# pragma mark - Modifying packages
+
 - (IBAction)processRenamePackagesAction:(id)sender
 {
     if ([self.defaults boolForKey:@"debug"]) {
@@ -880,59 +935,6 @@
 	[self deleteSelectedPackages];
 }
 
-- (void)createNewManifest
-{
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-	
-	// Configure the dialog
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Create"];
-    [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:@"New Manifest"];
-    [alert setInformativeText:@"Create a new manifest with title:"];
-    [alert setAlertStyle:NSInformationalAlertStyle];
-	//NSImage *theIcon = [NSImage imageNamed:@"manifestIcon2"];
-	//[theIcon setScalesWhenResized:NO];
-	//[alert setIcon:theIcon];
-    [alert setShowsSuppressionButton:NO];
-    [alert setAccessoryView:createNewManifestCustomView];
-	
-	// Make the accessory view first responder
-	[alert layout];
-	[[alert window] makeFirstResponder:createNewManifestCustomView];
-	
-	// Display the dialog and act accordingly
-    NSInteger result = [alert runModal];
-    if (result == NSAlertFirstButtonReturn) {
-		NSManagedObjectContext *moc = [self managedObjectContext];
-        ManifestMO *manifest;
-		manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-		manifest.title = [createNewManifestCustomView stringValue];
-		manifest.manifestURL = [self.manifestsURL URLByAppendingPathComponent:manifest.title];
-		
-		for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
-			CatalogInfoMO *newCatalogInfo;
-			newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-			newCatalogInfo.catalog.title = aCatalog.title;
-			[aCatalog addManifestsObject:manifest];
-			newCatalogInfo.manifest = manifest;
-			[aCatalog addCatalogInfosObject:newCatalogInfo];
-			newCatalogInfo.isEnabledForManifestValue = NO;
-		}
-		
-    } else if ( result == NSAlertSecondButtonReturn ) {
-        
-    }
-    [alert release];
-}
-
-- (IBAction)createNewManifestAction:sender
-{
-	[self createNewManifest];
-}
-
 - (void)createNewCatalog
 {
 	if ([self.defaults boolForKey:@"debug"]) {
@@ -1024,6 +1026,8 @@
 	[self disableAllPackagesForManifest];
 }
 
+# pragma mark - Modifying repository
+
 - (IBAction)createNewRepository:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
@@ -1102,6 +1106,8 @@
 }
 
 
+# pragma mark - Callbacks
+
 - (void)makepkginfoDidFinish:(NSDictionary *)pkginfoPlist
 {
 	// Callback from makepkginfo
@@ -1176,9 +1182,66 @@
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
 	}
-
 }
 
+- (void)scannerDidProcessPkginfo
+{
+	//[self arrangeCatalogs];
+}
+
+- (void)relationshipScannerDidFinish:(NSString *)mode
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if ([mode isEqualToString:@"pkgs"]) {
+        
+        
+    } else if ([mode isEqualToString:@"manifests"]) {
+        [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.allPackagesArrayController setEntityName:@"Package"];
+        if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
+            [self.allPackagesArrayController setSelectionIndex:0];
+        }
+        [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.packageInfosArrayController setEntityName:@"PackageInfo"];
+        if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.packageInfosArrayController setAutomaticallyPreparesContent:YES];
+            [self.packageInfosArrayController setSelectionIndex:0];
+        }
+        [self.manifestsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.manifestsArrayController setEntityName:@"Manifest"];
+        if (![self.manifestsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
+            [self.manifestsArrayController setSelectionIndex:0];
+        }
+        [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.applicationsArrayController setEntityName:@"Application"];
+        if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
+            [self.applicationsArrayController setSelectionIndex:0];
+        }
+        [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
+        [self.allCatalogsArrayController setEntityName:@"Catalog"];
+        if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+            [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
+            [self.allCatalogsArrayController setSelectionIndex:0];
+        }
+    }
+}
+
+- (void)mergeChanges:(NSNotification*)notification
+{
+	NSAssert([NSThread mainThread], @"Not on the main thread");
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"Merging changes in main thread");
+	}
+	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+}
+
+
+# pragma mark - Advanced package editor IBActions
 
 - (void)editSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
@@ -1212,7 +1275,29 @@
     
 }
 
-- (IBAction)addNewNestedManifestAction:(id)sender
+
+# pragma mark - Manifest detail view IBActions
+
+- (IBAction)addNewConditionalItemAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
+    newConditionalItem.manifest = selectedManifest;
+    newConditionalItem.munki_condition = @"os_vers BEGINSWITH \"10.7\"";
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
+- (IBAction)removeConditionalItemAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (ConditionalItemMO *aConditionalItem in [manifestDetailViewController.conditionalItemsController selectedObjects]) {
+        [self.managedObjectContext deleteObject:aConditionalItem];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
+- (IBAction)addNewIncludedManifestAction:(id)sender
 {
     [NSApp beginSheet:[selectManifestsWindowController window] 
 	   modalForWindow:self.window modalDelegate:nil 
@@ -1231,6 +1316,16 @@
     //[[selectManifestsWindowController manifestsArrayController] setFilterPredicate:compPred];
     [selectManifestsWindowController setOriginalPredicate:compPred];
     [tempPredicates release];
+}
+
+- (IBAction)removeIncludedManifestAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (StringObjectMO *anIncludedManifest in [manifestDetailViewController.includedManifestsController selectedObjects]) {
+        [self.managedObjectContext deleteObject:anIncludedManifest];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
 - (IBAction)addNewManagedInstallAction:(id)sender
@@ -1254,6 +1349,16 @@
     [tempPredicates release];
 }
 
+- (IBAction)removeManagedInstallAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (StringObjectMO *aManagedInstall in [manifestDetailViewController.managedInstallsController selectedObjects]) {
+        [self.managedObjectContext deleteObject:aManagedInstall];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
 - (IBAction)addNewManagedUninstallAction:(id)sender
 {
     self.addItemsType = @"managedUninstall";
@@ -1274,6 +1379,17 @@
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
 }
+
+- (IBAction)removeManagedUninstallAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (StringObjectMO *aManagedUninstall in [manifestDetailViewController.managedUninstallsController selectedObjects]) {
+        [self.managedObjectContext deleteObject:aManagedUninstall];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
 - (IBAction)addNewManagedUpdateAction:(id)sender
 {
     self.addItemsType = @"managedUpdate";
@@ -1294,6 +1410,17 @@
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
 }
+
+- (IBAction)removeManagedUpdateAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (StringObjectMO *aManagedUpdate in [manifestDetailViewController.managedUpdatesController selectedObjects]) {
+        [self.managedObjectContext deleteObject:aManagedUpdate];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
 - (IBAction)addNewOptionalInstallAction:(id)sender
 {
     self.addItemsType = @"optionalInstall";
@@ -1313,6 +1440,16 @@
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
     [tempPredicates release];
+}
+
+- (IBAction)removeOptionalInstallAction:(id)sender
+{
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    
+    for (StringObjectMO *anOptionalInstall in [manifestDetailViewController.optionalInstallsController selectedObjects]) {
+        [self.managedObjectContext deleteObject:anOptionalInstall];
+    }
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
 - (IBAction)processAddNestedManifestAction:(id)sender
@@ -1337,6 +1474,8 @@
             newItem.indexInNestedManifestValue = [selectedManifest.includedManifestsFaster count];
             [selectedManifest addIncludedManifestsFasterObject:newItem];
         }
+        // Need to refresh fetched properties
+        [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
     }
     [NSApp endSheet:[selectManifestsWindowController window]];
 	[[selectManifestsWindowController window] close];
@@ -1420,6 +1559,9 @@
                 [selectedManifest addOptionalInstallsFasterObject:newItem];
             }
         }
+        
+        // Need to refresh fetched properties
+        [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 	}
 	[NSApp endSheet:[addItemsWindowController window]];
 	[[addItemsWindowController window] close];
@@ -1437,6 +1579,8 @@
 	[NSApp endSheet:[selectManifestsWindowController window]];
 	[[selectManifestsWindowController window] close];
 }
+
+# pragma mark - pkginfo
 
 - (IBAction)addNewPackage:sender
 {
@@ -1508,21 +1652,6 @@
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
 	}
-}
-
-- (void)propagateAppDescriptionToVersions
-{
-	for (ApplicationMO *anApp in [applicationsArrayController selectedObjects]) {
-		for (PackageMO *aPackage in anApp.packages) {
-			aPackage.munki_description = anApp.munki_description;
-		}
-	}
-	[self writePackagePropertyListsToDisk];
-}
-
-- (IBAction)propagateAppDescriptionToVersions:sender
-{
-	[self propagateAppDescriptionToVersions];
 }
 
 # pragma mark -
@@ -1850,62 +1979,6 @@
 	}
 	
 	[fetchForApplications release];
-}
-
-- (void)scannerDidProcessPkginfo
-{
-	//[self arrangeCatalogs];
-}
-
-- (void)relationshipScannerDidFinish:(NSString *)mode
-{
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    if ([mode isEqualToString:@"pkgs"]) {
-
-        
-    } else if ([mode isEqualToString:@"manifests"]) {
-        [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.allPackagesArrayController setEntityName:@"Package"];
-        if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
-            [self.allPackagesArrayController setSelectionIndex:0];
-        }
-        [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.packageInfosArrayController setEntityName:@"PackageInfo"];
-        if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.packageInfosArrayController setAutomaticallyPreparesContent:YES];
-            [self.packageInfosArrayController setSelectionIndex:0];
-        }
-        [self.manifestsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.manifestsArrayController setEntityName:@"Manifest"];
-        if (![self.manifestsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
-            [self.manifestsArrayController setSelectionIndex:0];
-        }
-        [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.applicationsArrayController setEntityName:@"Application"];
-        if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
-            [self.applicationsArrayController setSelectionIndex:0];
-        }
-        [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.allCatalogsArrayController setEntityName:@"Catalog"];
-        if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
-            [self.allCatalogsArrayController setSelectionIndex:0];
-        }
-    }
-}
-
-- (void)mergeChanges:(NSNotification*)notification
-{
-	NSAssert([NSThread mainThread], @"Not on the main thread");
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Merging changes in main thread");
-	}
-	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
 }
 
 - (void)scanCurrentRepoForPackages

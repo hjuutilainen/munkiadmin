@@ -28,6 +28,11 @@ const struct ManifestMORelationships ManifestMORelationships = {
 };
 
 const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
+	.allIncludedManifests = @"allIncludedManifests",
+	.allManagedInstalls = @"allManagedInstalls",
+	.allManagedUninstalls = @"allManagedUninstalls",
+	.allManagedUpdates = @"allManagedUpdates",
+	.allOptionalInstalls = @"allOptionalInstalls",
 };
 
 @implementation ManifestMOID
@@ -280,6 +285,16 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	
 
 
+
+@dynamic allIncludedManifests;
+
+@dynamic allManagedInstalls;
+
+@dynamic allManagedUninstalls;
+
+@dynamic allManagedUpdates;
+
+@dynamic allOptionalInstalls;
 
 
 

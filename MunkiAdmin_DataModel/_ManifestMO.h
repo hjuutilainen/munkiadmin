@@ -29,6 +29,11 @@ extern const struct ManifestMORelationships {
 } ManifestMORelationships;
 
 extern const struct ManifestMOFetchedProperties {
+	 NSString *allIncludedManifests;
+	 NSString *allManagedInstalls;
+	 NSString *allManagedUninstalls;
+	 NSString *allManagedUpdates;
+	 NSString *allOptionalInstalls;
 } ManifestMOFetchedProperties;
 
 @class ApplicationMO;
@@ -192,6 +197,16 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
+
+@property (nonatomic, readonly) NSArray *allIncludedManifests;
+
+@property (nonatomic, readonly) NSArray *allManagedInstalls;
+
+@property (nonatomic, readonly) NSArray *allManagedUninstalls;
+
+@property (nonatomic, readonly) NSArray *allManagedUpdates;
+
+@property (nonatomic, readonly) NSArray *allOptionalInstalls;
 
 @end
 

@@ -24,6 +24,7 @@
 #import "PreferencesController.h"
 #import "PackageInfosArrayController.h"
 #import "CatalogsArrayController.h"
+#import "ConditionalItemMO.h"
 
 @class ApplicationsArrayController;
 @class PackageArrayController;
@@ -198,11 +199,9 @@
 - (IBAction)openRepository:sender;
 - (IBAction)reloadRepositoryAction:sender;
 - (IBAction)updateCatalogs:sender;
-- (IBAction)propagateAppDescriptionToVersions:sender;
 - (IBAction)createNewRepository:sender;
 - (IBAction)createNewManifestAction:sender;
 - (IBAction)createNewCatalogAction:sender;
-//- (IBAction)openAddItemsWindowAction:sender;
 - (IBAction)cancelAddItemsAction:sender;
 - (IBAction)addNewPackage:sender;
 - (IBAction)addNewInstallsItem:sender;
@@ -216,10 +215,18 @@
 - (IBAction)enableAllPackagesForManifestAction:sender;
 - (IBAction)disableAllPackagesForManifestAction:sender;
 
+- (IBAction)addNewIncludedManifestAction:(id)sender;
+- (IBAction)removeIncludedManifestAction:(id)sender;
+- (IBAction)addNewConditionalItemAction:(id)sender;
+- (IBAction)removeConditionalItemAction:(id)sender;
 - (IBAction)addNewManagedInstallAction:(id)sender;
+- (IBAction)removeManagedInstallAction:(id)sender;
 - (IBAction)addNewManagedUninstallAction:(id)sender;
+- (IBAction)removeManagedUninstallAction:(id)sender;
 - (IBAction)addNewManagedUpdateAction:(id)sender;
+- (IBAction)removeManagedUpdateAction:(id)sender;
 - (IBAction)addNewOptionalInstallAction:(id)sender;
+- (IBAction)removeOptionalInstallAction:(id)sender;
 - (IBAction)getInfoAction:(id)sender;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
 
