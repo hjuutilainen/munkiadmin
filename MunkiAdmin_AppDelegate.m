@@ -1245,7 +1245,7 @@
 
 # pragma mark - Advanced package editor IBActions
 
-- (void)editSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -1254,6 +1254,7 @@
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];
 }
+
 
 - (IBAction)getInfoAction:(id)sender
 {
@@ -1267,14 +1268,7 @@
     [[[self managedObjectContext] undoManager] beginUndoGrouping];
     [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
         
-    [advancedPackageEditor setPkginfoToEdit:object];
-    
-    [NSApp beginSheet:[advancedPackageEditor window] 
-       modalForWindow:self.window 
-        modalDelegate:self 
-       didEndSelector:@selector(editSheetDidEnd:returnCode:object:) 
-          contextInfo:object];
-    
+    [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
 }
 
 
@@ -1372,13 +1366,22 @@
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
+- (void)addNewManagedInstallSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (returnCode == NSCancelButton) return;
+    [self processAddItemsAction:sheet];
+}
+
 - (IBAction)addNewManagedInstallAction:(id)sender
 {
     self.addItemsType = @"managedInstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+	   modalForWindow:self.window modalDelegate:self 
+	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
@@ -1389,7 +1392,9 @@
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController groupedPkgsArrayController] setSelectedObjects:nil];
     [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [[addItemsWindowController individualPkgsArrayController] setSelectedObjects:nil];
     [tempPredicates release];
 }
 
@@ -1408,8 +1413,8 @@
     self.addItemsType = @"managedUninstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+	   modalForWindow:self.window modalDelegate:self 
+	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
@@ -1439,8 +1444,8 @@
     self.addItemsType = @"managedUpdate";
     
     [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+	   modalForWindow:self.window modalDelegate:self 
+	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
@@ -1470,8 +1475,8 @@
     self.addItemsType = @"optionalInstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+	   modalForWindow:self.window modalDelegate:self 
+	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
@@ -1526,93 +1531,27 @@
 }
 
 
-- (IBAction)processAddItemsAction:sender
+- (void)processAddItemsAction:(id)sender
 {
-    NSString *selectedTabViewLabel = [[[addItemsWindowController tabView] selectedTabViewItem] label];
     for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
-        
-        if ([selectedTabViewLabel isEqualToString:@"Grouped"]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Grouped mode");
-            for (ApplicationMO *anApp in [[addItemsWindowController groupedPkgsArrayController] selectedObjects]) {
-                StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
-                newItem.title = anApp.munki_name;
-                newItem.originalApplication = anApp;
-                
-                if ([self.addItemsType isEqualToString:@"managedInstall"]) {
-                    newItem.typeString = @"managedInstall";
-                    [selectedManifest addManagedInstallsFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
-                    newItem.typeString = @"managedUninstall";
-                    [selectedManifest addManagedUninstallsFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
-                    newItem.typeString = @"managedUpdate";
-                    [selectedManifest addManagedUpdatesFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
-                    newItem.typeString = @"optionalInstall";
-                    [selectedManifest addOptionalInstallsFasterObject:newItem];
-                }
-            }
-        } else if ([selectedTabViewLabel isEqualToString:@"Individual"]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Individual mode");
-            for (PackageMO *aPackage in [[addItemsWindowController individualPkgsArrayController] selectedObjects]) {
-                StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
-                NSString *newTitle = [NSString stringWithFormat:@"%@-%@", aPackage.munki_name, aPackage.munki_version];
-                newItem.title = newTitle;
-                newItem.originalPackage = aPackage;
-                
-                if ([self.addItemsType isEqualToString:@"managedInstall"]) {
-                    newItem.typeString = @"managedInstall";
-                    [selectedManifest addManagedInstallsFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
-                    newItem.typeString = @"managedUninstall";
-                    [selectedManifest addManagedUninstallsFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
-                    newItem.typeString = @"managedUpdate";
-                    [selectedManifest addManagedUpdatesFasterObject:newItem];
-                }
-                else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
-                    newItem.typeString = @"optionalInstall";
-                    [selectedManifest addOptionalInstallsFasterObject:newItem];
-                }
-            }
-        } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding in Custom mode");
-            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
-            NSString *newTitle = [[addItemsWindowController customValueTextField] stringValue];
-            newItem.title = newTitle;
-            
+        for (StringObjectMO *selectedItem in [addItemsWindowController selectionAsStringObjects]) {
+            selectedItem.typeString = self.addItemsType;
             if ([self.addItemsType isEqualToString:@"managedInstall"]) {
-                newItem.typeString = @"managedInstall";
-                [selectedManifest addManagedInstallsFasterObject:newItem];
+                [selectedManifest addManagedInstallsFasterObject:selectedItem];
             }
             else if ([self.addItemsType isEqualToString:@"managedUninstall"]) {
-                newItem.typeString = @"managedUninstall";
-                [selectedManifest addManagedUninstallsFasterObject:newItem];
+                [selectedManifest addManagedUninstallsFasterObject:selectedItem];
             }
             else if ([self.addItemsType isEqualToString:@"managedUpdate"]) {
-                newItem.typeString = @"managedUpdate";
-                [selectedManifest addManagedUpdatesFasterObject:newItem];
+                [selectedManifest addManagedUpdatesFasterObject:selectedItem];
             }
             else if ([self.addItemsType isEqualToString:@"optionalInstall"]) {
-                newItem.typeString = @"optionalInstall";
-                [selectedManifest addOptionalInstallsFasterObject:newItem];
+                [selectedManifest addOptionalInstallsFasterObject:selectedItem];
             }
         }
-        
         // Need to refresh fetched properties
         [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 	}
-	[NSApp endSheet:[addItemsWindowController window]];
-	[[addItemsWindowController window] close];
-}
-
-- (IBAction)cancelAddItemsAction:sender
-{
 	[NSApp endSheet:[addItemsWindowController window]];
 	[[addItemsWindowController window] close];
 }

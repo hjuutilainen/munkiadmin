@@ -9,6 +9,8 @@
 #import "PackageMO.h"
 #import "StringObjectMO.h"
 
+@class SelectPkginfoItemsWindow;
+
 @interface AdvancedPackageEditor : NSWindowController {
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
@@ -33,22 +35,32 @@
     NSArrayController *installsItemsController;
     NSArrayController *receiptsArrayController;
     NSArrayController *itemsToCopyArrayController;
-
+    NSArrayController *requiresArrayController;
+    NSArrayController *updateForArrayController;
+    
+    NSModalSession modalSession;
+    id delegate;
+    
+    SelectPkginfoItemsWindow *pkginfoSelector;
 }
 
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage;
+- (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate;
 
+@property (retain) id delegate;
 @property (assign) PackageMO *pkginfoToEdit;
-
+@property NSModalSession modalSession;
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (assign) IBOutlet NSTabView *mainTabView;
 @property (assign) IBOutlet NSArrayController *installsItemsController;
 @property (assign) IBOutlet NSObjectController *pkgController;
 @property (assign) IBOutlet NSArrayController *receiptsArrayController;
 @property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
+@property (assign) IBOutlet NSArrayController *requiresArrayController;
+@property (assign) IBOutlet NSArrayController *updateForArrayController;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;

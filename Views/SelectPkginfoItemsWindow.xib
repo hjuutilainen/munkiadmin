@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
+		<string key="IBDocument.SystemVersion">11D50b</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<string key="IBDocument.AppKitVersion">1138.32</string>
+		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">1938</string>
@@ -808,19 +808,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">processAddItemsAction:</string>
-						<reference key="source" ref="1003"/>
+						<string key="label">addSelectedAction:</string>
+						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="309520854"/>
 					</object>
-					<int key="connectionID">41</int>
+					<int key="connectionID">67</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">cancelAddItemsAction:</string>
-						<reference key="source" ref="1003"/>
+						<string key="label">cancelAction:</string>
+						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="158722991"/>
 					</object>
-					<int key="connectionID">42</int>
+					<int key="connectionID">68</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1432,7 +1432,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">66</int>
+			<int key="maxID">68</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1457,498 +1457,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">CatalogsArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CatalogsArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">GradientBackgroundView</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/GradientBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ManifestsArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ManifestsArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MunkiAdmin_AppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addNewInstallsItem:</string>
-							<string>addNewManagedInstallAction:</string>
-							<string>addNewManagedUninstallAction:</string>
-							<string>addNewManagedUpdateAction:</string>
-							<string>addNewOptionalInstallAction:</string>
-							<string>addNewPackage:</string>
-							<string>cancelAddItemsAction:</string>
-							<string>cancelOperationsAction:</string>
-							<string>createNewCatalogAction:</string>
-							<string>createNewManifestAction:</string>
-							<string>createNewRepository:</string>
-							<string>deleteSelectedManifestsAction:</string>
-							<string>deleteSelectedPackagesAction:</string>
-							<string>didSelectSegment:</string>
-							<string>disableAllPackagesForManifestAction:</string>
-							<string>enableAllPackagesForManifestAction:</string>
-							<string>openPreferencesAction:</string>
-							<string>openRepository:</string>
-							<string>propagateAppDescriptionToVersions:</string>
-							<string>reloadRepositoryAction:</string>
-							<string>renameSelectedManifestAction:</string>
-							<string>renameSelectedPackagesAction:</string>
-							<string>saveAction:</string>
-							<string>selectViewAction:</string>
-							<string>updateCatalogs:</string>
-							<string>writeChangesToDisk:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addNewInstallsItem:</string>
-							<string>addNewManagedInstallAction:</string>
-							<string>addNewManagedUninstallAction:</string>
-							<string>addNewManagedUpdateAction:</string>
-							<string>addNewOptionalInstallAction:</string>
-							<string>addNewPackage:</string>
-							<string>cancelAddItemsAction:</string>
-							<string>cancelOperationsAction:</string>
-							<string>createNewCatalogAction:</string>
-							<string>createNewManifestAction:</string>
-							<string>createNewRepository:</string>
-							<string>deleteSelectedManifestsAction:</string>
-							<string>deleteSelectedPackagesAction:</string>
-							<string>didSelectSegment:</string>
-							<string>disableAllPackagesForManifestAction:</string>
-							<string>enableAllPackagesForManifestAction:</string>
-							<string>openPreferencesAction:</string>
-							<string>openRepository:</string>
-							<string>propagateAppDescriptionToVersions:</string>
-							<string>reloadRepositoryAction:</string>
-							<string>renameSelectedManifestAction:</string>
-							<string>renameSelectedPackagesAction:</string>
-							<string>saveAction:</string>
-							<string>selectViewAction:</string>
-							<string>updateCatalogs:</string>
-							<string>writeChangesToDisk:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">addNewInstallsItem:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addNewManagedInstallAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addNewManagedUninstallAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addNewManagedUpdateAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addNewOptionalInstallAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addNewPackage:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">cancelAddItemsAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">cancelOperationsAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">createNewCatalogAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">createNewManifestAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">createNewRepository:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">deleteSelectedManifestsAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">deleteSelectedPackagesAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">didSelectSegment:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">disableAllPackagesForManifestAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">enableAllPackagesForManifestAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">openPreferencesAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">openRepository:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">propagateAppDescriptionToVersions:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">reloadRepositoryAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">renameSelectedManifestAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">renameSelectedPackagesAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">saveAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">selectViewAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">updateCatalogs:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">writeChangesToDisk:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addItemsWindow</string>
-							<string>allCatalogsArrayController</string>
-							<string>allPackagesArrayController</string>
-							<string>applicationTableView</string>
-							<string>applicationsArrayController</string>
-							<string>applicationsDetailView</string>
-							<string>applicationsListView</string>
-							<string>catalogsDetailView</string>
-							<string>catalogsListView</string>
-							<string>createNewManifestCustomView</string>
-							<string>detailViewPlaceHolder</string>
-							<string>installsItemsArrayController</string>
-							<string>itemsToCopyArrayController</string>
-							<string>mainSegmentedControl</string>
-							<string>mainSplitView</string>
-							<string>mainTabView</string>
-							<string>makepkginfoOptionsView</string>
-							<string>managedInstallsArrayController</string>
-							<string>managedUninstallsArrayController</string>
-							<string>managedUpdatesArrayController</string>
-							<string>manifestInfosArrayController</string>
-							<string>manifestsArrayController</string>
-							<string>manifestsDetailView</string>
-							<string>manifestsListView</string>
-							<string>optionalInstallsArrayController</string>
-							<string>packageInfosArrayController</string>
-							<string>packagesDetailView</string>
-							<string>packagesListView</string>
-							<string>pkgGroupsForAddingArrayController</string>
-							<string>pkgsForAddingArrayController</string>
-							<string>progressIndicator</string>
-							<string>progressPanel</string>
-							<string>receiptsArrayController</string>
-							<string>sourceViewPlaceHolder</string>
-							<string>window</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSWindow</string>
-							<string>CatalogsArrayController</string>
-							<string>PackageArrayController</string>
-							<string>NSTableView</string>
-							<string>ApplicationsArrayController</string>
-							<string>NSView</string>
-							<string>NSView</string>
-							<string>NSView</string>
-							<string>NSView</string>
-							<string>NSTextField</string>
-							<string>NSView</string>
-							<string>NSArrayController</string>
-							<string>NSArrayController</string>
-							<string>NSSegmentedControl</string>
-							<string>NSSplitView</string>
-							<string>NSTabView</string>
-							<string>NSView</string>
-							<string>NSArrayController</string>
-							<string>NSArrayController</string>
-							<string>NSArrayController</string>
-							<string>NSArrayController</string>
-							<string>ManifestsArrayController</string>
-							<string>NSView</string>
-							<string>NSView</string>
-							<string>NSArrayController</string>
-							<string>PackageInfosArrayController</string>
-							<string>NSView</string>
-							<string>NSView</string>
-							<string>ApplicationsArrayController</string>
-							<string>PackageArrayController</string>
-							<string>NSProgressIndicator</string>
-							<string>NSWindow</string>
-							<string>NSArrayController</string>
-							<string>NSView</string>
-							<string>NSWindow</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addItemsWindow</string>
-							<string>allCatalogsArrayController</string>
-							<string>allPackagesArrayController</string>
-							<string>applicationTableView</string>
-							<string>applicationsArrayController</string>
-							<string>applicationsDetailView</string>
-							<string>applicationsListView</string>
-							<string>catalogsDetailView</string>
-							<string>catalogsListView</string>
-							<string>createNewManifestCustomView</string>
-							<string>detailViewPlaceHolder</string>
-							<string>installsItemsArrayController</string>
-							<string>itemsToCopyArrayController</string>
-							<string>mainSegmentedControl</string>
-							<string>mainSplitView</string>
-							<string>mainTabView</string>
-							<string>makepkginfoOptionsView</string>
-							<string>managedInstallsArrayController</string>
-							<string>managedUninstallsArrayController</string>
-							<string>managedUpdatesArrayController</string>
-							<string>manifestInfosArrayController</string>
-							<string>manifestsArrayController</string>
-							<string>manifestsDetailView</string>
-							<string>manifestsListView</string>
-							<string>optionalInstallsArrayController</string>
-							<string>packageInfosArrayController</string>
-							<string>packagesDetailView</string>
-							<string>packagesListView</string>
-							<string>pkgGroupsForAddingArrayController</string>
-							<string>pkgsForAddingArrayController</string>
-							<string>progressIndicator</string>
-							<string>progressPanel</string>
-							<string>receiptsArrayController</string>
-							<string>sourceViewPlaceHolder</string>
-							<string>window</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">addItemsWindow</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">allCatalogsArrayController</string>
-								<string key="candidateClassName">CatalogsArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">allPackagesArrayController</string>
-								<string key="candidateClassName">PackageArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">applicationTableView</string>
-								<string key="candidateClassName">NSTableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">applicationsArrayController</string>
-								<string key="candidateClassName">ApplicationsArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">applicationsDetailView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">applicationsListView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">catalogsDetailView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">catalogsListView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">createNewManifestCustomView</string>
-								<string key="candidateClassName">NSTextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">detailViewPlaceHolder</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">installsItemsArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">itemsToCopyArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">mainSegmentedControl</string>
-								<string key="candidateClassName">NSSegmentedControl</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">mainSplitView</string>
-								<string key="candidateClassName">NSSplitView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">mainTabView</string>
-								<string key="candidateClassName">NSTabView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">makepkginfoOptionsView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">managedInstallsArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">managedUninstallsArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">managedUpdatesArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">manifestInfosArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">manifestsArrayController</string>
-								<string key="candidateClassName">ManifestsArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">manifestsDetailView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">manifestsListView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">optionalInstallsArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">packageInfosArrayController</string>
-								<string key="candidateClassName">PackageInfosArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">packagesDetailView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">packagesListView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pkgGroupsForAddingArrayController</string>
-								<string key="candidateClassName">ApplicationsArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pkgsForAddingArrayController</string>
-								<string key="candidateClassName">PackageArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">progressIndicator</string>
-								<string key="candidateClassName">NSProgressIndicator</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">progressPanel</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">receiptsArrayController</string>
-								<string key="candidateClassName">NSArrayController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">sourceViewPlaceHolder</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">window</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MunkiAdmin_AppDelegate.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2043,25 +1556,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/PackageArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PackageInfosArrayController</string>
-					<string key="superclassName">NSArrayController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">catalogsTableView</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">catalogsTableView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">catalogsTableView</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/PackageInfosArrayController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

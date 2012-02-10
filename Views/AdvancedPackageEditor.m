@@ -8,6 +8,7 @@
 #import "AdvancedPackageEditor.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MunkiOperation.h"
+#import "SelectPkginfoItemsWindow.h"
 
 
 @implementation AdvancedPackageEditor
@@ -17,6 +18,8 @@
 @synthesize pkgController;
 @synthesize receiptsArrayController;
 @synthesize itemsToCopyArrayController;
+@synthesize requiresArrayController;
+@synthesize updateForArrayController;
 
 @synthesize temp_preinstall_script_enabled;
 @synthesize temp_preuninstall_script_enabled;
@@ -30,9 +33,9 @@
 @synthesize temp_preinstall_script;
 @synthesize temp_preuninstall_script;
 @synthesize temp_uninstall_script;
-
+@synthesize modalSession;
 @synthesize pkginfoToEdit;
-
+@synthesize delegate;
 
 - (NSUndoManager*)windowWillReturnUndoManager:(NSWindow*)window
 {
@@ -46,6 +49,62 @@
 {
     [undoManager release];
     [super dealloc];
+}
+
+- (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate
+{
+    self.pkginfoToEdit = aPackage;
+    self.delegate = modalDelegate;
+    [self.mainTabView selectTabViewItemAtIndex:0];
+    
+    // Set the force_install_after_date date picker to use UTC
+    [self.forceInstallDatePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    
+    [self setDefaultValuesFromPackage:self.pkginfoToEdit];
+    
+    self.modalSession = [NSApp beginModalSessionForWindow:self.window];
+    [NSApp runModalSession:self.modalSession];
+    return self.modalSession;
+}
+
+- (void)addRequiresItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (returnCode == NSCancelButton) return;
+    
+    for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
+        selectedItem.typeString = @"package";
+        [self.pkginfoToEdit addRequirementsObject:selectedItem];
+    }
+}
+
+- (IBAction)addRequiresItemAction:(id)sender
+{
+    [NSApp beginSheet:[pkginfoSelector window]
+	   modalForWindow:[self window] modalDelegate:self 
+	   didEndSelector:@selector(addRequiresItemSheetDidEnd:returnCode:object:) contextInfo:nil];
+}
+
+- (void)addUpdateForItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (returnCode == NSCancelButton) return;
+    
+    for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
+        selectedItem.typeString = @"package";
+        [self.pkginfoToEdit addUpdateForObject:selectedItem];
+    }
+}
+
+- (IBAction)addUpdateForItem:(id)sender
+{
+    [NSApp beginSheet:[pkginfoSelector window]
+	   modalForWindow:[self window] modalDelegate:self 
+	   didEndSelector:@selector(addUpdateForItemSheetDidEnd:returnCode:object:) contextInfo:nil];
 }
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
@@ -66,7 +125,6 @@
 	}
     
 }
-
 
 - (IBAction)addInstallsItemFromDiskAction:(id)sender
 {
@@ -153,15 +211,25 @@
     } else {
         self.pkginfoToEdit.munki_force_install_after_date = nil;
     }
-    
+        
     [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSOKButton];
+    [NSApp endModalSession:modalSession];
+    [NSApp stopModal];
+    
+    if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
+        [self.delegate packageEditorDidFinish:self returnCode:NSOKButton object:nil];
+    }
 }
 
 - (void)cancelAction:(id)sender;
-{
+{    
     [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSCancelButton];
+    [NSApp endModalSession:modalSession];
+    [NSApp stopModal];
+    
+    if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
+        [self.delegate packageEditorDidFinish:self returnCode:NSCancelButton object:nil];
+    }
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -181,6 +249,8 @@
 {
     [super windowDidLoad];
     
+    pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
+    
     // Set the force_install_after_date date picker to use UTC
     [self.forceInstallDatePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [self setDefaultValuesFromPackage:self.pkginfoToEdit];
@@ -197,6 +267,10 @@
     NSSortDescriptor *sortReceiptsByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
+    
+    NSSortDescriptor *sortStringObjectsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.updateForArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
+    [self.requiresArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
 }
 
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage

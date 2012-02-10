@@ -30,4 +30,6 @@
 @property (assign) IBOutlet GradientBackgroundView *groupSearchBgView;
 @property (assign) IBOutlet GradientBackgroundView *customBgView;
 
+- (NSArray *)selectionAsStringObjects;
+
 @end

@@ -204,7 +204,6 @@
 - (IBAction)createNewRepository:sender;
 - (IBAction)createNewManifestAction:sender;
 - (IBAction)createNewCatalogAction:sender;
-- (IBAction)cancelAddItemsAction:sender;
 - (IBAction)addNewPackage:sender;
 - (IBAction)addNewInstallsItem:sender;
 - (IBAction)didSelectSegment:sender;
@@ -217,6 +216,7 @@
 - (IBAction)enableAllPackagesForManifestAction:sender;
 - (IBAction)disableAllPackagesForManifestAction:sender;
 
+- (void)processAddItemsAction:(id)sender;
 - (IBAction)addNewIncludedManifestAction:(id)sender;
 - (IBAction)removeIncludedManifestAction:(id)sender;
 - (IBAction)addNewConditionalItemAction:(id)sender;
@@ -231,6 +231,7 @@
 - (IBAction)addNewOptionalInstallAction:(id)sender;
 - (IBAction)removeOptionalInstallAction:(id)sender;
 - (IBAction)getInfoAction:(id)sender;
+- (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
 
 # pragma mark -
