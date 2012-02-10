@@ -1280,30 +1280,55 @@
 
 # pragma mark - Manifest detail view IBActions
 
-- (void)predicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)newPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSCancelButton) return;
+    
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
+    newConditionalItem.manifest = selectedManifest;
+    newConditionalItem.munki_condition = [predicateEditor.predicate description];
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
+- (void)editPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (returnCode == NSCancelButton) return;
+    
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    predicateEditor.conditionToEdit.munki_condition = [predicateEditor.predicate description];
+    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
 - (IBAction)addNewConditionalItemAction:(id)sender
 {
+    predicateEditor.conditionToEdit = nil;
+    [predicateEditor resetPredicateToDefault];
+    
     [NSApp beginSheet:[predicateEditor window] 
 	   modalForWindow:self.window 
         modalDelegate:self 
-	   didEndSelector:@selector(predicateSheetDidEnd:returnCode:object:) 
+	   didEndSelector:@selector(newPredicateSheetDidEnd:returnCode:object:) 
           contextInfo:nil];
+}
 
+- (IBAction)editConditionalItemAction:(id)sender
+{
+    ConditionalItemMO *selectedCondition = [[manifestDetailViewController.conditionalItemsController selectedObjects] lastObject];
+    predicateEditor.conditionToEdit = selectedCondition;
+    predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
     
-    /*
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
-    newConditionalItem.manifest = selectedManifest;
-    newConditionalItem.munki_condition = @"os_vers BEGINSWITH \"10.7\"";
-    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
-     */
+    [NSApp beginSheet:[predicateEditor window] 
+	   modalForWindow:self.window 
+        modalDelegate:self 
+	   didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:) 
+          contextInfo:nil];
 }
 
 - (IBAction)removeConditionalItemAction:(id)sender
