@@ -234,7 +234,9 @@
     if ([self.conditionalItems count] > 0) {
         NSMutableArray *conditionalItems = [NSMutableArray arrayWithCapacity:[self.conditionalItems count]];
 		for (ConditionalItemMO *conditionalItem in [self.conditionalItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByIndex]]) {
-            [conditionalItems addObject:[conditionalItem dictValueForSave]];
+            if (conditionalItem.parent == nil) {
+                [conditionalItems addObject:[conditionalItem dictValueForSave]];
+            }
 		}
         [tmpDict setObject:conditionalItems forKey:@"conditional_items"];
     } else {
