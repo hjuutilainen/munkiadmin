@@ -11,6 +11,16 @@
 
 @implementation ManifestMO
 
+- (NSArray *)rootConditionalItems
+{
+    [self willAccessValueForKey:@"conditionalItems"];
+    NSSet *tmp = [[self primitiveValueForKey:@"conditionalItems"] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parent == nil"]];
+    NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *tmpArray = [tmp sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByTitleWithParentTitle]];
+    [self didAccessValueForKey:@"conditionalItems"];
+    return tmpArray;
+}
+
 - (NSArray *)enabledManagedUpdates
 {
 	NSPredicate *enabledPredicate = [NSPredicate predicateWithFormat:@"isEnabled == TRUE"];

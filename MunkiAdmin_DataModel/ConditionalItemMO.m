@@ -3,6 +3,27 @@
 
 @implementation ConditionalItemMO
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+    if ([key isEqualToString:@"parent"]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"titleWithParentTitle", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } 
+	
+    return keyPaths;
+}
+
+- (NSString *)titleWithParentTitle
+{
+    if (self.parent) {
+        return [NSString stringWithFormat:@"%@ -> %@", self.parent.titleWithParentTitle, self.munki_condition];
+    } else {
+        return self.munki_condition;
+    }
+}
+
 - (NSDictionary *)dictValue
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:

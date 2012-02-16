@@ -17,6 +17,8 @@
     NSTableView *nestedManifestsTableView;
     NSTableView *catalogsTableView;
     NSArrayController *conditionalItemsController;
+    NSOutlineView *conditionsOutlineView;
+    NSTreeController *conditionsTreeController;
 }
 
 @property (assign) IBOutlet NSArrayController *managedInstallsController;
@@ -28,6 +30,8 @@
 @property (assign) IBOutlet NSTableView *nestedManifestsTableView;
 @property (assign) IBOutlet NSTableView *catalogsTableView;
 @property (assign) IBOutlet NSArrayController *conditionalItemsController;
+@property (assign) IBOutlet NSOutlineView *conditionsOutlineView;
+@property (assign) IBOutlet NSTreeController *conditionsTreeController;
 
 
 @end

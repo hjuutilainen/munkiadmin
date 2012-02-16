@@ -11,6 +11,8 @@
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 
+NSString *ConditionalItemType = @"ConditionalItemType";
+
 @implementation ManifestDetailView
 
 @synthesize managedInstallsController;
@@ -22,6 +24,8 @@
 @synthesize nestedManifestsTableView;
 @synthesize catalogsTableView;
 @synthesize conditionalItemsController;
+@synthesize conditionsOutlineView;
+@synthesize conditionsTreeController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,6 +44,10 @@
     
     [self.catalogsTableView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
     [self.catalogsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    
+    [self.conditionsOutlineView registerForDraggedTypes:[NSArray arrayWithObject:ConditionalItemType]];
+    [self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    [self.conditionsOutlineView setAutoresizesSubviews:NO];
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
@@ -76,7 +84,9 @@
     [self.catalogsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndexInManifest, sortCatalogsByTitle, nil]];
     
     NSSortDescriptor *sortByCondition = [NSSortDescriptor sortDescriptorWithKey:@"munki_condition" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [self.conditionalItemsController setSortDescriptors:[NSArray arrayWithObjects:sortByCondition, nil]];
+    NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.conditionalItemsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
+    [self.conditionsTreeController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
 }
 
 
@@ -244,6 +254,47 @@
     else {
         return NO;
     }
+}
+
+
+# pragma mark - NSOutlineView delegates
+
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
+    [pboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
+    NSIndexPath *pathToDraggedNode = [[items objectAtIndex:0] indexPath];
+    NSData *indexPathData = [NSKeyedArchiver archivedDataWithRootObject:pathToDraggedNode];
+    [pboard setData:indexPathData forType:ConditionalItemType];
+    return YES;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index {
+    NSIndexPath *droppedIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+    id treeRoot = [self.conditionsTreeController arrangedObjects];
+    NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:droppedIndexPath];
+    [self.conditionsTreeController moveNode:node toIndexPath:[[item indexPath] indexPathByAddingIndex:0]];
+    [self.conditionsTreeController rearrangeObjects];
+    [self.conditionalItemsController rearrangeObjects];
+    return YES;
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index {
+    if (index != -1) {
+        return NSDragOperationNone;
+    }
+    
+    NSIndexPath *droppedIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+    id treeRoot = [self.conditionsTreeController arrangedObjects];
+    NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:droppedIndexPath];
+    NSTreeNode *parent = item;
+    while (parent != nil) {
+        if (parent == node) {
+            return NSDragOperationNone;
+        }
+        parent = [parent parentNode];
+    }
+    
+    return NSDragOperationGeneric;
 }
 
 

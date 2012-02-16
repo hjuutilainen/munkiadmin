@@ -2,6 +2,7 @@
 
 @interface ManifestMO : _ManifestMO {}
 
+- (NSSet *)rootConditionalItems;
 - (NSDictionary *)manifestInfoDictionary;
 
 @end

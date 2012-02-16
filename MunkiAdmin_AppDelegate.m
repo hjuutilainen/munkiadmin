@@ -310,6 +310,9 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
@@ -1282,8 +1285,10 @@
     if (returnCode == NSCancelButton) return;
     
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ConditionalItemMO *selectedConditionalItem = [[[manifestDetailViewController conditionsTreeController] selectedObjects] objectAtIndex:0];
     ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
     newConditionalItem.manifest = selectedManifest;
+    newConditionalItem.parent = selectedConditionalItem;
     newConditionalItem.munki_condition = [predicateEditor.predicate description];
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
@@ -1314,7 +1319,7 @@
 
 - (IBAction)editConditionalItemAction:(id)sender
 {
-    ConditionalItemMO *selectedCondition = [[manifestDetailViewController.conditionalItemsController selectedObjects] lastObject];
+    ConditionalItemMO *selectedCondition = [[manifestDetailViewController.conditionsTreeController selectedObjects] lastObject];
     predicateEditor.conditionToEdit = selectedCondition;
     predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
     
@@ -1329,7 +1334,7 @@
 {
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (ConditionalItemMO *aConditionalItem in [manifestDetailViewController.conditionalItemsController selectedObjects]) {
+    for (ConditionalItemMO *aConditionalItem in [manifestDetailViewController.conditionsTreeController selectedObjects]) {
         [self.managedObjectContext deleteObject:aConditionalItem];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1562,6 +1567,16 @@
 	[NSApp endSheet:[selectManifestsWindowController window]];
 	[[selectManifestsWindowController window] close];
 }
+
+# pragma mark - NSUndoManager notifications
+
+- (void)undoManagerDidUndo:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+}
+
 
 # pragma mark - pkginfo
 
