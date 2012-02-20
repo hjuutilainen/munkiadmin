@@ -10,6 +10,7 @@
 #import "StringObjectMO.h"
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
+#import "ConditionalItemMO.h"
 
 NSString *ConditionalItemType = @"ConditionalItemType";
 
@@ -46,7 +47,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
     [self.catalogsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     [self.conditionsOutlineView registerForDraggedTypes:[NSArray arrayWithObject:ConditionalItemType]];
-    [self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    [self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:YES];
     [self.conditionsOutlineView setAutoresizesSubviews:NO];
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -261,39 +262,71 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
-    [pboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
-    NSIndexPath *pathToDraggedNode = [[items objectAtIndex:0] indexPath];
-    NSData *indexPathData = [NSKeyedArchiver archivedDataWithRootObject:pathToDraggedNode];
-    [pboard setData:indexPathData forType:ConditionalItemType];
+    [pboard declareTypes:[NSArray arrayWithObject:ConditionalItemType] owner:self];
+    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"]] forType:ConditionalItemType];
     return YES;
 }
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)index {
-    NSIndexPath *droppedIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
-    id treeRoot = [self.conditionsTreeController arrangedObjects];
-    NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:droppedIndexPath];
-    [self.conditionsTreeController moveNode:node toIndexPath:[[item indexPath] indexPathByAddingIndex:0]];
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index {
+    
+    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+	
+	NSMutableArray *draggedNodes = [NSMutableArray array];
+	for (NSIndexPath *indexPath in droppedIndexPaths) {
+        id treeRoot = [self.conditionsTreeController arrangedObjects];
+        NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];
+		[draggedNodes addObject:node];
+    }
+    
+    for (NSTreeNode *aNode in draggedNodes) {
+        ConditionalItemMO *droppedConditional = [aNode representedObject];
+        NSTreeNode *parent = proposedParentItem;
+        ConditionalItemMO *parentConditional = [parent representedObject];
+        
+        if (!proposedParentItem) {
+            droppedConditional.parent = nil;
+        }
+        else {
+            droppedConditional.parent = parentConditional;
+        }
+        
+        [[[NSApp delegate] managedObjectContext] refreshObject:droppedConditional.manifest mergeChanges:YES];
+    }
+    
     [self.conditionsTreeController rearrangeObjects];
     [self.conditionalItemsController rearrangeObjects];
+    
     return YES;
 }
 
 - (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index {
+    
+    // Deny drag and drop reordering
     if (index != -1) {
         return NSDragOperationNone;
     }
-    
-    NSIndexPath *droppedIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
-    id treeRoot = [self.conditionsTreeController arrangedObjects];
-    NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:droppedIndexPath];
-    NSTreeNode *parent = item;
-    while (parent != nil) {
-        if (parent == node) {
+        
+    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+    for (NSIndexPath *indexPath in draggedIndexPaths) {
+        id treeRoot = [self.conditionsTreeController arrangedObjects];
+        NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];
+        ConditionalItemMO *droppedConditional = [node representedObject];
+        NSTreeNode *parent = item;
+        ConditionalItemMO *parentConditional = [parent representedObject];
+        
+        // Dragging a 1st level item so deny dropping to root
+        if ((droppedConditional.parent == nil) && (parentConditional == nil)) {
             return NSDragOperationNone;
         }
-        parent = [parent parentNode];
+        
+        // Can't drop on child items
+        while (parent != nil) {
+            if (parent == node) {
+                return NSDragOperationNone;
+            }
+            parent = [parent parentNode];
+        }
     }
-    
     return NSDragOperationGeneric;
 }
 
