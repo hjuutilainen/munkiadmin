@@ -277,6 +277,7 @@
 {
     if (aPackage.munki_postinstall_script == nil) {
         self.temp_postinstall_script_enabled = NO;
+        self.temp_postinstall_script = @"";
     } else {
         self.temp_postinstall_script_enabled = YES;
         self.temp_postinstall_script = aPackage.munki_postinstall_script;
@@ -284,6 +285,7 @@
     
     if (aPackage.munki_postuninstall_script == nil) {
         self.temp_postuninstall_script_enabled = NO;
+        self.temp_postuninstall_script = @"";
     } else {
         self.temp_postuninstall_script_enabled = YES;
         self.temp_postuninstall_script = aPackage.munki_postuninstall_script;
@@ -291,6 +293,7 @@
     
     if (aPackage.munki_preinstall_script == nil) {
         self.temp_preinstall_script_enabled = NO;
+        self.temp_preinstall_script = @"";
     } else {
         self.temp_preinstall_script_enabled = YES;
         self.temp_preinstall_script = aPackage.munki_preinstall_script;
@@ -298,6 +301,7 @@
     
     if (aPackage.munki_preuninstall_script == nil) {
         self.temp_preuninstall_script_enabled = NO;
+        self.temp_preuninstall_script = @"";
     } else {
         self.temp_preuninstall_script_enabled = YES;
         self.temp_preuninstall_script = aPackage.munki_preuninstall_script;
@@ -305,6 +309,7 @@
     
     if (aPackage.munki_uninstall_script == nil) {
         self.temp_uninstall_script_enabled = NO;
+        self.temp_uninstall_script = @"";
     } else {
         self.temp_uninstall_script_enabled = YES;
         self.temp_uninstall_script = aPackage.munki_uninstall_script;
