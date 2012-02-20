@@ -1284,13 +1284,25 @@
 	}
     if (returnCode == NSCancelButton) return;
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    ConditionalItemMO *selectedConditionalItem = [[[manifestDetailViewController conditionsTreeController] selectedObjects] objectAtIndex:0];
-    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
-    newConditionalItem.manifest = selectedManifest;
-    newConditionalItem.parent = selectedConditionalItem;
-    newConditionalItem.munki_condition = [predicateEditor.predicate description];
-    [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+    NSArray *selectedManifests = [manifestsArrayController selectedObjects];
+    NSArray *selectedConditionalItems = [[manifestDetailViewController conditionsTreeController] selectedObjects];
+    
+    for (ManifestMO *selectedManifest in selectedManifests) {
+        if ([[[manifestDetailViewController conditionsTreeController] selectedObjects] count] == 0) {
+            ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
+            newConditionalItem.munki_condition = [predicateEditor.predicate description];
+            newConditionalItem.manifest = selectedManifest;
+        } else {
+            for (id selectedConditionalItem in selectedConditionalItems) {
+                NSLog(@"%@", [selectedConditionalItem class]);
+                ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
+                newConditionalItem.munki_condition = [predicateEditor.predicate description];
+                newConditionalItem.manifest = selectedManifest;
+                newConditionalItem.parent = selectedConditionalItem;
+            }
+        }
+        [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+    }
 }
 
 - (void)editPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
