@@ -58,9 +58,9 @@ extern const struct ConditionalItemMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *originalIndex;
 
 
-@property int originalIndexValue;
-- (int)originalIndexValue;
-- (void)setOriginalIndexValue:(int)value_;
+@property int32_t originalIndexValue;
+- (int32_t)originalIndexValue;
+- (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
@@ -124,6 +124,7 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ConditionalItemMO (CoreDataGeneratedAccessors)
@@ -163,17 +164,17 @@ extern const struct ConditionalItemMOFetchedProperties {
 @interface _ConditionalItemMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveMunki_condition;
-- (void)setPrimitiveMunki_condition:(NSString*)value;
+- (NSString *)primitiveMunki_condition;
+- (void)setPrimitiveMunki_condition:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (NSNumber *)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
 
-- (int)primitiveOriginalIndexValue;
-- (void)setPrimitiveOriginalIndexValue:(int)value_;
+- (int32_t)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
 
 

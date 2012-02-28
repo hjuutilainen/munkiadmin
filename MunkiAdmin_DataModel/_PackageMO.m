@@ -34,6 +34,12 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_uninstaller_item_location = @"munki_uninstaller_item_location",
 	.munki_version = @"munki_version",
 	.originalPkginfo = @"originalPkginfo",
+	.packageDateCreated = @"packageDateCreated",
+	.packageDateLastOpened = @"packageDateLastOpened",
+	.packageDateModified = @"packageDateModified",
+	.packageInfoDateCreated = @"packageInfoDateCreated",
+	.packageInfoDateLastOpened = @"packageInfoDateLastOpened",
+	.packageInfoDateModified = @"packageInfoDateModified",
 	.packageInfoURL = @"packageInfoURL",
 	.packageURL = @"packageURL",
 	.titleWithVersion = @"titleWithVersion",
@@ -51,6 +57,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.receipts = @"receipts",
 	.referencingStringObjects = @"referencingStringObjects",
 	.requirements = @"requirements",
+	.sourceListItems = @"sourceListItems",
 	.supportedArchitectures = @"supportedArchitectures",
 	.updateFor = @"updateFor",
 };
@@ -237,21 +244,21 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 
-- (long long)munki_installed_sizeValue {
+- (int64_t)munki_installed_sizeValue {
 	NSNumber *result = [self munki_installed_size];
 	return [result longLongValue];
 }
 
-- (void)setMunki_installed_sizeValue:(long long)value_ {
+- (void)setMunki_installed_sizeValue:(int64_t)value_ {
 	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
-- (long long)primitiveMunki_installed_sizeValue {
+- (int64_t)primitiveMunki_installed_sizeValue {
 	NSNumber *result = [self primitiveMunki_installed_size];
 	return [result longLongValue];
 }
 
-- (void)setPrimitiveMunki_installed_sizeValue:(long long)value_ {
+- (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
 	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
@@ -277,21 +284,21 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 
-- (long long)munki_installer_item_sizeValue {
+- (int64_t)munki_installer_item_sizeValue {
 	NSNumber *result = [self munki_installer_item_size];
 	return [result longLongValue];
 }
 
-- (void)setMunki_installer_item_sizeValue:(long long)value_ {
+- (void)setMunki_installer_item_sizeValue:(int64_t)value_ {
 	[self setMunki_installer_item_size:[NSNumber numberWithLongLong:value_]];
 }
 
-- (long long)primitiveMunki_installer_item_sizeValue {
+- (int64_t)primitiveMunki_installer_item_sizeValue {
 	NSNumber *result = [self primitiveMunki_installer_item_size];
 	return [result longLongValue];
 }
 
-- (void)setPrimitiveMunki_installer_item_sizeValue:(long long)value_ {
+- (void)setPrimitiveMunki_installer_item_sizeValue:(int64_t)value_ {
 	[self setPrimitiveMunki_installer_item_size:[NSNumber numberWithLongLong:value_]];
 }
 
@@ -508,6 +515,48 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 
+@dynamic packageDateCreated;
+
+
+
+
+
+
+@dynamic packageDateLastOpened;
+
+
+
+
+
+
+@dynamic packageDateModified;
+
+
+
+
+
+
+@dynamic packageInfoDateCreated;
+
+
+
+
+
+
+@dynamic packageInfoDateLastOpened;
+
+
+
+
+
+
+@dynamic packageInfoDateModified;
+
+
+
+
+
+
 @dynamic packageInfoURL;
 
 
@@ -663,6 +712,19 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 }
 	
 
+@dynamic sourceListItems;
+
+	
+- (NSMutableSet*)sourceListItemsSet {
+	[self willAccessValueForKey:@"sourceListItems"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"sourceListItems"];
+  
+	[self didAccessValueForKey:@"sourceListItems"];
+	return result;
+}
+	
+
 @dynamic supportedArchitectures;
 
 	
@@ -688,6 +750,7 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	return result;
 }
 	
+
 
 
 

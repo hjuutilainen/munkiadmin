@@ -37,6 +37,21 @@
     return keyPaths;
 }
 
+- (NSImage *)packageInfoIconImage
+{
+    return [[NSWorkspace sharedWorkspace] iconForFile:[self.packageInfoURL relativePath]];
+}
+
+- (NSImage *)packageIconImage
+{
+    return [[NSWorkspace sharedWorkspace] iconForFile:[self.packageURL relativePath]];
+}
+
+- (NSURL *)parentURL
+{
+    return [self.packageInfoURL URLByDeletingLastPathComponent];
+}
+
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];

@@ -52,9 +52,9 @@ extern const struct ReceiptMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *munki_installed_size;
 
 
-@property long long munki_installed_sizeValue;
-- (long long)munki_installed_sizeValue;
-- (void)setMunki_installed_sizeValue:(long long)value_;
+@property int64_t munki_installed_sizeValue;
+- (int64_t)munki_installed_sizeValue;
+- (void)setMunki_installed_sizeValue:(int64_t)value_;
 
 //- (BOOL)validateMunki_installed_size:(id*)value_ error:(NSError**)error_;
 
@@ -88,9 +88,9 @@ extern const struct ReceiptMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *originalIndex;
 
 
-@property int originalIndexValue;
-- (int)originalIndexValue;
-- (void)setOriginalIndexValue:(int)value_;
+@property int32_t originalIndexValue;
+- (int32_t)originalIndexValue;
+- (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
@@ -105,6 +105,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ReceiptMO (CoreDataGeneratedAccessors)
@@ -114,44 +115,44 @@ extern const struct ReceiptMOFetchedProperties {
 @interface _ReceiptMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveMunki_filename;
-- (void)setPrimitiveMunki_filename:(NSString*)value;
+- (NSString *)primitiveMunki_filename;
+- (void)setPrimitiveMunki_filename:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_installed_size;
-- (void)setPrimitiveMunki_installed_size:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_installed_size;
+- (void)setPrimitiveMunki_installed_size:(NSNumber *)value;
 
-- (long long)primitiveMunki_installed_sizeValue;
-- (void)setPrimitiveMunki_installed_sizeValue:(long long)value_;
-
-
-
-
-- (NSString*)primitiveMunki_name;
-- (void)setPrimitiveMunki_name:(NSString*)value;
+- (int64_t)primitiveMunki_installed_sizeValue;
+- (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_;
 
 
 
 
-- (NSString*)primitiveMunki_packageid;
-- (void)setPrimitiveMunki_packageid:(NSString*)value;
+- (NSString *)primitiveMunki_name;
+- (void)setPrimitiveMunki_name:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_version;
-- (void)setPrimitiveMunki_version:(NSString*)value;
+- (NSString *)primitiveMunki_packageid;
+- (void)setPrimitiveMunki_packageid:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (NSString *)primitiveMunki_version;
+- (void)setPrimitiveMunki_version:(NSString *)value;
 
-- (int)primitiveOriginalIndexValue;
-- (void)setPrimitiveOriginalIndexValue:(int)value_;
+
+
+
+- (NSNumber *)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+
+- (int32_t)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
 
 

@@ -71,21 +71,21 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 
 
 
-- (long long)munki_installed_sizeValue {
+- (int64_t)munki_installed_sizeValue {
 	NSNumber *result = [self munki_installed_size];
 	return [result longLongValue];
 }
 
-- (void)setMunki_installed_sizeValue:(long long)value_ {
+- (void)setMunki_installed_sizeValue:(int64_t)value_ {
 	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
-- (long long)primitiveMunki_installed_sizeValue {
+- (int64_t)primitiveMunki_installed_sizeValue {
 	NSNumber *result = [self primitiveMunki_installed_size];
 	return [result longLongValue];
 }
 
-- (void)setPrimitiveMunki_installed_sizeValue:(long long)value_ {
+- (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
 	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
@@ -118,21 +118,21 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 
 
 
-- (int)originalIndexValue {
+- (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
 	return [result intValue];
 }
 
-- (void)setOriginalIndexValue:(int)value_ {
+- (void)setOriginalIndexValue:(int32_t)value_ {
 	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveOriginalIndexValue {
+- (int32_t)primitiveOriginalIndexValue {
 	NSNumber *result = [self primitiveOriginalIndex];
 	return [result intValue];
 }
 
-- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
@@ -143,6 +143,7 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 @dynamic package;
 
 	
+
 
 
 

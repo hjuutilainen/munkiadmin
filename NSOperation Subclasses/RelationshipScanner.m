@@ -14,6 +14,7 @@
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
 #import "StringObjectMO.h"
+#import "DirectoryMO.h"
 
 @implementation RelationshipScanner
 
@@ -278,12 +279,37 @@
     [getAllCatalogs release];
     
     
+    DirectoryMO *basePkginfoDirectory;
+    NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
+    [fetchBaseDirectory setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
+    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"All Packages"];
+    [fetchBaseDirectory setPredicate:parentPredicate];
+    NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
+    if (foundItems > 0) {
+        basePkginfoDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
+    }
+    [fetchBaseDirectory release];
+    
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %i/%i", idx+1, [self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
         NSArray *existingCatalogTitles = [currentPackage.catalogInfos valueForKeyPath:@"catalog.title"];
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;
         NSArray *catalogsFromPkginfo = [originalPkginfo objectForKey:@"catalogs"];
+        
+        // Link to DirectoryMO object
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
+        NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [currentPackage.packageInfoURL URLByDeletingLastPathComponent]];
+        [request setPredicate:parentPredicate];
+        NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
+        if (foundItems > 0) {
+            DirectoryMO *aDir = [[moc executeFetchRequest:request error:nil] objectAtIndex:0];
+            //currentPackage.directory = aDir;
+            [currentPackage addSourceListItemsObject:aDir];
+            [currentPackage addSourceListItemsObject:basePkginfoDirectory];
+        }
+        [request release];
         
 
         // Loop through the catalog objects we already know about
