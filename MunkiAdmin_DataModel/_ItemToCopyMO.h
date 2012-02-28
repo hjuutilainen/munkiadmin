@@ -84,9 +84,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *originalIndex;
 
 
-@property int originalIndexValue;
-- (int)originalIndexValue;
-- (void)setOriginalIndexValue:(int)value_;
+@property int32_t originalIndexValue;
+- (int32_t)originalIndexValue;
+- (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
@@ -101,6 +101,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ItemToCopyMO (CoreDataGeneratedAccessors)
@@ -110,41 +111,41 @@ extern const struct ItemToCopyMOFetchedProperties {
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveMunki_destination_path;
-- (void)setPrimitiveMunki_destination_path:(NSString*)value;
+- (NSString *)primitiveMunki_destination_path;
+- (void)setPrimitiveMunki_destination_path:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_group;
-- (void)setPrimitiveMunki_group:(NSString*)value;
+- (NSString *)primitiveMunki_group;
+- (void)setPrimitiveMunki_group:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_mode;
-- (void)setPrimitiveMunki_mode:(NSString*)value;
+- (NSString *)primitiveMunki_mode;
+- (void)setPrimitiveMunki_mode:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_source_item;
-- (void)setPrimitiveMunki_source_item:(NSString*)value;
+- (NSString *)primitiveMunki_source_item;
+- (void)setPrimitiveMunki_source_item:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_user;
-- (void)setPrimitiveMunki_user:(NSString*)value;
+- (NSString *)primitiveMunki_user;
+- (void)setPrimitiveMunki_user:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (NSNumber *)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
 
-- (int)primitiveOriginalIndexValue;
-- (void)setPrimitiveOriginalIndexValue:(int)value_;
+- (int32_t)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
 
 

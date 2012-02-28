@@ -37,6 +37,7 @@ extern const struct ManagedUpdateMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ManagedUpdateMO (CoreDataGeneratedAccessors)

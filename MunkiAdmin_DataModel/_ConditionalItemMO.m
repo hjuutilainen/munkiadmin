@@ -70,21 +70,21 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 
 
 
-- (int)originalIndexValue {
+- (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
 	return [result intValue];
 }
 
-- (void)setOriginalIndexValue:(int)value_ {
+- (void)setOriginalIndexValue:(int32_t)value_ {
 	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveOriginalIndexValue {
+- (int32_t)primitiveOriginalIndexValue {
 	NSNumber *result = [self primitiveOriginalIndex];
 	return [result intValue];
 }
 
-- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
@@ -177,6 +177,7 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 @dynamic parent;
 
 	
+
 
 
 

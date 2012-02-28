@@ -17,6 +17,7 @@
 #import "PackageNameEditor.h"
 #import "AdvancedPackageEditor.h"
 #import "PredicateEditor.h"
+#import "PackagesView.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -314,6 +315,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
+    packagesViewController = [[PackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
@@ -368,7 +370,7 @@
 		currentSourceView = packagesListView;
 		[mainSegmentedControl setSelectedSegment:0];
 	}
-	
+    	
 	[self changeItemView];
 	
 	[self.window center];
@@ -2000,6 +2002,28 @@
 		NSLog(@"Scanning selected repo for packages");
 	}
 	
+    PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+    newSourceListItem2.title = @"REPOSITORY";
+    newSourceListItem2.originalIndexValue = 0;
+    newSourceListItem2.parent = nil;
+    newSourceListItem2.isGroupItemValue = YES;
+    
+    DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    newDirectory.originalURL = self.pkgsInfoURL;
+    newDirectory.title = @"All Packages";
+    newDirectory.type = @"smart";
+    newDirectory.parent = newSourceListItem2;
+    newDirectory.originalIndexValue = 10;
+    
+    
+    PackageSourceListItemMO *newSourceListItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+    newSourceListItem.title = @"DIRECTORIES";
+    newSourceListItem.originalIndexValue = 1;
+    newSourceListItem.parent = nil;
+    newSourceListItem.isGroupItemValue = YES;
+    
+    
+    
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
@@ -2007,18 +2031,44 @@
     packageRelationships.delegate = self;
 
 	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-	for (NSURL *aPkgInfoFile in pkgsInfoDirEnum)
+	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
 		NSNumber *isDir;
-		[aPkgInfoFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:aPkgInfoFile];
+			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:anURL];
 			scanOp.delegate = self;
             [packageRelationships addDependency:scanOp];
 			[self.operationQueue addOperation:scanOp];
 			
-		}
+		} else {
+            //NSLog(@"Got directory: %@", [anURL relativePath]);
+            DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+            newDirectory.originalURL = anURL;
+            newDirectory.originalIndexValue = 10;
+            newDirectory.type = @"regular";
+            NSString *newTitle;
+            [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
+            newDirectory.title = newTitle;
+            NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
+            if ([parentDirectory isEqual:self.pkgsInfoURL]) {
+                newDirectory.parent = newSourceListItem;
+            } else {
+                NSFetchRequest *request = [[NSFetchRequest alloc] init];
+				[request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
+				NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
+				[request setPredicate:parentPredicate];
+				NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:request error:nil];
+				if (foundItems > 0) {
+					DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:request error:nil] objectAtIndex:0];
+                    NSLog(@"Got parent: %@", parent.title);
+                    newDirectory.parent = parent;
+				}
+				[request release];
+            }
+        }
 	}
+    
     [self.operationQueue addOperation:packageRelationships];
 }
 
@@ -2468,8 +2518,9 @@
 		case 0:
 			if (currentSourceView != packagesListView) {
 				self.selectedViewDescr = @"Packages";
-				currentDetailView = packagesDetailView;
-				currentSourceView = packagesListView;
+                currentWholeView = [packagesViewController view];
+				//currentDetailView = packagesDetailView;
+				//currentSourceView = packagesListView;
 				[self changeItemView];
 			}
 			break;
@@ -2527,6 +2578,16 @@
 
 - (void)changeItemView
 {
+    if (currentWholeView == [packagesViewController view]) {
+        [self.mainSplitView removeFromSuperview];
+        [[self.window contentView] addSubview:[packagesViewController view]];
+        [[packagesViewController view] setFrame:[[self.window contentView] frame]];
+        [[packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
+        [[packagesViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        [[packagesViewController directoriesOutlineView] reloadData];
+        [[packagesViewController packagesArrayController] rearrangeObjects];
+    } else {
 	// remove the old subview
 	[self removeSubviews];
 	
@@ -2557,7 +2618,7 @@
 	[currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 	
 	self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
-	
+	}
 }
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem

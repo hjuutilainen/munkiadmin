@@ -183,12 +183,29 @@
 			aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
 			if (self.sourceURL != nil) {
 				aNewPackage.packageInfoURL = self.sourceURL;
+                
+                NSDate *pkginfoDateCreated;
+                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateCreated forKey:NSURLCreationDateKey error:nil];
+                aNewPackage.packageInfoDateCreated = pkginfoDateCreated;
+                
+                NSDate *pkginfoDateLastOpened;
+                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
+                aNewPackage.packageInfoDateLastOpened = pkginfoDateLastOpened;
+                
+                NSDate *pkginfoDateModified;
+                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateModified forKey:NSURLContentModificationDateKey error:nil];
+                aNewPackage.packageInfoDateModified = pkginfoDateModified;
+                
 			} else {
                 NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
                 NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
                 NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
 				newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
 				aNewPackage.packageInfoURL = newPkginfoURL;
+                
+                aNewPackage.packageInfoDateCreated = [NSDate date];
+                aNewPackage.packageInfoDateModified = [NSDate date];
+                aNewPackage.packageInfoDateLastOpened = [NSDate date];
 			}
 			
 			// =================================

@@ -72,21 +72,21 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 
 
 
-- (int)indexInManifestValue {
+- (int32_t)indexInManifestValue {
 	NSNumber *result = [self indexInManifest];
 	return [result intValue];
 }
 
-- (void)setIndexInManifestValue:(int)value_ {
+- (void)setIndexInManifestValue:(int32_t)value_ {
 	[self setIndexInManifest:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveIndexInManifestValue {
+- (int32_t)primitiveIndexInManifestValue {
 	NSNumber *result = [self primitiveIndexInManifest];
 	return [result intValue];
 }
 
-- (void)setPrimitiveIndexInManifestValue:(int)value_ {
+- (void)setPrimitiveIndexInManifestValue:(int32_t)value_ {
 	[self setPrimitiveIndexInManifest:[NSNumber numberWithInt:value_]];
 }
 
@@ -150,21 +150,21 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 
 
 
-- (int)originalIndexValue {
+- (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
 	return [result intValue];
 }
 
-- (void)setOriginalIndexValue:(int)value_ {
+- (void)setOriginalIndexValue:(int32_t)value_ {
 	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveOriginalIndexValue {
+- (int32_t)primitiveOriginalIndexValue {
 	NSNumber *result = [self primitiveOriginalIndex];
 	return [result intValue];
 }
 
-- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
@@ -183,6 +183,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 @dynamic package;
 
 	
+
 
 
 

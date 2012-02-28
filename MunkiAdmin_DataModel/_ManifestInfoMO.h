@@ -74,6 +74,7 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ManifestInfoMO (CoreDataGeneratedAccessors)
@@ -83,8 +84,8 @@ extern const struct ManifestInfoMOFetchedProperties {
 @interface _ManifestInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveIsAvailableForEditing;
-- (void)setPrimitiveIsAvailableForEditing:(NSNumber*)value;
+- (NSNumber *)primitiveIsAvailableForEditing;
+- (void)setPrimitiveIsAvailableForEditing:(NSNumber *)value;
 
 - (BOOL)primitiveIsAvailableForEditingValue;
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_;
@@ -92,8 +93,8 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-- (NSNumber*)primitiveIsEnabledForManifest;
-- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
+- (NSNumber *)primitiveIsEnabledForManifest;
+- (void)setPrimitiveIsEnabledForManifest:(NSNumber *)value;
 
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;

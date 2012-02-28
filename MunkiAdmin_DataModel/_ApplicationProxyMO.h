@@ -51,6 +51,7 @@ extern const struct ApplicationProxyMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ApplicationProxyMO (CoreDataGeneratedAccessors)
@@ -60,8 +61,8 @@ extern const struct ApplicationProxyMOFetchedProperties {
 @interface _ApplicationProxyMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveIsEnabled;
-- (void)setPrimitiveIsEnabled:(NSNumber*)value;
+- (NSNumber *)primitiveIsEnabled;
+- (void)setPrimitiveIsEnabled:(NSNumber *)value;
 
 - (BOOL)primitiveIsEnabledValue;
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_;

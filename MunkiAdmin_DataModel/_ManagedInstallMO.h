@@ -37,6 +37,7 @@ extern const struct ManagedInstallMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ManagedInstallMO (CoreDataGeneratedAccessors)
