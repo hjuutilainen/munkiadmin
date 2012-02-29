@@ -75,6 +75,7 @@
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
 		F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */; };
+		FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0EAC5914FE4D02003C55E9 /* MATableView.m */; };
 		FE0F4E6514FB564F0081AEFF /* PackagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6314FB564F0081AEFF /* PackagesView.m */; };
 		FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE0F4E6414FB564F0081AEFF /* PackagesView.xib */; };
 		FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6D14FB61590081AEFF /* _DirectoryMO.m */; };
@@ -228,6 +229,8 @@
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon3.png; path = Graphics/catalogIcon3.png; sourceTree = "<group>"; };
 		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiOperation.h; path = "NSOperation Subclasses/MunkiOperation.h"; sourceTree = "<group>"; };
 		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiOperation.m; path = "NSOperation Subclasses/MunkiOperation.m"; sourceTree = "<group>"; };
+		FE0EAC5814FE4D02003C55E9 /* MATableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MATableView.h; path = Views/MATableView.h; sourceTree = "<group>"; };
+		FE0EAC5914FE4D02003C55E9 /* MATableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MATableView.m; path = Views/MATableView.m; sourceTree = "<group>"; };
 		FE0F4E6214FB564F0081AEFF /* PackagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackagesView.h; path = Views/PackagesView.h; sourceTree = "<group>"; };
 		FE0F4E6314FB564F0081AEFF /* PackagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackagesView.m; path = Views/PackagesView.m; sourceTree = "<group>"; };
 		FE0F4E6414FB564F0081AEFF /* PackagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PackagesView.xib; path = Views/PackagesView.xib; sourceTree = "<group>"; };
@@ -528,6 +531,8 @@
 				FE0F4E7C14FB86B40081AEFF /* ImageAndTitleCell.h */,
 				FE0F4E7D14FB86B40081AEFF /* ImageAndTitleCell.m */,
 				FE0F4E6414FB564F0081AEFF /* PackagesView.xib */,
+				FE0EAC5814FE4D02003C55E9 /* MATableView.h */,
+				FE0EAC5914FE4D02003C55E9 /* MATableView.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -734,6 +739,7 @@
 				FE0F4E7B14FB804C0081AEFF /* PackageSourceListItemMO.m in Sources */,
 				FE0F4E7E14FB86B40081AEFF /* ImageAndTitleCell.m in Sources */,
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
+				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

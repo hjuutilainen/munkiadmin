@@ -345,8 +345,7 @@
 	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-		currentDetailView = packagesDetailView;
-		currentSourceView = packagesListView;
+        currentWholeView = [packagesViewController view];
 		[mainSegmentedControl setSelectedSegment:0];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
@@ -354,6 +353,7 @@
 		self.selectedViewDescr = @"Catalogs";
 		currentDetailView = catalogsDetailView;
 		currentSourceView = catalogsListView;
+        currentWholeView = self.mainSplitView;
 		[mainSegmentedControl setSelectedSegment:1];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
@@ -361,13 +361,13 @@
 		self.selectedViewDescr = @"Manifests";
 		currentDetailView = [manifestDetailViewController view];
 		currentSourceView = manifestsListView;
+        currentWholeView = self.mainSplitView;
 		[mainSegmentedControl setSelectedSegment:2];
 	}
 	else {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-		currentDetailView = packagesDetailView;
-		currentSourceView = packagesListView;
+        currentWholeView = [packagesViewController view];
 		[mainSegmentedControl setSelectedSegment:0];
 	}
     	
@@ -2490,17 +2490,19 @@
 {
 	switch ([sender tag]) {
 		case 1:
-			if (currentSourceView != packagesListView) {
+			if (currentWholeView != [packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-				currentDetailView = packagesDetailView;
-				currentSourceView = packagesListView;
-				[mainSegmentedControl setSelectedSegment:0];
+                currentWholeView = [packagesViewController view];
+                currentDetailView = nil;
+                currentSourceView = nil;
+                [mainSegmentedControl setSelectedSegment:0];
 				[self changeItemView];
-			}
+            }
 			break;
 		case 2:
-			if (currentSourceView != catalogsListView) {
+			if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = catalogsDetailView;
 				currentSourceView = catalogsListView;
 				[mainSegmentedControl setSelectedSegment:1];
@@ -2508,8 +2510,9 @@
 			}
 			break;
 		case 3:
-			if (currentSourceView != manifestsListView) {
+			if (currentDetailView != [manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[mainSegmentedControl setSelectedSegment:2];
@@ -2525,29 +2528,31 @@
 {
 	switch ([sender selectedSegment]) {
 		case 0:
-			if (currentSourceView != packagesListView) {
+            if (currentWholeView != [packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
+                currentDetailView = nil;
+                currentSourceView = nil;
                 currentWholeView = [packagesViewController view];
-				//currentDetailView = packagesDetailView;
-				//currentSourceView = packagesListView;
 				[self changeItemView];
-			}
+            }
 			break;
 		case 1:
-			if (currentSourceView != catalogsListView) {
+            if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = catalogsDetailView;
 				currentSourceView = catalogsListView;
 				[self changeItemView];
-			}
+            }
 			break;
 		case 2:
-			if (currentSourceView != manifestsListView) {
+            if (currentDetailView != [manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[self changeItemView];
-			}
+            }
 			break;
 		default:
 			break;
@@ -2570,7 +2575,18 @@
 
 - (void)removeSubviews
 {
-	NSArray *detailSubViews = [detailViewPlaceHolder subviews];
+    NSArray *subViews = [[self.window contentView] subviews];
+    for (id aSubView in subViews) {
+        [aSubView removeFromSuperview];
+    }
+    /*
+	if ([subViews count] > 0)
+	{
+		[[subViews objectAtIndex:0] removeFromSuperview];
+	}
+    */
+    
+    NSArray *detailSubViews = [detailViewPlaceHolder subviews];
 	if ([detailSubViews count] > 0)
 	{
 		[[detailSubViews objectAtIndex:0] removeFromSuperview];
@@ -2581,6 +2597,10 @@
 	{
 		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
 	}
+    
+    //[self.mainSplitView removeFromSuperview];
+    //[[self.window contentView] display];
+	
 	//[sourceViewPlaceHolder display];
 	//[detailViewPlaceHolder display];
 }
@@ -2588,7 +2608,9 @@
 - (void)changeItemView
 {
     if (currentWholeView == [packagesViewController view]) {
-        [self.mainSplitView removeFromSuperview];
+        // remove the old subview
+        [self removeSubviews];
+        
         [[self.window contentView] addSubview:[packagesViewController view]];
         [[packagesViewController view] setFrame:[[self.window contentView] frame]];
         [[packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
@@ -2596,10 +2618,14 @@
         [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
         [[packagesViewController directoriesOutlineView] reloadData];
         [[packagesViewController packagesArrayController] rearrangeObjects];
-        self.window.title = [NSString stringWithFormat:@"MunkiAdmin - Packages"];
     } else {
         // remove the old subview
         [self removeSubviews];
+        
+        [[self.window contentView] addSubview:self.mainSplitView];
+        [self.mainSplitView setFrame:[[self.window contentView] frame]];
+        [self.mainSplitView setFrameOrigin:NSMakePoint(0,0)];
+        [self.mainSplitView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         
         // add a spinning progress gear in case populating the icon view takes too long
         NSRect bounds = [detailViewPlaceHolder bounds];
@@ -2626,13 +2652,15 @@
         
         [currentSourceView setFrameOrigin:NSMakePoint(0,0)];
         [currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        
-        self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 	}
+    self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 }
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
+	}
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
 		currentDetailView = applicationsDetailView;
 	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {

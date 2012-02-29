@@ -19,14 +19,14 @@
 	NSMutableParagraphStyle * aParagraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 	[aParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 	
-	// Title attributes: system font, 14pt, black, truncate tail
+	// Title attributes: system font, 11pt, black, truncate tail
 	self.aTitleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                               [NSColor blackColor],NSForegroundColorAttributeName,
                               [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
                               aParagraphStyle, NSParagraphStyleAttributeName,
                               nil] autorelease];
 	
-	// Subtitle attributes: system font, 12pt, gray, truncate tail
+	// Subtitle attributes: system font, 11pt, gray, truncate tail
 	self.aSubtitleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  [NSColor grayColor],NSForegroundColorAttributeName,
                                  [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
