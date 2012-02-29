@@ -92,7 +92,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    NSURL *selectedURL = (NSURL *)[[[allPackagesArrayController selectedObjects] objectAtIndex:0] packageInfoURL];
+    NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
     [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
 }
 
@@ -789,7 +789,7 @@
     if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming to: %@", newName);
     
     
-    for (PackageMO *selectedPackage in [allPackagesArrayController selectedObjects]) {
+    for (PackageMO *selectedPackage in [[packagesViewController packagesArrayController] selectedObjects]) {
         if ([packageNameEditor shouldRenameAll]) {
             // Get the current app
             ApplicationMO *currentApp = selectedPackage.parentApplication;
@@ -886,7 +886,7 @@
     [NSApp beginSheet:[packageNameEditor window] 
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
-    NSArray *selTitles = [[allPackagesArrayController selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    NSArray *selTitles = [[[packagesViewController packagesArrayController] selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
     [packageNameEditor setChangedName:[selTitles objectAtIndex:0]];
 }
 
@@ -901,7 +901,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
-	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	
 	// Configure the dialog
@@ -1152,7 +1152,7 @@
                 
             } else if (numFoundPkgs == 1) {
                 PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-                [self.allPackagesArrayController setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
+                [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
             } else {
                 
             }
@@ -1172,7 +1172,7 @@
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
-	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
@@ -1211,6 +1211,12 @@
             [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
             [self.allPackagesArrayController setSelectionIndex:0];
         }
+        [[packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
+        [[packagesViewController packagesArrayController] setEntityName:@"Package"];
+        if ([[packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
+            [[packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
+            [[packagesViewController packagesArrayController] setSelectionIndex:0];
+        }
         [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
         [self.packageInfosArrayController setEntityName:@"PackageInfo"];
         if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
@@ -1235,6 +1241,8 @@
             [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
             [self.allCatalogsArrayController setSelectionIndex:0];
         }
+        
+        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
     }
 }
 
@@ -1267,7 +1275,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    PackageMO *object = [[allPackagesArrayController selectedObjects] lastObject];
+    PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
     if (!object) return;
     
     [[[self managedObjectContext] undoManager] beginUndoGrouping];
@@ -1919,6 +1927,7 @@
     [self.applicationsArrayController setManagedObjectContext:nil];
     [self.packageInfosArrayController setManagedObjectContext:nil];
     [self.allPackagesArrayController setManagedObjectContext:nil];
+    [[packagesViewController packagesArrayController] setManagedObjectContext:nil];
     [self.manifestsArrayController setManagedObjectContext:nil];
         
     NSError *dirReadError = nil;
@@ -2587,37 +2596,38 @@
         [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
         [[packagesViewController directoriesOutlineView] reloadData];
         [[packagesViewController packagesArrayController] rearrangeObjects];
+        self.window.title = [NSString stringWithFormat:@"MunkiAdmin - Packages"];
     } else {
-	// remove the old subview
-	[self removeSubviews];
-	
-	// add a spinning progress gear in case populating the icon view takes too long
-	NSRect bounds = [detailViewPlaceHolder bounds];
-	CGFloat x = (bounds.size.width-32)/2;
-	CGFloat y = (bounds.size.height-32)/2;
-	NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
-	[busyGear setStyle:NSProgressIndicatorSpinningStyle];
-	[busyGear startAnimation:self];
-	[detailViewPlaceHolder addSubview:busyGear];
-	//[detailViewPlaceHolder display];
-	
-	[detailViewPlaceHolder addSubview:currentDetailView];
-	[sourceViewPlaceHolder addSubview:currentSourceView];
-	
-	[busyGear removeFromSuperview];
-	[busyGear release];
-	
-	[currentDetailView setFrame:[[currentDetailView superview] frame]];
-	[currentSourceView setFrame:[[currentSourceView superview] frame]];
-	
-	// make sure our added subview is placed and resizes correctly
-	[currentDetailView setFrameOrigin:NSMakePoint(0,0)];
-	[currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-	
-	[currentSourceView setFrameOrigin:NSMakePoint(0,0)];
-	[currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-	
-	self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
+        // remove the old subview
+        [self removeSubviews];
+        
+        // add a spinning progress gear in case populating the icon view takes too long
+        NSRect bounds = [detailViewPlaceHolder bounds];
+        CGFloat x = (bounds.size.width-32)/2;
+        CGFloat y = (bounds.size.height-32)/2;
+        NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
+        [busyGear setStyle:NSProgressIndicatorSpinningStyle];
+        [busyGear startAnimation:self];
+        [detailViewPlaceHolder addSubview:busyGear];
+        //[detailViewPlaceHolder display];
+        
+        [detailViewPlaceHolder addSubview:currentDetailView];
+        [sourceViewPlaceHolder addSubview:currentSourceView];
+        
+        [busyGear removeFromSuperview];
+        [busyGear release];
+        
+        [currentDetailView setFrame:[[currentDetailView superview] frame]];
+        [currentSourceView setFrame:[[currentSourceView superview] frame]];
+        
+        // make sure our added subview is placed and resizes correctly
+        [currentDetailView setFrameOrigin:NSMakePoint(0,0)];
+        [currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        
+        [currentSourceView setFrameOrigin:NSMakePoint(0,0)];
+        [currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        
+        self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 	}
 }
 

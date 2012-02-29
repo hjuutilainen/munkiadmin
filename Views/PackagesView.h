@@ -17,6 +17,9 @@
     NSArrayController *packagesArrayController;
     NSTreeController *directoriesTreeController;
     NSOutlineView *directoriesOutlineView;
+    NSTextView *descriptionTextView;
+    NSTextView *notesTextView;
+    NSSplitView *notesDescriptionSplitView;
 }
 
 @property (assign) IBOutlet NSSplitView *tripleSplitView;
@@ -27,5 +30,8 @@
 @property (assign) IBOutlet NSArrayController *packagesArrayController;
 @property (assign) IBOutlet NSTreeController *directoriesTreeController;
 @property (assign) IBOutlet NSOutlineView *directoriesOutlineView;
+@property (assign) IBOutlet NSTextView *descriptionTextView;
+@property (assign) IBOutlet NSTextView *notesTextView;
+@property (assign) IBOutlet NSSplitView *notesDescriptionSplitView;
 
 @end
