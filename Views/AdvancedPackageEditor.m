@@ -10,6 +10,7 @@
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
 
+#define kMinSplitViewWidth      300.0f
 
 @implementation AdvancedPackageEditor
 @synthesize forceInstallDatePicker;
@@ -343,5 +344,41 @@
     }
 
 }
+
+#pragma mark -
+#pragma mark NSSplitView delegates
+
+- (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
+{
+	return NO;
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView shouldCollapseSubview:(NSView *)subview forDoubleClickOnDividerAtIndex:(NSInteger)dividerIndex
+{
+	return NO;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
+{
+    if (dividerIndex == 0) {
+        return kMinSplitViewWidth;
+    }
+    return proposedMin;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+{
+    if (dividerIndex == 0) {
+        return [splitView frame].size.width - kMinSplitViewWidth;
+    }
+    return proposedMax;
+}
+
+/*
+- (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize
+{
+    
+}
+*/
 
 @end
