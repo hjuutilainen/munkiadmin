@@ -66,6 +66,11 @@
 			nil];
 }
 
+- (NSNumber *)numberOfKeys
+{
+    return [NSNumber numberWithInt:[self.pkgInfoDictionary count]];
+}
+
 - (NSDictionary *)pkgInfoDictionary
 {
 	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];

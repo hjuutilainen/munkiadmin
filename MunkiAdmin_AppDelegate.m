@@ -1275,6 +1275,8 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
+    
+    
     PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
     if (!object) return;
     
@@ -1282,6 +1284,32 @@
     [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
         
     [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
+    
+    if ([sender isKindOfClass:[NSButton class]]) {
+        switch ([sender tag]) {
+            case 0:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:5];
+                break;
+            case 1:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                break;
+            case 2:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                break;
+            case 4:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                break;
+            case 5:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                break;
+            case 99:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                break;
+            default:
+                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                break;
+        }
+    }
 }
 
 
