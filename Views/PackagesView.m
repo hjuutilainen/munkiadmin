@@ -4,6 +4,9 @@
 //
 //  Created by Juutilainen Hannes on 27.2.2012.
 //
+// This class contains code provided by Agile Monks, LLC.
+// http://cocoa.agilemonks.com/2011/09/25/add-a-contextual-menu-to-hideshow-columns-in-an-nstableview/
+
 
 #import "PackagesView.h"
 #import "PackageSourceListItemMO.h"
@@ -86,6 +89,37 @@
 	[self.leftPlaceHolder setFrame:leftFrame];
 	[self.middlePlaceHolder setFrame:centerFrame];
     [self.rightPlaceHolder setFrame:rightFrame];
+    
+    
+    // Create a contextual menu for customizing table columns
+    NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+    NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
+    for (NSTableColumn *col in tableColumnsSorted) {
+        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+                                                    action:@selector(toggleColumn:)
+                                             keyEquivalent:@""];
+        mi.target = self;
+        mi.representedObject = col;
+        [menu addItem:mi];
+    }
+    menu.delegate = self;
+    self.packagesTableView.headerView.menu = menu;
+    [menu release];
+}
+
+-(void)toggleColumn:(id)sender
+{
+	NSTableColumn *col = [sender representedObject];
+	[col setHidden:![col isHidden]];
+}
+
+-(void)menuWillOpen:(NSMenu *)menu
+{
+	for (NSMenuItem *mi in menu.itemArray) {
+		NSTableColumn *col = [mi representedObject];
+		[mi setState:col.isHidden ? NSOffState : NSOnState];
+	}
 }
 
 

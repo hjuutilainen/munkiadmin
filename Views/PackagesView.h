@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 #import "GradientBackgroundView.h"
 
-@interface PackagesView : NSViewController {
+@interface PackagesView : NSViewController <NSMenuDelegate> {
     NSSplitView *tripleSplitView;
     NSView *leftPlaceHolder;
     NSView *middlePlaceHolder;
