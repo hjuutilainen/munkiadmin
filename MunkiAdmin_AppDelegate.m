@@ -1272,6 +1272,39 @@
     [[[self managedObjectContext] undoManager] undo];
 }
 
+- (IBAction)selectNextPackageForEditing:(id)sender
+{
+    // Commit any changes
+    [advancedPackageEditor commitChangesToCurrentPackage];
+    
+    // Change selection
+    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
+    if ([currentIndexes lastIndex] < [[[packagesViewController packagesArrayController] arrangedObjects] count]) {
+        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
+        
+        // Populate new values
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        [advancedPackageEditor setPkginfoToEdit:object];
+        [advancedPackageEditor setDefaultValuesFromPackage:object];
+    }
+}
+
+- (IBAction)selectPreviousPackageForEditing:(id)sender
+{
+    // Commit any changes
+    [advancedPackageEditor commitChangesToCurrentPackage];
+    
+    // Change selection
+    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
+    if ([currentIndexes lastIndex] > 0) {
+        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]-1];
+        
+        // Populate new values
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        [advancedPackageEditor setPkginfoToEdit:object];
+        [advancedPackageEditor setDefaultValuesFromPackage:object];
+    }
+}
 
 - (IBAction)getInfoAction:(id)sender
 {
@@ -1279,39 +1312,52 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    
-    
-    PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
-    if (!object) return;
-    
-    [[[self managedObjectContext] undoManager] beginUndoGrouping];
-    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
+    if (currentWholeView == [packagesViewController view]) {
         
-    [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
-    
-    if ([sender isKindOfClass:[NSButton class]]) {
-        switch ([sender tag]) {
-            case 0:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:5];
-                break;
-            case 1:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
-                break;
-            case 2:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
-                break;
-            case 4:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
-                break;
-            case 5:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
-                break;
-            case 99:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
-                break;
-            default:
-                [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
-                break;
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
+        if (!object) return;
+        
+        [[[self managedObjectContext] undoManager] beginUndoGrouping];
+        [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
+        
+        [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
+        
+        if ([sender isKindOfClass:[NSButton class]]) {
+            switch ([sender tag]) {
+                case 0: // Catalogs
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:6];
+                    break;
+                case 1: // Receipts
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                    break;
+                case 2: // Installs
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                    break;
+                case 3: // Items to copy
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 4: // Requires
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                    break;
+                case 5: // Update for
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                    break;
+                case 6: // Installer Choices XML
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 7: // Blocking Applications
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 8: // Architectures
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 99: // Generic -> select the first tab view item
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                    break;
+                default:
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                    break;
+            }
         }
     }
 }
@@ -1786,6 +1832,7 @@
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"blocking_applications",
                                  @"description",
                                  @"display_name",
                                  @"force_install_after_date",
@@ -1804,6 +1851,7 @@
                                  @"postinstall_script",
                                  @"postuninstall_script",
                                  @"RestartAction",
+                                 @"supported_architectures",
                                  @"uninstall_method",
                                  @"uninstaller_item_location",
                                  @"uninstall_script",

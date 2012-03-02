@@ -236,6 +236,8 @@
 - (IBAction)addNewOptionalInstallAction:(id)sender;
 - (IBAction)removeOptionalInstallAction:(id)sender;
 - (IBAction)getInfoAction:(id)sender;
+- (IBAction)selectPreviousPackageForEditing:(id)sender;
+- (IBAction)selectNextPackageForEditing:(id)sender;
 - (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
 

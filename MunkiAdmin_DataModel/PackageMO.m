@@ -271,11 +271,7 @@
 			[blockingApplicationsItems addObject:[blockingItem title]];
 		}
 	}
-	if ([blockingApplicationsItems count] == 0) {
-		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"blocking_applications"] != nil) {
-			[tmpDict setObject:[NSArray array] forKey:@"blocking_applications"];
-		}
-	} else {
+	if ([blockingApplicationsItems count] > 0) {
 		[tmpDict setObject:blockingApplicationsItems forKey:@"blocking_applications"];
 	}
     
@@ -291,11 +287,7 @@
 			[supportedArchitecturesItems addObject:[supportedArch title]];
 		}
 	}
-	if ([supportedArchitecturesItems count] == 0) {
-		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"supported_architectures"] != nil) {
-			[tmpDict setObject:[NSArray array] forKey:@"supported_architectures"];
-		}
-	} else {
+	if ([supportedArchitecturesItems count] > 0) {
 		[tmpDict setObject:supportedArchitecturesItems forKey:@"supported_architectures"];
 	}
     
