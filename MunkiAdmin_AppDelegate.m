@@ -1242,7 +1242,10 @@
             [self.allCatalogsArrayController setSelectionIndex:0];
         }
         
+        // Configure packages view source list
         [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        NSUInteger defaultIndexes[] = {0,0};
+        [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
 }
 
@@ -1263,6 +1266,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    [self.managedObjectContext refreshObject:object mergeChanges:YES];
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];

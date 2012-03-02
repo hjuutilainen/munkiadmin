@@ -96,9 +96,9 @@
     NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
     for (NSTableColumn *col in tableColumnsSorted) {
-        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+        NSMenuItem *mi = [[[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
                                                     action:@selector(toggleColumn:)
-                                             keyEquivalent:@""];
+                                             keyEquivalent:@""] autorelease];
         mi.target = self;
         mi.representedObject = col;
         [menu addItem:mi];

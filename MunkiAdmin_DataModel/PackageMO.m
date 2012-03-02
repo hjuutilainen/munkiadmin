@@ -33,7 +33,7 @@
         NSSet *affectingKeys = [NSSet setWithObjects:@"parentApplication.munki_description", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }*/
-	
+    
     return keyPaths;
 }
 

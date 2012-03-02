@@ -287,6 +287,8 @@
     NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
     if (foundItems > 0) {
         basePkginfoDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
+    } else {
+        basePkginfoDirectory = nil;
     }
     [fetchBaseDirectory release];
     
