@@ -37,6 +37,9 @@
     NSArrayController *itemsToCopyArrayController;
     NSArrayController *requiresArrayController;
     NSArrayController *updateForArrayController;
+    NSArrayController *blockingApplicationsArrayController;
+    NSArrayController *supportedArchitecturesArrayController;
+    NSArrayController *installerChoicesArrayController;
     
     NSModalSession modalSession;
     id delegate;
@@ -47,6 +50,7 @@
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
+- (void)commitChangesToCurrentPackage;
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage;
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate;
 
@@ -61,6 +65,9 @@
 @property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
 @property (assign) IBOutlet NSArrayController *requiresArrayController;
 @property (assign) IBOutlet NSArrayController *updateForArrayController;
+@property (assign) IBOutlet NSArrayController *blockingApplicationsArrayController;
+@property (assign) IBOutlet NSArrayController *supportedArchitecturesArrayController;
+@property (assign) IBOutlet NSArrayController *installerChoicesArrayController;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;

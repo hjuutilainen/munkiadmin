@@ -79,21 +79,21 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 
 
 
-- (int)indexInNestedManifestValue {
+- (int32_t)indexInNestedManifestValue {
 	NSNumber *result = [self indexInNestedManifest];
 	return [result intValue];
 }
 
-- (void)setIndexInNestedManifestValue:(int)value_ {
+- (void)setIndexInNestedManifestValue:(int32_t)value_ {
 	[self setIndexInNestedManifest:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveIndexInNestedManifestValue {
+- (int32_t)primitiveIndexInNestedManifestValue {
 	NSNumber *result = [self primitiveIndexInNestedManifest];
 	return [result intValue];
 }
 
-- (void)setPrimitiveIndexInNestedManifestValue:(int)value_ {
+- (void)setPrimitiveIndexInNestedManifestValue:(int32_t)value_ {
 	[self setPrimitiveIndexInNestedManifest:[NSNumber numberWithInt:value_]];
 }
 
@@ -105,21 +105,21 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 
 
 
-- (int)originalIndexValue {
+- (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
 	return [result intValue];
 }
 
-- (void)setOriginalIndexValue:(int)value_ {
+- (void)setOriginalIndexValue:(int32_t)value_ {
 	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
-- (int)primitiveOriginalIndexValue {
+- (int32_t)primitiveOriginalIndexValue {
 	NSNumber *result = [self primitiveOriginalIndex];
 	return [result intValue];
 }
 
-- (void)setPrimitiveOriginalIndexValue:(int)value_ {
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
@@ -210,6 +210,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 @dynamic manifestsWithSameTitle;
 
 @dynamic packagesWithSameTitle;
+
 
 
 

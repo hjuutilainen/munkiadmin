@@ -37,6 +37,7 @@ extern const struct ManagedUninstallMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _ManagedUninstallMO (CoreDataGeneratedAccessors)

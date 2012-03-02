@@ -68,7 +68,7 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSObject *manifestURL;
+@property (nonatomic, retain) id manifestURL;
 
 
 //- (BOOL)validateManifestURL:(id*)value_ error:(NSError**)error_;
@@ -76,7 +76,7 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSObject *originalManifest;
+@property (nonatomic, retain) id originalManifest;
 
 
 //- (BOOL)validateOriginalManifest:(id*)value_ error:(NSError**)error_;
@@ -208,6 +208,7 @@ extern const struct ManifestMOFetchedProperties {
 
 @property (nonatomic, readonly) NSArray *allOptionalInstalls;
 
+
 @end
 
 @interface _ManifestMO (CoreDataGeneratedAccessors)
@@ -292,20 +293,20 @@ extern const struct ManifestMOFetchedProperties {
 @interface _ManifestMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSObject*)primitiveManifestURL;
-- (void)setPrimitiveManifestURL:(NSObject*)value;
+- (id)primitiveManifestURL;
+- (void)setPrimitiveManifestURL:(id)value;
 
 
 
 
-- (NSObject*)primitiveOriginalManifest;
-- (void)setPrimitiveOriginalManifest:(NSObject*)value;
+- (id)primitiveOriginalManifest;
+- (void)setPrimitiveOriginalManifest:(id)value;
 
 
 
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (NSString *)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString *)value;
 
 
 

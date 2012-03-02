@@ -10,6 +10,7 @@
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
 
+#define kMinSplitViewWidth      300.0f
 
 @implementation AdvancedPackageEditor
 @synthesize forceInstallDatePicker;
@@ -20,6 +21,9 @@
 @synthesize itemsToCopyArrayController;
 @synthesize requiresArrayController;
 @synthesize updateForArrayController;
+@synthesize blockingApplicationsArrayController;
+@synthesize supportedArchitecturesArrayController;
+@synthesize installerChoicesArrayController;
 
 @synthesize temp_preinstall_script_enabled;
 @synthesize temp_preuninstall_script_enabled;
@@ -148,12 +152,8 @@
 	}
 }
 
-- (void)saveAction:(id)sender;
+- (void)commitChangesToCurrentPackage
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    
     // Scripts
     if (self.temp_preinstall_script_enabled) {
         if (self.temp_preinstall_script) {
@@ -211,6 +211,15 @@
     } else {
         self.pkginfoToEdit.munki_force_install_after_date = nil;
     }
+}
+
+- (void)saveAction:(id)sender;
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
+    [self commitChangesToCurrentPackage];
         
     [[self window] orderOut:sender];
     [NSApp endModalSession:modalSession];
@@ -271,6 +280,12 @@
     NSSortDescriptor *sortStringObjectsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.updateForArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
     [self.requiresArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
+    [self.blockingApplicationsArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
+    [self.supportedArchitecturesArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
+    
+    NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.installerChoicesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil]];
 }
 
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage
@@ -343,5 +358,41 @@
     }
 
 }
+
+#pragma mark -
+#pragma mark NSSplitView delegates
+
+- (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
+{
+	return NO;
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView shouldCollapseSubview:(NSView *)subview forDoubleClickOnDividerAtIndex:(NSInteger)dividerIndex
+{
+	return NO;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
+{
+    if (dividerIndex == 0) {
+        return kMinSplitViewWidth;
+    }
+    return proposedMin;
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
+{
+    if (dividerIndex == 0) {
+        return [splitView frame].size.width - kMinSplitViewWidth;
+    }
+    return proposedMax;
+}
+
+/*
+- (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize
+{
+    
+}
+*/
 
 @end

@@ -33,8 +33,23 @@
         NSSet *affectingKeys = [NSSet setWithObjects:@"parentApplication.munki_description", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }*/
-	
+    
     return keyPaths;
+}
+
+- (NSImage *)packageInfoIconImage
+{
+    return [[NSWorkspace sharedWorkspace] iconForFile:[self.packageInfoURL relativePath]];
+}
+
+- (NSImage *)packageIconImage
+{
+    return [[NSWorkspace sharedWorkspace] iconForFile:[self.packageURL relativePath]];
+}
+
+- (NSURL *)parentURL
+{
+    return [self.packageInfoURL URLByDeletingLastPathComponent];
 }
 
 - (NSUserDefaults *)defaults
@@ -49,6 +64,11 @@
 			self.munki_version, @"subtitle",
 			@"package", @"type",
 			nil];
+}
+
+- (NSNumber *)numberOfKeys
+{
+    return [NSNumber numberWithInt:[self.pkgInfoDictionary count]];
 }
 
 - (NSDictionary *)pkgInfoDictionary
@@ -251,11 +271,7 @@
 			[blockingApplicationsItems addObject:[blockingItem title]];
 		}
 	}
-	if ([blockingApplicationsItems count] == 0) {
-		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"blocking_applications"] != nil) {
-			[tmpDict setObject:[NSArray array] forKey:@"blocking_applications"];
-		}
-	} else {
+	if ([blockingApplicationsItems count] > 0) {
 		[tmpDict setObject:blockingApplicationsItems forKey:@"blocking_applications"];
 	}
     
@@ -271,11 +287,7 @@
 			[supportedArchitecturesItems addObject:[supportedArch title]];
 		}
 	}
-	if ([supportedArchitecturesItems count] == 0) {
-		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"supported_architectures"] != nil) {
-			[tmpDict setObject:[NSArray array] forKey:@"supported_architectures"];
-		}
-	} else {
+	if ([supportedArchitecturesItems count] > 0) {
 		[tmpDict setObject:supportedArchitecturesItems forKey:@"supported_architectures"];
 	}
     

@@ -17,6 +17,7 @@
 #import "PackageNameEditor.h"
 #import "AdvancedPackageEditor.h"
 #import "PredicateEditor.h"
+#import "PackagesView.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -91,7 +92,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    NSURL *selectedURL = (NSURL *)[[[allPackagesArrayController selectedObjects] objectAtIndex:0] packageInfoURL];
+    NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
     [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
 }
 
@@ -314,6 +315,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
+    packagesViewController = [[PackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
@@ -343,8 +345,7 @@
 	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-		currentDetailView = packagesDetailView;
-		currentSourceView = packagesListView;
+        currentWholeView = [packagesViewController view];
 		[mainSegmentedControl setSelectedSegment:0];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
@@ -352,6 +353,7 @@
 		self.selectedViewDescr = @"Catalogs";
 		currentDetailView = catalogsDetailView;
 		currentSourceView = catalogsListView;
+        currentWholeView = self.mainSplitView;
 		[mainSegmentedControl setSelectedSegment:1];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
@@ -359,16 +361,16 @@
 		self.selectedViewDescr = @"Manifests";
 		currentDetailView = [manifestDetailViewController view];
 		currentSourceView = manifestsListView;
+        currentWholeView = self.mainSplitView;
 		[mainSegmentedControl setSelectedSegment:2];
 	}
 	else {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-		currentDetailView = packagesDetailView;
-		currentSourceView = packagesListView;
+        currentWholeView = [packagesViewController view];
 		[mainSegmentedControl setSelectedSegment:0];
 	}
-	
+    	
 	[self changeItemView];
 	
 	[self.window center];
@@ -787,7 +789,7 @@
     if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming to: %@", newName);
     
     
-    for (PackageMO *selectedPackage in [allPackagesArrayController selectedObjects]) {
+    for (PackageMO *selectedPackage in [[packagesViewController packagesArrayController] selectedObjects]) {
         if ([packageNameEditor shouldRenameAll]) {
             // Get the current app
             ApplicationMO *currentApp = selectedPackage.parentApplication;
@@ -884,7 +886,7 @@
     [NSApp beginSheet:[packageNameEditor window] 
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
-    NSArray *selTitles = [[allPackagesArrayController selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    NSArray *selTitles = [[[packagesViewController packagesArrayController] selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
     [packageNameEditor setChangedName:[selTitles objectAtIndex:0]];
 }
 
@@ -899,7 +901,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
-	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	
 	// Configure the dialog
@@ -1150,7 +1152,7 @@
                 
             } else if (numFoundPkgs == 1) {
                 PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-                [self.allPackagesArrayController setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
+                [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
             } else {
                 
             }
@@ -1170,7 +1172,7 @@
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
-	NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
+	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
@@ -1209,6 +1211,12 @@
             [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
             [self.allPackagesArrayController setSelectionIndex:0];
         }
+        [[packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
+        [[packagesViewController packagesArrayController] setEntityName:@"Package"];
+        if ([[packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
+            [[packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
+            [[packagesViewController packagesArrayController] setSelectionIndex:0];
+        }
         [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
         [self.packageInfosArrayController setEntityName:@"PackageInfo"];
         if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
@@ -1233,6 +1241,11 @@
             [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
             [self.allCatalogsArrayController setSelectionIndex:0];
         }
+        
+        // Configure packages view source list
+        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        NSUInteger defaultIndexes[] = {0,0};
+        [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
 }
 
@@ -1253,11 +1266,45 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    [self.managedObjectContext refreshObject:object mergeChanges:YES];
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];
 }
 
+- (IBAction)selectNextPackageForEditing:(id)sender
+{
+    // Commit any changes
+    [advancedPackageEditor commitChangesToCurrentPackage];
+    
+    // Change selection
+    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
+    if ([currentIndexes lastIndex] < [[[packagesViewController packagesArrayController] arrangedObjects] count]) {
+        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
+        
+        // Populate new values
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        [advancedPackageEditor setPkginfoToEdit:object];
+        [advancedPackageEditor setDefaultValuesFromPackage:object];
+    }
+}
+
+- (IBAction)selectPreviousPackageForEditing:(id)sender
+{
+    // Commit any changes
+    [advancedPackageEditor commitChangesToCurrentPackage];
+    
+    // Change selection
+    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
+    if ([currentIndexes lastIndex] > 0) {
+        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]-1];
+        
+        // Populate new values
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        [advancedPackageEditor setPkginfoToEdit:object];
+        [advancedPackageEditor setDefaultValuesFromPackage:object];
+    }
+}
 
 - (IBAction)getInfoAction:(id)sender
 {
@@ -1265,13 +1312,54 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    PackageMO *object = [[allPackagesArrayController selectedObjects] lastObject];
-    if (!object) return;
-    
-    [[[self managedObjectContext] undoManager] beginUndoGrouping];
-    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
+    if (currentWholeView == [packagesViewController view]) {
         
-    [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
+        if (!object) return;
+        
+        [[[self managedObjectContext] undoManager] beginUndoGrouping];
+        [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Editing \"%@\"", [object titleWithVersion]]];
+        
+        [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
+        
+        if ([sender isKindOfClass:[NSButton class]]) {
+            switch ([sender tag]) {
+                case 0: // Catalogs
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:6];
+                    break;
+                case 1: // Receipts
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                    break;
+                case 2: // Installs
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
+                    break;
+                case 3: // Items to copy
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 4: // Requires
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                    break;
+                case 5: // Update for
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:2];
+                    break;
+                case 6: // Installer Choices XML
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 7: // Blocking Applications
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 8: // Architectures
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:3];
+                    break;
+                case 99: // Generic -> select the first tab view item
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                    break;
+                default:
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
+                    break;
+            }
+        }
+    }
 }
 
 
@@ -1744,6 +1832,7 @@
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"blocking_applications",
                                  @"description",
                                  @"display_name",
                                  @"force_install_after_date",
@@ -1762,6 +1851,7 @@
                                  @"postinstall_script",
                                  @"postuninstall_script",
                                  @"RestartAction",
+                                 @"supported_architectures",
                                  @"uninstall_method",
                                  @"uninstaller_item_location",
                                  @"uninstall_script",
@@ -1917,6 +2007,7 @@
     [self.applicationsArrayController setManagedObjectContext:nil];
     [self.packageInfosArrayController setManagedObjectContext:nil];
     [self.allPackagesArrayController setManagedObjectContext:nil];
+    [[packagesViewController packagesArrayController] setManagedObjectContext:nil];
     [self.manifestsArrayController setManagedObjectContext:nil];
         
     NSError *dirReadError = nil;
@@ -2000,6 +2091,28 @@
 		NSLog(@"Scanning selected repo for packages");
 	}
 	
+    PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+    newSourceListItem2.title = @"REPOSITORY";
+    newSourceListItem2.originalIndexValue = 0;
+    newSourceListItem2.parent = nil;
+    newSourceListItem2.isGroupItemValue = YES;
+    
+    DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    newDirectory.originalURL = self.pkgsInfoURL;
+    newDirectory.title = @"All Packages";
+    newDirectory.type = @"smart";
+    newDirectory.parent = newSourceListItem2;
+    newDirectory.originalIndexValue = 10;
+    
+    
+    PackageSourceListItemMO *newSourceListItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+    newSourceListItem.title = @"DIRECTORIES";
+    newSourceListItem.originalIndexValue = 1;
+    newSourceListItem.parent = nil;
+    newSourceListItem.isGroupItemValue = YES;
+    
+    
+    
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
@@ -2007,18 +2120,44 @@
     packageRelationships.delegate = self;
 
 	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-	for (NSURL *aPkgInfoFile in pkgsInfoDirEnum)
+	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
 		NSNumber *isDir;
-		[aPkgInfoFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:aPkgInfoFile];
+			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:anURL];
 			scanOp.delegate = self;
             [packageRelationships addDependency:scanOp];
 			[self.operationQueue addOperation:scanOp];
 			
-		}
+		} else {
+            //NSLog(@"Got directory: %@", [anURL relativePath]);
+            DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+            newDirectory.originalURL = anURL;
+            newDirectory.originalIndexValue = 10;
+            newDirectory.type = @"regular";
+            NSString *newTitle;
+            [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
+            newDirectory.title = newTitle;
+            NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
+            if ([parentDirectory isEqual:self.pkgsInfoURL]) {
+                newDirectory.parent = newSourceListItem;
+            } else {
+                NSFetchRequest *request = [[NSFetchRequest alloc] init];
+				[request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
+				NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
+				[request setPredicate:parentPredicate];
+				NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:request error:nil];
+				if (foundItems > 0) {
+					DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:request error:nil] objectAtIndex:0];
+                    NSLog(@"Got parent: %@", parent.title);
+                    newDirectory.parent = parent;
+				}
+				[request release];
+            }
+        }
 	}
+    
     [self.operationQueue addOperation:packageRelationships];
 }
 
@@ -2431,17 +2570,19 @@
 {
 	switch ([sender tag]) {
 		case 1:
-			if (currentSourceView != packagesListView) {
+			if (currentWholeView != [packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-				currentDetailView = packagesDetailView;
-				currentSourceView = packagesListView;
-				[mainSegmentedControl setSelectedSegment:0];
+                currentWholeView = [packagesViewController view];
+                currentDetailView = nil;
+                currentSourceView = nil;
+                [mainSegmentedControl setSelectedSegment:0];
 				[self changeItemView];
-			}
+            }
 			break;
 		case 2:
-			if (currentSourceView != catalogsListView) {
+			if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = catalogsDetailView;
 				currentSourceView = catalogsListView;
 				[mainSegmentedControl setSelectedSegment:1];
@@ -2449,8 +2590,9 @@
 			}
 			break;
 		case 3:
-			if (currentSourceView != manifestsListView) {
+			if (currentDetailView != [manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[mainSegmentedControl setSelectedSegment:2];
@@ -2466,28 +2608,31 @@
 {
 	switch ([sender selectedSegment]) {
 		case 0:
-			if (currentSourceView != packagesListView) {
+            if (currentWholeView != [packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-				currentDetailView = packagesDetailView;
-				currentSourceView = packagesListView;
+                currentDetailView = nil;
+                currentSourceView = nil;
+                currentWholeView = [packagesViewController view];
 				[self changeItemView];
-			}
+            }
 			break;
 		case 1:
-			if (currentSourceView != catalogsListView) {
+            if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = catalogsDetailView;
 				currentSourceView = catalogsListView;
 				[self changeItemView];
-			}
+            }
 			break;
 		case 2:
-			if (currentSourceView != manifestsListView) {
+            if (currentDetailView != [manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
+                currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
 				currentSourceView = manifestsListView;
 				[self changeItemView];
-			}
+            }
 			break;
 		default:
 			break;
@@ -2510,7 +2655,18 @@
 
 - (void)removeSubviews
 {
-	NSArray *detailSubViews = [detailViewPlaceHolder subviews];
+    NSArray *subViews = [[self.window contentView] subviews];
+    for (id aSubView in subViews) {
+        [aSubView removeFromSuperview];
+    }
+    /*
+	if ([subViews count] > 0)
+	{
+		[[subViews objectAtIndex:0] removeFromSuperview];
+	}
+    */
+    
+    NSArray *detailSubViews = [detailViewPlaceHolder subviews];
 	if ([detailSubViews count] > 0)
 	{
 		[[detailSubViews objectAtIndex:0] removeFromSuperview];
@@ -2521,47 +2677,70 @@
 	{
 		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
 	}
+    
+    //[self.mainSplitView removeFromSuperview];
+    //[[self.window contentView] display];
+	
 	//[sourceViewPlaceHolder display];
 	//[detailViewPlaceHolder display];
 }
 
 - (void)changeItemView
 {
-	// remove the old subview
-	[self removeSubviews];
-	
-	// add a spinning progress gear in case populating the icon view takes too long
-	NSRect bounds = [detailViewPlaceHolder bounds];
-	CGFloat x = (bounds.size.width-32)/2;
-	CGFloat y = (bounds.size.height-32)/2;
-	NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
-	[busyGear setStyle:NSProgressIndicatorSpinningStyle];
-	[busyGear startAnimation:self];
-	[detailViewPlaceHolder addSubview:busyGear];
-	//[detailViewPlaceHolder display];
-	
-	[detailViewPlaceHolder addSubview:currentDetailView];
-	[sourceViewPlaceHolder addSubview:currentSourceView];
-	
-	[busyGear removeFromSuperview];
-	[busyGear release];
-	
-	[currentDetailView setFrame:[[currentDetailView superview] frame]];
-	[currentSourceView setFrame:[[currentSourceView superview] frame]];
-	
-	// make sure our added subview is placed and resizes correctly
-	[currentDetailView setFrameOrigin:NSMakePoint(0,0)];
-	[currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-	
-	[currentSourceView setFrameOrigin:NSMakePoint(0,0)];
-	[currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-	
-	self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
-	
+    if (currentWholeView == [packagesViewController view]) {
+        // remove the old subview
+        [self removeSubviews];
+        
+        [[self.window contentView] addSubview:[packagesViewController view]];
+        [[packagesViewController view] setFrame:[[self.window contentView] frame]];
+        [[packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
+        [[packagesViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        [[packagesViewController directoriesOutlineView] reloadData];
+        [[packagesViewController packagesArrayController] rearrangeObjects];
+    } else {
+        // remove the old subview
+        [self removeSubviews];
+        
+        [[self.window contentView] addSubview:self.mainSplitView];
+        [self.mainSplitView setFrame:[[self.window contentView] frame]];
+        [self.mainSplitView setFrameOrigin:NSMakePoint(0,0)];
+        [self.mainSplitView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        
+        // add a spinning progress gear in case populating the icon view takes too long
+        NSRect bounds = [detailViewPlaceHolder bounds];
+        CGFloat x = (bounds.size.width-32)/2;
+        CGFloat y = (bounds.size.height-32)/2;
+        NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
+        [busyGear setStyle:NSProgressIndicatorSpinningStyle];
+        [busyGear startAnimation:self];
+        [detailViewPlaceHolder addSubview:busyGear];
+        //[detailViewPlaceHolder display];
+        
+        [detailViewPlaceHolder addSubview:currentDetailView];
+        [sourceViewPlaceHolder addSubview:currentSourceView];
+        
+        [busyGear removeFromSuperview];
+        [busyGear release];
+        
+        [currentDetailView setFrame:[[currentDetailView superview] frame]];
+        [currentSourceView setFrame:[[currentSourceView superview] frame]];
+        
+        // make sure our added subview is placed and resizes correctly
+        [currentDetailView setFrameOrigin:NSMakePoint(0,0)];
+        [currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        
+        [currentSourceView setFrameOrigin:NSMakePoint(0,0)];
+        [currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+	}
+    self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 }
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
+	}
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
 		currentDetailView = applicationsDetailView;
 	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {

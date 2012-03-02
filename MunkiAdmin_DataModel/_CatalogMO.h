@@ -74,6 +74,7 @@ extern const struct CatalogMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _CatalogMO (CoreDataGeneratedAccessors)
@@ -103,8 +104,8 @@ extern const struct CatalogMOFetchedProperties {
 @interface _CatalogMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (NSString *)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString *)value;
 
 
 

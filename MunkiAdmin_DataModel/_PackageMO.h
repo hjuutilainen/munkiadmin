@@ -35,6 +35,12 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_uninstaller_item_location;
 	 NSString *munki_version;
 	 NSString *originalPkginfo;
+	 NSString *packageDateCreated;
+	 NSString *packageDateLastOpened;
+	 NSString *packageDateModified;
+	 NSString *packageInfoDateCreated;
+	 NSString *packageInfoDateLastOpened;
+	 NSString *packageInfoDateModified;
 	 NSString *packageInfoURL;
 	 NSString *packageURL;
 	 NSString *titleWithVersion;
@@ -52,6 +58,7 @@ extern const struct PackageMORelationships {
 	 NSString *receipts;
 	 NSString *referencingStringObjects;
 	 NSString *requirements;
+	 NSString *sourceListItems;
 	 NSString *supportedArchitectures;
 	 NSString *updateFor;
 } PackageMORelationships;
@@ -70,6 +77,7 @@ extern const struct PackageMOFetchedProperties {
 @class ReceiptMO;
 @class StringObjectMO;
 @class StringObjectMO;
+@class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
 
@@ -103,6 +111,12 @@ extern const struct PackageMOFetchedProperties {
 
 
 @class NSObject;
+
+
+
+
+
+
 @class NSObject;
 @class NSObject;
 
@@ -190,9 +204,9 @@ extern const struct PackageMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *munki_installed_size;
 
 
-@property long long munki_installed_sizeValue;
-- (long long)munki_installed_sizeValue;
-- (void)setMunki_installed_sizeValue:(long long)value_;
+@property int64_t munki_installed_sizeValue;
+- (int64_t)munki_installed_sizeValue;
+- (void)setMunki_installed_sizeValue:(int64_t)value_;
 
 //- (BOOL)validateMunki_installed_size:(id*)value_ error:(NSError**)error_;
 
@@ -218,9 +232,9 @@ extern const struct PackageMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *munki_installer_item_size;
 
 
-@property long long munki_installer_item_sizeValue;
-- (long long)munki_installer_item_sizeValue;
-- (void)setMunki_installer_item_sizeValue:(long long)value_;
+@property int64_t munki_installer_item_sizeValue;
+- (int64_t)munki_installer_item_sizeValue;
+- (void)setMunki_installer_item_sizeValue:(int64_t)value_;
 
 //- (BOOL)validateMunki_installer_item_size:(id*)value_ error:(NSError**)error_;
 
@@ -387,7 +401,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSObject *originalPkginfo;
+@property (nonatomic, retain) id originalPkginfo;
 
 
 //- (BOOL)validateOriginalPkginfo:(id*)value_ error:(NSError**)error_;
@@ -395,7 +409,55 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSObject *packageInfoURL;
+@property (nonatomic, retain) NSDate *packageDateCreated;
+
+
+//- (BOOL)validatePackageDateCreated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *packageDateLastOpened;
+
+
+//- (BOOL)validatePackageDateLastOpened:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *packageDateModified;
+
+
+//- (BOOL)validatePackageDateModified:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *packageInfoDateCreated;
+
+
+//- (BOOL)validatePackageInfoDateCreated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *packageInfoDateLastOpened;
+
+
+//- (BOOL)validatePackageInfoDateLastOpened:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSDate *packageInfoDateModified;
+
+
+//- (BOOL)validatePackageInfoDateModified:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) id packageInfoURL;
 
 
 //- (BOOL)validatePackageInfoURL:(id*)value_ error:(NSError**)error_;
@@ -403,7 +465,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSObject *packageURL;
+@property (nonatomic, retain) id packageURL;
 
 
 //- (BOOL)validatePackageURL:(id*)value_ error:(NSError**)error_;
@@ -497,6 +559,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) NSSet* sourceListItems;
+
+- (NSMutableSet*)sourceListItemsSet;
+
+
+
+
 @property (nonatomic, retain) NSSet* supportedArchitectures;
 
 - (NSMutableSet*)supportedArchitecturesSet;
@@ -507,6 +576,7 @@ extern const struct PackageMOFetchedProperties {
 @property (nonatomic, retain) NSSet* updateFor;
 
 - (NSMutableSet*)updateForSet;
+
 
 
 
@@ -565,6 +635,11 @@ extern const struct PackageMOFetchedProperties {
 - (void)addRequirementsObject:(StringObjectMO*)value_;
 - (void)removeRequirementsObject:(StringObjectMO*)value_;
 
+- (void)addSourceListItems:(NSSet*)value_;
+- (void)removeSourceListItems:(NSSet*)value_;
+- (void)addSourceListItemsObject:(PackageSourceListItemMO*)value_;
+- (void)removeSourceListItemsObject:(PackageSourceListItemMO*)value_;
+
 - (void)addSupportedArchitectures:(NSSet*)value_;
 - (void)removeSupportedArchitectures:(NSSet*)value_;
 - (void)addSupportedArchitecturesObject:(StringObjectMO*)value_;
@@ -580,14 +655,14 @@ extern const struct PackageMOFetchedProperties {
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveMunki_RestartAction;
-- (void)setPrimitiveMunki_RestartAction:(NSString*)value;
+- (NSString *)primitiveMunki_RestartAction;
+- (void)setPrimitiveMunki_RestartAction:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_autoremove;
-- (void)setPrimitiveMunki_autoremove:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_autoremove;
+- (void)setPrimitiveMunki_autoremove:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_autoremoveValue;
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_;
@@ -595,26 +670,26 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSString*)primitiveMunki_description;
-- (void)setPrimitiveMunki_description:(NSString*)value;
+- (NSString *)primitiveMunki_description;
+- (void)setPrimitiveMunki_description:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_display_name;
-- (void)setPrimitiveMunki_display_name:(NSString*)value;
+- (NSString *)primitiveMunki_display_name;
+- (void)setPrimitiveMunki_display_name:(NSString *)value;
 
 
 
 
-- (NSDate*)primitiveMunki_force_install_after_date;
-- (void)setPrimitiveMunki_force_install_after_date:(NSDate*)value;
+- (NSDate *)primitiveMunki_force_install_after_date;
+- (void)setPrimitiveMunki_force_install_after_date:(NSDate *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_forced_install;
-- (void)setPrimitiveMunki_forced_install:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_forced_install;
+- (void)setPrimitiveMunki_forced_install:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_forced_installValue;
 - (void)setPrimitiveMunki_forced_installValue:(BOOL)value_;
@@ -622,8 +697,8 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSNumber*)primitiveMunki_forced_uninstall;
-- (void)setPrimitiveMunki_forced_uninstall:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_forced_uninstall;
+- (void)setPrimitiveMunki_forced_uninstall:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_forced_uninstallValue;
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
@@ -631,98 +706,98 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSNumber*)primitiveMunki_installed_size;
-- (void)setPrimitiveMunki_installed_size:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_installed_size;
+- (void)setPrimitiveMunki_installed_size:(NSNumber *)value;
 
-- (long long)primitiveMunki_installed_sizeValue;
-- (void)setPrimitiveMunki_installed_sizeValue:(long long)value_;
-
-
-
-
-- (NSString*)primitiveMunki_installer_item_hash;
-- (void)setPrimitiveMunki_installer_item_hash:(NSString*)value;
+- (int64_t)primitiveMunki_installed_sizeValue;
+- (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_;
 
 
 
 
-- (NSString*)primitiveMunki_installer_item_location;
-- (void)setPrimitiveMunki_installer_item_location:(NSString*)value;
+- (NSString *)primitiveMunki_installer_item_hash;
+- (void)setPrimitiveMunki_installer_item_hash:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_installer_item_size;
-- (void)setPrimitiveMunki_installer_item_size:(NSNumber*)value;
-
-- (long long)primitiveMunki_installer_item_sizeValue;
-- (void)setPrimitiveMunki_installer_item_sizeValue:(long long)value_;
+- (NSString *)primitiveMunki_installer_item_location;
+- (void)setPrimitiveMunki_installer_item_location:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_installer_type;
-- (void)setPrimitiveMunki_installer_type:(NSString*)value;
+- (NSNumber *)primitiveMunki_installer_item_size;
+- (void)setPrimitiveMunki_installer_item_size:(NSNumber *)value;
+
+- (int64_t)primitiveMunki_installer_item_sizeValue;
+- (void)setPrimitiveMunki_installer_item_sizeValue:(int64_t)value_;
 
 
 
 
-- (NSString*)primitiveMunki_maximum_os_version;
-- (void)setPrimitiveMunki_maximum_os_version:(NSString*)value;
+- (NSString *)primitiveMunki_installer_type;
+- (void)setPrimitiveMunki_installer_type:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_minimum_os_version;
-- (void)setPrimitiveMunki_minimum_os_version:(NSString*)value;
+- (NSString *)primitiveMunki_maximum_os_version;
+- (void)setPrimitiveMunki_maximum_os_version:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_name;
-- (void)setPrimitiveMunki_name:(NSString*)value;
+- (NSString *)primitiveMunki_minimum_os_version;
+- (void)setPrimitiveMunki_minimum_os_version:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_package_path;
-- (void)setPrimitiveMunki_package_path:(NSString*)value;
+- (NSString *)primitiveMunki_name;
+- (void)setPrimitiveMunki_name:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_postinstall_script;
-- (void)setPrimitiveMunki_postinstall_script:(NSString*)value;
+- (NSString *)primitiveMunki_package_path;
+- (void)setPrimitiveMunki_package_path:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_postuninstall_script;
-- (void)setPrimitiveMunki_postuninstall_script:(NSString*)value;
+- (NSString *)primitiveMunki_postinstall_script;
+- (void)setPrimitiveMunki_postinstall_script:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_preinstall_script;
-- (void)setPrimitiveMunki_preinstall_script:(NSString*)value;
+- (NSString *)primitiveMunki_postuninstall_script;
+- (void)setPrimitiveMunki_postuninstall_script:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_preuninstall_script;
-- (void)setPrimitiveMunki_preuninstall_script:(NSString*)value;
+- (NSString *)primitiveMunki_preinstall_script;
+- (void)setPrimitiveMunki_preinstall_script:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_receipts;
-- (void)setPrimitiveMunki_receipts:(NSString*)value;
+- (NSString *)primitiveMunki_preuninstall_script;
+- (void)setPrimitiveMunki_preuninstall_script:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_suppress_bundle_relocation;
-- (void)setPrimitiveMunki_suppress_bundle_relocation:(NSNumber*)value;
+- (NSString *)primitiveMunki_receipts;
+- (void)setPrimitiveMunki_receipts:(NSString *)value;
+
+
+
+
+- (NSNumber *)primitiveMunki_suppress_bundle_relocation;
+- (void)setPrimitiveMunki_suppress_bundle_relocation:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_suppress_bundle_relocationValue;
 - (void)setPrimitiveMunki_suppress_bundle_relocationValue:(BOOL)value_;
@@ -730,8 +805,8 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSNumber*)primitiveMunki_unattended_install;
-- (void)setPrimitiveMunki_unattended_install:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_unattended_install;
+- (void)setPrimitiveMunki_unattended_install:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_unattended_installValue;
 - (void)setPrimitiveMunki_unattended_installValue:(BOOL)value_;
@@ -739,8 +814,8 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSNumber*)primitiveMunki_unattended_uninstall;
-- (void)setPrimitiveMunki_unattended_uninstall:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_unattended_uninstall;
+- (void)setPrimitiveMunki_unattended_uninstall:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_unattended_uninstallValue;
 - (void)setPrimitiveMunki_unattended_uninstallValue:(BOOL)value_;
@@ -748,20 +823,20 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSString*)primitiveMunki_uninstall_method;
-- (void)setPrimitiveMunki_uninstall_method:(NSString*)value;
+- (NSString *)primitiveMunki_uninstall_method;
+- (void)setPrimitiveMunki_uninstall_method:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_uninstall_script;
-- (void)setPrimitiveMunki_uninstall_script:(NSString*)value;
+- (NSString *)primitiveMunki_uninstall_script;
+- (void)setPrimitiveMunki_uninstall_script:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveMunki_uninstallable;
-- (void)setPrimitiveMunki_uninstallable:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_uninstallable;
+- (void)setPrimitiveMunki_uninstallable:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_uninstallableValue;
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
@@ -769,38 +844,74 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-- (NSString*)primitiveMunki_uninstaller_item_location;
-- (void)setPrimitiveMunki_uninstaller_item_location:(NSString*)value;
+- (NSString *)primitiveMunki_uninstaller_item_location;
+- (void)setPrimitiveMunki_uninstaller_item_location:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_version;
-- (void)setPrimitiveMunki_version:(NSString*)value;
+- (NSString *)primitiveMunki_version;
+- (void)setPrimitiveMunki_version:(NSString *)value;
 
 
 
 
-- (NSObject*)primitiveOriginalPkginfo;
-- (void)setPrimitiveOriginalPkginfo:(NSObject*)value;
+- (id)primitiveOriginalPkginfo;
+- (void)setPrimitiveOriginalPkginfo:(id)value;
 
 
 
 
-- (NSObject*)primitivePackageInfoURL;
-- (void)setPrimitivePackageInfoURL:(NSObject*)value;
+- (NSDate *)primitivePackageDateCreated;
+- (void)setPrimitivePackageDateCreated:(NSDate *)value;
 
 
 
 
-- (NSObject*)primitivePackageURL;
-- (void)setPrimitivePackageURL:(NSObject*)value;
+- (NSDate *)primitivePackageDateLastOpened;
+- (void)setPrimitivePackageDateLastOpened:(NSDate *)value;
 
 
 
 
-- (NSString*)primitiveTitleWithVersion;
-- (void)setPrimitiveTitleWithVersion:(NSString*)value;
+- (NSDate *)primitivePackageDateModified;
+- (void)setPrimitivePackageDateModified:(NSDate *)value;
+
+
+
+
+- (NSDate *)primitivePackageInfoDateCreated;
+- (void)setPrimitivePackageInfoDateCreated:(NSDate *)value;
+
+
+
+
+- (NSDate *)primitivePackageInfoDateLastOpened;
+- (void)setPrimitivePackageInfoDateLastOpened:(NSDate *)value;
+
+
+
+
+- (NSDate *)primitivePackageInfoDateModified;
+- (void)setPrimitivePackageInfoDateModified:(NSDate *)value;
+
+
+
+
+- (id)primitivePackageInfoURL;
+- (void)setPrimitivePackageInfoURL:(id)value;
+
+
+
+
+- (id)primitivePackageURL;
+- (void)setPrimitivePackageURL:(id)value;
+
+
+
+
+- (NSString *)primitiveTitleWithVersion;
+- (void)setPrimitiveTitleWithVersion:(NSString *)value;
 
 
 
@@ -858,6 +969,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveRequirements;
 - (void)setPrimitiveRequirements:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveSourceListItems;
+- (void)setPrimitiveSourceListItems:(NSMutableSet*)value;
 
 
 

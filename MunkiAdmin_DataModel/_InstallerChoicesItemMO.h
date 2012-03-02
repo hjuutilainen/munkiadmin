@@ -68,9 +68,9 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 @property (nonatomic, retain) NSNumber *originalIndex;
 
 
-@property int originalIndexValue;
-- (int)originalIndexValue;
-- (void)setOriginalIndexValue:(int)value_;
+@property int32_t originalIndexValue;
+- (int32_t)originalIndexValue;
+- (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
@@ -85,6 +85,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
+
 @end
 
 @interface _InstallerChoicesItemMO (CoreDataGeneratedAccessors)
@@ -94,8 +95,8 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 @interface _InstallerChoicesItemMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveMunki_attributeSetting;
-- (void)setPrimitiveMunki_attributeSetting:(NSNumber*)value;
+- (NSNumber *)primitiveMunki_attributeSetting;
+- (void)setPrimitiveMunki_attributeSetting:(NSNumber *)value;
 
 - (BOOL)primitiveMunki_attributeSettingValue;
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_;
@@ -103,23 +104,23 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-- (NSString*)primitiveMunki_choiceAttribute;
-- (void)setPrimitiveMunki_choiceAttribute:(NSString*)value;
+- (NSString *)primitiveMunki_choiceAttribute;
+- (void)setPrimitiveMunki_choiceAttribute:(NSString *)value;
 
 
 
 
-- (NSString*)primitiveMunki_choiceIdentifier;
-- (void)setPrimitiveMunki_choiceIdentifier:(NSString*)value;
+- (NSString *)primitiveMunki_choiceIdentifier;
+- (void)setPrimitiveMunki_choiceIdentifier:(NSString *)value;
 
 
 
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (NSNumber *)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
 
-- (int)primitiveOriginalIndexValue;
-- (void)setPrimitiveOriginalIndexValue:(int)value_;
+- (int32_t)primitiveOriginalIndexValue;
+- (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
 
 
