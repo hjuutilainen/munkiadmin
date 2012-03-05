@@ -879,9 +879,6 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	
-	//NSArray *selectedPackages = [allPackagesArrayController selectedObjects];
-	//NSManagedObjectContext *moc = [self managedObjectContext];
     
     [NSApp beginSheet:[packageNameEditor window] 
 	   modalForWindow:self.window modalDelegate:nil 
@@ -893,6 +890,18 @@
 - (IBAction)renameSelectedPackagesAction:sender
 {
     [self renameSelectedPackages];
+}
+
+- (IBAction)renamePackageFromAdvancedEditor:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
+    [NSApp beginSheet:[packageNameEditor window] 
+	   modalForWindow:[advancedPackageEditor window] modalDelegate:nil 
+	   didEndSelector:nil contextInfo:nil];
+    [packageNameEditor setChangedName:[[advancedPackageEditor pkginfoToEdit] munki_name]];
 }
 
 - (void)deleteSelectedPackages

@@ -1847,6 +1847,7 @@
 										<string key="NSFrame">{{125, 13}, {91, 28}}</string>
 										<reference key="NSSuperview" ref="508985879"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<int key="NSTag">99</int>
 										<bool key="NSEnabled">YES</bool>
@@ -2045,6 +2046,14 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">NSMenuMixedState</string>
 						</object>
+					</object>
+					<object class="NSMenuItem" id="333279334">
+						<reference key="NSMenu" ref="127374364"/>
+						<string key="NSTitle">Rename...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="950948120"/>
+						<reference key="NSMixedImage" ref="323722171"/>
 					</object>
 					<object class="NSMenuItem" id="45559572">
 						<reference key="NSMenu" ref="127374364"/>
@@ -2477,6 +2486,14 @@
 					<int key="connectionID">73</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">packagesTableViewMenu</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="127374364"/>
+					</object>
+					<int key="connectionID">552</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">getInfoAction:</string>
 						<reference key="source" ref="1003"/>
@@ -2595,6 +2612,14 @@
 						<reference key="destination" ref="1025763261"/>
 					</object>
 					<int key="connectionID">547</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">renameSelectedPackagesAction:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="333279334"/>
+					</object>
+					<int key="connectionID">551</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -3542,6 +3567,7 @@
 							<reference ref="462696923"/>
 							<reference ref="731809654"/>
 							<reference ref="633260593"/>
+							<reference ref="333279334"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Packages List Menu</string>
@@ -4406,6 +4432,11 @@
 						<reference key="object" ref="745029503"/>
 						<reference key="parent" ref="1025763261"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">550</int>
+						<reference key="object" ref="333279334"/>
+						<reference key="parent" ref="127374364"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -4571,6 +4602,7 @@
 				<string key="543.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="544.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="545.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="550.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="80.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="81.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4586,7 +4618,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">549</int>
+			<int key="maxID">552</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

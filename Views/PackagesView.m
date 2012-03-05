@@ -36,6 +36,7 @@
 @synthesize descriptionTextView;
 @synthesize notesTextView;
 @synthesize notesDescriptionSplitView;
+@synthesize packagesTableViewMenu;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

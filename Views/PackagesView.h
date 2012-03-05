@@ -20,6 +20,7 @@
     NSTextView *descriptionTextView;
     NSTextView *notesTextView;
     NSSplitView *notesDescriptionSplitView;
+    NSMenu *packagesTableViewMenu;
 }
 
 @property (assign) IBOutlet NSSplitView *tripleSplitView;
@@ -33,5 +34,6 @@
 @property (assign) IBOutlet NSTextView *descriptionTextView;
 @property (assign) IBOutlet NSTextView *notesTextView;
 @property (assign) IBOutlet NSSplitView *notesDescriptionSplitView;
+@property (assign) IBOutlet NSMenu *packagesTableViewMenu;
 
 @end
