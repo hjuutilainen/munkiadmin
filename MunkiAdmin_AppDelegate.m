@@ -1205,6 +1205,65 @@
 	//[self arrangeCatalogs];
 }
 
+- (void)enableAllBindings
+{
+    [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
+    [self.allPackagesArrayController setEntityName:@"Package"];
+    if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
+        [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
+        [self.allPackagesArrayController setSelectionIndex:0];
+    }
+    [[packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
+    [[packagesViewController packagesArrayController] setEntityName:@"Package"];
+    if ([[packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
+        [[packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
+        [[packagesViewController packagesArrayController] setSelectionIndex:0];
+    }
+    [[packagesViewController directoriesTreeController] setManagedObjectContext:[self managedObjectContext]];
+    [[packagesViewController directoriesTreeController] setEntityName:@"PackageSourceListItem"];
+    if ([[packagesViewController directoriesTreeController] fetchWithRequest:nil merge:YES error:nil]) {
+        [[packagesViewController directoriesTreeController] setAutomaticallyPreparesContent:YES];
+        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        NSUInteger defaultIndexes[] = {0,0};
+        [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
+    }
+    [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
+    [self.packageInfosArrayController setEntityName:@"PackageInfo"];
+    if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
+        [self.packageInfosArrayController setAutomaticallyPreparesContent:YES];
+        [self.packageInfosArrayController setSelectionIndex:0];
+    }
+    [self.manifestsArrayController setManagedObjectContext:[self managedObjectContext]];
+    [self.manifestsArrayController setEntityName:@"Manifest"];
+    if (![self.manifestsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+        [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
+        [self.manifestsArrayController setSelectionIndex:0];
+    }
+    [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
+    [self.applicationsArrayController setEntityName:@"Application"];
+    if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+        [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
+        [self.applicationsArrayController setSelectionIndex:0];
+    }
+    [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
+    [self.allCatalogsArrayController setEntityName:@"Catalog"];
+    if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
+        [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
+        [self.allCatalogsArrayController setSelectionIndex:0];
+    }
+}
+
+- (void)disableAllBindings
+{
+    [self.allCatalogsArrayController setManagedObjectContext:nil];
+    [self.applicationsArrayController setManagedObjectContext:nil];
+    [self.packageInfosArrayController setManagedObjectContext:nil];
+    [self.allPackagesArrayController setManagedObjectContext:nil];
+    [[packagesViewController packagesArrayController] setManagedObjectContext:nil];
+    [[packagesViewController directoriesTreeController] setManagedObjectContext:nil];
+    [self.manifestsArrayController setManagedObjectContext:nil];
+}
+
 - (void)relationshipScannerDidFinish:(NSString *)mode
 {
     if ([self.defaults boolForKey:@"debug"]) {
@@ -1214,42 +1273,6 @@
         
         
     } else if ([mode isEqualToString:@"manifests"]) {
-        [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.allPackagesArrayController setEntityName:@"Package"];
-        if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
-            [self.allPackagesArrayController setSelectionIndex:0];
-        }
-        [[packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
-        [[packagesViewController packagesArrayController] setEntityName:@"Package"];
-        if ([[packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
-            [[packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
-            [[packagesViewController packagesArrayController] setSelectionIndex:0];
-        }
-        [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.packageInfosArrayController setEntityName:@"PackageInfo"];
-        if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.packageInfosArrayController setAutomaticallyPreparesContent:YES];
-            [self.packageInfosArrayController setSelectionIndex:0];
-        }
-        [self.manifestsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.manifestsArrayController setEntityName:@"Manifest"];
-        if (![self.manifestsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
-            [self.manifestsArrayController setSelectionIndex:0];
-        }
-        [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.applicationsArrayController setEntityName:@"Application"];
-        if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
-            [self.applicationsArrayController setSelectionIndex:0];
-        }
-        [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
-        [self.allCatalogsArrayController setEntityName:@"Catalog"];
-        if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
-            [self.allCatalogsArrayController setAutomaticallyPreparesContent:YES];
-            [self.allCatalogsArrayController setSelectionIndex:0];
-        }
         
         // Configure packages view source list
         [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
@@ -1700,6 +1723,8 @@
 		if (filesToAdd) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", (unsigned long)[filesToAdd count]);
 			
+            [self disableAllBindings];
+            
             RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
             packageRelationships.delegate = self;
             
@@ -1730,6 +1755,11 @@
 				}
 			}
             [self.operationQueue addOperation:packageRelationships];
+            NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+                [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+            }];
+            [enableBindingsOp addDependency:packageRelationships];
+            [self.operationQueue addOperation:enableBindingsOp];
 			[self showProgressPanel];
 		}
 	} else {
@@ -2012,12 +2042,7 @@
 	}
     [self deleteAllManagedObjects];
     
-    [self.allCatalogsArrayController setManagedObjectContext:nil];
-    [self.applicationsArrayController setManagedObjectContext:nil];
-    [self.packageInfosArrayController setManagedObjectContext:nil];
-    [self.allPackagesArrayController setManagedObjectContext:nil];
-    [[packagesViewController packagesArrayController] setManagedObjectContext:nil];
-    [self.manifestsArrayController setManagedObjectContext:nil];
+    [self disableAllBindings];
         
     NSError *dirReadError = nil;
 	NSArray *selectedDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[newURL relativePath] error:&dirReadError];
@@ -2274,6 +2299,12 @@
 		[self.operationQueue addOperation:scanOp];
 	}
     [self.operationQueue addOperation:manifestRelationships];
+    
+    NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+        [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+    }];
+    [enableBindingsOp addDependency:manifestRelationships];
+    [self.operationQueue addOperation:enableBindingsOp];
 }
 
 - (void)scanCurrentRepoForIncludedManifests

@@ -278,6 +278,12 @@
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
     [getAllCatalogs release];
     
+    // Link to DirectoryMO object
+    NSFetchRequest *getAllDirectories = [[NSFetchRequest alloc] init];
+    [getAllDirectories setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
+    NSArray *allDirectories = [moc executeFetchRequest:getAllDirectories error:nil];
+    [getAllDirectories release];
+    
     
     DirectoryMO *basePkginfoDirectory;
     NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
@@ -300,6 +306,7 @@
         NSArray *catalogsFromPkginfo = [originalPkginfo objectForKey:@"catalogs"];
         
         // Link to DirectoryMO object
+        /*
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
         NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [currentPackage.packageInfoURL URLByDeletingLastPathComponent]];
@@ -312,7 +319,12 @@
             [currentPackage addSourceListItemsObject:basePkginfoDirectory];
         }
         [request release];
+        */
         
+        NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [currentPackage.packageInfoURL URLByDeletingLastPathComponent]];
+        DirectoryMO *aDir = [[allDirectories filteredArrayUsingPredicate:parentPredicate] objectAtIndex:0];
+        [currentPackage addSourceListItemsObject:aDir];
+        [currentPackage addSourceListItemsObject:basePkginfoDirectory];
 
         // Loop through the catalog objects we already know about
 
