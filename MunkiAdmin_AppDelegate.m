@@ -1311,7 +1311,7 @@
     
     // Change selection
     NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
-    if ([currentIndexes lastIndex] < [[[packagesViewController packagesArrayController] arrangedObjects] count]) {
+    if ([currentIndexes lastIndex] < [[[packagesViewController packagesArrayController] arrangedObjects] count] - 1) {
         [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
         
         // Populate new values
@@ -1329,7 +1329,7 @@
     // Change selection
     NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
     if ([currentIndexes lastIndex] > 0) {
-        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]-1];
+        [[packagesViewController packagesArrayController] setSelectionIndex:([currentIndexes lastIndex] - 1)];
         
         // Populate new values
         PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
@@ -1357,7 +1357,7 @@
         if ([sender isKindOfClass:[NSButton class]]) {
             switch ([sender tag]) {
                 case 0: // Catalogs
-                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:6];
+                    [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
                     break;
                 case 1: // Receipts
                     [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:1];
