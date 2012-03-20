@@ -40,6 +40,7 @@
     NSArrayController *blockingApplicationsArrayController;
     NSArrayController *supportedArchitecturesArrayController;
     NSArrayController *installerChoicesArrayController;
+    NSArrayController *catalogInfosArrayController;
     
     NSModalSession modalSession;
     id delegate;
@@ -68,6 +69,7 @@
 @property (assign) IBOutlet NSArrayController *blockingApplicationsArrayController;
 @property (assign) IBOutlet NSArrayController *supportedArchitecturesArrayController;
 @property (assign) IBOutlet NSArrayController *installerChoicesArrayController;
+@property (assign) IBOutlet NSArrayController *catalogInfosArrayController;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;

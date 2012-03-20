@@ -24,6 +24,7 @@
 @synthesize blockingApplicationsArrayController;
 @synthesize supportedArchitecturesArrayController;
 @synthesize installerChoicesArrayController;
+@synthesize catalogInfosArrayController;
 
 @synthesize temp_preinstall_script_enabled;
 @synthesize temp_preuninstall_script_enabled;
@@ -286,6 +287,9 @@
     NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.installerChoicesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil]];
+    
+    NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES];
+    [self.catalogInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortByCatalogTitle]];
 }
 
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage
