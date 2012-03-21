@@ -387,7 +387,7 @@
 
 - (NSString *)formattedTitle
 {
-	return [self.munki_display_name stringByAppendingFormat:@" - version %@", self.munki_version];
+    return [NSString stringWithFormat:@"%@ - version %@", self.munki_name, self.munki_version];
 }
 
 - (NSString *)titleWithVersion
