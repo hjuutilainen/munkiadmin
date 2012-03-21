@@ -1129,7 +1129,8 @@
 	// Callback from makepkginfo
     
     if (pkginfoPlist) {
-        // Create a name for the new pkginfo item
+        
+        // Extract a name for the new pkginfo item
         NSString *name = [pkginfoPlist objectForKey:@"name"];
         NSString *version = [pkginfoPlist objectForKey:@"version"];
         NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
@@ -1142,30 +1143,39 @@
         // Write the pkginfo to disk and add it to our datastore
         BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:YES];
         if (saved) {
+            
+            // Rescan the main pkginfo dir for any newly created directories
+            [self configureSourceListDirectoriesSection];
+            
             // Create a scanner job but run it without an operation queue
             PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
             scanOp.canModify = YES;
             scanOp.delegate = self;
             [scanOp start];
             
-            // Select the newly created package
+            // Fetch the newly created package
             NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
             [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
             NSPredicate *pkgPred;
-            pkgPred = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_version == %@", name, version];
-            
+            pkgPred = [NSPredicate predicateWithFormat:@"packageInfoURL == %@", newPkginfoURL];
             [fetchForPackage setPredicate:pkgPred];
             
             NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
             if (numFoundPkgs == 0) {
-                
-            } else if (numFoundPkgs == 1) {
-                PackageMO *existingPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-                [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:existingPkg]];
-            } else {
-                
+                // Didn't find anything
             }
-            
+            else if (numFoundPkgs == 1) {
+                PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+                
+                // Add the newly created package to any needed containers
+                [self configureContainersForPackage:createdPkg];
+                
+                // Select the newly created package
+                [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+            }
+            else {
+                // Found multiple matches for a single URL
+            }
             [fetchForPackage release];
         }
     } else {
@@ -1752,6 +1762,7 @@
                     [packageRelationships addDependency:theOp];
 					theOp.delegate = self;
 					[self.operationQueue addOperation:theOp];
+                    
 				}
 			}
             [self.operationQueue addOperation:packageRelationships];
@@ -2116,6 +2127,98 @@
 	[fetchForApplications release];
 }
 
+- (void)configureContainersForPackage:(PackageMO *)aPackage
+{
+    NSManagedObjectContext *moc = self.managedObjectContext;
+
+    NSFetchRequest *getAllDirectories = [[NSFetchRequest alloc] init];
+    [getAllDirectories setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
+    NSArray *allDirectories = [moc executeFetchRequest:getAllDirectories error:nil];
+    [getAllDirectories release];
+    
+    DirectoryMO *basePkginfoDirectory;
+    NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
+    [fetchBaseDirectory setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
+    NSPredicate *allPackagesItemPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"All Packages"];
+    [fetchBaseDirectory setPredicate:allPackagesItemPredicate];
+    NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
+    if (foundItems > 0) {
+        basePkginfoDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
+        [aPackage addSourceListItemsObject:basePkginfoDirectory];
+    } else {
+        basePkginfoDirectory = nil;
+    }
+    [fetchBaseDirectory release];
+    
+    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [aPackage.packageInfoURL URLByDeletingLastPathComponent]];
+    DirectoryMO *aDir = [[allDirectories filteredArrayUsingPredicate:parentPredicate] objectAtIndex:0];
+    [aPackage addSourceListItemsObject:aDir];
+}
+
+- (void)configureSourceListDirectoriesSection
+{
+    PackageSourceListItemMO *directoriesGroupItem = nil;
+    NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
+    [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext]];
+    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"DIRECTORIES"];
+    [groupItemRequest setPredicate:parentPredicate];
+    NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:groupItemRequest error:nil];
+    if (foundItems > 0) {
+        directoriesGroupItem = [[self.managedObjectContext executeFetchRequest:groupItemRequest error:nil] objectAtIndex:0];
+    } else {
+        directoriesGroupItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+        directoriesGroupItem.title = @"DIRECTORIES";
+        directoriesGroupItem.originalIndexValue = 1;
+        directoriesGroupItem.parent = nil;
+        directoriesGroupItem.isGroupItemValue = YES;
+    }
+    [groupItemRequest release];
+    
+    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
+	NSFileManager *fm = [NSFileManager defaultManager];
+        
+	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	for (NSURL *anURL in pkgsInfoDirEnum)
+	{
+		NSNumber *isDir;
+		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+		if ([isDir boolValue]) {
+            //NSLog(@"Got directory: %@", [anURL relativePath]);
+            
+            NSFetchRequest *checkForExistingRequest = [[NSFetchRequest alloc] init];
+            [checkForExistingRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
+            NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", anURL];
+            [checkForExistingRequest setPredicate:parentPredicate];
+            NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:checkForExistingRequest error:nil];
+            if (foundItems == 0) {
+                DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+                newDirectory.originalURL = anURL;
+                newDirectory.originalIndexValue = 10;
+                newDirectory.type = @"regular";
+                NSString *newTitle;
+                [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
+                newDirectory.title = newTitle;
+                NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
+                if ([parentDirectory isEqual:self.pkgsInfoURL]) {
+                    newDirectory.parent = directoriesGroupItem;
+                } else {
+                    NSFetchRequest *parentRequest = [[NSFetchRequest alloc] init];
+                    [parentRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
+                    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
+                    [parentRequest setPredicate:parentPredicate];
+                    NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:parentRequest error:nil];
+                    if (foundItems > 0) {
+                        DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:parentRequest error:nil] objectAtIndex:0];
+                        newDirectory.parent = parent;
+                    }
+                    [parentRequest release];
+                }
+            }
+            [checkForExistingRequest release];
+        }
+	}
+}
+
 - (void)scanCurrentRepoForPackages
 {
 	// Scan the current repo for already existing pkginfo files
@@ -2138,13 +2241,15 @@
     newDirectory.parent = newSourceListItem2;
     newDirectory.originalIndexValue = 10;
     
+    [self configureSourceListDirectoriesSection];
     
+    /*
     PackageSourceListItemMO *newSourceListItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
     newSourceListItem.title = @"DIRECTORIES";
     newSourceListItem.originalIndexValue = 1;
     newSourceListItem.parent = nil;
     newSourceListItem.isGroupItemValue = YES;
-    
+    */
     
     
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
@@ -2166,6 +2271,7 @@
 			
 		} else {
             //NSLog(@"Got directory: %@", [anURL relativePath]);
+            /*
             DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
             newDirectory.originalURL = anURL;
             newDirectory.originalIndexValue = 10;
@@ -2189,6 +2295,7 @@
 				}
 				[request release];
             }
+             */
         }
 	}
     
