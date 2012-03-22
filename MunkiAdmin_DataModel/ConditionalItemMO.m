@@ -1,6 +1,8 @@
 #import "ConditionalItemMO.h"
 #import "StringObjectMO.h"
 
+#define kSeparatorCharacter 0x02192
+
 @implementation ConditionalItemMO
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
@@ -18,7 +20,8 @@
 - (NSString *)titleWithParentTitle
 {
     if (self.parent) {
-        return [NSString stringWithFormat:@"%@ -> %@", self.parent.titleWithParentTitle, self.munki_condition];
+        // Return a string representation with conditions separated with an arrow character
+        return [NSString stringWithFormat:@"%@ %C %@", self.parent.titleWithParentTitle, kSeparatorCharacter, self.munki_condition];
     } else {
         return self.munki_condition;
     }

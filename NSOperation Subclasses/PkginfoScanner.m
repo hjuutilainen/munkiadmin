@@ -209,6 +209,8 @@
 			}
             
             if (aNewPackage.packageURL != nil) {
+                NSFileManager *fm = [NSFileManager defaultManager];
+                if ([fm fileExistsAtPath:[aNewPackage.packageURL relativePath]]) {
                 NSDate *packageDateCreated;
                 [aNewPackage.packageURL getResourceValue:&packageDateCreated forKey:NSURLCreationDateKey error:nil];
                 aNewPackage.packageDateCreated = packageDateCreated;
@@ -220,6 +222,7 @@
                 NSDate *packageDateModified;
                 [aNewPackage.packageURL getResourceValue:&packageDateModified forKey:NSURLContentModificationDateKey error:nil];
                 aNewPackage.packageDateModified = packageDateModified;
+                }
             }
 			
 			// =================================
