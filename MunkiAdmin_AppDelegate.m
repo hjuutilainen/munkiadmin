@@ -1414,19 +1414,25 @@
 	}
     if (returnCode == NSCancelButton) return;
     
+    NSString *thePredicateString = nil;
+    if ([predicateEditor.tabView selectedTabViewItem] == predicateEditor.predicateEditorTabViewItem) {
+        thePredicateString = [predicateEditor.predicate description];
+    } else {
+        thePredicateString = [predicateEditor.customTextField stringValue];
+    }
+    
     NSArray *selectedManifests = [manifestsArrayController selectedObjects];
     NSArray *selectedConditionalItems = [[manifestDetailViewController conditionsTreeController] selectedObjects];
     
     for (ManifestMO *selectedManifest in selectedManifests) {
         if ([[[manifestDetailViewController conditionsTreeController] selectedObjects] count] == 0) {
             ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
-            newConditionalItem.munki_condition = [predicateEditor.predicate description];
+            newConditionalItem.munki_condition = thePredicateString;
             newConditionalItem.manifest = selectedManifest;
         } else {
             for (id selectedConditionalItem in selectedConditionalItems) {
-                NSLog(@"%@", [selectedConditionalItem class]);
                 ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
-                newConditionalItem.munki_condition = [predicateEditor.predicate description];
+                newConditionalItem.munki_condition = thePredicateString;
                 newConditionalItem.manifest = selectedManifest;
                 newConditionalItem.parent = selectedConditionalItem;
             }
@@ -1442,8 +1448,15 @@
 	}
     if (returnCode == NSCancelButton) return;
     
+    NSString *thePredicateString = nil;
+    if ([predicateEditor.tabView selectedTabViewItem] == predicateEditor.predicateEditorTabViewItem) {
+        thePredicateString = [predicateEditor.predicate description];
+    } else {
+        thePredicateString = [predicateEditor.customTextField stringValue];
+    }
+    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    predicateEditor.conditionToEdit.munki_condition = [predicateEditor.predicate description];
+    predicateEditor.conditionToEdit.munki_condition = thePredicateString;
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
@@ -1462,14 +1475,28 @@
 - (IBAction)editConditionalItemAction:(id)sender
 {
     ConditionalItemMO *selectedCondition = [[manifestDetailViewController.conditionsTreeController selectedObjects] lastObject];
-    predicateEditor.conditionToEdit = selectedCondition;
-    predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
     
-    [NSApp beginSheet:[predicateEditor window] 
-	   modalForWindow:self.window 
-        modalDelegate:self 
-	   didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:) 
-          contextInfo:nil];
+    @try {
+        NSPredicate *predicateToEdit = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
+        if (predicateToEdit != nil) {
+            predicateEditor.conditionToEdit = selectedCondition;
+            predicateEditor.customPredicateString = selectedCondition.munki_condition;
+            predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
+            
+            [NSApp beginSheet:[predicateEditor window] 
+               modalForWindow:self.window 
+                modalDelegate:self 
+               didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:) 
+                  contextInfo:nil];
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+    @finally {
+        
+    }
+    
 }
 
 - (IBAction)removeConditionalItemAction:(id)sender

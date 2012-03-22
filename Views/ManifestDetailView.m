@@ -88,6 +88,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
     NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.conditionalItemsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
     [self.conditionsTreeController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
+    [self.conditionsOutlineView expandItem:nil expandChildren:YES];
 }
 
 

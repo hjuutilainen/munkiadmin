@@ -13,7 +13,12 @@
 @implementation PredicateEditor
 @synthesize predicateEditor;
 @synthesize predicate;
+@synthesize tabView;
+@synthesize customTextField;
+@synthesize predicateEditorTabViewItem;
+@synthesize customTabViewItem;
 @synthesize conditionToEdit;
+@synthesize customPredicateString;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -33,6 +38,7 @@
 - (void)resetPredicateToDefault
 {
     self.predicate = [NSPredicate predicateWithFormat:DEFAULT_PREDICATE];
+    self.customPredicateString = [NSString stringWithString:DEFAULT_PREDICATE];
 }
 
 - (void)saveAction:(id)sender;

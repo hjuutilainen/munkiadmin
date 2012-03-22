@@ -337,7 +337,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="459059165"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="465133055">
 														<int key="NSCellFlags">-2080244224</int>
@@ -593,7 +592,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="427522403"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="1005437030">
 														<int key="NSCellFlags">-2080244224</int>
@@ -841,7 +839,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="407575700"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="877626915">
 														<int key="NSCellFlags">-2080244224</int>
@@ -1089,7 +1086,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="992120573"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="924179530">
 														<int key="NSCellFlags">-2080244224</int>
@@ -1251,7 +1247,6 @@
 													<int key="NSvFlags">-2147483392</int>
 													<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 													<reference key="NSSuperview" ref="13419997"/>
-													<reference key="NSNextKeyView"/>
 													<int key="NSsFlags">1</int>
 													<reference key="NSTarget" ref="13419997"/>
 													<string key="NSAction">_doScroller:</string>
@@ -1492,7 +1487,6 @@
 													<int key="NSvFlags">292</int>
 													<string key="NSFrame">{{24, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="191709709"/>
-													<reference key="NSNextKeyView"/>
 													<bool key="NSEnabled">YES</bool>
 													<object class="NSButtonCell" key="NSCell" id="490680572">
 														<int key="NSCellFlags">-2080244224</int>
@@ -1558,7 +1552,7 @@
 												<object class="NSButton" id="254776431">
 													<reference key="NSNextResponder" ref="528092977"/>
 													<int key="NSvFlags">292</int>
-													<string key="NSFrame">{{2, 1}, {23, 23}}</string>
+													<string key="NSFrame">{{3, 1}, {23, 23}}</string>
 													<reference key="NSSuperview" ref="528092977"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="233994447"/>
@@ -1569,8 +1563,12 @@
 														<string key="NSContents">...</string>
 														<reference key="NSSupport" ref="188568672"/>
 														<reference key="NSControlView" ref="254776431"/>
-														<int key="NSButtonFlags">-2046541569</int>
+														<int key="NSButtonFlags">-2042347265</int>
 														<int key="NSButtonFlags2">162</int>
+														<object class="NSCustomResource" key="NSNormalImage">
+															<string key="NSClassName">NSImage</string>
+															<string key="NSResourceName">NSActionTemplate</string>
+														</object>
 														<string key="NSAlternateContents"/>
 														<string key="NSKeyEquivalent"/>
 														<int key="NSPeriodicDelay">400</int>
@@ -2102,19 +2100,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">addNewConditionalItemAction:</string>
-						<reference key="source" ref="1003"/>
-						<reference key="destination" ref="233994447"/>
-					</object>
-					<int key="connectionID">485</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">editConditionalItemAction:</string>
 						<reference key="source" ref="1003"/>
 						<reference key="destination" ref="254776431"/>
 					</object>
 					<int key="connectionID">486</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">addNewConditionalItemAction:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="233994447"/>
+					</object>
+					<int key="connectionID">526</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2731,7 +2729,7 @@
 						<string key="label">contentValues: arrangedObjects.titleWithParentTitle</string>
 						<reference key="source" ref="904771043"/>
 						<reference key="destination" ref="1060908503"/>
-						<object class="NSNibBindingConnector" key="connector" id="179483417">
+						<object class="NSNibBindingConnector" key="connector" id="42561683">
 							<reference key="NSSource" ref="904771043"/>
 							<reference key="NSDestination" ref="1060908503"/>
 							<string key="NSLabel">contentValues: arrangedObjects.titleWithParentTitle</string>
@@ -2758,7 +2756,7 @@
 							<string key="NSLabel">selectedObject: arrangedObjects.managedUninstallConditionalReference</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">arrangedObjects.managedUninstallConditionalReference</string>
-							<reference key="NSPreviousConnector" ref="179483417"/>
+							<reference key="NSPreviousConnector" ref="42561683"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -2789,7 +2787,7 @@
 						<string key="label">contentValues: arrangedObjects.titleWithParentTitle</string>
 						<reference key="source" ref="760741273"/>
 						<reference key="destination" ref="1060908503"/>
-						<object class="NSNibBindingConnector" key="connector" id="184999115">
+						<object class="NSNibBindingConnector" key="connector" id="602038647">
 							<reference key="NSSource" ref="760741273"/>
 							<reference key="NSDestination" ref="1060908503"/>
 							<string key="NSLabel">contentValues: arrangedObjects.titleWithParentTitle</string>
@@ -2816,7 +2814,7 @@
 							<string key="NSLabel">selectedObject: arrangedObjects.optionalInstallConditionalReference</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">arrangedObjects.optionalInstallConditionalReference</string>
-							<reference key="NSPreviousConnector" ref="184999115"/>
+							<reference key="NSPreviousConnector" ref="602038647"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -2847,7 +2845,7 @@
 						<string key="label">contentValues: arrangedObjects.titleWithParentTitle</string>
 						<reference key="source" ref="226012746"/>
 						<reference key="destination" ref="1060908503"/>
-						<object class="NSNibBindingConnector" key="connector" id="684904676">
+						<object class="NSNibBindingConnector" key="connector" id="920257694">
 							<reference key="NSSource" ref="226012746"/>
 							<reference key="NSDestination" ref="1060908503"/>
 							<string key="NSLabel">contentValues: arrangedObjects.titleWithParentTitle</string>
@@ -2874,7 +2872,7 @@
 							<string key="NSLabel">selectedObject: arrangedObjects.managedUpdateConditionalReference</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">arrangedObjects.managedUpdateConditionalReference</string>
-							<reference key="NSPreviousConnector" ref="684904676"/>
+							<reference key="NSPreviousConnector" ref="920257694"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -2905,7 +2903,7 @@
 						<string key="label">contentValues: arrangedObjects.titleWithParentTitle</string>
 						<reference key="source" ref="429725938"/>
 						<reference key="destination" ref="1060908503"/>
-						<object class="NSNibBindingConnector" key="connector" id="369469650">
+						<object class="NSNibBindingConnector" key="connector" id="144201833">
 							<reference key="NSSource" ref="429725938"/>
 							<reference key="NSDestination" ref="1060908503"/>
 							<string key="NSLabel">contentValues: arrangedObjects.titleWithParentTitle</string>
@@ -2932,7 +2930,7 @@
 							<string key="NSLabel">selectedObject: arrangedObjects.includedManifestConditionalReference</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">arrangedObjects.includedManifestConditionalReference</string>
-							<reference key="NSPreviousConnector" ref="369469650"/>
+							<reference key="NSPreviousConnector" ref="144201833"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -3033,7 +3031,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">481</int>
+					<int key="connectionID">538</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3049,7 +3047,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">482</int>
+					<int key="connectionID">534</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3065,7 +3063,7 @@
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">483</int>
+					<int key="connectionID">536</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4253,7 +4251,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">518</int>
+			<int key="maxID">538</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4848,6 +4846,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NSActionTemplate">{15, 15}</string>
 			<string key="NSAddTemplate">{8, 8}</string>
 			<string key="NSMenuCheckmark">{11, 11}</string>
 			<string key="NSMenuMixedState">{10, 3}</string>
