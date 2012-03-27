@@ -1400,6 +1400,8 @@
                     [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
                     break;
             }
+        } else {
+            [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
         }
     }
 }

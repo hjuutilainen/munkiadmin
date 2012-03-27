@@ -54,6 +54,9 @@
     //[self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:YES];
     //[self.conditionsOutlineView setAutoresizesSubviews:NO];
     
+    [self.packagesTableView setTarget:[NSApp delegate]];
+    [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
+    
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortByMunkiName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
