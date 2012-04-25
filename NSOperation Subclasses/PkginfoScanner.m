@@ -467,6 +467,26 @@
                         }
                     }
                     
+                    // Requires
+                    if ([self.defaults boolForKey:@"assimilate_requires"]) {
+                        for (StringObjectMO *requiresItem in latestPackage.requirements) {
+                            StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                            newRequiredPkgInfo.title = requiresItem.title;
+                            newRequiredPkgInfo.typeString = @"package";
+                            [aNewPackage addRequirementsObject:newRequiredPkgInfo];
+                        }
+                    }
+                    
+                    // Supported architectures
+                    if ([self.defaults boolForKey:@"assimilate_supported_architectures"]) {
+                        for (StringObjectMO *supportedArch in latestPackage.supportedArchitectures) {
+                            StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                            newSupportedArchitecture.title = supportedArch.title;
+                            newSupportedArchitecture.typeString = @"architecture";
+                            [aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
+                        }
+                    }
+                    
                     [existingApplication addPackagesObject:aNewPackage];
 					
 				} else {
