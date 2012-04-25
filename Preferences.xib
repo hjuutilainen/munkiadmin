@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<string key="IBDocument.SystemVersion">11D50b</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.32</string>
+		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1938</string>
+			<string key="NS.object.0">2182</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -71,7 +71,7 @@
 					<object class="NSButton" id="303745466">
 						<reference key="NSNextResponder" ref="359875168"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{168, 150}, {190, 18}}</string>
+						<string key="NSFrame">{{168, 150}, {223, 18}}</string>
 						<reference key="NSSuperview" ref="359875168"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="396489828"/>
@@ -79,7 +79,7 @@
 						<object class="NSButtonCell" key="NSCell" id="588197976">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Copy minimum OS version</string>
+							<string key="NSContents">Assimilate minimum OS version</string>
 							<object class="NSFont" key="NSSupport" id="567784504">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">13</double>
@@ -282,7 +282,7 @@
 						<object class="NSButtonCell" key="NSCell" id="621531280">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Copy description from existing</string>
+							<string key="NSContents">Assimilate description</string>
 							<reference key="NSSupport" ref="567784504"/>
 							<reference key="NSControlView" ref="32719859"/>
 							<int key="NSButtonFlags">1211912703</int>
@@ -298,7 +298,7 @@
 					<object class="NSButton" id="988594253">
 						<reference key="NSNextResponder" ref="359875168"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{168, 190}, {233, 18}}</string>
+						<string key="NSFrame">{{168, 190}, {177, 18}}</string>
 						<reference key="NSSuperview" ref="359875168"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="32719859"/>
@@ -306,7 +306,7 @@
 						<object class="NSButtonCell" key="NSCell" id="139053603">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Copy display_name from existing</string>
+							<string key="NSContents">Assimilate display_name</string>
 							<reference key="NSSupport" ref="567784504"/>
 							<reference key="NSControlView" ref="988594253"/>
 							<int key="NSButtonFlags">1211912703</int>
@@ -1089,35 +1089,35 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.UseExistingDisplayNameForPackages</string>
+						<string key="label">value: values.assimilate_display_name</string>
 						<reference key="source" ref="988594253"/>
 						<reference key="destination" ref="214307732"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="988594253"/>
 							<reference key="NSDestination" ref="214307732"/>
-							<string key="NSLabel">value: values.UseExistingDisplayNameForPackages</string>
+							<string key="NSLabel">value: values.assimilate_display_name</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.UseExistingDisplayNameForPackages</string>
+							<string key="NSKeyPath">values.assimilate_display_name</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">56</int>
+					<int key="connectionID">146</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.UseExistingDescriptionForPackages</string>
+						<string key="label">value: values.assimilate_description</string>
 						<reference key="source" ref="32719859"/>
 						<reference key="destination" ref="214307732"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="32719859"/>
 							<reference key="NSDestination" ref="214307732"/>
-							<string key="NSLabel">value: values.UseExistingDescriptionForPackages</string>
+							<string key="NSLabel">value: values.assimilate_description</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.UseExistingDescriptionForPackages</string>
+							<string key="NSKeyPath">values.assimilate_description</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">57</int>
+					<int key="connectionID">147</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1249,19 +1249,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.UseExistingMinOSVersionForPackages</string>
+						<string key="label">value: values.assimilate_minimum_os_version</string>
 						<reference key="source" ref="303745466"/>
 						<reference key="destination" ref="214307732"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="303745466"/>
 							<reference key="NSDestination" ref="214307732"/>
-							<string key="NSLabel">value: values.UseExistingMinOSVersionForPackages</string>
+							<string key="NSLabel">value: values.assimilate_minimum_os_version</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.UseExistingMinOSVersionForPackages</string>
+							<string key="NSKeyPath">values.assimilate_minimum_os_version</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">90</int>
+					<int key="connectionID">148</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2150,7 +2150,7 @@
 					<string>9.IBPluginDependency</string>
 					<string>91.IBPluginDependency</string>
 				</object>
-				<object class="NSMutableArray" key="dict.values">
+				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2253,7 +2253,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">145</int>
+			<int key="maxID">148</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2270,7 +2270,7 @@
 							<string>munkiView</string>
 							<string>myWindow</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSView</string>
 							<string>NSView</string>
@@ -2287,7 +2287,7 @@
 							<string>munkiView</string>
 							<string>myWindow</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">advancedView</string>
@@ -2334,10 +2334,10 @@
 				<string>NSMenuMixedState</string>
 				<string>NSSwitch</string>
 			</object>
-			<object class="NSMutableArray" key="dict.values">
+			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{9, 8}</string>
-				<string>{7, 2}</string>
+				<string>{11, 11}</string>
+				<string>{10, 3}</string>
 				<string>{15, 15}</string>
 			</object>
 		</object>
