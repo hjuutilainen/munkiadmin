@@ -37,7 +37,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isEnabledForCatalog;
+@property (nonatomic, retain) NSNumber* isEnabledForCatalog;
 
 
 @property BOOL isEnabledForCatalogValue;
@@ -49,7 +49,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -61,7 +61,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString* title;
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -94,8 +94,8 @@ extern const struct PackageInfoMOFetchedProperties {
 @interface _PackageInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveIsEnabledForCatalog;
-- (void)setPrimitiveIsEnabledForCatalog:(NSNumber *)value;
+- (NSNumber*)primitiveIsEnabledForCatalog;
+- (void)setPrimitiveIsEnabledForCatalog:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForCatalogValue;
 - (void)setPrimitiveIsEnabledForCatalogValue:(BOOL)value_;
@@ -103,8 +103,8 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -112,8 +112,8 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-- (NSString *)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString *)value;
+- (NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString*)value;
 
 
 

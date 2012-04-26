@@ -41,7 +41,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isGroupItem;
+@property (nonatomic, retain) NSNumber* isGroupItem;
 
 
 @property BOOL isGroupItemValue;
@@ -53,7 +53,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -65,7 +65,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString* title;
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -73,7 +73,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *type;
+@property (nonatomic, retain) NSString* type;
 
 
 //- (BOOL)validateType:(id*)value_ error:(NSError**)error_;
@@ -123,8 +123,8 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 @interface _PackageSourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveIsGroupItem;
-- (void)setPrimitiveIsGroupItem:(NSNumber *)value;
+- (NSNumber*)primitiveIsGroupItem;
+- (void)setPrimitiveIsGroupItem:(NSNumber*)value;
 
 - (BOOL)primitiveIsGroupItemValue;
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_;
@@ -132,8 +132,8 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -141,14 +141,14 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-- (NSString *)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString *)value;
+- (NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveType;
-- (void)setPrimitiveType:(NSString *)value;
+- (NSString*)primitiveType;
+- (void)setPrimitiveType:(NSString*)value;
 
 
 

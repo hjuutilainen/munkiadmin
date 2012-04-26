@@ -41,7 +41,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *indexInManifest;
+@property (nonatomic, retain) NSNumber* indexInManifest;
 
 
 @property int32_t indexInManifestValue;
@@ -53,7 +53,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isEnabledForManifest;
+@property (nonatomic, retain) NSNumber* isEnabledForManifest;
 
 
 @property BOOL isEnabledForManifestValue;
@@ -65,7 +65,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isEnabledForPackage;
+@property (nonatomic, retain) NSNumber* isEnabledForPackage;
 
 
 @property BOOL isEnabledForPackageValue;
@@ -77,7 +77,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -121,8 +121,8 @@ extern const struct CatalogInfoMOFetchedProperties {
 @interface _CatalogInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveIndexInManifest;
-- (void)setPrimitiveIndexInManifest:(NSNumber *)value;
+- (NSNumber*)primitiveIndexInManifest;
+- (void)setPrimitiveIndexInManifest:(NSNumber*)value;
 
 - (int32_t)primitiveIndexInManifestValue;
 - (void)setPrimitiveIndexInManifestValue:(int32_t)value_;
@@ -130,8 +130,8 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveIsEnabledForManifest;
-- (void)setPrimitiveIsEnabledForManifest:(NSNumber *)value;
+- (NSNumber*)primitiveIsEnabledForManifest;
+- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
@@ -139,8 +139,8 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveIsEnabledForPackage;
-- (void)setPrimitiveIsEnabledForPackage:(NSNumber *)value;
+- (NSNumber*)primitiveIsEnabledForPackage;
+- (void)setPrimitiveIsEnabledForPackage:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForPackageValue;
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_;
@@ -148,8 +148,8 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;

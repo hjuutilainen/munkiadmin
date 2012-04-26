@@ -41,7 +41,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_description;
+@property (nonatomic, retain) NSString* munki_description;
 
 
 //- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
@@ -49,7 +49,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_display_name;
+@property (nonatomic, retain) NSString* munki_display_name;
 
 
 //- (BOOL)validateMunki_display_name:(id*)value_ error:(NSError**)error_;
@@ -57,7 +57,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_name;
+@property (nonatomic, retain) NSString* munki_name;
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
@@ -124,20 +124,20 @@ extern const struct ApplicationMOFetchedProperties {
 @interface _ApplicationMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString *)primitiveMunki_description;
-- (void)setPrimitiveMunki_description:(NSString *)value;
+- (NSString*)primitiveMunki_description;
+- (void)setPrimitiveMunki_description:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_display_name;
-- (void)setPrimitiveMunki_display_name:(NSString *)value;
+- (NSString*)primitiveMunki_display_name;
+- (void)setPrimitiveMunki_display_name:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_name;
-- (void)setPrimitiveMunki_name:(NSString *)value;
+- (NSString*)primitiveMunki_name;
+- (void)setPrimitiveMunki_name:(NSString*)value;
 
 
 

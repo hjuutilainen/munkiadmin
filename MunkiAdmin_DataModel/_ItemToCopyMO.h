@@ -41,7 +41,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_destination_path;
+@property (nonatomic, retain) NSString* munki_destination_path;
 
 
 //- (BOOL)validateMunki_destination_path:(id*)value_ error:(NSError**)error_;
@@ -49,7 +49,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_group;
+@property (nonatomic, retain) NSString* munki_group;
 
 
 //- (BOOL)validateMunki_group:(id*)value_ error:(NSError**)error_;
@@ -57,7 +57,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_mode;
+@property (nonatomic, retain) NSString* munki_mode;
 
 
 //- (BOOL)validateMunki_mode:(id*)value_ error:(NSError**)error_;
@@ -65,7 +65,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_source_item;
+@property (nonatomic, retain) NSString* munki_source_item;
 
 
 //- (BOOL)validateMunki_source_item:(id*)value_ error:(NSError**)error_;
@@ -73,7 +73,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_user;
+@property (nonatomic, retain) NSString* munki_user;
 
 
 //- (BOOL)validateMunki_user:(id*)value_ error:(NSError**)error_;
@@ -81,7 +81,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -111,38 +111,38 @@ extern const struct ItemToCopyMOFetchedProperties {
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString *)primitiveMunki_destination_path;
-- (void)setPrimitiveMunki_destination_path:(NSString *)value;
+- (NSString*)primitiveMunki_destination_path;
+- (void)setPrimitiveMunki_destination_path:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_group;
-- (void)setPrimitiveMunki_group:(NSString *)value;
+- (NSString*)primitiveMunki_group;
+- (void)setPrimitiveMunki_group:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_mode;
-- (void)setPrimitiveMunki_mode:(NSString *)value;
+- (NSString*)primitiveMunki_mode;
+- (void)setPrimitiveMunki_mode:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_source_item;
-- (void)setPrimitiveMunki_source_item:(NSString *)value;
+- (NSString*)primitiveMunki_source_item;
+- (void)setPrimitiveMunki_source_item:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_user;
-- (void)setPrimitiveMunki_user:(NSString *)value;
+- (NSString*)primitiveMunki_user;
+- (void)setPrimitiveMunki_user:(NSString*)value;
 
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;

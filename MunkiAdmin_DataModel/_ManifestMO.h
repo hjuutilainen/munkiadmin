@@ -84,7 +84,7 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString* title;
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -305,8 +305,8 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
-- (NSString *)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString *)value;
+- (NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString*)value;
 
 
 

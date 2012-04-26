@@ -37,7 +37,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *munki_attributeSetting;
+@property (nonatomic, retain) NSNumber* munki_attributeSetting;
 
 
 @property BOOL munki_attributeSettingValue;
@@ -49,7 +49,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_choiceAttribute;
+@property (nonatomic, retain) NSString* munki_choiceAttribute;
 
 
 //- (BOOL)validateMunki_choiceAttribute:(id*)value_ error:(NSError**)error_;
@@ -57,7 +57,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *munki_choiceIdentifier;
+@property (nonatomic, retain) NSString* munki_choiceIdentifier;
 
 
 //- (BOOL)validateMunki_choiceIdentifier:(id*)value_ error:(NSError**)error_;
@@ -65,7 +65,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -95,8 +95,8 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 @interface _InstallerChoicesItemMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveMunki_attributeSetting;
-- (void)setPrimitiveMunki_attributeSetting:(NSNumber *)value;
+- (NSNumber*)primitiveMunki_attributeSetting;
+- (void)setPrimitiveMunki_attributeSetting:(NSNumber*)value;
 
 - (BOOL)primitiveMunki_attributeSettingValue;
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_;
@@ -104,20 +104,20 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-- (NSString *)primitiveMunki_choiceAttribute;
-- (void)setPrimitiveMunki_choiceAttribute:(NSString *)value;
+- (NSString*)primitiveMunki_choiceAttribute;
+- (void)setPrimitiveMunki_choiceAttribute:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveMunki_choiceIdentifier;
-- (void)setPrimitiveMunki_choiceIdentifier:(NSString *)value;
+- (NSString*)primitiveMunki_choiceIdentifier;
+- (void)setPrimitiveMunki_choiceIdentifier:(NSString*)value;
 
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;

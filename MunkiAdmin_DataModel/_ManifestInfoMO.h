@@ -35,7 +35,7 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isAvailableForEditing;
+@property (nonatomic, retain) NSNumber* isAvailableForEditing;
 
 
 @property BOOL isAvailableForEditingValue;
@@ -47,7 +47,7 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *isEnabledForManifest;
+@property (nonatomic, retain) NSNumber* isEnabledForManifest;
 
 
 @property BOOL isEnabledForManifestValue;
@@ -84,8 +84,8 @@ extern const struct ManifestInfoMOFetchedProperties {
 @interface _ManifestInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveIsAvailableForEditing;
-- (void)setPrimitiveIsAvailableForEditing:(NSNumber *)value;
+- (NSNumber*)primitiveIsAvailableForEditing;
+- (void)setPrimitiveIsAvailableForEditing:(NSNumber*)value;
 
 - (BOOL)primitiveIsAvailableForEditingValue;
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_;
@@ -93,8 +93,8 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveIsEnabledForManifest;
-- (void)setPrimitiveIsEnabledForManifest:(NSNumber *)value;
+- (NSNumber*)primitiveIsEnabledForManifest;
+- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;

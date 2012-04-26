@@ -69,7 +69,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *indexInNestedManifest;
+@property (nonatomic, retain) NSNumber* indexInNestedManifest;
 
 
 @property int32_t indexInNestedManifestValue;
@@ -81,7 +81,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber *originalIndex;
+@property (nonatomic, retain) NSNumber* originalIndex;
 
 
 @property int32_t originalIndexValue;
@@ -93,7 +93,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString* title;
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -101,7 +101,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString *typeString;
+@property (nonatomic, retain) NSString* typeString;
 
 
 //- (BOOL)validateTypeString:(id*)value_ error:(NSError**)error_;
@@ -236,8 +236,8 @@ extern const struct StringObjectMOFetchedProperties {
 @interface _StringObjectMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber *)primitiveIndexInNestedManifest;
-- (void)setPrimitiveIndexInNestedManifest:(NSNumber *)value;
+- (NSNumber*)primitiveIndexInNestedManifest;
+- (void)setPrimitiveIndexInNestedManifest:(NSNumber*)value;
 
 - (int32_t)primitiveIndexInNestedManifestValue;
 - (void)setPrimitiveIndexInNestedManifestValue:(int32_t)value_;
@@ -245,8 +245,8 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-- (NSNumber *)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber *)value;
+- (NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -254,14 +254,14 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-- (NSString *)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString *)value;
+- (NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(NSString*)value;
 
 
 
 
-- (NSString *)primitiveTypeString;
-- (void)setPrimitiveTypeString:(NSString *)value;
+- (NSString*)primitiveTypeString;
+- (void)setPrimitiveTypeString:(NSString*)value;
 
 
 
