@@ -1922,6 +1922,7 @@
                                  @"installer_item_size",
                                  @"installer_item_size",
                                  @"maximum_os_version",
+                                 @"minimum_munki_version",
                                  @"minimum_os_version",
                                  @"notes",
                                  @"package_path",

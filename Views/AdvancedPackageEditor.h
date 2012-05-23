@@ -14,6 +14,7 @@
 @interface AdvancedPackageEditor : NSWindowController {
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
+    NSArray *osVersions;
     
     NSDate      *temp_force_install_after_date;
     BOOL        temp_force_install_after_date_enabled;
@@ -83,5 +84,6 @@
 @property (retain) NSString    *temp_preinstall_script;
 @property (retain) NSString    *temp_preuninstall_script;
 @property (retain) NSString    *temp_uninstall_script;
+@property (retain) NSArray     *osVersions;
 
 @end

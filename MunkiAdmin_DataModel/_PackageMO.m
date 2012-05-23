@@ -17,6 +17,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_installer_item_size = @"munki_installer_item_size",
 	.munki_installer_type = @"munki_installer_type",
 	.munki_maximum_os_version = @"munki_maximum_os_version",
+	.munki_minimum_munki_version = @"munki_minimum_munki_version",
 	.munki_minimum_os_version = @"munki_minimum_os_version",
 	.munki_name = @"munki_name",
 	.munki_notes = @"munki_notes",
@@ -315,6 +316,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 @dynamic munki_maximum_os_version;
+
+
+
+
+
+
+@dynamic munki_minimum_munki_version;
 
 
 

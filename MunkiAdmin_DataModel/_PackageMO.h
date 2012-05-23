@@ -18,6 +18,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_installer_item_size;
 	 NSString *munki_installer_type;
 	 NSString *munki_maximum_os_version;
+	 NSString *munki_minimum_munki_version;
 	 NSString *munki_minimum_os_version;
 	 NSString *munki_name;
 	 NSString *munki_notes;
@@ -81,6 +82,7 @@ extern const struct PackageMOFetchedProperties {
 @class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
 
 
 
@@ -255,6 +257,14 @@ extern const struct PackageMOFetchedProperties {
 
 
 //- (BOOL)validateMunki_maximum_os_version:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString* munki_minimum_munki_version;
+
+
+//- (BOOL)validateMunki_minimum_munki_version:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -754,6 +764,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSString*)primitiveMunki_maximum_os_version;
 - (void)setPrimitiveMunki_maximum_os_version:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_minimum_munki_version;
+- (void)setPrimitiveMunki_minimum_munki_version:(NSString*)value;
 
 
 

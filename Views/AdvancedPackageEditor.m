@@ -41,6 +41,7 @@
 @synthesize modalSession;
 @synthesize pkginfoToEdit;
 @synthesize delegate;
+@synthesize osVersions;
 
 - (NSUndoManager*)windowWillReturnUndoManager:(NSWindow*)window
 {
@@ -260,6 +261,22 @@
     [super windowDidLoad];
     
     pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
+    
+    NSSortDescriptor *sortOSVersions = [NSSortDescriptor sortDescriptorWithKey:nil 
+                                                                     ascending:NO 
+                                                                      selector:@selector(localizedStandardCompare:)];
+    
+    self.osVersions = [[NSArray arrayWithObjects:
+                        @"10.4.11", 
+                        @"10.5.8", 
+                        @"10.6.8", 
+                        @"10.6.99", 
+                        @"10.7.0", 
+                        @"10.7.3", 
+                        @"10.7.4", 
+                        @"10.7.99", 
+                        nil] 
+                       sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortOSVersions]];
     
     // Set the force_install_after_date date picker to use UTC
     [self.forceInstallDatePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
