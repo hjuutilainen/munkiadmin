@@ -189,12 +189,11 @@
 	openPanel.canChooseDirectories = YES;
 	openPanel.canChooseFiles = NO;
 	openPanel.resolvesAliases = YES;
-	openPanel.directoryURL = [NSURL URLWithString:[self.defaults stringForKey:@"openRepositoryLastDir"]];
-	
+	openPanel.directoryURL = [self.defaults URLForKey:@"openRepositoryLastDir"];
+    
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
-		NSString *lastPath = [[[openPanel URLs] objectAtIndex:0] relativePath];
-		[self.defaults setValue:lastPath forKey:@"openRepositoryLastDir"];
+		[self.defaults setURL:[[openPanel URLs] objectAtIndex:0] forKey:@"openRepositoryLastDir"];
 		return [[openPanel URLs] objectAtIndex:0];
 	} else {
 		return nil;
@@ -1924,6 +1923,7 @@
                                  @"installer_item_size",
                                  @"maximum_os_version",
                                  @"minimum_os_version",
+                                 @"notes",
                                  @"package_path",
                                  @"preinstall_script",
                                  @"preuninstall_script",

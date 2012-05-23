@@ -20,6 +20,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_maximum_os_version;
 	 NSString *munki_minimum_os_version;
 	 NSString *munki_name;
+	 NSString *munki_notes;
 	 NSString *munki_package_path;
 	 NSString *munki_postinstall_script;
 	 NSString *munki_postuninstall_script;
@@ -80,6 +81,7 @@ extern const struct PackageMOFetchedProperties {
 @class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
 
 
 
@@ -269,6 +271,14 @@ extern const struct PackageMOFetchedProperties {
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString* munki_notes;
+
+
+//- (BOOL)validateMunki_notes:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -756,6 +766,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSString*)primitiveMunki_name;
 - (void)setPrimitiveMunki_name:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_notes;
+- (void)setPrimitiveMunki_notes:(NSString*)value;
 
 
 

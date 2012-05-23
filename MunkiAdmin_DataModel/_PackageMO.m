@@ -19,6 +19,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_maximum_os_version = @"munki_maximum_os_version",
 	.munki_minimum_os_version = @"munki_minimum_os_version",
 	.munki_name = @"munki_name",
+	.munki_notes = @"munki_notes",
 	.munki_package_path = @"munki_package_path",
 	.munki_postinstall_script = @"munki_postinstall_script",
 	.munki_postuninstall_script = @"munki_postuninstall_script",
@@ -328,6 +329,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 @dynamic munki_name;
+
+
+
+
+
+
+@dynamic munki_notes;
 
 
 
