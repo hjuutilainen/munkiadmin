@@ -275,12 +275,28 @@
 	}
 }
 
+- (NSURL *)showSavePanelForCopyOperation:(NSString *)fileName
+{
+	NSSavePanel *savePanel = [NSSavePanel savePanel];
+	savePanel.nameFieldStringValue = fileName;
+    savePanel.directoryURL = self.pkgsURL;
+    savePanel.title = @"Save package";
+    savePanel.message = [NSString stringWithFormat:@"Original item is not in your pkgs directory. It will be copied to the selected destination."];
+	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+	{
+		return [savePanel URL];
+	} else {
+		return nil;
+	}
+}
+
 
 - (NSURL *)showSavePanelForPkginfo:(NSString *)fileName
 {
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
     savePanel.directoryURL = self.pkgsInfoURL;
+    savePanel.title = @"Save pkginfo";
 	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [savePanel URL];
@@ -1750,6 +1766,18 @@
 
 # pragma mark - pkginfo
 
+- (void)setupCopyOperation:(FileCopyOperation *)copyOp withDependingOperation:(MunkiOperation *)depOp
+{
+    [depOp addDependency:copyOp];
+    copyOp.delegate = self;
+}
+
+- (void)setupMakepkginfoOperation:(MunkiOperation *)theOp withDependingOperation:(RelationshipScanner *)relScan
+{
+    [relScan addDependency:theOp];
+    theOp.delegate = self;
+}
+
 - (IBAction)addNewPackage:sender
 {
 	if ([self.defaults boolForKey:@"debug"]) {
@@ -1766,40 +1794,58 @@
             RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
             packageRelationships.delegate = self;
             
+            NSMutableArray *operationsToAdd = [[[NSMutableArray alloc] init] autorelease];
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
                     MunkiOperation *theOp;
                     
                     if (![[fileToAdd relativePath] hasPrefix:[self.repoURL relativePath]]) {
-                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
                         if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) && 
-                            ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])){
-                            NSURL *newTarget = [self.pkgsURL URLByAppendingPathComponent:[[fileToAdd relativePath] lastPathComponent]];
-                            FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
-                            copyOp.delegate = self;
-                            theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
-                            [theOp addDependency:copyOp];
-                            [self.operationQueue addOperation:copyOp];
+                            ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
+                            if ([self.defaults boolForKey:@"debug"])
+                                NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
+                            NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
+                            if (newTarget) {
+                                FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
+                                theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
+                                [self setupCopyOperation:copyOp withDependingOperation:theOp];
+                                [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
+                                [operationsToAdd addObject:copyOp];
+                                [operationsToAdd addObject:theOp];
+                            } else {
+                                if ([self.defaults boolForKey:@"debug"])
+                                    NSLog(@"User chose to cancel the copy operation for %@. Bailing out...", [fileToAdd relativePath]);
+                            }
+                            
                         } else {
                             theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                            [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
+                            [operationsToAdd addObject:theOp];
                         }
                         
                     } else {
                         theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                        [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
+                        [operationsToAdd addObject:theOp];
                     }
-                    [packageRelationships addDependency:theOp];
-					theOp.delegate = self;
-					[self.operationQueue addOperation:theOp];
-                    
 				}
 			}
-            [self.operationQueue addOperation:packageRelationships];
-            NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
-                [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
-            }];
-            [enableBindingsOp addDependency:packageRelationships];
-            [self.operationQueue addOperation:enableBindingsOp];
-			[self showProgressPanel];
+            if ([operationsToAdd count] > 0) {
+                [self.operationQueue addOperations:operationsToAdd waitUntilFinished:NO];
+                [self.operationQueue addOperation:packageRelationships];
+                NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+                    [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+                }];
+                [enableBindingsOp addDependency:packageRelationships];
+                [self.operationQueue addOperation:enableBindingsOp];
+                [self showProgressPanel];
+            } else {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Re-enabling all bindings...");
+                NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+                    [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+                }];
+                [self.operationQueue addOperation:enableBindingsOp];
+            }
 		}
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
