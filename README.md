@@ -14,7 +14,7 @@ For more information, visit [Munki tools homepage](http://code.google.com/p/munk
 
 ### Download a pre-built version:
 
-See the [MunkiAdmin downloads page](https://github.com/hjuutilainen/munkiadmin/downloads)
+See the [MunkiAdmin downloads page](https://github.com/hjuutilainen/munkiadmin/downloads) and [Release Notes wiki page](https://github.com/hjuutilainen/munkiadmin/wiki/Release-Notes)
 
 * Mac OS X 10.6 or later
 * munki tools installed in default location (/usr/local/munki/)
