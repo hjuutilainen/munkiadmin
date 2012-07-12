@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>MunkiAdmin by hjuutilainen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>MunkiAdmin</h1>
+        <p>GUI for managing munki repositories for Mac OS X</p>
+
+        <p class="view"><a href="https://github.com/hjuutilainen/munkiadmin">View the Project on GitHub <small>hjuutilainen/munkiadmin</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/hjuutilainen/munkiadmin/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/hjuutilainen/munkiadmin/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/hjuutilainen/munkiadmin">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>What is MunkiAdmin?</h1>
+
+<p>MunkiAdmin is a GUI for managing munki repositories. It is written
+with Objective-C and uses in-memory Core Data store as a backend.</p>
+
+<p>So what is munki and what are those munki repositories then? Well,
+munki is a set of tools that allow administrators to define managed
+installs for client machines. Repositories are served from a standard
+web server.</p>
+
+<p>For more information, visit <a href="http://code.google.com/p/munki/">Munki tools homepage</a></p>
+
+<h1>How to get MunkiAdmin?</h1>
+
+<h3>Download a pre-built version:</h3>
+
+<p>See the <a href="https://github.com/hjuutilainen/munkiadmin/downloads">MunkiAdmin downloads page</a>
+and <a href="https://github.com/hjuutilainen/munkiadmin/wiki/Release-Notes">Release Notes wiki page</a></p>
+
+<ul>
+<li>Mac OS X 10.6 or later</li>
+<li>munki tools installed in default location (/usr/local/munki/)</li>
+</ul><h3>Build from source:</h3>
+
+<p>Clone, fork or download the source. Open MunkiAdmin.xcodeproj with Xcode and hit 'Run'. If you're making changes to the data model, you need to use mogenerator to keep NSManagedObject subclasses updated. So in short:</p>
+
+<ul>
+<li>Xcode 4 on Snow Leopard or Lion</li>
+<li>10.6 or 10.7 SDK</li>
+<li>Optional: <a href="http://github.com/rentzsch/mogenerator">mogenerator + Xmo'd</a>
+</li>
+</ul><h1>Important:</h1>
+
+<p>Code is <em>not</em> considered stable and production ready. If you wan't to run this on a production repo, make sure your backups are current or you have some other methods for going back in time. I'm using git version control on my test repos so I'll always know what was changed.</p>
+
+<h1>Thanks to:</h1>
+
+<ul>
+<li>Jonathan Rentzsch for his <a href="http://github.com/rentzsch/mogenerator">mogenerator</a>
+</li>
+<li>CocoaDev <a href="http://www.cocoadev.com/index.pl?MultiPanePreferences">MultiPanePreferences</a>
+</li>
+<li>Cathy Shive for <a href="http://katidev.com/blog/2008/02/22/styling-an-nstableview-dttah/">NSCell example code</a>
+</li>
+<li>Developer icons from various sources:
+
+<ul>
+<li><a href="http://jonasraskdesign.com">Jonas Rask Design</a></li>
+<li><a href="http://www.mattballdesign.com/">Matt Ball</a></li>
+<li><a href="http://www.midtonedesign.com">Jonatan Castro Fernández</a></li>
+</ul>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/hjuutilainen">hjuutilainen</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-30793877-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
