@@ -59,7 +59,7 @@
 		subtitle = [NSString stringWithFormat:@"%@", [self latestVersion]];
 		type = @"applications";
 	} else {
-		subtitle = [NSString stringWithFormat:@"%@  (%i packages)", [self latestVersion], [self.packages count]];
+		subtitle = [NSString stringWithFormat:@"%@  (%lu packages)", [self latestVersion], (unsigned long)[self.packages count]];
 		type = @"applications";
 	}
 	

@@ -152,6 +152,7 @@
 		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApplicationInfosArrayController.m; path = "NSArrayController Subclasses/ApplicationInfosArrayController.m"; sourceTree = "<group>"; };
 		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestScanner.h; path = "NSOperation Subclasses/ManifestScanner.h"; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestScanner.m; path = "NSOperation Subclasses/ManifestScanner.m"; sourceTree = "<group>"; };
+		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MunkiAdmin.entitlements; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageInfosArrayController.h; path = "NSArrayController Subclasses/PackageInfosArrayController.h"; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageInfosArrayController.m; path = "NSArrayController Subclasses/PackageInfosArrayController.m"; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -359,6 +360,7 @@
 		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
 			isa = PBXGroup;
 			children = (
+				F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */,
 				7756732906782D8800D1FEB8 /* Models */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -593,7 +595,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "MunkiAdmin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -769,6 +771,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CODE_SIGN_ENTITLEMENTS = MunkiAdmin.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -779,8 +784,9 @@
 				GCC_PREFIX_HEADER = MunkiAdmin_Prefix.pch;
 				INFOPLIST_FILE = "MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = MunkiAdmin;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -788,6 +794,9 @@
 		26FC0A860875C7B200E6366F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MunkiAdmin.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -796,8 +805,9 @@
 				GCC_PREFIX_HEADER = MunkiAdmin_Prefix.pch;
 				INFOPLIST_FILE = "MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = MunkiAdmin;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -809,9 +819,9 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -822,8 +832,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

@@ -144,7 +144,7 @@
     // and configure contents for each
     
     [self.allManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        self.currentJobDescription = [NSString stringWithFormat:@"Processing %i/%i", idx+1, [self.allManifests count]];
+        self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allManifests count]];
         ManifestMO *currentManifest = (ManifestMO *)obj;
         NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
         
@@ -299,7 +299,7 @@
     [fetchBaseDirectory release];
     
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        self.currentJobDescription = [NSString stringWithFormat:@"Processing %i/%i", idx+1, [self.allPackages count]];
+        self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
         NSArray *existingCatalogTitles = [currentPackage.catalogInfos valueForKeyPath:@"catalog.title"];
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;

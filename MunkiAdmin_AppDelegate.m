@@ -710,7 +710,7 @@
     [alert addButtonWithTitle:@"Delete"];
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:@"Delete Manifests"];
-    [alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete %i manifest(s)? This can't be undone.", [selectedManifests count]]];
+    [alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete %lu manifest(s)? This can't be undone.", (unsigned long)[selectedManifests count]]];
     [alert setAlertStyle:NSInformationalAlertStyle];
 	//NSImage *theIcon = [NSImage imageNamed:@"trash"];
 	//[theIcon setScalesWhenResized:NO];
@@ -940,8 +940,8 @@
 								   singlePackage.munki_name]];
 	} else {
 		[alert setInformativeText:[NSString stringWithFormat:
-								   @"Are you sure you want to delete %i packages and their packageinfo files from the repository? This cannot be undone.", 
-								   [selectedPackages count]]];
+								   @"Are you sure you want to delete %lu packages and their packageinfo files from the repository? This cannot be undone.", 
+								   (unsigned long)[selectedPackages count]]];
 	}
     [alert setAlertStyle:NSInformationalAlertStyle];
     [alert setShowsSuppressionButton:NO];

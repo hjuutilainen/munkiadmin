@@ -1,7 +1,7 @@
 #import "ConditionalItemMO.h"
 #import "StringObjectMO.h"
 
-#define kSeparatorCharacter 0x02192
+unichar kSeparatorCharacter = 0x02192;
 
 @implementation ConditionalItemMO
 

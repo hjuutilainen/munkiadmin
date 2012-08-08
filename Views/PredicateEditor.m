@@ -38,7 +38,7 @@
 - (void)resetPredicateToDefault
 {
     self.predicate = [NSPredicate predicateWithFormat:DEFAULT_PREDICATE];
-    self.customPredicateString = [NSString stringWithString:DEFAULT_PREDICATE];
+    self.customPredicateString = DEFAULT_PREDICATE;
 }
 
 - (void)saveAction:(id)sender;

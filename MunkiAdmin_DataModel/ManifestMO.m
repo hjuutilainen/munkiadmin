@@ -76,19 +76,19 @@
 	}*/
     
     if ([self.managedInstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%i installs, ", [self.managedInstallsFaster count]];
+        subtitle = [subtitle stringByAppendingFormat:@"%lu installs, ", (unsigned long)[self.managedInstallsFaster count]];
     }
     if ([self.managedUninstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%i uninstalls, ", [self.managedUninstallsFaster count]];
+        subtitle = [subtitle stringByAppendingFormat:@"%lu uninstalls, ", (unsigned long)[self.managedUninstallsFaster count]];
     }
     if ([self.optionalInstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%i optional installs, ", [self.optionalInstallsFaster count]];
+        subtitle = [subtitle stringByAppendingFormat:@"%lu optional installs, ", (unsigned long)[self.optionalInstallsFaster count]];
     }
     if ([self.managedUpdatesFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%i updates, ", [self.managedUpdatesFaster count]];
+        subtitle = [subtitle stringByAppendingFormat:@"%lu updates, ", (unsigned long)[self.managedUpdatesFaster count]];
     }
     if ([self.includedManifestsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%i nested manifests", [self.includedManifestsFaster count]];
+        subtitle = [subtitle stringByAppendingFormat:@"%lu nested manifests", (unsigned long)[self.includedManifestsFaster count]];
     }
 	
     if ([subtitle isEqualToString:@""]) {

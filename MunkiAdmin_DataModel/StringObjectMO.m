@@ -86,9 +86,9 @@
         NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
         NSString *latestVersion = [[foundPkgs objectAtIndex:0] munki_version];
         if (numPkgs == 1) {
-            subtitle = [NSString stringWithFormat:@"%i matching package (%@)", numPkgs, latestVersion];
+            subtitle = [NSString stringWithFormat:@"%lu matching package (%@)", (unsigned long)numPkgs, latestVersion];
         } else {
-            subtitle = [NSString stringWithFormat:@"%i matching packages (%@)", numPkgs, latestVersion];
+            subtitle = [NSString stringWithFormat:@"%lu matching packages (%@)", (unsigned long)numPkgs, latestVersion];
         }
     }
     
