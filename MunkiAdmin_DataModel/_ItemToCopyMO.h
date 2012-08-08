@@ -5,6 +5,7 @@
 
 
 extern const struct ItemToCopyMOAttributes {
+	 NSString *munki_destination_item;
 	 NSString *munki_destination_path;
 	 NSString *munki_group;
 	 NSString *munki_mode;
@@ -29,6 +30,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @interface ItemToCopyMOID : NSManagedObjectID {}
 @end
 
@@ -37,6 +39,14 @@ extern const struct ItemToCopyMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ItemToCopyMOID*)objectID;
+
+
+
+
+@property (nonatomic, retain) NSString* munki_destination_item;
+
+
+//- (BOOL)validateMunki_destination_item:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -109,6 +119,12 @@ extern const struct ItemToCopyMOFetchedProperties {
 @end
 
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveMunki_destination_item;
+- (void)setPrimitiveMunki_destination_item:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveMunki_destination_path;

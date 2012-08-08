@@ -4,6 +4,7 @@
 #import "_ItemToCopyMO.h"
 
 const struct ItemToCopyMOAttributes ItemToCopyMOAttributes = {
+	.munki_destination_item = @"munki_destination_item",
 	.munki_destination_path = @"munki_destination_path",
 	.munki_group = @"munki_group",
 	.munki_mode = @"munki_mode",
@@ -52,6 +53,13 @@ const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic munki_destination_item;
+
+
 
 
 
