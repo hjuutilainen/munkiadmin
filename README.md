@@ -16,15 +16,15 @@ For more information, visit [Munki tools homepage](http://code.google.com/p/munk
 
 See the [MunkiAdmin downloads page](https://github.com/hjuutilainen/munkiadmin/downloads) and [Release Notes wiki page](https://github.com/hjuutilainen/munkiadmin/wiki/Release-Notes)
 
-* Mac OS X 10.6 or later
+* Mac OS X 10.7 or later
 * munki tools installed in default location (/usr/local/munki/)
 
 ### Build from source:
 
 Clone, fork or download the source. Open MunkiAdmin.xcodeproj with Xcode and hit 'Run'. If you're making changes to the data model, you need to use mogenerator to keep NSManagedObject subclasses updated. So in short:
 
-* Xcode 4 on Snow Leopard or Lion
-* 10.6 or 10.7 SDK
+* Xcode 4 or later
+* 10.7 or 10.8 SDK (comes with Xcode)
 * Optional: [mogenerator + Xmo'd](http://github.com/rentzsch/mogenerator)
 
 # Important:
