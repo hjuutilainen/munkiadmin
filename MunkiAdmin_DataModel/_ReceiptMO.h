@@ -8,6 +8,7 @@ extern const struct ReceiptMOAttributes {
 	 NSString *munki_filename;
 	 NSString *munki_installed_size;
 	 NSString *munki_name;
+	 NSString *munki_optional;
 	 NSString *munki_packageid;
 	 NSString *munki_version;
 	 NSString *originalIndex;
@@ -21,6 +22,7 @@ extern const struct ReceiptMOFetchedProperties {
 } ReceiptMOFetchedProperties;
 
 @class PackageMO;
+
 
 
 
@@ -65,6 +67,18 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSNumber* munki_optional;
+
+
+@property BOOL munki_optionalValue;
+- (BOOL)munki_optionalValue;
+- (void)setMunki_optionalValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_optional:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -132,6 +146,15 @@ extern const struct ReceiptMOFetchedProperties {
 
 - (NSString*)primitiveMunki_name;
 - (void)setPrimitiveMunki_name:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveMunki_optional;
+- (void)setPrimitiveMunki_optional:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_optionalValue;
+- (void)setPrimitiveMunki_optionalValue:(BOOL)value_;
 
 
 

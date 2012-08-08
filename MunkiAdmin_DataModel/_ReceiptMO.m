@@ -7,6 +7,7 @@ const struct ReceiptMOAttributes ReceiptMOAttributes = {
 	.munki_filename = @"munki_filename",
 	.munki_installed_size = @"munki_installed_size",
 	.munki_name = @"munki_name",
+	.munki_optional = @"munki_optional",
 	.munki_packageid = @"munki_packageid",
 	.munki_version = @"munki_version",
 	.originalIndex = @"originalIndex",
@@ -47,6 +48,10 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 	
 	if ([key isEqualToString:@"munki_installed_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installed_size"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+	if ([key isEqualToString:@"munki_optionalValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_optional"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 	if ([key isEqualToString:@"originalIndexValue"]) {
@@ -95,6 +100,32 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 
 @dynamic munki_name;
 
+
+
+
+
+
+@dynamic munki_optional;
+
+
+
+- (BOOL)munki_optionalValue {
+	NSNumber *result = [self munki_optional];
+	return [result boolValue];
+}
+
+- (void)setMunki_optionalValue:(BOOL)value_ {
+	[self setMunki_optional:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_optionalValue {
+	NSNumber *result = [self primitiveMunki_optional];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_optionalValue:(BOOL)value_ {
+	[self setPrimitiveMunki_optional:[NSNumber numberWithBool:value_]];
+}
 
 
 
