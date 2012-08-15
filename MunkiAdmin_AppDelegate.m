@@ -101,6 +101,21 @@
 	return [NSUserDefaults standardUserDefaults];
 }
 
+- (void)alertMunkiToolNotInstalled:(NSString *)munkitoolName
+{
+    NSString *alertText = [NSString stringWithFormat:
+                           @"Can't find %@.\n\nMake sure munkitools package is installed and a correct path for %@ is set in MunkiAdmin preferences.",
+                           munkitoolName,
+                           munkitoolName];
+    
+    NSAlert *munkitoolFailedAlert = [NSAlert alertWithMessageText:@"Munkitools error"
+                                                    defaultButton:@"OK"
+                                                  alternateButton:@""
+                                                      otherButton:@""
+                                        informativeTextWithFormat:alertText];
+    [munkitoolFailedAlert runModal];
+}
+
 - (BOOL)makepkginfoInstalled
 {
 	// Check if /usr/local/munki/makepkginfo exists
@@ -1849,6 +1864,7 @@
 		}
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+        [self alertMunkiToolNotInstalled:@"makepkginfo"];
 	}
 }
 
@@ -1873,6 +1889,7 @@
 		}
 	} else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+        [self alertMunkiToolNotInstalled:@"makepkginfo"];
 	}
 }
 
@@ -1895,16 +1912,22 @@
 		
 	} else {
 		NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
+        [self alertMunkiToolNotInstalled:@"makecatalogs"];
 	}
 }
 
 - (IBAction)updateCatalogs:sender
 {
-	//[self updateCatalogs];
-	MunkiOperation *op = [[[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil] autorelease];
-	op.delegate = self;
-	[self.operationQueue addOperation:op];
-	[self showProgressPanel];
+	// Run makecatalogs against the current repo
+	if ([self makecatalogsInstalled]) {
+        MunkiOperation *op = [[[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil] autorelease];
+        op.delegate = self;
+        [self.operationQueue addOperation:op];
+        [self showProgressPanel];
+    } else {
+        NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
+        [self alertMunkiToolNotInstalled:@"makecatalogs"];
+    }
 }
 
 
