@@ -39,10 +39,10 @@
 		//NSString *appPath = [wp fullPathForApplication:[[self objectValue] valueForKey:@"title"]];
 		//if (appPath != nil) img = [wp iconForFile:appPath];
 		//else img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 	
 	} else if ([type isEqualToString:@"applications"]) {
-		img = [NSImage imageNamed:@"packagesMultipleIcon2"];
+		img = [NSImage imageNamed:@"packageGroupIcon_32x32"];
 		
 	} else if ([type isEqualToString:@"catalog"]) {
 		img = [NSImage imageNamed:@"catalogIcon3"];
@@ -51,7 +51,7 @@
 		img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericDocumentIcon)];
 		
 	} else if ([type isEqualToString:@"package"]) {
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 		
 	} else if ([type isEqualToString:@"packageinfo"]) {
 		img = [wp iconForFileType:@"dmg"];
@@ -69,22 +69,22 @@
 		img = [wp iconForFileType:@"pkg"];
 	
 	} else if ([type isEqualToString:@"requirement"]) {
-		img = [wp iconForFileType:@"packageIcon2"];
+		img = [wp iconForFileType:@"packageIcon_32x32"];
         
 	} else if ([type isEqualToString:@"itemtocopy"]) {
 		img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericDocumentIcon)];
 	
     } else if ([type isEqualToString:@"managedInstall"]) {
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 	
     } else if ([type isEqualToString:@"managedUninstall"]) {
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 	
     } else if ([type isEqualToString:@"managedUpdate"]) {
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 	
     } else if ([type isEqualToString:@"optionalInstall"]) {
-		img = [NSImage imageNamed:@"packageIcon2"];
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
 	}
 	
 	return img;

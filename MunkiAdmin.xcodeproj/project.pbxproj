@@ -39,6 +39,10 @@
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* GradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* GradientButtonBarView.m */; };
+		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
+		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
+		F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */; };
+		F5B2997015E7959B008BE0EF /* packageGroupIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */; };
 		F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC877129546E200B68F4F /* ApplicationMO.m */; };
 		F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */; };
 		F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */; };
@@ -161,6 +165,10 @@
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* GradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* GradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonBarView.m; sourceTree = "<group>"; };
+		F5B2996015E78704008BE0EF /* packageIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon_32x32.png; path = Graphics/packageIcon_32x32.png; sourceTree = "<group>"; };
+		F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageIcon_32x32@2x.png"; path = "Graphics/packageIcon_32x32@2x.png"; sourceTree = "<group>"; };
+		F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageGroupIcon_32x32.png; path = Graphics/packageGroupIcon_32x32.png; sourceTree = "<group>"; };
+		F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageGroupIcon_32x32@2x.png"; path = "Graphics/packageGroupIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5DFC877129546E200B68F4F /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
 		F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
 		F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
@@ -386,6 +394,10 @@
 			children = (
 				FEB749FD147F9C20004EC366 /* unused */,
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
+				F5B2996015E78704008BE0EF /* packageIcon_32x32.png */,
+				F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */,
+				F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */,
+				F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */,
 				F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */,
 				F5F6339411182934007CC030 /* catalogIcon3.png */,
 				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
@@ -645,6 +657,10 @@
 				FEED6897149F3A7E006ABA1E /* AdvancedPackageEditor.xib in Resources */,
 				FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */,
 				FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */,
+				F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */,
+				F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */,
+				F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */,
+				F5B2997015E7959B008BE0EF /* packageGroupIcon_32x32@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,7 +800,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = MunkiAdmin;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -803,7 +819,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = MunkiAdmin;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

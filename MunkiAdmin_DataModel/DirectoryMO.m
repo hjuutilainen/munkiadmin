@@ -5,12 +5,11 @@
 - (NSImage *)icon
 {
     if ([self.type isEqualToString:@"regular"]) {
-        NSImage *regularFolder = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
-        return regularFolder;
+        return [NSImage imageNamed:NSImageNameFolder];
     } else if ([self.type isEqualToString:@"smart"]) {
-        return [NSImage imageNamed:@"NSFolderSmart"];
+        return [NSImage imageNamed:NSImageNameFolderSmart];
     } else {
-        return [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericFolderIcon)];
+        return [NSImage imageNamed:NSImageNameFolder];
     }
 }
 

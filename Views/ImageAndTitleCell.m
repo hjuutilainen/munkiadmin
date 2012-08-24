@@ -52,14 +52,24 @@
         [anIcon setFlipped:YES];
         
         // get the size of the icon for layout
-        NSSize		anIconSize = NSMakeSize(16, 16);
+        NSSize anIconSize = NSMakeSize(32, 32);
+        if (anInsetRect.size.height <= 20) {
+            anIconSize = NSMakeSize(16, 16);
+            [aTitleAttributes setValue:[NSFont systemFontOfSize:11] forKey:NSFontAttributeName];
+        } else if (anInsetRect.size.height <= 24) {
+            anIconSize = NSMakeSize(22, 22);
+            [aTitleAttributes setValue:[NSFont systemFontOfSize:12] forKey:NSFontAttributeName];
+        } else if (anInsetRect.size.height <= 34) {
+            anIconSize = NSMakeSize(32, 32);
+            [aTitleAttributes setValue:[NSFont systemFontOfSize:13] forKey:NSFontAttributeName];
+        }
         
         // Make the strings and get their sizes
         
         // Make a Title string
         NSString *aTitle = [[self objectValue] valueForKey:@"title"];
         // get the size of the string for layout
-        NSSize		aTitleSize = [aTitle sizeWithAttributes:self.aTitleAttributes];
+        NSSize aTitleSize = [aTitle sizeWithAttributes:self.aTitleAttributes];
         
         
         // Make the layout boxes for all of our elements - remember that we're in a flipped coordinate system when setting the y-values
@@ -71,9 +81,10 @@
         float		aHorizontalPadding = 5.0;
         
         // Icon box: center the icon vertically inside of the inset rect
-        NSRect		anIconBox = NSMakeRect(anInsetRect.origin.x,
-                                           anInsetRect.origin.y + anInsetRect.size.height*.5 - anIconSize.height*.5,
-                                           anIconSize.width,
+        
+        NSRect		anIconBox = NSMakeRect(floor(anInsetRect.origin.x),
+                                           floor(anInsetRect.origin.y + anInsetRect.size.height*.5 - anIconSize.height*.5),
+                                           anIconSize.height,
                                            anIconSize.height);
         
         // Make a box for our text
@@ -82,16 +93,16 @@
         // Center it vertically inside of the inset rect
         //float		aCombinedHeight = aTitleSize.height + aVerticalPadding;
         
-        NSRect		aTextBox = NSMakeRect(anIconBox.origin.x + anIconBox.size.width + aHorizontalPadding,
-                                          anInsetRect.origin.y + anInsetRect.size.height*.5 - aTitleSize.height*.5,
+        NSRect		aTextBox = NSMakeRect(floor(anIconBox.origin.x + anIconBox.size.width + aHorizontalPadding),
+                                          floor(anInsetRect.origin.y + anInsetRect.size.height*.5 - aTitleSize.height*.5),
                                           anInsetRect.size.width - anIconSize.width - aHorizontalPadding,
                                           aTitleSize.height);
         
         // Now split the text box in half and put the title box in the top half and subtitle box in bottom half
-        NSRect		aTitleBox = NSMakeRect(aTextBox.origin.x, 
-                                           aTextBox.origin.y + aTextBox.size.height*0.5 - aTitleSize.height*0.5,
-                                           aTextBox.size.width,
-                                           aTitleSize.height);	
+        NSRect		aTitleBox = NSMakeRect(floor(aTextBox.origin.x),
+                                           floor(aTextBox.origin.y + aTextBox.size.height*0.5 - aTitleSize.height*0.5),
+                                           floor(aTextBox.size.width),
+                                           floor(aTitleSize.height));
         
         if(	[self isHighlighted])
         {
