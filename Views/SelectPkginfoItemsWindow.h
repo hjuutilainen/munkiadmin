@@ -10,7 +10,7 @@
 #import "ApplicationsArrayController.h"
 #import "GradientBackgroundView.h"
 
-@interface SelectPkginfoItemsWindow : NSWindowController {
+@interface SelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
     PackageArrayController *individualPkgsArrayController;
     ApplicationsArrayController *groupedPkgsArrayController;
     NSTabView *tabView;
@@ -19,8 +19,13 @@
     GradientBackgroundView *indSearchBgView;
     GradientBackgroundView *groupSearchBgView;
     GradientBackgroundView *customBgView;
+    BOOL shouldHideAddedItems;
 }
 
+@property (assign) IBOutlet NSSearchField *groupedSearchField;
+@property (assign) IBOutlet NSSearchField *individualSearchField;
+@property (retain) NSPredicate *hideAddedPredicate;
+@property BOOL shouldHideAddedItems;
 @property (assign) IBOutlet PackageArrayController *individualPkgsArrayController;
 @property (assign) IBOutlet ApplicationsArrayController *groupedPkgsArrayController;
 @property (assign) IBOutlet NSTabView *tabView;
@@ -31,5 +36,7 @@
 @property (assign) IBOutlet GradientBackgroundView *customBgView;
 
 - (NSArray *)selectionAsStringObjects;
+- (void)updateGroupedSearchPredicate;
+- (void)updateIndividualSearchPredicate;
 
 @end

@@ -20,6 +20,68 @@
 @synthesize indSearchBgView;
 @synthesize groupSearchBgView;
 @synthesize customBgView;
+@dynamic shouldHideAddedItems;
+
+- (void)updateGroupedSearchPredicate
+{
+    if (self.shouldHideAddedItems) {
+        if ([[self.groupedSearchField stringValue] isEqualToString:@""]) {
+            [self.groupedPkgsArrayController setFilterPredicate:self.hideAddedPredicate];
+        } else {
+            NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.groupedSearchField stringValue]];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, nil]];
+            [self.groupedPkgsArrayController setFilterPredicate:merged];
+        }
+    } else {
+        if ([[self.groupedSearchField stringValue] isEqualToString:@""]) {
+            [self.groupedPkgsArrayController setFilterPredicate:nil];
+        } else {
+        NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.groupedSearchField stringValue]];
+        [self.groupedPkgsArrayController setFilterPredicate:new];
+        }
+    }
+}
+
+- (void)updateIndividualSearchPredicate
+{
+    if (self.shouldHideAddedItems) {
+        if ([[self.individualSearchField stringValue] isEqualToString:@""]) {
+            [self.individualPkgsArrayController setFilterPredicate:self.hideAddedPredicate];
+        } else {
+            NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.individualSearchField stringValue]];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, nil]];
+            [self.individualPkgsArrayController setFilterPredicate:merged];
+        }
+    } else {
+        if ([[self.individualSearchField stringValue] isEqualToString:@""]) {
+            [self.individualPkgsArrayController setFilterPredicate:nil];
+        } else {
+            NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.individualSearchField stringValue]];
+            [self.individualPkgsArrayController setFilterPredicate:new];
+        }
+    }
+}
+
+- (void)setShouldHideAddedItems:(BOOL)newHideAddedItems
+{
+    shouldHideAddedItems = newHideAddedItems;
+    [self updateGroupedSearchPredicate];
+}
+
+- (BOOL)shouldHideAddedItems
+{
+    return shouldHideAddedItems;
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    NSString *selectedTabViewLabel = [[[self tabView] selectedTabViewItem] label];
+    if ([selectedTabViewLabel isEqualToString:@"Grouped"]) {
+        [self updateGroupedSearchPredicate];
+    } else if ([selectedTabViewLabel isEqualToString:@"Individual"]) {
+        [self updateIndividualSearchPredicate];
+    }
+}
 
 - (void)beginSelectSession:(id)delegate
 {
@@ -98,6 +160,8 @@
                                                                     endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
     self.customBgView.drawBottomLine = YES;
     self.customBgView.lineColor = [NSColor grayColor];
+    
+    [self updateGroupedSearchPredicate];
 }
 
 @end

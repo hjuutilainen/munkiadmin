@@ -1596,11 +1596,10 @@
         [tempPredicates addObject:newPredicate];
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
-    [[addItemsWindowController groupedPkgsArrayController] setSelectedObjects:nil];
-    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
-    [[addItemsWindowController individualPkgsArrayController] setSelectedObjects:nil];
+    [addItemsWindowController setHideAddedPredicate:compPred];
     [tempPredicates release];
+    [addItemsWindowController updateGroupedSearchPredicate];
+    [addItemsWindowController updateIndividualSearchPredicate];
 }
 
 - (IBAction)removeManagedInstallAction:(id)sender
@@ -1629,9 +1628,10 @@
         [tempPredicates addObject:newPredicate];
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
-    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [addItemsWindowController setHideAddedPredicate:compPred];
     [tempPredicates release];
+    [addItemsWindowController updateGroupedSearchPredicate];
+    [addItemsWindowController updateIndividualSearchPredicate];
 }
 
 - (IBAction)removeManagedUninstallAction:(id)sender
@@ -1660,9 +1660,10 @@
         [tempPredicates addObject:newPredicate];
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
-    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [addItemsWindowController setHideAddedPredicate:compPred];
     [tempPredicates release];
+    [addItemsWindowController updateGroupedSearchPredicate];
+    [addItemsWindowController updateIndividualSearchPredicate];
 }
 
 - (IBAction)removeManagedUpdateAction:(id)sender
@@ -1691,9 +1692,10 @@
         [tempPredicates addObject:newPredicate];
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    [[addItemsWindowController groupedPkgsArrayController] setFilterPredicate:compPred];
-    [[addItemsWindowController individualPkgsArrayController] setFilterPredicate:compPred];
+    [addItemsWindowController setHideAddedPredicate:compPred];
     [tempPredicates release];
+    [addItemsWindowController updateGroupedSearchPredicate];
+    [addItemsWindowController updateIndividualSearchPredicate];
 }
 
 - (IBAction)removeOptionalInstallAction:(id)sender
