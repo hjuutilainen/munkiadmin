@@ -45,7 +45,7 @@
 		img = [NSImage imageNamed:@"packageGroupIcon_32x32"];
 		
 	} else if ([type isEqualToString:@"catalog"]) {
-		img = [NSImage imageNamed:@"catalogIcon3"];
+		img = [NSImage imageNamed:@"catalogIcon_32x32"];
 		
 	} else if ([type isEqualToString:@"cataloginfo"]) {
 		img = [wp iconForFileType:NSFileTypeForHFSTypeCode(kGenericDocumentIcon)];
@@ -57,10 +57,10 @@
 		img = [wp iconForFileType:@"dmg"];
 		
 	} else if ([type isEqualToString:@"manifest"]) {
-		img = [NSImage imageNamed:@"manifestIcon2"];
+		img = [NSImage imageNamed:@"manifestIcon_32x32"];
 	
 	} else if ([type isEqualToString:@"includedManifest"]) {
-		img = [NSImage imageNamed:@"manifestIcon2"];
+		img = [NSImage imageNamed:@"manifestIcon_32x32"];
         
 	} else if ([type isEqualToString:@"installsitem"]) {
 		img = [wp iconForFile:[[self objectValue] valueForKey:@"title"]];

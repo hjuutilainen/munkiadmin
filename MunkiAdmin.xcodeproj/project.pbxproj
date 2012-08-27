@@ -33,6 +33,10 @@
 		F5299AD910FB78620074CFEA /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299AD810FB78620074CFEA /* MyCell.m */; };
 		F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* PkginfoScanner.m */; };
 		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
+		F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */; };
+		F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */; };
+		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
+		F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */; };
 		F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */; };
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
@@ -154,6 +158,10 @@
 		F53269A2125AF75C00AF967C /* PkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoScanner.m; path = "NSOperation Subclasses/PkginfoScanner.m"; sourceTree = "<group>"; };
 		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApplicationInfosArrayController.h; path = "NSArrayController Subclasses/ApplicationInfosArrayController.h"; sourceTree = "<group>"; };
 		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApplicationInfosArrayController.m; path = "NSArrayController Subclasses/ApplicationInfosArrayController.m"; sourceTree = "<group>"; };
+		F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon_32x32.png; path = Graphics/catalogIcon_32x32.png; sourceTree = "<group>"; };
+		F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "catalogIcon_32x32@2x.png"; path = "Graphics/catalogIcon_32x32@2x.png"; sourceTree = "<group>"; };
+		F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon_32x32.png; path = Graphics/manifestIcon_32x32.png; sourceTree = "<group>"; };
+		F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "manifestIcon_32x32@2x.png"; path = "Graphics/manifestIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestScanner.h; path = "NSOperation Subclasses/ManifestScanner.h"; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestScanner.m; path = "NSOperation Subclasses/ManifestScanner.m"; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MunkiAdmin.entitlements; sourceTree = "<group>"; };
@@ -394,6 +402,10 @@
 			children = (
 				FEB749FD147F9C20004EC366 /* unused */,
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
+				F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */,
+				F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */,
+				F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */,
+				F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */,
 				F5B2996015E78704008BE0EF /* packageIcon_32x32.png */,
 				F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */,
 				F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */,
@@ -661,6 +673,10 @@
 				F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */,
 				F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */,
 				F5B2997015E7959B008BE0EF /* packageGroupIcon_32x32@2x.png in Resources */,
+				F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */,
+				F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */,
+				F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */,
+				F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -355,14 +355,13 @@
     
     
 	// Configure segmented control
-	NSWorkspace *wp = [NSWorkspace sharedWorkspace];
 	[mainSegmentedControl setSegmentCount:3];
 	
-	NSImage *packagesIcon = [wp iconForFileType:@"pkg"];
+    NSImage *packagesIcon = [[[NSImage imageNamed:@"packageIcon_32x32"] copy] autorelease];
 	[packagesIcon setSize:NSMakeSize(16, 16)];
-	NSImage *catalogsIcon = [[[NSImage imageNamed:@"catalogIcon3"] copy] autorelease];
+	NSImage *catalogsIcon = [[[NSImage imageNamed:@"catalogIcon_32x32"] copy] autorelease];
 	[catalogsIcon setSize:NSMakeSize(16, 16)];
-	NSImage *manifestsIcon = [[[NSImage imageNamed:@"manifestIcon2"] copy] autorelease];
+	NSImage *manifestsIcon = [[[NSImage imageNamed:@"manifestIcon_32x32"] copy] autorelease];
 	[manifestsIcon setSize:NSMakeSize(16, 16)];
 	
 	[mainSegmentedControl setImage:packagesIcon forSegment:0];
