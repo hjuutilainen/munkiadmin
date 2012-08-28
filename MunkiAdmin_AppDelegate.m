@@ -112,7 +112,7 @@
                                                     defaultButton:@"OK"
                                                   alternateButton:@""
                                                       otherButton:@""
-                                        informativeTextWithFormat:alertText];
+                                        informativeTextWithFormat:@"%@", alertText];
     [munkitoolFailedAlert runModal];
 }
 
@@ -358,11 +358,11 @@
 	[mainSegmentedControl setSegmentCount:3];
 	
     NSImage *packagesIcon = [[[NSImage imageNamed:@"packageIcon_32x32"] copy] autorelease];
-	[packagesIcon setSize:NSMakeSize(16, 16)];
+	[packagesIcon setSize:NSMakeSize(18, 18)];
 	NSImage *catalogsIcon = [[[NSImage imageNamed:@"catalogIcon_32x32"] copy] autorelease];
-	[catalogsIcon setSize:NSMakeSize(16, 16)];
+	[catalogsIcon setSize:NSMakeSize(18, 18)];
 	NSImage *manifestsIcon = [[[NSImage imageNamed:@"manifestIcon_32x32"] copy] autorelease];
-	[manifestsIcon setSize:NSMakeSize(16, 16)];
+	[manifestsIcon setSize:NSMakeSize(18, 18)];
 	
 	[mainSegmentedControl setImage:packagesIcon forSegment:0];
 	[mainSegmentedControl setImage:catalogsIcon forSegment:1];
