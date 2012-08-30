@@ -778,21 +778,22 @@
 	// Display the dialog and act accordingly
     NSInteger result = [alert runModal];
     if (result == NSAlertFirstButtonReturn) {
-		NSManagedObjectContext *moc = [self managedObjectContext];
-        ManifestMO *manifest;
-		manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-		manifest.title = [createNewManifestCustomView stringValue];
-		manifest.manifestURL = [self.manifestsURL URLByAppendingPathComponent:manifest.title];
-		
-		for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
-			CatalogInfoMO *newCatalogInfo;
-			newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-			newCatalogInfo.catalog.title = aCatalog.title;
-			[aCatalog addManifestsObject:manifest];
-			newCatalogInfo.manifest = manifest;
-			[aCatalog addCatalogInfosObject:newCatalogInfo];
-			newCatalogInfo.isEnabledForManifestValue = NO;
-		}
+        
+        NSDictionary *emptyManifest = [NSDictionary dictionary];
+        NSString *manifestTitle = [createNewManifestCustomView stringValue];
+        NSURL *writeURL = [self.manifestsURL URLByAppendingPathComponent:manifestTitle];
+        [emptyManifest writeToURL:writeURL atomically:YES];
+        
+        RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+        manifestRelationships.delegate = self;
+        
+        ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:writeURL] autorelease];
+        scanOp.delegate = self;
+        [manifestRelationships addDependency:scanOp];
+        [self.operationQueue addOperation:scanOp];
+        [self.operationQueue addOperation:manifestRelationships];
+        
+        [self showProgressPanel];
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
         
@@ -2090,24 +2091,122 @@
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
-	// Get all packages and check them for changes
+	// Get all manifests and check them for changes
 	NSArray *allManifests;
 	NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
 	[getAllManifests setEntity:packageEntityDescr];
 	allManifests = [moc executeFetchRequest:getAllManifests error:nil];
 	
 	for (ManifestMO *aManifest in allManifests) {
+        
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
+        }
+        
+        /*
+         Note!
+         
+         Manifest files might contain custom keys added
+         by the user or not yet supported by MunkiAdmin.
+         We need to be extra careful not to touch those.
+         */
+        
+        // ===========================================
+        // Read the current manifest file from disk
+        // ===========================================
+        NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aManifest.manifestURL];
+		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        
+        // ===========================================
+        // Get the ManifestMO object as a dictionary
+        // ===========================================
+        NSDictionary *infoDictFromManifest = [aManifest manifestInfoDictionary];
+		NSArray *sortedManifestKeys = [[infoDictFromManifest allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
-		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aManifest.manifestURL];
-		NSMutableDictionary *mergedInfoDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
-		[mergedInfoDict addEntriesFromDictionary:[aManifest manifestInfoDictionary]];
-		
-		if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-			NSLog(@"Changes detected in %@. Writing new manifest to disk", [(NSURL *)aManifest.manifestURL relativePath]);
-			[mergedInfoDict writeToURL:(NSURL *)aManifest.manifestURL atomically:NO];
-		} else {
-			//NSLog(@"No changes detected in %@", [(NSURL *)aManifest.manifestURL relativePath]);
+        // ===========================================
+        // Check for differences in key arrays and log them
+        // ===========================================
+        NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
+        NSSet *newKeysSet = [NSSet setWithArray:sortedManifestKeys];
+        NSArray *keysToDelete = [NSArray arrayWithObjects:
+                                 @"catalogs",
+                                 @"conditional_items",
+                                 @"included_manifests",
+                                 @"managed_installs",
+                                 @"managed_uninstalls",
+                                 @"managed_updates",
+                                 @"optional_installs",
+                                 nil];
+        
+        // Determine which keys were removed
+        NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
+        [removedItems minusSet:newKeysSet];
+        
+        // Determine which keys were added
+        NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
+        [addedItems minusSet:originalKeysSet];
+        
+        if ([self.defaults boolForKey:@"debug"]) {
+            for (NSString *aKey in [removedItems allObjects]) {
+                if (![keysToDelete containsObject:aKey]) {
+                    NSLog(@"Key change: \"%@\" found in original manifest. Keeping it.", aKey);
+                } else {
+                    NSLog(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
+                }
+                
+            }
+            for (NSString *aKey in [addedItems allObjects]) {
+                NSLog(@"Key change: \"%@\" added by MunkiAdmin", aKey);
+            }
+        }
+        
+        // ===========================================
+        // Create a new dictionary by merging
+        // the original from disk with the new one.
+        //
+        // This will be written to disk
+        // ===========================================
+		NSMutableDictionary *mergedManifestDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
+		[mergedManifestDict addEntriesFromDictionary:[aManifest manifestInfoDictionary]];
+        
+        // ===========================================
+        // Remove keys that were deleted by user
+        // ===========================================
+        for (NSString *aKey in keysToDelete) {
+            if (([infoDictFromManifest valueForKey:aKey] == nil) &&
+                ([infoDictOnDisk valueForKey:aKey] != nil)) {
+                [mergedManifestDict removeObjectForKey:aKey];
+            }
+        }
+        
+        // ===========================================
+        // Key arrays already differ.
+        // User has added new information
+        // ===========================================
+        NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
+			[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
 		}
+        
+        // ===========================================
+        // Finally write the manifest to disk if
+        // mergedManifestDict is not equal to infoDictOnDisk
+        //
+        // This will be triggered if any value is changed.
+        // ===========================================
+        else {
+            if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
+				if ([self.defaults boolForKey:@"debug"]) {
+                    NSLog(@"Values differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
+                }
+				[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
+			} else {
+				if ([self.defaults boolForKey:@"debug"]) {
+                    NSLog(@"No changes detected");
+                }
+			}
+        }
 	}
 	[getAllManifests release];
 }
