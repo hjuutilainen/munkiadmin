@@ -195,34 +195,37 @@
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading manifest %@", [self.sourceURL relativePath]);
 		
+        // Read the manifest dictionary from disk
 		NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
 		if (manifestInfoDict != nil) {
 			
-			NSString *filename = nil;
-			[self.sourceURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+			// Get some needed NSURL properties all at once
+            NSArray *filePropertiesToGet = [NSArray arrayWithObjects:
+                                            NSURLNameKey,
+                                            NSURLCreationDateKey,
+                                            NSURLContentAccessDateKey,
+                                            NSURLContentModificationDateKey,
+                                            nil];
+            NSDictionary *manifestFileProperties = [self.sourceURL resourceValuesForKeys:filePropertiesToGet error:nil];
+			NSString *filename = [manifestFileProperties objectForKey:NSURLNameKey];
             
-            /*ManifestMO *manifest;
-            manifest = [self matchingManifestForString:filename inMoc:moc];
-			if (manifest == nil) {
-                manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-				manifest.title = filename;
-				manifest.manifestURL = self.sourceURL;
-            }*/
             
             // Check if we already have a manifest with this name
-			
             NSFetchRequest *request = [[NSFetchRequest alloc] init];
             NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 			[request setEntity:manifestEntityDescr];
             [request setReturnsObjectsAsFaults:NO];
-            [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"managedInstallsFaster", @"managedUninstallsFaster", @"managedUpdatesFaster", @"optionalInstallsFaster", nil]];
+            [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:
+                                                            @"managedInstallsFaster",
+                                                            @"managedUninstallsFaster",
+                                                            @"managedUpdatesFaster",
+                                                            @"optionalInstallsFaster",
+                                                            nil]];
 			
 			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
             
 			[request setPredicate:titlePredicate];
-			[request setReturnsObjectsAsFaults:NO];
             ManifestMO *manifest;
-            //NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
             NSArray *foundItems = [moc executeFetchRequest:request error:nil];
 			if ([foundItems count] == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
@@ -238,60 +241,15 @@
 			
             
 			manifest.originalManifest = manifestInfoDict;
-            
-            // Get all application objects for later use
-            //NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
-            //[getApplications setEntity:applicationEntityDescr];
-            //[getApplications setReturnsObjectsAsFaults:NO];
-            //[getApplications setIncludesSubentities:NO];
-            //apps = [moc executeFetchRequest:getApplications error:nil];
-            //[getApplications release];
-            
-            // Get all packages for later use
-            //NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
-            //[getPackages setEntity:packageEntityDescr];
-            //[getPackages setReturnsObjectsAsFaults:NO];
-            //[getPackages setIncludesSubentities:NO];
-            //packages = [moc executeFetchRequest:getPackages error:nil];
-            //[getPackages release];
 			
+            
             // =================================
 			// Get "catalogs" items
             // =================================
-			/*NSArray *catalogs = [manifestInfoDict objectForKey:@"catalogs"];
-			NSArray *allCatalogs;
-			NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
-			[getAllCatalogs setEntity:catalogEntityDescr];
-			[getAllCatalogs setReturnsObjectsAsFaults:NO];
-            //[getAllCatalogs setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"catalogInfos", @"manifests", @"packageInfos", nil]];
-            allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-			[getAllCatalogs release];
-			
-			[allCatalogs enumerateObjectsWithOptions:0 usingBlock:^(id aCatalog, NSUInteger idx, BOOL *stop) {
-                NSString *catalogTitle = [aCatalog title];
-				CatalogInfoMO *newCatalogInfo;
-				newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-				newCatalogInfo.catalog.title = catalogTitle;
-				[aCatalog addManifestsObject:manifest];
-				newCatalogInfo.manifest = manifest;
-				[aCatalog addCatalogInfosObject:newCatalogInfo];
-				
-				if (catalogs == nil) {
-					newCatalogInfo.isEnabledForManifestValue = NO;
-					newCatalogInfo.originalIndexValue = 0;
-                    newCatalogInfo.indexInManifestValue = 0;
-				} else if ([catalogs containsObject:catalogTitle]) {
-					newCatalogInfo.isEnabledForManifestValue = YES;
-					newCatalogInfo.originalIndexValue = [catalogs indexOfObject:catalogTitle];
-                    newCatalogInfo.indexInManifestValue = [catalogs indexOfObject:catalogTitle];
-				} else {
-					newCatalogInfo.isEnabledForManifestValue = NO;
-					newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
-                    newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
-				}
-			}];*/
-			
-			
+			/*
+             Left here as a reminder: Catalogs are processed with RelationshipScanner
+             */
+            
             
             // =================================
 			// Get "managed_installs" items
