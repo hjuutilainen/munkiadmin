@@ -20,6 +20,10 @@
     GradientBackgroundView *groupSearchBgView;
     GradientBackgroundView *customBgView;
     BOOL shouldHideAddedItems;
+    
+    NSSearchField *groupedSearchField;
+    NSSearchField *individualSearchField;
+    NSPredicate *hideAddedPredicate;
 }
 
 @property (assign) IBOutlet NSSearchField *groupedSearchField;
