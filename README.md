@@ -10,6 +10,14 @@ web server.
 
 For more information, visit [Munki tools homepage](http://code.google.com/p/munki/)
 
+
+# Important:
+
+Code _is_ considered stable and it shouldn't have any major issues. However, MunkiAdmin is still alpha and not feature-complete so be prepared to see bugs. If you decide to run this on a production repo, make sure your backups are current or you have some other methods for going back in time. I'm using git version control on my munki repositories so I'll always know what was changed.
+
+You can continue to use your favorite text editor to edit pkginfo files and manifests. MunkiAdmin is designed to complement your current workflow and it doesn't require any configuration or changes to your munki repository.
+
+
 # How to get MunkiAdmin?
 
 ### Download a pre-built version:
@@ -26,12 +34,6 @@ Clone, fork or download the source. Open MunkiAdmin.xcodeproj with Xcode and hit
 * Xcode 4 or later
 * 10.7 or 10.8 SDK (comes with Xcode)
 * Optional: [mogenerator + Xmo'd](http://github.com/rentzsch/mogenerator)
-
-# Important:
-
-Code is _not_ considered stable and production ready. If you wan't to run this on a production repo, make sure your backups are current or you have some other methods for going back in time. I'm using git version control on my test repos so I'll always know what was changed.
-
-You can continue to use your favorite text editor to edit pkginfo files and manifests. MunkiAdmin is designed to complement your current workflow and it doesn't require any configuration or changes to your munki repository.
 
 
 # Thanks to:
