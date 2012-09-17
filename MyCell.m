@@ -102,7 +102,14 @@
 	[anIcon setFlipped:YES];
 	
 	// get the size of the icon for layout
-	NSSize		anIconSize = [anIcon size];
+    NSSize anIconSize;
+    if (anInsetRect.size.height <= 20) {
+        anIconSize = NSMakeSize(16, 16);
+    } else if (anInsetRect.size.height <= 40) {
+        anIconSize = NSMakeSize(32, 32);
+    } else {
+        anIconSize = NSMakeSize(32, 32);
+    }
 											
 	// Make the strings and get their sizes
 	
