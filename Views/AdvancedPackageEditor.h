@@ -78,12 +78,16 @@
 @property BOOL                  temp_preinstall_script_enabled;
 @property BOOL                  temp_preuninstall_script_enabled;
 @property BOOL                  temp_uninstall_script_enabled;
+@property BOOL                  temp_installcheck_script_enabled;
+@property BOOL                  temp_uninstallcheck_script_enabled;
 @property (retain) NSDate      *temp_force_install_after_date;
 @property (retain) NSString    *temp_postinstall_script;
 @property (retain) NSString    *temp_postuninstall_script;
 @property (retain) NSString    *temp_preinstall_script;
 @property (retain) NSString    *temp_preuninstall_script;
 @property (retain) NSString    *temp_uninstall_script;
+@property (retain) NSString    *temp_installcheck_script;
+@property (retain) NSString    *temp_uninstallcheck_script;
 @property (retain) NSArray     *osVersions;
 
 @end

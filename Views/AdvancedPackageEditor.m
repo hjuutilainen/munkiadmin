@@ -207,6 +207,26 @@
         self.pkginfoToEdit.munki_uninstall_script = nil;
     }
     
+    if (self.temp_installcheck_script_enabled) {
+        if (self.temp_installcheck_script) {
+            self.pkginfoToEdit.munki_installcheck_script = self.temp_installcheck_script;
+        } else {
+            self.pkginfoToEdit.munki_installcheck_script = @"";
+        }
+    } else {
+        self.pkginfoToEdit.munki_installcheck_script = nil;
+    }
+    
+    if (self.temp_uninstallcheck_script_enabled) {
+        if (self.temp_uninstallcheck_script) {
+            self.pkginfoToEdit.munki_uninstallcheck_script = self.temp_uninstallcheck_script;
+        } else {
+            self.pkginfoToEdit.munki_uninstallcheck_script = @"";
+        }
+    } else {
+        self.pkginfoToEdit.munki_uninstallcheck_script = nil;
+    }
+    
     
     if (self.temp_force_install_after_date_enabled) {
         self.pkginfoToEdit.munki_force_install_after_date = self.temp_force_install_after_date;
@@ -349,6 +369,22 @@
     } else {
         self.temp_uninstall_script_enabled = YES;
         self.temp_uninstall_script = aPackage.munki_uninstall_script;
+    }
+    
+    if (aPackage.munki_installcheck_script == nil) {
+        self.temp_installcheck_script_enabled = NO;
+        self.temp_installcheck_script = @"";
+    } else {
+        self.temp_installcheck_script_enabled = YES;
+        self.temp_installcheck_script = aPackage.munki_installcheck_script;
+    }
+    
+    if (aPackage.munki_uninstallcheck_script == nil) {
+        self.temp_uninstallcheck_script_enabled = NO;
+        self.temp_uninstallcheck_script = @"";
+    } else {
+        self.temp_uninstallcheck_script_enabled = YES;
+        self.temp_uninstallcheck_script = aPackage.munki_uninstallcheck_script;
     }
     
     if (aPackage.munki_force_install_after_date == nil) {
