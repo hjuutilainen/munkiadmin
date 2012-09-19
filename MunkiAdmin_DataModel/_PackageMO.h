@@ -12,6 +12,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_force_install_after_date;
 	 NSString *munki_forced_install;
 	 NSString *munki_forced_uninstall;
+	 NSString *munki_installcheck_script;
 	 NSString *munki_installed_size;
 	 NSString *munki_installer_item_hash;
 	 NSString *munki_installer_item_location;
@@ -34,6 +35,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_uninstall_method;
 	 NSString *munki_uninstall_script;
 	 NSString *munki_uninstallable;
+	 NSString *munki_uninstallcheck_script;
 	 NSString *munki_uninstaller_item_location;
 	 NSString *munki_version;
 	 NSString *originalPkginfo;
@@ -82,6 +84,8 @@ extern const struct PackageMOFetchedProperties {
 @class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
+
 
 
 
@@ -201,6 +205,14 @@ extern const struct PackageMOFetchedProperties {
 - (void)setMunki_forced_uninstallValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_forced_uninstall:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString* munki_installcheck_script;
+
+
+//- (BOOL)validateMunki_installcheck_script:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -401,6 +413,14 @@ extern const struct PackageMOFetchedProperties {
 - (void)setMunki_uninstallableValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_uninstallable:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, retain) NSString* munki_uninstallcheck_script;
+
+
+//- (BOOL)validateMunki_uninstallcheck_script:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -726,6 +746,12 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+- (NSString*)primitiveMunki_installcheck_script;
+- (void)setPrimitiveMunki_installcheck_script:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveMunki_installed_size;
 - (void)setPrimitiveMunki_installed_size:(NSNumber*)value;
 
@@ -872,6 +898,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (BOOL)primitiveMunki_uninstallableValue;
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveMunki_uninstallcheck_script;
+- (void)setPrimitiveMunki_uninstallcheck_script:(NSString*)value;
 
 
 
