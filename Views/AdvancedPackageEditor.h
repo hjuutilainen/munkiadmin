@@ -28,6 +28,10 @@
     NSString    *temp_preuninstall_script;
     BOOL        temp_uninstall_script_enabled;
     NSString    *temp_uninstall_script;
+    BOOL        temp_installcheck_script_enabled;
+    NSString    *temp_installcheck_script;
+    BOOL        temp_uninstallcheck_script_enabled;
+    NSString    *temp_uninstallcheck_script;
     
     NSUndoManager *undoManager;
     PackageMO *pkginfoToEdit;

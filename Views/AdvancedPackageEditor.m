@@ -13,6 +13,7 @@
 #define kMinSplitViewWidth      300.0f
 
 @implementation AdvancedPackageEditor
+
 @synthesize forceInstallDatePicker;
 @synthesize mainTabView;
 @synthesize installsItemsController;
@@ -38,6 +39,10 @@
 @synthesize temp_preinstall_script;
 @synthesize temp_preuninstall_script;
 @synthesize temp_uninstall_script;
+@synthesize temp_installcheck_script_enabled;
+@synthesize temp_installcheck_script;
+@synthesize temp_uninstallcheck_script_enabled;
+@synthesize temp_uninstallcheck_script;
 @synthesize modalSession;
 @synthesize pkginfoToEdit;
 @synthesize delegate;
