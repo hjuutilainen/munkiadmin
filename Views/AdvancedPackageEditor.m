@@ -47,6 +47,7 @@
 @synthesize pkginfoToEdit;
 @synthesize delegate;
 @synthesize osVersions;
+@synthesize installerTypes;
 
 - (NSUndoManager*)windowWillReturnUndoManager:(NSWindow*)window
 {
@@ -287,9 +288,12 @@
     
     pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     
-    NSSortDescriptor *sortOSVersions = [NSSortDescriptor sortDescriptorWithKey:nil 
+    NSSortDescriptor *osVersionSorter = [NSSortDescriptor sortDescriptorWithKey:nil
                                                                      ascending:NO 
                                                                       selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *installerTypeSorter = [NSSortDescriptor sortDescriptorWithKey:nil
+                                                                      ascending:YES
+                                                                       selector:@selector(localizedStandardCompare:)];
     
     self.osVersions = [[NSArray arrayWithObjects:
                         @"10.5.8",
@@ -302,7 +306,18 @@
                         @"10.8",
                         @"10.8.1",
                         nil] 
-                       sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortOSVersions]];
+                       sortedArrayUsingDescriptors:[NSArray arrayWithObject:osVersionSorter]];
+    
+    self.installerTypes = [[NSArray arrayWithObjects:
+                            @"nopkg",
+                            @"copy_from_dmg",
+                            @"AdobeSetup",
+                            @"AdobeUberInstaller",
+                            @"AdobeAcrobatUpdater",
+                            @"AdobeCS5AAMEEPackage",
+                            @"AdobeCS5PatchInstaller",
+                            nil]
+                           sortedArrayUsingDescriptors:[NSArray arrayWithObject:installerTypeSorter]];
     
     // Set the force_install_after_date date picker to use UTC
     [self.forceInstallDatePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
