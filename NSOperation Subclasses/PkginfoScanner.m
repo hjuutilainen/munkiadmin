@@ -180,9 +180,45 @@
 					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: nil (skipped)", self.fileName, key);
 				}
 			}];
+            
+            // ==================================================
+            // Additional steps for deprecated forced_install
+            // ==================================================
+            if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install != nil)) {
+                // pkginfo has both forced_install and unattended_install defined
+                if (aNewPackage.munki_forced_installValue != aNewPackage.munki_unattended_installValue) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_install and unattended_install defined with differing values. Favoring unattended_install", self.fileName);
+                    aNewPackage.munki_forced_install = aNewPackage.munki_unattended_install;
+                }
+            }
+            else if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install == nil)) {
+                // pkginfo has only forced_install defined
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_install defined. Migrating to unattended_install", self.fileName);
+                aNewPackage.munki_unattended_install = aNewPackage.munki_forced_install;
+            }
+            
+            // ==================================================
+            // Additional steps for deprecated forced_uninstall
+            // ==================================================
+            if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall != nil)) {
+                // pkginfo has both values defined
+                if (aNewPackage.munki_forced_uninstallValue != aNewPackage.munki_unattended_uninstallValue) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_uninstall and unattended_uninstall defined with differing values. Favoring unattended_uninstall", self.fileName);
+                    aNewPackage.munki_forced_uninstall = aNewPackage.munki_unattended_uninstall;
+                }
+            }
+            else if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall == nil)) {
+                // pkginfo has only forced_uninstall defined
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_uninstall defined. Migrating to unattended_uninstall", self.fileName);
+                aNewPackage.munki_unattended_uninstall = aNewPackage.munki_forced_uninstall;
+            }
+            
+            
+            // Check if we have installer_item_location and expand it to absolute URL
             if (aNewPackage.munki_installer_item_location != nil) {
                 aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
             }
+            
 			if (self.sourceURL != nil) {
 				aNewPackage.packageInfoURL = self.sourceURL;
                 
