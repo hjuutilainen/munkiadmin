@@ -180,7 +180,9 @@
 					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: nil (skipped)", self.fileName, key);
 				}
 			}];
-			aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+            if (aNewPackage.munki_installer_item_location != nil) {
+                aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+            }
 			if (self.sourceURL != nil) {
 				aNewPackage.packageInfoURL = self.sourceURL;
                 
