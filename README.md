@@ -36,6 +36,13 @@ Clone, fork or download the source. Open MunkiAdmin.xcodeproj with Xcode and hit
 * Optional: [mogenerator + Xmo'd](http://github.com/rentzsch/mogenerator)
 
 
+# Contact
+
+For any questions, problems or version announcements, please join the MunkiAdmin's google group: [munkiadmin-dev](https://groups.google.com/d/forum/munkiadmin-dev). If you don't want to join the google group, you can always email me directly. My public email address can be found at the [GitHub profile page](https://github.com/hjuutilainen).
+
+Please let me know if you are testing, using or just planning to use MunkiAdmin in your organization. I'd be happy to share my workflow and discuss about possible caveats.
+
+
 # Thanks to:
 
 * Jonathan Rentzsch for his [mogenerator](http://github.com/rentzsch/mogenerator)
