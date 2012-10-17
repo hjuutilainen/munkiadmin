@@ -18,6 +18,7 @@
 #import "AdvancedPackageEditor.h"
 #import "PredicateEditor.h"
 #import "PackagesView.h"
+#import "MAImportWindow.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -352,6 +353,7 @@
     packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
+    importWindowController = [[MAImportWindow alloc] initWithWindowNibName:@"MAImportWindow"];
     
     
 	// Configure segmented control
@@ -1800,7 +1802,10 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    
+    [importWindowController showWindow:self];
 	
+    /*
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
 		if (filesToAdd) {
@@ -1868,6 +1873,7 @@
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
         [self alertMunkiToolNotInstalled:@"makepkginfo"];
 	}
+     */
 }
 
 

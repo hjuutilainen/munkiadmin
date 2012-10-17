@@ -39,6 +39,7 @@
 @class PackagesView;
 @class AdvancedPackageEditor;
 @class PredicateEditor;
+@class MAImportWindow;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -67,6 +68,7 @@
     PackageNameEditor *packageNameEditor;
     AdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
+    MAImportWindow *importWindowController;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;

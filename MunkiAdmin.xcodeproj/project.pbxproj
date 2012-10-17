@@ -43,6 +43,10 @@
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* GradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* GradientButtonBarView.m */; };
+		F5A29B52162D4377001139E4 /* MAImportWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A29B50162D4377001139E4 /* MAImportWindow.m */; };
+		F5A29B53162D4377001139E4 /* MAImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5A29B51162D4377001139E4 /* MAImportWindow.xib */; };
+		F5A29B57162D447D001139E4 /* MALinkedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A29B56162D447D001139E4 /* MALinkedView.m */; };
+		F5A29B5B162D467A001139E4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A29B5A162D467A001139E4 /* QuartzCore.framework */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
 		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
 		F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */; };
@@ -177,6 +181,12 @@
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* GradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* GradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonBarView.m; sourceTree = "<group>"; };
+		F5A29B4F162D4377001139E4 /* MAImportWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAImportWindow.h; path = Views/MAImportWindow.h; sourceTree = "<group>"; };
+		F5A29B50162D4377001139E4 /* MAImportWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAImportWindow.m; path = Views/MAImportWindow.m; sourceTree = "<group>"; };
+		F5A29B51162D4377001139E4 /* MAImportWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MAImportWindow.xib; path = Views/MAImportWindow.xib; sourceTree = "<group>"; };
+		F5A29B55162D447D001139E4 /* MALinkedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MALinkedView.h; path = Views/MALinkedView.h; sourceTree = "<group>"; };
+		F5A29B56162D447D001139E4 /* MALinkedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MALinkedView.m; path = Views/MALinkedView.m; sourceTree = "<group>"; };
+		F5A29B5A162D467A001139E4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F5B2996015E78704008BE0EF /* packageIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon_32x32.png; path = Graphics/packageIcon_32x32.png; sourceTree = "<group>"; };
 		F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageIcon_32x32@2x.png"; path = "Graphics/packageIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageGroupIcon_32x32.png; path = Graphics/packageGroupIcon_32x32.png; sourceTree = "<group>"; };
@@ -309,6 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5A29B5B162D467A001139E4 /* QuartzCore.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,6 +395,7 @@
 		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
 			isa = PBXGroup;
 			children = (
+				F5A29B5A162D467A001139E4 /* QuartzCore.framework */,
 				F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */,
 				7756732906782D8800D1FEB8 /* Models */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -571,6 +583,11 @@
 				FE0F4E6414FB564F0081AEFF /* PackagesView.xib */,
 				FE0EAC5814FE4D02003C55E9 /* MATableView.h */,
 				FE0EAC5914FE4D02003C55E9 /* MATableView.m */,
+				F5A29B4F162D4377001139E4 /* MAImportWindow.h */,
+				F5A29B50162D4377001139E4 /* MAImportWindow.m */,
+				F5A29B51162D4377001139E4 /* MAImportWindow.xib */,
+				F5A29B55162D447D001139E4 /* MALinkedView.h */,
+				F5A29B56162D447D001139E4 /* MALinkedView.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -693,6 +710,7 @@
 				F5CD0AD215EC981500BBC11F /* saveTemplate.pdf in Resources */,
 				F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */,
 				F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */,
+				F5A29B53162D4377001139E4 /* MAImportWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +808,8 @@
 				FE0F4E7E14FB86B40081AEFF /* ImageAndTitleCell.m in Sources */,
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
+				F5A29B52162D4377001139E4 /* MAImportWindow.m in Sources */,
+				F5A29B57162D447D001139E4 /* MALinkedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
