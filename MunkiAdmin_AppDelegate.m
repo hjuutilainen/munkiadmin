@@ -1951,7 +1951,7 @@
 	
 	for (PackageMO *aPackage in allPackages) {
         
-        if ([self.defaults boolForKey:@"debug"]) {
+        if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
         }
         
@@ -2075,7 +2075,7 @@
                 }
 				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 			} else {
-				if ([self.defaults boolForKey:@"debug"]) {
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");
                 }
 			}
@@ -2101,7 +2101,7 @@
 	
 	for (ManifestMO *aManifest in allManifests) {
         
-        if ([self.defaults boolForKey:@"debug"]) {
+        if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
         }
         
@@ -2204,7 +2204,7 @@
                 }
 				[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
 			} else {
-				if ([self.defaults boolForKey:@"debug"]) {
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");
                 }
 			}
@@ -2814,20 +2814,6 @@
  */
  
 - (IBAction) saveAction:(id)sender {
-
-    NSError *error = nil;
-    
-    if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
-    }
-
-    if (![[self managedObjectContext] save:&error]) {
-        [[NSApplication sharedApplication] presentError:error];
-    }
-	
-	/*if ([self.defaults boolForKey:@"CopyAppDescriptionToPackages"]) {
-		[self propagateAppDescriptionToVersions];
-	}*/
 	
 	if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
 		[self writePackagePropertyListsToDisk];
@@ -2837,7 +2823,17 @@
 	}
 	if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
 		[self updateCatalogs];
-	} 
+	}
+    
+    NSError *error = nil;
+    
+    if (![[self managedObjectContext] commitEditing]) {
+        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
+    }
+    
+    if (![[self managedObjectContext] save:&error]) {
+        [[NSApplication sharedApplication] presentError:error];
+    }
 	
 	[applicationTableView reloadData];
 }
