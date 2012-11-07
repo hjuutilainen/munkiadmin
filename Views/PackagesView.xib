@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2549</string>
+			<string key="NS.object.0">2843</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBCustomFormatter</string>
@@ -340,7 +340,7 @@
 														<string key="NSFrameSize">{625, 633}</string>
 														<reference key="NSSuperview" ref="331521787"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="804903044"/>
+														<reference key="NSNextKeyView" ref="189379995"/>
 														<string key="NSReuseIdentifierKey">_NS:13</string>
 														<bool key="NSEnabled">YES</bool>
 														<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -756,7 +756,7 @@
 										<string key="NSFrame">{{0, 1}, {625, 650}}</string>
 										<reference key="NSSuperview" ref="660895316"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="331521787"/>
+										<reference key="NSNextKeyView" ref="804903044"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<int key="NSsFlags">133680</int>
 										<reference key="NSVScroller" ref="189379995"/>
@@ -2144,7 +2144,15 @@
 					</object>
 					<object class="NSMenuItem" id="45559572">
 						<reference key="NSMenu" ref="127374364"/>
-						<string key="NSTitle">Show in Finder</string>
+						<string key="NSTitle">Show pkginfo in Finder</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="950948120"/>
+						<reference key="NSMixedImage" ref="323722171"/>
+					</object>
+					<object class="NSMenuItem" id="982915084">
+						<reference key="NSMenu" ref="127374364"/>
+						<string key="NSTitle">Show installer in Finder</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="950948120"/>
@@ -2717,6 +2725,14 @@
 						<reference key="destination" ref="744112186"/>
 					</object>
 					<int key="connectionID">301</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showInstallerInFinderAction:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="982915084"/>
+					</object>
+					<int key="connectionID">601</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -3703,6 +3719,7 @@
 							<reference ref="731809654"/>
 							<reference ref="633260593"/>
 							<reference ref="333279334"/>
+							<reference ref="982915084"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Packages List Menu</string>
@@ -4585,6 +4602,11 @@
 						<reference key="object" ref="516106086"/>
 						<reference key="parent" ref="190222931"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">599</int>
+						<reference key="object" ref="982915084"/>
+						<reference key="parent" ref="127374364"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -4753,6 +4775,7 @@
 				<string key="550.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="585.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="586.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="80.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="81.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4768,7 +4791,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">598</int>
+			<int key="maxID">601</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4851,7 +4874,9 @@
 						<string key="addNewManagedUpdateAction:">id</string>
 						<string key="addNewOptionalInstallAction:">id</string>
 						<string key="addNewPackage:">id</string>
+						<string key="cancelAddNestedManifestsAction:">id</string>
 						<string key="cancelOperationsAction:">id</string>
+						<string key="cancelRenamePackagesAction:">id</string>
 						<string key="createNewCatalogAction:">id</string>
 						<string key="createNewManifestAction:">id</string>
 						<string key="createNewRepository:">id</string>
@@ -4865,6 +4890,8 @@
 						<string key="getInfoAction:">id</string>
 						<string key="openPreferencesAction:">id</string>
 						<string key="openRepository:">id</string>
+						<string key="processAddNestedManifestAction:">id</string>
+						<string key="processRenamePackagesAction:">id</string>
 						<string key="reloadRepositoryAction:">id</string>
 						<string key="removeConditionalItemAction:">id</string>
 						<string key="removeIncludedManifestAction:">id</string>
@@ -4872,12 +4899,14 @@
 						<string key="removeManagedUninstallAction:">id</string>
 						<string key="removeManagedUpdateAction:">id</string>
 						<string key="removeOptionalInstallAction:">id</string>
+						<string key="renamePackageFromAdvancedEditor:">id</string>
 						<string key="renameSelectedManifestAction:">id</string>
 						<string key="renameSelectedPackagesAction:">id</string>
 						<string key="saveAction:">id</string>
 						<string key="selectNextPackageForEditing:">id</string>
 						<string key="selectPreviousPackageForEditing:">id</string>
 						<string key="selectViewAction:">id</string>
+						<string key="showInstallerInFinderAction:">id</string>
 						<string key="showPkginfoInFinderAction:">id</string>
 						<string key="updateCatalogs:">id</string>
 						<string key="writeChangesToDisk:">id</string>
@@ -4915,8 +4944,16 @@
 							<string key="name">addNewPackage:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="cancelAddNestedManifestsAction:">
+							<string key="name">cancelAddNestedManifestsAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="cancelOperationsAction:">
 							<string key="name">cancelOperationsAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cancelRenamePackagesAction:">
+							<string key="name">cancelRenamePackagesAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="createNewCatalogAction:">
@@ -4971,6 +5008,14 @@
 							<string key="name">openRepository:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="processAddNestedManifestAction:">
+							<string key="name">processAddNestedManifestAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="processRenamePackagesAction:">
+							<string key="name">processRenamePackagesAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="reloadRepositoryAction:">
 							<string key="name">reloadRepositoryAction:</string>
 							<string key="candidateClassName">id</string>
@@ -4999,6 +5044,10 @@
 							<string key="name">removeOptionalInstallAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="renamePackageFromAdvancedEditor:">
+							<string key="name">renamePackageFromAdvancedEditor:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="renameSelectedManifestAction:">
 							<string key="name">renameSelectedManifestAction:</string>
 							<string key="candidateClassName">id</string>
@@ -5021,6 +5070,10 @@
 						</object>
 						<object class="IBActionInfo" key="selectViewAction:">
 							<string key="name">selectViewAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showInstallerInFinderAction:">
+							<string key="name">showInstallerInFinderAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showPkginfoInFinderAction:">

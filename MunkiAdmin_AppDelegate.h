@@ -240,6 +240,7 @@
 - (IBAction)selectNextPackageForEditing:(id)sender;
 - (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
+- (IBAction)showInstallerInFinderAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
