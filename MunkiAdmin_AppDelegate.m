@@ -343,6 +343,43 @@
 	}
 }
 
+- (void)managedObjectsDidChange:(NSNotification *)notification
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		//NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
+    /*
+    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+    for (id anUpdatedObject in updatedObjects) {
+        NSLog(@"Updated: %@", anUpdatedObject);
+    }
+    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+    for (id aDeletedObject in deletedObjects) {
+        NSLog(@"Deleted: %@", aDeletedObject);
+    }
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+    for (id anInsertedObject in insertedObjects) {
+        NSLog(@"Updated: %@", anInsertedObject);
+    }
+    */
+}
+
+- (void)startObservingObjectsForChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(managedObjectsDidChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.managedObjectContext];
+}
+
+- (void)stopObservingObjectsForChanges
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextObjectsDidChangeNotification
+                                                  object:self.managedObjectContext];
+}
+
 # pragma mark -
 # pragma mark Application Startup
 
@@ -351,7 +388,6 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
@@ -1942,24 +1978,84 @@
     }
 }
 
+- (NSArray *)modifiedManifestsSinceLastSave
+{
+    if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
+		NSLog(@"Getting modified manifests since last save");
+	}
+    
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSMutableArray *tempModifiedManifests = [[NSMutableArray alloc] init];
+    
+    for (id anUpdatedObject in [moc updatedObjects]) {
+        if ([anUpdatedObject isKindOfClass:[ManifestMO class]]) {
+            [tempModifiedManifests addObject:anUpdatedObject];
+        }
+        else if ([anUpdatedObject respondsToSelector:@selector(manifest)]) {
+            [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+        }
+    }
+    
+    for (id anUpdatedObject in [moc insertedObjects]) {
+        if ([anUpdatedObject isKindOfClass:[ManifestMO class]]) {
+            [tempModifiedManifests addObject:anUpdatedObject];
+        }
+        else if ([anUpdatedObject respondsToSelector:@selector(manifest)]) {
+            [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+        }
+    }
+    
+    NSArray *allModifiedManifests = [NSArray arrayWithArray:tempModifiedManifests];
+    [tempModifiedManifests release];
+    return allModifiedManifests;
+}
+
+
+- (NSArray *)modifiedPackagesSinceLastSave
+{
+    if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
+		NSLog(@"Getting modified pkginfos since last save");
+	}
+    
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSMutableArray *tempModifiedPackages = [[NSMutableArray alloc] init];
+    
+    for (id anUpdatedObject in [moc updatedObjects]) {
+        if ([anUpdatedObject isKindOfClass:[PackageMO class]]) {
+            [tempModifiedPackages addObject:anUpdatedObject];
+        }
+    }
+    
+    for (id anUpdatedObject in [moc insertedObjects]) {
+        if ([anUpdatedObject isKindOfClass:[PackageMO class]]) {
+            [tempModifiedPackages addObject:anUpdatedObject];
+        }
+    }
+    
+    NSArray *allModifiedPackages = [NSArray arrayWithArray:tempModifiedPackages];
+    [tempModifiedPackages release];
+    return allModifiedPackages;
+}
+
 
 - (void)writePackagePropertyListsToDisk
 {
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write package property lists to disk");
 	}
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+	//NSManagedObjectContext *moc = [self managedObjectContext];
+	//NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
 	
     // ===========================================
-	// Get all packages and check them for changes
+	// Get all packages that have been modified
+    // since last save and check them for changes
     // ===========================================
-	NSArray *allPackages;
-	NSFetchRequest *getAllPackages = [[NSFetchRequest alloc] init];
-	[getAllPackages setEntity:packageEntityDescr];
-	allPackages = [moc executeFetchRequest:getAllPackages error:nil];
+	//NSArray *allPackages;
+	//NSFetchRequest *getAllPackages = [[NSFetchRequest alloc] init];
+	//[getAllPackages setEntity:packageEntityDescr];
+	//allPackages = [moc executeFetchRequest:getAllPackages error:nil];
 	
-	for (PackageMO *aPackage in allPackages) {
+	for (PackageMO *aPackage in [self modifiedPackagesSinceLastSave]) {
         
         if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
@@ -2091,7 +2187,7 @@
 			}
 		}
 	}
-	[getAllPackages release];
+	//[getAllPackages release];
 	
 }
 
@@ -2100,16 +2196,18 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write manifest property lists to disk");
 	}
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
+	//NSManagedObjectContext *moc = [self managedObjectContext];
+	//NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
+    // ===========================================
 	// Get all manifests and check them for changes
-	NSArray *allManifests;
-	NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
-	[getAllManifests setEntity:packageEntityDescr];
-	allManifests = [moc executeFetchRequest:getAllManifests error:nil];
+    // ===========================================
+	//NSArray *allManifests;
+	//NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
+	//[getAllManifests setEntity:packageEntityDescr];
+	//allManifests = [moc executeFetchRequest:getAllManifests error:nil];
 	
-	for (ManifestMO *aManifest in allManifests) {
+	for (ManifestMO *aManifest in [self modifiedManifestsSinceLastSave]) {
         
         if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
@@ -2220,7 +2318,7 @@
 			}
         }
 	}
-	[getAllManifests release];
+	//[getAllManifests release];
 }
 
 - (IBAction)writeChangesToDisk:sender
@@ -2262,6 +2360,9 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Selecting repo: %@", [newURL relativePath]);
 	}
+    
+    [self stopObservingObjectsForChanges];
+    
     [self deleteAllManagedObjects];
     
     [self disableAllBindings];
@@ -2623,6 +2724,12 @@
     }];
     [enableBindingsOp addDependency:manifestRelationships];
     [self.operationQueue addOperation:enableBindingsOp];
+    
+    NSBlockOperation *startObservingChangesOp = [NSBlockOperation blockOperationWithBlock:^{
+        [self performSelectorOnMainThread:@selector(startObservingObjectsForChanges) withObject:nil waitUntilDone:YES];
+    }];
+    [startObservingChangesOp addDependency:enableBindingsOp];
+    [self.operationQueue addOperation:startObservingChangesOp];
 }
 
 - (void)scanCurrentRepoForIncludedManifests
