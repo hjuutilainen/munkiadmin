@@ -93,7 +93,9 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
-    [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    }
 }
 
 - (IBAction)showInstallerInFinderAction:(id)sender
@@ -102,7 +104,9 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageURL];
-    [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    }
 }
 
 
