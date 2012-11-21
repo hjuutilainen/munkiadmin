@@ -2123,6 +2123,7 @@
                                  @"description",
                                  @"display_name",
                                  @"force_install_after_date",
+                                 @"installable_condition",
                                  @"installcheck_script",
                                  @"installed_size",
                                  @"installer_item_hash",

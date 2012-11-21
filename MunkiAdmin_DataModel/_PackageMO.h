@@ -12,6 +12,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_force_install_after_date;
 	 NSString *munki_forced_install;
 	 NSString *munki_forced_uninstall;
+	 NSString *munki_installable_condition;
 	 NSString *munki_installcheck_script;
 	 NSString *munki_installed_size;
 	 NSString *munki_installer_item_hash;
@@ -84,6 +85,7 @@ extern const struct PackageMOFetchedProperties {
 @class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
 
 
 
@@ -219,6 +221,16 @@ extern const struct PackageMOFetchedProperties {
 - (void)setMunki_forced_uninstallValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_forced_uninstall:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, retain) NSString* munki_installable_condition;
+
+
+
+//- (BOOL)validateMunki_installable_condition:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -828,6 +840,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (BOOL)primitiveMunki_forced_uninstallValue;
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveMunki_installable_condition;
+- (void)setPrimitiveMunki_installable_condition:(NSString*)value;
 
 
 
