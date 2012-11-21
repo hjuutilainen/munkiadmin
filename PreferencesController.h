@@ -18,6 +18,7 @@
 	IBOutlet NSView *generalView;
 	IBOutlet NSView *munkiView;
     IBOutlet NSView *advancedView;
+    IBOutlet NSView *importOptionsView;
 
 }
 

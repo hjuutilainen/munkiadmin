@@ -39,6 +39,18 @@
     [munkiItem release];
     
     
+    NSToolbarItem *importOptionsItem;
+	importOptionsItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Import Options"];
+    [importOptionsItem setPaletteLabel:@"Import Options"];
+    [importOptionsItem setLabel:@"Import Options"];
+    [importOptionsItem setToolTip:@"Import Options"];
+    [importOptionsItem setImage:[NSImage imageNamed:@"NSAdvanced"]];
+    [importOptionsItem setTarget:self];
+    [importOptionsItem setAction:@selector(switchViews:)];
+    [items setObject:importOptionsItem forKey:@"Import Options"];
+    [importOptionsItem release];
+    
+    
     NSToolbarItem *advancedItem;
 	advancedItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Advanced"];
     [advancedItem setPaletteLabel:@"Advanced"];
@@ -83,6 +95,8 @@
         prefsView = generalView;
     } else if ([sender isEqualToString:@"Munki"]) {
         prefsView = munkiView;
+    } else if ([sender isEqualToString:@"Import Options"]) {
+        prefsView = importOptionsView;
     } else if ([sender isEqualToString:@"Advanced"]) {
         prefsView = advancedView;
     } else {
@@ -118,7 +132,7 @@
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)theToolbar
 {
-    return [NSArray arrayWithObjects:@"General", @"Munki", @"Advanced", nil];
+    return [NSArray arrayWithObjects:@"General", @"Munki", @"Import Options", @"Advanced", nil];
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers: (NSToolbar *)toolbar

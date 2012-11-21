@@ -464,25 +464,46 @@
                         aNewPackage.munki_minimum_os_version = latestPackage.munki_minimum_os_version;
                     }
                     
+                    // Set the minimum munki version
+                    if ([self.defaults boolForKey:@"assimilate_minimum_munki_version"]) {
+                        aNewPackage.munki_minimum_munki_version = latestPackage.munki_minimum_munki_version;
+                    }
+                    
                     // Scripts
-                    if ([self.defaults boolForKey:@"assimilate_pre_scripts"]) {
+                    if ([self.defaults boolForKey:@"assimilate_preinstall_script"]) {
                         aNewPackage.munki_preinstall_script = latestPackage.munki_preinstall_script;
+                    }
+                    if ([self.defaults boolForKey:@"assimilate_preuninstall_script"]) {
                         aNewPackage.munki_preuninstall_script = latestPackage.munki_preuninstall_script;
                     }
-                    if ([self.defaults boolForKey:@"assimilate_post_scripts"]) {
+                    if ([self.defaults boolForKey:@"assimilate_postinstall_script"]) {
                         aNewPackage.munki_postinstall_script = latestPackage.munki_postinstall_script;
+                    }
+                    if ([self.defaults boolForKey:@"assimilate_postuninstall_script"]) {
                         aNewPackage.munki_postuninstall_script = latestPackage.munki_postuninstall_script;
+                    }
+                    if ([self.defaults boolForKey:@"assimilate_installcheck_script"]) {
+                        aNewPackage.munki_installcheck_script = latestPackage.munki_installcheck_script;
+                    }
+                    if ([self.defaults boolForKey:@"assimilate_uninstallcheck_script"]) {
+                        aNewPackage.munki_uninstallcheck_script = latestPackage.munki_uninstallcheck_script;
                     }
                     
                     // Other properties
                     if ([self.defaults boolForKey:@"assimilate_autoremove"]) {
                         aNewPackage.munki_autoremove = latestPackage.munki_autoremove;
                     }
+                    if ([self.defaults boolForKey:@"assimilate_installable_condition"]) {
+                        aNewPackage.munki_installable_condition = latestPackage.munki_installable_condition;
+                    }
                     if ([self.defaults boolForKey:@"assimilate_unattended_install"]) {
                         aNewPackage.munki_unattended_install = latestPackage.munki_unattended_install;
                     }
                     if ([self.defaults boolForKey:@"assimilate_unattended_uninstall"]) {
                         aNewPackage.munki_unattended_uninstall = latestPackage.munki_unattended_uninstall;
+                    }
+                    if ([self.defaults boolForKey:@"assimilate_uninstallable"]) {
+                        aNewPackage.munki_uninstallable = latestPackage.munki_uninstallable;
                     }
                     if ([self.defaults boolForKey:@"assimilate_uninstall_method"]) {
                         aNewPackage.munki_uninstall_method = latestPackage.munki_uninstall_method;
