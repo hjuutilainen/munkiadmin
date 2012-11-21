@@ -41,7 +41,9 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isGroupItem;
+
 
 
 @property BOOL isGroupItemValue;
@@ -53,7 +55,9 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -65,7 +69,9 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* title;
+
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -73,7 +79,9 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* type;
+
 
 
 //- (BOOL)validateType:(id*)value_ error:(NSError**)error_;
@@ -82,21 +90,21 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* children;
+@property (nonatomic, retain) NSSet *children;
 
 - (NSMutableSet*)childrenSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* packages;
+@property (nonatomic, retain) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
 
 
 
-@property (nonatomic, retain) PackageSourceListItemMO* parent;
+@property (nonatomic, retain) PackageSourceListItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
 

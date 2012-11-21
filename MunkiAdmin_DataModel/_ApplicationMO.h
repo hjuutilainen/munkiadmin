@@ -41,7 +41,9 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_description;
+
 
 
 //- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
@@ -49,7 +51,9 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_display_name;
+
 
 
 //- (BOOL)validateMunki_display_name:(id*)value_ error:(NSError**)error_;
@@ -57,7 +61,9 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_name;
+
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
@@ -66,28 +72,28 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* applicationProxies;
+@property (nonatomic, retain) NSSet *applicationProxies;
 
 - (NSMutableSet*)applicationProxiesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* manifests;
+@property (nonatomic, retain) NSSet *manifests;
 
 - (NSMutableSet*)manifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* packages;
+@property (nonatomic, retain) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* referencingStringObjects;
+@property (nonatomic, retain) NSSet *referencingStringObjects;
 
 - (NSMutableSet*)referencingStringObjectsSet;
 

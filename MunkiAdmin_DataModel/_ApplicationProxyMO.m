@@ -37,12 +37,13 @@ const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProper
 	return (ApplicationProxyMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"isEnabledValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabled"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 
 	return keyPaths;

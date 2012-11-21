@@ -36,7 +36,7 @@ const struct OptionalInstallMOFetchedProperties OptionalInstallMOFetchedProperti
 	return (OptionalInstallMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 

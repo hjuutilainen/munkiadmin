@@ -44,12 +44,13 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 	return (InstallsItemMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 
 	return keyPaths;

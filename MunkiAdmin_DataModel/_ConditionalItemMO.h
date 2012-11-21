@@ -47,7 +47,9 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_condition;
+
 
 
 //- (BOOL)validateMunki_condition:(id*)value_ error:(NSError**)error_;
@@ -55,7 +57,9 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -68,56 +72,56 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* children;
+@property (nonatomic, retain) NSSet *children;
 
 - (NSMutableSet*)childrenSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* includedManifests;
+@property (nonatomic, retain) NSSet *includedManifests;
 
 - (NSMutableSet*)includedManifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedInstalls;
+@property (nonatomic, retain) NSSet *managedInstalls;
 
 - (NSMutableSet*)managedInstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUninstalls;
+@property (nonatomic, retain) NSSet *managedUninstalls;
 
 - (NSMutableSet*)managedUninstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUpdates;
+@property (nonatomic, retain) NSSet *managedUpdates;
 
 - (NSMutableSet*)managedUpdatesSet;
 
 
 
 
-@property (nonatomic, retain) ManifestMO* manifest;
+@property (nonatomic, retain) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) NSSet* optionalInstalls;
+@property (nonatomic, retain) NSSet *optionalInstalls;
 
 - (NSMutableSet*)optionalInstallsSet;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO* parent;
+@property (nonatomic, retain) ConditionalItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
 

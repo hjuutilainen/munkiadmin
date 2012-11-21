@@ -31,7 +31,9 @@ extern const struct ApplicationProxyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isEnabled;
+
 
 
 @property BOOL isEnabledValue;
@@ -44,7 +46,7 @@ extern const struct ApplicationProxyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ApplicationMO* parentApplication;
+@property (nonatomic, retain) ApplicationMO *parentApplication;
 
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 

@@ -35,7 +35,9 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isAvailableForEditing;
+
 
 
 @property BOOL isAvailableForEditingValue;
@@ -47,7 +49,9 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isEnabledForManifest;
+
 
 
 @property BOOL isEnabledForManifestValue;
@@ -60,14 +64,14 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO* manifest;
+@property (nonatomic, retain) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO* parentManifest;
+@property (nonatomic, retain) ManifestMO *parentManifest;
 
 //- (BOOL)validateParentManifest:(id*)value_ error:(NSError**)error_;
 

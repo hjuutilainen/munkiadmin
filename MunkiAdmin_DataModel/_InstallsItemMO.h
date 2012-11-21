@@ -45,7 +45,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_CFBundleIdentifier;
+
 
 
 //- (BOOL)validateMunki_CFBundleIdentifier:(id*)value_ error:(NSError**)error_;
@@ -53,7 +55,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_CFBundleName;
+
 
 
 //- (BOOL)validateMunki_CFBundleName:(id*)value_ error:(NSError**)error_;
@@ -61,7 +65,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_CFBundleShortVersionString;
+
 
 
 //- (BOOL)validateMunki_CFBundleShortVersionString:(id*)value_ error:(NSError**)error_;
@@ -69,7 +75,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_md5checksum;
+
 
 
 //- (BOOL)validateMunki_md5checksum:(id*)value_ error:(NSError**)error_;
@@ -77,7 +85,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_minosversion;
+
 
 
 //- (BOOL)validateMunki_minosversion:(id*)value_ error:(NSError**)error_;
@@ -85,7 +95,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_path;
+
 
 
 //- (BOOL)validateMunki_path:(id*)value_ error:(NSError**)error_;
@@ -93,7 +105,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_type;
+
 
 
 //- (BOOL)validateMunki_type:(id*)value_ error:(NSError**)error_;
@@ -101,7 +115,9 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -114,7 +130,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* packages;
+@property (nonatomic, retain) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 

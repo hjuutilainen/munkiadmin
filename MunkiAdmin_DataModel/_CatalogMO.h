@@ -37,7 +37,9 @@ extern const struct CatalogMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* title;
+
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -46,28 +48,28 @@ extern const struct CatalogMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* catalogInfos;
+@property (nonatomic, retain) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* manifests;
+@property (nonatomic, retain) NSSet *manifests;
 
 - (NSMutableSet*)manifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* packageInfos;
+@property (nonatomic, retain) NSSet *packageInfos;
 
 - (NSMutableSet*)packageInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* packages;
+@property (nonatomic, retain) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 

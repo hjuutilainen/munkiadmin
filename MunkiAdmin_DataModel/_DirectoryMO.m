@@ -37,7 +37,7 @@ const struct DirectoryMOFetchedProperties DirectoryMOFetchedProperties = {
 	return (DirectoryMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 
