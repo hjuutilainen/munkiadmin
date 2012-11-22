@@ -32,7 +32,7 @@
     [munkiItem setPaletteLabel:@"Munki"];
     [munkiItem setLabel:@"Munki"];
     [munkiItem setToolTip:@"Munki preference options."];
-    [munkiItem setImage:[NSImage imageNamed:@"NSColorPanel"]];
+    [munkiItem setImage:[NSImage imageNamed:@"MunkiAdminIcon_32x32"]];
     [munkiItem setTarget:self];
     [munkiItem setAction:@selector(switchViews:)];
     [items setObject:munkiItem forKey:@"Munki"];
@@ -44,7 +44,7 @@
     [importOptionsItem setPaletteLabel:@"Import Options"];
     [importOptionsItem setLabel:@"Import Options"];
     [importOptionsItem setToolTip:@"Import Options"];
-    [importOptionsItem setImage:[NSImage imageNamed:@"NSAdvanced"]];
+    [importOptionsItem setImage:[NSImage imageNamed:@"packageGroupIcon_32x32"]];
     [importOptionsItem setTarget:self];
     [importOptionsItem setAction:@selector(switchViews:)];
     [items setObject:importOptionsItem forKey:@"Import Options"];
