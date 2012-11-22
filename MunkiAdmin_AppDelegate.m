@@ -2005,19 +2005,23 @@
          The modified object is a sub-item of a manifest
          */
         else if ([anUpdatedObject respondsToSelector:@selector(manifest)]) {
-            [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+            if ([anUpdatedObject manifest] != nil) {
+                [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+            }
         }
     }
     
     /*
      Check if the inserted (new) objects contain any manifests
      */
-    for (id anUpdatedObject in [moc insertedObjects]) {
-        if ([anUpdatedObject isKindOfClass:[ManifestMO class]]) {
-            [tempModifiedManifests addObject:anUpdatedObject];
+    for (id anInsertedObject in [moc insertedObjects]) {
+        if ([anInsertedObject isKindOfClass:[ManifestMO class]]) {
+            [tempModifiedManifests addObject:anInsertedObject];
         }
-        else if ([anUpdatedObject respondsToSelector:@selector(manifest)]) {
-            [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+        else if ([anInsertedObject respondsToSelector:@selector(manifest)]) {
+            if ([anInsertedObject manifest] != nil) {
+                [tempModifiedManifests addObject:[anInsertedObject manifest]];
+            }
         }
     }
     
@@ -2050,19 +2054,23 @@
          The modified object is a sub-item of a package
          */
         else if ([anUpdatedObject respondsToSelector:@selector(package)]) {
-            [tempModifiedPackages addObject:[anUpdatedObject package]];
+            if ([anUpdatedObject package] != nil) {
+                [tempModifiedPackages addObject:[anUpdatedObject package]];
+            }
         }
     }
     
     /*
      Check if the inserted (new) objects contain any packages
      */
-    for (id anUpdatedObject in [moc insertedObjects]) {
-        if ([anUpdatedObject isKindOfClass:[PackageMO class]]) {
-            [tempModifiedPackages addObject:anUpdatedObject];
+    for (id anInsertedObject in [moc insertedObjects]) {
+        if ([anInsertedObject isKindOfClass:[PackageMO class]]) {
+            [tempModifiedPackages addObject:anInsertedObject];
         }
-        else if ([anUpdatedObject respondsToSelector:@selector(package)]) {
-            [tempModifiedPackages addObject:[anUpdatedObject package]];
+        else if ([anInsertedObject respondsToSelector:@selector(package)]) {
+            if ([anInsertedObject package] != nil) {
+                [tempModifiedPackages addObject:[anInsertedObject package]];
+            }
         }
     }
     
