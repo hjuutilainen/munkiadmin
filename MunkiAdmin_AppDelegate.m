@@ -2400,6 +2400,35 @@
 	[self selectRepoAtURL:self.repoURL];
 }
 
+- (BOOL)resetPersistentStore
+{
+    /*
+     * Delete all existing stores
+     */
+    for (NSPersistentStore *aStore in self.persistentStoreCoordinator.persistentStores) {
+        NSError *removeError = nil;
+        if (![self.persistentStoreCoordinator removePersistentStore:aStore error:&removeError]) {
+            [[NSApplication sharedApplication] presentError:removeError];
+            return NO;
+        }
+    }
+    
+    /*
+     * Create a new in-memory store
+     */
+    NSError *addError = nil;
+    if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                       configuration:nil
+                                                                 URL:nil
+                                                             options:nil
+                                                               error:&addError]){
+        [[NSApplication sharedApplication] presentError:addError];
+        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        return NO;
+    }
+    return YES;
+}
+
 - (void)selectRepoAtURL:(NSURL *)newURL
 {
 	if ([self.defaults boolForKey:@"debug"]) {
@@ -2407,11 +2436,16 @@
 	}
     
     [self stopObservingObjectsForChanges];
-    
-    [self deleteAllManagedObjects];
-    
     [self disableAllBindings];
-        
+    
+    /*
+     * This is much faster than deleting everything individually
+     */
+    if (![self resetPersistentStore]) {
+        return;
+    }
+    
+    
     NSError *dirReadError = nil;
 	NSArray *selectedDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[newURL relativePath] error:&dirReadError];
 	
@@ -2435,7 +2469,7 @@
 			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
-			
+            
 			[self scanCurrentRepoForCatalogFiles];
 			[self scanCurrentRepoForPackages];
 			[self scanCurrentRepoForManifests];
@@ -2920,11 +2954,11 @@
 		}
     }
     
-    NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
+    //NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType 
                                                 configuration:nil 
-                                                URL:url 
+                                                URL:nil
                                                 options:nil 
                                                 error:&error]){
         [[NSApplication sharedApplication] presentError:error];
