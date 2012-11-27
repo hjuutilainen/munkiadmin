@@ -2765,17 +2765,24 @@
 		[aManifestFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
 			
-			NSString *filename = nil;
-			[aManifestFile getResourceValue:&filename forKey:NSURLNameKey error:nil];
+            /*
+             * Manifest name should be the relative path from manifests subdirectory
+             */
+            NSArray *manifestComponents = [aManifestFile pathComponents];
+            NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+            NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+            [relativePathComponents removeObjectsInArray:manifestDirComponents];
+            NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+            
 			NSFetchRequest *request = [[NSFetchRequest alloc] init];
 			[request setEntity:entityDescription];
-			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
+			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", manifestRelativePath];
 			[request setPredicate:titlePredicate];
 			ManifestMO *manifest;
 			NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
 			if (foundItems == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-				manifest.title = filename;
+				manifest.title = manifestRelativePath;
 				manifest.manifestURL = aManifestFile;
 			}
 			[request release];
