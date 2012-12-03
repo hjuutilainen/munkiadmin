@@ -18,6 +18,7 @@
 #import "AdvancedPackageEditor.h"
 #import "PredicateEditor.h"
 #import "PackagesView.h"
+#import "PkginfoAssimilator.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -402,6 +403,7 @@
     packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
+    pkginfoAssimilator = [[PkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
     
     
 	// Configure segmented control
@@ -1229,7 +1231,7 @@
             
             // Create a scanner job but run it without an operation queue
             PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
-            scanOp.canModify = YES;
+            scanOp.canModify = NO;
             scanOp.delegate = self;
             [scanOp start];
             
@@ -1252,11 +1254,22 @@
                 
                 // Select the newly created package
                 [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+                
+                // Run the assimilator
+                /*
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[[self managedObjectContext] undoManager] beginUndoGrouping];
+                    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Assimilating \"%@\"", [createdPkg titleWithVersion]]];
+                    [pkginfoAssimilator beginEditSessionWithObject:createdPkg source:nil delegate:self];
+                });
+                 */
             }
             else {
                 // Found multiple matches for a single URL
             }
             [fetchForPackage release];
+            
+            
         }
     } else {
         NSLog(@"makepkginfo failed!");
@@ -1380,6 +1393,39 @@
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
 }
 
+# pragma mark - Pkginfo Assimilator IBActions
+
+- (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
+    [[[self managedObjectContext] undoManager] endUndoGrouping];
+    if (returnCode == NSOKButton) return;
+    [[[self managedObjectContext] undoManager] undo];
+}
+
+
+- (IBAction)startPkginfoAssimilatorAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (currentWholeView == [packagesViewController view]) {
+        
+        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
+        if (!object) return;
+        
+        [[[self managedObjectContext] undoManager] beginUndoGrouping];
+        [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Assimilating \"%@\"", [object titleWithVersion]]];
+        
+        [pkginfoAssimilator beginEditSessionWithObject:object source:nil delegate:self];
+        
+        NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"SELF != %@", object];
+        [pkginfoAssimilator.allPackagesArrayController setFilterPredicate:denySelfPred];
+    }
+}
 
 # pragma mark - Advanced package editor IBActions
 

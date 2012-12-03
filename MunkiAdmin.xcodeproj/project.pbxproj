@@ -43,6 +43,8 @@
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
+		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
+		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* GradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* GradientButtonBarView.m */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
@@ -178,6 +180,9 @@
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PkginfoAssimilator.h; path = Views/PkginfoAssimilator.h; sourceTree = "<group>"; };
+		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoAssimilator.m; path = Views/PkginfoAssimilator.m; sourceTree = "<group>"; };
+		F5836985166C9147003E1442 /* PkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PkginfoAssimilator.xib; path = Views/PkginfoAssimilator.xib; sourceTree = "<group>"; };
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* GradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* GradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonBarView.m; sourceTree = "<group>"; };
@@ -577,6 +582,9 @@
 				FE0F4E6414FB564F0081AEFF /* PackagesView.xib */,
 				FE0EAC5814FE4D02003C55E9 /* MATableView.h */,
 				FE0EAC5914FE4D02003C55E9 /* MATableView.m */,
+				F5836983166C9147003E1442 /* PkginfoAssimilator.h */,
+				F5836984166C9147003E1442 /* PkginfoAssimilator.m */,
+				F5836985166C9147003E1442 /* PkginfoAssimilator.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -701,6 +709,7 @@
 				F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */,
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
+				F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +807,7 @@
 				FE0F4E7E14FB86B40081AEFF /* ImageAndTitleCell.m in Sources */,
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
+				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,7 @@
 @class PackagesView;
 @class AdvancedPackageEditor;
 @class PredicateEditor;
+@class PkginfoAssimilator;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
@@ -67,6 +68,7 @@
     PackageNameEditor *packageNameEditor;
     AdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
+    PkginfoAssimilator *pkginfoAssimilator;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
     NSView *makepkginfoOptionsView;
@@ -241,6 +243,8 @@
 - (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
 - (IBAction)showInstallerInFinderAction:(id)sender;
+- (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
+- (IBAction)startPkginfoAssimilatorAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods

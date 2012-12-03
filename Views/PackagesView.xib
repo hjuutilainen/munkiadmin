@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
 		<string key="IBDocument.SystemVersion">12C60</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2843</string>
+			<string key="NS.object.0">2844</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBCustomFormatter</string>
@@ -2184,6 +2184,24 @@
 						<reference key="NSOnImage" ref="950948120"/>
 						<reference key="NSMixedImage" ref="323722171"/>
 					</object>
+					<object class="NSMenuItem" id="309348490">
+						<reference key="NSMenu" ref="127374364"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="950948120"/>
+						<reference key="NSMixedImage" ref="323722171"/>
+					</object>
+					<object class="NSMenuItem" id="682804125">
+						<reference key="NSMenu" ref="127374364"/>
+						<string key="NSTitle">Assimilate Properties...</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="950948120"/>
+						<reference key="NSMixedImage" ref="323722171"/>
+					</object>
 				</array>
 			</object>
 			<object class="NSSplitView" id="22162715">
@@ -2733,6 +2751,14 @@
 						<reference key="destination" ref="982915084"/>
 					</object>
 					<int key="connectionID">601</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">startPkginfoAssimilatorAction:</string>
+						<reference key="source" ref="1003"/>
+						<reference key="destination" ref="682804125"/>
+					</object>
+					<int key="connectionID">604</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -3720,6 +3746,8 @@
 							<reference ref="633260593"/>
 							<reference ref="333279334"/>
 							<reference ref="982915084"/>
+							<reference ref="309348490"/>
+							<reference ref="682804125"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Packages List Menu</string>
@@ -4607,6 +4635,16 @@
 						<reference key="object" ref="982915084"/>
 						<reference key="parent" ref="127374364"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">602</int>
+						<reference key="object" ref="309348490"/>
+						<reference key="parent" ref="127374364"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">603</int>
+						<reference key="object" ref="682804125"/>
+						<reference key="parent" ref="127374364"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -4776,6 +4814,8 @@
 				<string key="585.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="586.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="602.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="603.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="80.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="81.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4791,7 +4831,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">601</int>
+			<int key="maxID">604</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4908,6 +4948,7 @@
 						<string key="selectViewAction:">id</string>
 						<string key="showInstallerInFinderAction:">id</string>
 						<string key="showPkginfoInFinderAction:">id</string>
+						<string key="startPkginfoAssimilatorAction:">id</string>
 						<string key="updateCatalogs:">id</string>
 						<string key="writeChangesToDisk:">id</string>
 					</dictionary>
@@ -5078,6 +5119,10 @@
 						</object>
 						<object class="IBActionInfo" key="showPkginfoInFinderAction:">
 							<string key="name">showPkginfoInFinderAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="startPkginfoAssimilatorAction:">
+							<string key="name">startPkginfoAssimilatorAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="updateCatalogs:">
