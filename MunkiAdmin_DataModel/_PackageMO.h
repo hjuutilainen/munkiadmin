@@ -12,6 +12,7 @@ extern const struct PackageMOAttributes {
 	 NSString *munki_force_install_after_date;
 	 NSString *munki_forced_install;
 	 NSString *munki_forced_uninstall;
+	 NSString *munki_installable_condition;
 	 NSString *munki_installcheck_script;
 	 NSString *munki_installed_size;
 	 NSString *munki_installer_item_hash;
@@ -118,6 +119,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @class NSObject;
 
 
@@ -141,7 +143,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_RestartAction;
+
 
 
 //- (BOOL)validateMunki_RestartAction:(id*)value_ error:(NSError**)error_;
@@ -149,7 +153,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_autoremove;
+
 
 
 @property BOOL munki_autoremoveValue;
@@ -161,7 +167,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_description;
+
 
 
 //- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
@@ -169,7 +177,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_display_name;
+
 
 
 //- (BOOL)validateMunki_display_name:(id*)value_ error:(NSError**)error_;
@@ -177,7 +187,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* munki_force_install_after_date;
+
 
 
 //- (BOOL)validateMunki_force_install_after_date:(id*)value_ error:(NSError**)error_;
@@ -185,7 +197,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_forced_install;
+
 
 
 @property BOOL munki_forced_installValue;
@@ -197,7 +211,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_forced_uninstall;
+
 
 
 @property BOOL munki_forced_uninstallValue;
@@ -209,7 +225,19 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
+@property (nonatomic, retain) NSString* munki_installable_condition;
+
+
+
+//- (BOOL)validateMunki_installable_condition:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, retain) NSString* munki_installcheck_script;
+
 
 
 //- (BOOL)validateMunki_installcheck_script:(id*)value_ error:(NSError**)error_;
@@ -217,7 +245,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_installed_size;
+
 
 
 @property int64_t munki_installed_sizeValue;
@@ -229,7 +259,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_installer_item_hash;
+
 
 
 //- (BOOL)validateMunki_installer_item_hash:(id*)value_ error:(NSError**)error_;
@@ -237,7 +269,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_installer_item_location;
+
 
 
 //- (BOOL)validateMunki_installer_item_location:(id*)value_ error:(NSError**)error_;
@@ -245,7 +279,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_installer_item_size;
+
 
 
 @property int64_t munki_installer_item_sizeValue;
@@ -257,7 +293,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_installer_type;
+
 
 
 //- (BOOL)validateMunki_installer_type:(id*)value_ error:(NSError**)error_;
@@ -265,7 +303,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_maximum_os_version;
+
 
 
 //- (BOOL)validateMunki_maximum_os_version:(id*)value_ error:(NSError**)error_;
@@ -273,7 +313,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_minimum_munki_version;
+
 
 
 //- (BOOL)validateMunki_minimum_munki_version:(id*)value_ error:(NSError**)error_;
@@ -281,7 +323,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_minimum_os_version;
+
 
 
 //- (BOOL)validateMunki_minimum_os_version:(id*)value_ error:(NSError**)error_;
@@ -289,7 +333,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_name;
+
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
@@ -297,7 +343,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_notes;
+
 
 
 //- (BOOL)validateMunki_notes:(id*)value_ error:(NSError**)error_;
@@ -305,7 +353,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_package_path;
+
 
 
 //- (BOOL)validateMunki_package_path:(id*)value_ error:(NSError**)error_;
@@ -313,7 +363,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_postinstall_script;
+
 
 
 //- (BOOL)validateMunki_postinstall_script:(id*)value_ error:(NSError**)error_;
@@ -321,7 +373,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_postuninstall_script;
+
 
 
 //- (BOOL)validateMunki_postuninstall_script:(id*)value_ error:(NSError**)error_;
@@ -329,7 +383,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_preinstall_script;
+
 
 
 //- (BOOL)validateMunki_preinstall_script:(id*)value_ error:(NSError**)error_;
@@ -337,7 +393,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_preuninstall_script;
+
 
 
 //- (BOOL)validateMunki_preuninstall_script:(id*)value_ error:(NSError**)error_;
@@ -345,7 +403,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_receipts;
+
 
 
 //- (BOOL)validateMunki_receipts:(id*)value_ error:(NSError**)error_;
@@ -353,7 +413,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_suppress_bundle_relocation;
+
 
 
 @property BOOL munki_suppress_bundle_relocationValue;
@@ -365,7 +427,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_unattended_install;
+
 
 
 @property BOOL munki_unattended_installValue;
@@ -377,7 +441,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_unattended_uninstall;
+
 
 
 @property BOOL munki_unattended_uninstallValue;
@@ -389,7 +455,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_uninstall_method;
+
 
 
 //- (BOOL)validateMunki_uninstall_method:(id*)value_ error:(NSError**)error_;
@@ -397,7 +465,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_uninstall_script;
+
 
 
 //- (BOOL)validateMunki_uninstall_script:(id*)value_ error:(NSError**)error_;
@@ -405,7 +475,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_uninstallable;
+
 
 
 @property BOOL munki_uninstallableValue;
@@ -417,7 +489,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_uninstallcheck_script;
+
 
 
 //- (BOOL)validateMunki_uninstallcheck_script:(id*)value_ error:(NSError**)error_;
@@ -425,7 +499,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_uninstaller_item_location;
+
 
 
 //- (BOOL)validateMunki_uninstaller_item_location:(id*)value_ error:(NSError**)error_;
@@ -433,7 +509,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_version;
+
 
 
 //- (BOOL)validateMunki_version:(id*)value_ error:(NSError**)error_;
@@ -441,7 +519,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id originalPkginfo;
+
 
 
 //- (BOOL)validateOriginalPkginfo:(id*)value_ error:(NSError**)error_;
@@ -449,7 +529,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageDateCreated;
+
 
 
 //- (BOOL)validatePackageDateCreated:(id*)value_ error:(NSError**)error_;
@@ -457,7 +539,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageDateLastOpened;
+
 
 
 //- (BOOL)validatePackageDateLastOpened:(id*)value_ error:(NSError**)error_;
@@ -465,7 +549,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageDateModified;
+
 
 
 //- (BOOL)validatePackageDateModified:(id*)value_ error:(NSError**)error_;
@@ -473,7 +559,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageInfoDateCreated;
+
 
 
 //- (BOOL)validatePackageInfoDateCreated:(id*)value_ error:(NSError**)error_;
@@ -481,7 +569,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageInfoDateLastOpened;
+
 
 
 //- (BOOL)validatePackageInfoDateLastOpened:(id*)value_ error:(NSError**)error_;
@@ -489,7 +579,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSDate* packageInfoDateModified;
+
 
 
 //- (BOOL)validatePackageInfoDateModified:(id*)value_ error:(NSError**)error_;
@@ -497,7 +589,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id packageInfoURL;
+
 
 
 //- (BOOL)validatePackageInfoURL:(id*)value_ error:(NSError**)error_;
@@ -505,7 +599,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id packageURL;
+
 
 
 //- (BOOL)validatePackageURL:(id*)value_ error:(NSError**)error_;
@@ -513,7 +609,9 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* titleWithVersion;
+
 
 
 //- (BOOL)validateTitleWithVersion:(id*)value_ error:(NSError**)error_;
@@ -522,98 +620,98 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* blockingApplications;
+@property (nonatomic, retain) NSSet *blockingApplications;
 
 - (NSMutableSet*)blockingApplicationsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* catalogInfos;
+@property (nonatomic, retain) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* catalogs;
+@property (nonatomic, retain) NSSet *catalogs;
 
 - (NSMutableSet*)catalogsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* installerChoicesItems;
+@property (nonatomic, retain) NSSet *installerChoicesItems;
 
 - (NSMutableSet*)installerChoicesItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* installsItems;
+@property (nonatomic, retain) NSSet *installsItems;
 
 - (NSMutableSet*)installsItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* itemsToCopy;
+@property (nonatomic, retain) NSSet *itemsToCopy;
 
 - (NSMutableSet*)itemsToCopySet;
 
 
 
 
-@property (nonatomic, retain) NSSet* packageInfos;
+@property (nonatomic, retain) NSSet *packageInfos;
 
 - (NSMutableSet*)packageInfosSet;
 
 
 
 
-@property (nonatomic, retain) ApplicationMO* parentApplication;
+@property (nonatomic, retain) ApplicationMO *parentApplication;
 
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) NSSet* receipts;
+@property (nonatomic, retain) NSSet *receipts;
 
 - (NSMutableSet*)receiptsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* referencingStringObjects;
+@property (nonatomic, retain) NSSet *referencingStringObjects;
 
 - (NSMutableSet*)referencingStringObjectsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* requirements;
+@property (nonatomic, retain) NSSet *requirements;
 
 - (NSMutableSet*)requirementsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* sourceListItems;
+@property (nonatomic, retain) NSSet *sourceListItems;
 
 - (NSMutableSet*)sourceListItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* supportedArchitectures;
+@property (nonatomic, retain) NSSet *supportedArchitectures;
 
 - (NSMutableSet*)supportedArchitecturesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* updateFor;
+@property (nonatomic, retain) NSSet *updateFor;
 
 - (NSMutableSet*)updateForSet;
 
@@ -742,6 +840,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (BOOL)primitiveMunki_forced_uninstallValue;
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveMunki_installable_condition;
+- (void)setPrimitiveMunki_installable_condition:(NSString*)value;
 
 
 

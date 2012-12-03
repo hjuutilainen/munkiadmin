@@ -37,7 +37,9 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_attributeSetting;
+
 
 
 @property BOOL munki_attributeSettingValue;
@@ -49,7 +51,9 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_choiceAttribute;
+
 
 
 //- (BOOL)validateMunki_choiceAttribute:(id*)value_ error:(NSError**)error_;
@@ -57,7 +61,9 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_choiceIdentifier;
+
 
 
 //- (BOOL)validateMunki_choiceIdentifier:(id*)value_ error:(NSError**)error_;
@@ -65,7 +71,9 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -78,7 +86,7 @@ extern const struct InstallerChoicesItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) PackageMO* package;
+@property (nonatomic, retain) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

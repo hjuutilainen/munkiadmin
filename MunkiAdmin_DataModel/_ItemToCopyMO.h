@@ -43,7 +43,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_destination_item;
+
 
 
 //- (BOOL)validateMunki_destination_item:(id*)value_ error:(NSError**)error_;
@@ -51,7 +53,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_destination_path;
+
 
 
 //- (BOOL)validateMunki_destination_path:(id*)value_ error:(NSError**)error_;
@@ -59,7 +63,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_group;
+
 
 
 //- (BOOL)validateMunki_group:(id*)value_ error:(NSError**)error_;
@@ -67,7 +73,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_mode;
+
 
 
 //- (BOOL)validateMunki_mode:(id*)value_ error:(NSError**)error_;
@@ -75,7 +83,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_source_item;
+
 
 
 //- (BOOL)validateMunki_source_item:(id*)value_ error:(NSError**)error_;
@@ -83,7 +93,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_user;
+
 
 
 //- (BOOL)validateMunki_user:(id*)value_ error:(NSError**)error_;
@@ -91,7 +103,9 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -104,7 +118,7 @@ extern const struct ItemToCopyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) PackageMO* package;
+@property (nonatomic, retain) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

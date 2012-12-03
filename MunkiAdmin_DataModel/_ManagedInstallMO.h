@@ -30,7 +30,7 @@ extern const struct ManagedInstallMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO* manifest;
+@property (nonatomic, retain) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 

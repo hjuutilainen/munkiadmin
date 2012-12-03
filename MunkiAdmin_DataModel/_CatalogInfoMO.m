@@ -42,24 +42,28 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 	return (CatalogInfoMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"indexInManifestValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"indexInManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"isEnabledForManifestValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"isEnabledForPackageValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForPackage"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 
 	return keyPaths;

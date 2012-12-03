@@ -11,6 +11,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_force_install_after_date = @"munki_force_install_after_date",
 	.munki_forced_install = @"munki_forced_install",
 	.munki_forced_uninstall = @"munki_forced_uninstall",
+	.munki_installable_condition = @"munki_installable_condition",
 	.munki_installcheck_script = @"munki_installcheck_script",
 	.munki_installed_size = @"munki_installed_size",
 	.munki_installer_item_hash = @"munki_installer_item_hash",
@@ -92,44 +93,53 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	return (PackageMOID*)[super objectID];
 }
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
 	if ([key isEqualToString:@"munki_autoremoveValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_autoremove"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_forced_installValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_forced_install"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_forced_uninstallValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_forced_uninstall"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_installed_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installed_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_installer_item_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installer_item_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_suppress_bundle_relocationValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_suppress_bundle_relocation"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_unattended_installValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_unattended_install"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_unattended_uninstallValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_unattended_uninstall"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 	if ([key isEqualToString:@"munki_uninstallableValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_uninstallable"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
 	}
 
 	return keyPaths;
@@ -239,6 +249,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_ {
 	[self setPrimitiveMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic munki_installable_condition;
+
 
 
 

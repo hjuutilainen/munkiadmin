@@ -37,7 +37,9 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isEnabledForCatalog;
+
 
 
 @property BOOL isEnabledForCatalogValue;
@@ -49,7 +51,9 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -61,7 +65,9 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* title;
+
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -70,14 +76,14 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) CatalogMO* catalog;
+@property (nonatomic, retain) CatalogMO *catalog;
 
 //- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO* package;
+@property (nonatomic, retain) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

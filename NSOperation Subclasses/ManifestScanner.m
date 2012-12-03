@@ -6,6 +6,7 @@
 //
 
 #import "ManifestScanner.h"
+#import "MunkiAdmin_AppDelegate.h"
 #import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "ApplicationMO.h"
@@ -195,22 +196,24 @@
 		self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading manifest %@", [self.sourceURL relativePath]);
 		
-        // Read the manifest dictionary from disk
+        /*
+         * Read the manifest dictionary from disk
+         */
 		NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
 		if (manifestInfoDict != nil) {
-			
-			// Get some needed NSURL properties all at once
-            NSArray *filePropertiesToGet = [NSArray arrayWithObjects:
-                                            NSURLNameKey,
-                                            NSURLCreationDateKey,
-                                            NSURLContentAccessDateKey,
-                                            NSURLContentModificationDateKey,
-                                            nil];
-            NSDictionary *manifestFileProperties = [self.sourceURL resourceValuesForKeys:filePropertiesToGet error:nil];
-			NSString *filename = [manifestFileProperties objectForKey:NSURLNameKey];
             
+            /*
+             * Manifest name should be the relative path from manifests subdirectory
+             */
+            NSArray *manifestComponents = [self.sourceURL pathComponents];
+            NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+            NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+            [relativePathComponents removeObjectsInArray:manifestDirComponents];
+            NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
             
-            // Check if we already have a manifest with this name
+            /*
+             * Check if we already have a manifest with this name
+             */
             NSFetchRequest *request = [[NSFetchRequest alloc] init];
             NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 			[request setEntity:manifestEntityDescr];
@@ -222,14 +225,14 @@
                                                             @"optionalInstallsFaster",
                                                             nil]];
 			
-			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
+			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", manifestRelativePath];
             
 			[request setPredicate:titlePredicate];
             ManifestMO *manifest;
             NSArray *foundItems = [moc executeFetchRequest:request error:nil];
 			if ([foundItems count] == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-				manifest.title = filename;
+				manifest.title = manifestRelativePath;
 				manifest.manifestURL = self.sourceURL;
 			} else {
 				manifest = [foundItems objectAtIndex:0];

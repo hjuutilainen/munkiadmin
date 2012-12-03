@@ -9,7 +9,7 @@
 	<key>CopyPkgsToRepo</key>
 	<true/>
 	<key>debug</key>
-	<true/>
+	<false/>
 	<key>debugLogAllProperties</key>
 	<false/>
 	<key>installsKeys</key>
@@ -61,6 +61,7 @@
 		<string>force_install_after_date</string>
 		<string>forced_install</string>
 		<string>forced_uninstall</string>
+		<string>installable_condition</string>
 		<string>installcheck_script</string>
 		<string>installed_size</string>
 		<string>installer_item_hash</string>
@@ -109,6 +110,8 @@
 	<true/>
 	<key>UseExistingMinOSVersionForPackages</key>
 	<true/>
+	<key>assimilate_enabled</key>
+	<true/>
 	<key>assimilate_autoremove</key>
 	<true/>
 	<key>assimilate_blocking_applications</key>
@@ -117,13 +120,27 @@
 	<true/>
 	<key>assimilate_display_name</key>
 	<true/>
+	<key>assimilate_installable_condition</key>
+	<true/>
+	<key>assimilate_installcheck_script</key>
+	<true/>
 	<key>assimilate_installs_items</key>
 	<true/>
 	<key>assimilate_maximum_os_version</key>
 	<true/>
+	<key>assimilate_minimum_munki_version</key>
+	<true/>
 	<key>assimilate_minimum_os_version</key>
 	<true/>
 	<key>assimilate_pre_scripts</key>
+	<true/>
+	<key>assimilate_preinstall_script</key>
+	<true/>
+	<key>assimilate_postinstall_script</key>
+	<true/>
+	<key>assimilate_preuninstall_script</key>
+	<true/>
+	<key>assimilate_postuninstall_script</key>
 	<true/>
 	<key>assimilate_post_scripts</key>
 	<true/>
@@ -139,9 +156,11 @@
 	<true/>
 	<key>assimilate_uninstall_script</key>
 	<true/>
-	<key>assimilate_uninstaller_item_location</key>
-	<true/>
 	<key>assimilate_uninstallable</key>
+	<true/>
+	<key>assimilate_uninstallcheck_script</key>
+	<true/>
+	<key>assimilate_uninstaller_item_location</key>
 	<true/>
 	<key>installerChoicesKeys</key>
 	<array>

@@ -94,8 +94,22 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
-    [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    }
 }
+
+- (IBAction)showInstallerInFinderAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageURL];
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    }
+}
+
 
 - (NSUserDefaults *)defaults
 {
@@ -334,6 +348,43 @@
 	}
 }
 
+- (void)managedObjectsDidChange:(NSNotification *)notification
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		//NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
+    /*
+    NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+    for (id anUpdatedObject in updatedObjects) {
+        NSLog(@"Updated: %@", anUpdatedObject);
+    }
+    NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
+    for (id aDeletedObject in deletedObjects) {
+        NSLog(@"Deleted: %@", aDeletedObject);
+    }
+    NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
+    for (id anInsertedObject in insertedObjects) {
+        NSLog(@"Updated: %@", anInsertedObject);
+    }
+    */
+}
+
+- (void)startObservingObjectsForChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(managedObjectsDidChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.managedObjectContext];
+}
+
+- (void)stopObservingObjectsForChanges
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextObjectsDidChangeNotification
+                                                  object:self.managedObjectContext];
+}
+
 # pragma mark -
 # pragma mark Application Startup
 
@@ -342,7 +393,6 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
@@ -1938,52 +1988,148 @@
     }
 }
 
+- (NSArray *)modifiedManifestsSinceLastSave
+{
+    if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
+		NSLog(@"Getting modified manifests since last save");
+	}
+    
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSMutableArray *tempModifiedManifests = [[NSMutableArray alloc] init];
+    
+    /*
+     Check the updated objects for manifest related changes
+     */
+    for (id anUpdatedObject in [moc updatedObjects]) {
+        /*
+         The modified object is a manifest
+         */
+        if ([anUpdatedObject isKindOfClass:[ManifestMO class]]) {
+            [tempModifiedManifests addObject:anUpdatedObject];
+        }
+        /*
+         The modified object is a sub-item of a manifest
+         */
+        else if ([anUpdatedObject respondsToSelector:@selector(manifest)]) {
+            if ([anUpdatedObject manifest] != nil) {
+                [tempModifiedManifests addObject:[anUpdatedObject manifest]];
+            }
+        }
+    }
+    
+    /*
+     Check if the inserted (new) objects contain any manifests
+     */
+    for (id anInsertedObject in [moc insertedObjects]) {
+        if ([anInsertedObject isKindOfClass:[ManifestMO class]]) {
+            [tempModifiedManifests addObject:anInsertedObject];
+        }
+        else if ([anInsertedObject respondsToSelector:@selector(manifest)]) {
+            if ([anInsertedObject manifest] != nil) {
+                [tempModifiedManifests addObject:[anInsertedObject manifest]];
+            }
+        }
+    }
+    
+    NSArray *allModifiedManifests = [NSArray arrayWithArray:tempModifiedManifests];
+    [tempModifiedManifests release];
+    return allModifiedManifests;
+}
+
+
+- (NSArray *)modifiedPackagesSinceLastSave
+{
+    if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
+		NSLog(@"Getting modified pkginfos since last save");
+	}
+    
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSMutableArray *tempModifiedPackages = [[NSMutableArray alloc] init];
+    
+    /*
+     Check the updated objects for package related changes
+     */
+    for (id anUpdatedObject in [moc updatedObjects]) {
+        /*
+         The modified object is a package
+         */
+        if ([anUpdatedObject isKindOfClass:[PackageMO class]]) {
+            [tempModifiedPackages addObject:anUpdatedObject];
+        }
+        /*
+         The modified object is a sub-item of a package
+         */
+        else if ([anUpdatedObject respondsToSelector:@selector(package)]) {
+            if ([anUpdatedObject package] != nil) {
+                [tempModifiedPackages addObject:[anUpdatedObject package]];
+            }
+        }
+    }
+    
+    /*
+     Check if the inserted (new) objects contain any packages
+     */
+    for (id anInsertedObject in [moc insertedObjects]) {
+        if ([anInsertedObject isKindOfClass:[PackageMO class]]) {
+            [tempModifiedPackages addObject:anInsertedObject];
+        }
+        else if ([anInsertedObject respondsToSelector:@selector(package)]) {
+            if ([anInsertedObject package] != nil) {
+                [tempModifiedPackages addObject:[anInsertedObject package]];
+            }
+        }
+    }
+    
+    NSArray *allModifiedPackages = [NSArray arrayWithArray:tempModifiedPackages];
+    [tempModifiedPackages release];
+    return allModifiedPackages;
+}
+
 
 - (void)writePackagePropertyListsToDisk
 {
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write package property lists to disk");
 	}
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+    
+    /*
+     * =============================================
+	 * Get all packages that have been modified
+     * since last save and check them for changes
+     * =============================================
+     */
 	
-    // ===========================================
-	// Get all packages and check them for changes
-    // ===========================================
-	NSArray *allPackages;
-	NSFetchRequest *getAllPackages = [[NSFetchRequest alloc] init];
-	[getAllPackages setEntity:packageEntityDescr];
-	allPackages = [moc executeFetchRequest:getAllPackages error:nil];
-	
-	for (PackageMO *aPackage in allPackages) {
+	for (PackageMO *aPackage in [self modifiedPackagesSinceLastSave]) {
         
-        if ([self.defaults boolForKey:@"debug"]) {
+        if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
         }
         
         /*
-         Note!
-         
-         Pkginfo files might contain custom keys added
-         by the user or not yet supported by MunkiAdmin. 
-         We need to be extra careful not to touch those.
-        */
+         * ===============================================
+         * Note!
+         *
+         * Pkginfo files might contain custom keys added
+         * by the user or not yet supported by MunkiAdmin.
+         * We need to be extra careful not to touch those.
+         * ===============================================
+         */
         
-        // ===========================================
-        // Read the current pkginfo from disk
-        // ===========================================
+        /*
+         Read the current pkginfo from disk
+         */
 		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
-        // ===========================================
-        // Get the PackageMO as a dictionary
-        // ===========================================
+        /*
+         Get the PackageMO as a dictionary
+         */
         NSDictionary *infoDictFromPackage = [aPackage pkgInfoDictionary];
 		NSArray *sortedPackageKeys = [[infoDictFromPackage allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
-        // ===========================================
-        // Check for differences in key arrays and log them
-        // ===========================================
+        /*
+         Check for differences in key arrays and log them
+         */
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
@@ -1991,6 +2137,7 @@
                                  @"description",
                                  @"display_name",
                                  @"force_install_after_date",
+                                 @"installable_condition",
                                  @"installcheck_script",
                                  @"installed_size",
                                  @"installer_item_hash",
@@ -2017,11 +2164,15 @@
                                  @"version",
                                  nil];
         
-        // Determine which keys were removed
+        /*
+         Determine which keys were removed
+         */
         NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
         [removedItems minusSet:newKeysSet];
         
-        // Determine which keys were added
+        /*
+         Determine which keys were added
+         */
         NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
         [addedItems minusSet:originalKeysSet];
         
@@ -2039,18 +2190,18 @@
             }
         }
         
-        // ===========================================
-        // Create a new dictionary by merging
-        // the original and the new one.
-        // 
-        // This will be written to disk
-        // ===========================================
+        /*
+         Create a new dictionary by merging
+         the original and the new one.
+
+         This will be written to disk
+         */
 		NSMutableDictionary *mergedInfoDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
 		[mergedInfoDict addEntriesFromDictionary:[aPackage pkgInfoDictionary]];
         
-        // ===========================================
-        // Remove keys that were deleted by user
-        // ===========================================
+        /*
+         Remove keys that were deleted by user
+         */
         for (NSString *aKey in keysToDelete) {
             if (([infoDictFromPackage valueForKey:aKey] == nil) && 
                 ([infoDictOnDisk valueForKey:aKey] != nil)) {
@@ -2058,37 +2209,35 @@
             }
         }
         
-        // ===========================================
-        // Key arrays already differ.
-        // User has added new information
-        // ===========================================
+        /*
+         Key arrays already differ.
+         User has added new information
+         */
         NSArray *sortedMergedKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
 			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 		}
         
-        // ===========================================
-        // Check for value changes
-        // ===========================================
+        /*
+         Check for value changes
+         */
         else {
-			/*if ([self.defaults boolForKey:@"debug"]) {
+			if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
                 NSLog(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-            }*/
+            }
             if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
 				if ([self.defaults boolForKey:@"debug"]) {
                     NSLog(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
                 }
 				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
 			} else {
-				if ([self.defaults boolForKey:@"debug"]) {
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");
                 }
 			}
 		}
 	}
-	[getAllPackages release];
-	
 }
 
 - (void)writeManifestPropertyListsToDisk
@@ -2096,44 +2245,45 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write manifest property lists to disk");
 	}
-	NSManagedObjectContext *moc = [self managedObjectContext];
-	NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
+
+    /*
+     * =============================================
+	 * Get all manifests that have been modified
+     * since last save and check them for changes
+     * =============================================
+     */
 	
-	// Get all manifests and check them for changes
-	NSArray *allManifests;
-	NSFetchRequest *getAllManifests = [[NSFetchRequest alloc] init];
-	[getAllManifests setEntity:packageEntityDescr];
-	allManifests = [moc executeFetchRequest:getAllManifests error:nil];
-	
-	for (ManifestMO *aManifest in allManifests) {
+	for (ManifestMO *aManifest in [self modifiedManifestsSinceLastSave]) {
         
-        if ([self.defaults boolForKey:@"debug"]) {
+        if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
             NSLog(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
         }
         
         /*
-         Note!
-         
-         Manifest files might contain custom keys added
-         by the user or not yet supported by MunkiAdmin.
-         We need to be extra careful not to touch those.
+         * ================================================
+         * Note!
+         *
+         * Manifest files might contain custom keys added
+         * by the user or not yet supported by MunkiAdmin.
+         * We need to be extra careful not to touch those.
+         * ================================================
          */
         
-        // ===========================================
-        // Read the current manifest file from disk
-        // ===========================================
+        /*
+         Read the current manifest file from disk
+         */
         NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aManifest.manifestURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
-        // ===========================================
-        // Get the ManifestMO object as a dictionary
-        // ===========================================
+        /*
+         Get the ManifestMO object as a dictionary
+         */
         NSDictionary *infoDictFromManifest = [aManifest manifestInfoDictionary];
 		NSArray *sortedManifestKeys = [[infoDictFromManifest allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		
-        // ===========================================
-        // Check for differences in key arrays and log them
-        // ===========================================
+        /*
+         Check for differences in key arrays and log them
+         */
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedManifestKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
@@ -2146,11 +2296,15 @@
                                  @"optional_installs",
                                  nil];
         
-        // Determine which keys were removed
+        /*
+         Determine which keys were removed
+         */
         NSMutableSet *removedItems = [NSMutableSet setWithSet:originalKeysSet];
         [removedItems minusSet:newKeysSet];
         
-        // Determine which keys were added
+        /*
+         Determine which keys were added
+         */
         NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
         [addedItems minusSet:originalKeysSet];
         
@@ -2168,18 +2322,18 @@
             }
         }
         
-        // ===========================================
-        // Create a new dictionary by merging
-        // the original from disk with the new one.
-        //
-        // This will be written to disk
-        // ===========================================
+        /*
+         Create a new dictionary by merging
+         the original from disk with the new one.
+         
+         This will be written to disk
+         */
 		NSMutableDictionary *mergedManifestDict = [NSMutableDictionary dictionaryWithDictionary:infoDictOnDisk];
 		[mergedManifestDict addEntriesFromDictionary:[aManifest manifestInfoDictionary]];
         
-        // ===========================================
-        // Remove keys that were deleted by user
-        // ===========================================
+        /*
+         Remove keys that were deleted by user
+         */
         for (NSString *aKey in keysToDelete) {
             if (([infoDictFromManifest valueForKey:aKey] == nil) &&
                 ([infoDictOnDisk valueForKey:aKey] != nil)) {
@@ -2187,22 +2341,22 @@
             }
         }
         
-        // ===========================================
-        // Key arrays already differ.
-        // User has added new information
-        // ===========================================
+        /*
+         Key arrays already differ.
+         User has added new information
+         */
         NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
 			[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
 		}
         
-        // ===========================================
-        // Finally write the manifest to disk if
-        // mergedManifestDict is not equal to infoDictOnDisk
-        //
-        // This will be triggered if any value is changed.
-        // ===========================================
+        /*
+         Finally write the manifest to disk if
+         mergedManifestDict is not equal to infoDictOnDisk
+         
+         This will be triggered if any value is changed.
+         */
         else {
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
 				if ([self.defaults boolForKey:@"debug"]) {
@@ -2210,13 +2364,12 @@
                 }
 				[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
 			} else {
-				if ([self.defaults boolForKey:@"debug"]) {
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");
                 }
 			}
         }
 	}
-	[getAllManifests release];
 }
 
 - (IBAction)writeChangesToDisk:sender
@@ -2253,15 +2406,52 @@
 	[self selectRepoAtURL:self.repoURL];
 }
 
+- (BOOL)resetPersistentStore
+{
+    /*
+     * Delete all existing stores
+     */
+    for (NSPersistentStore *aStore in self.persistentStoreCoordinator.persistentStores) {
+        NSError *removeError = nil;
+        if (![self.persistentStoreCoordinator removePersistentStore:aStore error:&removeError]) {
+            [[NSApplication sharedApplication] presentError:removeError];
+            return NO;
+        }
+    }
+    
+    /*
+     * Create a new in-memory store
+     */
+    NSError *addError = nil;
+    if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                       configuration:nil
+                                                                 URL:nil
+                                                             options:nil
+                                                               error:&addError]){
+        [[NSApplication sharedApplication] presentError:addError];
+        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        return NO;
+    }
+    return YES;
+}
+
 - (void)selectRepoAtURL:(NSURL *)newURL
 {
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Selecting repo: %@", [newURL relativePath]);
 	}
-    [self deleteAllManagedObjects];
     
+    [self stopObservingObjectsForChanges];
     [self disableAllBindings];
-        
+    
+    /*
+     * This is much faster than deleting everything individually
+     */
+    if (![self resetPersistentStore]) {
+        return;
+    }
+    
+    
     NSError *dirReadError = nil;
 	NSArray *selectedDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[newURL relativePath] error:&dirReadError];
 	
@@ -2285,7 +2475,7 @@
 			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
-			
+            
 			[self scanCurrentRepoForCatalogFiles];
 			[self scanCurrentRepoForPackages];
 			[self scanCurrentRepoForManifests];
@@ -2581,17 +2771,24 @@
 		[aManifestFile getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
 			
-			NSString *filename = nil;
-			[aManifestFile getResourceValue:&filename forKey:NSURLNameKey error:nil];
+            /*
+             * Manifest name should be the relative path from manifests subdirectory
+             */
+            NSArray *manifestComponents = [aManifestFile pathComponents];
+            NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+            NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+            [relativePathComponents removeObjectsInArray:manifestDirComponents];
+            NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+            
 			NSFetchRequest *request = [[NSFetchRequest alloc] init];
 			[request setEntity:entityDescription];
-			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", filename];
+			NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", manifestRelativePath];
 			[request setPredicate:titlePredicate];
 			ManifestMO *manifest;
 			NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
 			if (foundItems == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
-				manifest.title = filename;
+				manifest.title = manifestRelativePath;
 				manifest.manifestURL = aManifestFile;
 			}
 			[request release];
@@ -2619,6 +2816,12 @@
     }];
     [enableBindingsOp addDependency:manifestRelationships];
     [self.operationQueue addOperation:enableBindingsOp];
+    
+    NSBlockOperation *startObservingChangesOp = [NSBlockOperation blockOperationWithBlock:^{
+        [self performSelectorOnMainThread:@selector(startObservingObjectsForChanges) withObject:nil waitUntilDone:YES];
+    }];
+    [startObservingChangesOp addDependency:enableBindingsOp];
+    [self.operationQueue addOperation:startObservingChangesOp];
 }
 
 - (void)scanCurrentRepoForIncludedManifests
@@ -2764,11 +2967,11 @@
 		}
     }
     
-    NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
+    //NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType 
                                                 configuration:nil 
-                                                URL:url 
+                                                URL:nil
                                                 options:nil 
                                                 error:&error]){
         [[NSApplication sharedApplication] presentError:error];
@@ -2820,20 +3023,6 @@
  */
  
 - (IBAction) saveAction:(id)sender {
-
-    NSError *error = nil;
-    
-    if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
-    }
-
-    if (![[self managedObjectContext] save:&error]) {
-        [[NSApplication sharedApplication] presentError:error];
-    }
-	
-	/*if ([self.defaults boolForKey:@"CopyAppDescriptionToPackages"]) {
-		[self propagateAppDescriptionToVersions];
-	}*/
 	
 	if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
 		[self writePackagePropertyListsToDisk];
@@ -2843,7 +3032,17 @@
 	}
 	if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
 		[self updateCatalogs];
-	} 
+	}
+    
+    NSError *error = nil;
+    
+    if (![[self managedObjectContext] commitEditing]) {
+        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
+    }
+    
+    if (![[self managedObjectContext] save:&error]) {
+        [[NSApplication sharedApplication] presentError:error];
+    }
 	
 	[applicationTableView reloadData];
 }

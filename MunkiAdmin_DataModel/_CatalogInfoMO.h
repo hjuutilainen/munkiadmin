@@ -41,7 +41,9 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* indexInManifest;
+
 
 
 @property int32_t indexInManifestValue;
@@ -53,7 +55,9 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isEnabledForManifest;
+
 
 
 @property BOOL isEnabledForManifestValue;
@@ -65,7 +69,9 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* isEnabledForPackage;
+
 
 
 @property BOOL isEnabledForPackageValue;
@@ -77,7 +83,9 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -90,21 +98,21 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) CatalogMO* catalog;
+@property (nonatomic, retain) CatalogMO *catalog;
 
 //- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO* manifest;
+@property (nonatomic, retain) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO* package;
+@property (nonatomic, retain) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

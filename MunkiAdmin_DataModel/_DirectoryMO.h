@@ -30,7 +30,9 @@ extern const struct DirectoryMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id originalURL;
+
 
 
 //- (BOOL)validateOriginalURL:(id*)value_ error:(NSError**)error_;

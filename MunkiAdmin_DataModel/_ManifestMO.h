@@ -68,7 +68,9 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id manifestURL;
+
 
 
 //- (BOOL)validateManifestURL:(id*)value_ error:(NSError**)error_;
@@ -76,7 +78,9 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) id originalManifest;
+
 
 
 //- (BOOL)validateOriginalManifest:(id*)value_ error:(NSError**)error_;
@@ -84,7 +88,9 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* title;
+
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
@@ -93,105 +99,105 @@ extern const struct ManifestMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet* applications;
+@property (nonatomic, retain) NSSet *applications;
 
 - (NSMutableSet*)applicationsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* catalogInfos;
+@property (nonatomic, retain) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* catalogs;
+@property (nonatomic, retain) NSSet *catalogs;
 
 - (NSMutableSet*)catalogsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* conditionalItems;
+@property (nonatomic, retain) NSSet *conditionalItems;
 
 - (NSMutableSet*)conditionalItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* includedManifests;
+@property (nonatomic, retain) NSSet *includedManifests;
 
 - (NSMutableSet*)includedManifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* includedManifestsFaster;
+@property (nonatomic, retain) NSSet *includedManifestsFaster;
 
 - (NSMutableSet*)includedManifestsFasterSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedInstalls;
+@property (nonatomic, retain) NSSet *managedInstalls;
 
 - (NSMutableSet*)managedInstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedInstallsFaster;
+@property (nonatomic, retain) NSSet *managedInstallsFaster;
 
 - (NSMutableSet*)managedInstallsFasterSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUninstalls;
+@property (nonatomic, retain) NSSet *managedUninstalls;
 
 - (NSMutableSet*)managedUninstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUninstallsFaster;
+@property (nonatomic, retain) NSSet *managedUninstallsFaster;
 
 - (NSMutableSet*)managedUninstallsFasterSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUpdates;
+@property (nonatomic, retain) NSSet *managedUpdates;
 
 - (NSMutableSet*)managedUpdatesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* managedUpdatesFaster;
+@property (nonatomic, retain) NSSet *managedUpdatesFaster;
 
 - (NSMutableSet*)managedUpdatesFasterSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* manifestInfos;
+@property (nonatomic, retain) NSSet *manifestInfos;
 
 - (NSMutableSet*)manifestInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* optionalInstalls;
+@property (nonatomic, retain) NSSet *optionalInstalls;
 
 - (NSMutableSet*)optionalInstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet* optionalInstallsFaster;
+@property (nonatomic, retain) NSSet *optionalInstallsFaster;
 
 - (NSMutableSet*)optionalInstallsFasterSet;
 

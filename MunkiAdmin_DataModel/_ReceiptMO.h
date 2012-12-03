@@ -43,7 +43,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_filename;
+
 
 
 //- (BOOL)validateMunki_filename:(id*)value_ error:(NSError**)error_;
@@ -51,7 +53,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_installed_size;
+
 
 
 @property int64_t munki_installed_sizeValue;
@@ -63,7 +67,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_name;
+
 
 
 //- (BOOL)validateMunki_name:(id*)value_ error:(NSError**)error_;
@@ -71,7 +77,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* munki_optional;
+
 
 
 @property BOOL munki_optionalValue;
@@ -83,7 +91,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_packageid;
+
 
 
 //- (BOOL)validateMunki_packageid:(id*)value_ error:(NSError**)error_;
@@ -91,7 +101,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSString* munki_version;
+
 
 
 //- (BOOL)validateMunki_version:(id*)value_ error:(NSError**)error_;
@@ -99,7 +111,9 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
+
 @property (nonatomic, retain) NSNumber* originalIndex;
+
 
 
 @property int32_t originalIndexValue;
@@ -112,7 +126,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) PackageMO* package;
+@property (nonatomic, retain) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 
