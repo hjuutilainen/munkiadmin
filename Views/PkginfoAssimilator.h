@@ -17,6 +17,10 @@
     PackageMO *targetPkginfo;
     NSModalSession modalSession;
     id delegate;
+    NSArrayController *allPackagesArrayController;
+    NSButton *cancelButton;
+    NSButton *okButton;
+    
     NSArray *defaultsKeysToLoop;
     NSDictionary *keyGroups;
     

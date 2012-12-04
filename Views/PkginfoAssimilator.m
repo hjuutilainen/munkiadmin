@@ -22,6 +22,8 @@
 @synthesize sourcePkginfo;
 @synthesize targetPkginfo;
 @synthesize allPackagesArrayController;
+@synthesize okButton;
+@synthesize cancelButton;
 
 @synthesize assimilate_blocking_applications;
 @synthesize assimilate_requires;
