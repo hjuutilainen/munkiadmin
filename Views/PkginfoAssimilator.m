@@ -10,36 +10,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 
 @interface PkginfoAssimilator () {
-    /*
-    BOOL assimilate_blocking_applications;
-    BOOL assimilate_requires;
-    BOOL assimilate_update_for;
-    BOOL assimilate_supported_architectures;
-    BOOL assimilate_installs_items;
-    BOOL assimilate_installer_choices_xml;
     
-    BOOL assimilate_autoremove;
-    BOOL assimilate_description;
-    BOOL assimilate_display_name;
-    BOOL assimilate_installable_condition;
-    BOOL assimilate_maximum_os_version;
-    BOOL assimilate_minimum_munki_version;
-    BOOL assimilate_minimum_os_version;
-    BOOL assimilate_name;
-    BOOL assimilate_unattended_install;
-    BOOL assimilate_unattended_uninstall;
-    BOOL assimilate_uninstallable;
-    BOOL assimilate_uninstaller_item_location;
-    
-    BOOL assimilate_installcheck_script;
-    BOOL assimilate_preinstall_script;
-    BOOL assimilate_postinstall_script;
-    BOOL assimilate_preuninstall_script;
-    BOOL assimilate_postuninstall_script;
-    BOOL assimilate_uninstall_method;
-    BOOL assimilate_uninstall_script;
-    BOOL assimilate_uninstallcheck_script;
-    */
 }
 
 @end
@@ -51,6 +22,36 @@
 @synthesize sourcePkginfo;
 @synthesize targetPkginfo;
 @synthesize allPackagesArrayController;
+
+@synthesize assimilate_blocking_applications;
+@synthesize assimilate_requires;
+@synthesize assimilate_update_for;
+@synthesize assimilate_supported_architectures;
+@synthesize assimilate_installs_items;
+@synthesize assimilate_installer_choices_xml;
+
+@synthesize assimilate_autoremove;
+@synthesize assimilate_description;
+@synthesize assimilate_display_name;
+@synthesize assimilate_installable_condition;
+@synthesize assimilate_maximum_os_version;
+@synthesize assimilate_minimum_munki_version;
+@synthesize assimilate_minimum_os_version;
+@synthesize assimilate_name;
+@synthesize assimilate_unattended_install;
+@synthesize assimilate_unattended_uninstall;
+@synthesize assimilate_uninstallable;
+@synthesize assimilate_uninstaller_item_location;
+
+@synthesize assimilate_installcheck_script;
+@synthesize assimilate_preinstall_script;
+@synthesize assimilate_postinstall_script;
+@synthesize assimilate_preuninstall_script;
+@synthesize assimilate_postuninstall_script;
+@synthesize assimilate_uninstall_method;
+@synthesize assimilate_uninstall_script;
+@synthesize assimilate_uninstallcheck_script;
+
 
 - (id)initWithWindow:(NSWindow *)window
 {

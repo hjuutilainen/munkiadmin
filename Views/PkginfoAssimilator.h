@@ -19,6 +19,36 @@
     id delegate;
     NSArray *defaultsKeysToLoop;
     NSDictionary *keyGroups;
+    
+    BOOL assimilate_blocking_applications;
+    BOOL assimilate_requires;
+    BOOL assimilate_update_for;
+    BOOL assimilate_supported_architectures;
+    BOOL assimilate_installs_items;
+    BOOL assimilate_installer_choices_xml;
+    
+    BOOL assimilate_autoremove;
+    BOOL assimilate_description;
+    BOOL assimilate_display_name;
+    BOOL assimilate_installable_condition;
+    BOOL assimilate_maximum_os_version;
+    BOOL assimilate_minimum_munki_version;
+    BOOL assimilate_minimum_os_version;
+    BOOL assimilate_name;
+    BOOL assimilate_unattended_install;
+    BOOL assimilate_unattended_uninstall;
+    BOOL assimilate_uninstallable;
+    BOOL assimilate_uninstaller_item_location;
+    
+    BOOL assimilate_installcheck_script;
+    BOOL assimilate_preinstall_script;
+    BOOL assimilate_postinstall_script;
+    BOOL assimilate_preuninstall_script;
+    BOOL assimilate_postuninstall_script;
+    BOOL assimilate_uninstall_method;
+    BOOL assimilate_uninstall_script;
+    BOOL assimilate_uninstallcheck_script;
+    
 }
 
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)targetPackage
