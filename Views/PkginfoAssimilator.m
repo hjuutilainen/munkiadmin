@@ -9,7 +9,38 @@
 #import "PkginfoAssimilator.h"
 #import "MunkiAdmin_AppDelegate.h"
 
-@interface PkginfoAssimilator ()
+@interface PkginfoAssimilator () {
+    /*
+    BOOL assimilate_blocking_applications;
+    BOOL assimilate_requires;
+    BOOL assimilate_update_for;
+    BOOL assimilate_supported_architectures;
+    BOOL assimilate_installs_items;
+    BOOL assimilate_installer_choices_xml;
+    
+    BOOL assimilate_autoremove;
+    BOOL assimilate_description;
+    BOOL assimilate_display_name;
+    BOOL assimilate_installable_condition;
+    BOOL assimilate_maximum_os_version;
+    BOOL assimilate_minimum_munki_version;
+    BOOL assimilate_minimum_os_version;
+    BOOL assimilate_name;
+    BOOL assimilate_unattended_install;
+    BOOL assimilate_unattended_uninstall;
+    BOOL assimilate_uninstallable;
+    BOOL assimilate_uninstaller_item_location;
+    
+    BOOL assimilate_installcheck_script;
+    BOOL assimilate_preinstall_script;
+    BOOL assimilate_postinstall_script;
+    BOOL assimilate_preuninstall_script;
+    BOOL assimilate_postuninstall_script;
+    BOOL assimilate_uninstall_method;
+    BOOL assimilate_uninstall_script;
+    BOOL assimilate_uninstallcheck_script;
+    */
+}
 
 @end
 
@@ -114,52 +145,26 @@
 
 - (void)commitChangesToCurrentPackage
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
+        if ([[self valueForKey:assimilateKeyName] boolValue]) {
+            NSString *munkiadminKeyName = [assimilateKeyName stringByReplacingOccurrencesOfString:@"assimilate_" withString:@"munki_"];
+            id sourceValue = [self.sourcePkginfo valueForKey:munkiadminKeyName];
+            [self.targetPkginfo setValue:sourceValue forKey:munkiadminKeyName];
+        }
+    }
+    
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"scriptKeys"]) {
+        if ([[self valueForKey:assimilateKeyName] boolValue]) {
+            NSString *munkiadminKeyName = [assimilateKeyName stringByReplacingOccurrencesOfString:@"assimilate_" withString:@"munki_"];
+            id sourceValue = [self.sourcePkginfo valueForKey:munkiadminKeyName];
+            [self.targetPkginfo setValue:sourceValue forKey:munkiadminKeyName];
+        }
+    }
+    
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-    
-    if ([defaults boolForKey:@"assimilate_autoremove"]) {
-        self.targetPkginfo.munki_autoremove = self.sourcePkginfo.munki_autoremove;
-    }
-    if ([defaults boolForKey:@"assimilate_description"]) {
-        self.targetPkginfo.munki_description = self.sourcePkginfo.munki_description;
-    }
-    if ([defaults boolForKey:@"assimilate_display_name"]) {
-        self.targetPkginfo.munki_display_name = self.sourcePkginfo.munki_display_name;
-    }
-    if ([defaults boolForKey:@"assimilate_installable_condition"]) {
-        self.targetPkginfo.munki_installable_condition = self.sourcePkginfo.munki_installable_condition;
-    }
-    if ([defaults boolForKey:@"assimilate_installcheck_script"]) {
-        self.targetPkginfo.munki_installcheck_script = self.sourcePkginfo.munki_installcheck_script;
-    }
-    if ([defaults boolForKey:@"assimilate_maximum_os_version"]) {
-        self.targetPkginfo.munki_maximum_os_version = self.sourcePkginfo.munki_maximum_os_version;
-    }
-    if ([defaults boolForKey:@"assimilate_minimum_munki_version"]) {
-        self.targetPkginfo.munki_minimum_munki_version = self.sourcePkginfo.munki_minimum_munki_version;
-    }
-    if ([defaults boolForKey:@"assimilate_minimum_os_version"]) {
-        self.targetPkginfo.munki_minimum_os_version = self.sourcePkginfo.munki_minimum_os_version;
-    }
-    if ([defaults boolForKey:@"assimilate_name"]) {
-        self.targetPkginfo.munki_name = self.sourcePkginfo.munki_name;
-    }
-    if ([defaults boolForKey:@"assimilate_preinstall_script"]) {
-        self.targetPkginfo.munki_preinstall_script = self.sourcePkginfo.munki_preinstall_script;
-    }
-    if ([defaults boolForKey:@"assimilate_postinstall_script"]) {
-        self.targetPkginfo.munki_postinstall_script = self.sourcePkginfo.munki_postinstall_script;
-    }
-    if ([defaults boolForKey:@"assimilate_preuninstall_script"]) {
-        self.targetPkginfo.munki_preuninstall_script = self.sourcePkginfo.munki_preuninstall_script;
-    }
-    if ([defaults boolForKey:@"assimilate_postuninstall_script"]) {
-        self.targetPkginfo.munki_postuninstall_script = self.sourcePkginfo.munki_postuninstall_script;
-    }
-    
-    
+        
     // Blocking applications
-    if ([defaults boolForKey:@"assimilate_blocking_applications"]) {
+    if (self.assimilate_blocking_applications) {
         for (StringObjectMO *blockingApp in self.sourcePkginfo.blockingApplications) {
             StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newBlockingApplication.title = blockingApp.title;
@@ -169,7 +174,7 @@
     }
     
     // Requires
-    if ([defaults boolForKey:@"assimilate_requires"]) {
+    if (self.assimilate_requires) {
         for (StringObjectMO *requiresItem in self.sourcePkginfo.requirements) {
             StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newRequiredPkgInfo.title = requiresItem.title;
@@ -179,7 +184,7 @@
     }
     
     // Update for
-    if ([defaults boolForKey:@"assimilate_update_for"]) {
+    if (self.assimilate_update_for) {
         for (StringObjectMO *updateForItem in self.sourcePkginfo.updateFor) {
             StringObjectMO *newUpdateForItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newUpdateForItem.title = updateForItem.title;
@@ -189,7 +194,7 @@
     }
     
     // Supported architectures
-    if ([defaults boolForKey:@"assimilate_supported_architectures"]) {
+    if (self.assimilate_supported_architectures) {
         for (StringObjectMO *supportedArch in self.sourcePkginfo.supportedArchitectures) {
             StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newSupportedArchitecture.title = supportedArch.title;
@@ -199,7 +204,7 @@
     }
     
     // Installs
-    if ([defaults boolForKey:@"assimilate_installs_items"]) {
+    if (self.assimilate_installs_items) {
         for (InstallsItemMO *installsItem in self.sourcePkginfo.installsItems) {
             InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
             newInstallsItem.munki_CFBundleIdentifier = installsItem.munki_CFBundleIdentifier;
@@ -214,8 +219,8 @@
     }
     
     // Installer choices XML
-    if ([defaults boolForKey:@"assimilate_installer_choices_xml"]) {
-        for (InstallerChoicesItemMO *installerChoicesItem in self.sourcePkginfo.installsItems) {
+    if (self.assimilate_installer_choices_xml) {
+        for (InstallerChoicesItemMO *installerChoicesItem in self.sourcePkginfo.installerChoicesItems) {
             InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
             newInstallerChoicesItem.munki_attributeSetting = installerChoicesItem.munki_attributeSetting;
             newInstallerChoicesItem.munki_choiceAttribute = installerChoicesItem.munki_choiceAttribute;
@@ -223,7 +228,6 @@
             [self.targetPkginfo addInstallerChoicesItemsObject:newInstallerChoicesItem];
         }
     }
-    
 }
 
 - (IBAction)saveAction:(id)sender;
@@ -302,6 +306,23 @@
     
     self.modalSession = [NSApp beginModalSessionForWindow:self.window];
     [NSApp runModalSession:self.modalSession];
+    
+    // Setup the default selection
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
+        NSLog(@"%@", assimilateKeyName);
+        BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
+        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+    }
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"scriptKeys"]) {
+        BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
+        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+    }
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"arrayKeys"]) {
+        BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
+        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+    }
+    
     return self.modalSession;
 }
 
