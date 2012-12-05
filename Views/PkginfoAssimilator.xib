@@ -1404,33 +1404,41 @@
 						<string key="label">content: arrangedObjects</string>
 						<reference key="source" ref="521994523"/>
 						<reference key="destination" ref="65444423"/>
-						<object class="NSNibBindingConnector" key="connector" id="685309003">
+						<object class="NSNibBindingConnector" key="connector" id="959286715">
 							<reference key="NSSource" ref="521994523"/>
 							<reference key="NSDestination" ref="65444423"/>
 							<string key="NSLabel">content: arrangedObjects</string>
 							<string key="NSBinding">content</string>
 							<string key="NSKeyPath">arrangedObjects</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSInsertsNullPlaceholder</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">215</int>
+					<int key="connectionID">400</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentValues: arrangedObjects.titleWithVersion</string>
 						<reference key="source" ref="521994523"/>
 						<reference key="destination" ref="65444423"/>
-						<object class="NSNibBindingConnector" key="connector" id="303591970">
+						<object class="NSNibBindingConnector" key="connector" id="236408728">
 							<reference key="NSSource" ref="521994523"/>
 							<reference key="NSDestination" ref="65444423"/>
 							<string key="NSLabel">contentValues: arrangedObjects.titleWithVersion</string>
 							<string key="NSBinding">contentValues</string>
 							<string key="NSKeyPath">arrangedObjects.titleWithVersion</string>
-							<reference key="NSPreviousConnector" ref="685309003"/>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSInsertsNullPlaceholder</string>
+								<boolean value="YES" key="NS.object.0"/>
+							</object>
+							<reference key="NSPreviousConnector" ref="959286715"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">216</int>
+					<int key="connectionID">401</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1447,11 +1455,11 @@
 								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
 								<boolean value="NO" key="NS.object.0"/>
 							</object>
-							<reference key="NSPreviousConnector" ref="303591970"/>
+							<reference key="NSPreviousConnector" ref="236408728"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">218</int>
+					<int key="connectionID">402</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3542,7 +3550,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">399</int>
+			<int key="maxID">402</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
