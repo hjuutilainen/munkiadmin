@@ -818,9 +818,6 @@
     [alert setMessageText:@"New Manifest"];
     [alert setInformativeText:@"Create a new manifest with title:"];
     [alert setAlertStyle:NSInformationalAlertStyle];
-	//NSImage *theIcon = [NSImage imageNamed:@"manifestIcon2"];
-	//[theIcon setScalesWhenResized:NO];
-	//[alert setIcon:theIcon];
     [alert setShowsSuppressionButton:NO];
     [alert setAccessoryView:createNewManifestCustomView];
 	
@@ -832,15 +829,13 @@
     NSInteger result = [alert runModal];
     if (result == NSAlertFirstButtonReturn) {
         
-        NSDictionary *emptyManifest = [NSDictionary dictionary];
-        NSString *manifestTitle = [createNewManifestCustomView stringValue];
-        NSURL *writeURL = [self.manifestsURL URLByAppendingPathComponent:manifestTitle];
-        [emptyManifest writeToURL:writeURL atomically:YES];
+        ManifestMO *newManifest = [[MunkiRepositoryManager sharedManager] newManifestWithTitle:[createNewManifestCustomView stringValue]];
+        [self.managedObjectContext save:nil];
         
         RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
         manifestRelationships.delegate = self;
         
-        ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:writeURL] autorelease];
+        ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL] autorelease];
         scanOp.delegate = self;
         [manifestRelationships addDependency:scanOp];
         [self.operationQueue addOperation:scanOp];
@@ -1060,32 +1055,8 @@
 	// Display the dialog and act accordingly
     NSInteger result = [alert runModal];
     if (result == NSAlertFirstButtonReturn) {
-		NSManagedObjectContext *moc = [self managedObjectContext];
-        CatalogMO *catalog;
-		catalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
-		catalog.title = [textField stringValue];
-		NSURL *catalogURL = [self.catalogsURL URLByAppendingPathComponent:catalog.title];
-		[[NSFileManager defaultManager] createFileAtPath:[catalogURL relativePath] contents:nil attributes:nil];
-		
-		// Loop through Package managed objects
-		for (PackageMO *aPackage in [self allObjectsForEntity:@"Package"]) {
-			CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
-			newCatalogInfo.package = aPackage;
-			newCatalogInfo.catalog = catalog;
-			newCatalogInfo.catalog.title = catalog.title;
-			
-			[catalog addPackagesObject:aPackage];
-			[catalog addCatalogInfosObject:newCatalogInfo];
-			
-			PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
-			newPackageInfo.catalog = catalog;
-			newPackageInfo.title = [aPackage.munki_display_name stringByAppendingFormat:@" %@", aPackage.munki_version];
-			newPackageInfo.package = aPackage;
-			
-			newCatalogInfo.isEnabledForPackageValue = NO;
-			newPackageInfo.isEnabledForCatalogValue = NO;
-			
-		}
+        
+        [[MunkiRepositoryManager sharedManager] newCatalogWithTitle:[textField stringValue]];
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
         

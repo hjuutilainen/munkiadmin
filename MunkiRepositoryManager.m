@@ -8,19 +8,23 @@
 
 #import "MunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
+#import "MunkiAdmin_AppDelegate.h"
 
 /*
  * Private interface
  */
 @interface MunkiRepositoryManager ()
+
 - (void)willStartOperations;
 - (void)willEndOperations;
-- (BOOL)makepkginfoInstalled;
-- (BOOL)makecatalogsInstalled;
+
 @end
 
 
 @implementation MunkiRepositoryManager
+
+@dynamic makecatalogsInstalled;
+@dynamic makepkginfoInstalled;
 
 
 # pragma mark -
@@ -78,6 +82,64 @@ static dispatch_queue_t serialQueue;
     dispatch_async(dispatch_get_main_queue(), ^{
         //[[[NSApp delegate] progressBar] stopAnimation:nil];
     });
+}
+
+# pragma mark -
+# pragma mark Creating new items
+
+- (CatalogMO *)newCatalogWithTitle:(NSString *)title
+{
+    if (title == nil) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    CatalogMO *catalog;
+    catalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
+    catalog.title = title;
+    NSURL *catalogURL = [[[NSApp delegate] catalogsURL] URLByAppendingPathComponent:catalog.title];
+    [[NSFileManager defaultManager] createFileAtPath:[catalogURL relativePath] contents:nil attributes:nil];
+    
+    // Loop through Package managed objects
+    for (PackageMO *aPackage in [sharedOperationManager allObjectsForEntity:@"Package"]) {
+        CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+        newCatalogInfo.package = aPackage;
+        newCatalogInfo.catalog = catalog;
+        newCatalogInfo.catalog.title = catalog.title;
+        
+        [catalog addPackagesObject:aPackage];
+        [catalog addCatalogInfosObject:newCatalogInfo];
+        
+        PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+        newPackageInfo.catalog = catalog;
+        newPackageInfo.title = [aPackage.munki_display_name stringByAppendingFormat:@" %@", aPackage.munki_version];
+        newPackageInfo.package = aPackage;
+        
+        newCatalogInfo.isEnabledForPackageValue = NO;
+        newPackageInfo.isEnabledForCatalogValue = NO;
+        
+    }
+    
+    return catalog;
+}
+
+- (ManifestMO *)newManifestWithTitle:(NSString *)title
+{
+    if (title == nil) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
+    newManifest.title = title;
+    newManifest.manifestURL = (NSURL *)[[[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
+    newManifest.originalManifest = [NSDictionary dictionary];
+    
+    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:YES]) {
+        return newManifest;
+    } else {
+        return nil;
+    }
 }
 
 
@@ -471,6 +533,16 @@ static dispatch_queue_t serialQueue;
 
 # pragma mark -
 # pragma mark Helper methods
+
+- (NSArray *)allObjectsForEntity:(NSString *)entityName
+{
+	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entityDescr];
+	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	[fetchRequest release];
+	return fetchResults;
+}
 
 - (BOOL)makepkginfoInstalled
 {
