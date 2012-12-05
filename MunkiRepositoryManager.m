@@ -85,6 +85,110 @@ static dispatch_queue_t serialQueue;
 }
 
 # pragma mark -
+# pragma mark Modifying items
+
+- (void)renamePackage:(PackageMO *)aPackage newName:(NSString *)newName cascade:(BOOL)shouldCascade
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    if (shouldCascade) {
+        // Get the current app
+        ApplicationMO *currentApp = aPackage.parentApplication;
+        
+        // Check for existing ApplicationMO with the same title
+        NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+        [getApplication setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc]];
+        NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newName];
+        [getApplication setPredicate:appPred];
+        if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+            // Application object exists with the new name so use it
+            NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+            ApplicationMO *app = [apps objectAtIndex:0];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Found ApplicationMO: %@", app.munki_name);
+            aPackage.munki_name = newName;
+            aPackage.hasUnstagedChangesValue = YES;
+            aPackage.parentApplication = app;
+        } else {
+            // No existing application objects with this name so just rename it
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming ApplicationMO %@ to %@", currentApp.munki_name, newName);
+            currentApp.munki_name = newName;
+            aPackage.munki_name = newName;
+            aPackage.hasUnstagedChangesValue = YES;
+            aPackage.parentApplication = currentApp; // Shouldn't need this...
+        }
+        [getApplication release];
+        
+        // Get sibling packages
+        NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
+        [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
+        NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", currentApp];
+        [getSiblings setPredicate:siblingPred];
+        if ([moc countForFetchRequest:getSiblings error:nil] > 0) {
+            NSArray *siblingPackages = [moc executeFetchRequest:getSiblings error:nil];
+            for (PackageMO *aSibling in siblingPackages) {
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming sibling %@ to %@", aSibling.munki_name, newName);
+                aSibling.munki_name = newName;
+                aSibling.hasUnstagedChangesValue = YES;
+                aSibling.parentApplication = aPackage.parentApplication;
+            }
+        } else {
+            
+        }
+        [getSiblings release];
+        
+        for (StringObjectMO *i in [aPackage referencingStringObjects]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, aPackage.titleWithVersion);
+            i.title = aPackage.titleWithVersion;
+            [moc refreshObject:i mergeChanges:YES];
+            if (i.managedInstallReference) {
+                i.managedInstallReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.managedUninstallReference) {
+                i.managedUninstallReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.managedUpdateReference) {
+                i.managedUpdateReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.optionalInstallReference) {
+                i.optionalInstallReference.hasUnstagedChangesValue = YES;
+            }
+        
+        }
+        for (StringObjectMO *i in [aPackage.parentApplication referencingStringObjects]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, aPackage.parentApplication.munki_name);
+            i.title = aPackage.parentApplication.munki_name;
+            [moc refreshObject:i mergeChanges:YES];
+            if (i.managedInstallReference) {
+                i.managedInstallReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.managedUninstallReference) {
+                i.managedUninstallReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.managedUpdateReference) {
+                i.managedUpdateReference.hasUnstagedChangesValue = YES;
+            }
+            if (i.optionalInstallReference) {
+                i.optionalInstallReference.hasUnstagedChangesValue = YES;
+            }
+        }
+        
+    } else {
+        aPackage.munki_name = newName;
+        for (StringObjectMO *i in [aPackage referencingStringObjects]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, aPackage.titleWithVersion);
+            i.title = aPackage.titleWithVersion;
+            [moc refreshObject:i mergeChanges:YES];
+            
+        }
+        for (StringObjectMO *i in [aPackage.parentApplication referencingStringObjects]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, aPackage.parentApplication.munki_name);
+            i.title = aPackage.parentApplication.munki_name;
+            [moc refreshObject:i mergeChanges:YES];
+            
+        }
+    }
+}
+
+# pragma mark -
 # pragma mark Creating new items
 
 - (CatalogMO *)newCatalogWithTitle:(NSString *)title

@@ -866,78 +866,9 @@
     NSString *newName = [packageNameEditor changedName];
     if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming to: %@", newName);
     
-    
     for (PackageMO *selectedPackage in [[packagesViewController packagesArrayController] selectedObjects]) {
-        if ([packageNameEditor shouldRenameAll]) {
-            // Get the current app
-            ApplicationMO *currentApp = selectedPackage.parentApplication;
-            
-            // Check for existing ApplicationMO with the same title
-            NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
-            [getApplication setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:self.managedObjectContext]];
-            NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newName];
-            [getApplication setPredicate:appPred];
-            if ([self.managedObjectContext countForFetchRequest:getApplication error:nil] > 0) {
-                // Application object exists with the new name so use it
-                NSArray *apps = [self.managedObjectContext executeFetchRequest:getApplication error:nil];
-                ApplicationMO *app = [apps objectAtIndex:0];
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Found ApplicationMO: %@", app.munki_name);
-                selectedPackage.munki_name = newName;
-                selectedPackage.parentApplication = app;
-            } else {
-                // No existing application objects with this name so just rename it
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming ApplicationMO %@ to %@", currentApp.munki_name, newName);
-                currentApp.munki_name = newName;
-                selectedPackage.munki_name = newName;
-                selectedPackage.parentApplication = currentApp; // Shouldn't need this...
-            }
-            [getApplication release];
-            
-            // Get sibling packages
-            NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
-            [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
-            NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", currentApp];
-            [getSiblings setPredicate:siblingPred];
-            if ([self.managedObjectContext countForFetchRequest:getSiblings error:nil] > 0) {
-                NSArray *siblingPackages = [self.managedObjectContext executeFetchRequest:getSiblings error:nil];
-                for (PackageMO *aSibling in siblingPackages) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming sibling %@ to %@", aSibling.munki_name, newName);
-                    aSibling.munki_name = newName;
-                    aSibling.parentApplication = selectedPackage.parentApplication;
-                }
-            } else {
-                
-            }
-            [getSiblings release];
-            
-            for (StringObjectMO *i in [selectedPackage referencingStringObjects]) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, selectedPackage.titleWithVersion);
-                i.title = selectedPackage.titleWithVersion;
-                [self.managedObjectContext refreshObject:i mergeChanges:YES];
-                
-            }
-            for (StringObjectMO *i in [selectedPackage.parentApplication referencingStringObjects]) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, selectedPackage.parentApplication.munki_name);
-                i.title = selectedPackage.parentApplication.munki_name;
-                [self.managedObjectContext refreshObject:i mergeChanges:YES];
-                
-            }
-
-        } else {
-            selectedPackage.munki_name = newName;
-            for (StringObjectMO *i in [selectedPackage referencingStringObjects]) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, selectedPackage.titleWithVersion);
-                i.title = selectedPackage.titleWithVersion;
-                [self.managedObjectContext refreshObject:i mergeChanges:YES];
-                
-            }
-            for (StringObjectMO *i in [selectedPackage.parentApplication referencingStringObjects]) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, selectedPackage.parentApplication.munki_name);
-                i.title = selectedPackage.parentApplication.munki_name;
-                [self.managedObjectContext refreshObject:i mergeChanges:YES];
-                
-            }
-        }
+        BOOL renameAll = [packageNameEditor shouldRenameAll];
+        [[MunkiRepositoryManager sharedManager] renamePackage:selectedPackage newName:newName cascade:renameAll];
     }
     [NSApp endSheet:[packageNameEditor window]];
 	[[packageNameEditor window] close];

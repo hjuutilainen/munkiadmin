@@ -21,6 +21,9 @@
 @property (readonly) BOOL makecatalogsInstalled;
 
 + (MunkiRepositoryManager *)sharedManager;
+
+- (void)renamePackage:(PackageMO *)aPackage newName:(NSString *)newName cascade:(BOOL)shouldCascade;
+
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
