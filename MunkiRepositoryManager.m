@@ -15,6 +15,8 @@
 @interface MunkiRepositoryManager ()
 - (void)willStartOperations;
 - (void)willEndOperations;
+- (BOOL)makepkginfoInstalled;
+- (BOOL)makecatalogsInstalled;
 @end
 
 
@@ -466,5 +468,36 @@ static dispatch_queue_t serialQueue;
         }
 	}
 }
+
+# pragma mark -
+# pragma mark Helper methods
+
+- (BOOL)makepkginfoInstalled
+{
+	// Check if /usr/local/munki/makepkginfo exists
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSString *makepkginfoPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
+	if ([fm fileExistsAtPath:makepkginfoPath]) {
+		return YES;
+	} else {
+		NSLog(@"Can't find %@. Check the paths to munki tools.", makepkginfoPath);
+		return NO;
+	}
+}
+
+- (BOOL)makecatalogsInstalled
+{
+	// Check if /usr/local/munki/makecatalogs exists
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSString *makecatalogsPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"];
+	if ([fm fileExistsAtPath:makecatalogsPath]) {
+		return YES;
+	} else {
+		NSLog(@"Can't find %@. Check the paths to munki tools.", makecatalogsPath);
+		return NO;
+	}
+}
+
+
 
 @end
