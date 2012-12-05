@@ -6,10 +6,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "PackageMO.h"
-#import "StringObjectMO.h"
 
 @class SelectPkginfoItemsWindow;
+@class PackageMO;
 
 @interface AdvancedPackageEditor : NSWindowController {
     NSDatePicker *forceInstallDatePicker;

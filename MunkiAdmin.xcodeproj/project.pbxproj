@@ -43,6 +43,7 @@
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
+		F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */; };
 		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
@@ -180,6 +181,9 @@
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
+		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
+		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModelHeaders.h; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PkginfoAssimilator.h; path = Views/PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoAssimilator.m; path = Views/PkginfoAssimilator.m; sourceTree = "<group>"; };
 		F5836985166C9147003E1442 /* PkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PkginfoAssimilator.xib; path = Views/PkginfoAssimilator.xib; sourceTree = "<group>"; };
@@ -360,6 +364,9 @@
 				FEABB23F144EB0D40006BDE8 /* View Controllers */,
 				FEF434DE14FCAF9E005AFF2F /* MAFileSizeFormatter.h */,
 				FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */,
+				F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */,
+				F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */,
+				F56AC7A4166F307300FD5438 /* DataModelHeaders.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -808,6 +815,7 @@
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
 				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
+				F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

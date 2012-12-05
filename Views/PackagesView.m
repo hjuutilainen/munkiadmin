@@ -9,10 +9,8 @@
 
 
 #import "PackagesView.h"
-#import "PackageSourceListItemMO.h"
-#import "DirectoryMO.h"
 #import "ImageAndTitleCell.h"
-#import "PackageMO.h"
+#import "DataModelHeaders.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f

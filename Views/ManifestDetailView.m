@@ -6,11 +6,7 @@
 //
 
 #import "ManifestDetailView.h"
-#import "ManifestMO.h"
-#import "StringObjectMO.h"
-#import "CatalogMO.h"
-#import "CatalogInfoMO.h"
-#import "ConditionalItemMO.h"
+#import "DataModelHeaders.h"
 
 NSString *ConditionalItemType = @"ConditionalItemType";
 

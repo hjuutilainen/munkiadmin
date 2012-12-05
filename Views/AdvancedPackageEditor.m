@@ -6,6 +6,7 @@
 //
 
 #import "AdvancedPackageEditor.h"
+#import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"

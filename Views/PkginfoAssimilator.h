@@ -7,8 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "PackageMO.h"
-#import "StringObjectMO.h"
+
+@class PackageMO;
 
 @interface PkginfoAssimilator : NSWindowController {
     

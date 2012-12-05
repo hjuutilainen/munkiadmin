@@ -6,9 +6,7 @@
 //
 
 #import "SelectPkginfoItemsWindow.h"
-#import "ApplicationMO.h"
-#import "PackageMO.h"
-#import "StringObjectMO.h"
+#import "DataModelHeaders.h"
 
 @implementation SelectPkginfoItemsWindow
 

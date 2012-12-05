@@ -7,14 +7,7 @@
 
 #import "PkginfoScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
-#import "PackageMO.h"
-#import "ReceiptMO.h"
-#import "CatalogMO.h"
-#import "CatalogInfoMO.h"
-#import "InstallsItemMO.h"
-#import "InstallerChoicesItemMO.h"
-#import "ItemToCopyMO.h"
-#import "StringObjectMO.h"
+#import "DataModelHeaders.h"
 
 
 @implementation PkginfoScanner

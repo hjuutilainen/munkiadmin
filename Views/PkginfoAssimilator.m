@@ -8,6 +8,7 @@
 
 #import "PkginfoAssimilator.h"
 #import "MunkiAdmin_AppDelegate.h"
+#import "DataModelHeaders.h"
 
 @interface PkginfoAssimilator () {
     

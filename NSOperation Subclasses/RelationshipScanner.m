@@ -6,15 +6,7 @@
 //
 
 #import "RelationshipScanner.h"
-#import "PackageMO.h"
-#import "PackageInfoMO.h"
-#import "CatalogMO.h"
-#import "CatalogInfoMO.h"
-#import "ApplicationMO.h"
-#import "ManifestMO.h"
-#import "ManifestInfoMO.h"
-#import "StringObjectMO.h"
-#import "DirectoryMO.h"
+#import "DataModelHeaders.h"
 
 @implementation RelationshipScanner
 

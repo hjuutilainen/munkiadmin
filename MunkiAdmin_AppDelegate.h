@@ -6,27 +6,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "PackageMO.h"
-#import "PackageInfoMO.h"
-#import "CatalogMO.h"
-#import "CatalogInfoMO.h"
-#import "ApplicationMO.h"
-#import "ManagedInstallMO.h"
-#import "ManagedUninstallMO.h"
-#import "ManagedUpdateMO.h"
-#import "OptionalInstallMO.h"
-#import "ReceiptMO.h"
-#import "ManifestMO.h"
-#import "ManifestInfoMO.h"
-#import "InstallsItemMO.h"
-#import "InstallerChoicesItemMO.h"
-#import "StringObjectMO.h"
-#import "DirectoryMO.h"
-#import "PackageSourceListItemMO.h"
+
 #import "PreferencesController.h"
 #import "PackageInfosArrayController.h"
 #import "CatalogsArrayController.h"
-#import "ConditionalItemMO.h"
+#import "DataModelHeaders.h"
 
 @class ApplicationsArrayController;
 @class PackageArrayController;

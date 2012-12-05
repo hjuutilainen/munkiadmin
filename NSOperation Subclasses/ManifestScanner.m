@@ -7,17 +7,7 @@
 
 #import "ManifestScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
-#import "CatalogMO.h"
-#import "CatalogInfoMO.h"
-#import "ApplicationMO.h"
-#import "PackageMO.h"
-#import "ApplicationProxyMO.h"
-#import "ManagedInstallMO.h"
-#import "ManagedUninstallMO.h"
-#import "ManagedUpdateMO.h"
-#import "OptionalInstallMO.h"
-#import "StringObjectMO.h"
-#import "ConditionalItemMO.h"
+#import "DataModelHeaders.h"
 
 @implementation ManifestScanner
 
