@@ -12,4 +12,8 @@
     
 }
 
++ (MunkiRepositoryManager *)sharedManager;
+- (void)writePackagePropertyListsToDisk;
+- (void)writeManifestPropertyListsToDisk;
+
 @end

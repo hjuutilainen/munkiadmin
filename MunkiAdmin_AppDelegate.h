@@ -256,7 +256,6 @@
 - (void)scanCurrentRepoForCatalogFiles;
 - (void)deleteAllManagedObjects;
 - (void)selectRepoAtURL:(NSURL *)newURL;
-- (void)writePackagePropertyListsToDisk;
 - (void)changeItemView;
 - (void)configureSourceListDirectoriesSection;
 - (void)configureContainersForPackage:(PackageMO *)aPackage;
