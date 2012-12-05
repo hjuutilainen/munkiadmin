@@ -146,7 +146,7 @@ static dispatch_queue_t serialQueue;
 # pragma mark -
 # pragma mark Writing to the repository
 
-- (NSArray *)modifiedManifestsSinceLastSave
+- (NSSet *)modifiedManifestsSinceLastSave
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
 		NSLog(@"Getting modified manifests since last save");
@@ -189,13 +189,27 @@ static dispatch_queue_t serialQueue;
         }
     }
     
-    NSArray *allModifiedManifests = [NSArray arrayWithArray:tempModifiedManifests];
+    /*
+     * Finally fetch manifests that have been saved but not yet written to disk
+     */
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+    NSPredicate *unstagedChangesPredicate = [NSPredicate predicateWithFormat:@"hasUnstagedChanges == YES"];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entityDescr];
+    [fetchRequest setPredicate:unstagedChangesPredicate];
+	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+    if ([fetchResults count] != 0) {
+        [tempModifiedManifests addObjectsFromArray:fetchResults];
+    }
+    [fetchRequest release];
+    
+    NSSet *allModifiedManifests = [NSSet setWithArray:tempModifiedManifests];
     [tempModifiedManifests release];
     return allModifiedManifests;
 }
 
 
-- (NSArray *)modifiedPackagesSinceLastSave
+- (NSSet *)modifiedPackagesSinceLastSave
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
 		NSLog(@"Getting modified pkginfos since last save");
@@ -238,7 +252,21 @@ static dispatch_queue_t serialQueue;
         }
     }
     
-    NSArray *allModifiedPackages = [NSArray arrayWithArray:tempModifiedPackages];
+    /*
+     * Finally fetch packages that have been saved but not yet written to disk
+     */
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+    NSPredicate *unstagedChangesPredicate = [NSPredicate predicateWithFormat:@"hasUnstagedChanges == YES"];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entityDescr];
+    [fetchRequest setPredicate:unstagedChangesPredicate];
+	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+    if ([fetchResults count] != 0) {
+        [tempModifiedPackages addObjectsFromArray:fetchResults];
+    }
+    [fetchRequest release];
+    
+    NSSet *allModifiedPackages = [NSSet setWithArray:tempModifiedPackages];
     [tempModifiedPackages release];
     return allModifiedPackages;
 }
@@ -395,6 +423,11 @@ static dispatch_queue_t serialQueue;
                 }
 			}
 		}
+        
+        /*
+         Clear the internal trigger
+         */
+        aPackage.hasUnstagedChangesValue = NO;
 	}
 }
 
@@ -528,6 +561,11 @@ static dispatch_queue_t serialQueue;
                 }
 			}
         }
+        
+        /*
+         Clear the internal trigger
+         */
+        aManifest.hasUnstagedChangesValue = NO;
 	}
 }
 

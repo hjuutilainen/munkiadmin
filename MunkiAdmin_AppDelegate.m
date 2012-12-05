@@ -1373,6 +1373,9 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
+    for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];
@@ -1407,6 +1410,9 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
+    for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];

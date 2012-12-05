@@ -28,4 +28,7 @@
 - (CatalogMO *)newCatalogWithTitle:(NSString *)title;
 - (ManifestMO *)newManifestWithTitle:(NSString *)title;
 
+- (NSSet *)modifiedManifestsSinceLastSave;
+- (NSSet *)modifiedPackagesSinceLastSave;
+
 @end

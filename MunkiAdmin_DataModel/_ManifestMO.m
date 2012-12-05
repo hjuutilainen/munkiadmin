@@ -4,6 +4,7 @@
 #import "_ManifestMO.h"
 
 const struct ManifestMOAttributes ManifestMOAttributes = {
+	.hasUnstagedChanges = @"hasUnstagedChanges",
 	.manifestURL = @"manifestURL",
 	.originalManifest = @"originalManifest",
 	.title = @"title",
@@ -61,9 +62,40 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"hasUnstagedChangesValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"hasUnstagedChanges"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic hasUnstagedChanges;
+
+
+
+- (BOOL)hasUnstagedChangesValue {
+	NSNumber *result = [self hasUnstagedChanges];
+	return [result boolValue];
+}
+
+- (void)setHasUnstagedChangesValue:(BOOL)value_ {
+	[self setHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveHasUnstagedChangesValue {
+	NSNumber *result = [self primitiveHasUnstagedChanges];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
+	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

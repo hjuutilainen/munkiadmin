@@ -4,6 +4,7 @@
 #import "_PackageMO.h"
 
 const struct PackageMOAttributes PackageMOAttributes = {
+	.hasUnstagedChanges = @"hasUnstagedChanges",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
 	.munki_description = @"munki_description",
@@ -96,6 +97,11 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"hasUnstagedChangesValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"hasUnstagedChanges"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"munki_autoremoveValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_autoremove"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -144,6 +150,32 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic hasUnstagedChanges;
+
+
+
+- (BOOL)hasUnstagedChangesValue {
+	NSNumber *result = [self hasUnstagedChanges];
+	return [result boolValue];
+}
+
+- (void)setHasUnstagedChangesValue:(BOOL)value_ {
+	[self setHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveHasUnstagedChangesValue {
+	NSNumber *result = [self primitiveHasUnstagedChanges];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
+	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

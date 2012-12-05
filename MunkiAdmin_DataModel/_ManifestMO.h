@@ -5,6 +5,7 @@
 
 
 extern const struct ManifestMOAttributes {
+	 NSString *hasUnstagedChanges;
 	 NSString *manifestURL;
 	 NSString *originalManifest;
 	 NSString *title;
@@ -52,6 +53,7 @@ extern const struct ManifestMOFetchedProperties {
 @class OptionalInstallMO;
 @class StringObjectMO;
 
+
 @class NSObject;
 @class NSObject;
 
@@ -64,6 +66,20 @@ extern const struct ManifestMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ManifestMOID*)objectID;
+
+
+
+
+
+@property (nonatomic, retain) NSNumber* hasUnstagedChanges;
+
+
+
+@property BOOL hasUnstagedChangesValue;
+- (BOOL)hasUnstagedChangesValue;
+- (void)setHasUnstagedChangesValue:(BOOL)value_;
+
+//- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -297,6 +313,15 @@ extern const struct ManifestMOFetchedProperties {
 @end
 
 @interface _ManifestMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveHasUnstagedChanges;
+- (void)setPrimitiveHasUnstagedChanges:(NSNumber*)value;
+
+- (BOOL)primitiveHasUnstagedChangesValue;
+- (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
+
+
 
 
 - (id)primitiveManifestURL;

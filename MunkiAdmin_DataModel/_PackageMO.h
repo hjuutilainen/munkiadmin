@@ -5,6 +5,7 @@
 
 
 extern const struct PackageMOAttributes {
+	 NSString *hasUnstagedChanges;
 	 NSString *munki_RestartAction;
 	 NSString *munki_autoremove;
 	 NSString *munki_description;
@@ -120,6 +121,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @class NSObject;
 
 
@@ -139,6 +141,20 @@ extern const struct PackageMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (PackageMOID*)objectID;
+
+
+
+
+
+@property (nonatomic, retain) NSNumber* hasUnstagedChanges;
+
+
+
+@property BOOL hasUnstagedChangesValue;
+- (BOOL)hasUnstagedChangesValue;
+- (void)setHasUnstagedChangesValue:(BOOL)value_;
+
+//- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -791,6 +807,15 @@ extern const struct PackageMOFetchedProperties {
 @end
 
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveHasUnstagedChanges;
+- (void)setPrimitiveHasUnstagedChanges:(NSNumber*)value;
+
+- (BOOL)primitiveHasUnstagedChangesValue;
+- (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
+
+
 
 
 - (NSString*)primitiveMunki_RestartAction;
