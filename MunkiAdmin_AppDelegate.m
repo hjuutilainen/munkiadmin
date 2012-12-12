@@ -171,12 +171,10 @@
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
-		//NSArray *allObjects = [[NSArray alloc] initWithArray:[self allObjectsForEntity:[entDescr name]]];
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
 		for (id anObject in allObjects) {
 			[moc deleteObject:anObject];
 		}
-		//[allObjects release];
 		[pool release];
 	}
 	[moc processPendingChanges];
@@ -189,7 +187,6 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
 	NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-	//NSArray *fetchResults = [[[NSArray alloc] initWithArray:[[self managedObjectContext] executeFetchRequest:fetchRequest error:nil]] autorelease];
 	[fetchRequest release];
 	return fetchResults;
 }
@@ -294,10 +291,6 @@
     openPanel.directoryURL = self.pkgsURL;
     [openPanel setAccessoryView:self.makepkginfoOptionsView];
 	
-	// Make the accessory view first responder
-	//[openPanel layout];
-	//[[openPanel window] makeFirstResponder:createNewManifestCustomView];
-	
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [openPanel URLs];
@@ -351,11 +344,17 @@
 
 - (void)managedObjectsDidChange:(NSNotification *)notification
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		//NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    /*
+     * ===============================================================
+     * At the moment we are not using this. Left here as a convenience
+     * ===============================================================
+     */
     
     /*
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    
     NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
     for (id anUpdatedObject in updatedObjects) {
         NSLog(@"Updated: %@", anUpdatedObject);
@@ -779,9 +778,6 @@
     [alert setMessageText:@"Delete Manifests"];
     [alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete %lu manifest(s)? This can't be undone.", (unsigned long)[selectedManifests count]]];
     [alert setAlertStyle:NSInformationalAlertStyle];
-	//NSImage *theIcon = [NSImage imageNamed:@"trash"];
-	//[theIcon setScalesWhenResized:NO];
-	//[alert setIcon:theIcon];
     [alert setShowsSuppressionButton:NO];
 	
 	NSInteger result = [alert runModal];
@@ -1562,7 +1558,6 @@
     NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
     [tempPredicates addObject:denySelfPred];
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
-    //[[selectManifestsWindowController manifestsArrayController] setFilterPredicate:compPred];
     [selectManifestsWindowController setOriginalPredicate:compPred];
     [tempPredicates release];
 }
@@ -1975,7 +1970,7 @@
 - (BOOL)resetPersistentStore
 {
     /*
-     * Delete all existing stores
+     Delete all existing stores
      */
     for (NSPersistentStore *aStore in self.persistentStoreCoordinator.persistentStores) {
         NSError *removeError = nil;
@@ -1986,7 +1981,7 @@
     }
     
     /*
-     * Create a new in-memory store
+     Create a new in-memory store
      */
     NSError *addError = nil;
     if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
@@ -2011,7 +2006,7 @@
     [self disableAllBindings];
     
     /*
-     * This is much faster than deleting everything individually
+     This is much faster than deleting everything individually
      */
     if (![self resetPersistentStore]) {
         return;
@@ -2145,9 +2140,7 @@
 	{
 		NSNumber *isDir;
 		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-		if ([isDir boolValue]) {
-            //NSLog(@"Got directory: %@", [anURL relativePath]);
-            
+		if ([isDir boolValue]) {            
             NSFetchRequest *checkForExistingRequest = [[NSFetchRequest alloc] init];
             [checkForExistingRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
             NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", anURL];
@@ -2184,9 +2177,10 @@
 
 - (void)scanCurrentRepoForPackages
 {
-	// Scan the current repo for already existing pkginfo files
-	// and create a new Package object for each of them
-	
+    /*
+     Scan the current repo for already existing pkginfo files
+     and create a new Package object for each of them
+	*/
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Scanning selected repo for packages");
 	}
@@ -2204,16 +2198,10 @@
     newDirectory.parent = newSourceListItem2;
     newDirectory.originalIndexValue = 10;
     
-    [self configureSourceListDirectoriesSection];
-    
     /*
-    PackageSourceListItemMO *newSourceListItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
-    newSourceListItem.title = @"DIRECTORIES";
-    newSourceListItem.originalIndexValue = 1;
-    newSourceListItem.parent = nil;
-    newSourceListItem.isGroupItemValue = YES;
-    */
-    
+     Setup the directory items for side bar
+     */
+    [self configureSourceListDirectoriesSection];
     
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -2234,31 +2222,6 @@
 			
 		} else {
             //NSLog(@"Got directory: %@", [anURL relativePath]);
-            /*
-            DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-            newDirectory.originalURL = anURL;
-            newDirectory.originalIndexValue = 10;
-            newDirectory.type = @"regular";
-            NSString *newTitle;
-            [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
-            newDirectory.title = newTitle;
-            NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
-            if ([parentDirectory isEqual:self.pkgsInfoURL]) {
-                newDirectory.parent = newSourceListItem;
-            } else {
-                NSFetchRequest *request = [[NSFetchRequest alloc] init];
-				[request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
-				NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
-				[request setPredicate:parentPredicate];
-				NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:request error:nil];
-				if (foundItems > 0) {
-					DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:request error:nil] objectAtIndex:0];
-                    NSLog(@"Got parent: %@", parent.title);
-                    newDirectory.parent = parent;
-				}
-				[request release];
-            }
-             */
         }
 	}
     
@@ -2267,8 +2230,10 @@
 
 - (void)scanCurrentRepoForCatalogFiles
 {
-	// Scan the current repo for already existing catalog files
-	// and create a new Catalog object for each of them
+    /*
+     Scan the current repo for already existing catalog files
+     and create a new Catalog object for each of them
+     */
 	
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Scanning selected repo for catalogs");
@@ -2316,8 +2281,10 @@
 
 - (void)scanCurrentRepoForManifests
 {
-	// Scan the current repo for already existing manifest files
-	// and create a new Manifest object for each of them
+    /*
+	 Scan the current repo for already existing manifest files
+	 and create a new Manifest object for each of them
+     */
 	
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Scanning selected repo for manifests");
@@ -2338,7 +2305,7 @@
 		if (![isDir boolValue]) {
 			
             /*
-             * Manifest name should be the relative path from manifests subdirectory
+             Manifest name should be the relative path from manifests subdirectory
              */
             NSArray *manifestComponents = [aManifestFile pathComponents];
             NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
@@ -2392,8 +2359,10 @@
 
 - (void)scanCurrentRepoForIncludedManifests
 {
-	// Scan the current repo for included manifests
-	
+	/*
+     Scan the current repo for included manifests
+     */
+    
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"Scanning selected repo for included manifests");
 	}
@@ -2778,12 +2747,6 @@
     for (id aSubView in subViews) {
         [aSubView removeFromSuperview];
     }
-    /*
-	if ([subViews count] > 0)
-	{
-		[[subViews objectAtIndex:0] removeFromSuperview];
-	}
-    */
     
     NSArray *detailSubViews = [detailViewPlaceHolder subviews];
 	if ([detailSubViews count] > 0)
@@ -2796,12 +2759,6 @@
 	{
 		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
 	}
-    
-    //[self.mainSplitView removeFromSuperview];
-    //[[self.window contentView] display];
-	
-	//[sourceViewPlaceHolder display];
-	//[detailViewPlaceHolder display];
 }
 
 - (void)changeItemView
