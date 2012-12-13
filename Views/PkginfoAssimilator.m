@@ -193,7 +193,7 @@
             StringObjectMO *newUpdateForItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newUpdateForItem.title = updateForItem.title;
             newUpdateForItem.typeString = @"package";
-            [self.targetPkginfo addRequirementsObject:newUpdateForItem];
+            [self.targetPkginfo addUpdateForObject:newUpdateForItem];
         }
     }
     
