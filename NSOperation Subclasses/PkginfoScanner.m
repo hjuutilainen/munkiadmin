@@ -8,6 +8,7 @@
 #import "PkginfoScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
+#import "MunkiRepositoryManager.h"
 
 
 @implementation PkginfoScanner
@@ -17,11 +18,6 @@
 @synthesize sourceURL;
 @synthesize sourceDict;
 @synthesize delegate;
-@synthesize pkginfoKeyMappings;
-@synthesize receiptKeyMappings;
-@synthesize installsKeyMappings;
-@synthesize itemsToCopyKeyMappings;
-@synthesize installerChoicesKeyMappings;
 @synthesize canModify;
 
 - (NSUserDefaults *)defaults
@@ -39,48 +35,6 @@
 	return [[[self alloc] initWithDictionary:dict] autorelease];
 }
 
-- (void)setupMappings
-{
-	// Define the munki keys we support
-	NSMutableDictionary *newPkginfoKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
-		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
-	}
-	self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
-	[newPkginfoKeyMappings release];
-	
-	// Receipt keys
-	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
-		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
-	}
-	self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
-	[newReceiptKeyMappings release];
-	
-	// Installs item keys
-	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
-		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
-	}
-	self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
-	[newInstallsKeyMappings release];
-	
-	// items_to_copy keys
-	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
-		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
-	}
-	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
-	[newItemsToCopyKeyMappings release];
-    
-    // installer_choices_xml
-    NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
-		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
-	}
-	self.installerChoicesKeyMappings = (NSDictionary *)newInstallerChoicesKeyMappings;
-	[newInstallerChoicesKeyMappings release];
-}
 
 - (id)initWithDictionary:(NSDictionary *)dict
 {
@@ -89,7 +43,6 @@
 		self.sourceDict = dict;
 		self.fileName = [self.sourceDict valueForKey:@"name"];
 		self.currentJobDescription = @"Initializing pkginfo scan operation";
-		[self setupMappings];
 	}
 	return self;
 }
@@ -101,7 +54,6 @@
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
 		self.currentJobDescription = @"Initializing pkginfo scan operation";
-		[self setupMappings];
 	}
 	return self;
 }
@@ -113,10 +65,6 @@
 	[sourceURL release];
 	[sourceDict release];
 	[delegate release];
-	[pkginfoKeyMappings release];
-	[receiptKeyMappings release];
-	[installsKeyMappings release];
-	[itemsToCopyKeyMappings release];
     
 	[super dealloc];
 }
@@ -133,7 +81,9 @@
 {
 	@try {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
+        
+		MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+        
 		NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
         [moc setUndoManager:nil];
         [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
@@ -164,7 +114,7 @@
 			// =================================
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading basic info for %@", self.fileName);
-			[self.pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[repoManager.pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 				id value = [self.sourceDict objectForKey:obj];
 				if (value != nil) {
 					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: %@", self.fileName, obj, value);
@@ -264,7 +214,7 @@
 				ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 				aNewReceipt.package = aNewPackage;
                 aNewReceipt.originalIndexValue = idx;
-				[self.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[repoManager.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [aReceipt objectForKey:obj];
 					if (value != nil) {
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
@@ -283,7 +233,7 @@
 				InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
 				[aNewInstallsItem addPackagesObject:aNewPackage];
                 aNewInstallsItem.originalIndexValue = idx;
-				[self.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anInstall objectForKey:obj];
 					if (value != nil) {
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
@@ -302,7 +252,7 @@
 				ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 				aNewItemToCopy.package = aNewPackage;
                 aNewItemToCopy.originalIndexValue = idx;
-				[self.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[repoManager.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [anItemToCopy objectForKey:obj];
 					if (value != nil) {
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
@@ -326,7 +276,7 @@
 				InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 				aNewInstallerChoice.package = aNewPackage;
                 aNewInstallerChoice.originalIndexValue = idx;
-				[self.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[repoManager.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [aChoice objectForKey:obj];
 					if (value != nil) {
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
@@ -556,7 +506,7 @@
 			NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 			[fetchForApplications setEntity:applicationEntityDescr];
 			NSPredicate *applicationTitlePredicate;
-			applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@ AND munki_display_name == %@", aNewPackage.munki_name, aNewPackage.munki_display_name];
+			applicationTitlePredicate = [NSPredicate predicateWithFormat:@"munki_name == %@", aNewPackage.munki_name];
 			
 			[fetchForApplications setPredicate:applicationTitlePredicate];
 			

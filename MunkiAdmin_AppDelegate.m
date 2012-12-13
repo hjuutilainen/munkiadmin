@@ -1155,6 +1155,9 @@
                 [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
                 
                 // Run the assimilator
+                //NSArray *assimilateKeys = [[NSUserDefaults standardUserDefaults] arrayForKey:@"pkginfoKeys"];
+                //[[MunkiRepositoryManager sharedManager] assimilatePackageWithPreviousVersion:createdPkg keys:assimilateKeys];
+                
                 /*
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[[self managedObjectContext] undoManager] beginUndoGrouping];

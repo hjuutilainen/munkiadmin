@@ -17,6 +17,8 @@
 
 - (void)willStartOperations;
 - (void)willEndOperations;
+- (NSUserDefaults *)defaults;
+- (void)setupMappings;
 
 @end
 
@@ -25,6 +27,12 @@
 
 @dynamic makecatalogsInstalled;
 @dynamic makepkginfoInstalled;
+
+@synthesize pkginfoKeyMappings;
+@synthesize receiptKeyMappings;
+@synthesize installsKeyMappings;
+@synthesize itemsToCopyKeyMappings;
+@synthesize installerChoicesKeyMappings;
 
 
 # pragma mark -
@@ -62,7 +70,7 @@ static dispatch_queue_t serialQueue;
     dispatch_sync(serialQueue, ^{
         obj = [super init];
         if (obj) {
-            
+            [self setupMappings];
         }
     });
     
@@ -86,6 +94,140 @@ static dispatch_queue_t serialQueue;
 
 # pragma mark -
 # pragma mark Modifying items
+
+- (void)copyStringObjectsOfType:(NSString *)type from:(PackageMO *)source target:(PackageMO *)target
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    if ([type isEqualToString:@"blocking_application"]) {
+        for (StringObjectMO *blockingApp in source.blockingApplications) {
+            StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newBlockingApplication.title = blockingApp.title;
+            newBlockingApplication.typeString = @"package";
+            [target addBlockingApplicationsObject:newBlockingApplication];
+        }
+    } else if ([type isEqualToString:@"requires"]) {
+        for (StringObjectMO *requiresItem in source.requirements) {
+            StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newRequiredPkgInfo.title = requiresItem.title;
+            newRequiredPkgInfo.typeString = @"package";
+            [target addRequirementsObject:newRequiredPkgInfo];
+        }
+    } else if ([type isEqualToString:@"supported_architectures"]) {
+        for (StringObjectMO *supportedArch in source.supportedArchitectures) {
+            StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newSupportedArchitecture.title = supportedArch.title;
+            newSupportedArchitecture.typeString = @"architecture";
+            [target addSupportedArchitecturesObject:newSupportedArchitecture];
+        }
+    } else if ([type isEqualToString:@"update_for"]) {
+        for (StringObjectMO *updateForItem in source.updateFor) {
+            StringObjectMO *newUpdateForItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+            newUpdateForItem.title = updateForItem.title;
+            newUpdateForItem.typeString = @"package";
+            [target addUpdateForObject:newUpdateForItem];
+        }
+    }
+}
+
+- (void)copyInstallerChoicesFrom:(PackageMO *)source target:(PackageMO *)target
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    for (InstallerChoicesItemMO *installerChoicesItem in source.installerChoicesItems) {
+        InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
+        newInstallerChoicesItem.munki_attributeSetting = installerChoicesItem.munki_attributeSetting;
+        newInstallerChoicesItem.munki_choiceAttribute = installerChoicesItem.munki_choiceAttribute;
+        newInstallerChoicesItem.munki_choiceIdentifier = installerChoicesItem.munki_choiceIdentifier;
+        [target addInstallerChoicesItemsObject:newInstallerChoicesItem];
+    }
+}
+
+- (void)copyInstallsItemsFrom:(PackageMO *)source target:(PackageMO *)target
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    for (InstallsItemMO *installsItem in source.installsItems) {
+        InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
+        newInstallsItem.munki_CFBundleIdentifier = installsItem.munki_CFBundleIdentifier;
+        newInstallsItem.munki_CFBundleName = installsItem.munki_CFBundleName;
+        newInstallsItem.munki_CFBundleShortVersionString = installsItem.munki_CFBundleShortVersionString;
+        newInstallsItem.munki_md5checksum = installsItem.munki_md5checksum;
+        newInstallsItem.munki_minosversion = installsItem.munki_minosversion;
+        newInstallsItem.munki_path = installsItem.munki_path;
+        newInstallsItem.munki_type = installsItem.munki_type;
+        [target addInstallsItemsObject:newInstallsItem];
+    }
+}
+
+- (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
+{
+    NSArray *arrayKeys = [NSArray arrayWithObjects:
+                          @"blocking_applications",
+                          @"installer_choices_xml",
+                          @"installs_items",
+                          @"requires",
+                          @"supported_architectures",
+                          @"update_for",
+                          nil];
+    NSArray *stringKeys = [NSArray arrayWithObjects:
+                           @"blocking_applications",
+                           @"requires",
+                           @"supported_architectures",
+                           @"update_for",
+                           nil];
+    
+    for (NSString *keyName in munkiKeys) {
+        if (![arrayKeys containsObject:keyName]) {
+            NSString *munkiadminKeyName = [NSString stringWithFormat:@"munki_%@", keyName];
+            id sourceValue = [sourcePackage valueForKey:munkiadminKeyName];
+            [targetPackage setValue:sourceValue forKey:munkiadminKeyName];
+        } else {
+            if ([stringKeys containsObject:keyName]) {
+                [self copyStringObjectsOfType:keyName from:sourcePackage target:targetPackage];
+            }
+            else if ([keyName isEqualToString:@"installer_choices_xml"]) {
+                [self copyInstallerChoicesFrom:sourcePackage target:targetPackage];
+            }
+            else if ([keyName isEqualToString:@"installs_items"]) {
+                [self copyInstallsItemsFrom:sourcePackage target:targetPackage];
+            }
+        }
+    }
+}
+
+- (void)assimilatePackageWithPreviousVersion:(PackageMO *)targetPackage keys:(NSArray *)munkiKeys
+{
+    /*
+     Helper method to assimilate a package with previous version
+     */
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSFetchRequest *fetchForApplicationsLoose = [[NSFetchRequest alloc] init];
+    [fetchForApplicationsLoose setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc]];
+    NSPredicate *applicationTitlePredicateLoose;
+    applicationTitlePredicateLoose = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", targetPackage.munki_name];
+    
+    [fetchForApplicationsLoose setPredicate:applicationTitlePredicateLoose];
+    
+    NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplicationsLoose error:nil];
+    if (numFoundApplications == 0) {
+        // No matching Applications found.
+        NSLog(@"Assimilator found zero matching Applications for package.");
+    } else if (numFoundApplications == 1) {
+        ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
+        
+        // Get the latest package for comparison
+        NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
+        NSArray *results = [[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]];
+        PackageMO *latestPackage;
+        if ([[results objectAtIndex:0] isEqualTo:targetPackage]) {
+            latestPackage = [results objectAtIndex:1];
+        } else {
+            latestPackage = [results objectAtIndex:0];
+        }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+            NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
+        [self assimilatePackage:targetPackage sourcePackage:latestPackage keys:munkiKeys];
+    }
+    [fetchForApplicationsLoose release];
+}
 
 - (void)renamePackage:(PackageMO *)aPackage newName:(NSString *)newName cascade:(BOOL)shouldCascade
 {
@@ -713,5 +855,52 @@ static dispatch_queue_t serialQueue;
 }
 
 
+- (void)setupMappings
+{
+	// Define the munki keys we support
+	NSMutableDictionary *newPkginfoKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
+		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
+	}
+	self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
+	[newPkginfoKeyMappings release];
+	
+	// Receipt keys
+	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
+		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
+	}
+	self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
+	[newReceiptKeyMappings release];
+	
+	// Installs item keys
+	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
+		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+	}
+	self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
+	[newInstallsKeyMappings release];
+	
+	// items_to_copy keys
+	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
+		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
+	}
+	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
+	[newItemsToCopyKeyMappings release];
+    
+    // installer_choices_xml
+    NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
+		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
+	}
+	self.installerChoicesKeyMappings = (NSDictionary *)newInstallerChoicesKeyMappings;
+	[newInstallerChoicesKeyMappings release];
+}
+
+- (NSUserDefaults *)defaults
+{
+	return [NSUserDefaults standardUserDefaults];
+}
 
 @end
