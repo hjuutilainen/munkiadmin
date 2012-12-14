@@ -15,6 +15,9 @@
  */
 @interface MunkiRepositoryManager ()
 
+@property (readwrite, retain) NSArray *pkginfoAssimilateKeys;
+@property (readwrite, retain) NSArray *pkginfoAssimilateKeysForAuto;
+
 - (void)willStartOperations;
 - (void)willEndOperations;
 - (NSUserDefaults *)defaults;
@@ -27,8 +30,11 @@
 
 @dynamic makecatalogsInstalled;
 @dynamic makepkginfoInstalled;
+@dynamic pkginfoAssimilateKeysForAuto;
 
-@synthesize pkginfoKeyMappings;
+@synthesize pkginfoBasicKeyMappings;
+@synthesize pkginfoArrayKeyMappings;
+@synthesize pkginfoAssimilateKeys;
 @synthesize receiptKeyMappings;
 @synthesize installsKeyMappings;
 @synthesize itemsToCopyKeyMappings;
@@ -98,7 +104,7 @@ static dispatch_queue_t serialQueue;
 - (void)copyStringObjectsOfType:(NSString *)type from:(PackageMO *)source target:(PackageMO *)target
 {
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-    if ([type isEqualToString:@"blocking_application"]) {
+    if ([type isEqualToString:@"blocking_applications"]) {
         for (StringObjectMO *blockingApp in source.blockingApplications) {
             StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
             newBlockingApplication.title = blockingApp.title;
@@ -157,6 +163,21 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (void)copyItemsToCopyItemsFrom:(PackageMO *)source target:(PackageMO *)target
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    for (ItemToCopyMO *itemsToCopyItem in source.itemsToCopy) {
+        ItemToCopyMO *newItemsToCopyItem = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
+        newItemsToCopyItem.munki_destination_item = itemsToCopyItem.munki_destination_item;
+        newItemsToCopyItem.munki_destination_path = itemsToCopyItem.munki_destination_path;
+        newItemsToCopyItem.munki_group = itemsToCopyItem.munki_group;
+        newItemsToCopyItem.munki_mode = itemsToCopyItem.munki_mode;
+        newItemsToCopyItem.munki_source_item = itemsToCopyItem.munki_source_item;
+        newItemsToCopyItem.munki_user = itemsToCopyItem.munki_user;
+        [target addItemsToCopyObject:newItemsToCopyItem];
+    }
+}
+
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
     NSArray *arrayKeys = [NSArray arrayWithObjects:
@@ -175,7 +196,7 @@ static dispatch_queue_t serialQueue;
                            nil];
     
     for (NSString *keyName in munkiKeys) {
-        if (![arrayKeys containsObject:keyName]) {
+        if (![arrayKeys containsObject:keyName] && [self.pkginfoAssimilateKeys containsObject:keyName]) {
             NSString *munkiadminKeyName = [NSString stringWithFormat:@"munki_%@", keyName];
             id sourceValue = [sourcePackage valueForKey:munkiadminKeyName];
             [targetPackage setValue:sourceValue forKey:munkiadminKeyName];
@@ -216,15 +237,19 @@ static dispatch_queue_t serialQueue;
         // Get the latest package for comparison
         NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
         NSArray *results = [[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]];
-        PackageMO *latestPackage;
-        if ([[results objectAtIndex:0] isEqualTo:targetPackage]) {
-            latestPackage = [results objectAtIndex:1];
+        PackageMO *latestPackage = nil;
+        if ([results count] > 1) {
+            if ([[results objectAtIndex:0] isEqualTo:targetPackage]) {
+                latestPackage = [results objectAtIndex:1];
+            } else {
+                latestPackage = [results objectAtIndex:0];
+            }
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+                NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
+            if (latestPackage != nil) [self assimilatePackage:targetPackage sourcePackage:latestPackage keys:munkiKeys];
         } else {
-            latestPackage = [results objectAtIndex:0];
+            NSLog(@"No previous packages");
         }
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
-            NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
-        [self assimilatePackage:targetPackage sourcePackage:latestPackage keys:munkiKeys];
     }
     [fetchForApplicationsLoose release];
 }
@@ -857,20 +882,63 @@ static dispatch_queue_t serialQueue;
 
 - (void)setupMappings
 {
-	// Define the munki keys we support
-	NSMutableDictionary *newPkginfoKeyMappings = [[NSMutableDictionary alloc] init];
-	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
-		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
+	/*
+     * =========================================
+     * Define the munki keys we support
+     *
+     * These are read from NSUserDefaults
+     * (which gets initialized from UserDefaults.plist)
+     * =========================================
+     */
+    
+    // Basic keys
+	NSMutableDictionary *newPkginfoBasicKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *pkginfoBasicKey in [self.defaults arrayForKey:@"pkginfoBasicKeys"]) {
+		[newPkginfoBasicKeyMappings setObject:pkginfoBasicKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoBasicKey]];
 	}
-	self.pkginfoKeyMappings = (NSDictionary *)newPkginfoKeyMappings;
-	[newPkginfoKeyMappings release];
+	self.pkginfoBasicKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoBasicKeyMappings];
+	[newPkginfoBasicKeyMappings release];
+    
+    // Array keys
+    NSMutableDictionary *newPkginfoArrayKeyMappings = [[NSMutableDictionary alloc] init];
+	for (NSString *pkginfoArrayKey in [self.defaults arrayForKey:@"pkginfoArrayKeys"]) {
+		[newPkginfoArrayKeyMappings setObject:pkginfoArrayKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoArrayKey]];
+	}
+	self.pkginfoArrayKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoArrayKeyMappings];
+	[newPkginfoArrayKeyMappings release];
+    
+    // Keys that might be assimilated
+    NSMutableArray *newPkginfoAssimilateKeys = [[NSMutableArray alloc] init];
+	for (NSString *pkginfoArrayKey in [self.defaults arrayForKey:@"pkginfoArrayKeys"]) {
+		[newPkginfoAssimilateKeys addObject:pkginfoArrayKey];
+	}
+    for (NSString *pkginfoBasicKey in [self.defaults arrayForKey:@"pkginfoBasicKeys"]) {
+		[newPkginfoAssimilateKeys addObject:pkginfoBasicKey];
+	}
+    
+    [newPkginfoAssimilateKeys removeObject:@"catalogs"];
+    [newPkginfoAssimilateKeys removeObject:@"receipts"];
+    [newPkginfoAssimilateKeys removeObject:@"installs"];
+    [newPkginfoAssimilateKeys removeObject:@"items_to_copy"];
+    
+    [newPkginfoAssimilateKeys removeObject:@"name"];
+    [newPkginfoAssimilateKeys removeObject:@"version"];
+    [newPkginfoAssimilateKeys removeObject:@"force_install_after_date"];
+    [newPkginfoAssimilateKeys removeObject:@"installed_size"];
+    [newPkginfoAssimilateKeys removeObject:@"installer_item_hash"];
+    [newPkginfoAssimilateKeys removeObject:@"installer_item_location"];
+    [newPkginfoAssimilateKeys removeObject:@"installer_item_size"];
+    [newPkginfoAssimilateKeys removeObject:@"package_path"];
+    
+	self.pkginfoAssimilateKeys = [NSArray arrayWithArray:newPkginfoAssimilateKeys];
+	[newPkginfoAssimilateKeys release];
 	
 	// Receipt keys
 	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
 		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 	}
-	self.receiptKeyMappings = (NSDictionary *)newReceiptKeyMappings;
+	self.receiptKeyMappings = [NSDictionary dictionaryWithDictionary:newReceiptKeyMappings];
 	[newReceiptKeyMappings release];
 	
 	// Installs item keys
@@ -878,7 +946,7 @@ static dispatch_queue_t serialQueue;
 	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
 		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
 	}
-	self.installsKeyMappings = (NSDictionary *)newInstallsKeyMappings;
+	self.installsKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallsKeyMappings];
 	[newInstallsKeyMappings release];
 	
 	// items_to_copy keys
@@ -886,7 +954,7 @@ static dispatch_queue_t serialQueue;
 	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
-	self.itemsToCopyKeyMappings = (NSDictionary *)newItemsToCopyKeyMappings;
+	self.itemsToCopyKeyMappings = [NSDictionary dictionaryWithDictionary:newItemsToCopyKeyMappings];
 	[newItemsToCopyKeyMappings release];
     
     // installer_choices_xml
@@ -894,8 +962,23 @@ static dispatch_queue_t serialQueue;
 	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
 		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
 	}
-	self.installerChoicesKeyMappings = (NSDictionary *)newInstallerChoicesKeyMappings;
+	self.installerChoicesKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallerChoicesKeyMappings];
 	[newInstallerChoicesKeyMappings release];
+}
+
+- (NSArray *)pkginfoAssimilateKeysForAuto
+{
+    // Setup the default selection
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *keysForAutomaticAssimilation = [[[NSMutableArray alloc] init] autorelease];
+    for (NSString *keyName in self.pkginfoAssimilateKeys) {
+        NSString *assimilateKeyName = [NSString stringWithFormat:@"assimilate_%@", keyName];
+        BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
+        if (sourceValue) {
+            [keysForAutomaticAssimilation addObject:keyName];
+        }
+    }
+    return [NSArray arrayWithArray:keysForAutomaticAssimilation];
 }
 
 - (NSUserDefaults *)defaults

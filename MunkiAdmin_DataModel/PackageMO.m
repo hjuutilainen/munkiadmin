@@ -77,7 +77,7 @@
 	
 	// Define the munki keys we support
 	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
-	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoKeys"]) {
+	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoBasicKeys"]) {
 		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
 	}
 	

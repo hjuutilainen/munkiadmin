@@ -114,7 +114,7 @@
 			// =================================
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading basic info for %@", self.fileName);
-			[repoManager.pkginfoKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[repoManager.pkginfoBasicKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 				id value = [self.sourceDict objectForKey:obj];
 				if (value != nil) {
 					if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: %@", self.fileName, obj, value);
@@ -364,141 +364,9 @@
 			// Assimilate with existing
 			// This is done only when adding new items to repo
 			// =====================================
-			if (self.canModify) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Assimilating %@", self.fileName);
-				NSFetchRequest *fetchForApplicationsLoose = [[NSFetchRequest alloc] init];
-				[fetchForApplicationsLoose setEntity:applicationEntityDescr];
-				NSPredicate *applicationTitlePredicateLoose;
-				applicationTitlePredicateLoose = [NSPredicate predicateWithFormat:@"munki_name like[cd] %@", aNewPackage.munki_name];
-                
-				[fetchForApplicationsLoose setPredicate:applicationTitlePredicateLoose];
-				
-				NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplicationsLoose error:nil];
-				if (numFoundApplications == 0) {
-					// No matching Applications found.
-					NSLog(@"Assimilator found zero matching Applications for package.");
-				} else if (numFoundApplications == 1) {
-					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
-                    
-                    // Get the latest package for comparison
-                    NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
-                    PackageMO *latestPackage = [[[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]] objectAtIndex:0];
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
-                    
-                    // If the existing matching packages have common description, use it with the new package
-					if ([existingApplication hasCommonDescription]) {
-						if ([self.defaults boolForKey:@"assimilate_description"]) {
-							aNewPackage.munki_description = [latestPackage munki_description];
-						}
-					}
-					
-                    // Set the display name
-					if ([self.defaults boolForKey:@"assimilate_display_name"]) {
-						aNewPackage.munki_display_name = existingApplication.munki_display_name;
-					}
-                    
-                    // Set the max OS version
-                    if ([self.defaults boolForKey:@"assimilate_maximum_os_version"]) {
-                        aNewPackage.munki_maximum_os_version = latestPackage.munki_maximum_os_version;
-                    }
-                    
-                    // Set the minimum OS version
-                    if ([self.defaults boolForKey:@"assimilate_minimum_os_version"]) {
-                        aNewPackage.munki_minimum_os_version = latestPackage.munki_minimum_os_version;
-                    }
-                    
-                    // Set the minimum munki version
-                    if ([self.defaults boolForKey:@"assimilate_minimum_munki_version"]) {
-                        aNewPackage.munki_minimum_munki_version = latestPackage.munki_minimum_munki_version;
-                    }
-                    
-                    // Scripts
-                    if ([self.defaults boolForKey:@"assimilate_preinstall_script"]) {
-                        aNewPackage.munki_preinstall_script = latestPackage.munki_preinstall_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_preuninstall_script"]) {
-                        aNewPackage.munki_preuninstall_script = latestPackage.munki_preuninstall_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_postinstall_script"]) {
-                        aNewPackage.munki_postinstall_script = latestPackage.munki_postinstall_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_postuninstall_script"]) {
-                        aNewPackage.munki_postuninstall_script = latestPackage.munki_postuninstall_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_installcheck_script"]) {
-                        aNewPackage.munki_installcheck_script = latestPackage.munki_installcheck_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_uninstallcheck_script"]) {
-                        aNewPackage.munki_uninstallcheck_script = latestPackage.munki_uninstallcheck_script;
-                    }
-                    
-                    // Other properties
-                    if ([self.defaults boolForKey:@"assimilate_autoremove"]) {
-                        aNewPackage.munki_autoremove = latestPackage.munki_autoremove;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_installable_condition"]) {
-                        aNewPackage.munki_installable_condition = latestPackage.munki_installable_condition;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_unattended_install"]) {
-                        aNewPackage.munki_unattended_install = latestPackage.munki_unattended_install;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_unattended_uninstall"]) {
-                        aNewPackage.munki_unattended_uninstall = latestPackage.munki_unattended_uninstall;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_uninstallable"]) {
-                        aNewPackage.munki_uninstallable = latestPackage.munki_uninstallable;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_uninstall_method"]) {
-                        aNewPackage.munki_uninstall_method = latestPackage.munki_uninstall_method;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_uninstall_script"]) {
-                        aNewPackage.munki_uninstall_script = latestPackage.munki_uninstall_script;
-                    }
-                    if ([self.defaults boolForKey:@"assimilate_uninstaller_item_location"]) {
-                        aNewPackage.munki_uninstaller_item_location = latestPackage.munki_uninstaller_item_location;
-                    }
-                    
-                    
-                    // Blocking applications
-                    if ([self.defaults boolForKey:@"assimilate_blocking_applications"]) {
-                        for (StringObjectMO *blockingApp in latestPackage.blockingApplications) {
-                            StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                            newBlockingApplication.title = blockingApp.title;
-                            newBlockingApplication.typeString = @"package";
-                            [aNewPackage addBlockingApplicationsObject:newBlockingApplication];
-                        }
-                    }
-                    
-                    // Requires
-                    if ([self.defaults boolForKey:@"assimilate_requires"]) {
-                        for (StringObjectMO *requiresItem in latestPackage.requirements) {
-                            StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                            newRequiredPkgInfo.title = requiresItem.title;
-                            newRequiredPkgInfo.typeString = @"package";
-                            [aNewPackage addRequirementsObject:newRequiredPkgInfo];
-                        }
-                    }
-                    
-                    // Supported architectures
-                    if ([self.defaults boolForKey:@"assimilate_supported_architectures"]) {
-                        for (StringObjectMO *supportedArch in latestPackage.supportedArchitectures) {
-                            StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                            newSupportedArchitecture.title = supportedArch.title;
-                            newSupportedArchitecture.typeString = @"architecture";
-                            [aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
-                        }
-                    }
-                    
-                    [existingApplication addPackagesObject:aNewPackage];
-					
-				} else {
-					NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
-					for (ApplicationMO *app in [moc executeFetchRequest:fetchForApplicationsLoose error:nil]) {
-						NSLog(@"%@", app.munki_name);
-					}
-				}
-				[fetchForApplicationsLoose release];
-			}
+			/*
+             Assimilator functions moved to MunkiRepositoryManager
+             */
 			
 			// =================================
 			// Group packages by "name" property

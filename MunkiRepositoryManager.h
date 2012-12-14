@@ -15,7 +15,10 @@
 @interface MunkiRepositoryManager : NSObject {
     BOOL makepkginfoInstalled;
     BOOL makecatalogsInstalled;
-    NSDictionary *pkginfoKeyMappings;
+    NSDictionary *pkginfoBasicKeyMappings;
+    NSDictionary *pkginfoArrayKeyMappings;
+    NSArray *pkginfoAssimilateKeys;
+    NSArray *pkginfoAssimilateKeysForAuto;
 	NSDictionary *receiptKeyMappings;
 	NSDictionary *installsKeyMappings;
     NSDictionary *installerChoicesKeyMappings;
@@ -24,7 +27,10 @@
 
 @property (readonly) BOOL makepkginfoInstalled;
 @property (readonly) BOOL makecatalogsInstalled;
-@property (retain) NSDictionary *pkginfoKeyMappings;
+@property (retain) NSDictionary *pkginfoBasicKeyMappings;
+@property (retain) NSDictionary *pkginfoArrayKeyMappings;
+@property (readonly, retain) NSArray *pkginfoAssimilateKeys;
+@property (readonly, retain) NSArray *pkginfoAssimilateKeysForAuto;
 @property (retain) NSDictionary *receiptKeyMappings;
 @property (retain) NSDictionary *installsKeyMappings;
 @property (retain) NSDictionary *installerChoicesKeyMappings;

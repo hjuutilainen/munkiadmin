@@ -1130,7 +1130,7 @@
             
             // Create a scanner job but run it without an operation queue
             PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
-            scanOp.canModify = NO;
+            scanOp.canModify = YES;
             scanOp.delegate = self;
             [scanOp start];
             
@@ -1155,8 +1155,10 @@
                 [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
                 
                 // Run the assimilator
-                //NSArray *assimilateKeys = [[NSUserDefaults standardUserDefaults] arrayForKey:@"pkginfoKeys"];
-                //[[MunkiRepositoryManager sharedManager] assimilatePackageWithPreviousVersion:createdPkg keys:assimilateKeys];
+                if ([self.defaults boolForKey:@"assimilate_enabled"]) {
+                    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+                    [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
+                }
                 
                 /*
                 dispatch_async(dispatch_get_main_queue(), ^{
