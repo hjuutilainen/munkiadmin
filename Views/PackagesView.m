@@ -35,6 +35,8 @@
 @synthesize notesTextView;
 @synthesize notesDescriptionSplitView;
 @synthesize packagesTableViewMenu;
+@synthesize packageInfoPathControl;
+@synthesize installerItemPathControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,13 +50,12 @@
 
 - (void)awakeFromNib
 {
-    //[self.d registerForDraggedTypes:[NSArray arrayWithObject:ConditionalItemType]];
-    //[self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:YES];
-    //[self.conditionsOutlineView setAutoresizesSubviews:NO];
-    
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
     
+    /*
+     Configure sorting
+     */
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortByMunkiName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -68,9 +69,10 @@
     [self.descriptionTextView setFont:[NSFont systemFontOfSize:11.0]];
     [self.notesTextView setFont:[NSFont systemFontOfSize:11.0]];
     
-    // Set a default width for the right most view
+    /*
+     Configure the main triple split view (sourcelist | packagelist | info)
+     */
     float rightFrameWidth = kDefaultSplitViewWidth;
-    
 	float dividerThickness = [self.tripleSplitView dividerThickness];
 	NSRect newFrame = [self.tripleSplitView frame];
 	NSRect leftFrame = [self.leftPlaceHolder frame];
@@ -93,7 +95,9 @@
     [self.rightPlaceHolder setFrame:rightFrame];
     
     
-    // Create a contextual menu for customizing table columns
+    /*
+     Create a contextual menu for customizing table columns
+     */
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
     NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
@@ -108,6 +112,14 @@
     menu.delegate = self;
     self.packagesTableView.headerView.menu = menu;
     [menu release];
+    
+    /*
+     Set the target and action for path controls (pkginfo and installer item)
+     */
+    [self.packageInfoPathControl setTarget:self];
+    [self.packageInfoPathControl setAction:@selector(didSelectPathControlItem:)];
+    [self.installerItemPathControl setTarget:self];
+    [self.installerItemPathControl setAction:@selector(didSelectPathControlItem:)];
 }
 
 -(void)toggleColumn:(id)sender
@@ -124,6 +136,9 @@
 	}
 }
 
+
+#pragma mark -
+#pragma mark NSOutlineView view delegates
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
@@ -159,6 +174,23 @@
     }
 }
 
+
+#pragma mark -
+#pragma mark NSPathControl methods
+
+- (void)didSelectPathControlItem:(id)sender
+{
+    /*
+     User selected a path component from one of the path controls, show it in Finder.
+     */
+    NSPathComponentCell *clickedCell = [(NSPathControl *)sender clickedPathComponentCell];
+    NSURL *clickedURL = [clickedCell URL];
+    if (clickedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[clickedURL relativePath] inFileViewerRootedAtPath:@""];
+    }
+}
+
+
 #pragma mark -
 #pragma mark NSSplitView delegates
 
@@ -181,16 +213,19 @@
             return kMinSplitViewHeight;
         }
     } else if (splitView == self.tripleSplitView) {
-        // User is dragging the left side divider
+        /*
+         User is dragging the left side divider
+         */
         if (dividerIndex == 0) {
             return kMinSplitViewWidth;
         }
-        // User is dragging the right side divider
+        /*
+         User is dragging the right side divider
+         */
         else if (dividerIndex == 1) {
             return proposedMin;
         }
     }
-    
     return proposedMin;
 }
 
@@ -201,17 +236,19 @@
             return [self.notesDescriptionSplitView frame].size.height - kMinSplitViewHeight;
         }
     } else if (splitView == self.tripleSplitView) {
-        // User is dragging the left side divider
+        /*
+         User is dragging the left side divider
+         */
         if (dividerIndex == 0) {
             return kMaxSplitViewWidth;
         }
-        // User is dragging the right side divider
+        /*
+         User is dragging the right side divider
+         */
         else if (dividerIndex == 1) {
             return [self.tripleSplitView frame].size.width - kMinSplitViewWidth;
         }
-        
     }
-    
     return proposedMax;
 }
 

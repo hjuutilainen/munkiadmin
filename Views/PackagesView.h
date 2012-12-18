@@ -21,6 +21,8 @@
     NSTextView *notesTextView;
     NSSplitView *notesDescriptionSplitView;
     NSMenu *packagesTableViewMenu;
+    NSPathControl *packageInfoPathControl;
+    NSPathControl *installerItemPathControl;
 }
 
 @property (assign) IBOutlet NSSplitView *tripleSplitView;
@@ -35,5 +37,7 @@
 @property (assign) IBOutlet NSTextView *notesTextView;
 @property (assign) IBOutlet NSSplitView *notesDescriptionSplitView;
 @property (assign) IBOutlet NSMenu *packagesTableViewMenu;
+@property (assign) IBOutlet NSPathControl *packageInfoPathControl;
+@property (assign) IBOutlet NSPathControl *installerItemPathControl;
 
 @end

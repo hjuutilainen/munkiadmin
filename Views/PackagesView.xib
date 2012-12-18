@@ -340,7 +340,7 @@
 														<string key="NSFrameSize">{625, 633}</string>
 														<reference key="NSSuperview" ref="331521787"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="189379995"/>
+														<reference key="NSNextKeyView" ref="804903044"/>
 														<string key="NSReuseIdentifierKey">_NS:13</string>
 														<bool key="NSEnabled">YES</bool>
 														<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -756,7 +756,7 @@
 										<string key="NSFrame">{{0, 1}, {625, 650}}</string>
 										<reference key="NSSuperview" ref="660895316"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="804903044"/>
+										<reference key="NSNextKeyView" ref="331521787"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<int key="NSsFlags">133680</int>
 										<reference key="NSVScroller" ref="189379995"/>
@@ -2615,6 +2615,22 @@
 						<reference key="destination" ref="508985879"/>
 					</object>
 					<int key="connectionID">73</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">installerItemPathControl</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="40427773"/>
+					</object>
+					<int key="connectionID">605</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">packageInfoPathControl</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="740104358"/>
+					</object>
+					<int key="connectionID">606</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -4831,7 +4847,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">604</int>
+			<int key="maxID">606</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4914,9 +4930,7 @@
 						<string key="addNewManagedUpdateAction:">id</string>
 						<string key="addNewOptionalInstallAction:">id</string>
 						<string key="addNewPackage:">id</string>
-						<string key="cancelAddNestedManifestsAction:">id</string>
 						<string key="cancelOperationsAction:">id</string>
-						<string key="cancelRenamePackagesAction:">id</string>
 						<string key="createNewCatalogAction:">id</string>
 						<string key="createNewManifestAction:">id</string>
 						<string key="createNewRepository:">id</string>
@@ -4930,8 +4944,6 @@
 						<string key="getInfoAction:">id</string>
 						<string key="openPreferencesAction:">id</string>
 						<string key="openRepository:">id</string>
-						<string key="processAddNestedManifestAction:">id</string>
-						<string key="processRenamePackagesAction:">id</string>
 						<string key="reloadRepositoryAction:">id</string>
 						<string key="removeConditionalItemAction:">id</string>
 						<string key="removeIncludedManifestAction:">id</string>
@@ -4939,7 +4951,6 @@
 						<string key="removeManagedUninstallAction:">id</string>
 						<string key="removeManagedUpdateAction:">id</string>
 						<string key="removeOptionalInstallAction:">id</string>
-						<string key="renamePackageFromAdvancedEditor:">id</string>
 						<string key="renameSelectedManifestAction:">id</string>
 						<string key="renameSelectedPackagesAction:">id</string>
 						<string key="saveAction:">id</string>
@@ -4985,16 +4996,8 @@
 							<string key="name">addNewPackage:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="cancelAddNestedManifestsAction:">
-							<string key="name">cancelAddNestedManifestsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="cancelOperationsAction:">
 							<string key="name">cancelOperationsAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelRenamePackagesAction:">
-							<string key="name">cancelRenamePackagesAction:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="createNewCatalogAction:">
@@ -5049,14 +5052,6 @@
 							<string key="name">openRepository:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="processAddNestedManifestAction:">
-							<string key="name">processAddNestedManifestAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="processRenamePackagesAction:">
-							<string key="name">processRenamePackagesAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="reloadRepositoryAction:">
 							<string key="name">reloadRepositoryAction:</string>
 							<string key="candidateClassName">id</string>
@@ -5083,10 +5078,6 @@
 						</object>
 						<object class="IBActionInfo" key="removeOptionalInstallAction:">
 							<string key="name">removeOptionalInstallAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="renamePackageFromAdvancedEditor:">
-							<string key="name">renamePackageFromAdvancedEditor:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="renameSelectedManifestAction:">
@@ -5390,10 +5381,12 @@
 						<string key="descriptionTextView">NSTextView</string>
 						<string key="directoriesOutlineView">NSOutlineView</string>
 						<string key="directoriesTreeController">NSTreeController</string>
+						<string key="installerItemPathControl">NSPathControl</string>
 						<string key="leftPlaceHolder">NSView</string>
 						<string key="middlePlaceHolder">NSView</string>
 						<string key="notesDescriptionSplitView">NSSplitView</string>
 						<string key="notesTextView">NSTextView</string>
+						<string key="packageInfoPathControl">NSPathControl</string>
 						<string key="packagesArrayController">NSArrayController</string>
 						<string key="packagesTableView">NSTableView</string>
 						<string key="packagesTableViewMenu">NSMenu</string>
@@ -5413,6 +5406,10 @@
 							<string key="name">directoriesTreeController</string>
 							<string key="candidateClassName">NSTreeController</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="installerItemPathControl">
+							<string key="name">installerItemPathControl</string>
+							<string key="candidateClassName">NSPathControl</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="leftPlaceHolder">
 							<string key="name">leftPlaceHolder</string>
 							<string key="candidateClassName">NSView</string>
@@ -5428,6 +5425,10 @@
 						<object class="IBToOneOutletInfo" key="notesTextView">
 							<string key="name">notesTextView</string>
 							<string key="candidateClassName">NSTextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="packageInfoPathControl">
+							<string key="name">packageInfoPathControl</string>
+							<string key="candidateClassName">NSPathControl</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="packagesArrayController">
 							<string key="name">packagesArrayController</string>
