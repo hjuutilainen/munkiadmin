@@ -265,20 +265,16 @@
 
 - (IBAction)enableAllAction:(id)sender
 {
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
     for (NSString *aKey in defaultsKeysToLoop) {
-        [def setBool:YES forKey:aKey];
+        [self setValue:[NSNumber numberWithBool:YES] forKey:aKey];
     }
 }
 
 
 - (IBAction)disableAllAction:(id)sender
 {
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
     for (NSString *aKey in defaultsKeysToLoop) {
-        [def setBool:NO forKey:aKey];
+        [self setValue:[NSNumber numberWithBool:NO] forKey:aKey];
     }
 }
 
@@ -314,7 +310,6 @@
     // Setup the default selection
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
-        NSLog(@"%@", assimilateKeyName);
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
     }

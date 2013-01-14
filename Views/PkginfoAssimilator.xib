@@ -1786,7 +1786,7 @@
 						<string key="label">enabled: sourcePkginfo</string>
 						<reference key="source" ref="6773482"/>
 						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector" id="383904362">
+						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="6773482"/>
 							<reference key="NSDestination" ref="1001"/>
 							<string key="NSLabel">enabled: sourcePkginfo</string>
@@ -1816,30 +1816,6 @@
 						</object>
 					</object>
 					<int key="connectionID">305</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled2: sourcePkginfo.munki_installcheck_script</string>
-						<reference key="source" ref="6773482"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="6773482"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">enabled2: sourcePkginfo.munki_installcheck_script</string>
-							<string key="NSBinding">enabled2</string>
-							<string key="NSKeyPath">sourcePkginfo.munki_installcheck_script</string>
-							<dictionary key="NSOptions">
-								<integer value="-1" key="NSMultipleValuesPlaceholder"/>
-								<integer value="-1" key="NSNoSelectionPlaceholder"/>
-								<integer value="-1" key="NSNotApplicablePlaceholder"/>
-								<integer value="-1" key="NSNullPlaceholder"/>
-								<string key="NSValueTransformerName">NSIsNotNil</string>
-							</dictionary>
-							<reference key="NSPreviousConnector" ref="383904362"/>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">399</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
