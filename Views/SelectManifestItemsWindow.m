@@ -34,6 +34,17 @@
     [super dealloc];
 }
 
+- (void)updateSearchPredicate
+{
+    if ([[self.existingSearchField stringValue] isEqualToString:@""]) {
+        [self.manifestsArrayController setFilterPredicate:nil];
+    } else {
+        NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@", [self.existingSearchField stringValue]];
+        NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.originalPredicate, nil]];
+        [self.manifestsArrayController setFilterPredicate:merged];
+    }
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
@@ -51,7 +62,7 @@
     
     [existingSearchField setDelegate:self];
     
-    [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
+    [self updateSearchPredicate];
 }
 
 
@@ -76,13 +87,7 @@
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
-    if ([[self.existingSearchField stringValue] isEqualToString:@""]) {
-        [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
-    } else {
-        NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@", [self.existingSearchField stringValue]];
-        NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.originalPredicate, nil]];
-        [self.manifestsArrayController setFilterPredicate:merged];
-    }
+    [self updateSearchPredicate];
 }
 
 @end

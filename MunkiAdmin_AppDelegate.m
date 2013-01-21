@@ -1564,6 +1564,7 @@
     [tempPredicates addObject:denySelfPred];
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [selectManifestsWindowController setOriginalPredicate:compPred];
+    [selectManifestsWindowController updateSearchPredicate];
     [tempPredicates release];
 }
 

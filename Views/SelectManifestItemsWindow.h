@@ -26,4 +26,6 @@
 @property (assign) IBOutlet NSArrayController *manifestsArrayController;
 @property (assign) IBOutlet NSSearchField *existingSearchField;
 
+- (void)updateSearchPredicate;
+
 @end
