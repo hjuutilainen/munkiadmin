@@ -633,21 +633,21 @@
 
 - (void)renameSelectedManifest
 {
-	ManifestMO *selMan = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-	NSString *oldTitle = selMan.title;
+	ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+	NSString *oldTitle = selectedManifest.title;
     
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Rename"];
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:@"Rename Manifest"];
-    [alert setInformativeText:[NSString stringWithFormat:@"Rename manifest \"%@\" to:", selMan.title]];
+    [alert setInformativeText:[NSString stringWithFormat:@"Rename manifest \"%@\" to:", [selectedManifest fileName]]];
     [alert setAlertStyle:NSInformationalAlertStyle];
     [alert setShowsSuppressionButton:NO];
 	
 	NSRect textRect = NSMakeRect(0, 0, 350, 22);
 	NSTextField *textField=[[NSTextField alloc] initWithFrame:textRect];
-	[textField setStringValue:selMan.title];
+	[textField setStringValue:[selectedManifest fileName]];
     [alert setAccessoryView:textField];
 	
 	// Make the accessory view first responder
@@ -658,26 +658,36 @@
     NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
 		NSString *newTitle = [textField stringValue];
-		if (![newTitle isEqualToString:selMan.title]) {
+		if (![newTitle isEqualToString:[selectedManifest fileName]]) {
 			if ([self.defaults boolForKey:@"debug"]) {
-				NSLog(@"Renaming %@ to %@", selMan.title, newTitle);
+				NSLog(@"Renaming %@ to %@", [selectedManifest fileName], newTitle);
 			}
-			NSURL *currentURL = (NSURL *)selMan.manifestURL;
-			NSURL *newURL = [[(NSURL *)selMan.manifestURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newTitle];
+			NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
+			NSURL *newURL = [[(NSURL *)selectedManifest.manifestURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newTitle];
 			if ([[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
-				selMan.manifestURL = newURL;
-				selMan.title = newTitle;
+				
+                // Manifest name should be the relative path from manifests subdirectory
+                NSArray *manifestComponents = [newURL pathComponents];
+                NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+                NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+                [relativePathComponents removeObjectsInArray:manifestDirComponents];
+                NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+				
+                selectedManifest.title = manifestRelativePath;
+                selectedManifest.manifestURL = newURL;
+                
                 
                 // Rename other references (this might be a nested manifest)
                 NSFetchRequest *getReferencingManifests = [[NSFetchRequest alloc] init];
                 [getReferencingManifests setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext]];
-                NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString == %@", oldTitle, @"includedManifest"];
+                NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title LIKE %@ AND typeString == %@", oldTitle, @"includedManifest"];
                 [getReferencingManifests setPredicate:referencingPred];
                 if ([self.managedObjectContext countForFetchRequest:getReferencingManifests error:nil] > 0) {
                     NSArray *referencingObjects = [self.managedObjectContext executeFetchRequest:getReferencingManifests error:nil];
                     for (StringObjectMO *aReference in referencingObjects) {
                         if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming reference from manifest: %@", aReference.manifestReference.title);
-                        aReference.title = newTitle;
+                        aReference.title = manifestRelativePath;
+                        aReference.manifestReference.hasUnstagedChangesValue = YES;
                     }
                 } else {
                     if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
@@ -703,20 +713,20 @@
 
 - (void)duplicateSelectedManifest
 {
-    ManifestMO *selMan = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Duplicate"];
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:@"Duplicate Manifest"];
-    [alert setInformativeText:[NSString stringWithFormat:@"Duplicate %@ to:", selMan.title]];
+    [alert setInformativeText:[NSString stringWithFormat:@"Duplicate %@ to:", [selectedManifest fileName]]];
     [alert setAlertStyle:NSInformationalAlertStyle];
     [alert setShowsSuppressionButton:NO];
 	
 	NSRect textRect = NSMakeRect(0, 0, 350, 22);
 	NSTextField *textField=[[NSTextField alloc] initWithFrame:textRect];
-	[textField setStringValue:selMan.title];
+    [textField setStringValue:[selectedManifest fileName]];
     [alert setAccessoryView:textField];
 	
 	// Make the accessory view first responder
@@ -727,12 +737,12 @@
     NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
 		NSString *newTitle = [textField stringValue];
-		if (![newTitle isEqualToString:selMan.title]) {
+		if (![newTitle isEqualToString:[selectedManifest fileName]]) {
 			if ([self.defaults boolForKey:@"debug"]) {
-				NSLog(@"Duplicating %@ to %@", selMan.title, newTitle);
+				NSLog(@"Duplicating %@ to %@", [selectedManifest fileName], newTitle);
 			}
-			NSURL *currentURL = (NSURL *)selMan.manifestURL;
-			NSURL *newURL = [[(NSURL *)selMan.manifestURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newTitle];
+			NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
+			NSURL *newURL = [[(NSURL *)selectedManifest.manifestURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newTitle];
 			if ([[NSFileManager defaultManager] copyItemAtURL:currentURL toURL:newURL error:nil]) {
                 
                 RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];

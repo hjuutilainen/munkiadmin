@@ -11,6 +11,15 @@
 
 @implementation ManifestMO
 
+- (NSString *)fileName
+{
+    NSString *tempFileName = nil;
+    if (![(NSURL *)self.manifestURL getResourceValue:&tempFileName forKey:NSURLNameKey error:nil]) {
+        tempFileName = self.title;
+    }
+    return tempFileName;
+}
+
 - (NSArray *)rootConditionalItems
 {
     [self willAccessValueForKey:@"conditionalItems"];
