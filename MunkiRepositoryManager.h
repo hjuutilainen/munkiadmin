@@ -15,6 +15,8 @@
 @interface MunkiRepositoryManager : NSObject {
     BOOL makepkginfoInstalled;
     BOOL makecatalogsInstalled;
+    NSString *makepkginfoVersion;
+    NSString *makecatalogsVersion;
     NSDictionary *pkginfoBasicKeyMappings;
     NSDictionary *pkginfoArrayKeyMappings;
     NSArray *pkginfoAssimilateKeys;
@@ -27,6 +29,8 @@
 
 @property (readonly) BOOL makepkginfoInstalled;
 @property (readonly) BOOL makecatalogsInstalled;
+@property (readonly, retain) NSString *makepkginfoVersion;
+@property (readonly, retain) NSString *makecatalogsVersion;
 @property (retain) NSDictionary *pkginfoBasicKeyMappings;
 @property (retain) NSDictionary *pkginfoArrayKeyMappings;
 @property (readonly, retain) NSArray *pkginfoAssimilateKeys;
@@ -55,5 +59,6 @@
 
 - (NSSet *)modifiedManifestsSinceLastSave;
 - (NSSet *)modifiedPackagesSinceLastSave;
+- (void)updateMunkiVersions;
 
 @end

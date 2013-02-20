@@ -490,11 +490,26 @@
 	
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    // Update version information if paths have changed
+    if (([keyPath isEqualToString:@"values.makepkginfoPath"]) ||
+        ([keyPath isEqualToString:@"values.makecatalogsPath"]))
+    {
+        [[MunkiRepositoryManager sharedManager] updateMunkiVersions];
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    
+    // Observe user defaults for changes in makepkginfo and makecatalogs paths
+    NSUserDefaultsController *dc = [NSUserDefaultsController sharedUserDefaultsController];
+    [dc addObserver:self forKeyPath:@"values.makepkginfoPath" options:NSKeyValueObservingOptionNew context:NULL];
+    [dc addObserver:self forKeyPath:@"values.makecatalogsPath" options:NSKeyValueObservingOptionNew context:NULL];
     
     // Select a repository
     if ([self.defaults integerForKey:@"startupWhatToDo"] == 1) {

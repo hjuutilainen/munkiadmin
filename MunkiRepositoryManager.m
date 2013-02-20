@@ -18,6 +18,9 @@
 @property (readwrite, retain) NSArray *pkginfoAssimilateKeys;
 @property (readwrite, retain) NSArray *pkginfoAssimilateKeysForAuto;
 
+@property (readwrite, retain) NSString *makepkginfoVersion;
+@property (readwrite, retain) NSString *makecatalogsVersion;
+
 - (void)willStartOperations;
 - (void)willEndOperations;
 - (NSUserDefaults *)defaults;
@@ -39,6 +42,8 @@
 @synthesize installsKeyMappings;
 @synthesize itemsToCopyKeyMappings;
 @synthesize installerChoicesKeyMappings;
+@synthesize makepkginfoVersion;
+@synthesize makecatalogsVersion;
 
 
 # pragma mark -
@@ -77,6 +82,7 @@ static dispatch_queue_t serialQueue;
         obj = [super init];
         if (obj) {
             [self setupMappings];
+            [self updateMunkiVersions];
         }
     });
     
@@ -853,6 +859,56 @@ static dispatch_queue_t serialQueue;
 	return fetchResults;
 }
 
+
+- (void)updateMakepkginfoVersionAsync
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSTask *task = [[[NSTask alloc] init] autorelease];
+        NSPipe *pipe = [NSPipe pipe];
+        NSFileHandle *filehandle = [pipe fileHandleForReading];
+        NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
+        [task setLaunchPath:launchPath];
+        [task setArguments:[NSArray arrayWithObject:@"--version"]];
+        [task setStandardOutput:pipe];
+        [task launch];
+        NSData *outputData = [filehandle readDataToEndOfFile];
+        NSString *results;
+        results = [[[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding] autorelease];
+        self.makepkginfoVersion = results;
+    });
+}
+
+- (void)updateMakecatalogsVersionAsync
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSTask *task = [[[NSTask alloc] init] autorelease];
+        NSPipe *pipe = [NSPipe pipe];
+        NSFileHandle *filehandle = [pipe fileHandleForReading];
+        NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"];
+        [task setLaunchPath:launchPath];
+        [task setArguments:[NSArray arrayWithObject:@"--version"]];
+        [task setStandardOutput:pipe];
+        [task launch];
+        NSData *outputData = [filehandle readDataToEndOfFile];
+        NSString *results;
+        results = [[[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding] autorelease];
+        self.makecatalogsVersion = results;
+    });
+}
+
+- (void)updateMunkiVersions
+{
+    /*
+     * Update versions for installed munki tools
+     */
+    if (self.makepkginfoInstalled) [self updateMakepkginfoVersionAsync];
+    else self.makepkginfoVersion = nil;
+    
+    if (self.makecatalogsInstalled) [self updateMakecatalogsVersionAsync];
+    else self.makecatalogsVersion = nil;
+}
+
+
 - (BOOL)makepkginfoInstalled
 {
 	// Check if /usr/local/munki/makepkginfo exists
@@ -861,7 +917,6 @@ static dispatch_queue_t serialQueue;
 	if ([fm fileExistsAtPath:makepkginfoPath]) {
 		return YES;
 	} else {
-		NSLog(@"Can't find %@. Check the paths to munki tools.", makepkginfoPath);
 		return NO;
 	}
 }
@@ -874,7 +929,6 @@ static dispatch_queue_t serialQueue;
 	if ([fm fileExistsAtPath:makecatalogsPath]) {
 		return YES;
 	} else {
-		NSLog(@"Can't find %@. Check the paths to munki tools.", makecatalogsPath);
 		return NO;
 	}
 }
