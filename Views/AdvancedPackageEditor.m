@@ -15,6 +15,8 @@
 
 @implementation AdvancedPackageEditor
 
+NSString *installsPboardType = @"installsPboardType";
+
 @synthesize forceInstallDatePicker;
 @synthesize mainTabView;
 @synthesize installsTableView;
@@ -289,6 +291,78 @@
     }
     
     return self;
+}
+
+- (void)getInstallsItemsFromPasteboard
+{
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    
+    // Get the archived custom data from pasteboard
+    NSData *archivedInstallsItems = [pb dataForType:installsPboardType];
+    
+    // Unarchive
+    NSArray *installsItemsFromPasteboard = [NSKeyedUnarchiver unarchiveObjectWithData:archivedInstallsItems];
+    
+    // Create new installs items
+    for (NSDictionary *installsItemProps in installsItemsFromPasteboard) {
+        InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem"
+                                                                        inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
+        newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
+        newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
+        newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
+        newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
+        newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
+        [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
+    }
+}
+
+- (void)copyInstallsItemsToPasteboard
+{
+    NSArray *selectedObjects = [self.installsItemsController selectedObjects];
+    NSMutableArray *objectDicts = [[[NSMutableArray alloc] init] autorelease];
+    for (InstallsItemMO *obj in selectedObjects) {
+        [objectDicts addObject:[obj dictValueForSave]];
+    }
+    
+    // Copy the data to pasteboard
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSArray *pb_types = [NSArray arrayWithObjects:installsPboardType, NSStringPboardType, nil];
+    [pb declareTypes:pb_types owner:nil];
+    [pb setData:[NSKeyedArchiver archivedDataWithRootObject:objectDicts] forType:installsPboardType];
+    
+    // As a convenience, copy the data as a string too
+    NSData *data;
+    NSString *error;
+    data = [NSPropertyListSerialization dataFromPropertyList:objectDicts
+                                                      format:NSPropertyListXMLFormat_v1_0
+                                            errorDescription:&error];
+    if (data) {
+        NSString *str = [NSString stringWithUTF8String:[data bytes]];
+        [pb setString:str forType:NSStringPboardType];
+    }
+}
+
+- (IBAction)paste:(id)sender
+{
+    [self getInstallsItemsFromPasteboard];
+}
+
+- (IBAction)copy:sender
+{
+    [self copyInstallsItemsToPasteboard];
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    if (aTableView == self.installsTableView) {
+        [self copyInstallsItemsToPasteboard];
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
