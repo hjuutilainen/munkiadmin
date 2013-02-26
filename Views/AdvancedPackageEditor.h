@@ -14,6 +14,13 @@
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
     NSTableView *installsTableView;
+    NSTextView *preinstallScriptTextView;
+    NSTextView *postinstallScriptTextView;
+    NSTextView *uninstallScriptTextView;
+    NSTextView *preuninstallScriptTextView;
+    NSTextView *postuninstallScriptTextView;
+    NSTextView *installCheckScriptTextView;
+    NSTextView *uninstallCheckScriptTextView;
     NSArray *osVersions;
     NSArray *installerTypes;
     
@@ -67,6 +74,13 @@
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (assign) IBOutlet NSTabView *mainTabView;
 @property (assign) IBOutlet NSTableView *installsTableView;
+@property (assign) IBOutlet NSTextView *preinstallScriptTextView;
+@property (assign) IBOutlet NSTextView *postinstallScriptTextView;
+@property (assign) IBOutlet NSTextView *uninstallScriptTextView;
+@property (assign) IBOutlet NSTextView *preuninstallScriptTextView;
+@property (assign) IBOutlet NSTextView *postuninstallScriptTextView;
+@property (assign) IBOutlet NSTextView *installCheckScriptTextView;
+@property (assign) IBOutlet NSTextView *uninstallCheckScriptTextView;
 @property (assign) IBOutlet NSArrayController *installsItemsController;
 @property (assign) IBOutlet NSObjectController *pkgController;
 @property (assign) IBOutlet NSArrayController *receiptsArrayController;

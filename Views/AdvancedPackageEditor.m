@@ -18,6 +18,13 @@
 @synthesize forceInstallDatePicker;
 @synthesize mainTabView;
 @synthesize installsTableView;
+@synthesize preinstallScriptTextView;
+@synthesize postinstallScriptTextView;
+@synthesize uninstallScriptTextView;
+@synthesize preuninstallScriptTextView;
+@synthesize postuninstallScriptTextView;
+@synthesize installCheckScriptTextView;
+@synthesize uninstallCheckScriptTextView;
 @synthesize installsItemsController;
 @synthesize pkgController;
 @synthesize receiptsArrayController;
@@ -324,6 +331,16 @@
     [super windowDidLoad];
     
     [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
+    
+    // Set a code-friendly font for the script views
+    NSFont *scriptFont = [NSFont fontWithName:@"Menlo Regular" size:11];
+    [[self.preinstallScriptTextView textStorage] setFont:scriptFont];
+    [[self.postinstallScriptTextView textStorage] setFont:scriptFont];
+    [[self.uninstallScriptTextView textStorage] setFont:scriptFont];
+    [[self.preuninstallScriptTextView textStorage] setFont:scriptFont];
+    [[self.postuninstallScriptTextView textStorage] setFont:scriptFont];
+    [[self.installCheckScriptTextView textStorage] setFont:scriptFont];
+    [[self.uninstallCheckScriptTextView textStorage] setFont:scriptFont];
     
     pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     
