@@ -13,6 +13,7 @@
 @interface AdvancedPackageEditor : NSWindowController {
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
+    NSTableView *installsTableView;
     NSArray *osVersions;
     NSArray *installerTypes;
     
@@ -65,6 +66,7 @@
 @property NSModalSession modalSession;
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (assign) IBOutlet NSTabView *mainTabView;
+@property (assign) IBOutlet NSTableView *installsTableView;
 @property (assign) IBOutlet NSArrayController *installsItemsController;
 @property (assign) IBOutlet NSObjectController *pkgController;
 @property (assign) IBOutlet NSArrayController *receiptsArrayController;

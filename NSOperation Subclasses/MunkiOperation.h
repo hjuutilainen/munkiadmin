@@ -19,6 +19,7 @@
 + (id)makecatalogsOperationWithTarget:(NSURL *)target;
 + (id)makepkginfoOperationWithSource:(NSURL *)sourceFile;
 + (id)installsItemFromURL:(NSURL *)sourceFile;
++ (id)installsItemFromPath:(NSString *)pathToFile;
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args;
 - (NSUserDefaults *)defaults;
 

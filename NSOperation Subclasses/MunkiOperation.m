@@ -31,6 +31,12 @@
 	return [[[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:[NSArray arrayWithObject:@"--file"]] autorelease];
 }
 
++ (id)installsItemFromPath:(NSString *)pathToFile
+{
+    NSURL *fileURL = [NSURL fileURLWithPath:pathToFile];
+	return [[[self alloc] initWithCommand:@"installsitem" targetURL:fileURL arguments:[NSArray arrayWithObject:@"--file"]] autorelease];
+}
+
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args
 {
 	if ((self = [super init])) {

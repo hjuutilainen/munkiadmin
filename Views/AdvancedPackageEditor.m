@@ -17,6 +17,7 @@
 
 @synthesize forceInstallDatePicker;
 @synthesize mainTabView;
+@synthesize installsTableView;
 @synthesize installsItemsController;
 @synthesize pkgController;
 @synthesize receiptsArrayController;
@@ -283,9 +284,46 @@
     return self;
 }
 
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
+{
+    NSPasteboard *pasteboard = [info draggingPasteboard];
+    
+    if (aTableView == self.installsTableView) {
+        NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+        NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+        NSArray *fileURLs = [pasteboard readObjectsForClasses:classes options:options];
+        for (NSURL *url in fileURLs) {
+            MunkiOperation *theOp = [MunkiOperation installsItemFromURL:url];
+            theOp.delegate = self;
+            [[[NSApp delegate] operationQueue] addOperation:theOp];
+        }
+        return YES;
+    }
+    return NO;
+}
+
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
+{
+    NSPasteboard *pasteboard = [info draggingPasteboard];
+    
+    if (aTableView == self.installsTableView) {
+        if ([[pasteboard types] containsObject:NSURLPboardType]) {
+            // The drop should always target the whole table view
+            [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
+            return NSDragOperationCopy;
+        }
+    }
+    
+    return NSDragOperationNone;
+}
+
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    
+    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
     
     pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     
