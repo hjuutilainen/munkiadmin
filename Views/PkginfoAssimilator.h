@@ -30,6 +30,7 @@
     BOOL assimilate_supported_architectures;
     BOOL assimilate_installs_items;
     BOOL assimilate_installer_choices_xml;
+    BOOL assimilate_items_to_copy;
     
     BOOL assimilate_autoremove;
     BOOL assimilate_description;
@@ -80,6 +81,7 @@
 @property BOOL assimilate_supported_architectures;
 @property BOOL assimilate_installs_items;
 @property BOOL assimilate_installer_choices_xml;
+@property BOOL assimilate_items_to_copy;
 
 @property BOOL assimilate_autoremove;
 @property BOOL assimilate_description;

@@ -32,6 +32,7 @@
 @synthesize assimilate_supported_architectures;
 @synthesize assimilate_installs_items;
 @synthesize assimilate_installer_choices_xml;
+@synthesize assimilate_items_to_copy;
 
 @synthesize assimilate_autoremove;
 @synthesize assimilate_description;
@@ -91,6 +92,7 @@
                               @"assimilate_blocking_applications",
                               @"assimilate_installer_choices_xml",
                               @"assimilate_installs_items",
+                              @"assimilate_items_to_copy",
                               @"assimilate_requires",
                               @"assimilate_supported_architectures",
                               @"assimilate_update_for",
@@ -110,6 +112,7 @@
                               @"assimilate_installcheck_script",
                               @"assimilate_installer_choices_xml",
                               @"assimilate_installs_items",
+                              @"assimilate_items_to_copy",
                               @"assimilate_maximum_os_version",
                               @"assimilate_minimum_munki_version",
                               @"assimilate_minimum_os_version",
@@ -230,6 +233,20 @@
             newInstallerChoicesItem.munki_choiceAttribute = installerChoicesItem.munki_choiceAttribute;
             newInstallerChoicesItem.munki_choiceIdentifier = installerChoicesItem.munki_choiceIdentifier;
             [self.targetPkginfo addInstallerChoicesItemsObject:newInstallerChoicesItem];
+        }
+    }
+    
+    // Items to copy
+    if (self.assimilate_items_to_copy) {
+        for (ItemToCopyMO *itemToCopy in self.sourcePkginfo.itemsToCopy) {
+            ItemToCopyMO *newItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
+            newItemToCopy.munki_destination_item = itemToCopy.munki_destination_item;
+            newItemToCopy.munki_destination_path = itemToCopy.munki_destination_path;
+            newItemToCopy.munki_group = itemToCopy.munki_group;
+            newItemToCopy.munki_mode = itemToCopy.munki_mode;
+            newItemToCopy.munki_source_item = itemToCopy.munki_source_item;
+            newItemToCopy.munki_user = itemToCopy.munki_user;
+            [self.targetPkginfo addItemsToCopyObject:newItemToCopy];
         }
     }
 }

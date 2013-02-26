@@ -91,15 +91,15 @@
 	</array>
 	<key>pkginfoArrayKeys</key>
 	<array>
-	    <string>blocking_applications</string>
-	    <string>catalogs</string>
-	    <string>installer_choices_xml</string>
-	    <string>installs</string>
-	    <string>items_to_copy</string>
-	    <string>receipts</string>
-	    <string>requires</string>
-	    <string>supported_architectures</string>
-	    <string>update_for</string>
+		<string>blocking_applications</string>
+		<string>catalogs</string>
+		<string>installer_choices_xml</string>
+		<string>installs</string>
+		<string>items_to_copy</string>
+		<string>receipts</string>
+		<string>requires</string>
+		<string>supported_architectures</string>
+		<string>update_for</string>
 	</array>
 	<key>receiptKeys</key>
 	<array>
@@ -139,6 +139,8 @@
 	<key>assimilate_installer_choices_xml</key>
 	<true/>
 	<key>assimilate_installs_items</key>
+	<false/>
+	<key>assimilate_items_to_copy</key>
 	<false/>
 	<key>assimilate_maximum_os_version</key>
 	<true/>
