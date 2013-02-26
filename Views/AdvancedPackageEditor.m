@@ -352,7 +352,10 @@
                                                                        selector:@selector(localizedStandardCompare:)];
     
     self.osVersions = [[NSArray arrayWithObjects:
+                        @"10.5",
                         @"10.5.8",
+                        @"10.5.99",
+                        @"10.6",
                         @"10.6.8", 
                         @"10.6.99", 
                         @"10.7",
@@ -361,6 +364,7 @@
                         @"10.7.99",
                         @"10.8",
                         @"10.8.1",
+                        @"10.8.99",
                         nil] 
                        sortedArrayUsingDescriptors:[NSArray arrayWithObject:osVersionSorter]];
     
