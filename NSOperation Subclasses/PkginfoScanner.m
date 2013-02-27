@@ -242,6 +242,18 @@
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, key);
 					}
 				}];
+                
+                // The "version_comparison_key" requires some special attention
+                if ([anInstall objectForKey:aNewInstallsItem.munki_version_comparison_key]) {
+                    aNewInstallsItem.munki_version_comparison_key_value = [anInstall objectForKey:aNewInstallsItem.munki_version_comparison_key];
+                } else {
+                    NSString *versionComparisonKeyDefault = @"CFBundleShortVersionString";
+                    aNewInstallsItem.munki_version_comparison_key = versionComparisonKeyDefault;
+                    aNewInstallsItem.munki_version_comparison_key_value = [anInstall objectForKey:versionComparisonKeyDefault];
+                }
+                
+                // Save the original installs item dictionary so that we can compare to it later
+                aNewInstallsItem.originalInstallsItem = (NSDictionary *)anInstall;
 			}];
 			
 			// =================================

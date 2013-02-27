@@ -7,11 +7,15 @@ const struct InstallsItemMOAttributes InstallsItemMOAttributes = {
 	.munki_CFBundleIdentifier = @"munki_CFBundleIdentifier",
 	.munki_CFBundleName = @"munki_CFBundleName",
 	.munki_CFBundleShortVersionString = @"munki_CFBundleShortVersionString",
+	.munki_CFBundleVersion = @"munki_CFBundleVersion",
 	.munki_md5checksum = @"munki_md5checksum",
 	.munki_minosversion = @"munki_minosversion",
 	.munki_path = @"munki_path",
 	.munki_type = @"munki_type",
+	.munki_version_comparison_key = @"munki_version_comparison_key",
+	.munki_version_comparison_key_value = @"munki_version_comparison_key_value",
 	.originalIndex = @"originalIndex",
+	.originalInstallsItem = @"originalInstallsItem",
 };
 
 const struct InstallsItemMORelationships InstallsItemMORelationships = {
@@ -80,6 +84,13 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 
 
 
+@dynamic munki_CFBundleVersion;
+
+
+
+
+
+
 @dynamic munki_md5checksum;
 
 
@@ -108,6 +119,20 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 
 
 
+@dynamic munki_version_comparison_key;
+
+
+
+
+
+
+@dynamic munki_version_comparison_key_value;
+
+
+
+
+
+
 @dynamic originalIndex;
 
 
@@ -129,6 +154,13 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
+
+
+
+
+
+@dynamic originalInstallsItem;
+
 
 
 
