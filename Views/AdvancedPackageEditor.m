@@ -16,10 +16,19 @@
 @implementation AdvancedPackageEditor
 
 NSString *installsPboardType = @"installsPboardType";
+NSString *itemsToCopyPboardType = @"itemsToCopyPboardType";
+NSString *receiptsPboardType = @"receiptsPboardType";
+NSString *installerChoicesXMLPboardType = @"installerChoicesXMLPboardType";
+NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 @synthesize forceInstallDatePicker;
 @synthesize mainTabView;
 @synthesize installsTableView;
+@synthesize receiptsTableView;
+@synthesize itemsToCopyTableView;
+@synthesize installerChoicesXMLTableView;
+@synthesize blockingApplicationsTableView;
+@synthesize supportedArchitecturesTableView;
 @synthesize preinstallScriptTextView;
 @synthesize postinstallScriptTextView;
 @synthesize uninstallScriptTextView;
@@ -130,18 +139,38 @@ NSString *installsPboardType = @"installsPboardType";
 	   didEndSelector:@selector(addUpdateForItemSheetDidEnd:returnCode:object:) contextInfo:nil];
 }
 
+- (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict
+{
+    InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+    newInstallsItem.munki_CFBundleIdentifier = [dict objectForKey:@"CFBundleIdentifier"];
+    newInstallsItem.munki_CFBundleName = [dict objectForKey:@"CFBundleName"];
+    newInstallsItem.munki_CFBundleShortVersionString = [dict objectForKey:@"CFBundleShortVersionString"];
+    newInstallsItem.munki_path = [dict objectForKey:@"path"];
+    newInstallsItem.munki_type = [dict objectForKey:@"type"];
+    newInstallsItem.munki_md5checksum = [dict objectForKey:@"md5checksum"];
+    newInstallsItem.munki_version_comparison_key = [dict objectForKey:@"version_comparison_key"];
+    newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:@"version_comparison_key_value"];
+    
+    // The "version_comparison_key" requires some special attention
+    if ([dict objectForKey:newInstallsItem.munki_version_comparison_key]) {
+        newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:newInstallsItem.munki_version_comparison_key];
+    } else {
+        NSString *versionComparisonKeyDefault = @"CFBundleShortVersionString";
+        newInstallsItem.munki_version_comparison_key = versionComparisonKeyDefault;
+        newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:versionComparisonKeyDefault];
+    }
+    
+    [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
+    
+    return newInstallsItem;
+}
+
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-        InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
-        newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
-        newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
-        newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
-        newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
-        newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
+        InstallsItemMO *newInstallsItem = [self createInstallsItemFromDictionary:installsItemProps];
         [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
 	} else {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
@@ -293,48 +322,30 @@ NSString *installsPboardType = @"installsPboardType";
     return self;
 }
 
-- (void)getInstallsItemsFromPasteboard
+- (NSArray *)getItemsOfTypeFromPasteboard:(NSString *)pboardType
 {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     
     // Get the archived custom data from pasteboard
-    NSData *archivedInstallsItems = [pb dataForType:installsPboardType];
+    NSData *archivedItems = [pb dataForType:pboardType];
     
     // Unarchive
-    NSArray *installsItemsFromPasteboard = [NSKeyedUnarchiver unarchiveObjectWithData:archivedInstallsItems];
-    
-    // Create new installs items
-    for (NSDictionary *installsItemProps in installsItemsFromPasteboard) {
-        InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem"
-                                                                        inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
-        newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
-        newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
-        newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
-        newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
-        newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
-        [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
-    }
+    NSArray *itemsFromPasteboard = [NSKeyedUnarchiver unarchiveObjectWithData:archivedItems];
+    return itemsFromPasteboard;
 }
 
-- (void)copyInstallsItemsToPasteboard
+- (void)copyItems:(NSArray *)items forType:(NSString *)pboardType
 {
-    NSArray *selectedObjects = [self.installsItemsController selectedObjects];
-    NSMutableArray *objectDicts = [[[NSMutableArray alloc] init] autorelease];
-    for (InstallsItemMO *obj in selectedObjects) {
-        [objectDicts addObject:[obj dictValueForSave]];
-    }
-    
     // Copy the data to pasteboard
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSArray *pb_types = [NSArray arrayWithObjects:installsPboardType, NSStringPboardType, nil];
+    NSArray *pb_types = [NSArray arrayWithObjects:pboardType, NSStringPboardType, nil];
     [pb declareTypes:pb_types owner:nil];
-    [pb setData:[NSKeyedArchiver archivedDataWithRootObject:objectDicts] forType:installsPboardType];
+    [pb setData:[NSKeyedArchiver archivedDataWithRootObject:items] forType:pboardType];
     
     // As a convenience, copy the data as a string too
     NSData *data;
     NSString *error;
-    data = [NSPropertyListSerialization dataFromPropertyList:objectDicts
+    data = [NSPropertyListSerialization dataFromPropertyList:items
                                                       format:NSPropertyListXMLFormat_v1_0
                                             errorDescription:&error];
     if (data) {
@@ -343,23 +354,149 @@ NSString *installsPboardType = @"installsPboardType";
     }
 }
 
+
 - (IBAction)paste:(id)sender
-{
-    [self getInstallsItemsFromPasteboard];
+{    
+    // Get the destination table view
+    NSResponder *firstResponder;
+    firstResponder = [[self window] firstResponder];
+    
+    // Create new objects based on the destination and pasteboard contents
+    if (firstResponder == self.installsTableView) {
+        for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:installsPboardType]) {
+            InstallsItemMO *newInstallsItem = [self createInstallsItemFromDictionary:item];
+            [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
+        }
+    } else if (firstResponder == self.receiptsTableView) {
+        for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:receiptsPboardType]) {
+            ReceiptMO *newReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            newReceipt.munki_filename = [item objectForKey:@"filename"];
+            newReceipt.munki_installed_size = [item objectForKey:@"installed_size"];
+            newReceipt.munki_name = [item objectForKey:@"name"];
+            newReceipt.munki_optional = [item objectForKey:@"optional"];
+            newReceipt.munki_packageid = [item objectForKey:@"packageid"];
+            newReceipt.munki_version = [item objectForKey:@"version"];
+            [self.pkginfoToEdit addReceiptsObject:newReceipt];
+        }
+    } else if (firstResponder == self.itemsToCopyTableView) {
+        for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:itemsToCopyPboardType]) {
+            ItemToCopyMO *newItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            newItemToCopy.munki_destination_item = [item objectForKey:@"destination_item"];
+            newItemToCopy.munki_destination_path = [item objectForKey:@"destination_path"];
+            newItemToCopy.munki_group = [item objectForKey:@"group"];
+            newItemToCopy.munki_mode = [item objectForKey:@"mode"];
+            newItemToCopy.munki_source_item = [item objectForKey:@"source_item"];
+            newItemToCopy.munki_user = [item objectForKey:@"user"];
+            [self.pkginfoToEdit addItemsToCopyObject:newItemToCopy];
+        }
+    } else if (firstResponder == self.installerChoicesXMLTableView) {
+        for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:installerChoicesXMLPboardType]) {
+            InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            newInstallerChoicesItem.munki_attributeSetting = [item objectForKey:@"attributeSetting"];
+            newInstallerChoicesItem.munki_choiceAttribute = [item objectForKey:@"choiceAttribute"];
+            newInstallerChoicesItem.munki_choiceIdentifier = [item objectForKey:@"choiceIdentifier"];
+            [self.pkginfoToEdit addInstallerChoicesItemsObject:newInstallerChoicesItem];
+        }
+    } else if (firstResponder == self.blockingApplicationsTableView) {
+        for (NSString *item in [self getItemsOfTypeFromPasteboard:stringObjectPboardType]) {
+            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            newStringObject.title = item;
+            newStringObject.typeString = @"package";
+            [self.pkginfoToEdit addBlockingApplicationsObject:newStringObject];
+        }
+    } else if (firstResponder == self.supportedArchitecturesTableView) {
+        for (NSString *item in [self getItemsOfTypeFromPasteboard:stringObjectPboardType]) {
+            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            newStringObject.title = item;
+            newStringObject.typeString = @"package";
+            [self.pkginfoToEdit addSupportedArchitecturesObject:newStringObject];
+        }
+    }
 }
 
-- (IBAction)copy:sender
+- (IBAction)copy:(id)sender
 {
-    [self copyInstallsItemsToPasteboard];
+    // Get the sending table view
+    NSResponder *firstResponder;
+    firstResponder = [[self window] firstResponder];
+    
+    if (firstResponder == self.installsTableView) {
+        NSArray *selectedObjects = [[self.installsItemsController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjects forType:installsPboardType];
+    } else if (firstResponder == self.receiptsTableView) {
+        NSArray *selectedObjects = [[self.receiptsArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjects forType:receiptsPboardType];
+    } else if (firstResponder == self.itemsToCopyTableView) {
+        NSArray *selectedObjects = [[self.itemsToCopyArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjects forType:itemsToCopyPboardType];
+    } else if (firstResponder == self.installerChoicesXMLTableView) {
+        NSArray *selectedObjects = [[self.installerChoicesArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjects forType:installerChoicesXMLPboardType];
+    } else if (firstResponder == self.blockingApplicationsTableView) {
+        NSArray *selectedObjects = [[self.blockingApplicationsArrayController selectedObjects] valueForKeyPath:@"title"];
+        [self copyItems:selectedObjects forType:stringObjectPboardType];
+    } else if (firstResponder == self.supportedArchitecturesTableView) {
+        NSArray *selectedObjects = [[self.supportedArchitecturesArrayController selectedObjects] valueForKeyPath:@"title"];
+        [self copyItems:selectedObjects forType:stringObjectPboardType];
+    }
+}
+
+- (IBAction)cut:(id)sender
+{
+    // Get the sending table view
+    NSResponder *firstResponder;
+    firstResponder = [[self window] firstResponder];
+    
+    if (firstResponder == self.installsTableView) {
+        NSArray *selectedObjects = [self.installsItemsController selectedObjects];
+        NSArray *selectedObjectDicts = [[self.installsItemsController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjectDicts forType:installsPboardType];
+        for (InstallsItemMO *installsItem in selectedObjects) {
+            [self.pkginfoToEdit removeInstallsItemsObject:installsItem];
+        }
+    } else if (firstResponder == self.receiptsTableView) {
+        NSArray *selectedObjects = [self.receiptsArrayController selectedObjects];
+        NSArray *selectedObjectDicts = [[self.receiptsArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjectDicts forType:receiptsPboardType];
+        for (ReceiptMO *receipt in selectedObjects) {
+            [self.pkginfoToEdit removeReceiptsObject:receipt];
+        }
+    } else if (firstResponder == self.itemsToCopyTableView) {
+        NSArray *selectedObjects = [self.itemsToCopyArrayController selectedObjects];
+        NSArray *selectedObjectDicts = [[self.itemsToCopyArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjectDicts forType:itemsToCopyPboardType];
+        for (ItemToCopyMO *item in selectedObjects) {
+            [self.pkginfoToEdit removeItemsToCopyObject:item];
+        }
+    } else if (firstResponder == self.installerChoicesXMLTableView) {        
+        NSArray *selectedObjects = [self.installerChoicesArrayController selectedObjects];
+        NSArray *selectedObjectDicts = [[self.installerChoicesArrayController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjectDicts forType:installerChoicesXMLPboardType];
+        for (InstallerChoicesItemMO *item in selectedObjects) {
+            [self.pkginfoToEdit removeInstallerChoicesItemsObject:item];
+        }
+    } else if (firstResponder == self.blockingApplicationsTableView) {        
+        NSArray *selectedObjects = [self.blockingApplicationsArrayController selectedObjects];
+        NSArray *selectedObjectTitles = [[self.blockingApplicationsArrayController selectedObjects] valueForKeyPath:@"title"];
+        [self copyItems:selectedObjectTitles forType:stringObjectPboardType];
+        for (StringObjectMO *object in selectedObjects) {
+            [self.pkginfoToEdit removeBlockingApplicationsObject:object];
+        }
+    } else if (firstResponder == self.supportedArchitecturesTableView) {        
+        NSArray *selectedObjects = [self.supportedArchitecturesArrayController selectedObjects];
+        NSArray *selectedObjectTitles = [[self.supportedArchitecturesArrayController selectedObjects] valueForKeyPath:@"title"];
+        [self copyItems:selectedObjectTitles forType:stringObjectPboardType];
+        for (StringObjectMO *architecture in selectedObjects) {
+            [self.pkginfoToEdit removeSupportedArchitecturesObject:architecture];
+        }
+    }
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
     if (aTableView == self.installsTableView) {
-        [self copyInstallsItemsToPasteboard];
+        NSArray *selectedObjects = [[self.installsItemsController selectedObjects] valueForKeyPath:@"dictValueForSave"];
+        [self copyItems:selectedObjects forType:installsPboardType];
         return YES;
     }
     return NO;
@@ -399,12 +536,34 @@ NSString *installsPboardType = @"installsPboardType";
     return NSDragOperationNone;
 }
 
+- (void)configureTableViews
+{
+    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
+    [self.installsTableView setDelegate:self];
+    [self.installsTableView setDataSource:self];
+    
+    [self.receiptsTableView setDelegate:self];
+    [self.receiptsTableView setDataSource:self];
+    
+    [self.itemsToCopyTableView setDelegate:self];
+    [self.itemsToCopyTableView setDataSource:self];
+    
+    [self.installerChoicesXMLTableView setDelegate:self];
+    [self.installerChoicesXMLTableView setDataSource:self];
+    
+    [self.blockingApplicationsTableView setDelegate:self];
+    [self.blockingApplicationsTableView setDataSource:self];
+    
+    [self.supportedArchitecturesTableView setDelegate:self];
+    [self.supportedArchitecturesTableView setDataSource:self];
+}
+
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
     
-    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
+    [self configureTableViews];
     
     // Set a code-friendly font for the script views
     NSFont *scriptFont = [NSFont fontWithName:@"Menlo Regular" size:11];

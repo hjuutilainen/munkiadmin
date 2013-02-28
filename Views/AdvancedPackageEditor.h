@@ -10,10 +10,15 @@
 @class SelectPkginfoItemsWindow;
 @class PackageMO;
 
-@interface AdvancedPackageEditor : NSWindowController {
+@interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
     NSTableView *installsTableView;
+    NSTableView *receiptsTableView;
+    NSTableView *itemsToCopyTableView;
+    NSTableView *installerChoicesXMLTableView;
+    NSTableView *blockingApplicationsTableView;
+    NSTableView *supportedArchitecturesTableView;
     NSTextView *preinstallScriptTextView;
     NSTextView *postinstallScriptTextView;
     NSTextView *uninstallScriptTextView;
@@ -74,6 +79,11 @@
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (assign) IBOutlet NSTabView *mainTabView;
 @property (assign) IBOutlet NSTableView *installsTableView;
+@property (assign) IBOutlet NSTableView *receiptsTableView;
+@property (assign) IBOutlet NSTableView *itemsToCopyTableView;
+@property (assign) IBOutlet NSTableView *installerChoicesXMLTableView;
+@property (assign) IBOutlet NSTableView *blockingApplicationsTableView;
+@property (assign) IBOutlet NSTableView *supportedArchitecturesTableView;
 @property (assign) IBOutlet NSTextView *preinstallScriptTextView;
 @property (assign) IBOutlet NSTextView *postinstallScriptTextView;
 @property (assign) IBOutlet NSTextView *uninstallScriptTextView;
