@@ -606,8 +606,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                        sortedArrayUsingDescriptors:[NSArray arrayWithObject:osVersionSorter]];
     
     self.installerTypes = [[NSArray arrayWithObjects:
-                            @"nopkg",
                             @"copy_from_dmg",
+                            @"apple_update_metadata",
+                            @"nopkg",
                             @"AdobeSetup",
                             @"AdobeUberInstaller",
                             @"AdobeAcrobatUpdater",
