@@ -17,7 +17,7 @@
 	if (self.munki_CFBundleIdentifier != nil) [tmpDict setObject:self.munki_CFBundleIdentifier forKey:@"CFBundleIdentifier"];
 	if (self.munki_CFBundleName != nil) [tmpDict setObject:self.munki_CFBundleName forKey:@"CFBundleName"];
 	if (self.munki_CFBundleShortVersionString != nil) [tmpDict setObject:self.munki_CFBundleShortVersionString forKey:@"CFBundleShortVersionString"];
-    if (self.munki_version_comparison_key != nil) {
+    if ((self.munki_version_comparison_key != nil) && (self.munki_version_comparison_key_value != nil)) {
         [tmpDict setObject:self.munki_version_comparison_key forKey:@"version_comparison_key"];
         [tmpDict setObject:self.munki_version_comparison_key_value forKey:self.munki_version_comparison_key];
     }

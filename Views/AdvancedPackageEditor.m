@@ -151,14 +151,24 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     newInstallsItem.munki_version_comparison_key = [dict objectForKey:@"version_comparison_key"];
     newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:@"version_comparison_key_value"];
     
-    // The "version_comparison_key" requires some special attention
+    /*
+     * The "version_comparison_key" requires some special attention
+     */
+    
+    // If the installs item has "version_comparison_key" defined, use it
     if ([dict objectForKey:newInstallsItem.munki_version_comparison_key]) {
         newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:newInstallsItem.munki_version_comparison_key];
-    } else {
+    }
+    // If the installs item has only "CFBundleShortVersionString" key defined,
+    // use it as a default version_comparison_key
+    else if ([dict objectForKey:@"CFBundleShortVersionString"]) {
         NSString *versionComparisonKeyDefault = @"CFBundleShortVersionString";
         newInstallsItem.munki_version_comparison_key = versionComparisonKeyDefault;
         newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:versionComparisonKeyDefault];
     }
+    
+    // Save the original installs item dictionary so that we can compare to it later
+    newInstallsItem.originalInstallsItem = (NSDictionary *)dict;
     
     [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
     

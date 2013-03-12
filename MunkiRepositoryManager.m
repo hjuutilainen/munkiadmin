@@ -548,6 +548,19 @@ static dispatch_queue_t serialQueue;
     return allModifiedPackages;
 }
 
+- (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+        NSLog(@"Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+    
+    if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
+        aPackage.originalPkginfo = plist;
+        return YES;
+    } else {
+        NSLog(@"Error: Failed to write %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+        return NO;
+    }
+}
 
 - (void)writePackagePropertyListsToDisk
 {
@@ -678,8 +691,7 @@ static dispatch_queue_t serialQueue;
          */
         NSArray *sortedMergedKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-			[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
+			[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
 		}
         
         /*
@@ -693,7 +705,7 @@ static dispatch_queue_t serialQueue;
 				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
                     NSLog(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
                 }
-				[mergedInfoDict writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES];
+				[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
 			} else {
 				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");

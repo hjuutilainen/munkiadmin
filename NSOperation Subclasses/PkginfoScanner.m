@@ -243,10 +243,17 @@
 					}
 				}];
                 
-                // The "version_comparison_key" requires some special attention
+                /*
+                 * The "version_comparison_key" requires some special attention
+                 */
+                
+                // If the installs item has "version_comparison_key" defined, use it
                 if ([anInstall objectForKey:aNewInstallsItem.munki_version_comparison_key]) {
                     aNewInstallsItem.munki_version_comparison_key_value = [anInstall objectForKey:aNewInstallsItem.munki_version_comparison_key];
-                } else {
+                }
+                // If the installs item has only "CFBundleShortVersionString" key defined,
+                // use it as a default version_comparison_key
+                else if ([anInstall objectForKey:@"CFBundleShortVersionString"]) {
                     NSString *versionComparisonKeyDefault = @"CFBundleShortVersionString";
                     aNewInstallsItem.munki_version_comparison_key = versionComparisonKeyDefault;
                     aNewInstallsItem.munki_version_comparison_key_value = [anInstall objectForKey:versionComparisonKeyDefault];
