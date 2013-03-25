@@ -872,6 +872,75 @@ static dispatch_queue_t serialQueue;
 }
 
 
+- (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL
+{
+    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:[childURL pathComponents]];
+    
+    NSArray *parentPathComponents = [NSArray arrayWithArray:[parentURL pathComponents]];
+    NSArray *childPathComponents = [NSArray arrayWithArray:[childURL pathComponents]];
+    
+    // Child URL must have more components than the parent
+    if ([childPathComponents count] < [parentPathComponents count]) {
+        return nil;
+    }
+    
+    [parentPathComponents enumerateObjectsUsingBlock:^(NSString *parentPathComponent, NSUInteger idx, BOOL *stop) {
+        if (idx < [childPathComponents count]) {
+            NSString *childPathComponent = [childPathComponents objectAtIndex:idx];
+            if ([childPathComponent isEqualToString:parentPathComponent]) {
+                [relativePathComponents removeObjectAtIndex:0];
+            } else {
+                stop = YES;
+            }
+        } else {
+            stop = YES;
+        }
+    }];
+    
+    NSString *childPath = [relativePathComponents componentsJoinedByString:@"/"];
+    return childPath;
+}
+
+
+- (BOOL)pkgsAndPkgsinfoDirectoriesAreIdentical
+{
+    BOOL identical = NO;
+    
+    NSURL *pkginfoDirectory = [[NSApp delegate] pkgsInfoURL];
+    NSURL *installerItemsDirectory = [[NSApp delegate] pkgsURL];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *dirEnum = [fileManager enumeratorAtURL:pkginfoDirectory
+                                       includingPropertiesForKeys:[NSArray arrayWithObjects:
+                                                                   NSURLNameKey,
+                                                                   NSURLIsDirectoryKey,nil]
+                                                          options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                     errorHandler:nil];
+    for (NSURL *theURL in dirEnum) {
+        
+        NSString *fileName;
+        [theURL getResourceValue:&fileName forKey:NSURLNameKey error:NULL];
+        
+        NSNumber *isDirectory;
+        [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+        
+        if ([isDirectory boolValue]) {
+            // Check if a relative item exists in pkgs directory
+            NSString *relative = [self relativePathToChildURL:theURL parentURL:pkginfoDirectory];
+            NSURL *pkgsSubURL = [installerItemsDirectory URLByAppendingPathComponent:relative isDirectory:YES];
+            if ([fileManager fileExistsAtPath:[pkgsSubURL path]]) {
+                identical = YES;
+            } else {
+                identical = NO;
+            }
+            
+        }
+    }
+    
+    return identical;
+}
+
+
 - (void)updateMakepkginfoVersionAsync
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
