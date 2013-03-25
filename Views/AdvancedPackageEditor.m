@@ -308,9 +308,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self.delegate packageEditorDidFinish:self returnCode:NSOKButton object:nil];
-        });
+        [self.delegate packageEditorDidFinish:self returnCode:NSOKButton object:nil];
     }
 }
 
@@ -321,9 +319,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self.delegate packageEditorDidFinish:self returnCode:NSCancelButton object:nil];
-        });
+        [self.delegate packageEditorDidFinish:self returnCode:NSCancelButton object:nil];
     }
 }
 
