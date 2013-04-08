@@ -628,7 +628,12 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                            sortedArrayUsingDescriptors:[NSArray arrayWithObject:installerTypeSorter]];
     
     // Set the force_install_after_date date picker to use UTC
-    [self.forceInstallDatePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+    [gregorian setTimeZone:timeZoneUTC];
+    [self.forceInstallDatePicker setCalendar:gregorian];
+    [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
+    
     [self setDefaultValuesFromPackage:self.pkginfoToEdit];
     
     [self.mainTabView selectTabViewItemAtIndex:0];
