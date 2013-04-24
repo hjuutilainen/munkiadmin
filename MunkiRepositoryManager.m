@@ -400,6 +400,33 @@ static dispatch_queue_t serialQueue;
     return catalog;
 }
 
+- (ManifestMO *)newManifestWithURL:(NSURL *)fileURL
+{
+    if (fileURL == nil) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
+    
+    // Manifest name should be the relative path from manifests subdirectory
+    NSArray *manifestComponents = [fileURL pathComponents];
+    NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+    [relativePathComponents removeObjectsInArray:manifestDirComponents];
+    NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+    
+    newManifest.title = manifestRelativePath;
+    newManifest.manifestURL = fileURL;
+    newManifest.originalManifest = [NSDictionary dictionary];
+    
+    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:YES]) {
+        return newManifest;
+    } else {
+        return nil;
+    }
+}
+
 - (ManifestMO *)newManifestWithTitle:(NSString *)title
 {
     if (title == nil) {

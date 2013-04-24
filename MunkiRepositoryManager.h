@@ -52,6 +52,7 @@
 
 - (CatalogMO *)newCatalogWithTitle:(NSString *)title;
 - (ManifestMO *)newManifestWithTitle:(NSString *)title;
+- (ManifestMO *)newManifestWithURL:(NSURL *)fileURL;
 - (void)assimilatePackage:(PackageMO *)targetPackage
             sourcePackage:(PackageMO *)sourcePackage
                      keys:(NSArray *)munkiKeys;
