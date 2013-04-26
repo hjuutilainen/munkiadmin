@@ -384,7 +384,7 @@
 			// This is done only when adding new items to repo
 			// =====================================
 			/*
-             Assimilator functions moved to MunkiRepositoryManager
+             Assimilator functions moved to class MunkiRepositoryManager
              */
 			
 			// =================================
@@ -426,7 +426,7 @@
 		}
 		
 		if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo)]) {
-			[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo) 
+			[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo)
 											withObject:nil
 										 waitUntilDone:YES];
 		}
