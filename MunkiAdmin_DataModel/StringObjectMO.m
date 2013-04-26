@@ -80,7 +80,7 @@
     NSString *subtitle;
     NSUInteger numPkgs = [self.packagesWithSameTitle count];
     if (numPkgs == 0) {
-        subtitle = @"--";
+        subtitle = @"";
     } else {
         NSSortDescriptor *byVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
         NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
@@ -92,17 +92,8 @@
         }
     }
     
-    NSString *newTitle;
-    if (self.originalApplication != nil) {
-        newTitle = self.originalApplication.munki_name;
-    } else if (self.originalPackage != nil) {
-        newTitle = self.title;
-    } else {
-        newTitle = self.title;
-    }
-    
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			newTitle, @"title",
+			self.title, @"title",
             self.typeString, @"type",
             subtitle, @"subtitle",
 			nil];

@@ -334,7 +334,7 @@
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
-				newRequiredPkgInfo.typeString = @"package";
+				newRequiredPkgInfo.typeString = @"requires";
 				newRequiredPkgInfo.originalIndexValue = idx;
 				[aNewPackage addRequirementsObject:newRequiredPkgInfo];
 			}];
@@ -347,7 +347,7 @@
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newRequiredPkgInfo.title = obj;
-				newRequiredPkgInfo.typeString = @"package";
+				newRequiredPkgInfo.typeString = @"updateFor";
 				newRequiredPkgInfo.originalIndexValue = idx;
 				[aNewPackage addUpdateForObject:newRequiredPkgInfo];
 			}];
@@ -360,7 +360,7 @@
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newBlockingApplication.title = obj;
-				newBlockingApplication.typeString = @"package";
+				newBlockingApplication.typeString = @"blockingApplication";
 				newBlockingApplication.originalIndexValue = idx;
 				[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 			}];
@@ -373,7 +373,7 @@
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 				newSupportedArchitecture.title = obj;
-				newSupportedArchitecture.typeString = @"architecture";
+				newSupportedArchitecture.typeString = @"supportedArchitecture";
 				newSupportedArchitecture.originalIndexValue = idx;
 				[aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
 			}];

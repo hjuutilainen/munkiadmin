@@ -53,6 +53,12 @@
 	} else if ([type isEqualToString:@"package"]) {
 		img = [NSImage imageNamed:@"packageIcon_32x32"];
 		
+	} else if ([type isEqualToString:@"requires"]) {
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
+		
+	} else if ([type isEqualToString:@"updateFor"]) {
+		img = [NSImage imageNamed:@"packageIcon_32x32"];
+		
 	} else if ([type isEqualToString:@"packageinfo"]) {
 		img = [wp iconForFileType:@"dmg"];
 		

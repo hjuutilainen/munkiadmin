@@ -6,11 +6,15 @@
 //
 
 #import "PackageNameEditor.h"
+#import "MunkiRepositoryManager.h"
+#import "DataModelHeaders.h"
 
 @implementation PackageNameEditor
 
 @synthesize shouldRenameAll;
 @synthesize changedName;
+@synthesize changeDescriptions;
+@synthesize changeDescriptionsArrayController;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -28,7 +32,8 @@
 {
     [super windowDidLoad];
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.changeDescriptionsArrayController setSortDescriptors:[NSArray arrayWithObjects:sort, nil]];
 }
 
 @end

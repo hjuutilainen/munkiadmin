@@ -42,6 +42,7 @@
 
 + (MunkiRepositoryManager *)sharedManager;
 
+- (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage;
 - (void)renamePackage:(PackageMO *)aPackage
               newName:(NSString *)newName
               cascade:(BOOL)shouldCascade;

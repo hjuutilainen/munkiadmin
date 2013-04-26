@@ -884,16 +884,193 @@
 	[[packageNameEditor window] close];
 }
 
+
 - (void)renameSelectedPackages
 {
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
+    
+    
     [NSApp beginSheet:[packageNameEditor window] 
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
     NSArray *selTitles = [[[packagesViewController packagesArrayController] selectedObjects] valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    
+    PackageMO *firstSelected = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+    NSDictionary *referencingDict = [[MunkiRepositoryManager sharedManager] referencingItemsForPackage:firstSelected];
+    NSMutableArray *changeDescriptions = [[[NSMutableArray alloc] init] autorelease];
+    NSImage *manifestIcon = [NSImage imageNamed:@"manifestIcon_32x32"];
+    NSImage *packageIcon = [NSImage imageNamed:@"packageIcon_32x32"];
+    [referencingDict enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray *obj, BOOL *stop) {
+        if ([key isEqualToString:@"managedInstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_installs: \"%@\"", obj.managedInstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"managedUninstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_uninstalls: \"%@\"", obj.managedUninstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"managedUpdates"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_updates: \"%@\"", obj.managedUpdateReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUpdate", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"optionalInstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: optional_installs: \"%@\"", obj.optionalInstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"optionalInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        else if ([key isEqualToString:@"conditionalManagedInstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedInstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_installs: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalManagedUninstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedUninstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_uninstalls: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalManagedUpdates"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedUpdateConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_updates: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUpdate", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalOptionalInstalls"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.optionalInstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": optional_installs: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"optionalInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        else if ([key isEqualToString:@"requiresItems"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: requires: \"%@\"", obj.requiresReference.titleWithVersion, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", packageIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"updateForItems"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: update_for: \"%@\"", obj.updateForReference.titleWithVersion, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", packageIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        
+        
+        // With version
+        else if ([key isEqualToString:@"managedInstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_installs: \"%@\"", obj.managedInstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"managedUninstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_uninstalls: \"%@\"", obj.managedUninstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"managedUpdatesWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: managed_updates: \"%@\"", obj.managedUpdateReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUpdate", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"optionalInstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: optional_installs: \"%@\"", obj.optionalInstallReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"optionalInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        else if ([key isEqualToString:@"conditionalManagedInstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedInstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_installs: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalManagedUninstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedUninstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_uninstalls: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalManagedUpdatesWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.managedUpdateConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": managed_updates: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUpdate", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"conditionalOptionalInstallsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *cond = obj.optionalInstallConditionalReference;
+                NSString *aDescr = [NSString stringWithFormat:@"%@: condition \"%@\": optional_installs: \"%@\"", cond.manifest.title, cond.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"optionalInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        else if ([key isEqualToString:@"requiresItemsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: requires: \"%@\"", obj.requiresReference.titleWithVersion, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", packageIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        } else if ([key isEqualToString:@"updateForItemsWithVersion"]) {
+            [obj enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *aDescr = [NSString stringWithFormat:@"%@: update_for: \"%@\"", obj.updateForReference.titleWithVersion, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:aDescr, @"title", @"managedUninstall", @"type", packageIcon, @"icon", nil];
+                [changeDescriptions addObject:objectDict];
+            }];
+            
+        }
+        
+        
+    }];
+    
+    [packageNameEditor setChangeDescriptions:[NSArray arrayWithArray:changeDescriptions]];
     [packageNameEditor setChangedName:[selTitles objectAtIndex:0]];
 }
 
