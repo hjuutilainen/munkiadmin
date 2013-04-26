@@ -171,21 +171,17 @@
 						<object class="NSTextField" id="463892091">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{17, 272}, {446, 70}}</string>
+							<string key="NSFrame">{{17, 300}, {446, 42}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="450865629"/>
+							<reference key="NSNextKeyView" ref="509228070"/>
 							<string key="NSReuseIdentifierKey">_NS:360</string>
 							<string key="NSAntiCompressionPriority">{250, 750}</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="1038564457">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">272760832</int>
-								<string type="base64-UTF8" key="NSContents">U2VsZWN0aW5nIHRoaXMgd2lsbCBhcHBseSB0aGUgbmV3IG5hbWUgdG8gb3RoZXIgcGtnaW5mbyBpdGVt
-cyB3aXRoIHRoZSBzYW1lIHRpdGxlLiBUaGlzIHdpbGwgYWxzbyByZW5hbWUgZGVwZW5kZW50IGl0ZW1z
-IGluIG1hbmlmZXN0cy4gSW4gbW9zdCBjYXNlcyBpdCBpcyBhIHZlcnkgZ29vZCBpZGVhIHRvIGtlZXAg
-dGhpbmdzIGluIHN5bmMuCgpUaGUgZm9sbG93aW5nIGl0ZW1zIGFyZSBjdXJyZW50bHkgcmVmZXJlbmNp
-bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
+								<string key="NSContents">Selecting this will apply the new name to other pkginfo items with the same title. This will also rename dependent items in manifests. In most cases it is a very good idea to keep things in sync.</string>
 								<object class="NSFont" key="NSSupport" id="26">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>
@@ -193,6 +189,28 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 								</object>
 								<string key="NSCellIdentifier">_NS:360</string>
 								<reference key="NSControlView" ref="463892091"/>
+								<reference key="NSBackgroundColor" ref="1060546375"/>
+								<reference key="NSTextColor" ref="364356820"/>
+							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+						</object>
+						<object class="NSTextField" id="509228070">
+							<reference key="NSNextResponder" ref="1006"/>
+							<int key="NSvFlags">266</int>
+							<string key="NSFrame">{{17, 272}, {446, 14}}</string>
+							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="450865629"/>
+							<string key="NSReuseIdentifierKey">_NS:360</string>
+							<string key="NSAntiCompressionPriority">{250, 750}</string>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSTextFieldCell" key="NSCell" id="318022550">
+								<int key="NSCellFlags">67108864</int>
+								<int key="NSCellFlags2">272760832</int>
+								<string key="NSContents">The following items are currently referencing this pkginfo by name:</string>
+								<reference key="NSSupport" ref="26"/>
+								<string key="NSCellIdentifier">_NS:360</string>
+								<reference key="NSControlView" ref="509228070"/>
 								<reference key="NSBackgroundColor" ref="1060546375"/>
 								<reference key="NSTextColor" ref="364356820"/>
 							</object>
@@ -275,7 +293,7 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 						</object>
 						<object class="NSBox" id="624937933">
 							<reference key="NSNextResponder" ref="1006"/>
-							<int key="NSvFlags">34</int>
+							<int key="NSvFlags">10</int>
 							<string key="NSFrame">{{12, 370}, {456, 5}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
@@ -482,7 +500,7 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="359725201"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1366, 746}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -704,6 +722,7 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 							<reference ref="42588985"/>
 							<reference ref="735577296"/>
 							<reference ref="302751046"/>
+							<reference ref="509228070"/>
 						</object>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -866,6 +885,20 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 						<reference key="object" ref="624937933"/>
 						<reference key="parent" ref="1006"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">65</int>
+						<reference key="object" ref="509228070"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="318022550"/>
+						</object>
+						<reference key="parent" ref="1006"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">66</int>
+						<reference key="object" ref="318022550"/>
+						<reference key="parent" ref="509228070"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -902,6 +935,8 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 					<string>6.IBPluginDependency</string>
 					<string>61.IBPluginDependency</string>
 					<string>63.IBPluginDependency</string>
+					<string>65.IBPluginDependency</string>
+					<string>66.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -911,6 +946,8 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{357, 418}, {480, 270}}</string>
 					<boolean value="NO"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -949,7 +986,7 @@ bmcgdGhpcyBwa2dpbmZvIGJ5IG5hbWU6A</string>
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">64</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

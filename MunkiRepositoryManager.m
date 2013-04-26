@@ -260,6 +260,34 @@ static dispatch_queue_t serialQueue;
     [fetchForApplicationsLoose release];
 }
 
+
+- (NSArray *)referencingPackageStringObjectsWithTitle:(NSString *)title
+{
+    NSArray *referencingObjects = nil;
+    
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSArray *stringObjectTypes = [NSArray arrayWithObjects:
+                                  @"managedInstall",
+                                  @"managedUninstall",
+                                  @"managedUpdate",
+                                  @"optionalInstall",
+                                  @"requires",
+                                  @"updateFor",
+                                  nil];
+    
+    NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
+    [getReferencesByName setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
+    NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", title, stringObjectTypes];
+    [getReferencesByName setPredicate:referencingPred];
+    if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
+        referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
+    } else {
+        if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
+    }
+    [getReferencesByName release];
+    return referencingObjects;
+}
+
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage
 {
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
@@ -268,7 +296,6 @@ static dispatch_queue_t serialQueue;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     
     NSMutableDictionary *combined = [[[NSMutableDictionary alloc] init] autorelease];
-    NSArray *stringObjectTypes = [NSArray arrayWithObjects:@"managedInstall", @"managedUninstall", @"managedUpdate", @"optionalInstall", @"requires", @"updateFor", nil];
     
     
     // Manifests
@@ -297,58 +324,49 @@ static dispatch_queue_t serialQueue;
      - requires item in a pkginfo
      - update_for item in a pkginfo
      */
-    NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
-    [getReferencesByName setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
-    NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", packageName, stringObjectTypes];
-    [getReferencesByName setPredicate:referencingPred];
-    if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
-        NSArray *referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
-        for (StringObjectMO *aReference in referencingObjects) {
-            
-            if (aReference.managedInstallReference) {
-                [managedInstalls addObject:aReference];
-            } else if (aReference.managedUninstallReference) {
-                [managedUninstalls addObject:aReference];
-            } else if (aReference.managedUpdateReference) {
-                [managedUpdates addObject:aReference];
-            } else if (aReference.optionalInstallReference) {
-                [optionalInstalls addObject:aReference];
-            }
-            
-            else if (aReference.managedInstallConditionalReference) {
-                [conditionalManagedInstalls addObject:aReference];
-            } else if (aReference.managedUninstallConditionalReference) {
-                [conditionalManagedUninstalls addObject:aReference];
-            } else if (aReference.managedUpdateConditionalReference) {
-                [conditionalManagedUpdates addObject:aReference];
-            } else if (aReference.optionalInstallConditionalReference) {
-                [conditionalOptionalInstalls addObject:aReference];
-            }
-            
-            else if (aReference.requiresReference) {
-                [requiresItems addObject:aReference];
-            } else if (aReference.updateForReference) {
-                [updateForItems addObject:aReference];
-            }
+    
+    NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:packageName];
+    for (StringObjectMO *aReference in referencingObjects) {
+        
+        if (aReference.managedInstallReference) {
+            [managedInstalls addObject:aReference];
+        } else if (aReference.managedUninstallReference) {
+            [managedUninstalls addObject:aReference];
+        } else if (aReference.managedUpdateReference) {
+            [managedUpdates addObject:aReference];
+        } else if (aReference.optionalInstallReference) {
+            [optionalInstalls addObject:aReference];
         }
         
-        if (managedInstalls) [combined setObject:managedInstalls forKey:@"managedInstalls"];
-        if (managedUninstalls) [combined setObject:managedUninstalls forKey:@"managedUninstalls"];
-        if (managedUpdates) [combined setObject:managedUpdates forKey:@"managedUpdates"];
-        if (optionalInstalls) [combined setObject:optionalInstalls forKey:@"optionalInstalls"];
+        else if (aReference.managedInstallConditionalReference) {
+            [conditionalManagedInstalls addObject:aReference];
+        } else if (aReference.managedUninstallConditionalReference) {
+            [conditionalManagedUninstalls addObject:aReference];
+        } else if (aReference.managedUpdateConditionalReference) {
+            [conditionalManagedUpdates addObject:aReference];
+        } else if (aReference.optionalInstallConditionalReference) {
+            [conditionalOptionalInstalls addObject:aReference];
+        }
         
-        if (conditionalManagedInstalls) [combined setObject:conditionalManagedInstalls forKey:@"conditionalManagedInstalls"];
-        if (conditionalManagedUninstalls) [combined setObject:conditionalManagedUninstalls forKey:@"conditionalManagedUninstalls"];
-        if (conditionalManagedUpdates) [combined setObject:conditionalManagedUpdates forKey:@"conditionalManagedUpdates"];
-        if (conditionalOptionalInstalls) [combined setObject:conditionalOptionalInstalls forKey:@"conditionalOptionalInstalls"];
-        
-        if (requiresItems) [combined setObject:requiresItems forKey:@"requiresItems"];
-        if (updateForItems) [combined setObject:updateForItems forKey:@"updateForItems"];
-        
-    } else {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects");
+        else if (aReference.requiresReference) {
+            [requiresItems addObject:aReference];
+        } else if (aReference.updateForReference) {
+            [updateForItems addObject:aReference];
+        }
     }
-    [getReferencesByName release];
+    
+    if (managedInstalls) [combined setObject:managedInstalls forKey:@"managedInstalls"];
+    if (managedUninstalls) [combined setObject:managedUninstalls forKey:@"managedUninstalls"];
+    if (managedUpdates) [combined setObject:managedUpdates forKey:@"managedUpdates"];
+    if (optionalInstalls) [combined setObject:optionalInstalls forKey:@"optionalInstalls"];
+    
+    if (conditionalManagedInstalls) [combined setObject:conditionalManagedInstalls forKey:@"conditionalManagedInstalls"];
+    if (conditionalManagedUninstalls) [combined setObject:conditionalManagedUninstalls forKey:@"conditionalManagedUninstalls"];
+    if (conditionalManagedUpdates) [combined setObject:conditionalManagedUpdates forKey:@"conditionalManagedUpdates"];
+    if (conditionalOptionalInstalls) [combined setObject:conditionalOptionalInstalls forKey:@"conditionalOptionalInstalls"];
+    
+    if (requiresItems) [combined setObject:requiresItems forKey:@"requiresItems"];
+    if (updateForItems) [combined setObject:updateForItems forKey:@"updateForItems"];
     
     
     /*
@@ -363,73 +381,63 @@ static dispatch_queue_t serialQueue;
      */
     
     // Manifests
-    NSMutableArray *managedInstallsV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUninstallsV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUpdatesV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *optionalInstallsV = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *managedInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *managedUninstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *managedUpdatesWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *optionalInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
     
     // Manifest conditional items
-    NSMutableArray *conditionalManagedInstallsV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUninstallsV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUpdatesV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalOptionalInstallsV = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalManagedInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalManagedUninstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalManagedUpdatesWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalOptionalInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
     
     // Pkginfo items
-    NSMutableArray *requiresItemsV = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *updateForItemsV = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *requiresItemsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *updateForItemsWithVersion = [[[NSMutableArray alloc] init] autorelease];
     
-    NSFetchRequest *getReferencesByNameAndVersion = [[NSFetchRequest alloc] init];
-    [getReferencesByNameAndVersion setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
-    NSPredicate *nameWithVersionPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", packageNameWithVersion, stringObjectTypes];
-    [getReferencesByNameAndVersion setPredicate:nameWithVersionPred];
-    if ([moc countForFetchRequest:getReferencesByNameAndVersion error:nil] > 0) {
-        NSArray *referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
-        for (StringObjectMO *aReference in referencingObjects) {
-            
-            if (aReference.managedInstallReference) {
-                [managedInstallsV addObject:aReference];
-            } else if (aReference.managedUninstallReference) {
-                [managedUninstallsV addObject:aReference];
-            } else if (aReference.managedUpdateReference) {
-                [managedUpdatesV addObject:aReference];
-            } else if (aReference.optionalInstallReference) {
-                [optionalInstallsV addObject:aReference];
-            }
-            
-            else if (aReference.managedInstallConditionalReference) {
-                [conditionalManagedInstallsV addObject:aReference];
-            } else if (aReference.managedUninstallConditionalReference) {
-                [conditionalManagedUninstallsV addObject:aReference];
-            } else if (aReference.managedUpdateConditionalReference) {
-                [conditionalManagedUpdatesV addObject:aReference];
-            } else if (aReference.optionalInstallConditionalReference) {
-                [conditionalOptionalInstallsV addObject:aReference];
-            }
-            
-            else if (aReference.requiresReference) {
-                [requiresItemsV addObject:aReference];
-            } else if (aReference.updateForReference) {
-                [updateForItems addObject:aReference];
-            }
+    NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:packageNameWithVersion];
+    for (StringObjectMO *aReference in referencingObjectsWithVersion) {
+        
+        if (aReference.managedInstallReference) {
+            [managedInstallsWithVersion addObject:aReference];
+        } else if (aReference.managedUninstallReference) {
+            [managedUninstallsWithVersion addObject:aReference];
+        } else if (aReference.managedUpdateReference) {
+            [managedUpdatesWithVersion addObject:aReference];
+        } else if (aReference.optionalInstallReference) {
+            [optionalInstallsWithVersion addObject:aReference];
         }
         
-        if (managedInstallsV) [combined setObject:managedInstallsV forKey:@"managedInstallsWithVersion"];
-        if (managedUninstallsV) [combined setObject:managedUninstallsV forKey:@"managedUninstallsWithVersion"];
-        if (managedUpdatesV) [combined setObject:managedUpdatesV forKey:@"managedUpdatesWithVersion"];
-        if (optionalInstallsV) [combined setObject:optionalInstallsV forKey:@"optionalInstallsWithVersion"];
+        else if (aReference.managedInstallConditionalReference) {
+            [conditionalManagedInstallsWithVersion addObject:aReference];
+        } else if (aReference.managedUninstallConditionalReference) {
+            [conditionalManagedUninstallsWithVersion addObject:aReference];
+        } else if (aReference.managedUpdateConditionalReference) {
+            [conditionalManagedUpdatesWithVersion addObject:aReference];
+        } else if (aReference.optionalInstallConditionalReference) {
+            [conditionalOptionalInstallsWithVersion addObject:aReference];
+        }
         
-        if (conditionalManagedInstallsV) [combined setObject:conditionalManagedInstallsV forKey:@"conditionalManagedInstallsWithVersion"];
-        if (conditionalManagedUninstallsV) [combined setObject:conditionalManagedUninstallsV forKey:@"conditionalManagedUninstallsWithVersion"];
-        if (conditionalManagedUpdatesV) [combined setObject:conditionalManagedUpdatesV forKey:@"conditionalManagedUpdatesWithVersion"];
-        if (conditionalOptionalInstallsV) [combined setObject:conditionalOptionalInstallsV forKey:@"conditionalOptionalInstallsWithVersion"];
-        
-        if (requiresItemsV) [combined setObject:requiresItemsV forKey:@"requiresItemsWithVersion"];
-        if (updateForItemsV) [combined setObject:updateForItemsV forKey:@"updateForItemsWithVersion"];
-        
-    } else {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+        else if (aReference.requiresReference) {
+            [requiresItemsWithVersion addObject:aReference];
+        } else if (aReference.updateForReference) {
+            [updateForItems addObject:aReference];
+        }
     }
-    [getReferencesByNameAndVersion release];
+    
+    if (managedInstallsWithVersion) [combined setObject:managedInstallsWithVersion forKey:@"managedInstallsWithVersion"];
+    if (managedUninstallsWithVersion) [combined setObject:managedUninstallsWithVersion forKey:@"managedUninstallsWithVersion"];
+    if (managedUpdatesWithVersion) [combined setObject:managedUpdatesWithVersion forKey:@"managedUpdatesWithVersion"];
+    if (optionalInstallsWithVersion) [combined setObject:optionalInstallsWithVersion forKey:@"optionalInstallsWithVersion"];
+    
+    if (conditionalManagedInstallsWithVersion) [combined setObject:conditionalManagedInstallsWithVersion forKey:@"conditionalManagedInstallsWithVersion"];
+    if (conditionalManagedUninstallsWithVersion) [combined setObject:conditionalManagedUninstallsWithVersion forKey:@"conditionalManagedUninstallsWithVersion"];
+    if (conditionalManagedUpdatesWithVersion) [combined setObject:conditionalManagedUpdatesWithVersion forKey:@"conditionalManagedUpdatesWithVersion"];
+    if (conditionalOptionalInstallsWithVersion) [combined setObject:conditionalOptionalInstallsWithVersion forKey:@"conditionalOptionalInstallsWithVersion"];
+    
+    if (requiresItemsWithVersion) [combined setObject:requiresItemsWithVersion forKey:@"requiresItemsWithVersion"];
+    if (updateForItemsWithVersion) [combined setObject:updateForItemsWithVersion forKey:@"updateForItemsWithVersion"];
     
     
     if (combined) {
@@ -500,83 +508,66 @@ static dispatch_queue_t serialQueue;
          - requires item in a package
          - update_for item in a package
          */
-        NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
-        [getReferencesByName setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
-        NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", oldName, [NSArray arrayWithObjects:@"managedInstall", @"managedUninstall", @"managedUpdate", @"optionalInstall", @"requires", @"updateFor", nil]];
-        [getReferencesByName setPredicate:referencingPred];
-        if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
-            NSArray *referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
-            for (StringObjectMO *aReference in referencingObjects) {
-                
-                // Change the name
-                aReference.title = newName;
-                
-                if (aReference.managedInstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
-                    aReference.managedInstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.managedUninstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
-                    aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.managedUpdateReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
-                    aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.optionalInstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
-                    aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.requiresReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
-                    aReference.requiresReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.updateForReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
-                    aReference.updateForReference.hasUnstagedChangesValue = YES;
-                }
-                
+        NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:oldName];
+        for (StringObjectMO *aReference in referencingObjects) {
+            
+            // Change the name
+            aReference.title = newName;
+            
+            if (aReference.managedInstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
+                aReference.managedInstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.managedUninstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
+                aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.managedUpdateReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
+                aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.optionalInstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
+                aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.requiresReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
+                aReference.requiresReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.updateForReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
+                aReference.updateForReference.hasUnstagedChangesValue = YES;
             }
-        } else {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+            
         }
-        [getReferencesByName release];
         
         
-        NSFetchRequest *getReferencesByNameAndVersion = [[NSFetchRequest alloc] init];
-        [getReferencesByNameAndVersion setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
-        NSPredicate *nameWithVersionPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", oldNameWithVersion, [NSArray arrayWithObjects:@"managedInstall", @"managedUninstall", @"managedUpdate", @"optionalInstall", @"requires", @"updateFor", nil]];
-        [getReferencesByNameAndVersion setPredicate:nameWithVersionPred];
-        if ([moc countForFetchRequest:getReferencesByNameAndVersion error:nil] > 0) {
-            NSArray *referencingObjects = [moc executeFetchRequest:getReferencesByNameAndVersion error:nil];
-            for (StringObjectMO *aReference in referencingObjects) {
-                
-                // Change the name
-                aReference.title = aPackage.titleWithVersion;
-                
-                if (aReference.managedInstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
-                    aReference.managedInstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.managedUninstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
-                    aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.managedUpdateReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
-                    aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.optionalInstallReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
-                    aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.requiresReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
-                    aReference.requiresReference.hasUnstagedChangesValue = YES;
-                } else if (aReference.updateForReference) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
-                    aReference.updateForReference.hasUnstagedChangesValue = YES;
-                }
-                
+        NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:oldNameWithVersion];
+        for (StringObjectMO *aReference in referencingObjectsWithVersion) {
+            
+            // Change the name
+            aReference.title = aPackage.titleWithVersion;
+            
+            if (aReference.managedInstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
+                aReference.managedInstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.managedUninstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
+                aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.managedUpdateReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
+                aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.optionalInstallReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
+                aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.requiresReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
+                aReference.requiresReference.hasUnstagedChangesValue = YES;
+            } else if (aReference.updateForReference) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
+                aReference.updateForReference.hasUnstagedChangesValue = YES;
             }
-        } else {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+            
         }
-        [getReferencesByNameAndVersion release];
-        
-        
-    } else {
+    }
+    
+    
+    else {
         aPackage.munki_name = newName;
         for (StringObjectMO *i in [aPackage referencingStringObjects]) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, aPackage.titleWithVersion);
