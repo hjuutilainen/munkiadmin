@@ -46,6 +46,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 @synthesize supportedArchitecturesArrayController;
 @synthesize installerChoicesArrayController;
 @synthesize catalogInfosArrayController;
+@synthesize installerEnvironmentVariablesArrayController;
 
 @synthesize temp_preinstall_script_enabled;
 @synthesize temp_preuninstall_script_enabled;
@@ -661,6 +662,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES];
     [self.catalogInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortByCatalogTitle]];
+    
+    NSSortDescriptor *sortByVariableName = [NSSortDescriptor sortDescriptorWithKey:@"munki_installer_environment_key" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.installerEnvironmentVariablesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByVariableName, nil]];
 }
 
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage

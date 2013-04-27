@@ -5,6 +5,7 @@
 #import "ReceiptMO.h"
 #import "InstallsItemMO.h"
 #import "InstallerChoicesItemMO.h"
+#import "InstallerEnvironmentVariableMO.h"
 #import "ItemToCopyMO.h"
 #import "StringObjectMO.h"
 
@@ -379,6 +380,25 @@
 	} else {
 		[tmpDict setObject:installerItems forKey:@"installer_choices_xml"];
 	}
+    
+    // ======================
+	// installer_environment
+	// ======================
+    NSSortDescriptor *sortByVariableKey = [NSSortDescriptor sortDescriptorWithKey:@"munki_installer_environment_key" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *installerEnvironmentSorters = [NSArray arrayWithObjects:sortByVariableKey, nil];
+    NSMutableDictionary *installerEnvironmentVariables = [NSMutableDictionary dictionaryWithCapacity:[self.installerEnvironmentVariables count]];
+    for (InstallerEnvironmentVariableMO *variable in [self.installerEnvironmentVariables sortedArrayUsingDescriptors:installerEnvironmentSorters]) {
+        // We absolutely need a value for the key
+        if (variable.munki_installer_environment_key &&
+            variable.munki_installer_environment_value) {
+            [installerEnvironmentVariables setObject:variable.munki_installer_environment_value forKey:variable.munki_installer_environment_key];
+        } else if (variable.munki_installer_environment_key) {
+            [installerEnvironmentVariables setObject:@"" forKey:variable.munki_installer_environment_key];
+        }
+    }
+    if ([installerEnvironmentVariables count] > 0) {
+        [tmpDict setObject:installerEnvironmentVariables forKey:@"installer_environment"];
+    }
     
     
 	NSDictionary *infoDictInMemory = [NSDictionary dictionaryWithDictionary:tmpDict];

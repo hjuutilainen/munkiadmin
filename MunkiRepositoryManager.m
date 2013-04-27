@@ -864,6 +864,7 @@ static dispatch_queue_t serialQueue;
                                  @"installable_condition",
                                  @"installcheck_script",
                                  @"installed_size",
+                                 @"installer_environment",
                                  @"installer_item_hash",
                                  @"installer_item_location",
                                  @"installer_item_size",
