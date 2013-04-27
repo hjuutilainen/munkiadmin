@@ -365,9 +365,9 @@
 				[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 			}];
             
-            // =================================
+			// =====================================
 			// Get "supported_architectures" items
-			// =================================
+			// =====================================
 			NSArray *supported_architectures = [self.sourceDict objectForKey:@"supported_architectures"];
 			[supported_architectures enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
@@ -378,7 +378,18 @@
 				[aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
 			}];
 			
-			
+			// =====================================
+            // Get "installer_environment" items
+			// =====================================
+			NSDictionary *installer_environment = [self.sourceDict objectForKey:@"installer_environment"];
+            [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
+                InstallerEnvironmentVariableMO *newInstallerEnvironmentVariable = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
+				newInstallerEnvironmentVariable.munki_installer_environment_key = key;
+                newInstallerEnvironmentVariable.munki_installer_environment_value = obj;
+				[aNewPackage addInstallerEnvironmentVariablesObject:newInstallerEnvironmentVariable];
+            }];
+            
 			// =====================================
 			// Assimilate with existing
 			// This is done only when adding new items to repo
@@ -387,9 +398,9 @@
              Assimilator functions moved to class MunkiRepositoryManager
              */
 			
-			// =================================
+			// =====================================
 			// Group packages by "name" property
-			// =================================
+			// =====================================
 			NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 			[fetchForApplications setEntity:applicationEntityDescr];
 			NSPredicate *applicationTitlePredicate;

@@ -15,6 +15,7 @@
 #import "ConditionalItemMO.h"
 #import "DirectoryMO.h"
 #import "InstallerChoicesItemMO.h"
+#import "InstallerEnvironmentVariableMO.h"
 #import "InstallsItemMO.h"
 #import "ItemToCopyMO.h"
 #import "ManagedInstallMO.h"

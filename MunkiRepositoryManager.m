@@ -289,9 +289,7 @@ static dispatch_queue_t serialQueue;
 }
 
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage
-{
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-    
+{    
     NSString *packageName = aPackage.munki_name;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     

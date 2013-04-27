@@ -56,6 +56,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.catalogInfos = @"catalogInfos",
 	.catalogs = @"catalogs",
 	.installerChoicesItems = @"installerChoicesItems",
+	.installerEnvironmentVariables = @"installerEnvironmentVariables",
 	.installsItems = @"installsItems",
 	.itemsToCopy = @"itemsToCopy",
 	.packageInfos = @"packageInfos",
@@ -707,6 +708,19 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"installerChoicesItems"];
   
 	[self didAccessValueForKey:@"installerChoicesItems"];
+	return result;
+}
+	
+
+@dynamic installerEnvironmentVariables;
+
+	
+- (NSMutableSet*)installerEnvironmentVariablesSet {
+	[self willAccessValueForKey:@"installerEnvironmentVariables"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"installerEnvironmentVariables"];
+  
+	[self didAccessValueForKey:@"installerEnvironmentVariables"];
 	return result;
 }
 	

@@ -57,6 +57,7 @@ extern const struct PackageMORelationships {
 	 NSString *catalogInfos;
 	 NSString *catalogs;
 	 NSString *installerChoicesItems;
+	 NSString *installerEnvironmentVariables;
 	 NSString *installsItems;
 	 NSString *itemsToCopy;
 	 NSString *packageInfos;
@@ -76,6 +77,7 @@ extern const struct PackageMOFetchedProperties {
 @class CatalogInfoMO;
 @class CatalogMO;
 @class InstallerChoicesItemMO;
+@class InstallerEnvironmentVariableMO;
 @class InstallsItemMO;
 @class ItemToCopyMO;
 @class PackageInfoMO;
@@ -664,6 +666,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) NSSet *installerEnvironmentVariables;
+
+- (NSMutableSet*)installerEnvironmentVariablesSet;
+
+
+
+
 @property (nonatomic, retain) NSSet *installsItems;
 
 - (NSMutableSet*)installsItemsSet;
@@ -758,6 +767,11 @@ extern const struct PackageMOFetchedProperties {
 - (void)removeInstallerChoicesItems:(NSSet*)value_;
 - (void)addInstallerChoicesItemsObject:(InstallerChoicesItemMO*)value_;
 - (void)removeInstallerChoicesItemsObject:(InstallerChoicesItemMO*)value_;
+
+- (void)addInstallerEnvironmentVariables:(NSSet*)value_;
+- (void)removeInstallerEnvironmentVariables:(NSSet*)value_;
+- (void)addInstallerEnvironmentVariablesObject:(InstallerEnvironmentVariableMO*)value_;
+- (void)removeInstallerEnvironmentVariablesObject:(InstallerEnvironmentVariableMO*)value_;
 
 - (void)addInstallsItems:(NSSet*)value_;
 - (void)removeInstallsItems:(NSSet*)value_;
@@ -1127,6 +1141,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveInstallerChoicesItems;
 - (void)setPrimitiveInstallerChoicesItems:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveInstallerEnvironmentVariables;
+- (void)setPrimitiveInstallerEnvironmentVariables:(NSMutableSet*)value;
 
 
 
