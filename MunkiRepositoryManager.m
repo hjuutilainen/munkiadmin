@@ -141,6 +141,17 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (void)copyInstallerEnvironmentVariablesFrom:(PackageMO *)source target:(PackageMO *)target
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    for (InstallerEnvironmentVariableMO *installerEnvironmentItem in source.installerEnvironmentVariables) {
+        InstallerEnvironmentVariableMO *newInstallerEnvironmentItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
+        newInstallerEnvironmentItem.munki_installer_environment_key = installerEnvironmentItem.munki_installer_environment_key;
+        newInstallerEnvironmentItem.munki_installer_environment_value = installerEnvironmentItem.munki_installer_environment_value;
+        [target addInstallerEnvironmentVariablesObject:newInstallerEnvironmentItem];
+    }
+}
+
 - (void)copyInstallerChoicesFrom:(PackageMO *)source target:(PackageMO *)target
 {
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
@@ -161,6 +172,8 @@ static dispatch_queue_t serialQueue;
         newInstallsItem.munki_CFBundleIdentifier = installsItem.munki_CFBundleIdentifier;
         newInstallsItem.munki_CFBundleName = installsItem.munki_CFBundleName;
         newInstallsItem.munki_CFBundleShortVersionString = installsItem.munki_CFBundleShortVersionString;
+        newInstallsItem.munki_version_comparison_key = installsItem.munki_version_comparison_key;
+        newInstallsItem.munki_version_comparison_key_value = installsItem.munki_version_comparison_key_value;
         newInstallsItem.munki_md5checksum = installsItem.munki_md5checksum;
         newInstallsItem.munki_minosversion = installsItem.munki_minosversion;
         newInstallsItem.munki_path = installsItem.munki_path;
@@ -193,6 +206,7 @@ static dispatch_queue_t serialQueue;
                           @"requires",
                           @"supported_architectures",
                           @"update_for",
+                          @"installer_environment",
                           nil];
     NSArray *stringKeys = [NSArray arrayWithObjects:
                            @"blocking_applications",
@@ -215,6 +229,9 @@ static dispatch_queue_t serialQueue;
             }
             else if ([keyName isEqualToString:@"installs_items"]) {
                 [self copyInstallsItemsFrom:sourcePackage target:targetPackage];
+            }
+            else if ([keyName isEqualToString:@"installer_environment"]) {
+                [self copyInstallerEnvironmentVariablesFrom:sourcePackage target:targetPackage];
             }
         }
     }
