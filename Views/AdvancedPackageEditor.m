@@ -19,6 +19,7 @@ NSString *installsPboardType = @"installsPboardType";
 NSString *itemsToCopyPboardType = @"itemsToCopyPboardType";
 NSString *receiptsPboardType = @"receiptsPboardType";
 NSString *installerChoicesXMLPboardType = @"installerChoicesXMLPboardType";
+NSString *installerEnvironmentPboardType = @"installerEnvironmentPboardType";
 NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 @synthesize forceInstallDatePicker;
