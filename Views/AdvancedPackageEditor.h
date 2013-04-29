@@ -60,6 +60,7 @@
     NSArrayController *supportedArchitecturesArrayController;
     NSArrayController *installerChoicesArrayController;
     NSArrayController *catalogInfosArrayController;
+    NSArrayController *installerEnvironmentVariablesArrayController;
     
     NSModalSession modalSession;
     id delegate;

@@ -11,7 +11,9 @@
 
 @interface PackageNameEditor : NSWindowController {
     BOOL shouldRenameAll;
+    NSString *oldName;
     NSString *changedName;
+    NSArray *changeDescriptions;
     NSArrayController *changeDescriptionsArrayController;
     NSUndoManager *undoManager;
     PackageMO *packageToRename;
