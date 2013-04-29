@@ -669,13 +669,11 @@
 
 - (void)renameSelectedManifest
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    
     ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
-    NSString *oldTitle = selectedManifest.title;
     
+    /*
+     Ask for a new location and name
+     */
     NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
     NSString *newFilename = [selectedManifest fileName];
     NSString *message = NSLocalizedString(([NSString stringWithFormat:@"Choose a new location and name for \"%@\".", [selectedManifest fileName]]), nil);
@@ -689,41 +687,13 @@
         return;
     }
     
-    if ([[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
-        
-        // Manifest name should be the relative path from manifests subdirectory
-        NSArray *manifestComponents = [newURL pathComponents];
-        NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
-        NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-        [relativePathComponents removeObjectsInArray:manifestDirComponents];
-        NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
-        
-        selectedManifest.title = manifestRelativePath;
-        selectedManifest.manifestURL = newURL;
-        
-        
-        // Rename other references (this might be a nested manifest)
-        NSFetchRequest *getReferencingManifests = [[NSFetchRequest alloc] init];
-        [getReferencingManifests setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext]];
-        NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title LIKE %@ AND typeString == %@", oldTitle, @"includedManifest"];
-        [getReferencingManifests setPredicate:referencingPred];
-        if ([self.managedObjectContext countForFetchRequest:getReferencingManifests error:nil] > 0) {
-            NSArray *referencingObjects = [self.managedObjectContext executeFetchRequest:getReferencingManifests error:nil];
-            for (StringObjectMO *aReference in referencingObjects) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming reference from manifest: %@", aReference.manifestReference.title);
-                aReference.title = manifestRelativePath;
-                aReference.manifestReference.hasUnstagedChangesValue = YES;
-            }
-        } else {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
-        }
-        [getReferencingManifests release];
-        
-    } else {
-        NSLog(@"Failed to rename manifest on disk");
-    }
+    /*
+     The actual renaming is handled by MunkiRepositoryManager
+     */
+    [[MunkiRepositoryManager sharedManager] moveManifest:selectedManifest toURL:newURL cascade:YES];
     
 }
+
 
 - (IBAction)renameSelectedManifestAction:sender
 {
@@ -858,23 +828,6 @@
 
 # pragma mark - Modifying packages
 
-- (IBAction)processRenamePackagesAction:(id)sender
-{
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    
-    NSString *newName = [packageNameEditor changedName];
-    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renaming to: %@", newName);
-    
-    for (PackageMO *selectedPackage in [[packagesViewController packagesArrayController] selectedObjects]) {
-        BOOL renameAll = [packageNameEditor shouldRenameAll];
-        [[MunkiRepositoryManager sharedManager] renamePackage:selectedPackage newName:newName cascade:renameAll];
-    }
-    [NSApp endSheet:[packageNameEditor window]];
-	[[packageNameEditor window] close];
-}
-
 - (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
     if ([self.defaults boolForKey:@"debug"]) {
@@ -887,15 +840,6 @@
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];
-}
-
-- (IBAction)cancelRenamePackagesAction:(id)sender
-{
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    [NSApp endSheet:[packageNameEditor window]];
-	[[packageNameEditor window] close];
 }
 
 

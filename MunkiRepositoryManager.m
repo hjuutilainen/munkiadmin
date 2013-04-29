@@ -278,6 +278,87 @@ static dispatch_queue_t serialQueue;
 }
 
 
+
+- (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSURL *currentURL = (NSURL *)manifest.manifestURL;
+    NSString *oldTitle = manifest.title;
+    
+    if (![[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
+        NSLog(@"Failed to rename manifest on disk");
+        return;
+    }
+    
+    // Manifest name should be the relative path from manifests subdirectory
+    NSArray *manifestComponents = [newURL pathComponents];
+    NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+    [relativePathComponents removeObjectsInArray:manifestDirComponents];
+    NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+    
+    manifest.title = manifestRelativePath;
+    manifest.manifestURL = newURL;
+    if ([self.defaults boolForKey:@"debug"]) {
+        NSString *aDescr = [NSString stringWithFormat:@"Renamed manifest \"%@\" to \"%@\"", oldTitle, manifest.title];
+        NSLog(@"%@", aDescr);
+    }
+    
+    if (shouldCascade) {
+        /*
+         Rename other references which include
+         - a nested manifest
+         - a conditional nested manifest
+         */
+        NSFetchRequest *getReferencingManifests = [[NSFetchRequest alloc] init];
+        [getReferencingManifests setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
+        NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString == %@", oldTitle, @"includedManifest"];
+        [getReferencingManifests setPredicate:referencingPred];
+        if ([moc countForFetchRequest:getReferencingManifests error:nil] > 0) {
+            NSArray *referencingObjects = [moc executeFetchRequest:getReferencingManifests error:nil];
+            for (StringObjectMO *aReference in referencingObjects) {
+                
+                // This is a nested manifest under included_manifests
+                if (aReference.manifestReference) {
+                    ManifestMO *manifest = aReference.manifestReference;
+                    aReference.title = manifestRelativePath;
+                    manifest.hasUnstagedChangesValue = YES;
+                    if ([self.defaults boolForKey:@"debug"]) {
+                        NSString *aDescr = [NSString stringWithFormat:
+                                            @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest %@",
+                                            oldTitle,
+                                            aReference.title,
+                                            manifest.title];
+                        NSLog(@"%@", aDescr);
+                    }
+                }
+                // This is a conditional nested manifest
+                else if (aReference.includedManifestConditionalReference) {
+                    ConditionalItemMO *conditional = aReference.includedManifestConditionalReference;
+                    ManifestMO *manifest = conditional.manifest;
+                    aReference.title = manifestRelativePath;
+                    manifest.hasUnstagedChangesValue = YES;
+                    if ([self.defaults boolForKey:@"debug"]) {
+                        NSString *aDescr = [NSString stringWithFormat:
+                                            @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest \"%@\" under condition \"%@\"",
+                                            oldTitle,
+                                            aReference.title,
+                                            manifest.title,
+                                            conditional.titleWithParentTitle];
+                        NSLog(@"%@", aDescr);
+                    }
+                }
+                
+                
+            }
+        } else {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+        }
+        [getReferencingManifests release];
+    }
+}
+
+
 - (NSArray *)referencingPackageStringObjectsWithTitle:(NSString *)title
 {
     NSArray *referencingObjects = nil;
@@ -299,7 +380,7 @@ static dispatch_queue_t serialQueue;
     if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
         referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
     } else {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
+        //if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
     }
     [getReferencesByName release];
     return referencingObjects;
@@ -483,11 +564,13 @@ static dispatch_queue_t serialQueue;
     NSString *oldName = aPackage.munki_name;
     NSString *oldNameWithVersion = aPackage.titleWithVersion;
     
-    if (shouldCascade) {
-        // Get the current app
-        ApplicationMO *currentApp = aPackage.parentApplication;
+    // Get the packages parent application which represents a group of
+    // packageinfos with the same name
+    ApplicationMO *packageGroup = aPackage.parentApplication;
         
-        // Check for existing ApplicationMO with the same title
+    if (shouldCascade) {
+        
+        // Check for existing ApplicationMO with the new name
         NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
         [getApplication setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc]];
         NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newName];
@@ -502,26 +585,35 @@ static dispatch_queue_t serialQueue;
             aPackage.parentApplication = app;
         } else {
             // No existing application objects with this name so just rename it
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming ApplicationMO %@ to %@", currentApp.munki_name, newName);
-            currentApp.munki_name = newName;
+            packageGroup.munki_name = newName;
             aPackage.munki_name = newName;
             aPackage.hasUnstagedChangesValue = YES;
-            aPackage.parentApplication = currentApp; // Shouldn't need this...
+            aPackage.parentApplication = packageGroup; // Shouldn't need this...
         }
         [getApplication release];
+        
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
+            NSLog(@"%@", aDescr);
+        }
         
         // Get sibling packages
         NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
         [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
-        NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", currentApp];
+        NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", packageGroup];
         [getSiblings setPredicate:siblingPred];
         if ([moc countForFetchRequest:getSiblings error:nil] > 0) {
             NSArray *siblingPackages = [moc executeFetchRequest:getSiblings error:nil];
             for (PackageMO *aSibling in siblingPackages) {
-                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming sibling %@ to %@", aSibling.munki_name, newName);
-                aSibling.munki_name = newName;
-                aSibling.hasUnstagedChangesValue = YES;
-                aSibling.parentApplication = aPackage.parentApplication;
+                if (aSibling != aPackage) {
+                    if ([self.defaults boolForKey:@"debug"]) {
+                        NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", aSibling.munki_name, newName, aSibling.relativePath];
+                        NSLog(@"%@", aDescr);
+                    }
+                    aSibling.munki_name = newName;
+                    aSibling.hasUnstagedChangesValue = YES;
+                    aSibling.parentApplication = aPackage.parentApplication;
+                }
             }
         } else {
             
@@ -545,23 +637,85 @@ static dispatch_queue_t serialQueue;
             aReference.title = newName;
             
             if (aReference.managedInstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
-                aReference.managedInstallReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.managedUninstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
-                aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedUninstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.managedUpdateReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
-                aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedUpdateReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.optionalInstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
-                aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
-            } else if (aReference.requiresReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
-                aReference.requiresReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.optionalInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            
+            else if (aReference.managedInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedInstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+                
+            } else if (aReference.managedUninstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            } else if (aReference.managedUpdateConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            } else if (aReference.optionalInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            
+            else if (aReference.requiresReference) {
+                PackageMO *package = aReference.requiresReference;
+                package.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
+                    NSLog(@"%@", aDescr);
+                }
+                
             } else if (aReference.updateForReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
-                aReference.updateForReference.hasUnstagedChangesValue = YES;
+                PackageMO *package = aReference.updateForReference;
+                package.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
+                    NSLog(@"%@", aDescr);
+                }
             }
             
         }
@@ -574,23 +728,84 @@ static dispatch_queue_t serialQueue;
             aReference.title = aPackage.titleWithVersion;
             
             if (aReference.managedInstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_installs reference in manifest %@", aReference.managedInstallReference.title);
-                aReference.managedInstallReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.managedUninstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_uninstalls reference in manifest %@", aReference.managedUninstallReference.title);
-                aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedUninstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.managedUpdateReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed managed_updates reference in manifest %@", aReference.managedUpdateReference.title);
-                aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.managedUpdateReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
             } else if (aReference.optionalInstallReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed optional_installs reference in manifest %@", aReference.optionalInstallReference.title);
-                aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
-            } else if (aReference.requiresReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed requires reference in package %@", aReference.requiresReference.titleWithVersion);
-                aReference.requiresReference.hasUnstagedChangesValue = YES;
+                ManifestMO *manifest = aReference.optionalInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            
+            else if (aReference.managedInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedInstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            } else if (aReference.managedUninstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            } else if (aReference.managedUpdateConditionalReference) {
+                ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            } else if (aReference.optionalInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
+                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            
+            else if (aReference.requiresReference) {
+                PackageMO *package = aReference.requiresReference;
+                package.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
+                    NSLog(@"%@", aDescr);
+                }
+                
             } else if (aReference.updateForReference) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Renamed update_for reference in package %@", aReference.updateForReference.titleWithVersion);
-                aReference.updateForReference.hasUnstagedChangesValue = YES;
+                PackageMO *package = aReference.updateForReference;
+                package.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
+                    NSLog(@"%@", aDescr);
+                }
             }
             
         }
@@ -598,18 +813,32 @@ static dispatch_queue_t serialQueue;
     
     
     else {
-        aPackage.munki_name = newName;
-        for (StringObjectMO *i in [aPackage referencingStringObjects]) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming packageref %@ to: %@", i.title, aPackage.titleWithVersion);
-            i.title = aPackage.titleWithVersion;
-            [moc refreshObject:i mergeChanges:YES];
-            
+        
+        // Check for existing ApplicationMO with the new name
+        NSFetchRequest *getApplication = [[NSFetchRequest alloc] init];
+        [getApplication setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc]];
+        NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", newName];
+        [getApplication setPredicate:appPred];
+        if ([moc countForFetchRequest:getApplication error:nil] > 0) {
+            // Application object exists with the new name so use it
+            NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
+            ApplicationMO *app = [apps objectAtIndex:0];
+            aPackage.munki_name = newName;
+            aPackage.hasUnstagedChangesValue = YES;
+            aPackage.parentApplication = app;
+        } else {
+            // No existing application objects with this name so just create a new instance
+            ApplicationMO *aNewApplication = [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:moc];
+            aNewApplication.munki_name = newName;
+            aPackage.munki_name = newName;
+            aPackage.hasUnstagedChangesValue = YES;
+            aPackage.parentApplication = aNewApplication; // Shouldn't need this...
         }
-        for (StringObjectMO *i in [aPackage.parentApplication referencingStringObjects]) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Renaming appref %@ to: %@", i.title, aPackage.parentApplication.munki_name);
-            i.title = aPackage.parentApplication.munki_name;
-            [moc refreshObject:i mergeChanges:YES];
-            
+        [getApplication release];
+        
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
+            NSLog(@"%@", aDescr);
         }
     }
 }

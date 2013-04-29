@@ -42,6 +42,7 @@
 
 + (MunkiRepositoryManager *)sharedManager;
 
+- (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade;
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage;
 - (void)renamePackage:(PackageMO *)aPackage
               newName:(NSString *)newName
