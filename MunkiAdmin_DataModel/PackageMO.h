@@ -5,6 +5,7 @@
 }
 
 - (NSURL *)parentURL;
+- (NSString *)relativePath;
 - (NSDictionary *)pkgInfoDictionary;
 - (NSString *)titleWithVersion;
 - (NSString *)formattedTitle;

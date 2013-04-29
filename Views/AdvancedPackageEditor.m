@@ -10,6 +10,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
+#import "PackageNameEditor.h"
 
 #define kMinSplitViewWidth      300.0f
 
@@ -103,6 +104,25 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.modalSession = [NSApp beginModalSessionForWindow:self.window];
     [NSApp runModalSession:self.modalSession];
     return self.modalSession;
+}
+
+- (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+{
+    [[self undoManager] endUndoGrouping];
+    if (returnCode == NSOKButton) return;
+    [[self undoManager] undo];
+}
+
+
+- (void)renameCurrentPackage
+{
+    SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
+    [PackageNameEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:self.pkginfoToEdit];
+}
+
+- (IBAction)renameCurrentPackageAction:(id)sender
+{
+    [self renameCurrentPackage];
 }
 
 - (void)addRequiresItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object

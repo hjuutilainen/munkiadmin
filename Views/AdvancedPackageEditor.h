@@ -8,6 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class SelectPkginfoItemsWindow;
+@class PackageNameEditor;
 @class PackageMO;
 
 @interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
@@ -67,6 +68,7 @@
 }
 
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
+- (IBAction)renameCurrentPackageAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 - (void)commitChangesToCurrentPackage;

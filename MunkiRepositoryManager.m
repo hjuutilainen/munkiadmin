@@ -311,7 +311,22 @@ static dispatch_queue_t serialQueue;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     
     NSMutableDictionary *combined = [[[NSMutableDictionary alloc] init] autorelease];
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     
+    // Get sibling packages
+    NSMutableArray *packagesWithSameName = [[[NSMutableArray alloc] init] autorelease];
+    NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
+    [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
+    NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", aPackage.parentApplication];
+    [getSiblings setPredicate:siblingPred];
+    if ([moc countForFetchRequest:getSiblings error:nil] > 0) {
+        NSArray *siblingPackages = [moc executeFetchRequest:getSiblings error:nil];
+        for (PackageMO *aSibling in siblingPackages) {
+            [packagesWithSameName addObject:aSibling];
+        }
+    }
+    [getSiblings release];
+    if (packagesWithSameName) [combined setObject:packagesWithSameName forKey:@"packagesWithSameName"];
     
     // Manifests
     NSMutableArray *managedInstalls = [[[NSMutableArray alloc] init] autorelease];
@@ -602,7 +617,7 @@ static dispatch_queue_t serialQueue;
 # pragma mark -
 # pragma mark Creating new items
 
-- (CatalogMO *)newCatalogWithTitle:(NSString *)title
+- (CatalogMO *)createCatalogWithTitle:(NSString *)title
 {
     if (title == nil) {
         return nil;
@@ -638,7 +653,7 @@ static dispatch_queue_t serialQueue;
     return catalog;
 }
 
-- (ManifestMO *)newManifestWithURL:(NSURL *)fileURL
+- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL
 {
     if (fileURL == nil) {
         return nil;
@@ -665,7 +680,7 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (ManifestMO *)newManifestWithTitle:(NSString *)title
+- (ManifestMO *)createManifestWithTitle:(NSString *)title
 {
     if (title == nil) {
         return nil;
@@ -1156,10 +1171,10 @@ static dispatch_queue_t serialQueue;
             if ([childPathComponent isEqualToString:parentPathComponent]) {
                 [relativePathComponents removeObjectAtIndex:0];
             } else {
-                stop = YES;
+                *stop = YES;
             }
         } else {
-            stop = YES;
+            *stop = YES;
         }
     }];
     

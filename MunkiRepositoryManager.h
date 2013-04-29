@@ -51,9 +51,9 @@
 - (void)writeManifestPropertyListsToDisk;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
 
-- (CatalogMO *)newCatalogWithTitle:(NSString *)title;
-- (ManifestMO *)newManifestWithTitle:(NSString *)title;
-- (ManifestMO *)newManifestWithURL:(NSURL *)fileURL;
+- (CatalogMO *)createCatalogWithTitle:(NSString *)title;
+- (ManifestMO *)createManifestWithTitle:(NSString *)title;
+- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL;
 - (void)assimilatePackage:(PackageMO *)targetPackage
             sourcePackage:(PackageMO *)sourcePackage
                      keys:(NSArray *)munkiKeys;

@@ -202,6 +202,7 @@
 - (IBAction)duplicateSelectedManifestAction:(id)sender;
 - (IBAction)renameSelectedManifestAction:sender;
 - (IBAction)renameSelectedPackagesAction:sender;
+- (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)deleteSelectedManifestsAction:sender;
 - (IBAction)deleteSelectedPackagesAction:sender;
 - (IBAction)enableAllPackagesForManifestAction:sender;

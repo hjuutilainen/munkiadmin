@@ -8,6 +8,7 @@
 #import "InstallerEnvironmentVariableMO.h"
 #import "ItemToCopyMO.h"
 #import "StringObjectMO.h"
+#import "MunkiAdmin_AppDelegate.h"
 
 @implementation PackageMO
 
@@ -51,6 +52,36 @@
 - (NSURL *)parentURL
 {
     return [self.packageInfoURL URLByDeletingLastPathComponent];
+}
+
+- (NSString *)relativePath
+{
+    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:[self.packageInfoURL pathComponents]];
+    
+    NSURL *repoURL = [[NSApp delegate] pkgsInfoURL];
+    NSArray *parentPathComponents = [NSArray arrayWithArray:[repoURL pathComponents]];
+    NSArray *childPathComponents = [NSArray arrayWithArray:[self.packageInfoURL pathComponents]];
+    
+    // Child URL must have more components than the parent
+    if ([childPathComponents count] < [parentPathComponents count]) {
+        return nil;
+    }
+    
+    [parentPathComponents enumerateObjectsUsingBlock:^(NSString *parentPathComponent, NSUInteger idx, BOOL *stop) {
+        if (idx < [childPathComponents count]) {
+            NSString *childPathComponent = [childPathComponents objectAtIndex:idx];
+            if ([childPathComponent isEqualToString:parentPathComponent]) {
+                [relativePathComponents removeObjectAtIndex:0];
+            } else {
+                *stop = YES;
+            }
+        } else {
+            *stop = YES;
+        }
+    }];
+    
+    NSString *childPath = [relativePathComponents componentsJoinedByString:@"/"];
+    return childPath;
 }
 
 - (NSUserDefaults *)defaults
