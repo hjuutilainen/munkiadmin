@@ -20,12 +20,14 @@ extern const struct InstallsItemMOAttributes {
 } InstallsItemMOAttributes;
 
 extern const struct InstallsItemMORelationships {
+	 NSString *customKeys;
 	 NSString *packages;
 } InstallsItemMORelationships;
 
 extern const struct InstallsItemMOFetchedProperties {
 } InstallsItemMOFetchedProperties;
 
+@class InstallsItemCustomKeyMO;
 @class PackageMO;
 
 
@@ -178,6 +180,13 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
+@property (nonatomic, retain) NSSet *customKeys;
+
+- (NSMutableSet*)customKeysSet;
+
+
+
+
 @property (nonatomic, retain) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
@@ -189,6 +198,11 @@ extern const struct InstallsItemMOFetchedProperties {
 @end
 
 @interface _InstallsItemMO (CoreDataGeneratedAccessors)
+
+- (void)addCustomKeys:(NSSet*)value_;
+- (void)removeCustomKeys:(NSSet*)value_;
+- (void)addCustomKeysObject:(InstallsItemCustomKeyMO*)value_;
+- (void)removeCustomKeysObject:(InstallsItemCustomKeyMO*)value_;
 
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
@@ -273,6 +287,11 @@ extern const struct InstallsItemMOFetchedProperties {
 - (void)setPrimitiveOriginalInstallsItem:(id)value;
 
 
+
+
+
+- (NSMutableSet*)primitiveCustomKeys;
+- (void)setPrimitiveCustomKeys:(NSMutableSet*)value;
 
 
 

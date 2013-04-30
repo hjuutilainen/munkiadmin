@@ -15,6 +15,11 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */; };
+		F506342C172FA43C00EF7728 /* InstallsItemEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342A172FA43C00EF7728 /* InstallsItemEditor.m */; };
+		F506342D172FA43C00EF7728 /* InstallsItemEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */; };
+		F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */; };
+		F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */; };
 		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
 		F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* GradientBackgroundView.m */; };
 		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
@@ -142,6 +147,15 @@
 		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5063425172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
+		F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
+		F5063429172FA43C00EF7728 /* InstallsItemEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstallsItemEditor.h; path = Views/InstallsItemEditor.h; sourceTree = "<group>"; };
+		F506342A172FA43C00EF7728 /* InstallsItemEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InstallsItemEditor.m; path = Views/InstallsItemEditor.m; sourceTree = "<group>"; };
+		F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InstallsItemEditor.xib; path = Views/InstallsItemEditor.xib; sourceTree = "<group>"; };
+		F506342E172FA97000EF7728 /* _InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
+		F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
+		F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
+		F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
 		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApplicationsArrayController.h; path = "NSArrayController Subclasses/ApplicationsArrayController.h"; sourceTree = "<group>"; };
 		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApplicationsArrayController.m; path = "NSArrayController Subclasses/ApplicationsArrayController.m"; sourceTree = "<group>"; };
 		F508522C11084C39001DAD73 /* GradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBackgroundView.h; sourceTree = "<group>"; };
@@ -480,6 +494,15 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */ = {
+			isa = PBXGroup;
+			children = (
+				F5063425172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.h */,
+				F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */,
+			);
+			path = RSVerticallyCenteredTextFieldCell;
+			sourceTree = "<group>";
+		};
 		F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,6 +522,8 @@
 				FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */,
 				265049FC172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.h */,
 				265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */,
+				F506342E172FA97000EF7728 /* _InstallsItemCustomKeyMO.h */,
+				F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */,
 				F5DFC8CB129546ED00B68F4F /* _InstallsItemMO.h */,
 				F5DFC8AF129546E900B68F4F /* _InstallsItemMO.m */,
 				F5DFC8CC129546ED00B68F4F /* _ItemToCopyMO.h */,
@@ -541,6 +566,8 @@
 				FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */,
 				265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */,
 				265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */,
+				F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */,
+				F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */,
 				F5DFC89B129546E600B68F4F /* InstallsItemMO.h */,
 				F5DFC87F129546E300B68F4F /* InstallsItemMO.m */,
 				F5DFC89C129546E600B68F4F /* ItemToCopyMO.h */,
@@ -574,6 +601,7 @@
 		FEABB23F144EB0D40006BDE8 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */,
 				FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */,
 				FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */,
 				FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */,
@@ -602,6 +630,9 @@
 				F5836983166C9147003E1442 /* PkginfoAssimilator.h */,
 				F5836984166C9147003E1442 /* PkginfoAssimilator.m */,
 				F5836985166C9147003E1442 /* PkginfoAssimilator.xib */,
+				F5063429172FA43C00EF7728 /* InstallsItemEditor.h */,
+				F506342A172FA43C00EF7728 /* InstallsItemEditor.m */,
+				F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -727,6 +758,7 @@
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
 				F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */,
+				F506342D172FA43C00EF7728 /* InstallsItemEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,6 +860,10 @@
 				F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */,
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,
+				F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */,
+				F506342C172FA43C00EF7728 /* InstallsItemEditor.m in Sources */,
+				F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */,
+				F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

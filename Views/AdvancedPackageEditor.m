@@ -8,9 +8,11 @@
 #import "AdvancedPackageEditor.h"
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
+#import "MunkiRepositoryManager.h"
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "PackageNameEditor.h"
+#import "InstallsItemEditor.h"
 
 #define kMinSplitViewWidth      300.0f
 
@@ -165,39 +167,50 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 	   didEndSelector:@selector(addUpdateForItemSheetDidEnd:returnCode:object:) contextInfo:nil];
 }
 
+- (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+{
+    [[self undoManager] endUndoGrouping];
+    if (returnCode == NSOKButton) return;
+    [[self undoManager] undo];
+}
+
+- (void)editInstallsItem
+{
+    InstallsItemMO *selected = [[self.installsItemsController selectedObjects] objectAtIndex:0];
+    SEL endSelector = @selector(installsItemEditorDidFinish:returnCode:object:);
+    [[self undoManager] beginUndoGrouping];
+    [InstallsItemEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:selected];
+}
+
 - (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict
 {
+    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
     InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-    newInstallsItem.munki_CFBundleIdentifier = [dict objectForKey:@"CFBundleIdentifier"];
-    newInstallsItem.munki_CFBundleName = [dict objectForKey:@"CFBundleName"];
-    newInstallsItem.munki_CFBundleShortVersionString = [dict objectForKey:@"CFBundleShortVersionString"];
-    newInstallsItem.munki_path = [dict objectForKey:@"path"];
-    newInstallsItem.munki_type = [dict objectForKey:@"type"];
-    newInstallsItem.munki_md5checksum = [dict objectForKey:@"md5checksum"];
-    newInstallsItem.munki_version_comparison_key = [dict objectForKey:@"version_comparison_key"];
-    newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:@"version_comparison_key_value"];
+    [repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        id value = [dict objectForKey:obj];
+        if (value != nil) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Installs item %@: %@", obj, value);
+            [newInstallsItem setValue:value forKey:key];
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Skipped nil value for key %@", key);
+        }
+    }];
     
-    /*
-     * The "version_comparison_key" requires some special attention
-     */
-    
-    // If the installs item has "version_comparison_key" defined, use it
-    if ([dict objectForKey:newInstallsItem.munki_version_comparison_key]) {
-        newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:newInstallsItem.munki_version_comparison_key];
-    }
-    // If the installs item has only "CFBundleShortVersionString" key defined,
-    // use it as a default version_comparison_key
-    else if ([dict objectForKey:@"CFBundleShortVersionString"]) {
-        NSString *versionComparisonKeyDefault = @"CFBundleShortVersionString";
-        newInstallsItem.munki_version_comparison_key = versionComparisonKeyDefault;
-        newInstallsItem.munki_version_comparison_key_value = [dict objectForKey:versionComparisonKeyDefault];
-    }
+    [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![[defaults arrayForKey:@"installsKeys"] containsObject:key]) {
+            if ([defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"Installs item custom key %@: %@", key, obj);
+            InstallsItemCustomKeyMO *customKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            customKey.customKeyName = key;
+            customKey.customKeyValue = obj;
+            customKey.installsItem = newInstallsItem;
+        }
+    }];
     
     // Save the original installs item dictionary so that we can compare to it later
     newInstallsItem.originalInstallsItem = (NSDictionary *)dict;
-    
-    [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
-    
+        
     return newInstallsItem;
 }
 
@@ -662,6 +675,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.installsItemsController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
+    [self.installsTableView setDoubleAction:@selector(editInstallsItem)];
     
     NSSortDescriptor *sortItemsToCopyByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortItemsToCopyBySource = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES selector:@selector(localizedStandardCompare:)];

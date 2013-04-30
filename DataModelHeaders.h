@@ -17,6 +17,7 @@
 #import "InstallerChoicesItemMO.h"
 #import "InstallerEnvironmentVariableMO.h"
 #import "InstallsItemMO.h"
+#import "InstallsItemCustomKeyMO.h"
 #import "ItemToCopyMO.h"
 #import "ManagedInstallMO.h"
 #import "ManagedUninstallMO.h"

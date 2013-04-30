@@ -2,6 +2,13 @@
 
 @implementation ReceiptMO
 
+- (NSImage *)iconImage
+{
+    NSWorkspace *wp = [NSWorkspace sharedWorkspace];
+    return [wp iconForFileType:@"pkg"];
+}
+
+
 - (NSDictionary *)dictValue
 {
 	NSString *title, *subtitle;

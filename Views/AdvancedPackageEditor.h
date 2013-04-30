@@ -9,6 +9,7 @@
 
 @class SelectPkginfoItemsWindow;
 @class PackageNameEditor;
+@class InstallsItemEditor;
 @class PackageMO;
 
 @interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {

@@ -41,4 +41,13 @@
 	return [super menuForEvent:theEvent];
 }
 
+
+- (void)textDidEndEditing:(NSNotification *)notification
+{
+    if ([[self delegate] respondsToSelector:@selector(tableViewDidEndAllEditing:)]) {
+        [[self delegate] performSelector:@selector(tableViewDidEndAllEditing:) withObject:self];
+    }
+    [super textDidEndEditing:notification];
+}
+
 @end

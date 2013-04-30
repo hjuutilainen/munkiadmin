@@ -19,6 +19,7 @@ const struct InstallsItemMOAttributes InstallsItemMOAttributes = {
 };
 
 const struct InstallsItemMORelationships InstallsItemMORelationships = {
+	.customKeys = @"customKeys",
 	.packages = @"packages",
 };
 
@@ -165,6 +166,19 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 
 
 
+
+@dynamic customKeys;
+
+	
+- (NSMutableSet*)customKeysSet {
+	[self willAccessValueForKey:@"customKeys"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"customKeys"];
+  
+	[self didAccessValueForKey:@"customKeys"];
+	return result;
+}
+	
 
 @dynamic packages;
 
