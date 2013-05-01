@@ -176,7 +176,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)editInstallsItem
 {
+    if ([[self.installsItemsController selectedObjects] count] == 0) {
+        return;
+    }
     InstallsItemMO *selected = [[self.installsItemsController selectedObjects] objectAtIndex:0];
+    if (!selected) {
+        return;
+    }
     SEL endSelector = @selector(installsItemEditorDidFinish:returnCode:object:);
     [[self undoManager] beginUndoGrouping];
     [InstallsItemEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:selected];
@@ -585,11 +591,74 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     return NSDragOperationNone;
 }
 
+-(void)toggleColumn:(id)sender
+{
+	NSTableColumn *col = [sender representedObject];
+	[col setHidden:![col isHidden]];
+}
+
+-(void)menuWillOpen:(NSMenu *)menu
+{
+	for (NSMenuItem *mi in menu.itemArray) {
+		NSTableColumn *col = [mi representedObject];
+		[mi setState:col.isHidden ? NSOffState : NSOnState];
+	}
+}
+
 - (void)configureTableViews
 {
+    /*
+     Create a contextual menu for customizing the installs item table columns
+     */
+    NSMenu *installsItemsHeaderMenu = [[NSMenu alloc] initWithTitle:@""];
+    NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *tableColumnsSorted = [self.installsTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
+    for (NSTableColumn *aColumn in tableColumnsSorted) {
+        NSString *menuItemTitle = [aColumn.headerCell stringValue];
+        if ([menuItemTitle isEqualToString:@""]) {
+            // Title is empty so this is the icon column
+            menuItemTitle = @"Icon";
+        }
+        NSMenuItem *newMenuItem = [[[NSMenuItem alloc] initWithTitle:menuItemTitle
+                                                              action:@selector(toggleColumn:)
+                                                       keyEquivalent:@""] autorelease];
+        newMenuItem.target = self;
+        newMenuItem.representedObject = aColumn;
+        [installsItemsHeaderMenu addItem:newMenuItem];
+    }
+    installsItemsHeaderMenu.delegate = self;
+    self.installsTableView.headerView.menu = installsItemsHeaderMenu;
+    [installsItemsHeaderMenu release];
+    
     [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
     [self.installsTableView setDelegate:self];
     [self.installsTableView setDataSource:self];
+    
+    
+    /*
+     Create a contextual menu for customizing the receipt items table columns
+     */
+    NSMenu *receiptsHeaderMenu = [[NSMenu alloc] initWithTitle:@""];
+    NSArray *receiptsTableColumnsSorted = [self.receiptsTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
+    for (NSTableColumn *aColumn in receiptsTableColumnsSorted) {
+        NSString *menuItemTitle = [aColumn.headerCell stringValue];
+        if ([menuItemTitle isEqualToString:@""]) {
+            // Title is empty so this is the icon column
+            menuItemTitle = @"Icon";
+        } else if ([menuItemTitle isEqualToString:@"Opt."]) {
+            // Optional check box column
+            menuItemTitle = @"Optional";
+        }
+        NSMenuItem *newMenuItem = [[[NSMenuItem alloc] initWithTitle:menuItemTitle
+                                                              action:@selector(toggleColumn:)
+                                                       keyEquivalent:@""] autorelease];
+        newMenuItem.target = self;
+        newMenuItem.representedObject = aColumn;
+        [receiptsHeaderMenu addItem:newMenuItem];
+    }
+    receiptsHeaderMenu.delegate = self;
+    self.receiptsTableView.headerView.menu = receiptsHeaderMenu;
+    [receiptsHeaderMenu release];
     
     [self.receiptsTableView setDelegate:self];
     [self.receiptsTableView setDataSource:self];
@@ -804,6 +873,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
 {
+    if ([splitView isVertical] == NO) {
+        return proposedMin;
+    }
     if (dividerIndex == 0) {
         return kMinSplitViewWidth;
     }
@@ -812,6 +884,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)dividerIndex
 {
+    if ([splitView isVertical] == NO) {
+        return proposedMax;
+    }
     if (dividerIndex == 0) {
         return [splitView frame].size.width - kMinSplitViewWidth;
     }

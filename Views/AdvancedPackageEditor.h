@@ -12,7 +12,7 @@
 @class InstallsItemEditor;
 @class PackageMO;
 
-@interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate> {
+@interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
     NSDatePicker *forceInstallDatePicker;
     NSTabView *mainTabView;
     NSTableView *installsTableView;
