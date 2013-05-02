@@ -169,9 +169,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    [[self undoManager] endUndoGrouping];
+    [[[[NSApp delegate] managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
-    [[self undoManager] undo];
+    [[[[NSApp delegate] managedObjectContext] undoManager] undoNestedGroup];
 }
 
 - (void)editInstallsItem
@@ -184,7 +184,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         return;
     }
     SEL endSelector = @selector(installsItemEditorDidFinish:returnCode:object:);
-    [[self undoManager] beginUndoGrouping];
+    [[[[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
     [InstallsItemEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:selected];
 }
 
