@@ -1437,7 +1437,7 @@ static dispatch_queue_t serialQueue;
         if ([isDirectory boolValue]) {
             // Check if a relative item exists in pkgs directory
             NSString *relative = [self relativePathToChildURL:theURL parentURL:pkginfoDirectory];
-            NSURL *pkgsSubURL = [installerItemsDirectory URLByAppendingPathComponent:relative isDirectory:YES];
+            NSURL *pkgsSubURL = [installerItemsDirectory URLByAppendingPathComponent:relative];
             if ([fileManager fileExistsAtPath:[pkgsSubURL path]]) {
                 identical = YES;
             } else {
