@@ -11,6 +11,7 @@
 @class CatalogMO;
 @class PackageMO;
 @class ManifestMO;
+@class InstallsItemMO;
 
 @interface MunkiRepositoryManager : NSObject {
     BOOL makepkginfoInstalled;
@@ -42,6 +43,11 @@
 
 + (MunkiRepositoryManager *)sharedManager;
 
+- (void)copyInstallerEnvironmentVariablesFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (void)copyInstallerChoicesFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (void)copyInstallsItemsFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (void)copyItemsToCopyItemsFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;
+
 - (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade;
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage;
 - (void)renamePackage:(PackageMO *)aPackage
@@ -52,9 +58,10 @@
 - (void)writeManifestPropertyListsToDisk;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
 
-- (CatalogMO *)createCatalogWithTitle:(NSString *)title;
-- (ManifestMO *)createManifestWithTitle:(NSString *)title;
-- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL;
+- (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (CatalogMO *)createCatalogWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (ManifestMO *)createManifestWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)assimilatePackage:(PackageMO *)targetPackage
             sourcePackage:(PackageMO *)sourcePackage
                      keys:(NSArray *)munkiKeys;

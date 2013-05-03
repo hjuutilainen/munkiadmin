@@ -188,44 +188,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [InstallsItemEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:selected];
 }
 
-- (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict
-{
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-    [repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        id value = [dict objectForKey:obj];
-        if (value != nil) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Installs item %@: %@", obj, value);
-            [newInstallsItem setValue:value forKey:key];
-        } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Skipped nil value for key %@", key);
-        }
-    }];
-    
-    [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (![[defaults arrayForKey:@"installsKeys"] containsObject:key]) {
-            if ([defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"Installs item custom key %@: %@", key, obj);
-            InstallsItemCustomKeyMO *customKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-            customKey.customKeyName = key;
-            customKey.customKeyValue = obj;
-            customKey.installsItem = newInstallsItem;
-        }
-    }];
-    
-    // Save the original installs item dictionary so that we can compare to it later
-    newInstallsItem.originalInstallsItem = (NSDictionary *)dict;
-        
-    return newInstallsItem;
-}
-
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
+    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-        InstallsItemMO *newInstallsItem = [self createInstallsItemFromDictionary:installsItemProps];
+        InstallsItemMO *newInstallsItem = [repoManager createInstallsItemFromDictionary:installsItemProps inManagedObjectContext:moc];
         [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
 	} else {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
@@ -416,10 +386,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSResponder *firstResponder;
     firstResponder = [[self window] firstResponder];
     
+    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
+    
     // Create new objects based on the destination and pasteboard contents
     if (firstResponder == self.installsTableView) {
         for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:installsPboardType]) {
-            InstallsItemMO *newInstallsItem = [self createInstallsItemFromDictionary:item];
+            InstallsItemMO *newInstallsItem = [repoManager createInstallsItemFromDictionary:item inManagedObjectContext:mainMoc];
             [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
         }
     } else if (firstResponder == self.receiptsTableView) {

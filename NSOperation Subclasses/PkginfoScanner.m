@@ -230,31 +230,9 @@
 			// =================================
 			NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
 			[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
-				InstallsItemMO *aNewInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
-				[aNewInstallsItem addPackagesObject:aNewPackage];
+                InstallsItemMO *aNewInstallsItem = [repoManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
+                [aNewInstallsItem addPackagesObject:aNewPackage];
                 aNewInstallsItem.originalIndexValue = idx;
-				[repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-					id value = [anInstall objectForKey:obj];
-					if (value != nil) {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
-						[aNewInstallsItem setValue:value forKey:key];
-					} else {
-						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, key);
-					}
-				}];
-                
-                [(NSDictionary *)anInstall enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                    if (![[self.defaults arrayForKey:@"installsKeys"] containsObject:key]) {
-                        if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installs item %lu --> custom key %@: %@", self.fileName, (unsigned long)idx, key, obj);
-                        InstallsItemCustomKeyMO *customKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc];
-                        customKey.customKeyName = key;
-                        customKey.customKeyValue = obj;
-                        customKey.installsItem = aNewInstallsItem;
-                    }
-                }];
-                
-                // Save the original installs item dictionary so that we can compare to it later
-                aNewInstallsItem.originalInstallsItem = (NSDictionary *)anInstall;
 			}];
 			
 			// =================================

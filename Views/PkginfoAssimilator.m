@@ -9,6 +9,7 @@
 #import "PkginfoAssimilator.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
+#import "MunkiRepositoryManager.h"
 
 @interface PkginfoAssimilator () {
     
@@ -169,6 +170,7 @@
     }
     
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
         
     // Blocking applications
     if (self.assimilate_blocking_applications) {
@@ -212,42 +214,17 @@
     
     // Installs
     if (self.assimilate_installs_items) {
-        for (InstallsItemMO *installsItem in self.sourcePkginfo.installsItems) {
-            InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
-            newInstallsItem.munki_CFBundleIdentifier = installsItem.munki_CFBundleIdentifier;
-            newInstallsItem.munki_CFBundleName = installsItem.munki_CFBundleName;
-            newInstallsItem.munki_CFBundleShortVersionString = installsItem.munki_CFBundleShortVersionString;
-            newInstallsItem.munki_md5checksum = installsItem.munki_md5checksum;
-            newInstallsItem.munki_minosversion = installsItem.munki_minosversion;
-            newInstallsItem.munki_path = installsItem.munki_path;
-            newInstallsItem.munki_type = installsItem.munki_type;
-            [self.targetPkginfo addInstallsItemsObject:newInstallsItem];
-        }
+        [repoManager copyInstallsItemsFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
     
     // Installer choices XML
     if (self.assimilate_installer_choices_xml) {
-        for (InstallerChoicesItemMO *installerChoicesItem in self.sourcePkginfo.installerChoicesItems) {
-            InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
-            newInstallerChoicesItem.munki_attributeSetting = installerChoicesItem.munki_attributeSetting;
-            newInstallerChoicesItem.munki_choiceAttribute = installerChoicesItem.munki_choiceAttribute;
-            newInstallerChoicesItem.munki_choiceIdentifier = installerChoicesItem.munki_choiceIdentifier;
-            [self.targetPkginfo addInstallerChoicesItemsObject:newInstallerChoicesItem];
-        }
+        [repoManager copyInstallerChoicesFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
     
     // Items to copy
     if (self.assimilate_items_to_copy) {
-        for (ItemToCopyMO *itemToCopy in self.sourcePkginfo.itemsToCopy) {
-            ItemToCopyMO *newItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
-            newItemToCopy.munki_destination_item = itemToCopy.munki_destination_item;
-            newItemToCopy.munki_destination_path = itemToCopy.munki_destination_path;
-            newItemToCopy.munki_group = itemToCopy.munki_group;
-            newItemToCopy.munki_mode = itemToCopy.munki_mode;
-            newItemToCopy.munki_source_item = itemToCopy.munki_source_item;
-            newItemToCopy.munki_user = itemToCopy.munki_user;
-            [self.targetPkginfo addItemsToCopyObject:newItemToCopy];
-        }
+        [repoManager copyItemsToCopyItemsFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
 }
 

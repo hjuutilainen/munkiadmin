@@ -805,7 +805,7 @@
         return;
     }
     
-    ManifestMO *newManifest = [[MunkiRepositoryManager sharedManager] createManifestWithURL:newURL];
+    ManifestMO *newManifest = [[MunkiRepositoryManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:nil];
     
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
@@ -939,7 +939,7 @@
     NSInteger result = [alert runModal];
     if (result == NSAlertFirstButtonReturn) {
         
-        [[MunkiRepositoryManager sharedManager] createCatalogWithTitle:[textField stringValue]];
+        [[MunkiRepositoryManager sharedManager] createCatalogWithTitle:[textField stringValue] inManagedObjectContext:self.managedObjectContext];
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
         
@@ -1142,26 +1142,6 @@
     }
 }
 
-- (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
-{
-	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
-	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
-	if (installsItemProps != nil) {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-		for (PackageMO *aPackage in selectedPackages) {
-			InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:self.managedObjectContext];
-			newInstallsItem.munki_CFBundleIdentifier = [installsItemProps objectForKey:@"CFBundleIdentifier"];
-			newInstallsItem.munki_CFBundleName = [installsItemProps objectForKey:@"CFBundleName"];
-			newInstallsItem.munki_CFBundleShortVersionString = [installsItemProps objectForKey:@"CFBundleShortVersionString"];
-			newInstallsItem.munki_path = [installsItemProps objectForKey:@"path"];
-			newInstallsItem.munki_type = [installsItemProps objectForKey:@"type"];
-			newInstallsItem.munki_md5checksum = [installsItemProps objectForKey:@"md5checksum"];
-			[aPackage addInstallsItemsObject:newInstallsItem];
-		}
-	} else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
-	}
-}
 
 - (void)scannerDidProcessPkginfo
 {

@@ -141,9 +141,8 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (void)copyInstallerEnvironmentVariablesFrom:(PackageMO *)source target:(PackageMO *)target
+- (void)copyInstallerEnvironmentVariablesFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     for (InstallerEnvironmentVariableMO *installerEnvironmentItem in source.installerEnvironmentVariables) {
         InstallerEnvironmentVariableMO *newInstallerEnvironmentItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
         newInstallerEnvironmentItem.munki_installer_environment_key = installerEnvironmentItem.munki_installer_environment_key;
@@ -152,53 +151,64 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (void)copyInstallerChoicesFrom:(PackageMO *)source target:(PackageMO *)target
+- (void)copyInstallerChoicesFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     for (InstallerChoicesItemMO *installerChoicesItem in source.installerChoicesItems) {
         InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
-        newInstallerChoicesItem.munki_attributeSetting = installerChoicesItem.munki_attributeSetting;
-        newInstallerChoicesItem.munki_choiceAttribute = installerChoicesItem.munki_choiceAttribute;
-        newInstallerChoicesItem.munki_choiceIdentifier = installerChoicesItem.munki_choiceIdentifier;
+        [self.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            id value = [installerChoicesItem valueForKey:key];
+            if (value != nil) {
+                [newInstallerChoicesItem setValue:value forKey:key];
+            }
+        }];
         [target addInstallerChoicesItemsObject:newInstallerChoicesItem];
     }
 }
 
-- (void)copyInstallsItemsFrom:(PackageMO *)source target:(PackageMO *)target
+- (void)copyInstallsItemsFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     for (InstallsItemMO *installsItem in source.installsItems) {
         InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
-        newInstallsItem.munki_CFBundleIdentifier = installsItem.munki_CFBundleIdentifier;
-        newInstallsItem.munki_CFBundleName = installsItem.munki_CFBundleName;
-        newInstallsItem.munki_CFBundleShortVersionString = installsItem.munki_CFBundleShortVersionString;
-        newInstallsItem.munki_version_comparison_key = installsItem.munki_version_comparison_key;
-        newInstallsItem.munki_version_comparison_key_value = installsItem.munki_version_comparison_key_value;
-        newInstallsItem.munki_md5checksum = installsItem.munki_md5checksum;
-        newInstallsItem.munki_minosversion = installsItem.munki_minosversion;
-        newInstallsItem.munki_path = installsItem.munki_path;
-        newInstallsItem.munki_type = installsItem.munki_type;
+        [self.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            id value = [installsItem valueForKey:key];
+            if (value != nil) {
+                [newInstallsItem setValue:value forKey:key];
+            }
+        }];
+        
         [target addInstallsItemsObject:newInstallsItem];
+        
+        [installsItem.customKeys enumerateObjectsWithOptions:0 usingBlock:^(InstallsItemCustomKeyMO *obj, BOOL *stop) {
+            InstallsItemCustomKeyMO *newCustomKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc];
+            newCustomKey.customKeyName = obj.customKeyName;
+            newCustomKey.customKeyValue = obj.customKeyValue;
+            newCustomKey.installsItem = newInstallsItem;
+        }];
+        
+        /*
+         Save the original installs item dictionary so that we can compare to it later
+         */
+        newInstallsItem.originalInstallsItem = installsItem.originalInstallsItem;
     }
 }
 
-- (void)copyItemsToCopyItemsFrom:(PackageMO *)source target:(PackageMO *)target
+- (void)copyItemsToCopyItemsFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     for (ItemToCopyMO *itemsToCopyItem in source.itemsToCopy) {
         ItemToCopyMO *newItemsToCopyItem = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
-        newItemsToCopyItem.munki_destination_item = itemsToCopyItem.munki_destination_item;
-        newItemsToCopyItem.munki_destination_path = itemsToCopyItem.munki_destination_path;
-        newItemsToCopyItem.munki_group = itemsToCopyItem.munki_group;
-        newItemsToCopyItem.munki_mode = itemsToCopyItem.munki_mode;
-        newItemsToCopyItem.munki_source_item = itemsToCopyItem.munki_source_item;
-        newItemsToCopyItem.munki_user = itemsToCopyItem.munki_user;
+        [self.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            id value = [itemsToCopyItem valueForKey:key];
+            if (value != nil) {
+                [newItemsToCopyItem setValue:value forKey:key];
+            }
+        }];
         [target addItemsToCopyObject:newItemsToCopyItem];
     }
 }
 
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
+    NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
     NSArray *arrayKeys = [NSArray arrayWithObjects:
                           @"blocking_applications",
                           @"installer_choices_xml",
@@ -225,13 +235,13 @@ static dispatch_queue_t serialQueue;
                 [self copyStringObjectsOfType:keyName from:sourcePackage target:targetPackage];
             }
             else if ([keyName isEqualToString:@"installer_choices_xml"]) {
-                [self copyInstallerChoicesFrom:sourcePackage target:targetPackage];
+                [self copyInstallerChoicesFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
             }
             else if ([keyName isEqualToString:@"installs_items"]) {
-                [self copyInstallsItemsFrom:sourcePackage target:targetPackage];
+                [self copyInstallsItemsFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
             }
             else if ([keyName isEqualToString:@"installer_environment"]) {
-                [self copyInstallerEnvironmentVariablesFrom:sourcePackage target:targetPackage];
+                [self copyInstallerEnvironmentVariablesFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
             }
         }
     }
@@ -846,13 +856,63 @@ static dispatch_queue_t serialQueue;
 # pragma mark -
 # pragma mark Creating new items
 
-- (CatalogMO *)createCatalogWithTitle:(NSString *)title
+- (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    if (title == nil) {
+    if ((dict == nil) || (moc == nil)) {
         return nil;
     }
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    /*
+     Create the initial item
+     */
+    InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
+    
+    /*
+     Get the supported keys from NSUserDefaults and set object properties
+     */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [self.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        id value = [dict objectForKey:obj];
+        if (value != nil) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"])
+                NSLog(@"Setting installs item key \"%@\" to \"%@\"", obj, value);
+            [newInstallsItem setValue:value forKey:key];
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Skipped nil value for key %@", key);
+        }
+    }];
+    
+    /*
+     Loop over the keys we didn't recognize previously and create custom objects out of them
+     These can be user defined keys that are usable with the version_comparison_key
+     */
+    [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![[defaults arrayForKey:@"installsKeys"] containsObject:key]) {
+            if ([defaults boolForKey:@"debugLogAllProperties"])
+                NSLog(@"Setting installs item custom key \"%@\" to \"%@\"", key, obj);
+            if (key && obj) {
+                InstallsItemCustomKeyMO *customKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc];
+                customKey.customKeyName = key;
+                customKey.customKeyValue = obj;
+                customKey.installsItem = newInstallsItem;
+            }
+        }
+    }];
+    
+    /*
+     Save the original installs item dictionary so that we can compare to it later
+     */
+    newInstallsItem.originalInstallsItem = (NSDictionary *)dict;
+    
+    return newInstallsItem;
+}
+
+- (CatalogMO *)createCatalogWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if ((title == nil) || (moc == nil)) {
+        return nil;
+    }
+    
     CatalogMO *catalog;
     catalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
     catalog.title = title;
@@ -882,13 +942,12 @@ static dispatch_queue_t serialQueue;
     return catalog;
 }
 
-- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL
+- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    if (fileURL == nil) {
+    if ((fileURL == nil) || (moc == nil)) {
         return nil;
     }
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
     
     // Manifest name should be the relative path from manifests subdirectory
@@ -909,13 +968,12 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (ManifestMO *)createManifestWithTitle:(NSString *)title
+- (ManifestMO *)createManifestWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    if (title == nil) {
+    if ((title == nil) || (moc == nil)) {
         return nil;
     }
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
     newManifest.title = title;
     newManifest.manifestURL = (NSURL *)[[[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
