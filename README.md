@@ -22,7 +22,7 @@ You can continue to use your favorite text editor to edit pkginfo files and mani
 
 ### Download a pre-built version:
 
-Latest version is [MunkiAdmin 0.2.11](https://s3.amazonaws.com/munkiadmin-downloads/public/MunkiAdmin-0.2.11.dmg). You might also want to visit the [Release Notes wiki page](https://github.com/hjuutilainen/munkiadmin/wiki/Release-Notes)
+Latest version is [MunkiAdmin 0.2.12](https://s3.amazonaws.com/munkiadmin-downloads/public/MunkiAdmin-0.2.12.dmg). You might also want to visit the [Release Notes wiki page](https://github.com/hjuutilainen/munkiadmin/wiki/Release-Notes)
 
 MunkiAdmin requires:
 
