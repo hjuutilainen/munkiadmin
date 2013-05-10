@@ -42,8 +42,9 @@
 - (void)drawInteriorWithFrame:(NSRect)theCellFrame inView:(NSView *)theControlView
 {
     if ([[self objectValue] isKindOfClass:[NSDictionary class]]) {
+        
         // Inset the cell frame to give everything a little horizontal padding
-        NSRect		anInsetRect = NSInsetRect(theCellFrame,10,0);
+        NSRect		anInsetRect = NSInsetRect(theCellFrame, 6, 0);
         
         // Make the icon
         NSImage *anIcon = [[self objectValue] valueForKey:@"icon"];
@@ -52,13 +53,13 @@
         [anIcon setFlipped:YES];
         
         // get the size of the icon for layout
-        NSSize anIconSize = NSMakeSize(32, 32);
+        NSSize anIconSize; // = NSMakeSize(32, 32);
         if (anInsetRect.size.height <= 20) {
             anIconSize = NSMakeSize(16, 16);
             [aTitleAttributes setValue:[NSFont systemFontOfSize:11] forKey:NSFontAttributeName];
         } else if (anInsetRect.size.height <= 24) {
-            anIconSize = NSMakeSize(22, 22);
-            [aTitleAttributes setValue:[NSFont systemFontOfSize:12] forKey:NSFontAttributeName];
+            anIconSize = NSMakeSize(19, 19);
+            [aTitleAttributes setValue:[NSFont systemFontOfSize:13] forKey:NSFontAttributeName];
         } else if (anInsetRect.size.height <= 34) {
             anIconSize = NSMakeSize(32, 32);
             [aTitleAttributes setValue:[NSFont systemFontOfSize:13] forKey:NSFontAttributeName];
@@ -78,7 +79,7 @@
         //float		aVerticalPadding = 2.0;
         
         // Horizontal padding between icon and text
-        float		aHorizontalPadding = 5.0;
+        float		aHorizontalPadding = 6.0;
         
         // Icon box: center the icon vertically inside of the inset rect
         
