@@ -2074,6 +2074,14 @@
     }
     [groupItemRequest release];
     
+    DirectoryMO *basePkgsInfoDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    basePkgsInfoDirectory.originalURL = self.pkgsInfoURL;
+    basePkgsInfoDirectory.title = @"pkgsinfo";
+    basePkgsInfoDirectory.type = @"regular";
+    basePkgsInfoDirectory.parent = directoriesGroupItem;
+    basePkgsInfoDirectory.originalIndexValue = 10;
+
+    
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
         
@@ -2098,7 +2106,7 @@
                 newDirectory.title = newTitle;
                 NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
                 if ([parentDirectory isEqual:self.pkgsInfoURL]) {
-                    newDirectory.parent = directoriesGroupItem;
+                    newDirectory.parent = basePkgsInfoDirectory;
                 } else {
                     NSFetchRequest *parentRequest = [[NSFetchRequest alloc] init];
                     [parentRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
