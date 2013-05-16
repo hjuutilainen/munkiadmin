@@ -63,6 +63,7 @@
 		F5CD0AD215EC981500BBC11F /* saveTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */; };
 		F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */; };
 		F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */; };
+		F5D052541744B36400487101 /* MACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D052531744B36400487101 /* MACoreDataManager.m */; };
 		F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC877129546E200B68F4F /* ApplicationMO.m */; };
 		F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */; };
 		F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */; };
@@ -201,8 +202,8 @@
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
-		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
-		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
+		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiRepositoryManager.h; path = Singletons/MunkiRepositoryManager.h; sourceTree = "<group>"; };
+		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiRepositoryManager.m; path = Singletons/MunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModelHeaders.h; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PkginfoAssimilator.h; path = Views/PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoAssimilator.m; path = Views/PkginfoAssimilator.m; sourceTree = "<group>"; };
@@ -218,6 +219,8 @@
 		F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = saveTemplate.pdf; path = Graphics/saveTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = makecatalogsTemplate.pdf; path = Graphics/makecatalogsTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = reloadTemplate.pdf; path = Graphics/reloadTemplate.pdf; sourceTree = "<group>"; };
+		F5D052521744B36400487101 /* MACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MACoreDataManager.h; path = Singletons/MACoreDataManager.h; sourceTree = "<group>"; };
+		F5D052531744B36400487101 /* MACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MACoreDataManager.m; path = Singletons/MACoreDataManager.m; sourceTree = "<group>"; };
 		F5DFC877129546E200B68F4F /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
 		F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
 		F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
@@ -352,41 +355,40 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FEB749F7147F98F3004EC366 /* Operations */,
-				F564873711B503830061B190 /* PreferencesController.h */,
-				F564873811B503830061B190 /* PreferencesController.m */,
-				F5299AD710FB78620074CFEA /* MyCell.h */,
-				F5299AD810FB78620074CFEA /* MyCell.m */,
-				77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */,
-				77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */,
-				F5299A5810FB6AB00074CFEA /* PackageArrayController.h */,
-				F5299A5910FB6AB00074CFEA /* PackageArrayController.m */,
-				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
-				F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */,
-				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
-				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
-				F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */,
-				F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */,
+				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
+				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
 				F508094D1105900E0058C7AC /* ApplicationsArrayController.h */,
 				F508094E1105900E0058C7AC /* ApplicationsArrayController.m */,
+				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
+				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
+				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
+				F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */,
+				F56AC7A4166F307300FD5438 /* DataModelHeaders.h */,
 				F508522C11084C39001DAD73 /* GradientBackgroundView.h */,
 				F508522D11084C39001DAD73 /* GradientBackgroundView.m */,
 				F59B724613698044008229E8 /* GradientButtonBarView.h */,
 				F59B724713698044008229E8 /* GradientButtonBarView.m */,
-				F508526C11085A5A001DAD73 /* ManifestsArrayController.h */,
-				F508526D11085A5A001DAD73 /* ManifestsArrayController.m */,
-				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
-				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
+				FEF434DE14FCAF9E005AFF2F /* MAFileSizeFormatter.h */,
+				FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */,
 				F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */,
 				F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */,
 				F50AC6E212BA04360069EB00 /* ManifestItemTableView.h */,
 				F50AC6E312BA04360069EB00 /* ManifestItemTableView.m */,
+				F508526C11085A5A001DAD73 /* ManifestsArrayController.h */,
+				F508526D11085A5A001DAD73 /* ManifestsArrayController.m */,
+				77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */,
+				77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */,
+				F5299AD710FB78620074CFEA /* MyCell.h */,
+				F5299AD810FB78620074CFEA /* MyCell.m */,
+				FEB749F7147F98F3004EC366 /* Operations */,
+				F5299A5810FB6AB00074CFEA /* PackageArrayController.h */,
+				F5299A5910FB6AB00074CFEA /* PackageArrayController.m */,
+				F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */,
+				F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */,
+				F564873711B503830061B190 /* PreferencesController.h */,
+				F564873811B503830061B190 /* PreferencesController.m */,
+				F5D052551744B40F00487101 /* Singletons */,
 				FEABB23F144EB0D40006BDE8 /* View Controllers */,
-				FEF434DE14FCAF9E005AFF2F /* MAFileSizeFormatter.h */,
-				FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */,
-				F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */,
-				F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */,
-				F56AC7A4166F307300FD5438 /* DataModelHeaders.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -596,6 +598,17 @@
 				F5DFC895129546E500B68F4F /* StringObjectMO.m */,
 			);
 			path = MunkiAdmin_DataModel;
+			sourceTree = "<group>";
+		};
+		F5D052551744B40F00487101 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */,
+				F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */,
+				F5D052521744B36400487101 /* MACoreDataManager.h */,
+				F5D052531744B36400487101 /* MACoreDataManager.m */,
+			);
+			name = Singletons;
 			sourceTree = "<group>";
 		};
 		FEABB23F144EB0D40006BDE8 /* View Controllers */ = {
@@ -864,6 +877,7 @@
 				F506342C172FA43C00EF7728 /* InstallsItemEditor.m in Sources */,
 				F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */,
 				F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */,
+				F5D052541744B36400487101 /* MACoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
