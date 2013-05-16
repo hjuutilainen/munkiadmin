@@ -20,6 +20,7 @@
 #import "PackagesView.h"
 #import "PkginfoAssimilator.h"
 #import "MunkiRepositoryManager.h"
+#import "MACoreDataManager.h"
 
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
@@ -2057,6 +2058,8 @@
 
 - (void)configureSourceListDirectoriesSection
 {
+    MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
+    
     PackageSourceListItemMO *directoriesGroupItem = nil;
     NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
     [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext]];
@@ -2074,8 +2077,7 @@
     }
     [groupItemRequest release];
     
-    DirectoryMO *basePkgsInfoDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    basePkgsInfoDirectory.originalURL = self.pkgsInfoURL;
+    DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:self.pkgsInfoURL managedObjectContext:self.managedObjectContext];
     basePkgsInfoDirectory.title = @"pkgsinfo";
     basePkgsInfoDirectory.type = @"regular";
     basePkgsInfoDirectory.parent = directoriesGroupItem;
@@ -2142,7 +2144,6 @@
     newSourceListItem2.isGroupItemValue = YES;
     
     DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    newDirectory.originalURL = self.pkgsInfoURL;
     newDirectory.title = @"All Packages";
     newDirectory.type = @"smart";
     newDirectory.parent = newSourceListItem2;

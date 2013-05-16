@@ -7,6 +7,7 @@
 
 #import "RelationshipScanner.h"
 #import "DataModelHeaders.h"
+#import "MACoreDataManager.h"
 
 @implementation RelationshipScanner
 
@@ -270,23 +271,17 @@
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
     [getAllCatalogs release];
     
-    // Link to DirectoryMO object
-    NSFetchRequest *getAllDirectories = [[NSFetchRequest alloc] init];
-    [getAllDirectories setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-    NSArray *allDirectories = [moc executeFetchRequest:getAllDirectories error:nil];
-    [getAllDirectories release];
     
-    
-    DirectoryMO *basePkginfoDirectory;
+    DirectoryMO *allPackagesSmartDirectory;
     NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
     [fetchBaseDirectory setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
     NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"All Packages"];
     [fetchBaseDirectory setPredicate:parentPredicate];
     NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
     if (foundItems > 0) {
-        basePkginfoDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
+        allPackagesSmartDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
     } else {
-        basePkginfoDirectory = nil;
+        allPackagesSmartDirectory = nil;
     }
     [fetchBaseDirectory release];
     
@@ -313,10 +308,9 @@
         [request release];
         */
         
-        NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [currentPackage.packageInfoURL URLByDeletingLastPathComponent]];
-        DirectoryMO *aDir = [[allDirectories filteredArrayUsingPredicate:parentPredicate] objectAtIndex:0];
+        DirectoryMO *aDir = [[MACoreDataManager sharedManager] directoryWithURL:[currentPackage.packageInfoURL URLByDeletingLastPathComponent] managedObjectContext:moc];
         [currentPackage addSourceListItemsObject:aDir];
-        [currentPackage addSourceListItemsObject:basePkginfoDirectory];
+        [currentPackage addSourceListItemsObject:allPackagesSmartDirectory];
 
         // Loop through the catalog objects we already know about
 
