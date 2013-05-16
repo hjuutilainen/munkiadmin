@@ -13,6 +13,7 @@
 #import "SelectPkginfoItemsWindow.h"
 #import "PackageNameEditor.h"
 #import "InstallsItemEditor.h"
+#import "MACoreDataManager.h"
 
 #define kMinSplitViewWidth      300.0f
 
@@ -190,12 +191,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
-        InstallsItemMO *newInstallsItem = [repoManager createInstallsItemFromDictionary:installsItemProps inManagedObjectContext:moc];
+        InstallsItemMO *newInstallsItem = [[MACoreDataManager sharedManager] createInstallsItemFromDictionary:installsItemProps inManagedObjectContext:moc];
         [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
 	} else {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
@@ -386,13 +386,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSResponder *firstResponder;
     firstResponder = [[self window] firstResponder];
     
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
     NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
     
     // Create new objects based on the destination and pasteboard contents
     if (firstResponder == self.installsTableView) {
         for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:installsPboardType]) {
-            InstallsItemMO *newInstallsItem = [repoManager createInstallsItemFromDictionary:item inManagedObjectContext:mainMoc];
+            InstallsItemMO *newInstallsItem = [coreDataManager createInstallsItemFromDictionary:item inManagedObjectContext:mainMoc];
             [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
         }
     } else if (firstResponder == self.receiptsTableView) {

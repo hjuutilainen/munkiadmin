@@ -806,7 +806,7 @@
         return;
     }
     
-    ManifestMO *newManifest = [[MunkiRepositoryManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
+    ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:nil];
     
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
@@ -940,7 +940,7 @@
     NSInteger result = [alert runModal];
     if (result == NSAlertFirstButtonReturn) {
         
-        [[MunkiRepositoryManager sharedManager] createCatalogWithTitle:[textField stringValue] inManagedObjectContext:self.managedObjectContext];
+        [[MACoreDataManager sharedManager] createCatalogWithTitle:[textField stringValue] inManagedObjectContext:self.managedObjectContext];
 		
     } else if ( result == NSAlertSecondButtonReturn ) {
         

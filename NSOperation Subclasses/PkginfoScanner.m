@@ -9,6 +9,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 #import "MunkiRepositoryManager.h"
+#import "MACoreDataManager.h"
 
 
 @implementation PkginfoScanner
@@ -83,6 +84,7 @@
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
         
 		MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+        MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
         
 		NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
         [moc setUndoManager:nil];
@@ -230,7 +232,7 @@
 			// =================================
 			NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
 			[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
-                InstallsItemMO *aNewInstallsItem = [repoManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
+                InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
                 [aNewInstallsItem addPackagesObject:aNewPackage];
                 aNewInstallsItem.originalIndexValue = idx;
 			}];

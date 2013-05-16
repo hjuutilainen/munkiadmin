@@ -58,10 +58,6 @@
 - (void)writeManifestPropertyListsToDisk;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
 
-- (InstallsItemMO *)createInstallsItemFromDictionary:(NSDictionary *)dict inManagedObjectContext:(NSManagedObjectContext *)moc;
-- (CatalogMO *)createCatalogWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
-- (ManifestMO *)createManifestWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
-- (ManifestMO *)createManifestWithURL:(NSURL *)fileURL inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (void)assimilatePackage:(PackageMO *)targetPackage
             sourcePackage:(PackageMO *)sourcePackage
                      keys:(NSArray *)munkiKeys;
