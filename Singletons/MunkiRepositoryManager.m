@@ -1468,13 +1468,18 @@ static dispatch_queue_t serialQueue;
         if (error) {
             NSUInteger errorCode = 1;
             NSString *description;
+            NSString *recoverySuggestion;
             if ([isPackage boolValue]) {
-                description = NSLocalizedString(@"Bundle file packages are not supported. MunkiAdmin only supports regular files.", @"");
+                description = NSLocalizedString(@"File type not supported", @"");
+                recoverySuggestion = NSLocalizedString(@"Bundle file packages are not supported. MunkiAdmin only supports regular files.", @"");
             } else {
-                description = NSLocalizedString(@"File type not supported. MunkiAdmin only supports regular files.", @"");
+                description = NSLocalizedString(@"File type not supported", @"");
+                recoverySuggestion = NSLocalizedString(@"MunkiAdmin only supports regular files.", @"");
             }
+            
             NSDictionary *errorDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                              description, NSLocalizedDescriptionKey,
+                                             recoverySuggestion, NSLocalizedRecoverySuggestionErrorKey,
                                              nil];
             *error = [[[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
                                                  code:errorCode
