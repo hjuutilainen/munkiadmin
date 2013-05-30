@@ -66,5 +66,6 @@
 - (NSSet *)modifiedManifestsSinceLastSave;
 - (NSSet *)modifiedPackagesSinceLastSave;
 - (void)updateMunkiVersions;
+- (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error;
 
 @end

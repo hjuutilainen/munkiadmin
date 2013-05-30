@@ -284,6 +284,7 @@
 - (NSArray *)chooseFilesForMakepkginfo
 {
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    openPanel.delegate = self;
 	openPanel.title = @"Select a File";
 	openPanel.allowsMultipleSelection = YES;
 	openPanel.canChooseDirectories = NO;
@@ -298,6 +299,15 @@
 	} else {
 		return nil;
 	}
+}
+
+- (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
+{
+    if ([[MunkiRepositoryManager sharedManager] canImportURL:url error:outError]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (NSURL *)showSavePanelForCopyOperation:(NSString *)fileName

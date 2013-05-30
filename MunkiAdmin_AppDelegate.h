@@ -26,7 +26,7 @@
 @class PkginfoAssimilator;
 
 
-@interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate>
+@interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
 	// ------------------
 	// IBOutlet variables

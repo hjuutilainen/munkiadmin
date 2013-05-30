@@ -1450,6 +1450,27 @@ static dispatch_queue_t serialQueue;
 }
 
 
+- (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error
+{
+    NSArray *keys = [NSArray arrayWithObjects:NSURLIsPackageKey, NSURLIsDirectoryKey, nil];
+    NSDictionary *properties = [fileURL resourceValuesForKeys:keys error:nil];
+    
+    NSNumber *isPackage = [properties objectForKey:NSURLIsDirectoryKey];
+    if ([isPackage boolValue]) {
+        if (error) {
+            NSUInteger errorCode = 1;
+            NSString *description = NSLocalizedString(@"File type not supported", @"");
+            NSDictionary *errorDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             description, NSLocalizedDescriptionKey, nil];
+            *error = [[[NSError alloc] initWithDomain:@"my domain" code:errorCode userInfo:errorDictionary] autorelease];
+        }
+        return NO;
+    }
+    
+    return YES;
+}
+
+
 - (void)setupMappings
 {
 	/*
