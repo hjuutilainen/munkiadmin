@@ -1452,21 +1452,36 @@ static dispatch_queue_t serialQueue;
 
 - (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error
 {
-    NSArray *keys = [NSArray arrayWithObjects:NSURLIsPackageKey, NSURLIsDirectoryKey, nil];
+    /*
+     Get some file properties
+     */
+    NSArray *keys = [NSArray arrayWithObjects:NSURLIsPackageKey, NSURLIsDirectoryKey, NSURLIsRegularFileKey, nil];
     NSDictionary *properties = [fileURL resourceValuesForKeys:keys error:nil];
     
-    NSNumber *isPackage = [properties objectForKey:NSURLIsDirectoryKey];
-    if ([isPackage boolValue]) {
+    NSNumber *isPackage = [properties objectForKey:NSURLIsPackageKey];
+    NSNumber *isRegularFile = [properties objectForKey:NSURLIsRegularFileKey];
+    
+    /*
+     Do a very simple check and fail if the item isn't a regular file
+     */
+    if (![isRegularFile boolValue]) {
         if (error) {
             NSUInteger errorCode = 1;
-            NSString *description = NSLocalizedString(@"File type not supported", @"");
+            NSString *description;
+            if ([isPackage boolValue]) {
+                description = NSLocalizedString(@"Bundle file packages are not supported. MunkiAdmin only supports regular files.", @"");
+            } else {
+                description = NSLocalizedString(@"File type not supported. MunkiAdmin only supports regular files.", @"");
+            }
             NSDictionary *errorDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                             description, NSLocalizedDescriptionKey, nil];
-            *error = [[[NSError alloc] initWithDomain:@"my domain" code:errorCode userInfo:errorDictionary] autorelease];
+                                             description, NSLocalizedDescriptionKey,
+                                             nil];
+            *error = [[[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
+                                                 code:errorCode
+                                             userInfo:errorDictionary] autorelease];
         }
         return NO;
     }
-    
     return YES;
 }
 
