@@ -86,7 +86,9 @@
 {
 	NSTask *makepkginfoTask = [[[NSTask alloc] init] autorelease];
 	NSPipe *makepkginfoPipe = [NSPipe pipe];
+    NSPipe *makepkginfoErrorPipe = [NSPipe pipe];
 	NSFileHandle *filehandle = [makepkginfoPipe fileHandleForReading];
+    NSFileHandle *errorfilehandle = [makepkginfoErrorPipe fileHandleForReading];
 	
 	NSArray *newArguments;
 	if ([self.command isEqualToString:@"makepkginfo"]) {
@@ -101,9 +103,22 @@
 	[makepkginfoTask setLaunchPath:launchPath];
 	[makepkginfoTask setArguments:newArguments];
 	[makepkginfoTask setStandardOutput:makepkginfoPipe];
+    [makepkginfoTask setStandardError:makepkginfoErrorPipe];
 	[makepkginfoTask launch];
 	
 	NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
+    
+    /*
+     Check if we got any warnings or errors from makepkginfo
+     */
+    NSData *makepkginfoTaskErrorData = [errorfilehandle readDataToEndOfFile];
+    NSString *errorString;
+    errorString = [[[NSString alloc] initWithData:makepkginfoTaskErrorData encoding:NSUTF8StringEncoding] autorelease];
+    if (![errorString isEqualToString:@""]) {
+        NSLog(@"makepkginfo reported error:\n%@", errorString);
+        return nil;
+    }
+    
 	
 	NSString *error;
 	NSPropertyListFormat format;
