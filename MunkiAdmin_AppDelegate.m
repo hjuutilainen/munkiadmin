@@ -520,6 +520,27 @@
     NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
     [receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
 	
+    NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
+    [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
+}
+
+- (void)didReceiveSharedPkginfo:(NSNotification *)aNotification
+{
+    /*
+     Make MunkiAdmin the top-most app
+     */
+    [NSApp activateIgnoringOtherApps:YES];
+    
+    /*
+     Get the pkginfo dictionary from the notification and make sure it's safe to use
+     */
+    id pkginfoPlist = [[aNotification userInfo] objectForKey:@"pkginfo"];
+    if ((pkginfoPlist != nil) && ([pkginfoPlist isKindOfClass:[NSDictionary class]])) {
+        [self makepkginfoDidFinish:pkginfoPlist];
+    } else {
+        NSLog(@"Error: Invalid pkginfo...");
+        NSLog(@"UserInfo: %@", [[aNotification userInfo] description]);
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -2603,7 +2624,10 @@
  */
  
 - (void)dealloc {
-
+    
+    NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
+    [dnc removeObserver:self name:nil object:nil];
+    
     [window release];
     [managedObjectContext release];
     [persistentStoreCoordinator release];
