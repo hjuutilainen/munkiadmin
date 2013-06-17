@@ -195,6 +195,7 @@
 - (IBAction)createNewRepository:sender;
 - (IBAction)createNewManifestAction:sender;
 - (IBAction)createNewCatalogAction:sender;
+- (void)addNewPackagesFromFileURLs:(NSArray *)filesToAdd;
 - (IBAction)addNewPackage:sender;
 - (IBAction)addNewInstallsItem:sender;
 - (IBAction)didSelectSegment:sender;

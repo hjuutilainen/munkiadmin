@@ -11,6 +11,8 @@
 #import "PackagesView.h"
 #import "ImageAndTitleCell.h"
 #import "DataModelHeaders.h"
+#import "MunkiRepositoryManager.h"
+#import "MunkiAdmin_AppDelegate.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f
@@ -52,6 +54,14 @@
 {
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
+    
+    [self.packagesTableView setDelegate:self];
+    [self.packagesTableView setDataSource:self];
+    [self.packagesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+	[self.packagesTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    
+    [self.directoriesOutlineView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+    [self.directoriesOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     /*
      Configure sorting
@@ -175,6 +185,95 @@
 }
 
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard
+{
+    /*
+     At the moment we don't support dragging the source list items
+     */
+    return NO;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
+{
+    if (outlineView == self.directoriesOutlineView) {
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSURLPboardType]) {
+            
+            DirectoryMO *targetDir = [proposedParentItem representedObject];
+                        
+            NSPasteboard *pasteboard = [info draggingPasteboard];
+            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+            NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                     [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            for (NSURL *uri in urls) {
+                NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
+                NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
+                NSString *currentFileName = [[droppedPackage packageInfoURL] lastPathComponent];
+                NSURL *targetURL = [targetDir.originalURL URLByAppendingPathComponent:currentFileName];
+                [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:YES];
+            }
+        }
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+    
+    // Deny drag and drop reordering
+    if (index != -1) {
+        return NSDragOperationNone;
+    }
+    
+    if (outlineView == self.directoriesOutlineView) {
+        
+        /*
+         Only allow dropping on regular folders
+         */
+        DirectoryMO *targetDir = [item representedObject];
+        if (![targetDir.type isEqualToString:@"regular"]) {
+            return NSDragOperationNone;
+        }
+        
+        /*
+         Check if we even have a supported type in pasteboard
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if (![dragTypes containsObject:NSURLPboardType]) {
+            return NSDragOperationNone;
+        }
+        
+        /*
+         Only accept "x-coredata" URLs which resolve to an actual object
+         */
+        NSPasteboard *pasteboard = [info draggingPasteboard];
+        NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+        NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+        NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+        for (NSURL *uri in urls) {
+            if ([[uri scheme] isEqualToString:@"x-coredata"]) {
+                NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
+                NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                if (!objectID) {
+                    return NSDragOperationNone;
+                }
+            } else {
+                return NSDragOperationNone;
+            }
+        }
+        return NSDragOperationMove;
+        
+    } else {
+        return NSDragOperationNone;
+    }
+}
+
+
 #pragma mark -
 #pragma mark NSPathControl methods
 
@@ -188,6 +287,104 @@
     if (clickedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[clickedURL relativePath] inFileViewerRootedAtPath:@""];
     }
+}
+
+
+# pragma mark -
+# pragma mark NSTableView delegates
+
+- (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
+{
+    if (theTableView == self.packagesTableView) {
+        [thePasteboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
+        NSMutableArray *urls = [NSMutableArray array];
+        [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            PackageMO *package = [[self.packagesArrayController arrangedObjects] objectAtIndex:idx];
+            [urls addObject:[[package objectID] URIRepresentation]];
+        }];
+        return [thePasteboard writeObjects:urls];
+    } 
+    
+    else {
+        return FALSE;
+    }
+}
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
+{
+	int result = NSDragOperationNone;
+    
+    /*
+     Packages table view validations
+     */
+    if (aTableView == self.packagesTableView) {
+        /*
+         Check if we have regular files
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+            
+            NSPasteboard *pasteboard = [info draggingPasteboard];
+            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+            NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                     [NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            
+            for (NSURL *uri in urls) {
+                BOOL canImport = [[MunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
+                if (canImport) {
+                    [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
+                    result = NSDragOperationCopy;
+                } else {
+                    result = NSDragOperationNone;
+                }
+            }
+            
+        } else {
+            result = NSDragOperationNone;
+        }
+    }
+    
+    return (result);
+}
+
+
+- (BOOL)tableView:(NSTableView *)theTableView acceptDrop:(id <NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
+{
+    
+    if (theTableView == self.packagesTableView) {
+        /*
+         Check if we have regular files
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+            
+            NSPasteboard *pasteboard = [info draggingPasteboard];
+            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+            NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                     [NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            
+            NSMutableArray *temporarySupportedURLs = [[[NSMutableArray alloc] init] autorelease];
+            for (NSURL *uri in urls) {
+                BOOL canImport = [[MunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
+                if (canImport) {
+                    [temporarySupportedURLs addObject:uri];
+                }
+            }
+            NSArray *supportedURLs = [NSArray arrayWithArray:temporarySupportedURLs];
+            [[NSApp delegate] addNewPackagesFromFileURLs:supportedURLs];
+            return YES;
+            
+        } else {
+            return NO;
+        }
+    }
+    
+    else {
+        return NO;
+    }
+    return NO;
 }
 
 

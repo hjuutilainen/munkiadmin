@@ -9,6 +9,7 @@
 #import "MunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
+#import "MACoreDataManager.h"
 
 /*
  * Private interface
@@ -106,6 +107,81 @@ static dispatch_queue_t serialQueue;
 
 # pragma mark -
 # pragma mark Modifying items
+
+- (BOOL)movePackage:(PackageMO *)aPackage toURL:(NSURL *)targetURL moveInstaller:(BOOL)moveInstaller
+{
+    BOOL returnValue = NO;
+    
+    NSManagedObjectContext *moc = [aPackage managedObjectContext];
+    
+    NSURL *sourceURL = aPackage.packageInfoURL;
+    DirectoryMO *originalDir = [[MACoreDataManager sharedManager] directoryWithURL:[sourceURL URLByDeletingLastPathComponent] managedObjectContext:moc];
+    DirectoryMO *targetDir = [[MACoreDataManager sharedManager] directoryWithURL:[targetURL URLByDeletingLastPathComponent] managedObjectContext:moc];
+    
+    /*
+     Deal with the pkginfo file first
+     */
+    NSFileManager *fm = [NSFileManager defaultManager];
+    BOOL moveSucceeded = [fm moveItemAtURL:sourceURL toURL:targetURL error:nil];
+    
+    if (moveSucceeded) {
+        /*
+         File was succesfully moved so update the object with a new location
+         */
+        [aPackage setPackageInfoURL:targetURL];
+        [aPackage removeSourceListItemsObject:originalDir];
+        [aPackage addSourceListItemsObject:targetDir];
+        returnValue = YES;
+    } else {
+        /*
+         Moving the pkginfo file failed, bail out
+         */
+        return NO;
+    }
+    
+    /*
+     Move the installer item too if requested
+     */
+    NSURL *installerSourceURL = aPackage.packageURL;
+    if (moveInstaller && (installerSourceURL != nil)) {
+        
+        /*
+         First check if we have a matching relative subdirectory in ./pkgs
+         */
+        NSURL *pkginfoDirectory = [[NSApp delegate] pkgsInfoURL];
+        NSURL *installerItemsDirectory = [[NSApp delegate] pkgsURL];
+        
+        NSNumber *isDirectory;
+        [[targetURL URLByDeletingLastPathComponent] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+        
+        if ([isDirectory boolValue]) {
+            NSString *relative = [self relativePathToChildURL:[targetURL URLByDeletingLastPathComponent] parentURL:pkginfoDirectory];
+            NSURL *pkgsSubURL = [installerItemsDirectory URLByAppendingPathComponent:relative];
+            if ([fm fileExistsAtPath:[pkgsSubURL path]]) {
+                /*
+                 Try to move the installer item
+                 */
+                NSURL *installerTargetURL = [pkgsSubURL URLByAppendingPathComponent:[installerSourceURL lastPathComponent]];
+                BOOL moveInstallerSucceeded = [fm moveItemAtURL:installerSourceURL toURL:installerTargetURL error:nil];
+                if (!moveInstallerSucceeded) {
+                    returnValue = NO;
+                } else {
+                    /*
+                     Installer item was succesfully moved, update the installer_item_location key
+                     */
+                    NSString *newInstallerItemPath = [self relativePathToChildURL:installerTargetURL parentURL:installerItemsDirectory];
+                    aPackage.munki_installer_item_location = newInstallerItemPath;
+                    aPackage.packageURL = installerTargetURL;
+                    returnValue = YES;
+                }
+            } else {
+                returnValue = NO;
+            }
+        }
+    }
+    
+    return returnValue;
+}
 
 - (void)copyStringObjectsOfType:(NSString *)type from:(PackageMO *)source target:(PackageMO *)target
 {
