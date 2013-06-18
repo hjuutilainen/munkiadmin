@@ -63,6 +63,9 @@
         } else if (anInsetRect.size.height <= 34) {
             anIconSize = NSMakeSize(32, 32);
             [aTitleAttributes setValue:[NSFont systemFontOfSize:13] forKey:NSFontAttributeName];
+        } else {
+            anIconSize = NSMakeSize(32, 32);
+            [aTitleAttributes setValue:[NSFont systemFontOfSize:13] forKey:NSFontAttributeName];
         }
         
         // Make the strings and get their sizes
