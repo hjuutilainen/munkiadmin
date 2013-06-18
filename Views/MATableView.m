@@ -26,6 +26,13 @@
 }
 
 
+- (NSImage *)dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset
+{
+    return [NSImage imageNamed:@"packageIcon_32x32"];
+}
+
+
+
 /*
  Overridden to change selection when user right-clicks the table
  */
