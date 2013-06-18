@@ -644,6 +644,95 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (void)removePackage:(PackageMO *)aPackage withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSWorkspace *wp = [NSWorkspace sharedWorkspace];
+    
+    NSString *name = aPackage.munki_name;
+    NSString *nameWithVersion = aPackage.titleWithVersion;
+    
+    /*
+     Get the packages parent application which represents a group of packageinfos with the same name
+     and get the number of other pkginfos with the same name.
+     */
+    ApplicationMO *packageGroup = aPackage.parentApplication;
+    NSUInteger numPackagesWithThisName = [packageGroup.packages count];
+    
+    /*
+     This is the last pkginfo with this name and we are allowed to remove references
+     */
+    if ((numPackagesWithThisName == 1) && removeReferences) {
+        NSLog(@"Removing the last pkginfo with this name. Removing references too...");
+        
+        /*
+         Check for and remove references to this package:
+         - managed_installs item in a manifest
+         - managed_uninstalls item in a manifest
+         - managed_updates item in a manifest
+         - optional_installs item in a manifest
+         - requires item in a package
+         - update_for item in a package
+         */
+        NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:name];
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
+        }
+        for (StringObjectMO *aReference in referencingObjects) {
+            [moc deleteObject:aReference];
+        }
+        
+        /*
+         Remove versioned references too
+         */
+        NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:nameWithVersion];
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
+        }
+        for (StringObjectMO *aReference in referencingObjectsWithVersion) {
+            [moc deleteObject:aReference];
+        }
+    }
+    
+    /*
+     This is the last pkginfo with this name but we were told to not touch referencing items
+     */
+    else if ((numPackagesWithThisName == 1) && !removeReferences) {
+        NSLog(@"Removing the last pkginfo with this name but not removing any references...");
+    }
+    
+    /*
+     There are other remaining pkginfos with the same name, don't touch any references
+     */
+    else {
+        NSLog(@"This name is used in %li other pkginfo items. Not removing references...", (unsigned long)numPackagesWithThisName - 1);
+    }
+    
+    /*
+     Determine the actual filesystem items to remove
+     */
+    NSArray *objectsToDelete = nil;
+    if ((aPackage.packageURL != nil) && removeInstallerItem) {
+        objectsToDelete = [NSArray arrayWithObjects:aPackage.packageURL, aPackage.packageInfoURL, nil];
+    } else {
+        objectsToDelete = [NSArray arrayWithObjects:aPackage.packageInfoURL, nil];
+    }
+    
+    for (NSURL *url in objectsToDelete) {
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Deleting file %@", [url relativePath]);
+        }
+    }
+    
+    /*
+     Remove items
+     */
+    [wp recycleURLs:objectsToDelete completionHandler:nil];
+    [moc deleteObject:aPackage];
+    [moc processPendingChanges];
+}
+
+
 - (void)renamePackage:(PackageMO *)aPackage newName:(NSString *)newName cascade:(BOOL)shouldCascade
 {
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];

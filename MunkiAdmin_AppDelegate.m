@@ -904,7 +904,6 @@
 	}
 	
 	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
-	NSManagedObjectContext *moc = [self managedObjectContext];
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
@@ -927,13 +926,7 @@
 	NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
 		for (PackageMO *aPackage in selectedPackages) {
-			if ([self.defaults boolForKey:@"debug"]) {
-				NSLog(@"Deleting %@", [(NSURL *)aPackage.packageURL relativePath]);
-				NSLog(@"Deleting %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-			}
-			NSArray *objectsToDelete = [NSArray arrayWithObjects:aPackage.packageURL, aPackage.packageInfoURL, nil];
-			[[NSWorkspace sharedWorkspace] recycleURLs:objectsToDelete completionHandler:nil];
-			[moc deleteObject:aPackage];
+            [[MunkiRepositoryManager sharedManager] removePackage:aPackage withInstallerItem:YES withReferences:YES];
 		}
 	}
 	[alert release];
