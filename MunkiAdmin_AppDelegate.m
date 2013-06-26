@@ -536,7 +536,28 @@
      */
     id pkginfoPlist = [[aNotification userInfo] objectForKey:@"pkginfo"];
     if ((pkginfoPlist != nil) && ([pkginfoPlist isKindOfClass:[NSDictionary class]])) {
+        
+        // Disable GUI bindings
+        [self disableAllBindings];
+        
+        // Create the pkginfo by pretending it came from makepkginfo
         [self makepkginfoDidFinish:pkginfoPlist];
+        
+        // We need to do a relationship scan after creating a pkginfo file
+        RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+        packageRelationships.delegate = self;
+        [self.operationQueue addOperation:packageRelationships];
+        
+        // Create a block operation to re-enable bindings
+        NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+            [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+        }];
+        [enableBindingsOp addDependency:packageRelationships];
+        [self.operationQueue addOperation:enableBindingsOp];
+        
+        // Trigger the progress panel
+        [self showProgressPanel];
+        
     } else {
         NSLog(@"Error: Invalid pkginfo...");
         NSLog(@"UserInfo: %@", [[aNotification userInfo] description]);
