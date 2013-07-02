@@ -1797,11 +1797,11 @@
         if (fileToAdd != nil) {
             MunkiOperation *theOp;
             
-            if (![[fileToAdd relativePath] hasPrefix:[self.repoURL relativePath]]) {
+            if (![[fileToAdd relativePath] hasPrefix:[self.pkgsURL relativePath]]) {
                 if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) &&
                     ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
                     if ([self.defaults boolForKey:@"debug"])
-                        NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.repoURL relativePath]);
+                        NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
                         FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
