@@ -76,30 +76,43 @@
 - (NSDictionary *)dictValue
 {
 	NSString *subtitle = @"";
-	/*if ([self.applications count] == 0) {
-		subtitle = @"No applications";
-	} else if ([self.applications count] == 1) {
-		subtitle = @"1 application included";
-	} else {
-		subtitle = [NSString stringWithFormat:@"%i managed installs", [[self enabledManagedInstalls] count]];
-	}*/
     
-    if ([self.managedInstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%lu installs, ", (unsigned long)[self.managedInstallsFaster count]];
+    int manInCount = 0;
+    int manUnCount = 0;
+    int manUpCount = 0;
+    int optInCount = 0;
+    int incManCount = 0;
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        manInCount += [condition.managedInstalls count];
+        manUnCount += [condition.managedUninstalls count];
+        manUpCount += [condition.managedUpdates count];
+        optInCount += [condition.optionalInstalls count];
+        incManCount += [condition.includedManifests count];
     }
-    if ([self.managedUninstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%lu uninstalls, ", (unsigned long)[self.managedUninstallsFaster count]];
+    
+    manInCount += [self.managedInstallsFaster count];
+    manUnCount += [self.managedUninstallsFaster count];
+    manUpCount += [self.managedUpdatesFaster count];
+    optInCount += [self.optionalInstallsFaster count];
+    incManCount += [self.includedManifestsFaster count];
+    
+    if (manInCount > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%u installs, ", manInCount];
     }
-    if ([self.optionalInstallsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%lu optional installs, ", (unsigned long)[self.optionalInstallsFaster count]];
+    if (manUnCount > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%u uninstalls, ", manUnCount];
     }
-    if ([self.managedUpdatesFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%lu updates, ", (unsigned long)[self.managedUpdatesFaster count]];
+    if (optInCount > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%u optional installs, ", optInCount];
     }
-    if ([self.includedManifestsFaster count] > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%lu nested manifests", (unsigned long)[self.includedManifestsFaster count]];
+    if (manUpCount > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%u updates, ", manUpCount];
     }
-	
+    if (incManCount > 0) {
+        subtitle = [subtitle stringByAppendingFormat:@"%u nested manifests", incManCount];
+    }
+    
     if ([subtitle isEqualToString:@""]) {
         subtitle = @"Empty";
     }
