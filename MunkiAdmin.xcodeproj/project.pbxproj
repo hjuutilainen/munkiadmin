@@ -142,7 +142,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2F7446980DB6B7EA00F9684A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
-		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
+		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
 		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
@@ -419,6 +419,58 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		261D5B75178C8D8F0045DDD8 /* MOHuman */ = {
+			isa = PBXGroup;
+			children = (
+				F5DFC897129546E500B68F4F /* ApplicationMO.h */,
+				F5DFC877129546E200B68F4F /* ApplicationMO.m */,
+				F5DFC898129546E600B68F4F /* ApplicationProxyMO.h */,
+				F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */,
+				F5DFC899129546E600B68F4F /* CatalogInfoMO.h */,
+				F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */,
+				F5DFC89A129546E600B68F4F /* CatalogMO.h */,
+				F5DFC87D129546E300B68F4F /* CatalogMO.m */,
+				FE679A4B14E1110F0047A9EE /* ConditionalItemMO.h */,
+				FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */,
+				FE0F4E6E14FB61590081AEFF /* DirectoryMO.h */,
+				FE0F4E6F14FB61590081AEFF /* DirectoryMO.m */,
+				FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */,
+				FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */,
+				265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */,
+				265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */,
+				F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */,
+				F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */,
+				F5DFC89B129546E600B68F4F /* InstallsItemMO.h */,
+				F5DFC87F129546E300B68F4F /* InstallsItemMO.m */,
+				F5DFC89C129546E600B68F4F /* ItemToCopyMO.h */,
+				F5DFC881129546E300B68F4F /* ItemToCopyMO.m */,
+				F5DFC89D129546E600B68F4F /* ManagedInstallMO.h */,
+				F5DFC883129546E300B68F4F /* ManagedInstallMO.m */,
+				F5DFC89E129546E600B68F4F /* ManagedUninstallMO.h */,
+				F5DFC885129546E400B68F4F /* ManagedUninstallMO.m */,
+				F5DFC89F129546E700B68F4F /* ManagedUpdateMO.h */,
+				F5DFC887129546E400B68F4F /* ManagedUpdateMO.m */,
+				F5DFC8A0129546E700B68F4F /* ManifestInfoMO.h */,
+				F5DFC889129546E400B68F4F /* ManifestInfoMO.m */,
+				F5DFC8A1129546E700B68F4F /* ManifestMO.h */,
+				F5DFC88B129546E400B68F4F /* ManifestMO.m */,
+				F5DFC8A2129546E700B68F4F /* OptionalInstallMO.h */,
+				F5DFC88D129546E400B68F4F /* OptionalInstallMO.m */,
+				F5DFC8A3129546E700B68F4F /* PackageInfoMO.h */,
+				F5DFC88F129546E500B68F4F /* PackageInfoMO.m */,
+				F5DFC8A4129546E700B68F4F /* PackageMO.h */,
+				F5DFC891129546E500B68F4F /* PackageMO.m */,
+				FE0F4E7814FB804C0081AEFF /* PackageSourceListItemMO.h */,
+				FE0F4E7914FB804C0081AEFF /* PackageSourceListItemMO.m */,
+				F5DFC8A5129546E700B68F4F /* ReceiptMO.h */,
+				F5DFC893129546E500B68F4F /* ReceiptMO.m */,
+				F5DFC8A6129546E700B68F4F /* StringObjectMO.h */,
+				F5DFC895129546E500B68F4F /* StringObjectMO.m */,
+			);
+			name = MOHuman;
+			path = MunkiAdmin/MOHuman;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
 			isa = PBXGroup;
 			children = (
@@ -490,8 +542,9 @@
 		7756732906782D8800D1FEB8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				261D5B75178C8D8F0045DDD8 /* MOHuman */,
+				F5A951B910FB30B60034ED28 /* MOMachine */,
 				770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */,
-				F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -505,7 +558,7 @@
 			path = RSVerticallyCenteredTextFieldCell;
 			sourceTree = "<group>";
 		};
-		F5A951B910FB30B60034ED28 /* MunkiAdmin_DataModel */ = {
+		F5A951B910FB30B60034ED28 /* MOMachine */ = {
 			isa = PBXGroup;
 			children = (
 				F5DFC8C7129546EC00B68F4F /* _ApplicationMO.h */,
@@ -552,52 +605,9 @@
 				F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */,
 				F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */,
 				F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */,
-				F5DFC897129546E500B68F4F /* ApplicationMO.h */,
-				F5DFC877129546E200B68F4F /* ApplicationMO.m */,
-				F5DFC898129546E600B68F4F /* ApplicationProxyMO.h */,
-				F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */,
-				F5DFC899129546E600B68F4F /* CatalogInfoMO.h */,
-				F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */,
-				F5DFC89A129546E600B68F4F /* CatalogMO.h */,
-				F5DFC87D129546E300B68F4F /* CatalogMO.m */,
-				FE679A4B14E1110F0047A9EE /* ConditionalItemMO.h */,
-				FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */,
-				FE0F4E6E14FB61590081AEFF /* DirectoryMO.h */,
-				FE0F4E6F14FB61590081AEFF /* DirectoryMO.m */,
-				FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */,
-				FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */,
-				265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */,
-				265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */,
-				F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */,
-				F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */,
-				F5DFC89B129546E600B68F4F /* InstallsItemMO.h */,
-				F5DFC87F129546E300B68F4F /* InstallsItemMO.m */,
-				F5DFC89C129546E600B68F4F /* ItemToCopyMO.h */,
-				F5DFC881129546E300B68F4F /* ItemToCopyMO.m */,
-				F5DFC89D129546E600B68F4F /* ManagedInstallMO.h */,
-				F5DFC883129546E300B68F4F /* ManagedInstallMO.m */,
-				F5DFC89E129546E600B68F4F /* ManagedUninstallMO.h */,
-				F5DFC885129546E400B68F4F /* ManagedUninstallMO.m */,
-				F5DFC89F129546E700B68F4F /* ManagedUpdateMO.h */,
-				F5DFC887129546E400B68F4F /* ManagedUpdateMO.m */,
-				F5DFC8A0129546E700B68F4F /* ManifestInfoMO.h */,
-				F5DFC889129546E400B68F4F /* ManifestInfoMO.m */,
-				F5DFC8A1129546E700B68F4F /* ManifestMO.h */,
-				F5DFC88B129546E400B68F4F /* ManifestMO.m */,
-				F5DFC8A2129546E700B68F4F /* OptionalInstallMO.h */,
-				F5DFC88D129546E400B68F4F /* OptionalInstallMO.m */,
-				F5DFC8A3129546E700B68F4F /* PackageInfoMO.h */,
-				F5DFC88F129546E500B68F4F /* PackageInfoMO.m */,
-				F5DFC8A4129546E700B68F4F /* PackageMO.h */,
-				F5DFC891129546E500B68F4F /* PackageMO.m */,
-				FE0F4E7814FB804C0081AEFF /* PackageSourceListItemMO.h */,
-				FE0F4E7914FB804C0081AEFF /* PackageSourceListItemMO.m */,
-				F5DFC8A5129546E700B68F4F /* ReceiptMO.h */,
-				F5DFC893129546E500B68F4F /* ReceiptMO.m */,
-				F5DFC8A6129546E700B68F4F /* StringObjectMO.h */,
-				F5DFC895129546E500B68F4F /* StringObjectMO.m */,
 			);
-			path = MunkiAdmin_DataModel;
+			name = MOMachine;
+			path = MunkiAdmin/MOMachine;
 			sourceTree = "<group>";
 		};
 		F5D052551744B40F00487101 /* Singletons */ = {
