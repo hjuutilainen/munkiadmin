@@ -144,8 +144,8 @@
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
 		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
-		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
+		77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiAdmin_AppDelegate.h; path = MunkiAdmin/MunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
+		77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiAdmin_AppDelegate.m; path = MunkiAdmin/MunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; path = "MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5063425172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
@@ -157,25 +157,25 @@
 		F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
 		F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
 		F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
-		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApplicationsArrayController.h; path = "NSArrayController Subclasses/ApplicationsArrayController.h"; sourceTree = "<group>"; };
-		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApplicationsArrayController.m; path = "NSArrayController Subclasses/ApplicationsArrayController.m"; sourceTree = "<group>"; };
+		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsArrayController.h; sourceTree = "<group>"; };
+		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationsArrayController.m; sourceTree = "<group>"; };
 		F508522C11084C39001DAD73 /* GradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBackgroundView.h; sourceTree = "<group>"; };
 		F508522D11084C39001DAD73 /* GradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBackgroundView.m; sourceTree = "<group>"; };
-		F508526C11085A5A001DAD73 /* ManifestsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestsArrayController.h; path = "NSArrayController Subclasses/ManifestsArrayController.h"; sourceTree = "<group>"; };
-		F508526D11085A5A001DAD73 /* ManifestsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestsArrayController.m; path = "NSArrayController Subclasses/ManifestsArrayController.m"; sourceTree = "<group>"; };
-		F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManifestItemArrayController.h; path = "NSArrayController Subclasses/ManifestItemArrayController.h"; sourceTree = "<group>"; };
-		F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManifestItemArrayController.m; path = "NSArrayController Subclasses/ManifestItemArrayController.m"; sourceTree = "<group>"; };
+		F508526C11085A5A001DAD73 /* ManifestsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestsArrayController.h; sourceTree = "<group>"; };
+		F508526D11085A5A001DAD73 /* ManifestsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestsArrayController.m; sourceTree = "<group>"; };
+		F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestItemArrayController.h; sourceTree = "<group>"; };
+		F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestItemArrayController.m; sourceTree = "<group>"; };
 		F50AC6E212BA04360069EB00 /* ManifestItemTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestItemTableView.h; sourceTree = "<group>"; };
 		F50AC6E312BA04360069EB00 /* ManifestItemTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestItemTableView.m; sourceTree = "<group>"; };
 		F525FB94165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MunkiAdminIcon_32x32@2x.png"; path = "Graphics/MunkiAdminIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MunkiAdminIcon_32x32.png; path = Graphics/MunkiAdminIcon_32x32.png; sourceTree = "<group>"; };
-		F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CatalogsArrayController.h; path = "NSArrayController Subclasses/CatalogsArrayController.h"; sourceTree = "<group>"; };
-		F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CatalogsArrayController.m; path = "NSArrayController Subclasses/CatalogsArrayController.m"; sourceTree = "<group>"; };
-		F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CatalogInfosArrayController.h; path = "NSArrayController Subclasses/CatalogInfosArrayController.h"; sourceTree = "<group>"; };
-		F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CatalogInfosArrayController.m; path = "NSArrayController Subclasses/CatalogInfosArrayController.m"; sourceTree = "<group>"; };
+		F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogsArrayController.h; sourceTree = "<group>"; };
+		F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogsArrayController.m; sourceTree = "<group>"; };
+		F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogInfosArrayController.h; sourceTree = "<group>"; };
+		F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogInfosArrayController.m; sourceTree = "<group>"; };
 		F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packagesMultipleIcon2.png; path = Graphics/packagesMultipleIcon2.png; sourceTree = "<group>"; };
-		F5299A5810FB6AB00074CFEA /* PackageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageArrayController.h; path = "NSArrayController Subclasses/PackageArrayController.h"; sourceTree = "<group>"; };
-		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageArrayController.m; path = "NSArrayController Subclasses/PackageArrayController.m"; sourceTree = "<group>"; };
+		F5299A5810FB6AB00074CFEA /* PackageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageArrayController.h; sourceTree = "<group>"; };
+		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
 		F5299AAB10FB75E00074CFEA /* open alt.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "open alt.tiff"; path = "Graphics/open alt.tiff"; sourceTree = "<group>"; };
 		F5299AAF10FB76270074CFEA /* install.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = install.tiff; path = Graphics/install.tiff; sourceTree = "<group>"; };
 		F5299AB110FB76D20074CFEA /* archive.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = archive.tiff; path = Graphics/archive.tiff; sourceTree = "<group>"; };
@@ -188,8 +188,8 @@
 		F5299AD810FB78620074CFEA /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
 		F53269A1125AF75C00AF967C /* PkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoScanner.h; sourceTree = "<group>"; };
 		F53269A2125AF75C00AF967C /* PkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoScanner.m; sourceTree = "<group>"; };
-		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ApplicationInfosArrayController.h; path = "NSArrayController Subclasses/ApplicationInfosArrayController.h"; sourceTree = "<group>"; };
-		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApplicationInfosArrayController.m; path = "NSArrayController Subclasses/ApplicationInfosArrayController.m"; sourceTree = "<group>"; };
+		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
+		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
 		F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon_32x32.png; path = Graphics/catalogIcon_32x32.png; sourceTree = "<group>"; };
 		F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "catalogIcon_32x32@2x.png"; path = "Graphics/catalogIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon_32x32.png; path = Graphics/manifestIcon_32x32.png; sourceTree = "<group>"; };
@@ -197,14 +197,14 @@
 		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestScanner.h; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestScanner.m; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MunkiAdmin.entitlements; sourceTree = "<group>"; };
-		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PackageInfosArrayController.h; path = "NSArrayController Subclasses/PackageInfosArrayController.h"; sourceTree = "<group>"; };
-		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PackageInfosArrayController.m; path = "NSArrayController Subclasses/PackageInfosArrayController.m"; sourceTree = "<group>"; };
+		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
+		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
 		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
-		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModelHeaders.h; sourceTree = "<group>"; };
+		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoAssimilator.m; sourceTree = "<group>"; };
 		F5836985166C9147003E1442 /* PkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PkginfoAssimilator.xib; sourceTree = "<group>"; };
@@ -355,32 +355,15 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
-				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
-				F508094D1105900E0058C7AC /* ApplicationsArrayController.h */,
-				F508094E1105900E0058C7AC /* ApplicationsArrayController.m */,
-				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
-				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
-				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
-				F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */,
-				F56AC7A4166F307300FD5438 /* DataModelHeaders.h */,
-				26C5620E178C93A100B38215 /* View Classes */,
+				26C5620F178C961400B38215 /* Array Controllers */,
 				FEF434DE14FCAF9E005AFF2F /* MAFileSizeFormatter.h */,
 				FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */,
-				F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */,
-				F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */,
-				F508526C11085A5A001DAD73 /* ManifestsArrayController.h */,
-				F508526D11085A5A001DAD73 /* ManifestsArrayController.m */,
 				77C8280B06725ACE000B614F /* MunkiAdmin_AppDelegate.h */,
 				77C8280C06725ACE000B614F /* MunkiAdmin_AppDelegate.m */,
 				FEB749F7147F98F3004EC366 /* Operations */,
-				F5299A5810FB6AB00074CFEA /* PackageArrayController.h */,
-				F5299A5910FB6AB00074CFEA /* PackageArrayController.m */,
-				F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */,
-				F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */,
 				F5D052551744B40F00487101 /* Singletons */,
 				FEABB23F144EB0D40006BDE8 /* UI Controllers */,
-				F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */,
+				26C5620E178C93A100B38215 /* View Classes */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -474,9 +457,34 @@
 				F50AC6E312BA04360069EB00 /* ManifestItemTableView.m */,
 				F5299AD710FB78620074CFEA /* MyCell.h */,
 				F5299AD810FB78620074CFEA /* MyCell.m */,
+				F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */,
 			);
 			name = "View Classes";
 			path = "MunkiAdmin/View Classes";
+			sourceTree = "<group>";
+		};
+		26C5620F178C961400B38215 /* Array Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
+				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
+				F508094D1105900E0058C7AC /* ApplicationsArrayController.h */,
+				F508094E1105900E0058C7AC /* ApplicationsArrayController.m */,
+				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
+				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
+				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
+				F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */,
+				F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */,
+				F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */,
+				F508526C11085A5A001DAD73 /* ManifestsArrayController.h */,
+				F508526D11085A5A001DAD73 /* ManifestsArrayController.m */,
+				F5299A5810FB6AB00074CFEA /* PackageArrayController.h */,
+				F5299A5910FB6AB00074CFEA /* PackageArrayController.m */,
+				F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */,
+				F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */,
+			);
+			name = "Array Controllers";
+			path = "MunkiAdmin/Array Controllers";
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
@@ -549,6 +557,7 @@
 		7756732906782D8800D1FEB8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F56AC7A4166F307300FD5438 /* DataModelHeaders.h */,
 				261D5B75178C8D8F0045DDD8 /* MOHuman */,
 				F5A951B910FB30B60034ED28 /* MOMachine */,
 				770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */,
@@ -912,6 +921,7 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			path = MunkiAdmin;
 			sourceTree = "<group>";
 		};
 		2F7446970DB6B7EA00F9684A /* MainMenu.xib */ = {
@@ -920,6 +930,7 @@
 				2F7446980DB6B7EA00F9684A /* English */,
 			);
 			name = MainMenu.xib;
+			path = MunkiAdmin;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
