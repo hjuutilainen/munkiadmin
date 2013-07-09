@@ -202,8 +202,8 @@
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
-		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiRepositoryManager.h; path = Singletons/MunkiRepositoryManager.h; sourceTree = "<group>"; };
-		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MunkiRepositoryManager.m; path = Singletons/MunkiRepositoryManager.m; sourceTree = "<group>"; };
+		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
+		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModelHeaders.h; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PkginfoAssimilator.h; path = Views/PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PkginfoAssimilator.m; path = Views/PkginfoAssimilator.m; sourceTree = "<group>"; };
@@ -219,8 +219,8 @@
 		F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = saveTemplate.pdf; path = Graphics/saveTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = makecatalogsTemplate.pdf; path = Graphics/makecatalogsTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = reloadTemplate.pdf; path = Graphics/reloadTemplate.pdf; sourceTree = "<group>"; };
-		F5D052521744B36400487101 /* MACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MACoreDataManager.h; path = Singletons/MACoreDataManager.h; sourceTree = "<group>"; };
-		F5D052531744B36400487101 /* MACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MACoreDataManager.m; path = Singletons/MACoreDataManager.m; sourceTree = "<group>"; };
+		F5D052521744B36400487101 /* MACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoreDataManager.h; sourceTree = "<group>"; };
+		F5D052531744B36400487101 /* MACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoreDataManager.m; sourceTree = "<group>"; };
 		F5DFC877129546E200B68F4F /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
 		F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
 		F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
@@ -619,6 +619,7 @@
 				F5D052531744B36400487101 /* MACoreDataManager.m */,
 			);
 			name = Singletons;
+			path = MunkiAdmin/Singletons;
 			sourceTree = "<group>";
 		};
 		FEABB23F144EB0D40006BDE8 /* View Controllers */ = {
