@@ -193,6 +193,43 @@
     return NO;
 }
 
+- (BOOL)shouldMoveInstallerItemWithPkginfo
+{
+    BOOL shouldMove = NO;
+    
+    NSString *moveDefaultsKey = @"MoveInstallerItemsWithPkginfos";
+    NSString *moveConfirmationSuppressed = @"MoveInstallerItemsWithPkginfosSuppressed";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:moveConfirmationSuppressed]) {
+        shouldMove = [defaults boolForKey:moveDefaultsKey];
+    } else {
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Move"];
+        [alert addButtonWithTitle:@"Skip"];
+        [alert setMessageText:@"Move installer item?"];
+        [alert setInformativeText:NSLocalizedString(@"MunkiAdmin can move the installer item to a corresponding subdirectory under the pkgs directory. Any missing directories will be created.", @"")];
+        [alert setShowsSuppressionButton:YES];
+        
+        // Display the dialog and act accordingly
+        NSInteger result = [alert runModal];
+        if (result == NSAlertFirstButtonReturn) {
+            shouldMove = YES;
+        } else if ( result == NSAlertSecondButtonReturn ) {
+            shouldMove = NO;
+        }
+        
+        if ([[alert suppressionButton] state] == NSOnState) {
+            // Suppress this alert from now on.
+            [defaults setBool:YES forKey:moveConfirmationSuppressed];
+            [defaults setBool:shouldMove forKey:moveDefaultsKey];
+        }
+        [alert release];
+    }
+    
+    return shouldMove;
+}
+
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
 {
     if (outlineView == self.directoriesOutlineView) {
@@ -212,7 +249,12 @@
                 PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
                 NSString *currentFileName = [[droppedPackage packageInfoURL] lastPathComponent];
                 NSURL *targetURL = [targetDir.originalURL URLByAppendingPathComponent:currentFileName];
-                [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:YES];
+                
+                /*
+                 Ask permission to move the installer item as well
+                 */
+                BOOL allowMove = [self shouldMoveInstallerItemWithPkginfo];
+                [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
             }
         }
         return YES;
