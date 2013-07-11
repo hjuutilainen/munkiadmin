@@ -122,7 +122,8 @@ static dispatch_queue_t serialQueue;
      Deal with the pkginfo file first
      */
     NSFileManager *fm = [NSFileManager defaultManager];
-    BOOL moveSucceeded = [fm moveItemAtURL:sourceURL toURL:targetURL error:nil];
+    NSError *pkginfoMoveError = nil;
+    BOOL moveSucceeded = [fm moveItemAtURL:sourceURL toURL:targetURL error:&pkginfoMoveError];
     
     if (moveSucceeded) {
         /*
@@ -136,6 +137,7 @@ static dispatch_queue_t serialQueue;
         /*
          Moving the pkginfo file failed, bail out
          */
+        NSLog(@"Failed to move pkginfo with error: %@", pkginfoMoveError);
         return NO;
     }
     
@@ -157,6 +159,12 @@ static dispatch_queue_t serialQueue;
         if ([isDirectory boolValue]) {
             NSString *relative = [self relativePathToChildURL:[targetURL URLByDeletingLastPathComponent] parentURL:pkginfoDirectory];
             NSURL *pkgsSubURL = [installerItemsDirectory URLByAppendingPathComponent:relative];
+            if (![fm fileExistsAtPath:[pkgsSubURL path]]) {
+                NSError *createError = nil;
+                if (![fm createDirectoryAtURL:pkgsSubURL withIntermediateDirectories:YES attributes:nil error:&createError]) {
+                    NSLog(@"%@", createError);
+                }
+            }
             if ([fm fileExistsAtPath:[pkgsSubURL path]]) {
                 /*
                  Try to move the installer item
@@ -175,6 +183,7 @@ static dispatch_queue_t serialQueue;
                     returnValue = YES;
                 }
             } else {
+                NSLog(@"Failed to move installer item. Directory not found: %@", [pkgsSubURL path]);
                 returnValue = NO;
             }
         }
