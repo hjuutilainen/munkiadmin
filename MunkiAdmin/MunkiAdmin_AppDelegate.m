@@ -229,10 +229,10 @@
 	}
 }
 
-- (NSArray *)chooseFolder
+- (NSArray *)chooseFolderForSave
 {
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	openPanel.title = @"Select a munki Repository";
+	openPanel.title = @"Select a save location";
 	openPanel.allowsMultipleSelection = NO;
 	openPanel.canChooseDirectories = YES;
 	openPanel.canChooseFiles = NO;
@@ -524,6 +524,145 @@
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
 }
 
+- (void)processSingleSharedPkginfo:(NSDictionary *)pkginfo
+{
+    // Disable GUI bindings
+    [self disableAllBindings];
+    
+    // Create the pkginfo by pretending it came from makepkginfo
+    [self makepkginfoDidFinish:pkginfo];
+    
+    // We need to do a relationship scan after creating a pkginfo file
+    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    packageRelationships.delegate = self;
+    [self.operationQueue addOperation:packageRelationships];
+    
+    // Create a block operation to re-enable bindings
+    NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+        [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+    }];
+    [enableBindingsOp addDependency:packageRelationships];
+    [self.operationQueue addOperation:enableBindingsOp];
+    
+    // Trigger the progress panel
+    [self showProgressPanel];
+}
+
+- (void)processMultipleSharedPkginfos:(NSArray *)sharedPkginfos
+{
+    /*
+     Process multiple items
+     */
+    NSURL *saveDirectory = [[self chooseFolderForSave] objectAtIndex:0];
+    
+    // Rescan the main pkginfo dir for any newly created directories
+    [self configureSourceListDirectoriesSection];
+    
+    __block BOOL wroteAll = YES;
+    [sharedPkginfos enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        
+        /*
+         Make sure this item has "filename" and "pkginfo" keys
+         and they are valid
+         */
+        BOOL hasFilename = ([obj objectForKey:@"filename"]) ? TRUE : FALSE;
+        BOOL hasPkginfo = ([obj objectForKey:@"pkginfo"]) ? TRUE : FALSE;
+        
+        if (!hasFilename || !hasPkginfo) {
+            NSLog(@"Error: Pkginfo from notification object is not valid...");
+            *stop = YES;
+        }
+        
+        id filenameHint = [obj objectForKey:@"filename"];
+        if (![filenameHint isKindOfClass:[NSString class]]) {
+            NSLog(@"Error: Object for key \"filename\" is not a string...");
+            *stop = YES;
+        }
+        
+        id pkginfo = [obj objectForKey:@"pkginfo"];
+        if (![pkginfo isKindOfClass:[NSDictionary class]]) {
+            NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
+            *stop = YES;
+        }
+        
+        NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:(NSString *)filenameHint];
+        
+        BOOL saved = [pkginfo writeToURL:saveURL atomically:YES];
+        if (!saved) {
+            NSLog(@"Error: Failed to write %@...", [saveURL path]);
+            wroteAll = NO;
+            *stop = YES;
+        }
+        
+        // Create a scanner job but run it without an operation queue
+        PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:saveURL];
+        scanOp.canModify = YES;
+        scanOp.delegate = self;
+        [scanOp start];
+        
+        // Fetch the newly created package
+        NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
+        [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
+        NSPredicate *pkgPred;
+        pkgPred = [NSPredicate predicateWithFormat:@"packageInfoURL == %@", saveURL];
+        [fetchForPackage setPredicate:pkgPred];
+        
+        NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
+        if (numFoundPkgs == 0) {
+            // Didn't find anything
+        }
+        else if (numFoundPkgs == 1) {
+            PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+            
+            // Add the newly created package to any needed containers
+            [self configureContainersForPackage:createdPkg];
+            
+            // Select the newly created package
+            [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+            
+            // Run the assimilator
+            if ([self.defaults boolForKey:@"assimilate_enabled"]) {
+                MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+                [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
+            }
+            
+            /*
+             dispatch_async(dispatch_get_main_queue(), ^{
+             [[[self managedObjectContext] undoManager] beginUndoGrouping];
+             [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Assimilating \"%@\"", [createdPkg titleWithVersion]]];
+             [pkginfoAssimilator beginEditSessionWithObject:createdPkg source:nil delegate:self];
+             });
+             */
+        }
+        else {
+            // Found multiple matches for a single URL
+        }
+        [fetchForPackage release];
+        
+    }];
+    
+    if (!wroteAll) {
+        return;
+    }
+    
+    
+    
+    // We need to do a relationship scan after creating a pkginfo file
+    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    packageRelationships.delegate = self;
+    [self.operationQueue addOperation:packageRelationships];
+    
+    // Create a block operation to re-enable bindings
+    NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
+        [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
+    }];
+    [enableBindingsOp addDependency:packageRelationships];
+    [self.operationQueue addOperation:enableBindingsOp];
+    
+    // Trigger the progress panel
+    [self showProgressPanel];
+}
+
 - (void)didReceiveSharedPkginfo:(NSNotification *)aNotification
 {
     /*
@@ -532,31 +671,23 @@
     [NSApp activateIgnoringOtherApps:YES];
     
     /*
-     Get the pkginfo dictionary from the notification and make sure it's safe to use
+     Get the payload dictionaries from the notification and make sure it's safe to use
      */
-    id pkginfoPlist = [[aNotification userInfo] objectForKey:@"pkginfo"];
-    if ((pkginfoPlist != nil) && ([pkginfoPlist isKindOfClass:[NSDictionary class]])) {
+    id payloadDictionaries = [[aNotification userInfo] objectForKey:@"payloadDictionaries"];
+    if ((payloadDictionaries != nil) && ([payloadDictionaries isKindOfClass:[NSArray class]])) {
         
-        // Disable GUI bindings
-        [self disableAllBindings];
+        NSArray *items = [NSArray arrayWithArray:payloadDictionaries];
         
-        // Create the pkginfo by pretending it came from makepkginfo
-        [self makepkginfoDidFinish:pkginfoPlist];
+        /*
+         Check how many items we got
+         */
+        if ([items count] == 1) {
+            NSDictionary *firstItem = [items objectAtIndex:0];
+            [self processSingleSharedPkginfo:[firstItem objectForKey:@"pkginfo"]];
+            return;
+        }
         
-        // We need to do a relationship scan after creating a pkginfo file
-        RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
-        packageRelationships.delegate = self;
-        [self.operationQueue addOperation:packageRelationships];
-        
-        // Create a block operation to re-enable bindings
-        NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
-            [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
-        }];
-        [enableBindingsOp addDependency:packageRelationships];
-        [self.operationQueue addOperation:enableBindingsOp];
-        
-        // Trigger the progress panel
-        [self showProgressPanel];
+        [self processMultipleSharedPkginfos:items];
         
     } else {
         NSLog(@"Error: Invalid pkginfo...");

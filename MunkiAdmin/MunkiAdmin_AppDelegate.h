@@ -246,7 +246,7 @@
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
 
 - (NSURL *)chooseRepositoryFolder;
-- (NSArray *)chooseFolder;
+- (NSArray *)chooseFolderForSave;
 - (NSURL *)chooseFile;
 - (NSArray *)chooseFiles;
 - (NSURL *)showSavePanel;
