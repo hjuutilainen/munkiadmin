@@ -246,6 +246,26 @@
 	}
 }
 
+- (NSURL *)chooseDestinationDirectoryWithTitle:(NSString *)title message:(NSString *)message
+{
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+	openPanel.title = title;
+    openPanel.message = message;
+	openPanel.allowsMultipleSelection = NO;
+	openPanel.canChooseDirectories = YES;
+	openPanel.canChooseFiles = NO;
+	openPanel.resolvesAliases = YES;
+    openPanel.prompt = @"Choose";
+    openPanel.directoryURL = self.pkgsInfoURL;
+	
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+	{
+		return [[openPanel URLs] objectAtIndex:0];
+	} else {
+		return nil;
+	}
+}
+
 - (NSURL *)chooseFile
 {
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
@@ -524,128 +544,170 @@
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
 }
 
-- (void)processSingleSharedPkginfo:(NSDictionary *)pkginfo
+- (NSString *)safeFilenameFromString:(NSString *)aFileName
 {
-    // Disable GUI bindings
-    [self disableAllBindings];
+    // Do a lossy conversion
+    NSData *data = [aFileName dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *tmpString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
     
-    // Create the pkginfo by pretending it came from makepkginfo
-    [self makepkginfoDidFinish:pkginfo];
+    // Remove the characters we don't want
+    NSCharacterSet *illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@":/\\?%*|\"<>#,"];
+    tmpString = [[tmpString componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@""];
     
-    // We need to do a relationship scan after creating a pkginfo file
-    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
-    packageRelationships.delegate = self;
-    [self.operationQueue addOperation:packageRelationships];
+    // Replace "/" characters with a "-"
+    tmpString = [tmpString stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
     
-    // Create a block operation to re-enable bindings
-    NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
-        [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
-    }];
-    [enableBindingsOp addDependency:packageRelationships];
-    [self.operationQueue addOperation:enableBindingsOp];
+    // Remove adjacent dashes
+    tmpString = [tmpString stringByReplacingOccurrencesOfString:@"--+" withString:@"-" options:NSRegularExpressionSearch range:NSMakeRange(0, [tmpString length])];
     
-    // Trigger the progress panel
-    [self showProgressPanel];
+    return tmpString;
 }
 
-- (void)processMultipleSharedPkginfos:(NSArray *)sharedPkginfos
+- (BOOL)processSingleSharedObject:(NSDictionary *)object saveDirectoryURL:(NSURL *)saveDirectory
 {
     /*
-     Process multiple items
+     Get the filename hint and the pkginfo
      */
-    NSURL *saveDirectory = [[self chooseFolderForSave] objectAtIndex:0];
+    NSString *filenameHint = [object objectForKey:@"filename"];
+    NSString *safeFilenameHint = [self safeFilenameFromString:filenameHint];
     
-    // Rescan the main pkginfo dir for any newly created directories
-    [self configureSourceListDirectoriesSection];
+    NSDictionary *pkginfo = [object objectForKey:@"pkginfo"];
     
-    __block BOOL wroteAll = YES;
-    [sharedPkginfos enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+    /*
+     Write the pkginfo
+     */
+    NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:safeFilenameHint];
+    BOOL saved = [pkginfo writeToURL:saveURL atomically:YES];
+    if (!saved) {
+        NSLog(@"Error: Failed to write %@...", [saveURL path]);
+        return NO;
+    }
+    
+    /*
+     Create a scanner job but run it without an operation queue
+     */
+    PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:saveURL];
+    scanOp.canModify = YES;
+    scanOp.delegate = self;
+    [scanOp start];
+    
+    /*
+     Fetch the newly created package
+     */
+    NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
+    [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
+    NSPredicate *pkgPred;
+    pkgPred = [NSPredicate predicateWithFormat:@"packageInfoURL == %@", saveURL];
+    [fetchForPackage setPredicate:pkgPred];
+    
+    NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
+    if (numFoundPkgs == 0) {
+        // Didn't find anything
+    }
+    else if (numFoundPkgs == 1) {
+        PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+        
+        // Add the newly created package to any needed containers
+        [self configureContainersForPackage:createdPkg];
+        
+        // Select the newly created package
+        [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+        
+        // Run the assimilator
+        if ([self.defaults boolForKey:@"assimilate_enabled"]) {
+            MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+            [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
+        }
+    }
+    else {
+        // Found multiple matches for a single URL
+    }
+    [fetchForPackage release];
+    
+    return YES;
+}
+
+- (void)processSharedPayloadDictionaries:(NSArray *)payloadDictionaries
+{
+    if (!payloadDictionaries) {
+        return;
+    }
+    
+    /*
+     Check each of the payload objects
+     */
+    __block BOOL allValid = YES;
+    [payloadDictionaries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         
         /*
-         Make sure this item has "filename" and "pkginfo" keys
-         and they are valid
+         Make sure this item has "filename" and "pkginfo" keys and make sure they are valid
          */
         BOOL hasFilename = ([obj objectForKey:@"filename"]) ? TRUE : FALSE;
         BOOL hasPkginfo = ([obj objectForKey:@"pkginfo"]) ? TRUE : FALSE;
         
         if (!hasFilename || !hasPkginfo) {
             NSLog(@"Error: Pkginfo from notification object is not valid...");
+            allValid = NO;
             *stop = YES;
         }
         
         id filenameHint = [obj objectForKey:@"filename"];
         if (![filenameHint isKindOfClass:[NSString class]]) {
             NSLog(@"Error: Object for key \"filename\" is not a string...");
+            allValid = NO;
             *stop = YES;
         }
         
         id pkginfo = [obj objectForKey:@"pkginfo"];
         if (![pkginfo isKindOfClass:[NSDictionary class]]) {
             NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
+            allValid = NO;
             *stop = YES;
         }
-        
-        NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:(NSString *)filenameHint];
-        
-        BOOL saved = [pkginfo writeToURL:saveURL atomically:YES];
-        if (!saved) {
-            NSLog(@"Error: Failed to write %@...", [saveURL path]);
-            wroteAll = NO;
-            *stop = YES;
-        }
-        
-        // Create a scanner job but run it without an operation queue
-        PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:saveURL];
-        scanOp.canModify = YES;
-        scanOp.delegate = self;
-        [scanOp start];
-        
-        // Fetch the newly created package
-        NSFetchRequest *fetchForPackage = [[NSFetchRequest alloc] init];
-        [fetchForPackage setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.managedObjectContext]];
-        NSPredicate *pkgPred;
-        pkgPred = [NSPredicate predicateWithFormat:@"packageInfoURL == %@", saveURL];
-        [fetchForPackage setPredicate:pkgPred];
-        
-        NSUInteger numFoundPkgs = [self.managedObjectContext countForFetchRequest:fetchForPackage error:nil];
-        if (numFoundPkgs == 0) {
-            // Didn't find anything
-        }
-        else if (numFoundPkgs == 1) {
-            PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-            
-            // Add the newly created package to any needed containers
-            [self configureContainersForPackage:createdPkg];
-            
-            // Select the newly created package
-            [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
-            
-            // Run the assimilator
-            if ([self.defaults boolForKey:@"assimilate_enabled"]) {
-                MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
-                [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
-            }
-            
-            /*
-             dispatch_async(dispatch_get_main_queue(), ^{
-             [[[self managedObjectContext] undoManager] beginUndoGrouping];
-             [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Assimilating \"%@\"", [createdPkg titleWithVersion]]];
-             [pkginfoAssimilator beginEditSessionWithObject:createdPkg source:nil delegate:self];
-             });
-             */
-        }
-        else {
-            // Found multiple matches for a single URL
-        }
-        [fetchForPackage release];
-        
     }];
     
-    if (!wroteAll) {
+    /*
+     Bail out if the received objects are not valid
+     */
+    if (!allValid) {
         return;
     }
     
     
+    /*
+     Choose a directory for the pkginfo files
+     */
+    NSString *openPanelTitle = @"Choose Location";
+    NSString *messageText = [NSString stringWithFormat:@"MunkiAdmin received %li pkginfo objects from SUS Inspector. Choose a location to save them.", (unsigned long)[payloadDictionaries count]];
+    __block NSURL *saveDirectory = [self chooseDestinationDirectoryWithTitle:openPanelTitle message:messageText];
+    if (!saveDirectory) {
+        return;
+    }
+    
+    /*
+     Rescan the main pkginfo dir for any newly created directories
+     */
+    [self configureSourceListDirectoriesSection];
+    
+    
+    /*
+     Process each of the payload objects
+     */
+    __block BOOL wroteAll = YES;
+    [payloadDictionaries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        if (![self processSingleSharedObject:obj saveDirectoryURL:saveDirectory]) {
+            NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
+            wroteAll = NO;
+            *stop = YES;
+        }
+    }];
+    
+    /*
+     Check if we successfully wrote everything
+     */
+    if (!wroteAll) {
+        return;
+    }
     
     // We need to do a relationship scan after creating a pkginfo file
     RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
@@ -677,20 +739,10 @@
     if ((payloadDictionaries != nil) && ([payloadDictionaries isKindOfClass:[NSArray class]])) {
         
         NSArray *items = [NSArray arrayWithArray:payloadDictionaries];
-        
-        /*
-         Check how many items we got
-         */
-        if ([items count] == 1) {
-            NSDictionary *firstItem = [items objectAtIndex:0];
-            [self processSingleSharedPkginfo:[firstItem objectForKey:@"pkginfo"]];
-            return;
-        }
-        
-        [self processMultipleSharedPkginfos:items];
+        [self processSharedPayloadDictionaries:items];
         
     } else {
-        NSLog(@"Error: Invalid pkginfo...");
+        NSLog(@"Error: Objects not in expected format...");
         NSLog(@"UserInfo: %@", [[aNotification userInfo] description]);
     }
 }
