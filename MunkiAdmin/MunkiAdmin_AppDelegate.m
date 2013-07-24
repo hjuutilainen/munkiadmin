@@ -22,6 +22,8 @@
 #import "MunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 
+#define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
+
 @implementation MunkiAdmin_AppDelegate
 @synthesize installsItemsArrayController;
 @synthesize itemsToCopyArrayController;
@@ -808,6 +810,7 @@
 		[NSApp endSheet:progressPanel];
 		[progressPanel close];
 		[progressIndicator stopAnimation:self];
+        [self postStatusUpdateReadyToReceive:YES];
 	}
 	
 	else {
@@ -1451,6 +1454,27 @@
         NSUInteger defaultIndexes[] = {0,0};
         [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
+}
+
+- (void)postStatusUpdateReadyToReceive:(BOOL)readyToReceive
+{
+    NSManagedObjectContext *moc = self.managedObjectContext;
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entityDescr];
+    NSPredicate *appleUpdates = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
+    [fetchRequest setPredicate:appleUpdates];
+    [fetchRequest setResultType:NSDictionaryResultType];
+    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:@"munki_name"]];
+	NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    NSArray *appleUpdateNames = [fetchResults valueForKeyPath:@"munki_name"];
+	[fetchRequest release];
+    
+    NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
+    [dnc postNotificationName:kMunkiAdminStatusChangeName
+                       object:nil
+                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:readyToReceive], @"readyToReceive", appleUpdateNames, @"appleUpdateMetadataNames", nil]
+           deliverImmediately:YES];
 }
 
 - (void)mergeChanges:(NSNotification*)notification
