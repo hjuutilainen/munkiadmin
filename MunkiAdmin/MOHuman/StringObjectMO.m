@@ -103,9 +103,10 @@
         /*
          Get package proxy objects from catalog objects
          */
+        NSPredicate *packagePredicate = [NSPredicate predicateWithFormat:@"(package.munki_name == %@ OR package.titleWithVersion == %@) AND isEnabledForCatalog == TRUE", self.title, self.title];
         NSMutableSet *mutableSet = [NSMutableSet setWithCapacity:[catalogs count]];
         for (CatalogMO *catalog in catalogs) {
-            NSSet *enabledPackageInfos = [catalog.packageInfos filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"package.munki_name == %@ AND isEnabledForCatalog == TRUE", self.title]];
+            NSSet *enabledPackageInfos = [catalog.packageInfos filteredSetUsingPredicate:packagePredicate];
             [mutableSet addObject:enabledPackageInfos];
         }
         
@@ -139,11 +140,14 @@
      Set the subtitle if referenced from a manifest
      */
     NSArray *packages = [self siblingPackagesWhenReferencedFromManifest:currentManifest];
-    if (packages != nil) {
-        NSString *latestVersion = [[packages objectAtIndex:0] munki_version];
-        if ([packages count] == 1) {
+    if (packages) {
+        if ([packages count] == 0) {
+            subtitle = @"No matching packages in selected catalogs";
+        } else if ([packages count] == 1) {
+            NSString *latestVersion = [[packages objectAtIndex:0] munki_version];
             subtitle = [NSString stringWithFormat:@"%lu matching package (%@)", (unsigned long)[packages count], latestVersion];
-        } else {
+        } else if ([packages count] > 1) {
+            NSString *latestVersion = [[packages objectAtIndex:0] munki_version];
             subtitle = [NSString stringWithFormat:@"%lu matching packages (%@)", (unsigned long)[packages count], latestVersion];
         }
     }
@@ -154,7 +158,7 @@
     else {
         NSUInteger numPkgs = [self.packagesWithSameTitle count];
         if (numPkgs == 0) {
-            subtitle = @"";
+            subtitle = @"No matching packages in any catalog";
         } else {
             NSSortDescriptor *byVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
             NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
