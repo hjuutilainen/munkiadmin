@@ -27,6 +27,15 @@
 @synthesize versionComparisonKeys;
 @synthesize customItemsTableView;
 @synthesize customItemsArrayController;
+@synthesize textFieldPath;
+@synthesize textFieldType;
+@synthesize textFieldCFBundleIdentifier;
+@synthesize textFieldCFBundleName;
+@synthesize textFieldCFBundleShortVersionString;
+@synthesize textFieldCFBundleVersion;
+@synthesize textFieldMD5Checksum;
+@synthesize textFieldMinOSVersion;
+@synthesize versionComparisonKeyPopup;
 
 - (id)initWithWindow:(NSWindow *)window
 {
