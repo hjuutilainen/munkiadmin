@@ -5,6 +5,7 @@
 
 
 extern const struct PackageMOAttributes {
+	 NSString *hasEmptyBlockingApplications;
 	 NSString *hasUnstagedChanges;
 	 NSString *munki_RestartAction;
 	 NSString *munki_autoremove;
@@ -124,6 +125,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+
 @class NSObject;
 
 
@@ -143,6 +145,20 @@ extern const struct PackageMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (PackageMOID*)objectID;
+
+
+
+
+
+@property (nonatomic, retain) NSNumber* hasEmptyBlockingApplications;
+
+
+
+@property BOOL hasEmptyBlockingApplicationsValue;
+- (BOOL)hasEmptyBlockingApplicationsValue;
+- (void)setHasEmptyBlockingApplicationsValue:(BOOL)value_;
+
+//- (BOOL)validateHasEmptyBlockingApplications:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -821,6 +837,15 @@ extern const struct PackageMOFetchedProperties {
 @end
 
 @interface _PackageMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveHasEmptyBlockingApplications;
+- (void)setPrimitiveHasEmptyBlockingApplications:(NSNumber*)value;
+
+- (BOOL)primitiveHasEmptyBlockingApplicationsValue;
+- (void)setPrimitiveHasEmptyBlockingApplicationsValue:(BOOL)value_;
+
+
 
 
 - (NSNumber*)primitiveHasUnstagedChanges;

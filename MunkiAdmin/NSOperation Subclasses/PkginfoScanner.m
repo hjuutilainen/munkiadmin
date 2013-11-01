@@ -330,6 +330,13 @@
 			// Get "blocking_applications" items
 			// =================================
 			NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
+            if (!blocking_applications) {
+                aNewPackage.hasEmptyBlockingApplicationsValue = NO;
+            } else if ([blocking_applications count] == 0) {
+                aNewPackage.hasEmptyBlockingApplicationsValue = YES;
+            } else {
+                aNewPackage.hasEmptyBlockingApplicationsValue = NO;
+            }
 			[blocking_applications enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 				StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];

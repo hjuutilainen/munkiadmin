@@ -303,7 +303,10 @@
 			[blockingApplicationsItems addObject:[blockingItem title]];
 		}
 	}
-	if ([blockingApplicationsItems count] > 0) {
+    if (self.hasEmptyBlockingApplicationsValue) {
+        [tmpDict setObject:[NSArray array] forKey:@"blocking_applications"];
+	}
+	else if ([blockingApplicationsItems count] > 0) {
 		[tmpDict setObject:blockingApplicationsItems forKey:@"blocking_applications"];
 	}
     

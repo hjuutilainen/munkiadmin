@@ -4,6 +4,7 @@
 #import "_PackageMO.h"
 
 const struct PackageMOAttributes PackageMOAttributes = {
+	.hasEmptyBlockingApplications = @"hasEmptyBlockingApplications",
 	.hasUnstagedChanges = @"hasUnstagedChanges",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
@@ -98,6 +99,11 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"hasEmptyBlockingApplicationsValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"hasEmptyBlockingApplications"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"hasUnstagedChangesValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"hasUnstagedChanges"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -151,6 +157,32 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic hasEmptyBlockingApplications;
+
+
+
+- (BOOL)hasEmptyBlockingApplicationsValue {
+	NSNumber *result = [self hasEmptyBlockingApplications];
+	return [result boolValue];
+}
+
+- (void)setHasEmptyBlockingApplicationsValue:(BOOL)value_ {
+	[self setHasEmptyBlockingApplications:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveHasEmptyBlockingApplicationsValue {
+	NSNumber *result = [self primitiveHasEmptyBlockingApplications];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveHasEmptyBlockingApplicationsValue:(BOOL)value_ {
+	[self setPrimitiveHasEmptyBlockingApplications:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

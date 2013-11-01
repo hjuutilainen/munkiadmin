@@ -53,6 +53,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 @synthesize catalogInfosArrayController;
 @synthesize installerEnvironmentVariablesArrayController;
 
+@synthesize temp_blocking_applications_include_empty;
 @synthesize temp_preinstall_script_enabled;
 @synthesize temp_preuninstall_script_enabled;
 @synthesize temp_postinstall_script_enabled;
@@ -227,6 +228,16 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)commitChangesToCurrentPackage
 {
+    // Empty blocking_applications array
+    if (self.temp_blocking_applications_include_empty) {
+        for (StringObjectMO *blockApp in self.pkginfoToEdit.blockingApplications) {
+            [self.pkginfoToEdit removeBlockingApplicationsObject:blockApp];
+        }
+        self.pkginfoToEdit.hasEmptyBlockingApplicationsValue = YES;
+    } else {
+        self.pkginfoToEdit.hasEmptyBlockingApplicationsValue = NO;
+    }
+    
     // Scripts
     if (self.temp_preinstall_script_enabled) {
         if (self.temp_preinstall_script) {
@@ -827,6 +838,12 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     } else {
         self.temp_force_install_after_date_enabled = YES;
         self.temp_force_install_after_date = aPackage.munki_force_install_after_date;
+    }
+    
+    if (aPackage.hasEmptyBlockingApplicationsValue) {
+        self.temp_blocking_applications_include_empty = YES;
+    } else {
+        self.temp_blocking_applications_include_empty = NO;
     }
 
 }
