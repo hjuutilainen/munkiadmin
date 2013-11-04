@@ -18,11 +18,11 @@
 + (id)fileCopySourceURL:(NSURL *)src toTargetURL:(NSURL *)target;
 - (id)initWithSourceURL:(NSURL *)src targetURL:(NSURL *)target;
 
-@property (retain) NSString *currentJobDescription;
-@property (retain) NSString *fileName;
-@property (retain) NSURL *sourceURL;
-@property (retain) NSURL *targetURL;
-@property (retain) id delegate;
+@property (strong) NSString *currentJobDescription;
+@property (strong) NSString *fileName;
+@property (strong) NSURL *sourceURL;
+@property (strong) NSURL *targetURL;
+@property (strong) id delegate;
 
 
 @end

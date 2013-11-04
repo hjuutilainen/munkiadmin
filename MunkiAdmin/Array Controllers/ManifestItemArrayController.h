@@ -12,6 +12,6 @@
 	id tableView;
 }
 
-@property (nonatomic, retain) IBOutlet id tableView;
+@property (nonatomic, strong) IBOutlet id tableView;
 
 @end

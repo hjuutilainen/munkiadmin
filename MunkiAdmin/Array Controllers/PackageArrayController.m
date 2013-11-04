@@ -47,8 +47,8 @@
 {
 	[super awakeFromNib];
 	
-	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
-	NSSortDescriptor *sortByVersion = [[[NSSortDescriptor alloc] initWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	NSSortDescriptor *sortByTitle = [[NSSortDescriptor alloc] initWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortByVersion = [[NSSortDescriptor alloc] initWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByVersion, nil]];
 }
 

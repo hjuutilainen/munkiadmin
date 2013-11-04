@@ -11,23 +11,23 @@
 
 @interface PredicateEditor : NSWindowController {
     NSPredicate *predicate;
-    NSTabView *tabView;
-    NSTextField *customTextField;
-    NSTabViewItem *predicateEditorTabViewItem;
-    NSTabViewItem *customTabViewItem;
-    NSPredicateEditor *predicateEditor;
+    NSTabView *__weak tabView;
+    NSTextField *__weak customTextField;
+    NSTabViewItem *__weak predicateEditorTabViewItem;
+    NSTabViewItem *__weak customTabViewItem;
+    NSPredicateEditor *__weak predicateEditor;
     
-    ConditionalItemMO *conditionToEdit;
+    ConditionalItemMO *__weak conditionToEdit;
     NSString *customPredicateString;
 }
-@property (retain) NSString *customPredicateString;
-@property (assign) ConditionalItemMO *conditionToEdit;
-@property (assign) IBOutlet NSPredicateEditor *predicateEditor;
-@property (retain) NSPredicate *predicate;
-@property (assign) IBOutlet NSTabView *tabView;
-@property (assign) IBOutlet NSTextField *customTextField;
-@property (assign) IBOutlet NSTabViewItem *predicateEditorTabViewItem;
-@property (assign) IBOutlet NSTabViewItem *customTabViewItem;
+@property (strong) NSString *customPredicateString;
+@property (weak) ConditionalItemMO *conditionToEdit;
+@property (weak) IBOutlet NSPredicateEditor *predicateEditor;
+@property (strong) NSPredicate *predicate;
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSTextField *customTextField;
+@property (weak) IBOutlet NSTabViewItem *predicateEditorTabViewItem;
+@property (weak) IBOutlet NSTabViewItem *customTabViewItem;
 
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;

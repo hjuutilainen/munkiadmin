@@ -5,19 +5,19 @@
 
 
 extern const struct ConditionalItemMOAttributes {
-	 NSString *munki_condition;
-	 NSString *originalIndex;
+	__unsafe_unretained NSString *munki_condition;
+	__unsafe_unretained NSString *originalIndex;
 } ConditionalItemMOAttributes;
 
 extern const struct ConditionalItemMORelationships {
-	 NSString *children;
-	 NSString *includedManifests;
-	 NSString *managedInstalls;
-	 NSString *managedUninstalls;
-	 NSString *managedUpdates;
-	 NSString *manifest;
-	 NSString *optionalInstalls;
-	 NSString *parent;
+	__unsafe_unretained NSString *children;
+	__unsafe_unretained NSString *includedManifests;
+	__unsafe_unretained NSString *managedInstalls;
+	__unsafe_unretained NSString *managedUninstalls;
+	__unsafe_unretained NSString *managedUpdates;
+	__unsafe_unretained NSString *manifest;
+	__unsafe_unretained NSString *optionalInstalls;
+	__unsafe_unretained NSString *parent;
 } ConditionalItemMORelationships;
 
 extern const struct ConditionalItemMOFetchedProperties {
@@ -48,7 +48,7 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_condition;
+@property (nonatomic, strong) NSString* munki_condition;
 
 
 
@@ -58,7 +58,7 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -72,56 +72,56 @@ extern const struct ConditionalItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *children;
+@property (nonatomic, strong) NSSet *children;
 
 - (NSMutableSet*)childrenSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *includedManifests;
+@property (nonatomic, strong) NSSet *includedManifests;
 
 - (NSMutableSet*)includedManifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *managedInstalls;
+@property (nonatomic, strong) NSSet *managedInstalls;
 
 - (NSMutableSet*)managedInstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *managedUninstalls;
+@property (nonatomic, strong) NSSet *managedUninstalls;
 
 - (NSMutableSet*)managedUninstallsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *managedUpdates;
+@property (nonatomic, strong) NSSet *managedUpdates;
 
 - (NSMutableSet*)managedUpdatesSet;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) NSSet *optionalInstalls;
+@property (nonatomic, strong) NSSet *optionalInstalls;
 
 - (NSMutableSet*)optionalInstallsSet;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *parent;
+@property (nonatomic, strong) ConditionalItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
 

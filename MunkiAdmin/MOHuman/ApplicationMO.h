@@ -5,7 +5,7 @@
 	BOOL hasCommonDescription;
 }
 
-@property (readonly) NSDictionary *dictValue;
+@property (weak, readonly) NSDictionary *dictValue;
 @property (readonly) BOOL hasCommonDescription;
 
 @end

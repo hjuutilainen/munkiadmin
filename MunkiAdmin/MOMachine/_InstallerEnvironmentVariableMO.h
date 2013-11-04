@@ -5,13 +5,13 @@
 
 
 extern const struct InstallerEnvironmentVariableMOAttributes {
-	 NSString *munki_installer_environment_key;
-	 NSString *munki_installer_environment_value;
-	 NSString *originalIndex;
+	__unsafe_unretained NSString *munki_installer_environment_key;
+	__unsafe_unretained NSString *munki_installer_environment_value;
+	__unsafe_unretained NSString *originalIndex;
 } InstallerEnvironmentVariableMOAttributes;
 
 extern const struct InstallerEnvironmentVariableMORelationships {
-	 NSString *packages;
+	__unsafe_unretained NSString *packages;
 } InstallerEnvironmentVariableMORelationships;
 
 extern const struct InstallerEnvironmentVariableMOFetchedProperties {
@@ -36,7 +36,7 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installer_environment_key;
+@property (nonatomic, strong) NSString* munki_installer_environment_key;
 
 
 
@@ -46,7 +46,7 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installer_environment_value;
+@property (nonatomic, strong) NSString* munki_installer_environment_value;
 
 
 
@@ -56,7 +56,7 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -70,7 +70,7 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *packages;
+@property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 

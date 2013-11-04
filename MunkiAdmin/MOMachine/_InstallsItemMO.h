@@ -5,23 +5,23 @@
 
 
 extern const struct InstallsItemMOAttributes {
-	 NSString *munki_CFBundleIdentifier;
-	 NSString *munki_CFBundleName;
-	 NSString *munki_CFBundleShortVersionString;
-	 NSString *munki_CFBundleVersion;
-	 NSString *munki_md5checksum;
-	 NSString *munki_minosversion;
-	 NSString *munki_path;
-	 NSString *munki_type;
-	 NSString *munki_version_comparison_key;
-	 NSString *munki_version_comparison_key_value;
-	 NSString *originalIndex;
-	 NSString *originalInstallsItem;
+	__unsafe_unretained NSString *munki_CFBundleIdentifier;
+	__unsafe_unretained NSString *munki_CFBundleName;
+	__unsafe_unretained NSString *munki_CFBundleShortVersionString;
+	__unsafe_unretained NSString *munki_CFBundleVersion;
+	__unsafe_unretained NSString *munki_md5checksum;
+	__unsafe_unretained NSString *munki_minosversion;
+	__unsafe_unretained NSString *munki_path;
+	__unsafe_unretained NSString *munki_type;
+	__unsafe_unretained NSString *munki_version_comparison_key;
+	__unsafe_unretained NSString *munki_version_comparison_key_value;
+	__unsafe_unretained NSString *originalIndex;
+	__unsafe_unretained NSString *originalInstallsItem;
 } InstallsItemMOAttributes;
 
 extern const struct InstallsItemMORelationships {
-	 NSString *customKeys;
-	 NSString *packages;
+	__unsafe_unretained NSString *customKeys;
+	__unsafe_unretained NSString *packages;
 } InstallsItemMORelationships;
 
 extern const struct InstallsItemMOFetchedProperties {
@@ -56,7 +56,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_CFBundleIdentifier;
+@property (nonatomic, strong) NSString* munki_CFBundleIdentifier;
 
 
 
@@ -66,7 +66,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_CFBundleName;
+@property (nonatomic, strong) NSString* munki_CFBundleName;
 
 
 
@@ -76,7 +76,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_CFBundleShortVersionString;
+@property (nonatomic, strong) NSString* munki_CFBundleShortVersionString;
 
 
 
@@ -86,7 +86,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_CFBundleVersion;
+@property (nonatomic, strong) NSString* munki_CFBundleVersion;
 
 
 
@@ -96,7 +96,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_md5checksum;
+@property (nonatomic, strong) NSString* munki_md5checksum;
 
 
 
@@ -106,7 +106,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_minosversion;
+@property (nonatomic, strong) NSString* munki_minosversion;
 
 
 
@@ -116,7 +116,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_path;
+@property (nonatomic, strong) NSString* munki_path;
 
 
 
@@ -126,7 +126,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_type;
+@property (nonatomic, strong) NSString* munki_type;
 
 
 
@@ -136,7 +136,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_version_comparison_key;
+@property (nonatomic, strong) NSString* munki_version_comparison_key;
 
 
 
@@ -146,7 +146,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_version_comparison_key_value;
+@property (nonatomic, strong) NSString* munki_version_comparison_key_value;
 
 
 
@@ -156,7 +156,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -170,7 +170,7 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) id originalInstallsItem;
+@property (nonatomic, strong) id originalInstallsItem;
 
 
 
@@ -180,14 +180,14 @@ extern const struct InstallsItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *customKeys;
+@property (nonatomic, strong) NSSet *customKeys;
 
 - (NSMutableSet*)customKeysSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packages;
+@property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 

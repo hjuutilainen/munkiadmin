@@ -42,7 +42,7 @@
 - (void)configureRenameOperation
 {
     NSDictionary *referencingDict = [[MunkiRepositoryManager sharedManager] referencingItemsForPackage:self.packageToRename];
-    NSMutableArray *changeDescriptionsForPackage = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *changeDescriptionsForPackage = [[NSMutableArray alloc] init];
     NSImage *manifestIcon = [NSImage imageNamed:@"manifestIcon_32x32"];
     NSImage *packageIcon = [NSImage imageNamed:@"packageIcon_32x32"];
     [referencingDict enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray *obj, BOOL *stop) {
@@ -254,7 +254,7 @@
        modalForWindow:window
         modalDelegate:delegate
        didEndSelector:selector
-          contextInfo:object];
+          contextInfo:(__bridge void *)(object)];
 }
 
 - (void)windowDidLoad

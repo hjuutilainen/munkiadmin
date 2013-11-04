@@ -1,5 +1,6 @@
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
+#import "CatalogMO.h"
 #import "CatalogInfoMO.h"
 #import "ApplicationMO.h"
 #import "ManagedUpdateMO.h"
@@ -128,7 +129,7 @@
 - (NSDictionary *)manifestInfoDictionary
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
 	
     // =====================
     // catalogs

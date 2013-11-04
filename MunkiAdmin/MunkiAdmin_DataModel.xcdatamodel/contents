@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
+        <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_name" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="applicationProxies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ApplicationProxy" inverseName="parentApplication" inverseEntity="ApplicationProxy" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Manifest" inverseName="applications" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Package" inverseName="parentApplication" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalApplication" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ApplicationProxy" representedClassName="ApplicationProxyMO" syncable="YES">
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="parentApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="applicationProxies" inverseEntity="Application" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Catalog" representedClassName="CatalogMO" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CatalogInfo" inverseName="catalog" inverseEntity="CatalogInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Manifest" inverseName="catalogs" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="packageInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageInfo" inverseName="catalog" inverseEntity="PackageInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="catalogs" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="CatalogInfo" representedClassName="CatalogInfoMO" syncable="YES">
+        <attribute name="indexInManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="isEnabledForManifest" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="isEnabledForPackage" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="catalog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="catalogInfos" inverseEntity="Catalog" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="catalogInfos" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="catalogInfos" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ConditionalItem" representedClassName="ConditionalItemMO" syncable="YES">
+        <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ConditionalItem" inverseName="parent" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="includedManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="includedManifestConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="managedInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUninstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="managedUninstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUpdates" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="managedUpdateConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="conditionalItems" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="optionalInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="children" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Directory" representedClassName="DirectoryMO" parentEntity="PackageSourceListItem" syncable="YES">
+        <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <fetchedProperty name="childPackages" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="parentURL == $FETCH_SOURCE.originalURL"/>
+            <userInfo/>
+        </fetchedProperty>
+        <userInfo/>
+    </entity>
+    <entity name="InstallerChoicesItem" representedClassName="InstallerChoicesItemMO" syncable="YES">
+        <attribute name="munki_attributeSetting" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_choiceAttribute" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_choiceIdentifier" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="Package" inverseName="installerChoicesItems" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="InstallerEnvironmentVariable" representedClassName="InstallerEnvironmentVariableMO" syncable="YES">
+        <attribute name="munki_installer_environment_key" attributeType="String" defaultValueString="NEW_VAR" syncable="YES"/>
+        <attribute name="munki_installer_environment_value" optional="YES" attributeType="String" defaultValueString="VALUE" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installerEnvironmentVariables" inverseEntity="Package" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="InstallsItem" representedClassName="InstallsItemMO" syncable="YES">
+        <attribute name="munki_CFBundleIdentifier" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_CFBundleName" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_CFBundleShortVersionString" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_CFBundleVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_md5checksum" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_minosversion" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_path" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_type" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_version_comparison_key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_version_comparison_key_value" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalInstallsItem" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="customKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallsItemCustomKey" inverseName="installsItem" inverseEntity="InstallsItemCustomKey" indexed="YES" syncable="YES"/>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installsItems" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="InstallsItemCustomKey" representedClassName="InstallsItemCustomKeyMO" syncable="YES">
+        <attribute name="customKeyName" optional="YES" attributeType="String" defaultValueString="NewKey" syncable="YES"/>
+        <attribute name="customKeyValue" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="installsItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="InstallsItem" inverseName="customKeys" inverseEntity="InstallsItem" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="ItemToCopy" representedClassName="ItemToCopyMO" syncable="YES">
+        <attribute name="munki_destination_item" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_destination_path" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_group" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_mode" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_source_item" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_user" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="itemsToCopy" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ManagedInstall" representedClassName="ManagedInstallMO" parentEntity="ApplicationProxy" syncable="YES">
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedInstalls" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ManagedUninstall" representedClassName="ManagedUninstallMO" parentEntity="ApplicationProxy" syncable="YES">
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedUninstalls" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="ManagedUpdate" representedClassName="ManagedUpdateMO" parentEntity="ApplicationProxy" syncable="YES">
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedUpdates" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Manifest" representedClassName="ManifestMO" syncable="YES">
+        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="manifestURL" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalManifest" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="applications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Application" inverseName="manifests" inverseEntity="Application" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CatalogInfo" inverseName="manifest" inverseEntity="CatalogInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="manifests" inverseEntity="Catalog" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="conditionalItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="manifest" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="includedManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestInfo" inverseName="manifest" inverseEntity="ManifestInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="includedManifestsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="manifestReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedInstall" inverseName="manifest" inverseEntity="ManagedInstall" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedInstallsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="managedInstallReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUninstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedUninstall" inverseName="manifest" inverseEntity="ManagedUninstall" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUninstallsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="managedUninstallReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUpdates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedUpdate" inverseName="manifest" inverseEntity="ManagedUpdate" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUpdatesFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="managedUpdateReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifestInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestInfo" inverseName="parentManifest" inverseEntity="ManifestInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OptionalInstall" inverseName="manifest" inverseEntity="OptionalInstall" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="optionalInstallsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="optionalInstallReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <fetchedProperty name="allIncludedManifests" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(manifestReference == $FETCH_SOURCE) OR (includedManifestConditionalReference.manifest == $FETCH_SOURCE)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <fetchedProperty name="allManagedInstalls" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(managedInstallReference == $FETCH_SOURCE) OR (managedInstallConditionalReference.manifest == $FETCH_SOURCE)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <fetchedProperty name="allManagedUninstalls" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(managedUninstallReference == $FETCH_SOURCE) OR (managedUninstallConditionalReference.manifest == $FETCH_SOURCE)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <fetchedProperty name="allManagedUpdates" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(managedUpdateReference == $FETCH_SOURCE) OR (managedUpdateConditionalReference.manifest == $FETCH_SOURCE)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <fetchedProperty name="allOptionalInstalls" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(optionalInstallReference == $FETCH_SOURCE) OR (optionalInstallConditionalReference.manifest == $FETCH_SOURCE)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <userInfo/>
+    </entity>
+    <entity name="ManifestInfo" representedClassName="ManifestInfoMO" syncable="YES">
+        <attribute name="isAvailableForEditing" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="isEnabledForManifest" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="includedManifests" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="parentManifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="manifestInfos" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="OptionalInstall" representedClassName="OptionalInstallMO" parentEntity="ApplicationProxy" syncable="YES">
+        <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="optionalInstalls" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Package" representedClassName="PackageMO" syncable="YES">
+        <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installable_condition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_installcheck_script" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installer_item_hash" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installer_item_location" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installer_item_size" optional="YES" attributeType="Integer 64" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installer_type" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_maximum_os_version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_minimum_munki_version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_minimum_os_version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_notes" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_package_path" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_postinstall_script" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_postuninstall_script" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_preinstall_script" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_preuninstall_script" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_receipts" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_RestartAction" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_suppress_bundle_relocation" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_unattended_install" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_unattended_uninstall" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_uninstall_method" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_uninstall_script" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_uninstallable" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_uninstallcheck_script" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_uninstaller_item_location" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalPkginfo" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageDateCreated" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageDateLastOpened" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageDateModified" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageInfoDateCreated" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageInfoDateLastOpened" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageInfoDateModified" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageInfoURL" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="packageURL" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="titleWithVersion" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="blockingApplications" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="blockingApplicationReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogInfo" inverseName="package" inverseEntity="CatalogInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packages" inverseEntity="Catalog" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="installerChoicesItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InstallerChoicesItem" inverseName="package" inverseEntity="InstallerChoicesItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="installerEnvironmentVariables" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallerEnvironmentVariable" inverseName="packages" inverseEntity="InstallerEnvironmentVariable" indexed="YES" syncable="YES"/>
+        <relationship name="installsItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InstallsItem" inverseName="packages" inverseEntity="InstallsItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="itemsToCopy" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ItemToCopy" inverseName="package" inverseEntity="ItemToCopy" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="packageInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PackageInfo" inverseName="package" inverseEntity="PackageInfo" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="parentApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="packages" inverseEntity="Application" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="receipts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Receipt" inverseName="package" inverseEntity="Receipt" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalPackage" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="requirements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="requiresReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="sourceListItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="packages" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="supportedArchitectures" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="supportedArchitectureReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="updateFor" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="updateForReference" inverseEntity="StringObject" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="PackageInfo" representedClassName="PackageInfoMO" syncable="YES">
+        <attribute name="isEnabledForCatalog" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="catalog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packageInfos" inverseEntity="Catalog" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="packageInfos" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
+        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="parent" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="sourceListItems" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="children" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="Receipt" representedClassName="ReceiptMO" syncable="YES">
+        <attribute name="munki_filename" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_optional" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_packageid" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="receipts" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="StringObject" representedClassName="StringObjectMO" syncable="YES">
+        <attribute name="indexInNestedManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" defaultValueString="New Item" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="typeString" optional="YES" attributeType="String" syncable="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="blockingApplicationReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="blockingApplications" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="includedManifestConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="includedManifests" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedInstallConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="managedInstalls" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedInstallReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedInstallsFaster" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUninstallConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="managedUninstalls" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUninstallReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedUninstallsFaster" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUpdateConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="managedUpdates" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="managedUpdateReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedUpdatesFaster" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="manifestReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="includedManifestsFaster" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="optionalInstallConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="optionalInstalls" inverseEntity="ConditionalItem" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="optionalInstallReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="optionalInstallsFaster" inverseEntity="Manifest" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="originalApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="referencingStringObjects" inverseEntity="Application" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="originalPackage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="referencingStringObjects" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="requiresReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="requirements" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="supportedArchitectureReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="supportedArchitectures" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="updateForReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="updateFor" inverseEntity="Package" indexed="YES" syncable="YES">
+            <userInfo/>
+        </relationship>
+        <fetchedProperty name="manifestsWithSameTitle" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="Manifest" predicateString="title == $FETCH_SOURCE.title"/>
+            <userInfo/>
+        </fetchedProperty>
+        <fetchedProperty name="packagesWithSameTitle" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="(munki_name == $FETCH_SOURCE.title) OR (titleWithVersion == $FETCH_SOURCE.title)"/>
+            <userInfo/>
+        </fetchedProperty>
+        <userInfo/>
+    </entity>
+    <elements>
+        <element name="CatalogInfo" positionX="374" positionY="273" width="128" height="150"/>
+        <element name="InstallerChoicesItem" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="InstallerEnvironmentVariable" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="InstallsItem" positionX="871" positionY="30" width="128" height="255"/>
+        <element name="PackageSourceListItem" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="InstallsItemCustomKey" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="ManagedUninstall" positionX="954" positionY="270" width="128" height="60"/>
+        <element name="ItemToCopy" positionX="97" positionY="630" width="128" height="165"/>
+        <element name="PackageInfo" positionX="299" positionY="10" width="128" height="120"/>
+        <element name="Package" positionX="592" positionY="129" width="128" height="945"/>
+        <element name="Receipt" positionX="578" positionY="627" width="128" height="165"/>
+        <element name="Manifest" positionX="188" positionY="203" width="128" height="419"/>
+        <element name="StringObject" positionX="934" positionY="666" width="128" height="389"/>
+        <element name="OptionalInstall" positionX="1098" positionY="180" width="128" height="60"/>
+        <element name="ApplicationProxy" positionX="882" positionY="558" width="128" height="75"/>
+        <element name="Catalog" positionX="9" positionY="60" width="128" height="120"/>
+        <element name="ManagedUpdate" positionX="1222" positionY="495" width="128" height="60"/>
+        <element name="Application" positionX="374" positionY="549" width="128" height="150"/>
+        <element name="ManifestInfo" positionX="1" positionY="297" width="128" height="105"/>
+        <element name="ConditionalItem" positionX="-236" positionY="171" width="128" height="195"/>
+        <element name="ManagedInstall" positionX="1096" positionY="369" width="128" height="60"/>
+        <element name="Directory" positionX="160" positionY="192" width="128" height="89"/>
+    </elements>
+</model>

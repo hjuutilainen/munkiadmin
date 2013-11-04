@@ -73,8 +73,8 @@
     [self.directoriesTreeController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex,sortByTitle, nil]];
     [self.packagesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByMunkiName, sortByMunkiVersion, nil]];
     
-    self.rightPlaceHolder.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                        endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                        endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
     [self.descriptionTextView setFont:[NSFont systemFontOfSize:11.0]];
     [self.notesTextView setFont:[NSFont systemFontOfSize:11.0]];
@@ -112,16 +112,15 @@
     NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
     for (NSTableColumn *col in tableColumnsSorted) {
-        NSMenuItem *mi = [[[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
                                                     action:@selector(toggleColumn:)
-                                             keyEquivalent:@""] autorelease];
+                                             keyEquivalent:@""];
         mi.target = self;
         mi.representedObject = col;
         [menu addItem:mi];
     }
     menu.delegate = self;
     self.packagesTableView.headerView.menu = menu;
-    [menu release];
     
     /*
      Set the target and action for path controls (pkginfo and installer item)
@@ -224,7 +223,6 @@
             [defaults setBool:YES forKey:moveConfirmationSuppressed];
             [defaults setBool:shouldMove forKey:moveDefaultsKey];
         }
-        [alert release];
     }
     
     return shouldMove;
@@ -407,7 +405,7 @@
                                      [NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             
-            NSMutableArray *temporarySupportedURLs = [[[NSMutableArray alloc] init] autorelease];
+            NSMutableArray *temporarySupportedURLs = [[NSMutableArray alloc] init];
             for (NSURL *uri in urls) {
                 BOOL canImport = [[MunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
                 if (canImport) {

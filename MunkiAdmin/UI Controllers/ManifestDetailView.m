@@ -156,7 +156,6 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 			aCatalogInfo.indexInManifestValue = currentIndex + 1;
 		}
 	}
-	[request release];
 }
 
 - (void)renumberCatalogItems
@@ -188,7 +187,6 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 			aNestedManifest.indexInNestedManifestValue = currentIndex + 1;
 		}
 	}
-	[request release];
 }
 
 - (void)renumberManifestItems

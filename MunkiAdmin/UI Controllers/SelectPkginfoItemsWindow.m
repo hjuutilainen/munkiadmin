@@ -91,7 +91,7 @@
 
 - (NSArray *)selectionAsStringObjects
 {
-    NSMutableArray *items = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *items = [[NSMutableArray alloc] init];
     NSString *selectedTabViewLabel = [[[self tabView] selectedTabViewItem] label];
     if ([selectedTabViewLabel isEqualToString:@"Grouped"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding in Grouped mode");
@@ -151,14 +151,14 @@
 {
     [super windowDidLoad];
     
-    self.indSearchBgView.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.indSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
-    self.groupSearchBgView.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.groupSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
-    self.customBgView.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.customBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     self.customBgView.drawBottomLine = YES;
     self.customBgView.lineColor = [NSColor grayColor];
     

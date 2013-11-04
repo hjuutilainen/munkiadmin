@@ -21,7 +21,7 @@
 
 + (id)fileCopySourceURL:(NSURL *)src toTargetURL:(NSURL *)target
 {
-	return [[[self alloc] initWithSourceURL:src targetURL:target] autorelease];
+	return [[self alloc] initWithSourceURL:src targetURL:target];
 }
 
 - (id)initWithSourceURL:(NSURL *)src targetURL:(NSURL *)target {
@@ -36,20 +36,12 @@
 	return self;
 }
 
-- (void)dealloc {
-	[fileName release];
-	[currentJobDescription release];
-	[sourceURL release];
-    [targetURL release];
-	[delegate release];
-	[super dealloc];
-}
 
 
 
 -(void)main {
 	@try {
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
         NSFileManager *fm = [NSFileManager defaultManager];
         //NSFileManager *fm = [[NSFileManager alloc] init];
         [fm setDelegate:self];
@@ -63,7 +55,7 @@
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copy failed with error: %@",[copyError description]);
         }
 		
-		[pool release];
+		}
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.

@@ -5,17 +5,17 @@
 
 
 extern const struct ReceiptMOAttributes {
-	 NSString *munki_filename;
-	 NSString *munki_installed_size;
-	 NSString *munki_name;
-	 NSString *munki_optional;
-	 NSString *munki_packageid;
-	 NSString *munki_version;
-	 NSString *originalIndex;
+	__unsafe_unretained NSString *munki_filename;
+	__unsafe_unretained NSString *munki_installed_size;
+	__unsafe_unretained NSString *munki_name;
+	__unsafe_unretained NSString *munki_optional;
+	__unsafe_unretained NSString *munki_packageid;
+	__unsafe_unretained NSString *munki_version;
+	__unsafe_unretained NSString *originalIndex;
 } ReceiptMOAttributes;
 
 extern const struct ReceiptMORelationships {
-	 NSString *package;
+	__unsafe_unretained NSString *package;
 } ReceiptMORelationships;
 
 extern const struct ReceiptMOFetchedProperties {
@@ -44,7 +44,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_filename;
+@property (nonatomic, strong) NSString* munki_filename;
 
 
 
@@ -54,7 +54,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_installed_size;
+@property (nonatomic, strong) NSNumber* munki_installed_size;
 
 
 
@@ -68,7 +68,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_name;
+@property (nonatomic, strong) NSString* munki_name;
 
 
 
@@ -78,7 +78,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_optional;
+@property (nonatomic, strong) NSNumber* munki_optional;
 
 
 
@@ -92,7 +92,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_packageid;
+@property (nonatomic, strong) NSString* munki_packageid;
 
 
 
@@ -102,7 +102,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_version;
+@property (nonatomic, strong) NSString* munki_version;
 
 
 
@@ -112,7 +112,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -126,7 +126,7 @@ extern const struct ReceiptMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) PackageMO *package;
+@property (nonatomic, strong) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

@@ -5,14 +5,14 @@
 #import "PackageSourceListItemMO.h"
 
 extern const struct DirectoryMOAttributes {
-	 NSString *originalURL;
+	__unsafe_unretained NSString *originalURL;
 } DirectoryMOAttributes;
 
 extern const struct DirectoryMORelationships {
 } DirectoryMORelationships;
 
 extern const struct DirectoryMOFetchedProperties {
-	 NSString *childPackages;
+	__unsafe_unretained NSString *childPackages;
 } DirectoryMOFetchedProperties;
 
 
@@ -31,7 +31,7 @@ extern const struct DirectoryMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) id originalURL;
+@property (nonatomic, strong) id originalURL;
 
 
 

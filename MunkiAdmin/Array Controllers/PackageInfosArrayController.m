@@ -24,7 +24,7 @@
 	// Reload the table view when catalogs change
 	//[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForCatalog" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
 	
-    NSMenu *theMenu = [[[NSMenu alloc] initWithTitle:@"Contextual Menu"] autorelease];
+    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
 	
 	NSMenuItem *enableSelected = [theMenu insertItemWithTitle:@"Enable Selected" 
                                                        action:@selector(enableSelected:) 

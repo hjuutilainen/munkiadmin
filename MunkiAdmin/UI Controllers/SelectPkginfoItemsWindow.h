@@ -11,33 +11,33 @@
 #import "GradientBackgroundView.h"
 
 @interface SelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
-    PackageArrayController *individualPkgsArrayController;
-    ApplicationsArrayController *groupedPkgsArrayController;
-    NSTabView *tabView;
+    PackageArrayController *__weak individualPkgsArrayController;
+    ApplicationsArrayController *__weak groupedPkgsArrayController;
+    NSTabView *__weak tabView;
     NSInteger currentMode;
-    NSTextField *customValueTextField;
-    GradientBackgroundView *indSearchBgView;
-    GradientBackgroundView *groupSearchBgView;
-    GradientBackgroundView *customBgView;
+    NSTextField *__weak customValueTextField;
+    GradientBackgroundView *__weak indSearchBgView;
+    GradientBackgroundView *__weak groupSearchBgView;
+    GradientBackgroundView *__weak customBgView;
     BOOL shouldHideAddedItems;
     
-    NSSearchField *groupedSearchField;
-    NSSearchField *individualSearchField;
+    NSSearchField *__weak groupedSearchField;
+    NSSearchField *__weak individualSearchField;
     NSPredicate *hideAddedPredicate;
 }
 
-@property (assign) IBOutlet NSSearchField *groupedSearchField;
-@property (assign) IBOutlet NSSearchField *individualSearchField;
-@property (retain) NSPredicate *hideAddedPredicate;
+@property (weak) IBOutlet NSSearchField *groupedSearchField;
+@property (weak) IBOutlet NSSearchField *individualSearchField;
+@property (strong) NSPredicate *hideAddedPredicate;
 @property BOOL shouldHideAddedItems;
-@property (assign) IBOutlet PackageArrayController *individualPkgsArrayController;
-@property (assign) IBOutlet ApplicationsArrayController *groupedPkgsArrayController;
-@property (assign) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet PackageArrayController *individualPkgsArrayController;
+@property (weak) IBOutlet ApplicationsArrayController *groupedPkgsArrayController;
+@property (weak) IBOutlet NSTabView *tabView;
 @property NSInteger currentMode;
-@property (assign) IBOutlet NSTextField *customValueTextField;
-@property (assign) IBOutlet GradientBackgroundView *indSearchBgView;
-@property (assign) IBOutlet GradientBackgroundView *groupSearchBgView;
-@property (assign) IBOutlet GradientBackgroundView *customBgView;
+@property (weak) IBOutlet NSTextField *customValueTextField;
+@property (weak) IBOutlet GradientBackgroundView *indSearchBgView;
+@property (weak) IBOutlet GradientBackgroundView *groupSearchBgView;
+@property (weak) IBOutlet GradientBackgroundView *customBgView;
 
 - (NSArray *)selectionAsStringObjects;
 - (void)updateGroupedSearchPredicate;

@@ -280,11 +280,6 @@
     return undoManager;
 }
 
-- (void)dealloc
-{
-    [undoManager release];
-    [super dealloc];
-}
 
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)targetPackage source:(PackageMO *)sourcePackage delegate:(id)modalDelegate
 {

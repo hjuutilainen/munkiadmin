@@ -94,7 +94,7 @@
     /*
      Now fetch the actual catalog objects
      */
-    NSFetchRequest *catalogFetch = [[NSFetchRequest new] autorelease];
+    NSFetchRequest *catalogFetch = [NSFetchRequest new];
     [catalogFetch setEntity:[NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:self.managedObjectContext]];
     [catalogFetch setPredicate:[NSPredicate predicateWithFormat:@"title IN %@", enabledCatalogTitles]];
     if ([self.managedObjectContext countForFetchRequest:catalogFetch error:nil] > 0) {

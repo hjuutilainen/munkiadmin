@@ -97,7 +97,6 @@
         // Existing directory found.
         directory = [[moc executeFetchRequest:checkForExisting error:nil] objectAtIndex:0];
     }
-    [checkForExisting release];
     return directory;
 }
 
@@ -190,7 +189,6 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
 	NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
-	[fetchRequest release];
 	return fetchResults;
 }
 

@@ -18,23 +18,23 @@
 
 + (id)makecatalogsOperationWithTarget:(NSURL *)target
 {
-	return [[[self alloc] initWithCommand:@"makecatalogs" targetURL:target arguments:nil] autorelease];
+	return [[self alloc] initWithCommand:@"makecatalogs" targetURL:target arguments:nil];
 }
 
 + (id)makepkginfoOperationWithSource:(NSURL *)sourceFile
 {
-	return [[[self alloc] initWithCommand:@"makepkginfo" targetURL:sourceFile arguments:nil] autorelease];
+	return [[self alloc] initWithCommand:@"makepkginfo" targetURL:sourceFile arguments:nil];
 }
 
 + (id)installsItemFromURL:(NSURL *)sourceFile
 {
-	return [[[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:[NSArray arrayWithObject:@"--file"]] autorelease];
+	return [[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:[NSArray arrayWithObject:@"--file"]];
 }
 
 + (id)installsItemFromPath:(NSString *)pathToFile
 {
     NSURL *fileURL = [NSURL fileURLWithPath:pathToFile];
-	return [[[self alloc] initWithCommand:@"installsitem" targetURL:fileURL arguments:[NSArray arrayWithObject:@"--file"]] autorelease];
+	return [[self alloc] initWithCommand:@"installsitem" targetURL:fileURL arguments:[NSArray arrayWithObject:@"--file"]];
 }
 
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args
@@ -50,13 +50,6 @@
 	return self;
 }
 
-- (void)dealloc {
-	[command release];
-	[targetURL release];
-	[arguments release];
-	[delegate release];
-	[super dealloc];
-}
 
 - (NSUserDefaults *)defaults
 {
@@ -65,7 +58,7 @@
 
 - (NSString *)makeCatalogs
 {
-	NSTask *makecatalogsTask = [[[NSTask alloc] init] autorelease];
+	NSTask *makecatalogsTask = [[NSTask alloc] init];
 	NSPipe *makecatalogsPipe = [NSPipe pipe];
 	NSFileHandle *filehandle = [makecatalogsPipe fileHandleForReading];
 	
@@ -78,13 +71,13 @@
 	NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
 	
 	NSString *makecatalogsResults;
-	makecatalogsResults = [[[NSString alloc] initWithData:makecatalogsTaskData encoding:NSUTF8StringEncoding] autorelease];
+	makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData encoding:NSUTF8StringEncoding];
 	return makecatalogsResults;
 }
 
 - (NSDictionary *)makepkginfo
 {
-	NSTask *makepkginfoTask = [[[NSTask alloc] init] autorelease];
+	NSTask *makepkginfoTask = [[NSTask alloc] init];
 	NSPipe *makepkginfoPipe = [NSPipe pipe];
     NSPipe *makepkginfoErrorPipe = [NSPipe pipe];
 	NSFileHandle *filehandle = [makepkginfoPipe fileHandleForReading];
@@ -113,7 +106,7 @@
      */
     NSData *makepkginfoTaskErrorData = [errorfilehandle readDataToEndOfFile];
     NSString *errorString;
-    errorString = [[[NSString alloc] initWithData:makepkginfoTaskErrorData encoding:NSUTF8StringEncoding] autorelease];
+    errorString = [[NSString alloc] initWithData:makepkginfoTaskErrorData encoding:NSUTF8StringEncoding];
     if (![errorString isEqualToString:@""]) {
         NSLog(@"makepkginfo reported error:\n%@", errorString);
         return nil;
@@ -131,7 +124,6 @@
 	if (!plist) {
 		if ([self.defaults boolForKey:@"debug"]) {
 			NSLog(@"MunkiOperation:makepkginfo:error:%@", [error description]);
-			[error release];
 		}
 		return nil;
 	}
@@ -145,41 +137,41 @@
 
 -(void)main {
 	@try {
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
 		
-		if ([self.command isEqualToString:@"makecatalogs"]) {
-			NSString *results = [self makeCatalogs];
+			if ([self.command isEqualToString:@"makecatalogs"]) {
+				NSString *results = [self makeCatalogs];
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makecatalogs");
-			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
-		}
-		
-		else if ([self.command isEqualToString:@"makepkginfo"]) {
-			NSDictionary *pkginfo = [self makepkginfo];
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
+			}
+			
+			else if ([self.command isEqualToString:@"makepkginfo"]) {
+				NSDictionary *pkginfo = [self makepkginfo];
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo");
-			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
-			if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
-				[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:) 
-												withObject:pkginfo
-											 waitUntilDone:YES];
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+				if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
+					[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:) 
+													withObject:pkginfo
+												 waitUntilDone:YES];
+				}
 			}
-		}
-		
-		else if ([self.command isEqualToString:@"installsitem"]) {
-			NSDictionary *pkginfo = [self makepkginfo];
+			
+			else if ([self.command isEqualToString:@"installsitem"]) {
+				NSDictionary *pkginfo = [self makepkginfo];
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:installsitem");
-			if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
-			if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
-				[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:) 
-												withObject:pkginfo
-											 waitUntilDone:YES];
+				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+				if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
+					[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:) 
+													withObject:pkginfo
+												 waitUntilDone:YES];
+				}
 			}
-		}
+			
+			else {
+				NSLog(@"Command not recognized: %@", self.command);
+			}
 		
-		else {
-			NSLog(@"Command not recognized: %@", self.command);
 		}
-		
-		[pool release];
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.

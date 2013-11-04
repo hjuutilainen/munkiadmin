@@ -8,7 +8,7 @@ extern const struct ManagedUpdateMOAttributes {
 } ManagedUpdateMOAttributes;
 
 extern const struct ManagedUpdateMORelationships {
-	 NSString *manifest;
+	__unsafe_unretained NSString *manifest;
 } ManagedUpdateMORelationships;
 
 extern const struct ManagedUpdateMOFetchedProperties {
@@ -30,7 +30,7 @@ extern const struct ManagedUpdateMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 

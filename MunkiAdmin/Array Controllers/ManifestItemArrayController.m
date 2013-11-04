@@ -17,7 +17,7 @@
 {
 	[super awakeFromNib];
 	
-	NSMenu *theMenu = [[[NSMenu alloc] initWithTitle:@"Contextual Menu"] autorelease];
+	NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
 	
 	NSMenuItem *enableSelected = [theMenu insertItemWithTitle:@"Enable Selected" 
 												   action:@selector(enableSelected:) 

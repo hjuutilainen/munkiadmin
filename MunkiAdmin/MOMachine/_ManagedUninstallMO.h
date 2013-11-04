@@ -8,7 +8,7 @@ extern const struct ManagedUninstallMOAttributes {
 } ManagedUninstallMOAttributes;
 
 extern const struct ManagedUninstallMORelationships {
-	 NSString *manifest;
+	__unsafe_unretained NSString *manifest;
 } ManagedUninstallMORelationships;
 
 extern const struct ManagedUninstallMOFetchedProperties {
@@ -30,7 +30,7 @@ extern const struct ManagedUninstallMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 

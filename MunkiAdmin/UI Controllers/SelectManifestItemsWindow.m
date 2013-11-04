@@ -27,12 +27,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [originalPredicate release];
-    [manifestsArrayController release];
-    [super dealloc];
-}
 
 - (void)updateSearchPredicate
 {
@@ -52,11 +46,11 @@
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self.manifestsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
     
-    self.existingSearchBgView.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.existingSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
-    self.customValueBgView.fillGradient = [[[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]] autorelease];
+    self.customValueBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     self.customValueBgView.drawBottomLine = YES;
     self.customValueBgView.lineColor = [NSColor grayColor];
     
@@ -73,7 +67,6 @@
 
 - (void)setOriginalPredicate:(NSPredicate *)newPredicate {
     if (originalPredicate != newPredicate) {
-        [originalPredicate release];
         originalPredicate = [newPredicate copy];
         [self.manifestsArrayController setFilterPredicate:originalPredicate];
     }

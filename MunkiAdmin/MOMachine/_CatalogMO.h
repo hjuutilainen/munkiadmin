@@ -5,14 +5,14 @@
 
 
 extern const struct CatalogMOAttributes {
-	 NSString *title;
+	__unsafe_unretained NSString *title;
 } CatalogMOAttributes;
 
 extern const struct CatalogMORelationships {
-	 NSString *catalogInfos;
-	 NSString *manifests;
-	 NSString *packageInfos;
-	 NSString *packages;
+	__unsafe_unretained NSString *catalogInfos;
+	__unsafe_unretained NSString *manifests;
+	__unsafe_unretained NSString *packageInfos;
+	__unsafe_unretained NSString *packages;
 } CatalogMORelationships;
 
 extern const struct CatalogMOFetchedProperties {
@@ -38,7 +38,7 @@ extern const struct CatalogMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* title;
+@property (nonatomic, strong) NSString* title;
 
 
 
@@ -48,28 +48,28 @@ extern const struct CatalogMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *catalogInfos;
+@property (nonatomic, strong) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *manifests;
+@property (nonatomic, strong) NSSet *manifests;
 
 - (NSMutableSet*)manifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packageInfos;
+@property (nonatomic, strong) NSSet *packageInfos;
 
 - (NSMutableSet*)packageInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packages;
+@property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 

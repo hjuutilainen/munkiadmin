@@ -40,7 +40,7 @@ unichar kSeparatorCharacter = 0x02192;
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
+    NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
     if (conditionalItem.munki_condition != nil) [tmpDict setObject:conditionalItem.munki_condition forKey:@"condition"];
     
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];

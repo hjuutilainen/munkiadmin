@@ -5,34 +5,34 @@
 
 
 extern const struct StringObjectMOAttributes {
-	 NSString *indexInNestedManifest;
-	 NSString *originalIndex;
-	 NSString *title;
-	 NSString *typeString;
+	__unsafe_unretained NSString *indexInNestedManifest;
+	__unsafe_unretained NSString *originalIndex;
+	__unsafe_unretained NSString *title;
+	__unsafe_unretained NSString *typeString;
 } StringObjectMOAttributes;
 
 extern const struct StringObjectMORelationships {
-	 NSString *blockingApplicationReference;
-	 NSString *includedManifestConditionalReference;
-	 NSString *managedInstallConditionalReference;
-	 NSString *managedInstallReference;
-	 NSString *managedUninstallConditionalReference;
-	 NSString *managedUninstallReference;
-	 NSString *managedUpdateConditionalReference;
-	 NSString *managedUpdateReference;
-	 NSString *manifestReference;
-	 NSString *optionalInstallConditionalReference;
-	 NSString *optionalInstallReference;
-	 NSString *originalApplication;
-	 NSString *originalPackage;
-	 NSString *requiresReference;
-	 NSString *supportedArchitectureReference;
-	 NSString *updateForReference;
+	__unsafe_unretained NSString *blockingApplicationReference;
+	__unsafe_unretained NSString *includedManifestConditionalReference;
+	__unsafe_unretained NSString *managedInstallConditionalReference;
+	__unsafe_unretained NSString *managedInstallReference;
+	__unsafe_unretained NSString *managedUninstallConditionalReference;
+	__unsafe_unretained NSString *managedUninstallReference;
+	__unsafe_unretained NSString *managedUpdateConditionalReference;
+	__unsafe_unretained NSString *managedUpdateReference;
+	__unsafe_unretained NSString *manifestReference;
+	__unsafe_unretained NSString *optionalInstallConditionalReference;
+	__unsafe_unretained NSString *optionalInstallReference;
+	__unsafe_unretained NSString *originalApplication;
+	__unsafe_unretained NSString *originalPackage;
+	__unsafe_unretained NSString *requiresReference;
+	__unsafe_unretained NSString *supportedArchitectureReference;
+	__unsafe_unretained NSString *updateForReference;
 } StringObjectMORelationships;
 
 extern const struct StringObjectMOFetchedProperties {
-	 NSString *manifestsWithSameTitle;
-	 NSString *packagesWithSameTitle;
+	__unsafe_unretained NSString *manifestsWithSameTitle;
+	__unsafe_unretained NSString *packagesWithSameTitle;
 } StringObjectMOFetchedProperties;
 
 @class PackageMO;
@@ -70,7 +70,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* indexInNestedManifest;
+@property (nonatomic, strong) NSNumber* indexInNestedManifest;
 
 
 
@@ -84,7 +84,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -98,7 +98,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* title;
+@property (nonatomic, strong) NSString* title;
 
 
 
@@ -108,7 +108,7 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* typeString;
+@property (nonatomic, strong) NSString* typeString;
 
 
 
@@ -118,112 +118,112 @@ extern const struct StringObjectMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) PackageMO *blockingApplicationReference;
+@property (nonatomic, strong) PackageMO *blockingApplicationReference;
 
 //- (BOOL)validateBlockingApplicationReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *includedManifestConditionalReference;
+@property (nonatomic, strong) ConditionalItemMO *includedManifestConditionalReference;
 
 //- (BOOL)validateIncludedManifestConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *managedInstallConditionalReference;
+@property (nonatomic, strong) ConditionalItemMO *managedInstallConditionalReference;
 
 //- (BOOL)validateManagedInstallConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *managedInstallReference;
+@property (nonatomic, strong) ManifestMO *managedInstallReference;
 
 //- (BOOL)validateManagedInstallReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *managedUninstallConditionalReference;
+@property (nonatomic, strong) ConditionalItemMO *managedUninstallConditionalReference;
 
 //- (BOOL)validateManagedUninstallConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *managedUninstallReference;
+@property (nonatomic, strong) ManifestMO *managedUninstallReference;
 
 //- (BOOL)validateManagedUninstallReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *managedUpdateConditionalReference;
+@property (nonatomic, strong) ConditionalItemMO *managedUpdateConditionalReference;
 
 //- (BOOL)validateManagedUpdateConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *managedUpdateReference;
+@property (nonatomic, strong) ManifestMO *managedUpdateReference;
 
 //- (BOOL)validateManagedUpdateReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *manifestReference;
+@property (nonatomic, strong) ManifestMO *manifestReference;
 
 //- (BOOL)validateManifestReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ConditionalItemMO *optionalInstallConditionalReference;
+@property (nonatomic, strong) ConditionalItemMO *optionalInstallConditionalReference;
 
 //- (BOOL)validateOptionalInstallConditionalReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *optionalInstallReference;
+@property (nonatomic, strong) ManifestMO *optionalInstallReference;
 
 //- (BOOL)validateOptionalInstallReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ApplicationMO *originalApplication;
+@property (nonatomic, strong) ApplicationMO *originalApplication;
 
 //- (BOOL)validateOriginalApplication:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *originalPackage;
+@property (nonatomic, strong) PackageMO *originalPackage;
 
 //- (BOOL)validateOriginalPackage:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *requiresReference;
+@property (nonatomic, strong) PackageMO *requiresReference;
 
 //- (BOOL)validateRequiresReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *supportedArchitectureReference;
+@property (nonatomic, strong) PackageMO *supportedArchitectureReference;
 
 //- (BOOL)validateSupportedArchitectureReference:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *updateForReference;
+@property (nonatomic, strong) PackageMO *updateForReference;
 
 //- (BOOL)validateUpdateForReference:(id*)value_ error:(NSError**)error_;
 

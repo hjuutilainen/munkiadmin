@@ -5,16 +5,16 @@
 
 
 extern const struct PackageSourceListItemMOAttributes {
-	 NSString *isGroupItem;
-	 NSString *originalIndex;
-	 NSString *title;
-	 NSString *type;
+	__unsafe_unretained NSString *isGroupItem;
+	__unsafe_unretained NSString *originalIndex;
+	__unsafe_unretained NSString *title;
+	__unsafe_unretained NSString *type;
 } PackageSourceListItemMOAttributes;
 
 extern const struct PackageSourceListItemMORelationships {
-	 NSString *children;
-	 NSString *packages;
-	 NSString *parent;
+	__unsafe_unretained NSString *children;
+	__unsafe_unretained NSString *packages;
+	__unsafe_unretained NSString *parent;
 } PackageSourceListItemMORelationships;
 
 extern const struct PackageSourceListItemMOFetchedProperties {
@@ -42,7 +42,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isGroupItem;
+@property (nonatomic, strong) NSNumber* isGroupItem;
 
 
 
@@ -56,7 +56,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -70,7 +70,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* title;
+@property (nonatomic, strong) NSString* title;
 
 
 
@@ -80,7 +80,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* type;
+@property (nonatomic, strong) NSString* type;
 
 
 
@@ -90,21 +90,21 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *children;
+@property (nonatomic, strong) NSSet *children;
 
 - (NSMutableSet*)childrenSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packages;
+@property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
 
 
 
-@property (nonatomic, retain) PackageSourceListItemMO *parent;
+@property (nonatomic, strong) PackageSourceListItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
 

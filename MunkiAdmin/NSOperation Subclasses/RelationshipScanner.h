@@ -24,12 +24,12 @@
 - (id)initWithMode:(NSInteger)mode;
 
 @property NSInteger operationMode;
-@property (retain) NSString *currentJobDescription;
-@property (retain) NSString *fileName;
-@property (retain) id delegate;
-@property (retain) NSArray *allApplications;
-@property (retain) NSArray *allPackages;
-@property (retain) NSArray *allCatalogs;
-@property (retain) NSArray *allManifests;
+@property (strong) NSString *currentJobDescription;
+@property (strong) NSString *fileName;
+@property (strong) id delegate;
+@property (strong) NSArray *allApplications;
+@property (strong) NSArray *allPackages;
+@property (strong) NSArray *allCatalogs;
+@property (strong) NSArray *allManifests;
 
 @end

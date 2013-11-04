@@ -23,10 +23,10 @@
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args;
 - (NSUserDefaults *)defaults;
 
-@property (retain) NSString *command;
-@property (retain) NSURL *targetURL;
-@property (retain) NSArray *arguments;
-@property (retain) id delegate;
+@property (strong) NSString *command;
+@property (strong) NSURL *targetURL;
+@property (strong) NSArray *arguments;
+@property (strong) id delegate;
 
 @end
 

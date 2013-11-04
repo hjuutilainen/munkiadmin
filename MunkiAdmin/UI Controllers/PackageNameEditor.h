@@ -14,9 +14,9 @@
     NSString *oldName;
     NSString *changedName;
     NSArray *changeDescriptions;
-    NSArrayController *changeDescriptionsArrayController;
+    NSArrayController *__weak changeDescriptionsArrayController;
     NSUndoManager *undoManager;
-    PackageMO *packageToRename;
+    PackageMO *__weak packageToRename;
     
 }
 
@@ -25,11 +25,11 @@
 - (IBAction)okAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 
-@property (assign) PackageMO *packageToRename;
+@property (weak) PackageMO *packageToRename;
 @property BOOL shouldRenameAll;
-@property (retain) NSString *changedName;
-@property (retain) NSString *oldName;
-@property (retain) NSArray *changeDescriptions;
-@property (assign) IBOutlet NSArrayController *changeDescriptionsArrayController;
+@property (strong) NSString *changedName;
+@property (strong) NSString *oldName;
+@property (strong) NSArray *changeDescriptions;
+@property (weak) IBOutlet NSArrayController *changeDescriptionsArrayController;
 
 @end

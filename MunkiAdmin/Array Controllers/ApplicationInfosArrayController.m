@@ -14,7 +14,7 @@
 {
 	[super awakeFromNib];
 	
-	NSSortDescriptor *sortByTitle = [[[NSSortDescriptor alloc] initWithKey:@"application.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)] autorelease];
+	NSSortDescriptor *sortByTitle = [[NSSortDescriptor alloc] initWithKey:@"application.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
 	
 	// Reload the table view when catalogs change

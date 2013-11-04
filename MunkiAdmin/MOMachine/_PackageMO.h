@@ -5,70 +5,70 @@
 
 
 extern const struct PackageMOAttributes {
-	 NSString *hasEmptyBlockingApplications;
-	 NSString *hasUnstagedChanges;
-	 NSString *munki_RestartAction;
-	 NSString *munki_autoremove;
-	 NSString *munki_description;
-	 NSString *munki_display_name;
-	 NSString *munki_force_install_after_date;
-	 NSString *munki_forced_install;
-	 NSString *munki_forced_uninstall;
-	 NSString *munki_installable_condition;
-	 NSString *munki_installcheck_script;
-	 NSString *munki_installed_size;
-	 NSString *munki_installer_item_hash;
-	 NSString *munki_installer_item_location;
-	 NSString *munki_installer_item_size;
-	 NSString *munki_installer_type;
-	 NSString *munki_maximum_os_version;
-	 NSString *munki_minimum_munki_version;
-	 NSString *munki_minimum_os_version;
-	 NSString *munki_name;
-	 NSString *munki_notes;
-	 NSString *munki_package_path;
-	 NSString *munki_postinstall_script;
-	 NSString *munki_postuninstall_script;
-	 NSString *munki_preinstall_script;
-	 NSString *munki_preuninstall_script;
-	 NSString *munki_receipts;
-	 NSString *munki_suppress_bundle_relocation;
-	 NSString *munki_unattended_install;
-	 NSString *munki_unattended_uninstall;
-	 NSString *munki_uninstall_method;
-	 NSString *munki_uninstall_script;
-	 NSString *munki_uninstallable;
-	 NSString *munki_uninstallcheck_script;
-	 NSString *munki_uninstaller_item_location;
-	 NSString *munki_version;
-	 NSString *originalPkginfo;
-	 NSString *packageDateCreated;
-	 NSString *packageDateLastOpened;
-	 NSString *packageDateModified;
-	 NSString *packageInfoDateCreated;
-	 NSString *packageInfoDateLastOpened;
-	 NSString *packageInfoDateModified;
-	 NSString *packageInfoURL;
-	 NSString *packageURL;
-	 NSString *titleWithVersion;
+	__unsafe_unretained NSString *hasEmptyBlockingApplications;
+	__unsafe_unretained NSString *hasUnstagedChanges;
+	__unsafe_unretained NSString *munki_RestartAction;
+	__unsafe_unretained NSString *munki_autoremove;
+	__unsafe_unretained NSString *munki_description;
+	__unsafe_unretained NSString *munki_display_name;
+	__unsafe_unretained NSString *munki_force_install_after_date;
+	__unsafe_unretained NSString *munki_forced_install;
+	__unsafe_unretained NSString *munki_forced_uninstall;
+	__unsafe_unretained NSString *munki_installable_condition;
+	__unsafe_unretained NSString *munki_installcheck_script;
+	__unsafe_unretained NSString *munki_installed_size;
+	__unsafe_unretained NSString *munki_installer_item_hash;
+	__unsafe_unretained NSString *munki_installer_item_location;
+	__unsafe_unretained NSString *munki_installer_item_size;
+	__unsafe_unretained NSString *munki_installer_type;
+	__unsafe_unretained NSString *munki_maximum_os_version;
+	__unsafe_unretained NSString *munki_minimum_munki_version;
+	__unsafe_unretained NSString *munki_minimum_os_version;
+	__unsafe_unretained NSString *munki_name;
+	__unsafe_unretained NSString *munki_notes;
+	__unsafe_unretained NSString *munki_package_path;
+	__unsafe_unretained NSString *munki_postinstall_script;
+	__unsafe_unretained NSString *munki_postuninstall_script;
+	__unsafe_unretained NSString *munki_preinstall_script;
+	__unsafe_unretained NSString *munki_preuninstall_script;
+	__unsafe_unretained NSString *munki_receipts;
+	__unsafe_unretained NSString *munki_suppress_bundle_relocation;
+	__unsafe_unretained NSString *munki_unattended_install;
+	__unsafe_unretained NSString *munki_unattended_uninstall;
+	__unsafe_unretained NSString *munki_uninstall_method;
+	__unsafe_unretained NSString *munki_uninstall_script;
+	__unsafe_unretained NSString *munki_uninstallable;
+	__unsafe_unretained NSString *munki_uninstallcheck_script;
+	__unsafe_unretained NSString *munki_uninstaller_item_location;
+	__unsafe_unretained NSString *munki_version;
+	__unsafe_unretained NSString *originalPkginfo;
+	__unsafe_unretained NSString *packageDateCreated;
+	__unsafe_unretained NSString *packageDateLastOpened;
+	__unsafe_unretained NSString *packageDateModified;
+	__unsafe_unretained NSString *packageInfoDateCreated;
+	__unsafe_unretained NSString *packageInfoDateLastOpened;
+	__unsafe_unretained NSString *packageInfoDateModified;
+	__unsafe_unretained NSString *packageInfoURL;
+	__unsafe_unretained NSString *packageURL;
+	__unsafe_unretained NSString *titleWithVersion;
 } PackageMOAttributes;
 
 extern const struct PackageMORelationships {
-	 NSString *blockingApplications;
-	 NSString *catalogInfos;
-	 NSString *catalogs;
-	 NSString *installerChoicesItems;
-	 NSString *installerEnvironmentVariables;
-	 NSString *installsItems;
-	 NSString *itemsToCopy;
-	 NSString *packageInfos;
-	 NSString *parentApplication;
-	 NSString *receipts;
-	 NSString *referencingStringObjects;
-	 NSString *requirements;
-	 NSString *sourceListItems;
-	 NSString *supportedArchitectures;
-	 NSString *updateFor;
+	__unsafe_unretained NSString *blockingApplications;
+	__unsafe_unretained NSString *catalogInfos;
+	__unsafe_unretained NSString *catalogs;
+	__unsafe_unretained NSString *installerChoicesItems;
+	__unsafe_unretained NSString *installerEnvironmentVariables;
+	__unsafe_unretained NSString *installsItems;
+	__unsafe_unretained NSString *itemsToCopy;
+	__unsafe_unretained NSString *packageInfos;
+	__unsafe_unretained NSString *parentApplication;
+	__unsafe_unretained NSString *receipts;
+	__unsafe_unretained NSString *referencingStringObjects;
+	__unsafe_unretained NSString *requirements;
+	__unsafe_unretained NSString *sourceListItems;
+	__unsafe_unretained NSString *supportedArchitectures;
+	__unsafe_unretained NSString *updateFor;
 } PackageMORelationships;
 
 extern const struct PackageMOFetchedProperties {
@@ -150,7 +150,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* hasEmptyBlockingApplications;
+@property (nonatomic, strong) NSNumber* hasEmptyBlockingApplications;
 
 
 
@@ -164,7 +164,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* hasUnstagedChanges;
+@property (nonatomic, strong) NSNumber* hasUnstagedChanges;
 
 
 
@@ -178,7 +178,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_RestartAction;
+@property (nonatomic, strong) NSString* munki_RestartAction;
 
 
 
@@ -188,7 +188,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_autoremove;
+@property (nonatomic, strong) NSNumber* munki_autoremove;
 
 
 
@@ -202,7 +202,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_description;
+@property (nonatomic, strong) NSString* munki_description;
 
 
 
@@ -212,7 +212,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_display_name;
+@property (nonatomic, strong) NSString* munki_display_name;
 
 
 
@@ -222,7 +222,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* munki_force_install_after_date;
+@property (nonatomic, strong) NSDate* munki_force_install_after_date;
 
 
 
@@ -232,7 +232,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_forced_install;
+@property (nonatomic, strong) NSNumber* munki_forced_install;
 
 
 
@@ -246,7 +246,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_forced_uninstall;
+@property (nonatomic, strong) NSNumber* munki_forced_uninstall;
 
 
 
@@ -260,7 +260,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installable_condition;
+@property (nonatomic, strong) NSString* munki_installable_condition;
 
 
 
@@ -270,7 +270,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installcheck_script;
+@property (nonatomic, strong) NSString* munki_installcheck_script;
 
 
 
@@ -280,7 +280,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_installed_size;
+@property (nonatomic, strong) NSNumber* munki_installed_size;
 
 
 
@@ -294,7 +294,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installer_item_hash;
+@property (nonatomic, strong) NSString* munki_installer_item_hash;
 
 
 
@@ -304,7 +304,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installer_item_location;
+@property (nonatomic, strong) NSString* munki_installer_item_location;
 
 
 
@@ -314,7 +314,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_installer_item_size;
+@property (nonatomic, strong) NSNumber* munki_installer_item_size;
 
 
 
@@ -328,7 +328,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_installer_type;
+@property (nonatomic, strong) NSString* munki_installer_type;
 
 
 
@@ -338,7 +338,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_maximum_os_version;
+@property (nonatomic, strong) NSString* munki_maximum_os_version;
 
 
 
@@ -348,7 +348,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_minimum_munki_version;
+@property (nonatomic, strong) NSString* munki_minimum_munki_version;
 
 
 
@@ -358,7 +358,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_minimum_os_version;
+@property (nonatomic, strong) NSString* munki_minimum_os_version;
 
 
 
@@ -368,7 +368,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_name;
+@property (nonatomic, strong) NSString* munki_name;
 
 
 
@@ -378,7 +378,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_notes;
+@property (nonatomic, strong) NSString* munki_notes;
 
 
 
@@ -388,7 +388,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_package_path;
+@property (nonatomic, strong) NSString* munki_package_path;
 
 
 
@@ -398,7 +398,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_postinstall_script;
+@property (nonatomic, strong) NSString* munki_postinstall_script;
 
 
 
@@ -408,7 +408,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_postuninstall_script;
+@property (nonatomic, strong) NSString* munki_postuninstall_script;
 
 
 
@@ -418,7 +418,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_preinstall_script;
+@property (nonatomic, strong) NSString* munki_preinstall_script;
 
 
 
@@ -428,7 +428,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_preuninstall_script;
+@property (nonatomic, strong) NSString* munki_preuninstall_script;
 
 
 
@@ -438,7 +438,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_receipts;
+@property (nonatomic, strong) NSString* munki_receipts;
 
 
 
@@ -448,7 +448,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_suppress_bundle_relocation;
+@property (nonatomic, strong) NSNumber* munki_suppress_bundle_relocation;
 
 
 
@@ -462,7 +462,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_unattended_install;
+@property (nonatomic, strong) NSNumber* munki_unattended_install;
 
 
 
@@ -476,7 +476,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_unattended_uninstall;
+@property (nonatomic, strong) NSNumber* munki_unattended_uninstall;
 
 
 
@@ -490,7 +490,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_uninstall_method;
+@property (nonatomic, strong) NSString* munki_uninstall_method;
 
 
 
@@ -500,7 +500,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_uninstall_script;
+@property (nonatomic, strong) NSString* munki_uninstall_script;
 
 
 
@@ -510,7 +510,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* munki_uninstallable;
+@property (nonatomic, strong) NSNumber* munki_uninstallable;
 
 
 
@@ -524,7 +524,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_uninstallcheck_script;
+@property (nonatomic, strong) NSString* munki_uninstallcheck_script;
 
 
 
@@ -534,7 +534,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_uninstaller_item_location;
+@property (nonatomic, strong) NSString* munki_uninstaller_item_location;
 
 
 
@@ -544,7 +544,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_version;
+@property (nonatomic, strong) NSString* munki_version;
 
 
 
@@ -554,7 +554,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) id originalPkginfo;
+@property (nonatomic, strong) id originalPkginfo;
 
 
 
@@ -564,7 +564,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageDateCreated;
+@property (nonatomic, strong) NSDate* packageDateCreated;
 
 
 
@@ -574,7 +574,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageDateLastOpened;
+@property (nonatomic, strong) NSDate* packageDateLastOpened;
 
 
 
@@ -584,7 +584,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageDateModified;
+@property (nonatomic, strong) NSDate* packageDateModified;
 
 
 
@@ -594,7 +594,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageInfoDateCreated;
+@property (nonatomic, strong) NSDate* packageInfoDateCreated;
 
 
 
@@ -604,7 +604,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageInfoDateLastOpened;
+@property (nonatomic, strong) NSDate* packageInfoDateLastOpened;
 
 
 
@@ -614,7 +614,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSDate* packageInfoDateModified;
+@property (nonatomic, strong) NSDate* packageInfoDateModified;
 
 
 
@@ -624,7 +624,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) id packageInfoURL;
+@property (nonatomic, strong) id packageInfoURL;
 
 
 
@@ -634,7 +634,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) id packageURL;
+@property (nonatomic, strong) id packageURL;
 
 
 
@@ -644,7 +644,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* titleWithVersion;
+@property (nonatomic, strong) NSString* titleWithVersion;
 
 
 
@@ -654,105 +654,105 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *blockingApplications;
+@property (nonatomic, strong) NSSet *blockingApplications;
 
 - (NSMutableSet*)blockingApplicationsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *catalogInfos;
+@property (nonatomic, strong) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *catalogs;
+@property (nonatomic, strong) NSSet *catalogs;
 
 - (NSMutableSet*)catalogsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *installerChoicesItems;
+@property (nonatomic, strong) NSSet *installerChoicesItems;
 
 - (NSMutableSet*)installerChoicesItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *installerEnvironmentVariables;
+@property (nonatomic, strong) NSSet *installerEnvironmentVariables;
 
 - (NSMutableSet*)installerEnvironmentVariablesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *installsItems;
+@property (nonatomic, strong) NSSet *installsItems;
 
 - (NSMutableSet*)installsItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *itemsToCopy;
+@property (nonatomic, strong) NSSet *itemsToCopy;
 
 - (NSMutableSet*)itemsToCopySet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packageInfos;
+@property (nonatomic, strong) NSSet *packageInfos;
 
 - (NSMutableSet*)packageInfosSet;
 
 
 
 
-@property (nonatomic, retain) ApplicationMO *parentApplication;
+@property (nonatomic, strong) ApplicationMO *parentApplication;
 
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) NSSet *receipts;
+@property (nonatomic, strong) NSSet *receipts;
 
 - (NSMutableSet*)receiptsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *referencingStringObjects;
+@property (nonatomic, strong) NSSet *referencingStringObjects;
 
 - (NSMutableSet*)referencingStringObjectsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *requirements;
+@property (nonatomic, strong) NSSet *requirements;
 
 - (NSMutableSet*)requirementsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *sourceListItems;
+@property (nonatomic, strong) NSSet *sourceListItems;
 
 - (NSMutableSet*)sourceListItemsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *supportedArchitectures;
+@property (nonatomic, strong) NSSet *supportedArchitectures;
 
 - (NSMutableSet*)supportedArchitecturesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *updateFor;
+@property (nonatomic, strong) NSSet *updateFor;
 
 - (NSMutableSet*)updateForSet;
 

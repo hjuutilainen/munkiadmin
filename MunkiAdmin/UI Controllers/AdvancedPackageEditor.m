@@ -84,11 +84,6 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     return undoManager;
 }
 
-- (void)dealloc
-{
-    [undoManager release];
-    [super dealloc];
-}
 
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate
 {
@@ -98,7 +93,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     // Set the force_install_after_date date picker to use UTC
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     [gregorian setTimeZone:timeZoneUTC];
     [self.forceInstallDatePicker setCalendar:gregorian];
     [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
@@ -603,16 +598,15 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
             // Title is empty so this is the icon column
             menuItemTitle = @"Icon";
         }
-        NSMenuItem *newMenuItem = [[[NSMenuItem alloc] initWithTitle:menuItemTitle
+        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                               action:@selector(toggleColumn:)
-                                                       keyEquivalent:@""] autorelease];
+                                                       keyEquivalent:@""];
         newMenuItem.target = self;
         newMenuItem.representedObject = aColumn;
         [installsItemsHeaderMenu addItem:newMenuItem];
     }
     installsItemsHeaderMenu.delegate = self;
     self.installsTableView.headerView.menu = installsItemsHeaderMenu;
-    [installsItemsHeaderMenu release];
     
     [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
     [self.installsTableView setDelegate:self];
@@ -633,16 +627,15 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
             // Optional check box column
             menuItemTitle = @"Optional";
         }
-        NSMenuItem *newMenuItem = [[[NSMenuItem alloc] initWithTitle:menuItemTitle
+        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                               action:@selector(toggleColumn:)
-                                                       keyEquivalent:@""] autorelease];
+                                                       keyEquivalent:@""];
         newMenuItem.target = self;
         newMenuItem.representedObject = aColumn;
         [receiptsHeaderMenu addItem:newMenuItem];
     }
     receiptsHeaderMenu.delegate = self;
     self.receiptsTableView.headerView.menu = receiptsHeaderMenu;
-    [receiptsHeaderMenu release];
     
     [self.receiptsTableView setDelegate:self];
     [self.receiptsTableView setDataSource:self];
@@ -717,7 +710,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     // Set the force_install_after_date date picker to use UTC
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     [gregorian setTimeZone:timeZoneUTC];
     [self.forceInstallDatePicker setCalendar:gregorian];
     [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
@@ -822,13 +815,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
          */
         
         NSDate *now = [NSDate date];
-        NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *dateComponents = [gregorian components:( NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:now];
         [dateComponents setMinute:0];
         [dateComponents setSecond:0];
         NSDate *normalizedDate = [gregorian dateFromComponents:dateComponents];
         
-        NSDateComponents *offsetComponents = [[[NSDateComponents alloc] init] autorelease];
+        NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
         [offsetComponents setDay:7];
         NSDate *newDate = [gregorian dateByAddingComponents:offsetComponents toDate:normalizedDate options:0];
         

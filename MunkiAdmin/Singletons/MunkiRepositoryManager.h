@@ -30,16 +30,16 @@
 
 @property (readonly) BOOL makepkginfoInstalled;
 @property (readonly) BOOL makecatalogsInstalled;
-@property (readonly, retain) NSString *makepkginfoVersion;
-@property (readonly, retain) NSString *makecatalogsVersion;
-@property (retain) NSDictionary *pkginfoBasicKeyMappings;
-@property (retain) NSDictionary *pkginfoArrayKeyMappings;
-@property (readonly, retain) NSArray *pkginfoAssimilateKeys;
-@property (readonly, retain) NSArray *pkginfoAssimilateKeysForAuto;
-@property (retain) NSDictionary *receiptKeyMappings;
-@property (retain) NSDictionary *installsKeyMappings;
-@property (retain) NSDictionary *installerChoicesKeyMappings;
-@property (retain) NSDictionary *itemsToCopyKeyMappings;
+@property (readonly, strong) NSString *makepkginfoVersion;
+@property (readonly, strong) NSString *makecatalogsVersion;
+@property (strong) NSDictionary *pkginfoBasicKeyMappings;
+@property (strong) NSDictionary *pkginfoArrayKeyMappings;
+@property (readonly, strong) NSArray *pkginfoAssimilateKeys;
+@property (readonly, strong) NSArray *pkginfoAssimilateKeysForAuto;
+@property (strong) NSDictionary *receiptKeyMappings;
+@property (strong) NSDictionary *installsKeyMappings;
+@property (strong) NSDictionary *installerChoicesKeyMappings;
+@property (strong) NSDictionary *itemsToCopyKeyMappings;
 
 + (MunkiRepositoryManager *)sharedManager;
 

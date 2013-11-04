@@ -27,12 +27,12 @@
 
 + (id)pkginfoScanner
 {
-	return [[[self alloc] initWithMode:0] autorelease];
+	return [[self alloc] initWithMode:0];
 }
 
 + (id)manifestScanner
 {
-	return [[[self alloc] initWithMode:1] autorelease];
+	return [[self alloc] initWithMode:1];
 }
 
 - (id)initWithMode:(NSInteger)mode {
@@ -45,12 +45,6 @@
 	return self;
 }
 
-- (void)dealloc {
-	[fileName release];
-	[currentJobDescription release];
-	[delegate release];
-	[super dealloc];
-}
 
 - (void)contextDidSave:(NSNotification*)notification 
 {
@@ -115,22 +109,18 @@
     NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
     [getManifests setEntity:manifestEntityDescr];
     self.allManifests = [moc executeFetchRequest:getManifests error:nil];
-    [getManifests release];
 
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
     self.allApplications = [moc executeFetchRequest:getApplications error:nil];
-    [getApplications release];
 
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-    [getAllCatalogs release];
 
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
-    [getPackages release];
     
     
     // Loop through all known manifest objects
@@ -236,7 +226,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextDidSaveNotification
                                                   object:moc];
-    [moc release], moc = nil;
+    moc = nil;
     
     
 }
@@ -263,13 +253,11 @@
     [getPackages setEntity:packageEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
-    [getPackages release];
 
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-    [getAllCatalogs release];
     
     
     DirectoryMO *allPackagesSmartDirectory;
@@ -283,7 +271,6 @@
     } else {
         allPackagesSmartDirectory = nil;
     }
-    [fetchBaseDirectory release];
     
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
@@ -399,7 +386,6 @@
                     newPackageInfo.isEnabledForCatalogValue = YES;
                 }
             }
-            [fetchForCatalogs release];
         }];
     }];
     
@@ -419,13 +405,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextDidSaveNotification
                                                   object:moc];
-    [moc release], moc = nil;
+    moc = nil;
 }
 
 
 -(void)main {
 	@try {
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
         
         switch (self.operationMode) {
             case 0:
@@ -437,7 +423,7 @@
                 break;
         }
         
-		[pool release];
+		}
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.

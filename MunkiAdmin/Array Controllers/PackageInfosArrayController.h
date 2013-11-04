@@ -10,10 +10,10 @@
 
 @interface PackageInfosArrayController : NSArrayController {
 	
-	IBOutlet id catalogsTableView;
+	IBOutlet id __unsafe_unretained catalogsTableView;
 
 }
 
-@property (assign) IBOutlet id catalogsTableView;
+@property (unsafe_unretained) IBOutlet id catalogsTableView;
 
 @end

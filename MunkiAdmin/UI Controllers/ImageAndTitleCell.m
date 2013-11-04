@@ -16,22 +16,22 @@
 - (void)awakeFromNib
 {
 	// Make attributes for our strings
-	NSMutableParagraphStyle * aParagraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+	NSMutableParagraphStyle * aParagraphStyle = [[NSMutableParagraphStyle alloc] init];
 	[aParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
 	
 	// Title attributes: system font, 11pt, black, truncate tail
-	self.aTitleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	self.aTitleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                               [NSColor blackColor],NSForegroundColorAttributeName,
                               [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
                               aParagraphStyle, NSParagraphStyleAttributeName,
-                              nil] autorelease];
+                              nil];
 	
 	// Subtitle attributes: system font, 11pt, gray, truncate tail
-	self.aSubtitleAttributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	self.aSubtitleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                  [NSColor grayColor],NSForegroundColorAttributeName,
                                  [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
                                  aParagraphStyle, NSParagraphStyleAttributeName,
-                                 nil] autorelease];
+                                 nil];
 }
 
 - (NSRect)expansionFrameWithFrame:(NSRect)cellFrame inView:(NSView *)view

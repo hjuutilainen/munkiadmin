@@ -21,6 +21,7 @@
 #import "PkginfoAssimilator.h"
 #import "MunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
+#import "ManifestsArrayController.h"
 
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
 
@@ -172,13 +173,13 @@
     [[moc undoManager] disableUndoRegistration];
 	
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
-		for (id anObject in allObjects) {
-			[moc deleteObject:anObject];
+		@autoreleasepool {
+			NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
+			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
+			for (id anObject in allObjects) {
+				[moc deleteObject:anObject];
+			}
 		}
-		[pool release];
 	}
 	[moc processPendingChanges];
     [[moc undoManager] enableUndoRegistration];
@@ -190,7 +191,6 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
 	NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-	[fetchRequest release];
 	return fetchResults;
 }
 
@@ -204,7 +204,6 @@
 		NSPredicate *pred = [NSPredicate predicateWithFormat:@"(isEnabledForPackage == 1)"];
 		[fetchRequest setPredicate:pred];
 		NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-		[fetchRequest release];
 		for (CatalogInfoMO *catInfo in fetchResults) {
 			//NSLog(@"%@:%@-%@", catInfo.catalog.title, catInfo.package.munki_name, catInfo.package.munki_version);
 		}
@@ -463,11 +462,11 @@
 	// Configure segmented control
 	[mainSegmentedControl setSegmentCount:3];
 	
-    NSImage *packagesIcon = [[[NSImage imageNamed:@"packageIcon_32x32"] copy] autorelease];
+    NSImage *packagesIcon = [[NSImage imageNamed:@"packageIcon_32x32"] copy];
 	[packagesIcon setSize:NSMakeSize(18, 18)];
-	NSImage *catalogsIcon = [[[NSImage imageNamed:@"catalogIcon_32x32"] copy] autorelease];
+	NSImage *catalogsIcon = [[NSImage imageNamed:@"catalogIcon_32x32"] copy];
 	[catalogsIcon setSize:NSMakeSize(18, 18)];
-	NSImage *manifestsIcon = [[[NSImage imageNamed:@"manifestIcon_32x32"] copy] autorelease];
+	NSImage *manifestsIcon = [[NSImage imageNamed:@"manifestIcon_32x32"] copy];
 	[manifestsIcon setSize:NSMakeSize(18, 18)];
 	
 	[mainSegmentedControl setImage:packagesIcon forSegment:0];
@@ -511,7 +510,7 @@
 	[self.window center];
 	
 	// Create an operation queue for later use
-	self.operationQueue = [[[NSOperationQueue alloc] init] autorelease];
+	self.operationQueue = [[NSOperationQueue alloc] init];
 	[self.operationQueue setMaxConcurrentOperationCount:1];
 	self.queueIsRunning = NO;
 	[progressIndicator setUsesThreadedAnimation:YES];
@@ -550,7 +549,7 @@
 {
     // Do a lossy conversion
     NSData *data = [aFileName dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *tmpString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    NSString *tmpString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     // Remove the characters we don't want
     NSCharacterSet *illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@":/\\?%*|\"<>#,"];
@@ -624,7 +623,6 @@
     else {
         // Found multiple matches for a single URL
     }
-    [fetchForPackage release];
     
     return YES;
 }
@@ -681,7 +679,7 @@
      */
     NSString *openPanelTitle = @"Choose Location";
     NSString *messageText = [NSString stringWithFormat:@"MunkiAdmin received %li pkginfo objects from SUS Inspector. Choose a location to save them.", (unsigned long)[payloadDictionaries count]];
-    __block NSURL *saveDirectory = [self chooseDestinationDirectoryWithTitle:openPanelTitle message:messageText];
+    __weak NSURL *saveDirectory = [self chooseDestinationDirectoryWithTitle:openPanelTitle message:messageText];
     if (!saveDirectory) {
         return;
     }
@@ -908,7 +906,7 @@
 
 - (void)renameSelectedManifest
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     /*
      Ask for a new location and name
@@ -948,7 +946,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
     NSString *newFilename = [selectedManifest fileName];
@@ -968,7 +966,7 @@
         RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
         manifestRelationships.delegate = self;
         
-        ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:newURL] autorelease];
+        ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:newURL];
         scanOp.delegate = self;
         [manifestRelationships addDependency:scanOp];
         [self.operationQueue addOperation:scanOp];
@@ -1015,7 +1013,6 @@
 			[moc deleteObject:aManifest];
 		}
 	}
-	[alert release];
 }
 
 - (IBAction)deleteSelectedManifestsAction:sender
@@ -1050,7 +1047,7 @@
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
     
-    ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL] autorelease];
+    ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL];
     scanOp.delegate = self;
     [manifestRelationships addDependency:scanOp];
     [self.operationQueue addOperation:scanOp];
@@ -1136,7 +1133,6 @@
             [[MunkiRepositoryManager sharedManager] removePackage:aPackage withInstallerItem:YES withReferences:YES];
 		}
 	}
-	[alert release];
 }
 
 - (IBAction)deleteSelectedPackagesAction:sender
@@ -1176,8 +1172,6 @@
     } else if ( result == NSAlertSecondButtonReturn ) {
         
     }
-	[textField release];
-    [alert release];
 }
 
 - (IBAction)createNewCatalogAction:sender
@@ -1281,13 +1275,11 @@
 		} else {
 			NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
 		}
-		[fetchForApplications release];
 	}
 	else {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %lu results found for package search", (unsigned long)numFoundPkgs);
 	}
 
-	[fetchForPackage release];
 }
 
 
@@ -1359,7 +1351,6 @@
             else {
                 // Found multiple matches for a single URL
             }
-            [fetchForPackage release];
             
             
         }
@@ -1468,7 +1459,6 @@
     [fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:@"munki_name"]];
 	NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     NSArray *appleUpdateNames = [fetchResults valueForKeyPath:@"munki_name"];
-	[fetchRequest release];
     
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc postNotificationName:kMunkiAdminStatusChangeName
@@ -1754,7 +1744,6 @@
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [selectManifestsWindowController setOriginalPredicate:compPred];
     [selectManifestsWindowController updateSearchPredicate];
-    [tempPredicates release];
 }
 
 - (IBAction)removeIncludedManifestAction:(id)sender
@@ -1793,7 +1782,6 @@
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
-    [tempPredicates release];
     [addItemsWindowController updateGroupedSearchPredicate];
     [addItemsWindowController updateIndividualSearchPredicate];
 }
@@ -1825,7 +1813,6 @@
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
-    [tempPredicates release];
     [addItemsWindowController updateGroupedSearchPredicate];
     [addItemsWindowController updateIndividualSearchPredicate];
 }
@@ -1857,7 +1844,6 @@
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
-    [tempPredicates release];
     [addItemsWindowController updateGroupedSearchPredicate];
     [addItemsWindowController updateIndividualSearchPredicate];
 }
@@ -1889,7 +1875,6 @@
     }
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
-    [tempPredicates release];
     [addItemsWindowController updateGroupedSearchPredicate];
     [addItemsWindowController updateIndividualSearchPredicate];
 }
@@ -1999,7 +1984,7 @@
     RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
     
-    NSMutableArray *operationsToAdd = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *operationsToAdd = [[NSMutableArray alloc] init];
     for (NSURL *fileToAdd in filesToAdd) {
         if (fileToAdd != nil) {
             MunkiOperation *theOp;
@@ -2122,7 +2107,7 @@
 {
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
-        MunkiOperation *op = [[[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil] autorelease];
+        MunkiOperation *op = [[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil];
         op.delegate = self;
         [self.operationQueue addOperation:op];
         [self showProgressPanel];
@@ -2190,7 +2175,7 @@
                                                              options:nil
                                                                error:&addError]){
         [[NSApplication sharedApplication] presentError:addError];
-        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        persistentStoreCoordinator = nil;
         return NO;
     }
     return YES;
@@ -2282,7 +2267,6 @@
 		NSLog(@"Found multiple Applications for package. This really shouldn't happen...");
 	}
 	
-	[fetchForApplications release];
 }
 
 - (void)configureContainersForPackage:(PackageMO *)aPackage
@@ -2292,7 +2276,6 @@
     NSFetchRequest *getAllDirectories = [[NSFetchRequest alloc] init];
     [getAllDirectories setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
     NSArray *allDirectories = [moc executeFetchRequest:getAllDirectories error:nil];
-    [getAllDirectories release];
     
     DirectoryMO *basePkginfoDirectory;
     NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
@@ -2306,7 +2289,6 @@
     } else {
         basePkginfoDirectory = nil;
     }
-    [fetchBaseDirectory release];
     
     NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [aPackage.packageInfoURL URLByDeletingLastPathComponent]];
     DirectoryMO *aDir = [[allDirectories filteredArrayUsingPredicate:parentPredicate] objectAtIndex:0];
@@ -2332,7 +2314,6 @@
         directoriesGroupItem.parent = nil;
         directoriesGroupItem.isGroupItemValue = YES;
     }
-    [groupItemRequest release];
     
     DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:self.pkgsInfoURL managedObjectContext:self.managedObjectContext];
     basePkgsInfoDirectory.title = @"pkgsinfo";
@@ -2376,10 +2357,8 @@
                         DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:parentRequest error:nil] objectAtIndex:0];
                         newDirectory.parent = parent;
                     }
-                    [parentRequest release];
                 }
             }
-            [checkForExistingRequest release];
         }
 	}
 }
@@ -2475,7 +2454,6 @@
 					CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
 					aNewCatalog.title = filename;
 				}
-				[request release];
 			}
 		}
 	}
@@ -2532,7 +2510,6 @@
 				manifest.title = manifestRelativePath;
 				manifest.manifestURL = aManifestFile;
 			}
-			[request release];
 			
 		}
 	}
@@ -2545,7 +2522,7 @@
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
 	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
-		ManifestScanner *scanOp = [[[ManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL] autorelease];
+		ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL];
 		scanOp.delegate = self;
         [manifestRelationships addDependency:scanOp];
 		[self.operationQueue addOperation:scanOp];
@@ -2615,7 +2592,6 @@
 				}
 			}
 
-			[request release];
 			
 			// Parse manifests included_manifests array
 			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
@@ -2675,7 +2651,7 @@
 
     if (managedObjectModel) return managedObjectModel;
 	
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];    
     return managedObjectModel;
 }
 
@@ -2718,7 +2694,7 @@
                                                 options:nil 
                                                 error:&error]){
         [[NSApplication sharedApplication] presentError:error];
-        [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
+        persistentStoreCoordinator = nil;
         return nil;
     }    
 
@@ -2834,7 +2810,6 @@
         [alert addButtonWithTitle:cancelButton];
 
         NSInteger answer = [alert runModal];
-        [alert release];
         alert = nil;
         
         if (answer == NSAlertAlternateReturn) return NSTerminateCancel;
@@ -2854,12 +2829,7 @@
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc removeObserver:self name:nil object:nil];
     
-    [window release];
-    [managedObjectContext release];
-    [persistentStoreCoordinator release];
-    [managedObjectModel release];
 	
-    [super dealloc];
 }
 
 # pragma mark -
@@ -3008,7 +2978,6 @@
         [sourceViewPlaceHolder addSubview:currentSourceView];
         
         [busyGear removeFromSuperview];
-        [busyGear release];
         
         [currentDetailView setFrame:[[currentDetailView superview] frame]];
         [currentSourceView setFrame:[[currentSourceView superview] frame]];

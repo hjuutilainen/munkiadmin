@@ -23,11 +23,11 @@
 - (id)initWithURL:(NSURL *)src;
 - (id)initWithDictionary:(NSDictionary *)dict;
 
-@property (retain) NSString *currentJobDescription;
-@property (retain) NSString *fileName;
-@property (retain) NSURL *sourceURL;
-@property (retain) NSDictionary *sourceDict;
-@property (retain) id delegate;
+@property (strong) NSString *currentJobDescription;
+@property (strong) NSString *fileName;
+@property (strong) NSURL *sourceURL;
+@property (strong) NSDictionary *sourceDict;
+@property (strong) id delegate;
 @property BOOL canModify;
 
 @end

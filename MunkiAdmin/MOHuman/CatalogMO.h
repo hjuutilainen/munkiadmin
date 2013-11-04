@@ -4,6 +4,6 @@
 	NSDictionary *dictValue;
 }
 
-@property (readonly) NSDictionary *dictValue;
+@property (weak, readonly) NSDictionary *dictValue;
 
 @end

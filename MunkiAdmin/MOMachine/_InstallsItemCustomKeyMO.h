@@ -5,12 +5,12 @@
 
 
 extern const struct InstallsItemCustomKeyMOAttributes {
-	 NSString *customKeyName;
-	 NSString *customKeyValue;
+	__unsafe_unretained NSString *customKeyName;
+	__unsafe_unretained NSString *customKeyValue;
 } InstallsItemCustomKeyMOAttributes;
 
 extern const struct InstallsItemCustomKeyMORelationships {
-	 NSString *installsItem;
+	__unsafe_unretained NSString *installsItem;
 } InstallsItemCustomKeyMORelationships;
 
 extern const struct InstallsItemCustomKeyMOFetchedProperties {
@@ -34,7 +34,7 @@ extern const struct InstallsItemCustomKeyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* customKeyName;
+@property (nonatomic, strong) NSString* customKeyName;
 
 
 
@@ -44,7 +44,7 @@ extern const struct InstallsItemCustomKeyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* customKeyValue;
+@property (nonatomic, strong) NSString* customKeyValue;
 
 
 
@@ -54,7 +54,7 @@ extern const struct InstallsItemCustomKeyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) InstallsItemMO *installsItem;
+@property (nonatomic, strong) InstallsItemMO *installsItem;
 
 //- (BOOL)validateInstallsItem:(id*)value_ error:(NSError**)error_;
 

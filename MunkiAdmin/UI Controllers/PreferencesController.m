@@ -24,7 +24,6 @@
     [generalItem setTarget:self];
     [generalItem setAction:@selector(switchViews:)];
     [items setObject:generalItem forKey:@"General"];
-    [generalItem release];
 	
 	
 	NSToolbarItem *munkiItem;
@@ -36,7 +35,6 @@
     [munkiItem setTarget:self];
     [munkiItem setAction:@selector(switchViews:)];
     [items setObject:munkiItem forKey:@"Munki"];
-    [munkiItem release];
     
     
     NSToolbarItem *importOptionsItem;
@@ -48,7 +46,6 @@
     [importOptionsItem setTarget:self];
     [importOptionsItem setAction:@selector(switchViews:)];
     [items setObject:importOptionsItem forKey:@"Import Options"];
-    [importOptionsItem release];
     
     
     NSToolbarItem *advancedItem;
@@ -60,13 +57,12 @@
     [advancedItem setTarget:self];
     [advancedItem setAction:@selector(switchViews:)];
     [items setObject:advancedItem forKey:@"Advanced"];
-    [advancedItem release];
 	
     //any other items you want to add, do so here.
     //after you are done, just do all the toolbar stuff.
     //myWindow is an outlet pointing to the Preferences Window you made to hold all these custom views.
 	
-    toolbar = [[[NSToolbar alloc] initWithIdentifier:@"preferencePanes"] autorelease];
+    toolbar = [[NSToolbar alloc] initWithIdentifier:@"preferencePanes"];
     [toolbar setDelegate:self];
     [toolbar setAllowsUserCustomization:NO];
     [toolbar setAutosavesConfiguration:NO];
@@ -105,7 +101,6 @@
 	
     NSView *tempView = [[NSView alloc] initWithFrame:[[myWindow contentView] frame]];
     [myWindow setContentView:tempView];
-    [tempView release];
     
     NSRect newFrame = [myWindow frame];
     newFrame.size.height = [prefsView frame].size.height + ([myWindow frame].size.height - [[myWindow contentView] frame].size.height);

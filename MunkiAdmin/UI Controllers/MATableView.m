@@ -28,14 +28,14 @@
 - (NSImage *)badgeImageWithText:(NSString *)text
 {
     
-    NSMutableParagraphStyle * aParagraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    NSMutableParagraphStyle * aParagraphStyle = [[NSMutableParagraphStyle alloc] init];
 	[aParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
     [aParagraphStyle setAlignment:NSCenterTextAlignment];
-	NSMutableDictionary *attributes = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         [NSColor whiteColor], NSForegroundColorAttributeName,
                                         [NSFont systemFontOfSize:10], NSFontAttributeName,
                                         aParagraphStyle, NSParagraphStyleAttributeName,
-                                        nil] autorelease];
+                                        nil];
     
     // Figure out the required sizes based on the input string
     // and the above attributes
@@ -44,7 +44,7 @@
     NSRect badgeRect = NSInsetRect(textRect, 0, 0);
     
     // Create the image and start drawing
-    NSImage *returnImage = [[[NSImage alloc] initWithSize:badgeRect.size] autorelease];
+    NSImage *returnImage = [[NSImage alloc] initWithSize:badgeRect.size];
     [returnImage lockFocus];
     
     // Create a small rounded rect
@@ -68,7 +68,7 @@
         
         // Get image references
         NSImage *iconImage = [NSImage imageNamed:@"packageGroupIcon_32x32"];
-        NSImage *dragImage = [[[NSImage alloc] initWithSize:NSMakeSize(iconImage.size.width + 8, iconImage.size.height)] autorelease];
+        NSImage *dragImage = [[NSImage alloc] initWithSize:NSMakeSize(iconImage.size.width + 8, iconImage.size.height)];
         
         // Start drawing
         [dragImage lockFocus];

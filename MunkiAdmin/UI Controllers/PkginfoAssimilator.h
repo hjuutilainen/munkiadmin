@@ -13,13 +13,13 @@
 @interface PkginfoAssimilator : NSWindowController {
     
     NSUndoManager *undoManager;
-    PackageMO *sourcePkginfo;
-    PackageMO *targetPkginfo;
+    PackageMO *__weak sourcePkginfo;
+    PackageMO *__weak targetPkginfo;
     NSModalSession modalSession;
     id delegate;
-    NSArrayController *allPackagesArrayController;
-    NSButton *cancelButton;
-    NSButton *okButton;
+    NSArrayController *__weak allPackagesArrayController;
+    NSButton *__weak cancelButton;
+    NSButton *__weak okButton;
     
     NSArray *defaultsKeysToLoop;
     NSDictionary *keyGroups;
@@ -66,13 +66,13 @@
 - (IBAction)cancelAction:(id)sender;
 - (void)commitChangesToCurrentPackage;
 
-@property (assign) IBOutlet NSButton *cancelButton;
-@property (assign) IBOutlet NSButton *okButton;
-@property (assign) IBOutlet NSArrayController *allPackagesArrayController;
+@property (weak) IBOutlet NSButton *cancelButton;
+@property (weak) IBOutlet NSButton *okButton;
+@property (weak) IBOutlet NSArrayController *allPackagesArrayController;
 
-@property (retain) id delegate;
-@property (assign) PackageMO *sourcePkginfo;
-@property (assign) PackageMO *targetPkginfo;
+@property (strong) id delegate;
+@property (weak) PackageMO *sourcePkginfo;
+@property (weak) PackageMO *targetPkginfo;
 @property NSModalSession modalSession;
 
 @property BOOL assimilate_blocking_applications;

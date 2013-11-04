@@ -16,11 +16,11 @@
  */
 @interface MunkiRepositoryManager ()
 
-@property (readwrite, retain) NSArray *pkginfoAssimilateKeys;
-@property (readwrite, retain) NSArray *pkginfoAssimilateKeysForAuto;
+@property (readwrite, strong) NSArray *pkginfoAssimilateKeys;
+@property (readwrite, strong) NSArray *pkginfoAssimilateKeysForAuto;
 
-@property (readwrite, retain) NSString *makepkginfoVersion;
-@property (readwrite, retain) NSString *makecatalogsVersion;
+@property (readwrite, strong) NSString *makepkginfoVersion;
+@property (readwrite, strong) NSString *makecatalogsVersion;
 
 - (void)willStartOperations;
 - (void)willEndOperations;
@@ -369,7 +369,6 @@ static dispatch_queue_t serialQueue;
             NSLog(@"No previous packages");
         }
     }
-    [fetchForApplicationsLoose release];
 }
 
 
@@ -449,7 +448,6 @@ static dispatch_queue_t serialQueue;
         } else {
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
         }
-        [getReferencingManifests release];
     }
 }
 
@@ -477,7 +475,6 @@ static dispatch_queue_t serialQueue;
     } else {
         //if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
     }
-    [getReferencesByName release];
     return referencingObjects;
 }
 
@@ -486,11 +483,11 @@ static dispatch_queue_t serialQueue;
     NSString *packageName = aPackage.munki_name;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     
-    NSMutableDictionary *combined = [[[NSMutableDictionary alloc] init] autorelease];
+    NSMutableDictionary *combined = [[NSMutableDictionary alloc] init];
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     
     // Get sibling packages
-    NSMutableArray *packagesWithSameName = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *packagesWithSameName = [[NSMutableArray alloc] init];
     NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
     [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
     NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"parentApplication == %@", aPackage.parentApplication];
@@ -501,24 +498,23 @@ static dispatch_queue_t serialQueue;
             [packagesWithSameName addObject:aSibling];
         }
     }
-    [getSiblings release];
     if (packagesWithSameName) [combined setObject:packagesWithSameName forKey:@"packagesWithSameName"];
     
     // Manifests
-    NSMutableArray *managedInstalls = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUninstalls = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUpdates = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *optionalInstalls = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *managedInstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *managedUninstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *managedUpdates = [[NSMutableArray alloc] init];
+    NSMutableArray *optionalInstalls = [[NSMutableArray alloc] init];
     
     // Manifest conditional items
-    NSMutableArray *conditionalManagedInstalls = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUninstalls = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUpdates = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalOptionalInstalls = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalManagedInstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalManagedUninstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalManagedUpdates = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalOptionalInstalls = [[NSMutableArray alloc] init];
     
     // Pkginfo items
-    NSMutableArray *requiresItems = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *updateForItems = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *requiresItems = [[NSMutableArray alloc] init];
+    NSMutableArray *updateForItems = [[NSMutableArray alloc] init];
     
     /*
      Look for references with the name key. These might include:
@@ -587,20 +583,20 @@ static dispatch_queue_t serialQueue;
      */
     
     // Manifests
-    NSMutableArray *managedInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUninstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *managedUpdatesWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *optionalInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *managedInstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *managedUninstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *managedUpdatesWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *optionalInstallsWithVersion = [[NSMutableArray alloc] init];
     
     // Manifest conditional items
-    NSMutableArray *conditionalManagedInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUninstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalManagedUpdatesWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *conditionalOptionalInstallsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *conditionalManagedInstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalManagedUninstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalManagedUpdatesWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalOptionalInstallsWithVersion = [[NSMutableArray alloc] init];
     
     // Pkginfo items
-    NSMutableArray *requiresItemsWithVersion = [[[NSMutableArray alloc] init] autorelease];
-    NSMutableArray *updateForItemsWithVersion = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *requiresItemsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *updateForItemsWithVersion = [[NSMutableArray alloc] init];
     
     NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:packageNameWithVersion];
     for (StringObjectMO *aReference in referencingObjectsWithVersion) {
@@ -774,7 +770,6 @@ static dispatch_queue_t serialQueue;
             aPackage.hasUnstagedChangesValue = YES;
             aPackage.parentApplication = packageGroup; // Shouldn't need this...
         }
-        [getApplication release];
         
         if ([self.defaults boolForKey:@"debug"]) {
             NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
@@ -802,7 +797,6 @@ static dispatch_queue_t serialQueue;
         } else {
             
         }
-        [getSiblings release];
         
         
         /*
@@ -1018,7 +1012,6 @@ static dispatch_queue_t serialQueue;
             aPackage.hasUnstagedChangesValue = YES;
             aPackage.parentApplication = aNewApplication; // Shouldn't need this...
         }
-        [getApplication release];
         
         if ([self.defaults boolForKey:@"debug"]) {
             NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
@@ -1086,10 +1079,8 @@ static dispatch_queue_t serialQueue;
     if ([fetchResults count] != 0) {
         [tempModifiedManifests addObjectsFromArray:fetchResults];
     }
-    [fetchRequest release];
     
     NSSet *allModifiedManifests = [NSSet setWithArray:tempModifiedManifests];
-    [tempModifiedManifests release];
     return allModifiedManifests;
 }
 
@@ -1149,10 +1140,8 @@ static dispatch_queue_t serialQueue;
     if ([fetchResults count] != 0) {
         [tempModifiedPackages addObjectsFromArray:fetchResults];
     }
-    [fetchRequest release];
     
     NSSet *allModifiedPackages = [NSSet setWithArray:tempModifiedPackages];
-    [tempModifiedPackages release];
     return allModifiedPackages;
 }
 
@@ -1476,7 +1465,6 @@ static dispatch_queue_t serialQueue;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
 	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-	[fetchRequest release];
 	return fetchResults;
 }
 
@@ -1553,7 +1541,7 @@ static dispatch_queue_t serialQueue;
 - (void)updateMakepkginfoVersionAsync
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSTask *task = [[[NSTask alloc] init] autorelease];
+        NSTask *task = [[NSTask alloc] init];
         NSPipe *pipe = [NSPipe pipe];
         NSFileHandle *filehandle = [pipe fileHandleForReading];
         NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
@@ -1563,7 +1551,7 @@ static dispatch_queue_t serialQueue;
         [task launch];
         NSData *outputData = [filehandle readDataToEndOfFile];
         NSString *results;
-        results = [[[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding] autorelease];
+        results = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
         self.makepkginfoVersion = results;
     });
 }
@@ -1571,7 +1559,7 @@ static dispatch_queue_t serialQueue;
 - (void)updateMakecatalogsVersionAsync
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSTask *task = [[[NSTask alloc] init] autorelease];
+        NSTask *task = [[NSTask alloc] init];
         NSPipe *pipe = [NSPipe pipe];
         NSFileHandle *filehandle = [pipe fileHandleForReading];
         NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"];
@@ -1581,7 +1569,7 @@ static dispatch_queue_t serialQueue;
         [task launch];
         NSData *outputData = [filehandle readDataToEndOfFile];
         NSString *results;
-        results = [[[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding] autorelease];
+        results = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
         self.makecatalogsVersion = results;
     });
 }
@@ -1655,9 +1643,9 @@ static dispatch_queue_t serialQueue;
                                              description, NSLocalizedDescriptionKey,
                                              recoverySuggestion, NSLocalizedRecoverySuggestionErrorKey,
                                              nil];
-            *error = [[[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
+            *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
                                                  code:errorCode
-                                             userInfo:errorDictionary] autorelease];
+                                             userInfo:errorDictionary];
         }
         return NO;
     }
@@ -1682,7 +1670,6 @@ static dispatch_queue_t serialQueue;
 		[newPkginfoBasicKeyMappings setObject:pkginfoBasicKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoBasicKey]];
 	}
 	self.pkginfoBasicKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoBasicKeyMappings];
-	[newPkginfoBasicKeyMappings release];
     
     // Array keys
     NSMutableDictionary *newPkginfoArrayKeyMappings = [[NSMutableDictionary alloc] init];
@@ -1690,7 +1677,6 @@ static dispatch_queue_t serialQueue;
 		[newPkginfoArrayKeyMappings setObject:pkginfoArrayKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoArrayKey]];
 	}
 	self.pkginfoArrayKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoArrayKeyMappings];
-	[newPkginfoArrayKeyMappings release];
     
     // Keys that might be assimilated
     NSMutableArray *newPkginfoAssimilateKeys = [[NSMutableArray alloc] init];
@@ -1716,7 +1702,6 @@ static dispatch_queue_t serialQueue;
     [newPkginfoAssimilateKeys removeObject:@"package_path"];
     
 	self.pkginfoAssimilateKeys = [NSArray arrayWithArray:newPkginfoAssimilateKeys];
-	[newPkginfoAssimilateKeys release];
 	
 	// Receipt keys
 	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
@@ -1724,7 +1709,6 @@ static dispatch_queue_t serialQueue;
 		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 	}
 	self.receiptKeyMappings = [NSDictionary dictionaryWithDictionary:newReceiptKeyMappings];
-	[newReceiptKeyMappings release];
 	
 	// Installs item keys
 	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
@@ -1732,7 +1716,6 @@ static dispatch_queue_t serialQueue;
 		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
 	}
 	self.installsKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallsKeyMappings];
-	[newInstallsKeyMappings release];
 	
 	// items_to_copy keys
 	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
@@ -1740,7 +1723,6 @@ static dispatch_queue_t serialQueue;
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
 	self.itemsToCopyKeyMappings = [NSDictionary dictionaryWithDictionary:newItemsToCopyKeyMappings];
-	[newItemsToCopyKeyMappings release];
     
     // installer_choices_xml
     NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
@@ -1748,14 +1730,13 @@ static dispatch_queue_t serialQueue;
 		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
 	}
 	self.installerChoicesKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallerChoicesKeyMappings];
-	[newInstallerChoicesKeyMappings release];
 }
 
 - (NSArray *)pkginfoAssimilateKeysForAuto
 {
     // Setup the default selection
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *keysForAutomaticAssimilation = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *keysForAutomaticAssimilation = [[NSMutableArray alloc] init];
     for (NSString *keyName in self.pkginfoAssimilateKeys) {
         NSString *assimilateKeyName = [NSString stringWithFormat:@"assimilate_%@", keyName];
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];

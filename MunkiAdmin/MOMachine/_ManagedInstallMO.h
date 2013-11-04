@@ -8,7 +8,7 @@ extern const struct ManagedInstallMOAttributes {
 } ManagedInstallMOAttributes;
 
 extern const struct ManagedInstallMORelationships {
-	 NSString *manifest;
+	__unsafe_unretained NSString *manifest;
 } ManagedInstallMORelationships;
 
 extern const struct ManagedInstallMOFetchedProperties {
@@ -30,7 +30,7 @@ extern const struct ManagedInstallMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 

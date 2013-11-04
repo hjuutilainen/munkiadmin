@@ -9,22 +9,22 @@
 #import "GradientBackgroundView.h"
 
 @interface SelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
-    GradientBackgroundView *existingSearchBgView;
-    GradientBackgroundView *customValueBgView;
-    NSTextField *customValueTextField;
-    NSTabView *tabView;
-    NSArrayController *manifestsArrayController;
-    NSSearchField *existingSearchField;
+    GradientBackgroundView *__weak existingSearchBgView;
+    GradientBackgroundView *__weak customValueBgView;
+    NSTextField *__weak customValueTextField;
+    NSTabView *__weak tabView;
+    NSArrayController *__weak manifestsArrayController;
+    NSSearchField *__weak existingSearchField;
     NSPredicate *originalPredicate;
 }
 
 @property (copy) NSPredicate *originalPredicate;
-@property (assign) IBOutlet GradientBackgroundView *existingSearchBgView;
-@property (assign) IBOutlet GradientBackgroundView *customValueBgView;
-@property (assign) IBOutlet NSTextField *customValueTextField;
-@property (assign) IBOutlet NSTabView *tabView;
-@property (assign) IBOutlet NSArrayController *manifestsArrayController;
-@property (assign) IBOutlet NSSearchField *existingSearchField;
+@property (weak) IBOutlet GradientBackgroundView *existingSearchBgView;
+@property (weak) IBOutlet GradientBackgroundView *customValueBgView;
+@property (weak) IBOutlet NSTextField *customValueTextField;
+@property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSArrayController *manifestsArrayController;
+@property (weak) IBOutlet NSSearchField *existingSearchField;
 
 - (void)updateSearchPredicate;
 

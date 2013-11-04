@@ -5,16 +5,16 @@
 
 
 extern const struct CatalogInfoMOAttributes {
-	 NSString *indexInManifest;
-	 NSString *isEnabledForManifest;
-	 NSString *isEnabledForPackage;
-	 NSString *originalIndex;
+	__unsafe_unretained NSString *indexInManifest;
+	__unsafe_unretained NSString *isEnabledForManifest;
+	__unsafe_unretained NSString *isEnabledForPackage;
+	__unsafe_unretained NSString *originalIndex;
 } CatalogInfoMOAttributes;
 
 extern const struct CatalogInfoMORelationships {
-	 NSString *catalog;
-	 NSString *manifest;
-	 NSString *package;
+	__unsafe_unretained NSString *catalog;
+	__unsafe_unretained NSString *manifest;
+	__unsafe_unretained NSString *package;
 } CatalogInfoMORelationships;
 
 extern const struct CatalogInfoMOFetchedProperties {
@@ -42,7 +42,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* indexInManifest;
+@property (nonatomic, strong) NSNumber* indexInManifest;
 
 
 
@@ -56,7 +56,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isEnabledForManifest;
+@property (nonatomic, strong) NSNumber* isEnabledForManifest;
 
 
 
@@ -70,7 +70,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isEnabledForPackage;
+@property (nonatomic, strong) NSNumber* isEnabledForPackage;
 
 
 
@@ -84,7 +84,7 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -98,21 +98,21 @@ extern const struct CatalogInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) CatalogMO *catalog;
+@property (nonatomic, strong) CatalogMO *catalog;
 
 //- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *package;
+@property (nonatomic, strong) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

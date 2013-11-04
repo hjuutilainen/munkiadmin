@@ -5,13 +5,13 @@
 
 
 extern const struct ManifestInfoMOAttributes {
-	 NSString *isAvailableForEditing;
-	 NSString *isEnabledForManifest;
+	__unsafe_unretained NSString *isAvailableForEditing;
+	__unsafe_unretained NSString *isEnabledForManifest;
 } ManifestInfoMOAttributes;
 
 extern const struct ManifestInfoMORelationships {
-	 NSString *manifest;
-	 NSString *parentManifest;
+	__unsafe_unretained NSString *manifest;
+	__unsafe_unretained NSString *parentManifest;
 } ManifestInfoMORelationships;
 
 extern const struct ManifestInfoMOFetchedProperties {
@@ -36,7 +36,7 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isAvailableForEditing;
+@property (nonatomic, strong) NSNumber* isAvailableForEditing;
 
 
 
@@ -50,7 +50,7 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isEnabledForManifest;
+@property (nonatomic, strong) NSNumber* isEnabledForManifest;
 
 
 
@@ -64,14 +64,14 @@ extern const struct ManifestInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ManifestMO *manifest;
+@property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) ManifestMO *parentManifest;
+@property (nonatomic, strong) ManifestMO *parentManifest;
 
 //- (BOOL)validateParentManifest:(id*)value_ error:(NSError**)error_;
 

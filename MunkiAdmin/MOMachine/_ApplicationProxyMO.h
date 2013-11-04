@@ -5,11 +5,11 @@
 
 
 extern const struct ApplicationProxyMOAttributes {
-	 NSString *isEnabled;
+	__unsafe_unretained NSString *isEnabled;
 } ApplicationProxyMOAttributes;
 
 extern const struct ApplicationProxyMORelationships {
-	 NSString *parentApplication;
+	__unsafe_unretained NSString *parentApplication;
 } ApplicationProxyMORelationships;
 
 extern const struct ApplicationProxyMOFetchedProperties {
@@ -32,7 +32,7 @@ extern const struct ApplicationProxyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isEnabled;
+@property (nonatomic, strong) NSNumber* isEnabled;
 
 
 
@@ -46,7 +46,7 @@ extern const struct ApplicationProxyMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) ApplicationMO *parentApplication;
+@property (nonatomic, strong) ApplicationMO *parentApplication;
 
 //- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
 

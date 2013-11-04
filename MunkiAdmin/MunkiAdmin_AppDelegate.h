@@ -55,9 +55,9 @@
     PkginfoAssimilator *pkginfoAssimilator;
     NSString *addItemsType;
 	NSTextField *createNewManifestCustomView;
-    NSView *makepkginfoOptionsView;
-    PackageInfosArrayController *packageInfosArrayController;
-    CatalogsArrayController *allCatalogsArrayController;
+    NSView *__weak makepkginfoOptionsView;
+    PackageInfosArrayController *__weak packageInfosArrayController;
+    CatalogsArrayController *__weak allCatalogsArrayController;
 	
 	// The current master and detail view
 	// that we are displaying
@@ -112,76 +112,76 @@
 	ManifestsArrayController *manifestsArrayController;
 	NSArrayController *manifestInfosArrayController;
 	NSArrayController *managedInstallsArrayController, *managedUpdatesArrayController, *managedUninstallsArrayController, *optionalInstallsArrayController;
-    NSArrayController *installsItemsArrayController;
-    NSArrayController *itemsToCopyArrayController;
-    NSArrayController *receiptsArrayController;
-    PackageArrayController *pkgsForAddingArrayController;
-    ApplicationsArrayController *pkgGroupsForAddingArrayController;
+    NSArrayController *__weak installsItemsArrayController;
+    NSArrayController *__weak itemsToCopyArrayController;
+    NSArrayController *__weak receiptsArrayController;
+    PackageArrayController *__weak pkgsForAddingArrayController;
+    ApplicationsArrayController *__weak pkgGroupsForAddingArrayController;
 }
 
-@property (assign) IBOutlet NSArrayController *installsItemsArrayController;
-@property (assign) IBOutlet NSArrayController *itemsToCopyArrayController;
-@property (assign) IBOutlet NSArrayController *receiptsArrayController;
-@property (assign) IBOutlet PackageArrayController *pkgsForAddingArrayController;
-@property (assign) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
-@property (assign) IBOutlet NSView *makepkginfoOptionsView;
-@property (assign) IBOutlet PackageInfosArrayController *packageInfosArrayController;
-@property (assign) IBOutlet CatalogsArrayController *allCatalogsArrayController;
+@property (weak) IBOutlet NSArrayController *installsItemsArrayController;
+@property (weak) IBOutlet NSArrayController *itemsToCopyArrayController;
+@property (weak) IBOutlet NSArrayController *receiptsArrayController;
+@property (weak) IBOutlet PackageArrayController *pkgsForAddingArrayController;
+@property (weak) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
+@property (weak) IBOutlet NSView *makepkginfoOptionsView;
+@property (weak) IBOutlet PackageInfosArrayController *packageInfosArrayController;
+@property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
 # pragma mark -
 # pragma mark Variable declarations
-@property (retain) NSString *selectedViewDescr;
+@property (strong) NSString *selectedViewDescr;
 @property NSUInteger selectedViewTag;
-@property (readonly) NSUserDefaults *defaults;
-@property (retain) NSURL *repoURL;
-@property (retain) NSURL *pkgsURL;
-@property (retain) NSURL *pkgsInfoURL;
-@property (retain) NSURL *catalogsURL;
-@property (retain) NSURL *manifestsURL;
-@property (retain) NSArray *defaultRepoContents;
-@property (retain) NSOperationQueue *operationQueue;
+@property (weak, readonly) NSUserDefaults *defaults;
+@property (strong) NSURL *repoURL;
+@property (strong) NSURL *pkgsURL;
+@property (strong) NSURL *pkgsInfoURL;
+@property (strong) NSURL *catalogsURL;
+@property (strong) NSURL *manifestsURL;
+@property (strong) NSArray *defaultRepoContents;
+@property (strong) NSOperationQueue *operationQueue;
 @property BOOL queueIsRunning;
 @property double subProgress;
-@property (retain) NSString *currentStatusDescription;
-@property (retain) NSString *queueStatusDescription;
-@property (retain) NSString *jobDescription;
-@property (retain) NSString *addItemsType;
+@property (strong) NSString *currentStatusDescription;
+@property (strong) NSString *queueStatusDescription;
+@property (strong) NSString *jobDescription;
+@property (strong) NSString *addItemsType;
 
 # pragma mark -
 # pragma mark IBOutlet declarations
-@property (nonatomic, retain) IBOutlet ApplicationsArrayController *applicationsArrayController;
-@property (nonatomic, retain) IBOutlet PackageArrayController *allPackagesArrayController;
-@property (nonatomic, retain) IBOutlet ManifestsArrayController *manifestsArrayController;
-@property (nonatomic, retain) IBOutlet NSArrayController *manifestInfosArrayController;
-@property (nonatomic, retain) IBOutlet NSArrayController *managedInstallsArrayController;
-@property (nonatomic, retain) IBOutlet NSArrayController *managedUpdatesArrayController;
-@property (nonatomic, retain) IBOutlet NSArrayController *managedUninstallsArrayController;
-@property (nonatomic, retain) IBOutlet NSArrayController *optionalInstallsArrayController;
-@property (nonatomic, retain) IBOutlet NSWindow *window;
-@property (nonatomic, retain) IBOutlet NSWindow *progressPanel;
-@property (nonatomic, retain) IBOutlet NSWindow *addItemsWindow;
-@property (nonatomic, retain) IBOutlet NSProgressIndicator *progressIndicator;
-@property (nonatomic, retain) IBOutlet NSTabView *mainTabView;
-@property (nonatomic, retain) IBOutlet NSTextField *createNewManifestCustomView;
-@property (nonatomic, retain) IBOutlet NSView *detailViewPlaceHolder;
-@property (nonatomic, retain) IBOutlet NSView *sourceViewPlaceHolder;
-@property (nonatomic, retain) IBOutlet NSView *catalogsListView;
-@property (nonatomic, retain) IBOutlet NSView *catalogsDetailView;
-@property (nonatomic, retain) IBOutlet NSView *applicationsListView;
-@property (nonatomic, retain) IBOutlet NSView *applicationsDetailView;
-@property (nonatomic, retain) IBOutlet NSView *packagesListView;
-@property (nonatomic, retain) IBOutlet NSView *packagesDetailView;
-@property (nonatomic, retain) IBOutlet NSView *manifestsListView;
-@property (nonatomic, retain) IBOutlet NSView *manifestsDetailView;
-@property (nonatomic, retain) IBOutlet NSTableView *applicationTableView;
-@property (nonatomic, retain) IBOutlet NSSplitView *mainSplitView;
-@property (nonatomic, retain) IBOutlet NSSegmentedControl *mainSegmentedControl;
+@property (strong) IBOutlet ApplicationsArrayController *applicationsArrayController;
+@property (strong) IBOutlet PackageArrayController *allPackagesArrayController;
+@property (strong) IBOutlet ManifestsArrayController *manifestsArrayController;
+@property (nonatomic, strong) IBOutlet NSArrayController *manifestInfosArrayController;
+@property (nonatomic, strong) IBOutlet NSArrayController *managedInstallsArrayController;
+@property (nonatomic, strong) IBOutlet NSArrayController *managedUpdatesArrayController;
+@property (nonatomic, strong) IBOutlet NSArrayController *managedUninstallsArrayController;
+@property (nonatomic, strong) IBOutlet NSArrayController *optionalInstallsArrayController;
+@property (nonatomic, strong) IBOutlet NSWindow *window;
+@property (nonatomic, strong) IBOutlet NSWindow *progressPanel;
+@property (nonatomic, strong) IBOutlet NSWindow *addItemsWindow;
+@property (nonatomic, strong) IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic, strong) IBOutlet NSTabView *mainTabView;
+@property (nonatomic, strong) IBOutlet NSTextField *createNewManifestCustomView;
+@property (nonatomic, strong) IBOutlet NSView *detailViewPlaceHolder;
+@property (nonatomic, strong) IBOutlet NSView *sourceViewPlaceHolder;
+@property (nonatomic, strong) IBOutlet NSView *catalogsListView;
+@property (nonatomic, strong) IBOutlet NSView *catalogsDetailView;
+@property (nonatomic, strong) IBOutlet NSView *applicationsListView;
+@property (nonatomic, strong) IBOutlet NSView *applicationsDetailView;
+@property (nonatomic, strong) IBOutlet NSView *packagesListView;
+@property (nonatomic, strong) IBOutlet NSView *packagesDetailView;
+@property (nonatomic, strong) IBOutlet NSView *manifestsListView;
+@property (nonatomic, strong) IBOutlet NSView *manifestsDetailView;
+@property (nonatomic, strong) IBOutlet NSTableView *applicationTableView;
+@property (nonatomic, strong) IBOutlet NSSplitView *mainSplitView;
+@property (nonatomic, strong) IBOutlet NSSegmentedControl *mainSegmentedControl;
 
 # pragma mark -
 # pragma mark Core data specific declarations
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
 # pragma mark -
 # pragma mark GUI actions

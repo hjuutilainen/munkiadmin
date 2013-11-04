@@ -105,34 +105,34 @@
 
 - (NSDictionary *)pkgInfoDictionary
 {
-	NSMutableDictionary *tmpDict = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
 	
 	// Define the munki keys we support
-	NSMutableDictionary *newPkginfoKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newPkginfoKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *pkginfoKey in [self.defaults arrayForKey:@"pkginfoBasicKeys"]) {
 		[newPkginfoKeyMappings setObject:pkginfoKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoKey]];
 	}
 	
 	// Receipt keys
-	NSMutableDictionary *newReceiptKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
 		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
 	}
 	
 	// Installs item keys
-	NSMutableDictionary *newInstallsKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
 		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
 	}
 	
 	// items_to_copy keys
-	NSMutableDictionary *newItemsToCopyKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
 		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
 	}
     
     // installer_choices_xml
-    NSMutableDictionary *newInstallerChoicesKeyMappings = [[[NSMutableDictionary alloc] init] autorelease];
+    NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
 		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
 	}

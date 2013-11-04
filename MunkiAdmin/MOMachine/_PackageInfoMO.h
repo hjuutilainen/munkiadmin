@@ -5,14 +5,14 @@
 
 
 extern const struct PackageInfoMOAttributes {
-	 NSString *isEnabledForCatalog;
-	 NSString *originalIndex;
-	 NSString *title;
+	__unsafe_unretained NSString *isEnabledForCatalog;
+	__unsafe_unretained NSString *originalIndex;
+	__unsafe_unretained NSString *title;
 } PackageInfoMOAttributes;
 
 extern const struct PackageInfoMORelationships {
-	 NSString *catalog;
-	 NSString *package;
+	__unsafe_unretained NSString *catalog;
+	__unsafe_unretained NSString *package;
 } PackageInfoMORelationships;
 
 extern const struct PackageInfoMOFetchedProperties {
@@ -38,7 +38,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* isEnabledForCatalog;
+@property (nonatomic, strong) NSNumber* isEnabledForCatalog;
 
 
 
@@ -52,7 +52,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSNumber* originalIndex;
+@property (nonatomic, strong) NSNumber* originalIndex;
 
 
 
@@ -66,7 +66,7 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* title;
+@property (nonatomic, strong) NSString* title;
 
 
 
@@ -76,14 +76,14 @@ extern const struct PackageInfoMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) CatalogMO *catalog;
+@property (nonatomic, strong) CatalogMO *catalog;
 
 //- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
 
 
 
 
-@property (nonatomic, retain) PackageMO *package;
+@property (nonatomic, strong) PackageMO *package;
 
 //- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
 

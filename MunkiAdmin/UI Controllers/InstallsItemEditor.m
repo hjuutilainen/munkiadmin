@@ -12,7 +12,7 @@
 
 @interface InstallsItemEditor ()
 
-@property (readwrite, retain) NSArray *versionComparisonKeys;
+@property (readwrite, strong) NSArray *versionComparisonKeys;
 
 - (IBAction)okAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
@@ -65,7 +65,7 @@
 
 - (void)updateVersionComparisonKeys
 {
-    NSMutableArray *newKeyNames = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *newKeyNames = [[NSMutableArray alloc] init];
     [newKeyNames addObjectsFromArray:[NSArray arrayWithObjects:@"CFBundleShortVersionString", @"CFBundleVersion", nil]];
     NSArray *customKeysFromInstallsItem = [[[self.itemToEdit.customKeys allObjects] valueForKeyPath:@"@distinctUnionOfObjects.customKeyName"] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
     if (customKeysFromInstallsItem) {
@@ -123,7 +123,7 @@
        modalForWindow:window
         modalDelegate:delegate
        didEndSelector:selector
-          contextInfo:object];
+          contextInfo:(__bridge void *)(object)];
 }
 
 @end

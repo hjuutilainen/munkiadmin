@@ -5,16 +5,16 @@
 
 
 extern const struct ApplicationMOAttributes {
-	 NSString *munki_description;
-	 NSString *munki_display_name;
-	 NSString *munki_name;
+	__unsafe_unretained NSString *munki_description;
+	__unsafe_unretained NSString *munki_display_name;
+	__unsafe_unretained NSString *munki_name;
 } ApplicationMOAttributes;
 
 extern const struct ApplicationMORelationships {
-	 NSString *applicationProxies;
-	 NSString *manifests;
-	 NSString *packages;
-	 NSString *referencingStringObjects;
+	__unsafe_unretained NSString *applicationProxies;
+	__unsafe_unretained NSString *manifests;
+	__unsafe_unretained NSString *packages;
+	__unsafe_unretained NSString *referencingStringObjects;
 } ApplicationMORelationships;
 
 extern const struct ApplicationMOFetchedProperties {
@@ -42,7 +42,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_description;
+@property (nonatomic, strong) NSString* munki_description;
 
 
 
@@ -52,7 +52,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_display_name;
+@property (nonatomic, strong) NSString* munki_display_name;
 
 
 
@@ -62,7 +62,7 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSString* munki_name;
+@property (nonatomic, strong) NSString* munki_name;
 
 
 
@@ -72,28 +72,28 @@ extern const struct ApplicationMOFetchedProperties {
 
 
 
-@property (nonatomic, retain) NSSet *applicationProxies;
+@property (nonatomic, strong) NSSet *applicationProxies;
 
 - (NSMutableSet*)applicationProxiesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *manifests;
+@property (nonatomic, strong) NSSet *manifests;
 
 - (NSMutableSet*)manifestsSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *packages;
+@property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
 
 
 
-@property (nonatomic, retain) NSSet *referencingStringObjects;
+@property (nonatomic, strong) NSSet *referencingStringObjects;
 
 - (NSMutableSet*)referencingStringObjectsSet;
 

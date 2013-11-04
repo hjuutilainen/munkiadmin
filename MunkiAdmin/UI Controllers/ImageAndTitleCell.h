@@ -15,8 +15,8 @@
 	
 }
 
-@property (retain) NSMutableDictionary * aTitleAttributes;
-@property (retain) NSMutableDictionary * aSubtitleAttributes;
+@property (strong) NSMutableDictionary * aTitleAttributes;
+@property (strong) NSMutableDictionary * aSubtitleAttributes;
 
 
 @end

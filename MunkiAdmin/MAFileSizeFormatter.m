@@ -24,7 +24,7 @@
 		i++;
 	}
     
-    NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
+    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
     [formatter setMaximumFractionDigits:1];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // Uses localized number formats.
     [formatter setAlwaysShowsDecimalSeparator:NO];

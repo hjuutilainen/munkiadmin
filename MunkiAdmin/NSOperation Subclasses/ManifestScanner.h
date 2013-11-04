@@ -25,13 +25,13 @@
 
 - (id)initWithURL:(NSURL *)src;
 
-@property (retain) NSString *currentJobDescription;
-@property (retain) NSString *fileName;
-@property (retain) NSURL *sourceURL;
-@property (retain) id delegate;
-@property (retain) NSDictionary *pkginfoKeyMappings;
-@property (retain) NSDictionary *receiptKeyMappings;
-@property (retain) NSDictionary *installsKeyMappings;
+@property (strong) NSString *currentJobDescription;
+@property (strong) NSString *fileName;
+@property (strong) NSURL *sourceURL;
+@property (strong) id delegate;
+@property (strong) NSDictionary *pkginfoKeyMappings;
+@property (strong) NSDictionary *receiptKeyMappings;
+@property (strong) NSDictionary *installsKeyMappings;
 
 
 @end

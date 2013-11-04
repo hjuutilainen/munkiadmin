@@ -28,22 +28,22 @@
 	NSWindow *addPrefixSuffixWindow;
 }
 
-@property (nonatomic, retain) IBOutlet NSView *addPrefixSuffixCustomView;
-@property (nonatomic, retain) IBOutlet NSTextField *prefixTextField;
-@property (nonatomic, retain) IBOutlet NSWindow *addPrefixSuffixWindow;
+@property (nonatomic, strong) IBOutlet NSView *addPrefixSuffixCustomView;
+@property (nonatomic, strong) IBOutlet NSTextField *prefixTextField;
+@property (nonatomic, strong) IBOutlet NSWindow *addPrefixSuffixWindow;
 
-@property (retain) NSString *prefixString;
-@property (retain) NSString *suffixString;
-@property (retain) NSString *searchString;
-@property (retain) NSString *replaceString;
-@property (retain) NSNumber *checkedDisplayName;
-@property (retain) NSNumber *checkedLocation;
-@property (retain) NSNumber *checkedDescription;
-@property (retain) NSNumber *checkedVersion;
-@property (retain) NSNumber *checkedName;
-@property (retain) NSNumber *checkedInstallerType;
-@property (retain) NSNumber *checkedUninstallMethod;
-@property (retain) NSNumber *checkedAll;
+@property (strong) NSString *prefixString;
+@property (strong) NSString *suffixString;
+@property (strong) NSString *searchString;
+@property (strong) NSString *replaceString;
+@property (strong) NSNumber *checkedDisplayName;
+@property (strong) NSNumber *checkedLocation;
+@property (strong) NSNumber *checkedDescription;
+@property (strong) NSNumber *checkedVersion;
+@property (strong) NSNumber *checkedName;
+@property (strong) NSNumber *checkedInstallerType;
+@property (strong) NSNumber *checkedUninstallMethod;
+@property (strong) NSNumber *checkedAll;
 
 - (IBAction)showModifyWindow:sender;
 - (IBAction)closeModifyWindow:sender;
