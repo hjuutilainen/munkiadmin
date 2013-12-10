@@ -23,20 +23,6 @@
 
 @implementation InstallsItemEditor
 
-@synthesize itemToEdit;
-@synthesize versionComparisonKeys;
-@synthesize customItemsTableView;
-@synthesize customItemsArrayController;
-@synthesize textFieldPath;
-@synthesize textFieldType;
-@synthesize textFieldCFBundleIdentifier;
-@synthesize textFieldCFBundleName;
-@synthesize textFieldCFBundleShortVersionString;
-@synthesize textFieldCFBundleVersion;
-@synthesize textFieldMD5Checksum;
-@synthesize textFieldMinOSVersion;
-@synthesize versionComparisonKeyPopup;
-
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
@@ -99,7 +85,7 @@
 }
 
 - (IBAction)okAction:(id)sender;
-{    
+{
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSOKButton];
 }
@@ -110,20 +96,5 @@
     [NSApp endSheet:[self window] returnCode:NSCancelButton];
 }
 
-+ (void)editSheetForWindow:(id)window delegate:(id)delegate endSelector:(SEL)selector entity:(InstallsItemMO *)object;
-{
-    InstallsItemEditor *controller;
-    controller = [[InstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
-    
-    controller.itemToEdit = object;
-    
-    [controller updateVersionComparisonKeys];
-    
-    [NSApp beginSheet:[controller window]
-       modalForWindow:window
-        modalDelegate:delegate
-       didEndSelector:selector
-          contextInfo:(__bridge void *)(object)];
-}
 
 @end

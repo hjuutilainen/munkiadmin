@@ -26,55 +26,6 @@ NSString *installerChoicesXMLPboardType = @"installerChoicesXMLPboardType";
 NSString *installerEnvironmentPboardType = @"installerEnvironmentPboardType";
 NSString *stringObjectPboardType = @"stringObjectPboardType";
 
-@synthesize forceInstallDatePicker;
-@synthesize mainTabView;
-@synthesize installsTableView;
-@synthesize receiptsTableView;
-@synthesize itemsToCopyTableView;
-@synthesize installerChoicesXMLTableView;
-@synthesize blockingApplicationsTableView;
-@synthesize supportedArchitecturesTableView;
-@synthesize preinstallScriptTextView;
-@synthesize postinstallScriptTextView;
-@synthesize uninstallScriptTextView;
-@synthesize preuninstallScriptTextView;
-@synthesize postuninstallScriptTextView;
-@synthesize installCheckScriptTextView;
-@synthesize uninstallCheckScriptTextView;
-@synthesize installsItemsController;
-@synthesize pkgController;
-@synthesize receiptsArrayController;
-@synthesize itemsToCopyArrayController;
-@synthesize requiresArrayController;
-@synthesize updateForArrayController;
-@synthesize blockingApplicationsArrayController;
-@synthesize supportedArchitecturesArrayController;
-@synthesize installerChoicesArrayController;
-@synthesize catalogInfosArrayController;
-@synthesize installerEnvironmentVariablesArrayController;
-
-@synthesize temp_blocking_applications_include_empty;
-@synthesize temp_preinstall_script_enabled;
-@synthesize temp_preuninstall_script_enabled;
-@synthesize temp_postinstall_script_enabled;
-@synthesize temp_postuninstall_script_enabled;
-@synthesize temp_uninstall_script_enabled;
-@synthesize temp_force_install_after_date;
-@synthesize temp_force_install_after_date_enabled;
-@synthesize temp_postinstall_script;
-@synthesize temp_postuninstall_script;
-@synthesize temp_preinstall_script;
-@synthesize temp_preuninstall_script;
-@synthesize temp_uninstall_script;
-@synthesize temp_installcheck_script_enabled;
-@synthesize temp_installcheck_script;
-@synthesize temp_uninstallcheck_script_enabled;
-@synthesize temp_uninstallcheck_script;
-@synthesize modalSession;
-@synthesize pkginfoToEdit;
-@synthesize delegate;
-@synthesize osVersions;
-@synthesize installerTypes;
 
 - (NSUndoManager*)windowWillReturnUndoManager:(NSWindow*)window
 {
@@ -180,9 +131,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     if (!selected) {
         return;
     }
-    SEL endSelector = @selector(installsItemEditorDidFinish:returnCode:object:);
     [[[[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
-    [InstallsItemEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:selected];
+    self.installsItemEditor.itemToEdit = selected;
+    [NSApp beginSheet:[self.installsItemEditor window]
+	   modalForWindow:[self window] modalDelegate:self
+	   didEndSelector:@selector(installsItemEditorDidFinish:returnCode:object:) contextInfo:nil];
+    [self.installsItemEditor updateVersionComparisonKeys];
+    
+    
 }
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
@@ -321,7 +277,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self commitChangesToCurrentPackage];
         
     [[self window] orderOut:sender];
-    [NSApp endModalSession:modalSession];
+    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
@@ -332,7 +288,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 - (void)cancelAction:(id)sender;
 {    
     [[self window] orderOut:sender];
-    [NSApp endModalSession:modalSession];
+    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
@@ -657,6 +613,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    
+    self.installsItemEditor = [[InstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
     
     [self configureTableViews];
     
