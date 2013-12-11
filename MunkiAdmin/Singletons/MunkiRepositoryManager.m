@@ -160,8 +160,9 @@ static dispatch_queue_t serialQueue;
                  Try to move the installer item
                  */
                 NSURL *installerTargetURL = [pkgsSubURL URLByAppendingPathComponent:[installerSourceURL lastPathComponent]];
-                BOOL moveInstallerSucceeded = [fm moveItemAtURL:installerSourceURL toURL:installerTargetURL error:nil];
-                if (!moveInstallerSucceeded) {
+                NSError *moveError = nil;
+                if (![fm moveItemAtURL:installerSourceURL toURL:installerTargetURL error:&moveError]) {
+                    NSLog(@"%@", moveError);
                     returnValue = NO;
                 } else {
                     /*
