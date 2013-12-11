@@ -58,16 +58,21 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    [[self undoManager] endUndoGrouping];
+    [[[[NSApp delegate] managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
-    [[self undoManager] undo];
+    [[[[NSApp delegate] managedObjectContext] undoManager] undoNestedGroup];
 }
 
 
 - (void)renameCurrentPackage
 {
+    [[[[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
+    self.packageNameEditor.packageToRename = self.pkginfoToEdit;
+    [self.packageNameEditor configureRenameOperation];
     SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
-    [PackageNameEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:self.pkginfoToEdit];
+    [NSApp beginSheet:[self.packageNameEditor window]
+	   modalForWindow:[self window] modalDelegate:self
+	   didEndSelector:endSelector contextInfo:nil];
 }
 
 - (IBAction)renameCurrentPackageAction:(id)sender
@@ -615,6 +620,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [super windowDidLoad];
     
     self.installsItemEditor = [[InstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
+    self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     
     [self configureTableViews];
     

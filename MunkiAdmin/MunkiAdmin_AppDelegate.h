@@ -49,7 +49,6 @@
     ManifestDetailView *manifestDetailViewController;
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;
-    PackageNameEditor *packageNameEditor;
     AdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
     PkginfoAssimilator *pkginfoAssimilator;
@@ -127,6 +126,8 @@
 @property (weak) IBOutlet NSView *makepkginfoOptionsView;
 @property (weak) IBOutlet PackageInfosArrayController *packageInfosArrayController;
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
+
+@property (strong) PackageNameEditor *packageNameEditor;
 
 # pragma mark -
 # pragma mark Variable declarations

@@ -453,7 +453,7 @@
     manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
-    packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
     pkginfoAssimilator = [[PkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
@@ -1072,7 +1072,9 @@
     for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
-    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Rename to \"%@\"", [object munki_name]]];
+    if (self.packageNameEditor.packageToRename) {
+        [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Rename to \"%@\"", [self.packageNameEditor.packageToRename munki_name]]];
+    }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
     [[[self managedObjectContext] undoManager] undo];
@@ -1088,10 +1090,16 @@
     PackageMO *firstSelected = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
     
     if (!firstSelected) return;
-    SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
+    
     [[[self managedObjectContext] undoManager] beginUndoGrouping];
     [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Rename \"%@\"", firstSelected.munki_name]];
-    [PackageNameEditor editSheetForWindow:self.window delegate:self endSelector:endSelector entity:firstSelected];
+    
+    self.packageNameEditor.packageToRename = firstSelected;
+    [self.packageNameEditor configureRenameOperation];
+    SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
+    [NSApp beginSheet:[self.packageNameEditor window]
+	   modalForWindow:[self window] modalDelegate:self
+	   didEndSelector:endSelector contextInfo:nil];
     
 }
 

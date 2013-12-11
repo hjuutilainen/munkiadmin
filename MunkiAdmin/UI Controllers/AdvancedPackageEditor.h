@@ -31,6 +31,7 @@
 @property (assign) id delegate;
 @property (assign) PackageMO *pkginfoToEdit;
 @property (strong) InstallsItemEditor *installsItemEditor;
+@property (strong) PackageNameEditor *packageNameEditor;
 @property NSModalSession modalSession;
 @property (assign) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (assign) IBOutlet NSTabView *mainTabView;

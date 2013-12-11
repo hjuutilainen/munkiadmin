@@ -12,13 +12,6 @@
 
 @implementation PackageNameEditor
 
-@synthesize packageToRename;
-@synthesize shouldRenameAll;
-@synthesize changedName;
-@synthesize oldName;
-@synthesize changeDescriptions;
-@synthesize changeDescriptionsArrayController;
-
 - (id)initWithWindow:(NSWindow *)window
 {
     self = [super initWithWindow:window];
@@ -239,22 +232,6 @@
 {
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSCancelButton];
-}
-
-+ (void)editSheetForWindow:(id)window delegate:(id)delegate endSelector:(SEL)selector entity:(PackageMO *)object;
-{
-    PackageNameEditor *controller;
-    controller = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
-    
-    controller.packageToRename = object;
-    
-    [controller configureRenameOperation];
-    
-    [NSApp beginSheet:[controller window]
-       modalForWindow:window
-        modalDelegate:delegate
-       didEndSelector:selector
-          contextInfo:(__bridge void *)(object)];
 }
 
 - (void)windowDidLoad
