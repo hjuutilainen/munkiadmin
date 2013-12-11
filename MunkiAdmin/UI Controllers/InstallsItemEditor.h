@@ -18,23 +18,23 @@
 
 # pragma mark -
 # pragma mark Properties
-@property (assign) InstallsItemMO *itemToEdit;
+@property (weak) InstallsItemMO *itemToEdit;
 @property (readonly, strong) NSArray *versionComparisonKeys;
 @property NSModalSession modalSession;
 @property (strong) NSManagedObjectContext *privateContext;
 
 # pragma mark -
 # pragma mark IBOutlets
-@property (assign) IBOutlet NSTableView *customItemsTableView;
-@property (assign) IBOutlet NSArrayController *customItemsArrayController;
-@property (assign) IBOutlet NSTextField *textFieldPath;
-@property (assign) IBOutlet NSTextField *textFieldType;
-@property (assign) IBOutlet NSTextField *textFieldCFBundleIdentifier;
-@property (assign) IBOutlet NSTextField *textFieldCFBundleName;
-@property (assign) IBOutlet NSTextField *textFieldCFBundleShortVersionString;
-@property (assign) IBOutlet NSTextField *textFieldCFBundleVersion;
-@property (assign) IBOutlet NSTextField *textFieldMD5Checksum;
-@property (assign) IBOutlet NSTextField *textFieldMinOSVersion;
-@property (assign) IBOutlet NSPopUpButton *versionComparisonKeyPopup;
+@property (weak) IBOutlet NSTableView *customItemsTableView;
+@property (weak) IBOutlet NSArrayController *customItemsArrayController;
+@property (weak) IBOutlet NSTextField *textFieldPath;
+@property (weak) IBOutlet NSTextField *textFieldType;
+@property (weak) IBOutlet NSTextField *textFieldCFBundleIdentifier;
+@property (weak) IBOutlet NSTextField *textFieldCFBundleName;
+@property (weak) IBOutlet NSTextField *textFieldCFBundleShortVersionString;
+@property (weak) IBOutlet NSTextField *textFieldCFBundleVersion;
+@property (weak) IBOutlet NSTextField *textFieldMD5Checksum;
+@property (weak) IBOutlet NSTextField *textFieldMinOSVersion;
+@property (weak) IBOutlet NSPopUpButton *versionComparisonKeyPopup;
 
 @end

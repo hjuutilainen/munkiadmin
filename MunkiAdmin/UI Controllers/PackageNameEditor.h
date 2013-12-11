@@ -17,11 +17,11 @@
 - (IBAction)cancelAction:(id)sender;
 - (void)configureRenameOperation;
 
-@property (assign) PackageMO *packageToRename;
+@property (weak) PackageMO *packageToRename;
 @property BOOL shouldRenameAll;
 @property (strong) NSString *changedName;
 @property (strong) NSString *oldName;
 @property (strong) NSArray *changeDescriptions;
-@property (assign) IBOutlet NSArrayController *changeDescriptionsArrayController;
+@property (weak) IBOutlet NSArrayController *changeDescriptionsArrayController;
 
 @end
