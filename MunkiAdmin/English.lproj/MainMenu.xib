@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -392,8 +392,8 @@ Gw
                                     <action selector="selectAll:" target="-1" id="506"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="1436"/>
-                            <menuItem title="Modify Package..." keyEquivalent="e" id="1437">
+                            <menuItem isSeparatorItem="YES" hidden="YES" id="1436"/>
+                            <menuItem title="Modify Package..." hidden="YES" keyEquivalent="e" id="1437">
                                 <connections>
                                     <action selector="showModifyWindow:" target="534" id="1497"/>
                                     <binding destination="534" name="enabled" keyPath="selectionIndexes" id="1469">
@@ -403,7 +403,7 @@ Gw
                                     </binding>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="455"/>
+                            <menuItem isSeparatorItem="YES" id="SQe-bM-sZr"/>
                             <menuItem title="Find" id="456">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Find" id="483">
@@ -773,8 +773,8 @@ Gw
                 <string>title</string>
             </declaredKeys>
             <connections>
-                <binding destination="534" name="contentSet" keyPath="selection.catalogInfos" id="635"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="633"/>
+                <binding destination="534" name="contentSet" keyPath="selection.catalogInfos" id="635"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="PackageInfo" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="869" userLabel="PackageInfos for Catalog" customClass="PackageInfosArrayController">
@@ -789,8 +789,8 @@ Gw
                 <string>package.munki_installer_item_location</string>
             </declaredKeys>
             <connections>
-                <binding destination="863" name="contentSet" keyPath="selection.packageInfos" id="871"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="870"/>
+                <binding destination="863" name="contentSet" keyPath="selection.packageInfos" id="871"/>
                 <outlet property="catalogsTableView" destination="845" id="2147"/>
             </connections>
         </arrayController>
@@ -809,8 +809,8 @@ Gw
                 <string>munki_name</string>
             </declaredKeys>
             <connections>
-                <binding destination="645" name="contentSet" keyPath="selection.packages" id="675"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="672"/>
+                <binding destination="645" name="contentSet" keyPath="selection.packages" id="675"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="ManagedInstall" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="1690" userLabel="Managed Installs for Manifest" customClass="ManifestItemArrayController">
@@ -819,8 +819,8 @@ Gw
                 <string>isEnabled</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.managedInstalls" id="1692"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1691"/>
+                <binding destination="964" name="contentSet" keyPath="selection.managedInstalls" id="1692"/>
                 <outlet property="tableView" destination="1650" id="2027"/>
             </connections>
         </arrayController>
@@ -830,8 +830,8 @@ Gw
                 <string>isEnabled</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.managedUninstalls" id="1700"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1699"/>
+                <binding destination="964" name="contentSet" keyPath="selection.managedUninstalls" id="1700"/>
                 <outlet property="tableView" destination="1704" id="2028"/>
             </connections>
         </arrayController>
@@ -841,8 +841,8 @@ Gw
                 <string>isEnabled</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.optionalInstalls" id="1745"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1744"/>
+                <binding destination="964" name="contentSet" keyPath="selection.optionalInstalls" id="1745"/>
                 <outlet property="tableView" destination="1734" id="2029"/>
             </connections>
         </arrayController>
@@ -852,8 +852,8 @@ Gw
                 <string>isEnabled</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.managedUpdates" id="1717"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1716"/>
+                <binding destination="964" name="contentSet" keyPath="selection.managedUpdates" id="1717"/>
                 <outlet property="tableView" destination="1719" id="2030"/>
             </connections>
         </arrayController>
@@ -864,8 +864,8 @@ Gw
                 <string>catalog.dictValue</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.catalogInfos" id="1027"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1043"/>
+                <binding destination="964" name="contentSet" keyPath="selection.catalogInfos" id="1027"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="ManifestInfo" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="1661" userLabel="ManifestInfos for Manifest">
@@ -878,8 +878,8 @@ Gw
                 <string>isAvailableForEditingValue</string>
             </declaredKeys>
             <connections>
-                <binding destination="964" name="contentSet" keyPath="selection.includedManifests" id="1679"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1662"/>
+                <binding destination="964" name="contentSet" keyPath="selection.includedManifests" id="1679"/>
             </connections>
         </arrayController>
         <customView id="928" userLabel="Catalogs List">
@@ -1070,17 +1070,17 @@ Gw
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </searchFieldCell>
                             <connections>
-                                <binding destination="869" name="predicate2" keyPath="filterPredicate" previousBinding="1312" id="1314">
-                                    <dictionary key="options">
-                                        <string key="NSDisplayName">Package Description</string>
-                                        <string key="NSPredicateFormat">package.munki_description contains[cd] $value</string>
-                                    </dictionary>
-                                </binding>
                                 <binding destination="869" name="predicate" keyPath="filterPredicate" id="1312">
                                     <dictionary key="options">
                                         <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                         <string key="NSDisplayName">Package Name</string>
                                         <string key="NSPredicateFormat">package.munki_name contains[cd] $value</string>
+                                    </dictionary>
+                                </binding>
+                                <binding destination="869" name="predicate2" keyPath="filterPredicate" previousBinding="1312" id="1314">
+                                    <dictionary key="options">
+                                        <string key="NSDisplayName">Package Description</string>
+                                        <string key="NSPredicateFormat">package.munki_description contains[cd] $value</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1182,11 +1182,11 @@ Gw
                     <tabViewItems>
                         <tabViewItem label="Info" identifier="1" id="1047">
                             <view key="view" id="1050">
-                                <rect key="frame" x="10" y="25" width="502" height="491"/>
+                                <rect key="frame" x="10" y="29" width="502" height="487"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <textField verticalHuggingPriority="750" id="1063">
-                                        <rect key="frame" x="135" y="463" width="277" height="22"/>
+                                        <rect key="frame" x="135" y="459" width="277" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1064">
                                             <font key="font" metaFont="system"/>
@@ -1198,7 +1198,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1065">
-                                        <rect key="frame" x="85" y="465" width="45" height="17"/>
+                                        <rect key="frame" x="85" y="461" width="45" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Name:" id="1066">
                                             <font key="font" metaFont="system"/>
@@ -1207,7 +1207,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1067">
-                                        <rect key="frame" x="135" y="433" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="429" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1070">
                                             <font key="font" metaFont="system"/>
@@ -1219,7 +1219,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1068">
-                                        <rect key="frame" x="35" y="435" width="95" height="17"/>
+                                        <rect key="frame" x="35" y="431" width="95" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Display Name:" id="1069">
                                             <font key="font" metaFont="system"/>
@@ -1228,7 +1228,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1073">
-                                        <rect key="frame" x="135" y="403" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="399" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1076">
                                             <font key="font" metaFont="system"/>
@@ -1240,7 +1240,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1074">
-                                        <rect key="frame" x="35" y="405" width="95" height="17"/>
+                                        <rect key="frame" x="35" y="401" width="95" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Version:" id="1075">
                                             <font key="font" metaFont="system"/>
@@ -1249,7 +1249,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1078">
-                                        <rect key="frame" x="135" y="373" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="369" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1081">
                                             <font key="font" metaFont="system"/>
@@ -1261,7 +1261,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1079">
-                                        <rect key="frame" x="35" y="375" width="95" height="17"/>
+                                        <rect key="frame" x="35" y="371" width="95" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Minimum OS:" id="1080">
                                             <font key="font" metaFont="system"/>
@@ -1270,7 +1270,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1083">
-                                        <rect key="frame" x="135" y="343" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="339" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1086">
                                             <font key="font" metaFont="system"/>
@@ -1282,7 +1282,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1084">
-                                        <rect key="frame" x="14" y="345" width="116" height="17"/>
+                                        <rect key="frame" x="14" y="341" width="116" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Uninstall method:" id="1085">
                                             <font key="font" metaFont="system"/>
@@ -1291,7 +1291,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1088">
-                                        <rect key="frame" x="135" y="271" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="267" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1091">
                                             <font key="font" metaFont="system"/>
@@ -1303,7 +1303,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1089">
-                                        <rect key="frame" x="14" y="273" width="116" height="17"/>
+                                        <rect key="frame" x="14" y="269" width="116" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Location:" id="1090">
                                             <font key="font" metaFont="system"/>
@@ -1312,7 +1312,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1768">
-                                        <rect key="frame" x="135" y="241" width="350" height="22"/>
+                                        <rect key="frame" x="135" y="237" width="350" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1771">
                                             <font key="font" metaFont="system"/>
@@ -1324,7 +1324,7 @@ Gw
                                         </connections>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1769">
-                                        <rect key="frame" x="14" y="243" width="116" height="17"/>
+                                        <rect key="frame" x="14" y="239" width="116" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Hash:" id="1770">
                                             <font key="font" metaFont="system"/>
@@ -1333,7 +1333,7 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <textField verticalHuggingPriority="750" id="1097">
-                                        <rect key="frame" x="14" y="216" width="116" height="17"/>
+                                        <rect key="frame" x="14" y="212" width="116" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Description:" id="1098">
                                             <font key="font" metaFont="system"/>
@@ -1342,20 +1342,20 @@ Gw
                                         </textFieldCell>
                                     </textField>
                                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="1093">
-                                        <rect key="frame" x="135" y="17" width="350" height="216"/>
+                                        <rect key="frame" x="135" y="17" width="350" height="212"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="AE1-mq-CGZ">
-                                            <rect key="frame" x="1" y="1" width="348" height="214"/>
+                                            <rect key="frame" x="1" y="1" width="333" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1096">
-                                                    <rect key="frame" x="0.0" y="0.0" width="348" height="214"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="333" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="348" height="214"/>
+                                                    <size key="minSize" width="333" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="348" height="214"/>
+                                                    <size key="minSize" width="333" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <connections>
                                                         <binding destination="534" name="value" keyPath="selection.munki_description" id="1103"/>
@@ -1369,12 +1369,12 @@ Gw
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="1094">
-                                            <rect key="frame" x="334" y="1" width="15" height="214"/>
+                                            <rect key="frame" x="334" y="1" width="15" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                     <button id="1104">
-                                        <rect key="frame" x="133" y="319" width="99" height="18"/>
+                                        <rect key="frame" x="133" y="315" width="99" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Autoremove" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1105">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1385,7 +1385,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button id="1960">
-                                        <rect key="frame" x="133" y="299" width="137" height="18"/>
+                                        <rect key="frame" x="133" y="295" width="137" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Unattended Install" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1961">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1396,7 +1396,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button id="1963">
-                                        <rect key="frame" x="274" y="299" width="154" height="18"/>
+                                        <rect key="frame" x="274" y="295" width="154" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Unattended Uninstall" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1964">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1407,7 +1407,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button id="1106">
-                                        <rect key="frame" x="274" y="319" width="104" height="18"/>
+                                        <rect key="frame" x="274" y="315" width="104" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Uninstallable" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1107">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1418,7 +1418,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" id="2124">
-                                        <rect key="frame" x="414" y="456" width="77" height="32"/>
+                                        <rect key="frame" x="414" y="452" width="77" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Edit..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2125">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -2509,18 +2509,18 @@ Gw
                     <tabViewItems>
                         <tabViewItem label="Installs" identifier="1" id="1633">
                             <view key="view" id="1636">
-                                <rect key="frame" x="10" y="25" width="759" height="485"/>
+                                <rect key="frame" x="10" y="29" width="759" height="481"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="1649">
-                                        <rect key="frame" x="17" y="17" width="725" height="462"/>
+                                        <rect key="frame" x="17" y="17" width="725" height="458"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="Yid-Vv-0tf">
-                                            <rect key="frame" x="1" y="1" width="723" height="460"/>
+                                            <rect key="frame" x="1" y="1" width="723" height="456"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" id="1650" customClass="ManifestItemTableView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="723" height="460"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="723" height="456"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2923,9 +2923,9 @@ Gw
                 <string>dictValue</string>
             </declaredKeys>
             <connections>
+                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1123"/>
                 <binding destination="534" name="contentArrayForMultipleSelection" keyPath="selection.receipts" id="1192"/>
                 <binding destination="534" name="contentSet" keyPath="selection.receipts" previousBinding="1192" id="1193"/>
-                <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1123"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="InstallsItem" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="1203" userLabel="InstallsItems for Package">
@@ -2940,8 +2940,8 @@ Gw
                 <string>munki_source_item</string>
             </declaredKeys>
             <connections>
-                <binding destination="534" name="contentSet" keyPath="selection.installsItems" id="1206"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1205"/>
+                <binding destination="534" name="contentSet" keyPath="selection.installsItems" id="1206"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="ItemToCopy" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="1819" userLabel="Items to Copy for Package">
@@ -2952,8 +2952,8 @@ Gw
                 <string>munki_mode</string>
             </declaredKeys>
             <connections>
-                <binding destination="534" name="contentSet" keyPath="selection.itemsToCopy" id="1820"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1821"/>
+                <binding destination="534" name="contentSet" keyPath="selection.itemsToCopy" id="1820"/>
             </connections>
         </arrayController>
         <textField verticalHuggingPriority="750" id="1405">
@@ -3339,8 +3339,8 @@ Gw
                 <string>title</string>
             </declaredKeys>
             <connections>
-                <binding destination="534" name="contentSet" keyPath="selection.updateFor" id="1944"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1943"/>
+                <binding destination="534" name="contentSet" keyPath="selection.updateFor" id="1944"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="1929" userLabel="Requirements for Package">
@@ -3349,8 +3349,8 @@ Gw
                 <string>dictValue</string>
             </declaredKeys>
             <connections>
-                <binding destination="534" name="contentSet" keyPath="selection.requirements" id="1931"/>
                 <binding destination="205" name="managedObjectContext" keyPath="managedObjectContext" id="1930"/>
+                <binding destination="534" name="contentSet" keyPath="selection.requirements" id="1931"/>
             </connections>
         </arrayController>
         <customView id="2112" userLabel="makepkginfo options">
