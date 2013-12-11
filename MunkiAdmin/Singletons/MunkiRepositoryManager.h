@@ -14,18 +14,7 @@
 @class InstallsItemMO;
 
 @interface MunkiRepositoryManager : NSObject {
-    BOOL makepkginfoInstalled;
-    BOOL makecatalogsInstalled;
-    NSString *makepkginfoVersion;
-    NSString *makecatalogsVersion;
-    NSDictionary *pkginfoBasicKeyMappings;
-    NSDictionary *pkginfoArrayKeyMappings;
-    NSArray *pkginfoAssimilateKeys;
-    NSArray *pkginfoAssimilateKeysForAuto;
-	NSDictionary *receiptKeyMappings;
-	NSDictionary *installsKeyMappings;
-    NSDictionary *installerChoicesKeyMappings;
-	NSDictionary *itemsToCopyKeyMappings;
+    
 }
 
 @property (readonly) BOOL makepkginfoInstalled;

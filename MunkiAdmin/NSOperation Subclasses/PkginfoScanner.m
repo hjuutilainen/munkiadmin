@@ -14,13 +14,6 @@
 
 @implementation PkginfoScanner
 
-@synthesize currentJobDescription;
-@synthesize fileName;
-@synthesize sourceURL;
-@synthesize sourceDict;
-@synthesize delegate;
-@synthesize canModify;
-
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];

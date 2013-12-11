@@ -10,15 +10,7 @@
 @class ConditionalItemMO;
 
 @interface PredicateEditor : NSWindowController {
-    NSPredicate *predicate;
-    NSTabView *__weak tabView;
-    NSTextField *__weak customTextField;
-    NSTabViewItem *__weak predicateEditorTabViewItem;
-    NSTabViewItem *__weak customTabViewItem;
-    NSPredicateEditor *__weak predicateEditor;
     
-    ConditionalItemMO *__weak conditionToEdit;
-    NSString *customPredicateString;
 }
 @property (strong) NSString *customPredicateString;
 @property (weak) ConditionalItemMO *conditionToEdit;

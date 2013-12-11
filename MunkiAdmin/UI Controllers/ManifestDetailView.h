@@ -8,17 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface ManifestDetailView : NSViewController <NSTableViewDelegate> {
-    NSArrayController *__weak managedInstallsController;
-    NSArrayController *__weak managedUpdatesController;
-    NSArrayController *__weak managedUninstallsController;
-    NSArrayController *__weak optionalInstallsController;
-    NSArrayController *__weak catalogsController;
-    NSArrayController *__weak includedManifestsController;
-    NSTableView *__weak nestedManifestsTableView;
-    NSTableView *__weak catalogsTableView;
-    NSArrayController *__weak conditionalItemsController;
-    NSOutlineView *__weak conditionsOutlineView;
-    NSTreeController *__weak conditionsTreeController;
+    
 }
 
 @property (weak) IBOutlet NSArrayController *managedInstallsController;

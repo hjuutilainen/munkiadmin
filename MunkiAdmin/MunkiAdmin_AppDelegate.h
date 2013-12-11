@@ -28,23 +28,6 @@
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
-	// ------------------
-	// IBOutlet variables
-	// ------------------
-    NSWindow *window;
-	NSWindow *progressPanel;
-	NSWindow *addItemsWindow;
-	NSTabView *mainTabView;
-	NSTableView *applicationTableView;
-	NSSplitView *mainSplitView;
-	NSView *applicationsListView;
-	NSView *catalogsListView;
-	NSView *packagesListView;
-	NSView *manifestsListView;
-	NSView *applicationsDetailView;
-	NSView *catalogsDetailView;
-	NSView *packagesDetailView;
-	NSView *manifestsDetailView;
     PackagesView *packagesViewController;
     ManifestDetailView *manifestDetailViewController;
     SelectPkginfoItemsWindow *addItemsWindowController;
@@ -52,70 +35,19 @@
     AdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
     PkginfoAssimilator *pkginfoAssimilator;
-    NSString *addItemsType;
-	NSTextField *createNewManifestCustomView;
-    NSView *__weak makepkginfoOptionsView;
-    PackageInfosArrayController *__weak packageInfosArrayController;
-    CatalogsArrayController *__weak allCatalogsArrayController;
 	
 	// The current master and detail view
 	// that we are displaying
     NSView *currentWholeView;
 	NSView *currentDetailView;
 	NSView *currentSourceView;
-	
-	// Place holder views that are used
-	// while changing the view
-	NSView *detailViewPlaceHolder;
-	NSView *sourceViewPlaceHolder;
-	
-	// The NSSegmentedControl that is used to change
-	// views betweeen packages, catalogs and manifests
-	NSSegmentedControl *mainSegmentedControl;
-	NSUInteger selectedViewTag;
-	NSString *selectedViewDescr;
-	
-	// ------------------
-	// Internal variables
-	// ------------------
-	
-	// URLs pointing to the current repo and its contents
-	NSURL *repoURL;
-	NSURL *pkgsURL;
-	NSURL *pkgsInfoURL;
-	NSURL *catalogsURL;
-	NSURL *manifestsURL;
-	
-	// Contains the default repo directory names
-	// This is used when opening and creating a repo
-	NSArray *defaultRepoContents;
-	
-	// We use operation queue when reading or writing to the repo
-	NSOperationQueue *operationQueue;
-	BOOL queueIsRunning;
-	NSString *currentStatusDescription;
-	NSString *queueStatusDescription;
-	NSString *jobDescription;
-	NSProgressIndicator *progressIndicator;
-	double subProgress;
-    NSTimer *operationTimer;
-	
+     
 	NSUserDefaults *defaults;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
 	
 	PreferencesController *preferencesController;
-	ApplicationsArrayController *applicationsArrayController;
-	PackageArrayController *allPackagesArrayController;
-	ManifestsArrayController *manifestsArrayController;
-	NSArrayController *manifestInfosArrayController;
-	NSArrayController *managedInstallsArrayController, *managedUpdatesArrayController, *managedUninstallsArrayController, *optionalInstallsArrayController;
-    NSArrayController *__weak installsItemsArrayController;
-    NSArrayController *__weak itemsToCopyArrayController;
-    NSArrayController *__weak receiptsArrayController;
-    PackageArrayController *__weak pkgsForAddingArrayController;
-    ApplicationsArrayController *__weak pkgGroupsForAddingArrayController;
 }
 
 @property (weak) IBOutlet NSArrayController *installsItemsArrayController;
@@ -128,6 +60,7 @@
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
 @property (strong) PackageNameEditor *packageNameEditor;
+@property (strong) NSTimer *operationTimer;
 
 # pragma mark -
 # pragma mark Variable declarations

@@ -11,14 +11,6 @@
 
 @implementation ManifestScanner
 
-@synthesize currentJobDescription;
-@synthesize fileName;
-@synthesize sourceURL;
-@synthesize delegate;
-@synthesize pkginfoKeyMappings;
-@synthesize receiptKeyMappings;
-@synthesize installsKeyMappings;
-
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];
@@ -163,10 +155,10 @@
 -(void)main {
 	@try {
 		@autoreleasepool {
-		
+            
 			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
 			[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
-        [moc setUndoManager:nil];
+            [moc setUndoManager:nil];
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(contextDidSave:)
 														 name:NSManagedObjectContextDidSaveNotification
@@ -175,40 +167,40 @@
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading manifest %@", [self.sourceURL relativePath]);
 			
-        /*
-         * Read the manifest dictionary from disk
-         */
+            /*
+             * Read the manifest dictionary from disk
+             */
 			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
 			if (manifestInfoDict != nil) {
-            
-            /*
-             * Manifest name should be the relative path from manifests subdirectory
-             */
-            NSArray *manifestComponents = [self.sourceURL pathComponents];
-            NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
-            NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-            [relativePathComponents removeObjectsInArray:manifestDirComponents];
-            NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
-            
-            /*
-             * Check if we already have a manifest with this name
-             */
-            NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
+                
+                /*
+                 * Manifest name should be the relative path from manifests subdirectory
+                 */
+                NSArray *manifestComponents = [self.sourceURL pathComponents];
+                NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+                NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
+                [relativePathComponents removeObjectsInArray:manifestDirComponents];
+                NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+                
+                /*
+                 * Check if we already have a manifest with this name
+                 */
+                NSFetchRequest *request = [[NSFetchRequest alloc] init];
+                NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 				[request setEntity:manifestEntityDescr];
-            [request setReturnsObjectsAsFaults:NO];
-            [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:
-                                                            @"managedInstallsFaster",
-                                                            @"managedUninstallsFaster",
-                                                            @"managedUpdatesFaster",
-                                                            @"optionalInstallsFaster",
-                                                            nil]];
+                [request setReturnsObjectsAsFaults:NO];
+                [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:
+                                                                @"managedInstallsFaster",
+                                                                @"managedUninstallsFaster",
+                                                                @"managedUpdatesFaster",
+                                                                @"optionalInstallsFaster",
+                                                                nil]];
 				
 				NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", manifestRelativePath];
-            
+                
 				[request setPredicate:titlePredicate];
-            ManifestMO *manifest;
-            NSArray *foundItems = [moc executeFetchRequest:request error:nil];
+                ManifestMO *manifest;
+                NSArray *foundItems = [moc executeFetchRequest:request error:nil];
 				if ([foundItems count] == 0) {
 					manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 					manifest.title = manifestRelativePath;
@@ -220,121 +212,121 @@
 					}
 				}
 				
-            
+                
 				manifest.originalManifest = manifestInfoDict;
 				
-            
-            // =================================
+                
+                // =================================
 				// Get "catalogs" items
-            // =================================
+                // =================================
 				/*
-             Left here as a reminder: Catalogs are processed with RelationshipScanner
-             */
-            
-            
-            // =================================
+                 Left here as a reminder: Catalogs are processed with RelationshipScanner
+                 */
+                
+                
+                // =================================
 				// Get "managed_installs" items
 				// =================================
-            NSDate *startTime = [NSDate date];
-            NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
-            [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                @autoreleasepool {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                    StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                    newManagedInstall.title = (NSString *)obj;
-                    newManagedInstall.typeString = @"managedInstall";
-                    newManagedInstall.originalIndexValue = idx;
-                    [manifest addManagedInstallsFasterObject:newManagedInstall];
+                NSDate *startTime = [NSDate date];
+                NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
+                [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    @autoreleasepool {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        newManagedInstall.title = (NSString *)obj;
+                        newManagedInstall.typeString = @"managedInstall";
+                        newManagedInstall.originalIndexValue = idx;
+                        [manifest addManagedInstallsFasterObject:newManagedInstall];
+                        
+                    }
+                }];
+                NSDate *now = [NSDate date];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
                 
-                }
-            }];
-            NSDate *now = [NSDate date];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
-            
-            
-            // =================================
+                
+                // =================================
 				// Get "managed_uninstalls" items
 				// =================================
-            startTime = [NSDate date];
-            NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
-            [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                @autoreleasepool {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                    StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                    newManagedUninstall.title = (NSString *)obj;
-                    newManagedUninstall.typeString = @"managedUninstall";
-                    newManagedUninstall.originalIndexValue = idx;
-                    [manifest addManagedUninstallsFasterObject:newManagedUninstall];
+                startTime = [NSDate date];
+                NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
+                [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    @autoreleasepool {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        newManagedUninstall.title = (NSString *)obj;
+                        newManagedUninstall.typeString = @"managedUninstall";
+                        newManagedUninstall.originalIndexValue = idx;
+                        [manifest addManagedUninstallsFasterObject:newManagedUninstall];
+                        
+                    }
+                }];
+                now = [NSDate date];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_uninstalls took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
                 
-                }
-            }];
-            now = [NSDate date];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_uninstalls took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
-            
-            
-            // =================================
+                
+                // =================================
 				// Get "managed_updates" items
 				// =================================
-            startTime = [NSDate date];
-            NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
-            [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                @autoreleasepool {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                    StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                    newManagedUpdate.title = (NSString *)obj;
-                    newManagedUpdate.typeString = @"managedUpdate";
-                    newManagedUpdate.originalIndexValue = idx;
-                    [manifest addManagedUpdatesFasterObject:newManagedUpdate];
-                
-                }
-            }];
+                startTime = [NSDate date];
+                NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
+                [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    @autoreleasepool {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        newManagedUpdate.title = (NSString *)obj;
+                        newManagedUpdate.typeString = @"managedUpdate";
+                        newManagedUpdate.originalIndexValue = idx;
+                        [manifest addManagedUpdatesFasterObject:newManagedUpdate];
+                        
+                    }
+                }];
 				now = [NSDate date];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_updates took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
-            
-            
-            // =================================
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning managed_updates took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+                
+                
+                // =================================
 				// Get "optional_installs" items
 				// =================================
-            startTime = [NSDate date];
-            NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
+                startTime = [NSDate date];
+                NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
 				[optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                @autoreleasepool {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                newOptionalInstall.title = (NSString *)obj;
-                newOptionalInstall.typeString = @"optionalInstall";
-                newOptionalInstall.originalIndexValue = idx;
-                [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                    @autoreleasepool {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        newOptionalInstall.title = (NSString *)obj;
+                        newOptionalInstall.typeString = @"optionalInstall";
+                        newOptionalInstall.originalIndexValue = idx;
+                        [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                        
+                    }
+                }];
+                now = [NSDate date];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
                 
-                }
-            }];
-            now = [NSDate date];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
-            
-            
-            // =================================
+                
+                // =================================
 				// Get "included_manifests" items
 				// =================================
 				NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
-            [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-                newIncludedManifest.title = (NSString *)obj;
-                newIncludedManifest.typeString = @"includedManifest";
-                newIncludedManifest.originalIndexValue = idx;
-                newIncludedManifest.indexInNestedManifestValue = idx;
-                [manifest addIncludedManifestsFasterObject:newIncludedManifest];
-            }];
-            
-            
-            // =================================
+                [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                    StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                    newIncludedManifest.title = (NSString *)obj;
+                    newIncludedManifest.typeString = @"includedManifest";
+                    newIncludedManifest.originalIndexValue = idx;
+                    newIncludedManifest.indexInNestedManifestValue = idx;
+                    [manifest addIncludedManifestsFasterObject:newIncludedManifest];
+                }];
+                
+                
+                // =================================
 				// Get "conditional_items"
 				// =================================
-            startTime = [NSDate date];
+                startTime = [NSDate date];
 				NSArray *conditionalItems = [manifestInfoDict objectForKey:@"conditional_items"];
-            [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:moc];
-            now = [NSDate date];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+                [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:moc];
+                now = [NSDate date];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
 				
 			} else {
 				NSLog(@"Can't read manifest file %@", [self.sourceURL relativePath]);

@@ -11,14 +11,6 @@
 #define DEFAULT_PREDICATE @"os_vers == '' AND arch == ''"
 
 @implementation PredicateEditor
-@synthesize predicateEditor;
-@synthesize predicate;
-@synthesize tabView;
-@synthesize customTextField;
-@synthesize predicateEditorTabViewItem;
-@synthesize customTabViewItem;
-@synthesize conditionToEdit;
-@synthesize customPredicateString;
 
 - (id)initWithWindow:(NSWindow *)window
 {

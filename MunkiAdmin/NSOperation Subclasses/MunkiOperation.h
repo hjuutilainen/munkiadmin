@@ -9,11 +9,7 @@
 
 
 @interface MunkiOperation : NSOperation {
-	
-	NSString *command;
-	NSURL *targetURL;
-	NSArray *arguments;
-	id delegate;
+    
 }
 
 + (id)makecatalogsOperationWithTarget:(NSURL *)target;
@@ -26,7 +22,7 @@
 @property (strong) NSString *command;
 @property (strong) NSURL *targetURL;
 @property (strong) NSArray *arguments;
-@property (strong) id delegate;
+@property (weak) id delegate;
 
 @end
 

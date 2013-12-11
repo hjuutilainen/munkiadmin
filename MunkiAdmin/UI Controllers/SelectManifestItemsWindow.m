@@ -10,12 +10,6 @@
 @implementation SelectManifestItemsWindow
 
 @dynamic originalPredicate;
-@synthesize existingSearchBgView;
-@synthesize customValueBgView;
-@synthesize customValueTextField;
-@synthesize tabView;
-@synthesize manifestsArrayController;
-@synthesize existingSearchField;
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -54,7 +48,7 @@
     self.customValueBgView.drawBottomLine = YES;
     self.customValueBgView.lineColor = [NSColor grayColor];
     
-    [existingSearchField setDelegate:self];
+    [self.existingSearchField setDelegate:self];
     
     [self updateSearchPredicate];
 }

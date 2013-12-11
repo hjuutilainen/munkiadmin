@@ -9,13 +9,7 @@
 
 
 @interface GradientBackgroundView : NSView {
-
-	NSGradient *fillGradient;
-    NSColor *lineColor;
-	BOOL drawBottomLine;
-    BOOL drawTopLine;
-    BOOL drawLeftLine;
-    BOOL drawRightLine;
+    
 }
 
 @property BOOL drawBottomLine;

@@ -9,12 +9,6 @@
 
 
 @implementation GradientBackgroundView
-@synthesize drawBottomLine;
-@synthesize drawTopLine;
-@synthesize drawLeftLine;
-@synthesize drawRightLine;
-@synthesize lineColor;
-@synthesize fillGradient;
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -35,7 +29,7 @@
 	
 	NSRect wholeRect = [self bounds];
 	
-	[fillGradient drawInRect:wholeRect angle:90.0];
+	[self.fillGradient drawInRect:wholeRect angle:90.0];
 	
 	if (self.drawBottomLine) {
         NSBezierPath *bottomLine = [NSBezierPath bezierPath];

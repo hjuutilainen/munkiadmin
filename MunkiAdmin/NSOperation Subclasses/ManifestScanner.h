@@ -10,15 +10,6 @@
 #import "ManifestInfoMO.h"
 
 @interface ManifestScanner : NSOperation {
-	
-	NSString *currentJobDescription;
-	NSString *fileName;
-	NSURL *sourceURL;
-	id delegate;
-	NSDictionary *pkginfoKeyMappings;
-	NSDictionary *receiptKeyMappings;
-	NSDictionary *installsKeyMappings;
-    
     NSArray *apps;
     NSArray *packages;
 }
@@ -28,7 +19,7 @@
 @property (strong) NSString *currentJobDescription;
 @property (strong) NSString *fileName;
 @property (strong) NSURL *sourceURL;
-@property (strong) id delegate;
+@property (weak) id delegate;
 @property (strong) NSDictionary *pkginfoKeyMappings;
 @property (strong) NSDictionary *receiptKeyMappings;
 @property (strong) NSDictionary *installsKeyMappings;

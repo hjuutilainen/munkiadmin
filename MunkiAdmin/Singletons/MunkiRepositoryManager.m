@@ -36,16 +36,6 @@
 @dynamic makepkginfoInstalled;
 @dynamic pkginfoAssimilateKeysForAuto;
 
-@synthesize pkginfoBasicKeyMappings;
-@synthesize pkginfoArrayKeyMappings;
-@synthesize pkginfoAssimilateKeys;
-@synthesize receiptKeyMappings;
-@synthesize installsKeyMappings;
-@synthesize itemsToCopyKeyMappings;
-@synthesize installerChoicesKeyMappings;
-@synthesize makepkginfoVersion;
-@synthesize makecatalogsVersion;
-
 
 # pragma mark -
 # pragma mark Singleton methods

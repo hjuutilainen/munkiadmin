@@ -8,11 +8,6 @@
 #import "FileCopyOperation.h"
 
 @implementation FileCopyOperation
-@synthesize currentJobDescription;
-@synthesize fileName;
-@synthesize sourceURL;
-@synthesize targetURL;
-@synthesize delegate;
 
 - (NSUserDefaults *)defaults
 {

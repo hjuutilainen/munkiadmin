@@ -11,19 +11,7 @@
 #import "GradientBackgroundView.h"
 
 @interface SelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
-    PackageArrayController *__weak individualPkgsArrayController;
-    ApplicationsArrayController *__weak groupedPkgsArrayController;
-    NSTabView *__weak tabView;
-    NSInteger currentMode;
-    NSTextField *__weak customValueTextField;
-    GradientBackgroundView *__weak indSearchBgView;
-    GradientBackgroundView *__weak groupSearchBgView;
-    GradientBackgroundView *__weak customBgView;
     BOOL shouldHideAddedItems;
-    
-    NSSearchField *__weak groupedSearchField;
-    NSSearchField *__weak individualSearchField;
-    NSPredicate *hideAddedPredicate;
 }
 
 @property (weak) IBOutlet NSSearchField *groupedSearchField;

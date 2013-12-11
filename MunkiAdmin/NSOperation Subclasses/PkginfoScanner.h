@@ -9,13 +9,7 @@
 
 
 @interface PkginfoScanner : NSOperation {
-	
-	NSString *currentJobDescription;
-	NSString *fileName;
-	NSURL *sourceURL;
-	NSDictionary *sourceDict;
-	id delegate;
-	BOOL canModify;
+    
 }
 
 + (id)scannerWithURL:(NSURL *)url;
@@ -27,7 +21,7 @@
 @property (strong) NSString *fileName;
 @property (strong) NSURL *sourceURL;
 @property (strong) NSDictionary *sourceDict;
-@property (strong) id delegate;
+@property (weak) id delegate;
 @property BOOL canModify;
 
 @end

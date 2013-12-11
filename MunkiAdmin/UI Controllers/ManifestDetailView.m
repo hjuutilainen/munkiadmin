@@ -12,18 +12,6 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 
 @implementation ManifestDetailView
 
-@synthesize managedInstallsController;
-@synthesize managedUpdatesController;
-@synthesize managedUninstallsController;
-@synthesize optionalInstallsController;
-@synthesize catalogsController;
-@synthesize includedManifestsController;
-@synthesize nestedManifestsTableView;
-@synthesize catalogsTableView;
-@synthesize conditionalItemsController;
-@synthesize conditionsOutlineView;
-@synthesize conditionsTreeController;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

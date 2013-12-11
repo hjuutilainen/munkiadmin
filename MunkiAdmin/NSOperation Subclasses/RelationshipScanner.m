@@ -11,15 +11,6 @@
 
 @implementation RelationshipScanner
 
-@synthesize currentJobDescription;
-@synthesize fileName;
-@synthesize delegate;
-@synthesize operationMode;
-@synthesize allCatalogs;
-@synthesize allPackages;
-@synthesize allApplications;
-@synthesize allManifests;
-
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];

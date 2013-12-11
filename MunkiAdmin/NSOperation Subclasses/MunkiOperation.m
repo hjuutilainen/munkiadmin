@@ -10,11 +10,6 @@
 
 @implementation MunkiOperation
 
-@synthesize command;
-@synthesize targetURL;
-@synthesize arguments;
-@synthesize delegate;
-
 
 + (id)makecatalogsOperationWithTarget:(NSURL *)target
 {

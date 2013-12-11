@@ -9,16 +9,10 @@
 #import "GradientBackgroundView.h"
 
 @interface SelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
-    GradientBackgroundView *__weak existingSearchBgView;
-    GradientBackgroundView *__weak customValueBgView;
-    NSTextField *__weak customValueTextField;
-    NSTabView *__weak tabView;
-    NSArrayController *__weak manifestsArrayController;
-    NSSearchField *__weak existingSearchField;
     NSPredicate *originalPredicate;
 }
 
-@property (copy) NSPredicate *originalPredicate;
+@property (strong) NSPredicate *originalPredicate;
 @property (weak) IBOutlet GradientBackgroundView *existingSearchBgView;
 @property (weak) IBOutlet GradientBackgroundView *customValueBgView;
 @property (weak) IBOutlet NSTextField *customValueTextField;

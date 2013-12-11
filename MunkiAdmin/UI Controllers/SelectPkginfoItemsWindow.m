@@ -10,17 +10,6 @@
 
 @implementation SelectPkginfoItemsWindow
 
-@synthesize individualPkgsArrayController;
-@synthesize groupedPkgsArrayController;
-@synthesize tabView;
-@synthesize currentMode;
-@synthesize customValueTextField;
-@synthesize indSearchBgView;
-@synthesize groupSearchBgView;
-@synthesize customBgView;
-@synthesize individualSearchField;
-@synthesize groupedSearchField;
-@synthesize hideAddedPredicate;
 @dynamic shouldHideAddedItems;
 
 - (void)updateGroupedSearchPredicate

@@ -5,9 +5,6 @@
 
 @implementation MyCell
 
-@synthesize aTitleAttributes;
-@synthesize aSubtitleAttributes;
-
 - (void)awakeFromNib
 {
 	// Make attributes for our strings
@@ -170,14 +167,14 @@
 	if(	[self isHighlighted])
 	{
 		// if the cell is highlighted, draw the text white
-		[aTitleAttributes setValue:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
-		[aSubtitleAttributes setValue:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
+		[_aTitleAttributes setValue:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
+		[_aSubtitleAttributes setValue:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
 	}
 	else
 	{
 		// if the cell is not highlighted, draw the title black and the subtile gray
-		[aTitleAttributes setValue:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
-		[aSubtitleAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+		[_aTitleAttributes setValue:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+		[_aSubtitleAttributes setValue:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
 	}
 	
 	
@@ -185,8 +182,8 @@
 	[anIcon drawInRect:anIconBox fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 	
 	// Draw the text
-	[aTitle drawInRect:aTitleBox withAttributes:aTitleAttributes];
-	[aSubtitle drawInRect:aSubtitleBox withAttributes:aSubtitleAttributes];
+	[aTitle drawInRect:aTitleBox withAttributes:self.aTitleAttributes];
+	[aSubtitle drawInRect:aSubtitleBox withAttributes:self.aSubtitleAttributes];
 
 }
 

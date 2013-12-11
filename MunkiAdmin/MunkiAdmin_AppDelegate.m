@@ -26,59 +26,11 @@
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
 
 @implementation MunkiAdmin_AppDelegate
-@synthesize installsItemsArrayController;
-@synthesize itemsToCopyArrayController;
-@synthesize receiptsArrayController;
-@synthesize pkgsForAddingArrayController;
-@synthesize pkgGroupsForAddingArrayController;
-@synthesize addItemsType;
-@synthesize makepkginfoOptionsView;
-@synthesize packageInfosArrayController;
-@synthesize allCatalogsArrayController;
 
 # pragma mark -
 # pragma mark Property Implementation Directives
 
 @dynamic defaults;
-@synthesize applicationsArrayController, allPackagesArrayController, manifestsArrayController;
-@synthesize manifestInfosArrayController;
-@synthesize managedInstallsArrayController;
-@synthesize managedUpdatesArrayController;
-@synthesize managedUninstallsArrayController;
-@synthesize optionalInstallsArrayController;
-@synthesize selectedViewDescr;
-@synthesize window;
-@synthesize progressPanel;
-@synthesize addItemsWindow;
-@synthesize mainTabView;
-@synthesize mainSplitView;
-@synthesize sourceViewPlaceHolder;
-@synthesize detailViewPlaceHolder;
-@synthesize createNewManifestCustomView;
-@synthesize applicationsDetailView;
-@synthesize applicationsListView;
-@synthesize applicationTableView;
-@synthesize catalogsListView;
-@synthesize catalogsDetailView;
-@synthesize packagesListView;
-@synthesize packagesDetailView;
-@synthesize manifestsListView;
-@synthesize manifestsDetailView;
-@synthesize mainSegmentedControl;
-@synthesize repoURL;
-@synthesize pkgsURL;
-@synthesize pkgsInfoURL;
-@synthesize catalogsURL;
-@synthesize manifestsURL;
-@synthesize operationQueue;
-@synthesize queueIsRunning;
-@synthesize progressIndicator;
-@synthesize currentStatusDescription;
-@synthesize queueStatusDescription;
-@synthesize jobDescription;
-@synthesize subProgress;
-@synthesize defaultRepoContents;
-@synthesize selectedViewTag;
 
 
 # pragma mark -
@@ -460,7 +412,7 @@
     
     
 	// Configure segmented control
-	[mainSegmentedControl setSegmentCount:3];
+	[self.mainSegmentedControl setSegmentCount:3];
 	
     NSImage *packagesIcon = [[NSImage imageNamed:@"packageIcon_32x32"] copy];
 	[packagesIcon setSize:NSMakeSize(18, 18)];
@@ -469,40 +421,40 @@
 	NSImage *manifestsIcon = [[NSImage imageNamed:@"manifestIcon_32x32"] copy];
 	[manifestsIcon setSize:NSMakeSize(18, 18)];
 	
-	[mainSegmentedControl setImage:packagesIcon forSegment:0];
-	[mainSegmentedControl setImage:catalogsIcon forSegment:1];
-	[mainSegmentedControl setImage:manifestsIcon forSegment:2];
+	[self.mainSegmentedControl setImage:packagesIcon forSegment:0];
+	[self.mainSegmentedControl setImage:catalogsIcon forSegment:1];
+	[self.mainSegmentedControl setImage:manifestsIcon forSegment:2];
 	
-	[mainTabView setDelegate:self];
-	[mainSplitView setDelegate:self];
+	[self.mainTabView setDelegate:self];
+	[self.mainSplitView setDelegate:self];
 	
 	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
         currentWholeView = [packagesViewController view];
-		[mainSegmentedControl setSelectedSegment:0];
+		[self.mainSegmentedControl setSelectedSegment:0];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
 		self.selectedViewTag = 1;
 		self.selectedViewDescr = @"Catalogs";
-		currentDetailView = catalogsDetailView;
-		currentSourceView = catalogsListView;
+		currentDetailView = self.catalogsDetailView;
+		currentSourceView = self.catalogsListView;
         currentWholeView = self.mainSplitView;
-		[mainSegmentedControl setSelectedSegment:1];
+		[self.mainSegmentedControl setSelectedSegment:1];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
 		self.selectedViewTag = 2;
 		self.selectedViewDescr = @"Manifests";
 		currentDetailView = [manifestDetailViewController view];
-		currentSourceView = manifestsListView;
+		currentSourceView = self.manifestsListView;
         currentWholeView = self.mainSplitView;
-		[mainSegmentedControl setSelectedSegment:2];
+		[self.mainSegmentedControl setSelectedSegment:2];
 	}
 	else {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
         currentWholeView = [packagesViewController view];
-		[mainSegmentedControl setSelectedSegment:0];
+		[self.mainSegmentedControl setSelectedSegment:0];
 	}
     	
 	[self changeItemView];
@@ -513,33 +465,33 @@
 	self.operationQueue = [[NSOperationQueue alloc] init];
 	[self.operationQueue setMaxConcurrentOperationCount:1];
 	self.queueIsRunning = NO;
-	[progressIndicator setUsesThreadedAnimation:YES];
+	[self.progressIndicator setUsesThreadedAnimation:YES];
 		
 	// Define default repository contents
     self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgsinfo", nil];
 	
 	// Set sort descriptors for array controllers
     NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-	[manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
+	[self.manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
 	
     NSSortDescriptor *sortAppProxiesByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortAppProxiesByDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSArray *appSorters = [NSArray arrayWithObjects:sortAppProxiesByDisplayName, sortAppProxiesByTitle, nil];
-	[managedInstallsArrayController setSortDescriptors:appSorters];
-	[managedUninstallsArrayController setSortDescriptors:appSorters];
-	[managedUpdatesArrayController setSortDescriptors:appSorters];
-	[optionalInstallsArrayController setSortDescriptors:appSorters];
+	[self.managedInstallsArrayController setSortDescriptors:appSorters];
+	[self.managedUninstallsArrayController setSortDescriptors:appSorters];
+	[self.managedUpdatesArrayController setSortDescriptors:appSorters];
+	[self.optionalInstallsArrayController setSortDescriptors:appSorters];
     
     NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES];
-    [installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
+    [self.installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
     
     NSSortDescriptor *sortItemsToCopyByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES];
     NSSortDescriptor *sortItemsToCopyBySource = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES];
-    [itemsToCopyArrayController setSortDescriptors:[NSArray arrayWithObjects:sortItemsToCopyByDestPath, sortItemsToCopyBySource, nil]];
+    [self.itemsToCopyArrayController setSortDescriptors:[NSArray arrayWithObjects:sortItemsToCopyByDestPath, sortItemsToCopyBySource, nil]];
     
     NSSortDescriptor *sortReceiptsByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES];
     NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
-    [receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
+    [self.receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
 	
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
@@ -804,10 +756,10 @@
 		self.queueIsRunning = NO;
 		self.jobDescription = @"Done";
 		self.currentStatusDescription = @"--";
-		[progressIndicator setDoubleValue:[progressIndicator maxValue]];
-		[NSApp endSheet:progressPanel];
-		[progressPanel close];
-		[progressIndicator stopAnimation:self];
+		[self.progressIndicator setDoubleValue:[self.progressIndicator maxValue]];
+		[NSApp endSheet:self.progressPanel];
+		[self.progressPanel close];
+		[self.progressIndicator stopAnimation:self];
         [self postStatusUpdateReadyToReceive:YES];
 	}
 	
@@ -815,12 +767,12 @@
 		// Update progress
 		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp - 1];
 		if (numOp == 1) {
-			[progressIndicator setIndeterminate:YES];
-			[progressIndicator startAnimation:self];
+			[self.progressIndicator setIndeterminate:YES];
+			[self.progressIndicator startAnimation:self];
 		} else {
-			[progressIndicator setIndeterminate:NO];
-			double currentProgress = [progressIndicator maxValue] - (double)numOp + 1;
-			[progressIndicator setDoubleValue:currentProgress];
+			[self.progressIndicator setIndeterminate:NO];
+			double currentProgress = [self.progressIndicator maxValue] - (double)numOp + 1;
+			[self.progressIndicator setDoubleValue:currentProgress];
 		}
 		
 		// Get the currently running operation
@@ -876,7 +828,7 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
+	self.operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													  target:self
 													selector:@selector(checkOperations:)
 													userInfo:nil
@@ -885,12 +837,12 @@
 
 - (void)showProgressPanel
 {
-	[NSApp beginSheet:progressPanel 
+	[NSApp beginSheet:self.progressPanel
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
-	[progressIndicator setDoubleValue:0.0];
-	[progressIndicator setMaxValue:[self.operationQueue operationCount]];
-	[progressIndicator startAnimation:self];
+	[self.progressIndicator setDoubleValue:0.0];
+	[self.progressIndicator setMaxValue:[self.operationQueue operationCount]];
+	[self.progressIndicator startAnimation:self];
 	[self startOperationTimer];
 }
 
@@ -992,7 +944,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
-	NSArray *selectedManifests = [manifestsArrayController selectedObjects];
+	NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
@@ -1189,7 +1141,7 @@
 
 - (void)enableAllPackagesForManifest
 {
-	ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+	ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = YES;
 	}
@@ -1202,7 +1154,7 @@
 
 - (void)disableAllPackagesForManifest
 {
-	ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+	ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = NO;
 	}
@@ -1646,7 +1598,7 @@
         thePredicateString = [predicateEditor.customTextField stringValue];
     }
     
-    NSArray *selectedManifests = [manifestsArrayController selectedObjects];
+    NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
     NSArray *selectedConditionalItems = [[manifestDetailViewController conditionsTreeController] selectedObjects];
     
     for (ManifestMO *selectedManifest in selectedManifests) {
@@ -1680,7 +1632,7 @@
         thePredicateString = [predicateEditor.customTextField stringValue];
     }
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     predicateEditor.conditionToEdit.munki_condition = thePredicateString;
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
@@ -1726,7 +1678,7 @@
 
 - (IBAction)removeConditionalItemAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (ConditionalItemMO *aConditionalItem in [manifestDetailViewController.conditionsTreeController selectedObjects]) {
         [self.managedObjectContext deleteObject:aConditionalItem];
@@ -1740,7 +1692,7 @@
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *aNestedManifest in [selectedManifest includedManifestsFaster]) {
@@ -1756,7 +1708,7 @@
 
 - (IBAction)removeIncludedManifestAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (StringObjectMO *anIncludedManifest in [manifestDetailViewController.includedManifestsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anIncludedManifest];
@@ -1781,7 +1733,7 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *aManagedInstall in [selectedManifest managedInstallsFaster]) {
@@ -1796,7 +1748,7 @@
 
 - (IBAction)removeManagedInstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (StringObjectMO *aManagedInstall in [manifestDetailViewController.managedInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedInstall];
@@ -1812,7 +1764,7 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *aManagedUninstall in [selectedManifest managedUninstallsFaster]) {
@@ -1827,7 +1779,7 @@
 
 - (IBAction)removeManagedUninstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (StringObjectMO *aManagedUninstall in [manifestDetailViewController.managedUninstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUninstall];
@@ -1843,7 +1795,7 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *aManagedUpdate in [selectedManifest managedUpdatesFaster]) {
@@ -1858,7 +1810,7 @@
 
 - (IBAction)removeManagedUpdateAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (StringObjectMO *aManagedUpdate in [manifestDetailViewController.managedUpdatesController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUpdate];
@@ -1874,7 +1826,7 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *anOptionalInstall in [selectedManifest optionalInstallsFaster]) {
@@ -1889,7 +1841,7 @@
 
 - (IBAction)removeOptionalInstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
     for (StringObjectMO *anOptionalInstall in [manifestDetailViewController.optionalInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anOptionalInstall];
@@ -1900,7 +1852,7 @@
 - (IBAction)processAddNestedManifestAction:(id)sender
 {
     NSString *selectedTabViewLabel = [[[selectManifestsWindowController tabView] selectedTabViewItem] label];
-    for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
+    for (ManifestMO *selectedManifest in [self.manifestsArrayController selectedObjects]) {
         if ([selectedTabViewLabel isEqualToString:@"Existing"]) {
             if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding nested manifest in Existing mode");
             for (ManifestMO *aManifest in [[selectManifestsWindowController manifestsArrayController] selectedObjects]) {
@@ -1929,7 +1881,7 @@
 
 - (void)processAddItemsAction:(id)sender
 {
-    for (ManifestMO *selectedManifest in [manifestsArrayController selectedObjects]) {
+    for (ManifestMO *selectedManifest in [self.manifestsArrayController selectedObjects]) {
         for (StringObjectMO *selectedItem in [addItemsWindowController selectionAsStringObjects]) {
             selectedItem.typeString = self.addItemsType;
             if ([self.addItemsType isEqualToString:@"managedInstall"]) {
@@ -2771,7 +2723,7 @@
         [[NSApplication sharedApplication] presentError:error];
     }
 	
-	[applicationTableView reloadData];
+	[self.applicationTableView reloadData];
 }
 
 
@@ -2852,7 +2804,7 @@
                 currentWholeView = [packagesViewController view];
                 currentDetailView = nil;
                 currentSourceView = nil;
-                [mainSegmentedControl setSelectedSegment:0];
+                [self.mainSegmentedControl setSelectedSegment:0];
 				[self changeItemView];
             }
 			break;
@@ -2860,9 +2812,9 @@
 			if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
                 currentWholeView = self.mainSplitView;
-				currentDetailView = catalogsDetailView;
-				currentSourceView = catalogsListView;
-				[mainSegmentedControl setSelectedSegment:1];
+				currentDetailView = self.catalogsDetailView;
+				currentSourceView = self.catalogsListView;
+				[self.mainSegmentedControl setSelectedSegment:1];
 				[self changeItemView];
 			}
 			break;
@@ -2871,8 +2823,8 @@
 				self.selectedViewDescr = @"Manifests";
                 currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
-				currentSourceView = manifestsListView;
-				[mainSegmentedControl setSelectedSegment:2];
+				currentSourceView = self.manifestsListView;
+				[self.mainSegmentedControl setSelectedSegment:2];
 				[self changeItemView];
 			}
 			break;
@@ -2897,8 +2849,8 @@
             if (currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
                 currentWholeView = self.mainSplitView;
-				currentDetailView = catalogsDetailView;
-				currentSourceView = catalogsListView;
+				currentDetailView = self.catalogsDetailView;
+				currentSourceView = self.catalogsListView;
 				[self changeItemView];
             }
 			break;
@@ -2907,7 +2859,7 @@
 				self.selectedViewDescr = @"Manifests";
                 currentWholeView = self.mainSplitView;
 				currentDetailView = [manifestDetailViewController view];
-				currentSourceView = manifestsListView;
+				currentSourceView = self.manifestsListView;
 				[self changeItemView];
             }
 			break;
@@ -2921,13 +2873,13 @@
 - (void)removeSubview
 {
 	// empty selection
-	NSArray *subViews = [detailViewPlaceHolder subviews];
+	NSArray *subViews = [self.detailViewPlaceHolder subviews];
 	if ([subViews count] > 0)
 	{
 		[[subViews objectAtIndex:0] removeFromSuperview];
 	}
 	
-	[detailViewPlaceHolder displayIfNeeded];
+	[self.detailViewPlaceHolder displayIfNeeded];
 }
 
 - (void)removeSubviews
@@ -2937,13 +2889,13 @@
         [aSubView removeFromSuperview];
     }
     
-    NSArray *detailSubViews = [detailViewPlaceHolder subviews];
+    NSArray *detailSubViews = [self.detailViewPlaceHolder subviews];
 	if ([detailSubViews count] > 0)
 	{
 		[[detailSubViews objectAtIndex:0] removeFromSuperview];
 	}
 	
-	NSArray *sourceSubViews = [sourceViewPlaceHolder subviews];
+	NSArray *sourceSubViews = [self.sourceViewPlaceHolder subviews];
 	if ([sourceSubViews count] > 0)
 	{
 		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
@@ -2973,17 +2925,17 @@
         [self.mainSplitView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         
         // add a spinning progress gear in case populating the icon view takes too long
-        NSRect bounds = [detailViewPlaceHolder bounds];
+        NSRect bounds = [self.detailViewPlaceHolder bounds];
         CGFloat x = (bounds.size.width-32)/2;
         CGFloat y = (bounds.size.height-32)/2;
         NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
         [busyGear setStyle:NSProgressIndicatorSpinningStyle];
         [busyGear startAnimation:self];
-        [detailViewPlaceHolder addSubview:busyGear];
+        [self.detailViewPlaceHolder addSubview:busyGear];
         //[detailViewPlaceHolder display];
         
-        [detailViewPlaceHolder addSubview:currentDetailView];
-        [sourceViewPlaceHolder addSubview:currentSourceView];
+        [self.detailViewPlaceHolder addSubview:currentDetailView];
+        [self.sourceViewPlaceHolder addSubview:currentSourceView];
         
         [busyGear removeFromSuperview];
         
@@ -3006,9 +2958,9 @@
 		NSLog(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
 	}
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
-		currentDetailView = applicationsDetailView;
+		currentDetailView = self.applicationsDetailView;
 	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {
-		currentDetailView = catalogsDetailView;
+		currentDetailView = self.catalogsDetailView;
 	}
 	[self changeItemView];
 }

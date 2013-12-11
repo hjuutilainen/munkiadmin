@@ -8,15 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RelationshipScanner : NSOperation {
-    NSString *currentJobDescription;
-	NSString *fileName;
-	id delegate;
-    NSInteger operationMode;
     
-    NSArray *allApplications;
-    NSArray *allPackages;
-    NSArray *allCatalogs;
-    NSArray *allManifests;
 }
 
 + (id)pkginfoScanner;
@@ -26,7 +18,7 @@
 @property NSInteger operationMode;
 @property (strong) NSString *currentJobDescription;
 @property (strong) NSString *fileName;
-@property (strong) id delegate;
+@property (weak) id delegate;
 @property (strong) NSArray *allApplications;
 @property (strong) NSArray *allPackages;
 @property (strong) NSArray *allCatalogs;

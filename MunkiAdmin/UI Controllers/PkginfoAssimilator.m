@@ -19,44 +19,6 @@
 
 @implementation PkginfoAssimilator
 
-@synthesize delegate;
-@synthesize modalSession;
-@synthesize sourcePkginfo;
-@synthesize targetPkginfo;
-@synthesize allPackagesArrayController;
-@synthesize okButton;
-@synthesize cancelButton;
-
-@synthesize assimilate_blocking_applications;
-@synthesize assimilate_requires;
-@synthesize assimilate_update_for;
-@synthesize assimilate_supported_architectures;
-@synthesize assimilate_installs_items;
-@synthesize assimilate_installer_choices_xml;
-@synthesize assimilate_items_to_copy;
-
-@synthesize assimilate_autoremove;
-@synthesize assimilate_description;
-@synthesize assimilate_display_name;
-@synthesize assimilate_installable_condition;
-@synthesize assimilate_maximum_os_version;
-@synthesize assimilate_minimum_munki_version;
-@synthesize assimilate_minimum_os_version;
-@synthesize assimilate_name;
-@synthesize assimilate_unattended_install;
-@synthesize assimilate_unattended_uninstall;
-@synthesize assimilate_uninstallable;
-@synthesize assimilate_uninstaller_item_location;
-
-@synthesize assimilate_installcheck_script;
-@synthesize assimilate_preinstall_script;
-@synthesize assimilate_postinstall_script;
-@synthesize assimilate_preuninstall_script;
-@synthesize assimilate_postuninstall_script;
-@synthesize assimilate_uninstall_method;
-@synthesize assimilate_uninstall_script;
-@synthesize assimilate_uninstallcheck_script;
-
 
 - (id)initWithWindow:(NSWindow *)window
 {
@@ -237,7 +199,7 @@
     [self commitChangesToCurrentPackage];
     
     [[self window] orderOut:sender];
-    [NSApp endModalSession:modalSession];
+    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(pkginfoAssimilatorDidFinish:returnCode:object:)]) {
@@ -248,7 +210,7 @@
 - (IBAction)cancelAction:(id)sender;
 {
     [[self window] orderOut:sender];
-    [NSApp endModalSession:modalSession];
+    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(pkginfoAssimilatorDidFinish:returnCode:object:)]) {
