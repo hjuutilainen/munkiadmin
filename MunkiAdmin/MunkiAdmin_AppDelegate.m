@@ -1950,18 +1950,32 @@
             MunkiOperation *theOp;
             
             if (![[fileToAdd relativePath] hasPrefix:[self.pkgsURL relativePath]]) {
-                if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) &&
-                    ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
-                    if ([self.defaults boolForKey:@"debug"])
+                if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) && ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
+                    
+                    if ([self.defaults boolForKey:@"debug"]) {
                         NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
+                    }
+                    
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
+                        
+                        // Setup the copy operation
                         FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
-                        theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
-                        [self setupCopyOperation:copyOp withDependingOperation:theOp];
-                        [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
+                        copyOp.delegate = self;
+                        
+                        // Run makepkginfo against the original file location
+                        theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                        theOp.delegate = self;
+                        
+                        // Copy file after makepkginfo finishes
+                        [copyOp addDependency:theOp];
+                        
+                        // Run the relationship scanner after the copy
+                        [packageRelationships addDependency:copyOp];
+                        
                         [operationsToAdd addObject:copyOp];
                         [operationsToAdd addObject:theOp];
+                        
                     } else {
                         if ([self.defaults boolForKey:@"debug"])
                             NSLog(@"User chose to cancel the copy operation for %@. Bailing out...", [fileToAdd relativePath]);
