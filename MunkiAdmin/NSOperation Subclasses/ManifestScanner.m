@@ -29,10 +29,10 @@
 }
 
 
-- (void)contextDidSave:(NSNotification*)notification 
+- (void)contextDidSave:(NSNotification*)notification
 {
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:) 
-									  withObject:notification 
+	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
+									  withObject:notification
 								   waitUntilDone:YES];
 }
 
@@ -339,7 +339,7 @@
 			}
 			
 			if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo)]) {
-				[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo) 
+				[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo)
 												withObject:nil
 											 waitUntilDone:YES];
 			}

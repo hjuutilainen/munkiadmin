@@ -470,7 +470,7 @@ static dispatch_queue_t serialQueue;
 }
 
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage
-{    
+{
     NSString *packageName = aPackage.munki_name;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     
@@ -738,7 +738,7 @@ static dispatch_queue_t serialQueue;
     // Get the packages parent application which represents a group of
     // packageinfos with the same name
     ApplicationMO *packageGroup = aPackage.parentApplication;
-        
+    
     if (shouldCascade) {
         
         // Check for existing ApplicationMO with the new name
@@ -1635,8 +1635,8 @@ static dispatch_queue_t serialQueue;
                                              recoverySuggestion, NSLocalizedRecoverySuggestionErrorKey,
                                              nil];
             *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
-                                                 code:errorCode
-                                             userInfo:errorDictionary];
+                                                code:errorCode
+                                            userInfo:errorDictionary];
         }
         return NO;
     }

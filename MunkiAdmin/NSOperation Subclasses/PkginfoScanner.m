@@ -53,10 +53,10 @@
 }
 
 
-- (void)contextDidSave:(NSNotification*)notification 
+- (void)contextDidSave:(NSNotification*)notification
 {
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:) 
-									  withObject:notification 
+	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
+									  withObject:notification
 								   waitUntilDone:YES];
 }
 
@@ -65,13 +65,13 @@
 {
 	@try {
 		@autoreleasepool {
-        
+            
 			MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
-        MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
-        
+            MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
+            
 			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
-        [moc setUndoManager:nil];
-        [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            [moc setUndoManager:nil];
+            [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 			[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(contextDidSave:)
@@ -83,15 +83,15 @@
 			
 			
 			if (self.sourceURL != nil) {
-            self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
-            self.sourceDict = [[NSDictionary alloc] initWithContentsOfURL:self.sourceURL];
+                self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading file %@", [self.sourceURL relativePath]);
+                self.sourceDict = [[NSDictionary alloc] initWithContentsOfURL:self.sourceURL];
 			}
 			
 			if (self.sourceDict != nil) {
 				
 				PackageMO *aNewPackage = [[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc];
-
+                
 				aNewPackage.originalPkginfo = self.sourceDict;
 				
 				// =================================
@@ -108,88 +108,88 @@
 						if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@ --> %@: nil (skipped)", self.fileName, key);
 					}
 				}];
-            
-            // ==================================================
-            // Additional steps for deprecated forced_install
-            // ==================================================
-            if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install != nil)) {
-                // pkginfo has both forced_install and unattended_install defined
-                if (aNewPackage.munki_forced_installValue != aNewPackage.munki_unattended_installValue) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_install and unattended_install defined with differing values. Favoring unattended_install", self.fileName);
-                    aNewPackage.munki_forced_install = aNewPackage.munki_unattended_install;
+                
+                // ==================================================
+                // Additional steps for deprecated forced_install
+                // ==================================================
+                if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install != nil)) {
+                    // pkginfo has both forced_install and unattended_install defined
+                    if (aNewPackage.munki_forced_installValue != aNewPackage.munki_unattended_installValue) {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_install and unattended_install defined with differing values. Favoring unattended_install", self.fileName);
+                        aNewPackage.munki_forced_install = aNewPackage.munki_unattended_install;
+                    }
                 }
-            }
-            else if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install == nil)) {
-                // pkginfo has only forced_install defined
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_install defined. Migrating to unattended_install", self.fileName);
-                aNewPackage.munki_unattended_install = aNewPackage.munki_forced_install;
-            }
-            
-            // ==================================================
-            // Additional steps for deprecated forced_uninstall
-            // ==================================================
-            if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall != nil)) {
-                // pkginfo has both values defined
-                if (aNewPackage.munki_forced_uninstallValue != aNewPackage.munki_unattended_uninstallValue) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_uninstall and unattended_uninstall defined with differing values. Favoring unattended_uninstall", self.fileName);
-                    aNewPackage.munki_forced_uninstall = aNewPackage.munki_unattended_uninstall;
+                else if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install == nil)) {
+                    // pkginfo has only forced_install defined
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_install defined. Migrating to unattended_install", self.fileName);
+                    aNewPackage.munki_unattended_install = aNewPackage.munki_forced_install;
                 }
-            }
-            else if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall == nil)) {
-                // pkginfo has only forced_uninstall defined
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_uninstall defined. Migrating to unattended_uninstall", self.fileName);
-                aNewPackage.munki_unattended_uninstall = aNewPackage.munki_forced_uninstall;
-            }
-            
-            
-            // Check if we have installer_item_location and expand it to absolute URL
-            if (aNewPackage.munki_installer_item_location != nil) {
-                aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
-            }
-            
+                
+                // ==================================================
+                // Additional steps for deprecated forced_uninstall
+                // ==================================================
+                if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall != nil)) {
+                    // pkginfo has both values defined
+                    if (aNewPackage.munki_forced_uninstallValue != aNewPackage.munki_unattended_uninstallValue) {
+                        if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has both forced_uninstall and unattended_uninstall defined with differing values. Favoring unattended_uninstall", self.fileName);
+                        aNewPackage.munki_forced_uninstall = aNewPackage.munki_unattended_uninstall;
+                    }
+                }
+                else if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall == nil)) {
+                    // pkginfo has only forced_uninstall defined
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ has only forced_uninstall defined. Migrating to unattended_uninstall", self.fileName);
+                    aNewPackage.munki_unattended_uninstall = aNewPackage.munki_forced_uninstall;
+                }
+                
+                
+                // Check if we have installer_item_location and expand it to absolute URL
+                if (aNewPackage.munki_installer_item_location != nil) {
+                    aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+                }
+                
 				if (self.sourceURL != nil) {
 					aNewPackage.packageInfoURL = self.sourceURL;
-                
-                NSDate *pkginfoDateCreated;
-                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateCreated forKey:NSURLCreationDateKey error:nil];
-                aNewPackage.packageInfoDateCreated = pkginfoDateCreated;
-                
-                NSDate *pkginfoDateLastOpened;
-                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
-                aNewPackage.packageInfoDateLastOpened = pkginfoDateLastOpened;
-                
-                NSDate *pkginfoDateModified;
-                [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateModified forKey:NSURLContentModificationDateKey error:nil];
-                aNewPackage.packageInfoDateModified = pkginfoDateModified;
-                
+                    
+                    NSDate *pkginfoDateCreated;
+                    [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateCreated forKey:NSURLCreationDateKey error:nil];
+                    aNewPackage.packageInfoDateCreated = pkginfoDateCreated;
+                    
+                    NSDate *pkginfoDateLastOpened;
+                    [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
+                    aNewPackage.packageInfoDateLastOpened = pkginfoDateLastOpened;
+                    
+                    NSDate *pkginfoDateModified;
+                    [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateModified forKey:NSURLContentModificationDateKey error:nil];
+                    aNewPackage.packageInfoDateModified = pkginfoDateModified;
+                    
 				} else {
-                NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-                NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
-                NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
+                    NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+                    NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
+                    NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
 					newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
 					aNewPackage.packageInfoURL = newPkginfoURL;
-                
-                aNewPackage.packageInfoDateCreated = [NSDate date];
-                aNewPackage.packageInfoDateModified = [NSDate date];
-                aNewPackage.packageInfoDateLastOpened = [NSDate date];
+                    
+                    aNewPackage.packageInfoDateCreated = [NSDate date];
+                    aNewPackage.packageInfoDateModified = [NSDate date];
+                    aNewPackage.packageInfoDateLastOpened = [NSDate date];
 				}
-            
-            if (aNewPackage.packageURL != nil) {
-                NSFileManager *fm = [NSFileManager defaultManager];
-                if ([fm fileExistsAtPath:[aNewPackage.packageURL relativePath]]) {
-                NSDate *packageDateCreated;
-                [aNewPackage.packageURL getResourceValue:&packageDateCreated forKey:NSURLCreationDateKey error:nil];
-                aNewPackage.packageDateCreated = packageDateCreated;
                 
-                NSDate *packageDateLastOpened;
-                [aNewPackage.packageURL getResourceValue:&packageDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
-                aNewPackage.packageDateLastOpened = packageDateLastOpened;
-                
-                NSDate *packageDateModified;
-                [aNewPackage.packageURL getResourceValue:&packageDateModified forKey:NSURLContentModificationDateKey error:nil];
-                aNewPackage.packageDateModified = packageDateModified;
+                if (aNewPackage.packageURL != nil) {
+                    NSFileManager *fm = [NSFileManager defaultManager];
+                    if ([fm fileExistsAtPath:[aNewPackage.packageURL relativePath]]) {
+                        NSDate *packageDateCreated;
+                        [aNewPackage.packageURL getResourceValue:&packageDateCreated forKey:NSURLCreationDateKey error:nil];
+                        aNewPackage.packageDateCreated = packageDateCreated;
+                        
+                        NSDate *packageDateLastOpened;
+                        [aNewPackage.packageURL getResourceValue:&packageDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
+                        aNewPackage.packageDateLastOpened = packageDateLastOpened;
+                        
+                        NSDate *packageDateModified;
+                        [aNewPackage.packageURL getResourceValue:&packageDateModified forKey:NSURLContentModificationDateKey error:nil];
+                        aNewPackage.packageDateModified = packageDateModified;
+                    }
                 }
-            }
 				
 				// =================================
 				// Get "receipts" items
@@ -198,7 +198,7 @@
 				[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 					aNewReceipt.package = aNewPackage;
-                aNewReceipt.originalIndexValue = idx;
+                    aNewReceipt.originalIndexValue = idx;
 					[repoManager.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 						id value = [aReceipt objectForKey:obj];
 						if (value != nil) {
@@ -215,9 +215,9 @@
 				// =================================
 				NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
 				[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
-                InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
-                [aNewInstallsItem addPackagesObject:aNewPackage];
-                aNewInstallsItem.originalIndexValue = idx;
+                    InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
+                    [aNewInstallsItem addPackagesObject:aNewPackage];
+                    aNewInstallsItem.originalIndexValue = idx;
 				}];
 				
 				// =================================
@@ -227,7 +227,7 @@
 				[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 					aNewItemToCopy.package = aNewPackage;
-                aNewItemToCopy.originalIndexValue = idx;
+                    aNewItemToCopy.originalIndexValue = idx;
 					[repoManager.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 						id value = [anItemToCopy objectForKey:obj];
 						if (value != nil) {
@@ -243,15 +243,15 @@
 						aNewItemToCopy.munki_mode = [self.defaults stringForKey:@"items_to_copyMode"];
 					}
 				}];
-            
-            // =================================
+                
+                // =================================
 				// Get "installer_choices_xml" items
 				// =================================
 				NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
 				[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 					aNewInstallerChoice.package = aNewPackage;
-                aNewInstallerChoice.originalIndexValue = idx;
+                    aNewInstallerChoice.originalIndexValue = idx;
 					[repoManager.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 						id value = [aChoice objectForKey:obj];
 						if (value != nil) {
@@ -267,10 +267,10 @@
 				// =================================
 				// Get "catalogs" items
 				// =================================
-            self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
+                self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
 				NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
 				[catalogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ catalogs item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ catalogs item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 					NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
 					[fetchForCatalogs setEntity:catalogEntityDescr];
 					NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", obj];
@@ -307,18 +307,18 @@
 					newRequiredPkgInfo.originalIndexValue = idx;
 					[aNewPackage addUpdateForObject:newRequiredPkgInfo];
 				}];
-            
-            // =================================
+                
+                // =================================
 				// Get "blocking_applications" items
 				// =================================
 				NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
-            if (!blocking_applications) {
-                aNewPackage.hasEmptyBlockingApplicationsValue = NO;
-            } else if ([blocking_applications count] == 0) {
-                aNewPackage.hasEmptyBlockingApplicationsValue = YES;
-            } else {
-                aNewPackage.hasEmptyBlockingApplicationsValue = NO;
-            }
+                if (!blocking_applications) {
+                    aNewPackage.hasEmptyBlockingApplicationsValue = NO;
+                } else if ([blocking_applications count] == 0) {
+                    aNewPackage.hasEmptyBlockingApplicationsValue = YES;
+                } else {
+                    aNewPackage.hasEmptyBlockingApplicationsValue = NO;
+                }
 				[blocking_applications enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
 					StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -327,7 +327,7 @@
 					newBlockingApplication.originalIndexValue = idx;
 					[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 				}];
-            
+                
 				// =====================================
 				// Get "supported_architectures" items
 				// =====================================
@@ -342,24 +342,24 @@
 				}];
 				
 				// =====================================
-            // Get "installer_environment" items
+                // Get "installer_environment" items
 				// =====================================
 				NSDictionary *installer_environment = [self.sourceDict objectForKey:@"installer_environment"];
-            [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
-                InstallerEnvironmentVariableMO *newInstallerEnvironmentVariable = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
+                [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
+                    InstallerEnvironmentVariableMO *newInstallerEnvironmentVariable = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
 					newInstallerEnvironmentVariable.munki_installer_environment_key = key;
-                newInstallerEnvironmentVariable.munki_installer_environment_value = obj;
+                    newInstallerEnvironmentVariable.munki_installer_environment_value = obj;
 					[aNewPackage addInstallerEnvironmentVariablesObject:newInstallerEnvironmentVariable];
-            }];
-            
+                }];
+                
 				// =====================================
 				// Assimilate with existing
 				// This is done only when adding new items to repo
 				// =====================================
 				/*
-             Assimilator functions moved to class MunkiRepositoryManager
-             */
+                 Assimilator functions moved to class MunkiRepositoryManager
+                 */
 				
 				// =====================================
 				// Group packages by "name" property
@@ -391,7 +391,7 @@
 			} else {
 				NSLog(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
 			}
-        
+            
 			// Save the context, this causes main app delegate to merge new items
 			NSError *error = nil;
 			if (![moc save:&error]) {
@@ -408,7 +408,7 @@
 															name:NSManagedObjectContextDidSaveNotification
 														  object:moc];
 			
-        moc = nil;
+            moc = nil;
 		}
 	}
 	@catch(...) {

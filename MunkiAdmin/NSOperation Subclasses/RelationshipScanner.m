@@ -37,10 +37,10 @@
 }
 
 
-- (void)contextDidSave:(NSNotification*)notification 
+- (void)contextDidSave:(NSNotification*)notification
 {
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:) 
-									  withObject:notification 
+	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
+									  withObject:notification
 								   waitUntilDone:YES];
 }
 
@@ -100,15 +100,15 @@
     NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
     [getManifests setEntity:manifestEntityDescr];
     self.allManifests = [moc executeFetchRequest:getManifests error:nil];
-
+    
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
     self.allApplications = [moc executeFetchRequest:getApplications error:nil];
-
+    
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
-
+    
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
@@ -209,7 +209,7 @@
     }
     
     if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:) 
+        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:)
                                         withObject:@"manifests"
                                      waitUntilDone:YES];
     }
@@ -244,7 +244,7 @@
     [getPackages setEntity:packageEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
-
+    
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
@@ -271,27 +271,13 @@
         NSArray *catalogsFromPkginfo = [originalPkginfo objectForKey:@"catalogs"];
         
         // Link to DirectoryMO object
-        /*
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-        NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [currentPackage.packageInfoURL URLByDeletingLastPathComponent]];
-        [request setPredicate:parentPredicate];
-        NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
-        if (foundItems > 0) {
-            DirectoryMO *aDir = [[moc executeFetchRequest:request error:nil] objectAtIndex:0];
-            //currentPackage.directory = aDir;
-            [currentPackage addSourceListItemsObject:aDir];
-            [currentPackage addSourceListItemsObject:basePkginfoDirectory];
-        }
-        [request release];
-        */
         
         DirectoryMO *aDir = [[MACoreDataManager sharedManager] directoryWithURL:[currentPackage.packageInfoURL URLByDeletingLastPathComponent] managedObjectContext:moc];
         [currentPackage addSourceListItemsObject:aDir];
         [currentPackage addSourceListItemsObject:allPackagesSmartDirectory];
-
+        
         // Loop through the catalog objects we already know about
-
+        
         for (CatalogMO *aCatalog in self.allCatalogs) {
             if (![existingCatalogTitles containsObject:aCatalog.title]) {
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -318,10 +304,10 @@
             }
         }
         
-
+        
         // Loop through the "catalogs" key in the original pkginfo
         // and create new catalog objects if necessary
-
+        
         [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
             NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
@@ -332,11 +318,11 @@
             
             NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
             
-
+            
             // There is an item in catalogs array which does not
             // yet have it's own CatalogMO object.
             // Create it and add dependencies for it
-
+            
             if (numFoundCatalogs == 0) {
                 CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
                 aNewCatalog.title = obj;
@@ -388,7 +374,7 @@
     }
     
     if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
-        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:) 
+        [self.delegate performSelectorOnMainThread:@selector(relationshipScannerDidFinish:)
                                         withObject:@"pkgs"
                                      waitUntilDone:YES];
     }
@@ -403,17 +389,17 @@
 -(void)main {
 	@try {
 		@autoreleasepool {
-        
-        switch (self.operationMode) {
-            case 0:
-                [self scanPkginfos];
-                break;
-            case 1:
-                [self scanManifests];
-            default:
-                break;
-        }
-        
+            
+            switch (self.operationMode) {
+                case 0:
+                    [self scanPkginfos];
+                    break;
+                case 1:
+                    [self scanManifests];
+                default:
+                    break;
+            }
+            
 		}
 	}
 	@catch(...) {

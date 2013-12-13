@@ -37,19 +37,18 @@
 -(void)main {
 	@try {
 		@autoreleasepool {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        //NSFileManager *fm = [[NSFileManager alloc] init];
-        [fm setDelegate:self];
-        NSError *copyError = nil;
-        
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copying %@ to %@", self.fileName, [self.targetURL relativePath]);
-        
-        if ([fm copyItemAtURL:self.sourceURL toURL:self.targetURL error:&copyError]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Done copying");
-        } else {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copy failed with error: %@",[copyError description]);
-        }
-		
+            NSFileManager *fm = [NSFileManager defaultManager];
+            [fm setDelegate:self];
+            NSError *copyError = nil;
+            
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copying %@ to %@", self.fileName, [self.targetURL relativePath]);
+            
+            if ([fm copyItemAtURL:self.sourceURL toURL:self.targetURL error:&copyError]) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Done copying");
+            } else {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copy failed with error: %@",[copyError description]);
+            }
+            
 		}
 	}
 	@catch(...) {
