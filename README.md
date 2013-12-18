@@ -24,16 +24,19 @@ You can continue to use your favorite text editor to edit pkginfo files and mani
 
 Latest version can be downloaded from the [Releases page](https://github.com/hjuutilainen/munkiadmin/releases/).
 
-MunkiAdmin requires:
+MunkiAdmin 0.2.x requires:
 
 * Mac OS X 10.6 or later
-* munki tools installed in default location (/usr/local/munki/)
+* [Munki](http://code.google.com/p/munki/) components installed (any recent version)
+
+Please note that the requirements OS X 10.8 or later will be required when MunkiAdmin 0.3 is released (in the near future):
+
 
 ### Build from source:
 
 Clone, fork or download the source. Open MunkiAdmin.xcodeproj with Xcode and hit 'Run'. If you're making changes to the data model, you need to use mogenerator to keep NSManagedObject subclasses updated. So in short:
 
-* Xcode 4 or later
+* Xcode 5 or later
 * OS X SDK (comes with Xcode)
 * Optional: [mogenerator + Xmo'd](http://github.com/rentzsch/mogenerator)
 
