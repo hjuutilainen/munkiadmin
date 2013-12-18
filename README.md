@@ -29,7 +29,7 @@ MunkiAdmin 0.2.x requires:
 * Mac OS X 10.6 or later
 * [Munki](http://code.google.com/p/munki/) components installed (any recent version)
 
-Please note that the requirements OS X 10.8 or later will be required when MunkiAdmin 0.3 is released (in the near future):
+Please note that OS X 10.8 or later will be required when MunkiAdmin 0.3 is released (in the near future):
 
 
 ### Build from source:
