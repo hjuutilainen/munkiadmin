@@ -24,13 +24,10 @@ You can continue to use your favorite text editor to edit pkginfo files and mani
 
 Latest version can be downloaded from the [Releases page](https://github.com/hjuutilainen/munkiadmin/releases/).
 
-MunkiAdmin 0.2.x requires:
+MunkiAdmin requires:
 
-* Mac OS X 10.6 or later
+* OS X 10.8 or later
 * [Munki](http://code.google.com/p/munki/) components installed (any recent version)
-
-Please note that OS X 10.8 or later will be required when MunkiAdmin 0.3 is released (in the near future):
-
 
 ### Build from source:
 
