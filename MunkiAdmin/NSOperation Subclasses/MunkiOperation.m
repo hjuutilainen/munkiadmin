@@ -59,7 +59,11 @@
 	
 	NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
 	[makecatalogsTask setLaunchPath:launchPath];
-	[makecatalogsTask setArguments:[NSArray arrayWithObject:[self.targetURL relativePath]]];
+    if ([self.defaults boolForKey:@"makecatalogsForceEnabled"]) {
+        [makecatalogsTask setArguments:[NSArray arrayWithObjects:@"--force", [self.targetURL relativePath], nil]];
+    } else {
+        [makecatalogsTask setArguments:[NSArray arrayWithObject:[self.targetURL relativePath]]];
+    }
 	[makecatalogsTask setStandardOutput:makecatalogsPipe];
 	[makecatalogsTask launch];
 	
