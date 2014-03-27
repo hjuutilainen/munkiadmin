@@ -658,6 +658,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSSortDescriptor *installerTypeSorter = [NSSortDescriptor sortDescriptorWithKey:nil
                                                                       ascending:YES
                                                                        selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *appCategorySorter = [NSSortDescriptor sortDescriptorWithKey:nil
+                                                                      ascending:NO
+                                                                       selector:@selector(localizedStandardCompare:)];
     
     self.osVersions = [[NSArray arrayWithObjects:
                         @"10.5",
@@ -688,6 +691,31 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                             @"AdobeCS5PatchInstaller",
                             nil]
                            sortedArrayUsingDescriptors:[NSArray arrayWithObject:installerTypeSorter]];
+    
+    self.appCategories = [[NSArray arrayWithObjects:
+                           @"Business",
+                           @"Developer Tools",
+                           @"Education",
+                           @"Entertainment",
+                           @"Finance",
+                           @"Games",
+                           @"Graphics & Design",
+                           @"Healthcare & Fitness",
+                           @"Lifestyle",
+                           @"Medical",
+                           @"Music",
+                           @"News",
+                           @"Photography",
+                           @"Productivity",
+                           @"Reference",
+                           @"Social Networking",
+                           @"Sports",
+                           @"Travel",
+                           @"Utilities",
+                           @"Video",
+                           @"Weather",
+                           nil]
+                          sortedArrayUsingDescriptors:[NSArray arrayWithObject:appCategorySorter]];
     
     // Set the force_install_after_date date picker to use UTC
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
