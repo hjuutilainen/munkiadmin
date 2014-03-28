@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		42581CDA18E5EB8F0079B1C1 /* Mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 42581CDD18E5EB8F0079B1C1 /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
+			buildPhases = (
+				42581CDE18E5EBAB0079B1C1 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Mogenerator;
+			productName = Mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */; };
 		26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */; };
@@ -129,6 +143,16 @@
 		FEED6897149F3A7E006ABA1E /* AdvancedPackageEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEED6896149F3A7E006ABA1E /* AdvancedPackageEditor.xib */; };
 		FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42581CDF18E5ED320079B1C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42581CDA18E5EB8F0079B1C1;
+			remoteInfo = Mogenerator;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -724,6 +748,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				42581CE018E5ED320079B1C1 /* PBXTargetDependency */,
 			);
 			name = MunkiAdmin;
 			productInstallPath = "$(HOME)/Applications";
@@ -754,6 +779,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* MunkiAdmin */,
+				42581CDA18E5EB8F0079B1C1 /* Mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -809,6 +835,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		42581CDE18E5EBAB0079B1C1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd MunkiAdmin\n/usr/bin/mogenerator --template-var arc=true -m MunkiAdmin_DataModel.xcdatamodel -M MOMachine/ -H MOHuman/\n";
+		};
 		FE145D971488D42200AEA151 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -914,6 +953,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		42581CE018E5ED320079B1C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42581CDA18E5EB8F0079B1C1 /* Mogenerator */;
+			targetProxy = 42581CDF18E5ED320079B1C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -1003,6 +1050,20 @@
 			};
 			name = Release;
 		};
+		42581CDB18E5EB8F0079B1C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		42581CDC18E5EB8F0079B1C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1023,6 +1084,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		42581CDD18E5EB8F0079B1C1 /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42581CDB18E5EB8F0079B1C1 /* Debug */,
+				42581CDC18E5EB8F0079B1C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

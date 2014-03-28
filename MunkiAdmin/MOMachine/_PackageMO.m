@@ -8,11 +8,14 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.hasUnstagedChanges = @"hasUnstagedChanges",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
+	.munki_category = @"munki_category",
 	.munki_description = @"munki_description",
+	.munki_developer = @"munki_developer",
 	.munki_display_name = @"munki_display_name",
 	.munki_force_install_after_date = @"munki_force_install_after_date",
 	.munki_forced_install = @"munki_forced_install",
 	.munki_forced_uninstall = @"munki_forced_uninstall",
+	.munki_icon_name = @"munki_icon_name",
 	.munki_installable_condition = @"munki_installable_condition",
 	.munki_installcheck_script = @"munki_installcheck_script",
 	.munki_installed_size = @"munki_installed_size",
@@ -246,7 +249,21 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 
+@dynamic munki_category;
+
+
+
+
+
+
 @dynamic munki_description;
+
+
+
+
+
+
+@dynamic munki_developer;
 
 
 
@@ -314,6 +331,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_ {
 	[self setPrimitiveMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic munki_icon_name;
+
 
 
 
