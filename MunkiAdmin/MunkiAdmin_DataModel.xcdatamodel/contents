@@ -149,11 +149,14 @@
         <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
+        <attribute name="munki_developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_icon_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installable_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installcheck_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES"/>
@@ -182,9 +185,6 @@
         <attribute name="munki_uninstallcheck_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_uninstaller_item_location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki2_category" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki2_developer" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki2_icon_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalPkginfo" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="packageDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="packageDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
@@ -283,7 +283,7 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1005"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1003"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
