@@ -1198,9 +1198,12 @@ static dispatch_queue_t serialQueue;
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = [NSArray arrayWithObjects:
                                  @"blocking_applications",
+                                 @"category",
                                  @"description",
+                                 @"developer",
                                  @"display_name",
                                  @"force_install_after_date",
+                                 @"icon_name",
                                  @"installable_condition",
                                  @"installcheck_script",
                                  @"installed_size",

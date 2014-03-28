@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3400" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -149,11 +149,14 @@
         <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
+        <attribute name="munki_developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_icon_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installable_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installcheck_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES"/>
@@ -263,27 +266,27 @@
         </fetchedProperty>
     </entity>
     <elements>
-        <element name="Application" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ApplicationProxy" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Catalog" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="CatalogInfo" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ConditionalItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Directory" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InstallerChoicesItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InstallsItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InstallsItemCustomKey" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ItemToCopy" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ManagedInstall" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ManagedUninstall" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ManagedUpdate" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Manifest" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ManifestInfo" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="OptionalInstall" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Package" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PackageInfo" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Receipt" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StringObject" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Application" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ApplicationProxy" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Catalog" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="CatalogInfo" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
+        <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="InstallsItem" positionX="0" positionY="0" width="128" height="255"/>
+        <element name="InstallsItemCustomKey" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="ItemToCopy" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
+        <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1005"/>
+        <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
     </elements>
 </model>
