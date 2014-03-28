@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -112,7 +112,7 @@ Gw
                 </subviews>
             </view>
         </window>
-        <window title="MunkiAdmin" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" wantsToBeColor="NO" frameAutosaveName="mainwindow" animationBehavior="default" id="21" userLabel="Window">
+        <window title="MunkiAdmin" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="mainwindow" animationBehavior="default" id="21" userLabel="Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="6" y="375" width="1100" height="700"/>
@@ -329,6 +329,12 @@ Gw
                             <menuItem title="Save" keyEquivalent="s" id="75">
                                 <connections>
                                     <action selector="saveAction:" target="205" id="211"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="3xh-DI-xCK"/>
+                            <menuItem title="Reload" keyEquivalent="r" id="mX6-me-Nka">
+                                <connections>
+                                    <action selector="reloadRepositoryAction:" target="205" id="5tr-e3-Uq2"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="703"/>
@@ -1345,17 +1351,17 @@ Gw
                                         <rect key="frame" x="135" y="17" width="350" height="212"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="AE1-mq-CGZ">
-                                            <rect key="frame" x="1" y="1" width="333" height="210"/>
+                                            <rect key="frame" x="1" y="1" width="348" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1096">
-                                                    <rect key="frame" x="0.0" y="0.0" width="333" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="348" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="333" height="210"/>
+                                                    <size key="minSize" width="348" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="333" height="210"/>
+                                                    <size key="minSize" width="348" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <connections>
                                                         <binding destination="534" name="value" keyPath="selection.munki_description" id="1103"/>
