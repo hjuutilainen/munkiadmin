@@ -641,7 +641,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Nlf-jL-OB3">
-                                            <rect key="frame" x="380" y="307" width="68" height="17"/>
+                                            <rect key="frame" x="375" y="297" width="68" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Developer" id="8kt-Es-Ky2">
                                                 <font key="font" metaFont="system"/>
@@ -652,28 +652,30 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <comboBox verticalHuggingPriority="750" id="xte-NQ-Ubb">
                                             <rect key="frame" x="377" y="470" width="253" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Category" drawsBackground="YES" numberOfVisibleItems="5" id="rvV-80-sTP">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="rvV-80-sTP">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <connections>
-                                                    <binding destination="367" name="content" keyPath="selection.munki2_category" id="Up5-V5-LS5"/>
-                                                </connections>
                                             </comboBoxCell>
+                                            <connections>
+                                                <binding destination="-2" name="contentValues" keyPath="appCategories" id="4Kx-yI-bEi"/>
+                                                <binding destination="367" name="value" keyPath="selection.munki_category" previousBinding="4Kx-yI-bEi" id="pxl-fj-wR4">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
                                         </comboBox>
                                         <comboBox verticalHuggingPriority="750" id="kMS-rN-XVL">
                                             <rect key="frame" x="377" y="265" width="253" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Developer" drawsBackground="YES" numberOfVisibleItems="5" id="Pz0-CI-ELw">
+                                            <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="Pz0-CI-ELw">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <objectValues>
                                                     <string>PaySpan Internal</string>
                                                 </objectValues>
-                                                <connections>
-                                                    <binding destination="367" name="content" keyPath="selection.munki2_developer" id="Wrd-Nk-K6y"/>
-                                                </connections>
                                             </comboBoxCell>
                                         </comboBox>
                                     </subviews>
