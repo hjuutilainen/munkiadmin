@@ -16,6 +16,8 @@
 
 @property (weak) IBOutlet NSSearchField *groupedSearchField;
 @property (weak) IBOutlet NSSearchField *individualSearchField;
+@property (weak) IBOutlet NSTableView *individualTableView;
+@property (weak) IBOutlet NSTableView *groupedTableView;
 @property (strong) NSPredicate *hideAddedPredicate;
 @property (strong) NSPredicate *hideGroupedAppleUpdatesPredicate;
 @property (strong) NSPredicate *hideIndividualAppleUpdatesPredicate;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SelectPkginfoItemsWindow">
@@ -12,9 +12,11 @@
                 <outlet property="groupSearchBgView" destination="56" id="59"/>
                 <outlet property="groupedPkgsArrayController" destination="31" id="39"/>
                 <outlet property="groupedSearchField" destination="57" id="73"/>
+                <outlet property="groupedTableView" destination="21" id="fu5-6X-4YC"/>
                 <outlet property="indSearchBgView" destination="52" id="55"/>
                 <outlet property="individualPkgsArrayController" destination="32" id="40"/>
                 <outlet property="individualSearchField" destination="53" id="75"/>
+                <outlet property="individualTableView" destination="16" id="ctD-eW-ovg"/>
                 <outlet property="tabView" destination="7" id="44"/>
                 <outlet property="window" destination="3" id="30"/>
             </connections>
@@ -122,14 +124,14 @@
                             <tabViewItem label="Individual" identifier="2" id="11">
                                 <view key="view" id="12">
                                     <rect key="frame" x="0.0" y="0.0" width="470" height="482"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="13">
                                             <rect key="frame" x="-1" y="0.0" width="472" height="445"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="xEl-5G-97Z">
                                                 <rect key="frame" x="1" y="1" width="470" height="443"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="40" id="16">
                                                         <rect key="frame" x="0.0" y="0.0" width="470" height="443"/>

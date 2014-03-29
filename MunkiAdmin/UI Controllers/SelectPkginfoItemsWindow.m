@@ -156,6 +156,12 @@
     self.customBgView.lineColor = [NSColor grayColor];
     
     /*
+     Allow double-clicking items in tableviews
+     */
+    self.groupedTableView.doubleAction = @selector(addSelectedAction:);
+    self.individualTableView.doubleAction = @selector(addSelectedAction:);
+    
+    /*
      Create predicates to hide "apple_update_metadata" style packages since they should not be added to any manifest.
      These will be used in a compound predicate later when the search field is updated.
      */
