@@ -16,18 +16,20 @@
 {
     if (self.shouldHideAddedItems) {
         if ([[self.groupedSearchField stringValue] isEqualToString:@""]) {
-            [self.groupedPkgsArrayController setFilterPredicate:self.hideAddedPredicate];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.hideAddedPredicate, self.hideGroupedAppleUpdatesPredicate, nil]];
+            [self.groupedPkgsArrayController setFilterPredicate:merged];
         } else {
             NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.groupedSearchField stringValue]];
-            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, nil]];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, self.hideGroupedAppleUpdatesPredicate, nil]];
             [self.groupedPkgsArrayController setFilterPredicate:merged];
         }
     } else {
         if ([[self.groupedSearchField stringValue] isEqualToString:@""]) {
-            [self.groupedPkgsArrayController setFilterPredicate:nil];
+            [self.groupedPkgsArrayController setFilterPredicate:self.hideGroupedAppleUpdatesPredicate];
         } else {
-        NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.groupedSearchField stringValue]];
-        [self.groupedPkgsArrayController setFilterPredicate:new];
+            NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.groupedSearchField stringValue]];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideGroupedAppleUpdatesPredicate, nil]];
+            [self.groupedPkgsArrayController setFilterPredicate:merged];
         }
     }
 }
@@ -36,18 +38,20 @@
 {
     if (self.shouldHideAddedItems) {
         if ([[self.individualSearchField stringValue] isEqualToString:@""]) {
-            [self.individualPkgsArrayController setFilterPredicate:self.hideAddedPredicate];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.hideAddedPredicate, self.hideIndividualAppleUpdatesPredicate, nil]];
+            [self.individualPkgsArrayController setFilterPredicate:merged];
         } else {
             NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.individualSearchField stringValue]];
-            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, nil]];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideAddedPredicate, self.hideIndividualAppleUpdatesPredicate, nil]];
             [self.individualPkgsArrayController setFilterPredicate:merged];
         }
     } else {
         if ([[self.individualSearchField stringValue] isEqualToString:@""]) {
-            [self.individualPkgsArrayController setFilterPredicate:nil];
+            [self.individualPkgsArrayController setFilterPredicate:self.hideIndividualAppleUpdatesPredicate];
         } else {
             NSPredicate *new = [NSPredicate predicateWithFormat:@"munki_name contains[cd] %@", [self.individualSearchField stringValue]];
-            [self.individualPkgsArrayController setFilterPredicate:new];
+            NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.hideIndividualAppleUpdatesPredicate, nil]];
+            [self.individualPkgsArrayController setFilterPredicate:merged];
         }
     }
 }
@@ -150,6 +154,14 @@
                                                                     endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     self.customBgView.drawBottomLine = YES;
     self.customBgView.lineColor = [NSColor grayColor];
+    
+    /*
+     Create predicates to hide "apple_update_metadata" style packages since they should not be added to any manifest.
+     These will be used in a compound predicate later when the search field is updated.
+     */
+    NSString *keyName = @"apple_update_metadata";
+    self.hideGroupedAppleUpdatesPredicate = [NSPredicate predicateWithFormat:@"SUBQUERY(packages, $package, $package.munki_installer_type == %@).@count == 0", keyName];
+    self.hideIndividualAppleUpdatesPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type != %@", keyName];
     
     [self updateGroupedSearchPredicate];
 }

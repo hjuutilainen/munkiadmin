@@ -17,6 +17,8 @@
 @property (weak) IBOutlet NSSearchField *groupedSearchField;
 @property (weak) IBOutlet NSSearchField *individualSearchField;
 @property (strong) NSPredicate *hideAddedPredicate;
+@property (strong) NSPredicate *hideGroupedAppleUpdatesPredicate;
+@property (strong) NSPredicate *hideIndividualAppleUpdatesPredicate;
 @property BOOL shouldHideAddedItems;
 @property (weak) IBOutlet PackageArrayController *individualPkgsArrayController;
 @property (weak) IBOutlet ApplicationsArrayController *groupedPkgsArrayController;
