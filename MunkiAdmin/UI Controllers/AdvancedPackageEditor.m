@@ -673,7 +673,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                         @"10.8.5",
                         @"10.8.99",
                         @"10.9",
-                        @"10.9.1",
+                        @"10.9.2",
+                        @"10.9.99",
                         nil] 
                        sortedArrayUsingDescriptors:[NSArray arrayWithObject:osVersionSorter]];
     
