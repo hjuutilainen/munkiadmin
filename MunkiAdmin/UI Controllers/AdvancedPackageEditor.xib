@@ -677,6 +677,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <string>PaySpan Internal</string>
                                                 </objectValues>
                                             </comboBoxCell>
+                                            <connections>
+                                                <binding destination="-2" name="contentValues" keyPath="appDevelopers" id="8vf-7l-1pg"/>
+                                                <binding destination="367" name="value" keyPath="selection.munki_developer" previousBinding="8vf-7l-1pg" id="j9M-pV-VDa">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
                                         </comboBox>
                                     </subviews>
                                 </view>

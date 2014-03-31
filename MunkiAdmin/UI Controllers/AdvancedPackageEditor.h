@@ -80,5 +80,6 @@
 @property (strong) NSArray     *osVersions;
 @property (strong) NSArray     *installerTypes;
 @property (strong) NSArray     *appCategories;
+@property (strong) NSArray     *appDevelopers;
 
 @end

@@ -661,6 +661,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSSortDescriptor *appCategorySorter = [NSSortDescriptor sortDescriptorWithKey:nil
                                                                       ascending:NO
                                                                        selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *developerTypeSorter = [NSSortDescriptor sortDescriptorWithKey:nil
+                                                                          ascending:YES
+                                                                           selector:@selector(localizedStandardCompare:)];
     
     self.osVersions = [[NSArray arrayWithObjects:
                         @"10.5",
@@ -716,6 +719,12 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                            @"Weather",
                            nil]
                           sortedArrayUsingDescriptors:[NSArray arrayWithObject:appCategorySorter]];
+    
+    self.appDevelopers = [[NSArray arrayWithObjects:
+                            @"Apple, Inc.",
+                            @"Internal",
+                            nil]
+                           sortedArrayUsingDescriptors:[NSArray arrayWithObject:developerTypeSorter]];
     
     // Set the force_install_after_date date picker to use UTC
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
