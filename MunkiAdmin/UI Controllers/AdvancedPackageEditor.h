@@ -79,5 +79,7 @@
 @property (strong) NSString    *temp_uninstallcheck_script;
 @property (strong) NSArray     *osVersions;
 @property (strong) NSArray     *installerTypes;
+@property (strong) NSArray     *appCategories;
+@property (strong) NSArray     *appDevelopers;
 
 @end

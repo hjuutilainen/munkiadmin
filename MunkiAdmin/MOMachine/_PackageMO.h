@@ -9,11 +9,14 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *hasUnstagedChanges;
 	__unsafe_unretained NSString *munki_RestartAction;
 	__unsafe_unretained NSString *munki_autoremove;
+	__unsafe_unretained NSString *munki_category;
 	__unsafe_unretained NSString *munki_description;
+	__unsafe_unretained NSString *munki_developer;
 	__unsafe_unretained NSString *munki_display_name;
 	__unsafe_unretained NSString *munki_force_install_after_date;
 	__unsafe_unretained NSString *munki_forced_install;
 	__unsafe_unretained NSString *munki_forced_uninstall;
+	__unsafe_unretained NSString *munki_icon_name;
 	__unsafe_unretained NSString *munki_installable_condition;
 	__unsafe_unretained NSString *munki_installcheck_script;
 	__unsafe_unretained NSString *munki_installed_size;
@@ -89,6 +92,9 @@ extern const struct PackageMOFetchedProperties {
 @class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
+
+
+
 
 
 
@@ -202,11 +208,31 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* munki_category;
+
+
+
+//- (BOOL)validateMunki_category:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* munki_description;
 
 
 
 //- (BOOL)validateMunki_description:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* munki_developer;
+
+
+
+//- (BOOL)validateMunki_developer:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -255,6 +281,16 @@ extern const struct PackageMOFetchedProperties {
 - (void)setMunki_forced_uninstallValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_forced_uninstall:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* munki_icon_name;
+
+
+
+//- (BOOL)validateMunki_icon_name:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -872,8 +908,20 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+- (NSString*)primitiveMunki_category;
+- (void)setPrimitiveMunki_category:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveMunki_description;
 - (void)setPrimitiveMunki_description:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveMunki_developer;
+- (void)setPrimitiveMunki_developer:(NSString*)value;
 
 
 
@@ -904,6 +952,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (BOOL)primitiveMunki_forced_uninstallValue;
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
+
+
+
+
+- (NSString*)primitiveMunki_icon_name;
+- (void)setPrimitiveMunki_icon_name:(NSString*)value;
 
 
 
