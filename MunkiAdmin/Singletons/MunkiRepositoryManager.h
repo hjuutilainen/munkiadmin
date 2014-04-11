@@ -41,6 +41,9 @@
 - (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade;
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage;
 
+- (void)removeManifest:(ManifestMO *)aManifest
+        withReferences:(BOOL)removeReferences;
+
 - (void)removePackage:(PackageMO *)aPackage
     withInstallerItem:(BOOL)removeInstallerItem
        withReferences:(BOOL)removeReferences;

@@ -945,25 +945,41 @@
 	}
 	
 	NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
-	NSManagedObjectContext *moc = [self managedObjectContext];
+    
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Delete"];
     [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:@"Delete Manifests"];
-    [alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete %lu manifest(s)? This can't be undone.", (unsigned long)[selectedManifests count]]];
+    
+    NSString *messageText;
+    NSString *informativeText;
+    if ([selectedManifests count] > 1) {
+        messageText = @"Delete manifests";
+        informativeText = [NSString stringWithFormat:
+                           @"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.",
+                           (unsigned long)[selectedManifests count]];
+    } else if ([selectedManifests count] == 1) {
+        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [[selectedManifests objectAtIndex:0] title]];
+        informativeText = [NSString stringWithFormat:
+                           @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
+                           [[selectedManifests objectAtIndex:0] title]];
+    } else {
+        NSLog(@"No manifests selected, can't delete anything...");
+        return;
+    }
+    [alert setMessageText:messageText];
+    [alert setInformativeText:informativeText];
     [alert setAlertStyle:NSInformationalAlertStyle];
     [alert setShowsSuppressionButton:NO];
 	
 	NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
+        [[self.managedObjectContext undoManager] beginUndoGrouping];
+        [[self.managedObjectContext undoManager] setActionName:messageText];
 		for (ManifestMO *aManifest in selectedManifests) {
-			if ([self.defaults boolForKey:@"debug"]) {
-				NSLog(@"Deleting %@", aManifest.title);
-			}
-			[[NSWorkspace sharedWorkspace] recycleURLs:[NSArray arrayWithObject:aManifest.manifestURL] completionHandler:nil];
-			[moc deleteObject:aManifest];
+            [[MunkiRepositoryManager sharedManager] removeManifest:aManifest withReferences:YES];
 		}
+        [[self.managedObjectContext undoManager] endUndoGrouping];
 	}
 }
 

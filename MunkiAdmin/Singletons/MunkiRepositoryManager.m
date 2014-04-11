@@ -469,6 +469,27 @@ static dispatch_queue_t serialQueue;
     return referencingObjects;
 }
 
+
+- (NSArray *)referencingManifestStringObjectsWithTitle:(NSString *)title
+{
+    NSArray *referencingObjects = nil;
+    
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSArray *stringObjectTypes = @[@"includedManifest"];
+    
+    NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
+    [getReferencesByName setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
+    NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString IN %@", title, stringObjectTypes];
+    [getReferencesByName setPredicate:referencingPred];
+    if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
+        referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
+    } else {
+        //if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
+    }
+    return referencingObjects;
+}
+
+
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage
 {
     NSString *packageName = aPackage.munki_name;
@@ -638,6 +659,77 @@ static dispatch_queue_t serialQueue;
     } else {
         return nil;
     }
+}
+
+- (void)removeManifest:(ManifestMO *)aManifest withReferences:(BOOL)removeReferences
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSString *name = aManifest.title;
+    
+    if (removeReferences) {
+        NSArray *referencingObjects = [self referencingManifestStringObjectsWithTitle:name];
+        if ([self.defaults boolForKey:@"debug"]) {
+            if ((unsigned long)[referencingObjects count] > 0) {
+                NSLog(@"Found %li references for manifest \"%@\"", (unsigned long)[referencingObjects count], name);
+            } else {
+                NSLog(@"No references found for manifest \"%@\"", name);
+            }
+        }
+        for (StringObjectMO *aReference in referencingObjects) {
+            /*
+             This reference is a regular included_manifest
+             */
+            if (aReference.manifestReference) {
+                ManifestMO *manifest = aReference.manifestReference;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\"", aReference.title, manifest.title];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            /*
+             This reference is an included_manifest under a conditional item
+             */
+            else if (aReference.includedManifestConditionalReference) {
+                ConditionalItemMO *cond = aReference.includedManifestConditionalReference;
+                ManifestMO *manifest = aReference.includedManifestConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                if ([self.defaults boolForKey:@"debug"]) {
+                    NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\" under condition \"%@\"", aReference.title, manifest.title, cond.titleWithParentTitle];
+                    NSLog(@"%@", aDescr);
+                }
+            }
+            
+            /*
+             Delete the reference object from context
+             */
+            [moc deleteObject:aReference];
+        }
+    } else {
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Not removing references for manifest \"%@\"", name);
+        }
+    }
+    
+    /*
+     Determine the actual filesystem items to remove
+     */
+    NSArray *objectsToDelete = nil;
+    objectsToDelete = @[aManifest.manifestURL];
+    
+    for (NSURL *url in objectsToDelete) {
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Deleting file %@", [url relativePath]);
+        }
+    }
+    
+    /*
+     Remove items
+     */
+    NSWorkspace *wp = [NSWorkspace sharedWorkspace];
+    [wp recycleURLs:objectsToDelete completionHandler:nil];
+    [moc deleteObject:aManifest];
+    [moc processPendingChanges];
 }
 
 - (void)removePackage:(PackageMO *)aPackage withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
