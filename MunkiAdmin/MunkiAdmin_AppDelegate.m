@@ -146,22 +146,6 @@
 	return fetchResults;
 }
 
-- (void)checkMaxVersionsForCatalogs
-{	
-	for (CatalogMO *aCatalog in [self allObjectsForEntity:@"Catalog"]) {
-		
-		NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"CatalogInfo" inManagedObjectContext:[self managedObjectContext]];
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		[fetchRequest setEntity:entityDescr];
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"(isEnabledForPackage == 1)"];
-		[fetchRequest setPredicate:pred];
-		NSArray *fetchResults = [[self managedObjectContext] executeFetchRequest:fetchRequest error:nil];
-		for (CatalogInfoMO *catInfo in fetchResults) {
-			//NSLog(@"%@:%@-%@", catInfo.catalog.title, catInfo.package.munki_name, catInfo.package.munki_version);
-		}
-	}
-}
-
 
 - (NSURL *)chooseRepositoryFolder
 {
