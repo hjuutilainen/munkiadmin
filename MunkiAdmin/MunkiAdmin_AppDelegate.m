@@ -67,6 +67,16 @@
     }
 }
 
+- (IBAction)showManifestInFinderAction:(id)sender
+{
+    if ([self.defaults boolForKey:@"debug"]) {
+		NSLog(@"%@", NSStringFromSelector(_cmd));
+	}
+    NSURL *selectedURL = (NSURL *)[[[self.manifestsArrayController selectedObjects] lastObject] manifestURL];
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
+    }
+}
 
 - (NSUserDefaults *)defaults
 {

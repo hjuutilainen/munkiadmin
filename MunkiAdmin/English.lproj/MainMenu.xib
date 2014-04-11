@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -1351,17 +1351,17 @@ Gw
                                         <rect key="frame" x="135" y="17" width="350" height="212"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="AE1-mq-CGZ">
-                                            <rect key="frame" x="1" y="1" width="348" height="210"/>
+                                            <rect key="frame" x="1" y="1" width="333" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1096">
-                                                    <rect key="frame" x="0.0" y="0.0" width="348" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="333" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="348" height="210"/>
+                                                    <size key="minSize" width="333" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="348" height="210"/>
+                                                    <size key="minSize" width="333" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <connections>
                                                         <binding destination="534" name="value" keyPath="selection.munki_description" id="1103"/>
@@ -3241,6 +3241,13 @@ Gw
         </window>
         <menu id="1579" userLabel="Manifests List Menu">
             <items>
+                <menuItem title="Show in Finder" id="ijz-IV-e4J">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showManifestInFinderAction:" target="205" id="3nB-v7-uR3"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="OHF-MD-2cz"/>
                 <menuItem title="New Manifest..." id="1584">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>

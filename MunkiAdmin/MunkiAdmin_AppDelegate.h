@@ -163,6 +163,7 @@
 - (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)showPkginfoInFinderAction:(id)sender;
 - (IBAction)showInstallerInFinderAction:(id)sender;
+- (IBAction)showManifestInFinderAction:(id)sender;
 - (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
 
