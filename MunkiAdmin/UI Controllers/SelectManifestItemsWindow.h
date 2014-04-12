@@ -19,6 +19,7 @@
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSArrayController *manifestsArrayController;
 @property (weak) IBOutlet NSSearchField *existingSearchField;
+@property (weak) IBOutlet NSTableView *manifestsTableView;
 
 - (void)updateSearchPredicate;
 
