@@ -50,6 +50,12 @@
     
     [self.existingSearchField setDelegate:self];
     
+    /*
+     Allow double-clicking items in tableviews
+     */
+    self.manifestsTableView.target = nil; // first responder
+    self.manifestsTableView.doubleAction = @selector(processAddNestedManifestAction:);
+    
     [self updateSearchPredicate];
 }
 
