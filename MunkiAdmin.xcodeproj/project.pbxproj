@@ -47,6 +47,8 @@
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
 		F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */; };
 		F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */; };
+		F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */; };
+		F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */; };
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
@@ -197,6 +199,10 @@
 		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestScanner.h; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestScanner.m; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MunkiAdmin.entitlements; path = MunkiAdmin/MunkiAdmin.entitlements; sourceTree = "<group>"; };
+		F5629EDE1901A8E5008B6CB9 /* IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImageMO.h; sourceTree = "<group>"; };
+		F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImageMO.m; sourceTree = "<group>"; };
+		F5629EE11901A8F3008B6CB9 /* _IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _IconImageMO.h; sourceTree = "<group>"; };
+		F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _IconImageMO.m; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -409,6 +415,8 @@
 				FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */,
 				FE0F4E6E14FB61590081AEFF /* DirectoryMO.h */,
 				FE0F4E6F14FB61590081AEFF /* DirectoryMO.m */,
+				F5629EDE1901A8E5008B6CB9 /* IconImageMO.h */,
+				F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */,
 				FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */,
 				FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */,
 				265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */,
@@ -589,6 +597,8 @@
 				FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */,
 				FE0F4E6C14FB61590081AEFF /* _DirectoryMO.h */,
 				FE0F4E6D14FB61590081AEFF /* _DirectoryMO.m */,
+				F5629EE11901A8F3008B6CB9 /* _IconImageMO.h */,
+				F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */,
 				FE781B9F144C0CCE0089E941 /* _InstallerChoicesItemMO.h */,
 				FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */,
 				265049FC172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.h */,
@@ -829,6 +839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				77C8280E06725ACE000B614F /* MunkiAdmin_AppDelegate.m in Sources */,
 				770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */,
@@ -873,6 +884,7 @@
 				F5DFC8BA129546EA00B68F4F /* _ManifestInfoMO.m in Sources */,
 				F5DFC8BC129546EB00B68F4F /* _ManifestMO.m in Sources */,
 				F5DFC8BE129546EB00B68F4F /* _OptionalInstallMO.m in Sources */,
+				F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */,
 				F5DFC8C0129546EB00B68F4F /* _PackageInfoMO.m in Sources */,
 				F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */,
 				F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */,

@@ -2189,6 +2189,7 @@
 			self.pkgsInfoURL = [self.repoURL URLByAppendingPathComponent:@"pkgsinfo"];
 			self.catalogsURL = [self.repoURL URLByAppendingPathComponent:@"catalogs"];
 			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
+            self.iconsURL = [self.repoURL URLByAppendingPathComponent:@"icons"];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
             

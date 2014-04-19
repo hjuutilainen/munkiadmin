@@ -14,6 +14,7 @@
 #import "CatalogMO.h"
 #import "ConditionalItemMO.h"
 #import "DirectoryMO.h"
+#import "IconImageMO.h"
 #import "InstallerChoicesItemMO.h"
 #import "InstallerEnvironmentVariableMO.h"
 #import "InstallsItemMO.h"

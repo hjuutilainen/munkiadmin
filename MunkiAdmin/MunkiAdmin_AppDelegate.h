@@ -72,6 +72,7 @@
 @property (strong) NSURL *pkgsInfoURL;
 @property (strong) NSURL *catalogsURL;
 @property (strong) NSURL *manifestsURL;
+@property (strong) NSURL *iconsURL;
 @property (strong) NSArray *defaultRepoContents;
 @property (strong) NSOperationQueue *operationQueue;
 @property BOOL queueIsRunning;

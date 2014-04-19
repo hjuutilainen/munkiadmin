@@ -60,6 +60,7 @@ extern const struct PackageMORelationships {
 	__unsafe_unretained NSString *blockingApplications;
 	__unsafe_unretained NSString *catalogInfos;
 	__unsafe_unretained NSString *catalogs;
+	__unsafe_unretained NSString *iconImage;
 	__unsafe_unretained NSString *installerChoicesItems;
 	__unsafe_unretained NSString *installerEnvironmentVariables;
 	__unsafe_unretained NSString *installsItems;
@@ -80,6 +81,7 @@ extern const struct PackageMOFetchedProperties {
 @class StringObjectMO;
 @class CatalogInfoMO;
 @class CatalogMO;
+@class IconImageMO;
 @class InstallerChoicesItemMO;
 @class InstallerEnvironmentVariableMO;
 @class InstallsItemMO;
@@ -711,6 +713,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, strong) IconImageMO *iconImage;
+
+//- (BOOL)validateIconImage:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) NSSet *installerChoicesItems;
 
 - (NSMutableSet*)installerChoicesItemsSet;
@@ -1215,6 +1224,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveCatalogs;
 - (void)setPrimitiveCatalogs:(NSMutableSet*)value;
+
+
+
+- (IconImageMO*)primitiveIconImage;
+- (void)setPrimitiveIconImage:(IconImageMO*)value;
 
 
 

@@ -8,6 +8,7 @@
 #import "RelationshipScanner.h"
 #import "DataModelHeaders.h"
 #import "MACoreDataManager.h"
+#import "MunkiAdmin_AppDelegate.h"
 
 @implementation RelationshipScanner
 
@@ -222,6 +223,51 @@
     
 }
 
+
+- (IconImageMO *)createIconImageFromURL:(NSURL *)url managedObjectContext:(NSManagedObjectContext *)moc
+{
+    /*
+     Search the context for an existing icon for the provided URL. If there's none, create a new icon object.
+     Passing nil for the URL returns the default pkginfo icon (icon for .pkg file type).
+     */
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc]];
+    NSPredicate *predicate;
+    if (url != nil) {
+        predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"originalURL = nil"];
+    }
+    [fetchRequest setPredicate:predicate];
+    
+    // Check the result count before fetching the actual object(s).
+    NSUInteger numFound = [moc countForFetchRequest:fetchRequest error:nil];
+    
+    // No existing icon found, create a new one
+    if (numFound == 0) {
+        IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
+        newIconImage.originalURL = url;
+        NSImage *image = [[NSImage alloc] initByReferencingURL:url];
+        newIconImage.image = image;
+        return newIconImage;
+    }
+    
+    // One existing icon found, fetch and reuse it.
+    else if (numFound == 1) {
+        IconImageMO *existingIconImage = [[moc executeFetchRequest:fetchRequest error:nil] objectAtIndex:0];
+        return existingIconImage;
+    }
+    
+    // Something went terribly wrong if we got here...
+    else {
+        NSLog(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
+        NSLog(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
+    }
+    
+    return nil;
+}
+
+
 - (void)scanPkginfos
 {
     // Configure the context
@@ -238,8 +284,9 @@
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
     
     
-    // Get some objects for later use
-    
+    /*
+     Get all packages and all catalogs for later use
+     */
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
@@ -249,6 +296,14 @@
     [getAllCatalogs setEntity:catalogEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
+    
+    /*
+     Create a default icon for packages without a custom icon
+     */
+    IconImageMO *defaultIcon = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
+    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+    defaultIcon.image = pkgicon;
+    defaultIcon.originalURL = nil;
     
     
     DirectoryMO *allPackagesSmartDirectory;
@@ -364,6 +419,33 @@
                 }
             }
         }];
+        
+        /*
+         Deal with the package icon
+         
+         First check if the pkginfo has a custom icon defined in "icon_name" key.
+         If not, check if there's an icon mathing the "name" key. If both of these fail,
+         use a default icon (which is the icon for .pkg file type).
+         */
+        if (currentPackage.munki_icon_name != nil) {
+            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
+            if ([[iconURL pathExtension] isEqualToString:@""]) {
+                iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+            }
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+                IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+                currentPackage.iconImage = icon;
+            }
+        } else {
+            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
+            iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+                IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+                currentPackage.iconImage = icon;
+            } else {
+                currentPackage.iconImage = defaultIcon;
+            }
+        }
     }];
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];

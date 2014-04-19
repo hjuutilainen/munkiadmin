@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PackagesView">
@@ -105,7 +105,18 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn identifier="packagesTableColumnName" editable="NO" width="164.859375" minWidth="40" maxWidth="1000" id="26">
+                                                    <tableColumn identifier="packagesTableColumnIcon" editable="NO" width="32" minWidth="32" maxWidth="32" id="xNW-w2-ncS">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                        </tableHeaderCell>
+                                                        <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="5bz-2o-69O"/>
+                                                        <connections>
+                                                            <binding destination="68" name="value" keyPath="arrangedObjects.iconImage.image" id="Y53-Ag-YuG"/>
+                                                        </connections>
+                                                    </tableColumn>
+                                                    <tableColumn identifier="packagesTableColumnName" editable="NO" width="143.0703125" minWidth="40" maxWidth="1000" id="26">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -121,7 +132,7 @@
                                                             <binding destination="68" name="value" keyPath="arrangedObjects.munki_name" id="76"/>
                                                         </connections>
                                                     </tableColumn>
-                                                    <tableColumn identifier="packagesTableColumnDisplayName" width="164.76171875" minWidth="40" maxWidth="1000" id="27">
+                                                    <tableColumn identifier="packagesTableColumnDisplayName" width="147.56640625" minWidth="40" maxWidth="1000" id="27">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -169,7 +180,7 @@
                                                             <binding destination="68" name="value" keyPath="arrangedObjects.munki_notes" id="588"/>
                                                         </connections>
                                                     </tableColumn>
-                                                    <tableColumn identifier="packagesTableColumnVersion" width="153.1953125" minWidth="10" maxWidth="3.4028234663852886e+38" id="37">
+                                                    <tableColumn identifier="packagesTableColumnVersion" width="135.65234375" minWidth="10" maxWidth="3.4028234663852886e+38" id="37">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Version">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -223,7 +234,7 @@
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                         </tableHeaderCell>
-                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" placeholderString="" id="117">
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" placeholderString="" id="117">
                                                             <customFormatter key="formatter" id="124" customClass="MAFileSizeFormatter"/>
                                                             <font key="font" metaFont="cellTitle"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -234,7 +245,7 @@
                                                             <binding destination="68" name="value" keyPath="arrangedObjects.munki_installer_item_size" id="122"/>
                                                         </connections>
                                                     </tableColumn>
-                                                    <tableColumn identifier="packagesTableColumnDateModified" editable="NO" width="130" minWidth="10" maxWidth="3.4028234663852886e+38" id="287">
+                                                    <tableColumn identifier="packagesTableColumnDateModified" editable="NO" width="119" minWidth="10" maxWidth="3.4028234663852886e+38" id="287">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Modified">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -277,10 +288,10 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </clipView>
                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="23">
-                                        <rect key="frame" x="0.0" y="635" width="625" height="15"/>
+                                        <rect key="frame" x="0.0" y="634" width="625" height="16"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
-                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="25">
+                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="25">
                                         <rect key="frame" x="224" y="17" width="15" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
@@ -302,6 +313,12 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </searchFieldCell>
                                             <connections>
+                                                <binding destination="68" name="predicate" keyPath="filterPredicate" id="594">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayName">Any</string>
+                                                        <string key="NSPredicateFormat">munki_name contains[cd] $value OR munki_display_name contains[cd] $value OR munki_description contains[cd] $value OR munki_notes contains[cd] $value</string>
+                                                    </dictionary>
+                                                </binding>
                                                 <binding destination="68" name="predicate2" keyPath="filterPredicate" previousBinding="594" id="595">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Name</string>
@@ -324,12 +341,6 @@
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Admin Notes</string>
                                                         <string key="NSPredicateFormat">munki_notes contains[cd] $value</string>
-                                                    </dictionary>
-                                                </binding>
-                                                <binding destination="68" name="predicate" keyPath="filterPredicate" id="594">
-                                                    <dictionary key="options">
-                                                        <string key="NSDisplayName">Any</string>
-                                                        <string key="NSPredicateFormat">munki_name contains[cd] $value OR munki_display_name contains[cd] $value OR munki_description contains[cd] $value OR munki_notes contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
                                             </connections>
@@ -853,8 +864,8 @@
         </customView>
         <arrayController mode="entity" entityName="Package" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="68" userLabel="All Packages">
             <connections>
-                <binding destination="89" name="contentSet" keyPath="selection.packages" id="110"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="69"/>
+                <binding destination="89" name="contentSet" keyPath="selection.packages" id="110"/>
             </connections>
         </arrayController>
         <treeController mode="entity" entityName="PackageSourceListItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" id="89" userLabel="Directories">
@@ -923,7 +934,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" id="GDB-3X-xAf">
                                 <rect key="frame" x="1" y="1" width="189" height="54"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="354">
                                         <rect key="frame" x="0.0" y="0.0" width="189" height="54"/>
@@ -946,7 +957,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="352">
-                                <rect key="frame" x="175" y="1" width="15" height="54"/>
+                                <rect key="frame" x="174" y="1" width="16" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -970,7 +981,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" id="vsX-GN-cfH">
                                 <rect key="frame" x="1" y="1" width="189" height="55"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="358">
                                         <rect key="frame" x="0.0" y="0.0" width="189" height="55"/>
@@ -990,7 +1001,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="360">
-                                <rect key="frame" x="175" y="1" width="15" height="55"/>
+                                <rect key="frame" x="174" y="1" width="16" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>

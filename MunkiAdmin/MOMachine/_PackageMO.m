@@ -59,6 +59,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.blockingApplications = @"blockingApplications",
 	.catalogInfos = @"catalogInfos",
 	.catalogs = @"catalogs",
+	.iconImage = @"iconImage",
 	.installerChoicesItems = @"installerChoicesItems",
 	.installerEnvironmentVariables = @"installerEnvironmentVariables",
 	.installsItems = @"installsItems",
@@ -753,6 +754,10 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	[self didAccessValueForKey:@"catalogs"];
 	return result;
 }
+	
+
+@dynamic iconImage;
+
 	
 
 @dynamic installerChoicesItems;
