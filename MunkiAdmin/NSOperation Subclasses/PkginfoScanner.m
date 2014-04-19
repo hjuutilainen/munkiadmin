@@ -94,9 +94,12 @@
                 
 				aNewPackage.originalPkginfo = self.sourceDict;
 				
-				// =================================
-				// Get basic package properties
-				// =================================
+                /*
+                 Get the basic package properties
+                 
+                 This loops over the "pkginfoBasicKeys" array from NSUserDefaults and will
+                 take care of most of the standard pkginfo keys and values
+                 */
 				self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
 				if ([self.defaults boolForKey:@"debug"]) NSLog(@"Reading basic info for %@", self.fileName);
 				[repoManager.pkginfoBasicKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -109,9 +112,11 @@
 					}
 				}];
                 
-                // ==================================================
-                // Additional steps for deprecated forced_install
-                // ==================================================
+                
+                
+                /*
+                 Additional steps for deprecated forced_install
+                 */
                 if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install != nil)) {
                     // pkginfo has both forced_install and unattended_install defined
                     if (aNewPackage.munki_forced_installValue != aNewPackage.munki_unattended_installValue) {
@@ -125,9 +130,9 @@
                     aNewPackage.munki_unattended_install = aNewPackage.munki_forced_install;
                 }
                 
-                // ==================================================
-                // Additional steps for deprecated forced_uninstall
-                // ==================================================
+                /*
+                 Additional steps for deprecated forced_uninstall
+                 */
                 if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall != nil)) {
                     // pkginfo has both values defined
                     if (aNewPackage.munki_forced_uninstallValue != aNewPackage.munki_unattended_uninstallValue) {
@@ -191,9 +196,9 @@
                     }
                 }
 				
-				// =================================
-				// Get "receipts" items
-				// =================================
+                /*
+                 Get the "receipts" items
+                 */
 				NSArray *itemReceipts = [self.sourceDict objectForKey:@"receipts"];
 				[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
@@ -210,9 +215,9 @@
 					}];
 				}];
 				
-				// =================================
-				// Get "installs" items
-				// =================================
+				/*
+                 Get the "installs" items
+                 */
 				NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
 				[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
                     InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
@@ -220,9 +225,9 @@
                     aNewInstallsItem.originalIndexValue = idx;
 				}];
 				
-				// =================================
-				// Get "items_to_copy" items
-				// =================================
+				/*
+                 Get the "items_to_copy" items
+                 */
 				NSArray *itemsToCopy = [self.sourceDict objectForKey:@"items_to_copy"];
 				[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
@@ -244,9 +249,9 @@
 					}
 				}];
                 
-                // =================================
-				// Get "installer_choices_xml" items
-				// =================================
+                /*
+                 Get the "installer_choices_xml" items
+                 */
 				NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
 				[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
@@ -264,9 +269,9 @@
 				}];
 				
 				
-				// =================================
-				// Get "catalogs" items
-				// =================================
+				/*
+                 Get the "catalogs" items
+                 */
                 self.currentJobDescription = [NSString stringWithFormat:@"Parsing catalogs for %@", self.fileName];
 				NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
 				[catalogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -282,9 +287,9 @@
 					}
 				}];
 				
-				// =================================
-				// Get "requires" items
-				// =================================
+				/*
+                 Get the "requires" items
+                 */
 				NSArray *requires = [self.sourceDict objectForKey:@"requires"];
 				[requires enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ requires item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
@@ -295,9 +300,9 @@
 					[aNewPackage addRequirementsObject:newRequiredPkgInfo];
 				}];
 				
-				// =================================
-				// Get "update_for" items
-				// =================================
+                /*
+                 Get the "update_for" items
+                 */
 				NSArray *update_for = [self.sourceDict objectForKey:@"update_for"];
 				[update_for enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ update_for item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
@@ -308,9 +313,9 @@
 					[aNewPackage addUpdateForObject:newRequiredPkgInfo];
 				}];
                 
-                // =================================
-				// Get "blocking_applications" items
-				// =================================
+                /*
+                 Get the "blocking_applications" items
+                 */
 				NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
                 if (!blocking_applications) {
                     aNewPackage.hasEmptyBlockingApplicationsValue = NO;
@@ -328,9 +333,9 @@
 					[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 				}];
                 
-				// =====================================
-				// Get "supported_architectures" items
-				// =====================================
+                /*
+                 Get the "supported_architectures" items
+                 */
 				NSArray *supported_architectures = [self.sourceDict objectForKey:@"supported_architectures"];
 				[supported_architectures enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ blocking_applications item %lu --> Name: %@", self.fileName, (unsigned long)idx, obj);
@@ -341,9 +346,9 @@
 					[aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
 				}];
 				
-				// =====================================
-                // Get "installer_environment" items
-				// =====================================
+                /*
+                 Get the "installer_environment" items
+                 */
 				NSDictionary *installer_environment = [self.sourceDict objectForKey:@"installer_environment"];
                 [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
                     if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
@@ -362,7 +367,7 @@
                  */
 				
 				// =====================================
-				// Group packages by "name" property
+				// Group packages by the "name" key
 				// =====================================
 				NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 				[fetchForApplications setEntity:applicationEntityDescr];
@@ -392,7 +397,9 @@
 				NSLog(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
 			}
             
-			// Save the context, this causes main app delegate to merge new items
+			/*
+             Save the context, this causes main app delegate to merge new items
+             */
 			NSError *error = nil;
 			if (![moc save:&error]) {
 				[NSApp presentError:error];
