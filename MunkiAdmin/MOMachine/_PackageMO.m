@@ -66,6 +66,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.itemsToCopy = @"itemsToCopy",
 	.packageInfos = @"packageInfos",
 	.parentApplication = @"parentApplication",
+	.parentApplicationFromLatestPackage = @"parentApplicationFromLatestPackage",
 	.receipts = @"receipts",
 	.referencingStringObjects = @"referencingStringObjects",
 	.requirements = @"requirements",
@@ -826,6 +827,10 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	
 
 @dynamic parentApplication;
+
+	
+
+@dynamic parentApplicationFromLatestPackage;
 
 	
 

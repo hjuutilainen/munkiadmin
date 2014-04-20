@@ -20,6 +20,13 @@
     return keyPaths;
 }
 
+- (void)updateLatestPackage
+{
+    NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
+	PackageMO *latestPkg = [[self.packages sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByVersion]] objectAtIndex:0];
+	self.latestPackage = latestPkg;
+}
+
 - (NSString *)latestVersion
 {
 	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];

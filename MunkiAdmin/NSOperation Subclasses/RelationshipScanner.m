@@ -282,6 +282,7 @@
                                                object:moc];
     NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
     
     
     /*
@@ -296,6 +297,10 @@
     [getAllCatalogs setEntity:catalogEntityDescr];
     [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
+    
+    NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
+    [getApplications setEntity:applicationEntityDescr];
+    self.allApplications = [moc executeFetchRequest:getApplications error:nil];
     
     /*
      Create a default icon for packages without a custom icon
@@ -446,6 +451,15 @@
                 currentPackage.iconImage = defaultIcon;
             }
         }
+    }];
+    
+    /*
+     Run through all the "name-grouped" packages and update the
+     reference to the latest package.
+     */
+    [self.allApplications enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ApplicationMO *currentApplication = (ApplicationMO *)obj;
+        [currentApplication updateLatestPackage];
     }];
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];

@@ -11,6 +11,7 @@ const struct ApplicationMOAttributes ApplicationMOAttributes = {
 
 const struct ApplicationMORelationships ApplicationMORelationships = {
 	.applicationProxies = @"applicationProxies",
+	.latestPackage = @"latestPackage",
 	.manifests = @"manifests",
 	.packages = @"packages",
 	.referencingStringObjects = @"referencingStringObjects",
@@ -84,6 +85,10 @@ const struct ApplicationMOFetchedProperties ApplicationMOFetchedProperties = {
 	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
 }
+	
+
+@dynamic latestPackage;
+
 	
 
 @dynamic manifests;

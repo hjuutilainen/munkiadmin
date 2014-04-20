@@ -12,6 +12,7 @@ extern const struct ApplicationMOAttributes {
 
 extern const struct ApplicationMORelationships {
 	__unsafe_unretained NSString *applicationProxies;
+	__unsafe_unretained NSString *latestPackage;
 	__unsafe_unretained NSString *manifests;
 	__unsafe_unretained NSString *packages;
 	__unsafe_unretained NSString *referencingStringObjects;
@@ -21,6 +22,7 @@ extern const struct ApplicationMOFetchedProperties {
 } ApplicationMOFetchedProperties;
 
 @class ApplicationProxyMO;
+@class PackageMO;
 @class ManifestMO;
 @class PackageMO;
 @class StringObjectMO;
@@ -75,6 +77,13 @@ extern const struct ApplicationMOFetchedProperties {
 @property (nonatomic, strong) NSSet *applicationProxies;
 
 - (NSMutableSet*)applicationProxiesSet;
+
+
+
+
+@property (nonatomic, strong) PackageMO *latestPackage;
+
+//- (BOOL)validateLatestPackage:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -151,6 +160,11 @@ extern const struct ApplicationMOFetchedProperties {
 
 - (NSMutableSet*)primitiveApplicationProxies;
 - (void)setPrimitiveApplicationProxies:(NSMutableSet*)value;
+
+
+
+- (PackageMO*)primitiveLatestPackage;
+- (void)setPrimitiveLatestPackage:(PackageMO*)value;
 
 
 

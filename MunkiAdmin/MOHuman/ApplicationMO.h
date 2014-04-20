@@ -7,4 +7,6 @@
 @property (weak, readonly) NSDictionary *dictValue;
 @property (readonly) BOOL hasCommonDescription;
 
+- (void)updateLatestPackage;
+
 @end

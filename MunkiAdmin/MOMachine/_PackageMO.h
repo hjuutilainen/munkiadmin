@@ -67,6 +67,7 @@ extern const struct PackageMORelationships {
 	__unsafe_unretained NSString *itemsToCopy;
 	__unsafe_unretained NSString *packageInfos;
 	__unsafe_unretained NSString *parentApplication;
+	__unsafe_unretained NSString *parentApplicationFromLatestPackage;
 	__unsafe_unretained NSString *receipts;
 	__unsafe_unretained NSString *referencingStringObjects;
 	__unsafe_unretained NSString *requirements;
@@ -87,6 +88,7 @@ extern const struct PackageMOFetchedProperties {
 @class InstallsItemMO;
 @class ItemToCopyMO;
 @class PackageInfoMO;
+@class ApplicationMO;
 @class ApplicationMO;
 @class ReceiptMO;
 @class StringObjectMO;
@@ -762,6 +764,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, strong) ApplicationMO *parentApplicationFromLatestPackage;
+
+//- (BOOL)validateParentApplicationFromLatestPackage:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) NSSet *receipts;
 
 - (NSMutableSet*)receiptsSet;
@@ -1259,6 +1268,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (ApplicationMO*)primitiveParentApplication;
 - (void)setPrimitiveParentApplication:(ApplicationMO*)value;
+
+
+
+- (ApplicationMO*)primitiveParentApplicationFromLatestPackage;
+- (void)setPrimitiveParentApplicationFromLatestPackage:(ApplicationMO*)value;
 
 
 

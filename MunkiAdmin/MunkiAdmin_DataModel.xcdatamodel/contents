@@ -5,6 +5,7 @@
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_name" attributeType="String" syncable="YES"/>
         <relationship name="applicationProxies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ApplicationProxy" inverseName="parentApplication" inverseEntity="ApplicationProxy" indexed="YES" syncable="YES"/>
+        <relationship name="latestPackage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="parentApplicationFromLatestPackage" inverseEntity="Package" syncable="YES"/>
         <relationship name="manifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Manifest" inverseName="applications" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Package" inverseName="parentApplication" inverseEntity="Package" indexed="YES" syncable="YES"/>
         <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalApplication" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
@@ -210,6 +211,7 @@
         <relationship name="itemsToCopy" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ItemToCopy" inverseName="package" inverseEntity="ItemToCopy" indexed="YES" syncable="YES"/>
         <relationship name="packageInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PackageInfo" inverseName="package" inverseEntity="PackageInfo" indexed="YES" syncable="YES"/>
         <relationship name="parentApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="packages" inverseEntity="Application" indexed="YES" syncable="YES"/>
+        <relationship name="parentApplicationFromLatestPackage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="latestPackage" inverseEntity="Application" syncable="YES"/>
         <relationship name="receipts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Receipt" inverseName="package" inverseEntity="Receipt" indexed="YES" syncable="YES"/>
         <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalPackage" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="requirements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="requiresReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
@@ -272,13 +274,13 @@
         </fetchedProperty>
     </entity>
     <elements>
-        <element name="Application" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Application" positionX="0" positionY="0" width="128" height="163"/>
         <element name="ApplicationProxy" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Catalog" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CatalogInfo" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
-        <element name="IconImage" positionX="9" positionY="153" width="128" height="90"/>
+        <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
         <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
         <element name="InstallsItem" positionX="0" positionY="0" width="128" height="255"/>
@@ -290,7 +292,7 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1020"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1033"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
