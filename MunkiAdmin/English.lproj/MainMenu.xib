@@ -973,7 +973,7 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="AjO-cO-g8B">
                         <rect key="frame" x="1" y="17" width="764" height="490"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="20" headerView="1266" id="845">
                                 <rect key="frame" x="0.0" y="0.0" width="764" height="490"/>
@@ -982,7 +982,7 @@ Gw
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="40" minWidth="40" maxWidth="1000" id="847">
+                                    <tableColumn width="40" minWidth="40" maxWidth="40" id="847">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -997,14 +997,26 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.isEnabledForCatalog" id="873"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="206" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
+                                    <tableColumn width="32" minWidth="32" maxWidth="32" id="R0y-Wk-Bvh">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                        </tableHeaderCell>
+                                        <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="NcN-wK-qsx"/>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="869" name="value" keyPath="arrangedObjects.package.iconImage.image" id="pAj-2L-41B"/>
+                                        </connections>
+                                    </tableColumn>
+                                    <tableColumn editable="NO" width="206" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="886">
-                                            <font key="font" metaFont="system"/>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="886" customClass="RSVerticallyCenteredTextFieldCell">
+                                            <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -1013,14 +1025,14 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_name" id="892"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="214" minWidth="40" maxWidth="1000" id="848">
+                                    <tableColumn editable="NO" width="217.515625" minWidth="40" maxWidth="1000" id="848">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="849">
-                                            <font key="font" metaFont="system"/>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="849" customClass="RSVerticallyCenteredTextFieldCell">
+                                            <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -1029,14 +1041,14 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_display_name" id="891"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="292" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
+                                    <tableColumn editable="NO" width="253" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Version">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="884">
-                                            <font key="font" metaFont="system"/>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="884" customClass="RSVerticallyCenteredTextFieldCell">
+                                            <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -1050,8 +1062,8 @@ Gw
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0013089005235602095" horizontal="YES" id="844">
-                        <rect key="frame" x="1" y="492" width="749" height="15"/>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="844">
+                        <rect key="frame" x="1" y="491" width="764" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="843">
@@ -1351,17 +1363,17 @@ Gw
                                         <rect key="frame" x="135" y="17" width="350" height="212"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="AE1-mq-CGZ">
-                                            <rect key="frame" x="1" y="1" width="333" height="210"/>
+                                            <rect key="frame" x="1" y="1" width="348" height="210"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1096">
-                                                    <rect key="frame" x="0.0" y="0.0" width="333" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="348" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="333" height="210"/>
+                                                    <size key="minSize" width="348" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="333" height="210"/>
+                                                    <size key="minSize" width="348" height="210"/>
                                                     <size key="maxSize" width="463" height="10000000"/>
                                                     <connections>
                                                         <binding destination="534" name="value" keyPath="selection.munki_description" id="1103"/>
