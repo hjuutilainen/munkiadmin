@@ -14,14 +14,14 @@
 	// Title attributes: system font, 14pt, black, truncate tail
 	self.aTitleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 											   [NSColor blackColor],NSForegroundColorAttributeName,
-											   [NSFont systemFontOfSize:13.0],NSFontAttributeName,
+											   [NSFont systemFontOfSize:[NSFont systemFontSize]],NSFontAttributeName,
 											   aParagraphStyle, NSParagraphStyleAttributeName,
 											   nil];
 	
 	// Subtitle attributes: system font, 12pt, gray, truncate tail
 	self.aSubtitleAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 												  [NSColor grayColor],NSForegroundColorAttributeName,
-												  [NSFont systemFontOfSize:12.0],NSFontAttributeName,
+												  [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
 												  aParagraphStyle, NSParagraphStyleAttributeName,
 												  nil];
 }
@@ -130,7 +130,7 @@
 	// Make the layout boxes for all of our elements - remember that we're in a flipped coordinate system when setting the y-values
 	
 	// Vertical padding between the lines of text
-	float		aVerticalPadding = 5.0;
+	float		aVerticalPadding = 1.0;
 	
 	// Horizontal padding between icon and text
 	float		aHorizontalPadding = 10.0;
@@ -154,12 +154,12 @@
 	
 	// Now split the text box in half and put the title box in the top half and subtitle box in bottom half
 	NSRect		aTitleBox = NSMakeRect(aTextBox.origin.x, 
-									   aTextBox.origin.y + aTextBox.size.height*.5 - aTitleSize.height,
+									   aTextBox.origin.y + aTextBox.size.height*.5 - aTitleSize.height - aVerticalPadding*.5,
 									   aTextBox.size.width,
 									   aTitleSize.height);
 											
 	NSRect		aSubtitleBox = NSMakeRect(aTextBox.origin.x,
-										  aTextBox.origin.y + aTextBox.size.height*.5,
+										  aTextBox.origin.y + aTextBox.size.height*.5 + aVerticalPadding*.5,
 										  aTextBox.size.width,
 										  aSubtitleSize.height);
 	
