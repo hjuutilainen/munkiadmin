@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ManifestDetailView">
@@ -34,16 +34,16 @@
                         <tabViewItem label="Installs" identifier="1" id="9">
                             <view key="view" id="10">
                                 <rect key="frame" x="10" y="25" width="759" height="485"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="12">
                                         <rect key="frame" x="17" y="41" width="725" height="438"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="4Mt-m0-Q4I">
                                             <rect key="frame" x="1" y="17" width="723" height="420"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="236" id="15" customClass="ManifestItemTableView">
+                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="236" viewBased="YES" id="15" customClass="ManifestItemTableView">
                                                     <rect key="frame" x="0.0" y="0.0" width="723" height="420"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -63,9 +63,50 @@
                                                             </textFieldCell>
                                                             <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="title"/>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="69" name="value" keyPath="arrangedObjects.dictValue" id="74"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="D7P-Lt-SmB">
+                                                                    <rect key="frame" x="1" y="1" width="410" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ek4-bm-9A2">
+                                                                            <rect key="frame" x="10" y="4" width="32" height="32"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="iVs-Jm-r7T"/>
+                                                                            <connections>
+                                                                                <binding destination="D7P-Lt-SmB" name="value" keyPath="objectValue.image" id="76T-ao-a7n"/>
+                                                                            </connections>
+                                                                        </imageView>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="MD7-tl-a0J">
+                                                                            <rect key="frame" x="50" y="19" width="359" height="17"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="iLL-zT-31q">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="D7P-Lt-SmB" name="value" keyPath="objectValue.title" id="NZf-Nb-RQk"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="5xH-H7-QUV">
+                                                                            <rect key="frame" x="50" y="4" width="359" height="14"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="sl4-DO-fML">
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="D7P-Lt-SmB" name="value" keyPath="objectValue.subtitle" id="hlY-Yr-eLe"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                    <connections>
+                                                                        <outlet property="imageView" destination="ek4-bm-9A2" id="7ZU-ZZ-OE3"/>
+                                                                        <outlet property="textField" destination="MD7-tl-a0J" id="F4g-By-U6a"/>
+                                                                    </connections>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                         <tableColumn width="307" minWidth="10" maxWidth="3.4028234663852886e+38" id="234">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
@@ -73,32 +114,60 @@
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                             </tableHeaderCell>
-                                                            <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="240">
+                                                            <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="240">
                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <menu key="menu" title="OtherViews" id="241">
                                                                     <items>
-                                                                        <menuItem title="Pop Up" state="on" id="242"/>
+                                                                        <menuItem title="Pop Up" id="242"/>
                                                                     </items>
                                                                 </menu>
                                                             </popUpButtonCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="246" name="content" keyPath="arrangedObjects" id="293">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="246" name="contentValues" keyPath="arrangedObjects.titleWithParentTitle" previousBinding="293" id="509">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder">--</string>
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="69" name="selectedObject" keyPath="arrangedObjects.managedInstallConditionalReference" previousBinding="509" id="510"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="5s6-0M-ky9">
+                                                                    <rect key="frame" x="414" y="1" width="307" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <popUpButton id="0fJ-eg-0em">
+                                                                            <rect key="frame" x="3" y="11" width="301" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="zlK-lE-EHr" id="EFk-dW-TUB">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <menu key="menu" title="OtherViews" id="yYs-Ia-5FB">
+                                                                                    <items>
+                                                                                        <menuItem title="Item 1" state="on" id="zlK-lE-EHr"/>
+                                                                                        <menuItem title="Item 2" id="f2m-UU-Osr"/>
+                                                                                        <menuItem title="Item 3" id="cay-1b-scC"/>
+                                                                                    </items>
+                                                                                </menu>
+                                                                            </popUpButtonCell>
+                                                                            <connections>
+                                                                                <binding destination="-2" name="content" keyPath="conditionalItemsController.arrangedObjects" id="ZQh-EQ-o7D">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="-2" name="contentValues" keyPath="conditionalItemsController.arrangedObjects.titleWithParentTitle" previousBinding="ZQh-EQ-o7D" id="EFN-zo-VoB">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                        <string key="NSNullPlaceholder">--</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="5s6-0M-ky9" name="selectedObject" keyPath="objectValue.managedInstallConditionalReference" previousBinding="EFN-zo-VoB" id="DNR-76-G9h"/>
+                                                                            </connections>
+                                                                        </popUpButton>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                     </tableColumns>
+                                                    <connections>
+                                                        <binding destination="69" name="content" keyPath="arrangedObjects" id="csO-Tj-y2T"/>
+                                                        <binding destination="69" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="csO-Tj-y2T" id="m2x-vQ-tzY"/>
+                                                        <outlet property="delegate" destination="-2" id="9CX-Vj-g7B"/>
+                                                    </connections>
                                                 </tableView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -152,16 +221,16 @@
                         <tabViewItem label="Uninstalls" identifier="Item 4" id="5">
                             <view key="view" id="51">
                                 <rect key="frame" x="10" y="25" width="759" height="485"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="52">
                                         <rect key="frame" x="17" y="41" width="725" height="438"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="rZG-U9-fXX">
                                             <rect key="frame" x="1" y="17" width="723" height="420"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="369" id="53" customClass="ManifestItemTableView">
+                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="369" viewBased="YES" id="53" customClass="ManifestItemTableView">
                                                     <rect key="frame" x="0.0" y="0.0" width="723" height="420"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -180,9 +249,50 @@
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="76" name="value" keyPath="arrangedObjects.dictValue" id="88"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="vo9-6Q-7Yl">
+                                                                    <rect key="frame" x="1" y="1" width="410" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="atp-my-tPd">
+                                                                            <rect key="frame" x="10" y="4" width="32" height="32"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="djG-KQ-fc8"/>
+                                                                            <connections>
+                                                                                <binding destination="vo9-6Q-7Yl" name="value" keyPath="objectValue.image" id="o1U-Wn-lPy"/>
+                                                                            </connections>
+                                                                        </imageView>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Nfl-yX-F5E">
+                                                                            <rect key="frame" x="50" y="19" width="359" height="17"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="6b8-vo-66v">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="vo9-6Q-7Yl" name="value" keyPath="objectValue.title" id="lHL-N9-HVb"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Emp-KQ-KR1">
+                                                                            <rect key="frame" x="50" y="4" width="359" height="14"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="bvf-0S-bu5">
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="vo9-6Q-7Yl" name="value" keyPath="objectValue.subtitle" id="7cw-jl-FcZ"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                    <connections>
+                                                                        <outlet property="imageView" destination="atp-my-tPd" id="uN2-Lz-nCN"/>
+                                                                        <outlet property="textField" destination="Nfl-yX-F5E" id="qsI-fn-pGy"/>
+                                                                    </connections>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                         <tableColumn width="307" minWidth="10" maxWidth="3.4028234663852886e+38" id="367">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
@@ -200,22 +310,50 @@
                                                                 </menu>
                                                             </popUpButtonCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="246" name="content" keyPath="arrangedObjects" id="376">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="246" name="contentValues" keyPath="arrangedObjects.titleWithParentTitle" previousBinding="376" id="511">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder">--</string>
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="76" name="selectedObject" keyPath="arrangedObjects.managedUninstallConditionalReference" previousBinding="511" id="512"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="T3B-3i-2qn">
+                                                                    <rect key="frame" x="414" y="1" width="307" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <popUpButton id="qFs-u3-ZjV">
+                                                                            <rect key="frame" x="3" y="11" width="301" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="1Yo-NI-HYZ" id="Yfa-ZF-avd">
+                                                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <menu key="menu" title="OtherViews" id="JI7-7X-ldv">
+                                                                                    <items>
+                                                                                        <menuItem title="Item 1" state="on" id="1Yo-NI-HYZ"/>
+                                                                                        <menuItem title="Item 2" id="92s-Zq-LbI"/>
+                                                                                        <menuItem title="Item 3" id="gAS-cY-ftn"/>
+                                                                                    </items>
+                                                                                </menu>
+                                                                            </popUpButtonCell>
+                                                                            <connections>
+                                                                                <binding destination="-2" name="content" keyPath="conditionalItemsController.arrangedObjects" id="pIT-xV-re7">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="-2" name="contentValues" keyPath="conditionalItemsController.arrangedObjects.titleWithParentTitle" previousBinding="pIT-xV-re7" id="9vf-9F-lbf">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                        <string key="NSNullPlaceholder">--</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="T3B-3i-2qn" name="selectedObject" keyPath="objectValue.managedUninstallConditionalReference" previousBinding="9vf-9F-lbf" id="y6u-ZZ-w1x"/>
+                                                                            </connections>
+                                                                        </popUpButton>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                     </tableColumns>
+                                                    <connections>
+                                                        <binding destination="76" name="content" keyPath="arrangedObjects" id="sEx-l1-HRG"/>
+                                                        <binding destination="76" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="sEx-l1-HRG" id="qfY-I5-7hN"/>
+                                                        <outlet property="delegate" destination="-2" id="Xyl-mG-KmA"/>
+                                                    </connections>
                                                 </tableView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -269,16 +407,16 @@
                         <tabViewItem label="Optional Installs" identifier="Item 3" id="6">
                             <view key="view" id="42">
                                 <rect key="frame" x="10" y="25" width="759" height="485"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="43">
                                         <rect key="frame" x="17" y="41" width="725" height="438"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="uME-G3-mR2">
                                             <rect key="frame" x="1" y="17" width="723" height="420"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="383" id="44" customClass="ManifestItemTableView">
+                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="383" viewBased="YES" id="44" customClass="ManifestItemTableView">
                                                     <rect key="frame" x="0.0" y="0.0" width="723" height="420"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -297,9 +435,46 @@
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="80" name="value" keyPath="arrangedObjects.dictValue" id="90"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="coa-Qh-51A">
+                                                                    <rect key="frame" x="1" y="1" width="410" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qTz-Yu-0Er">
+                                                                            <rect key="frame" x="10" y="4" width="32" height="32"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="BKO-K5-1kY"/>
+                                                                            <connections>
+                                                                                <binding destination="coa-Qh-51A" name="value" keyPath="objectValue.image" id="qSu-YL-634"/>
+                                                                            </connections>
+                                                                        </imageView>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="CZl-2F-A2x">
+                                                                            <rect key="frame" x="50" y="19" width="359" height="17"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="aJX-aE-NK1">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="coa-Qh-51A" name="value" keyPath="objectValue.title" id="DUo-4N-dAj"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="SAR-4q-v5j">
+                                                                            <rect key="frame" x="50" y="4" width="359" height="14"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="USy-zI-lvl">
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="coa-Qh-51A" name="value" keyPath="objectValue.subtitle" id="xQc-Pe-5aF"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                         <tableColumn width="307" minWidth="10" maxWidth="3.4028234663852886e+38" id="381">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
@@ -317,22 +492,50 @@
                                                                 </menu>
                                                             </popUpButtonCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="246" name="content" keyPath="arrangedObjects" id="390">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="246" name="contentValues" keyPath="arrangedObjects.titleWithParentTitle" previousBinding="390" id="513">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder">--</string>
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="80" name="selectedObject" keyPath="arrangedObjects.optionalInstallConditionalReference" previousBinding="513" id="514"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="yAf-wa-0As">
+                                                                    <rect key="frame" x="414" y="1" width="307" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <popUpButton id="TM4-S2-pFc">
+                                                                            <rect key="frame" x="3" y="11" width="301" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="nd7-mG-NMo" id="fhN-PZ-Bon">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <menu key="menu" title="OtherViews" id="Z0A-UJ-Nk0">
+                                                                                    <items>
+                                                                                        <menuItem title="Item 1" state="on" id="nd7-mG-NMo"/>
+                                                                                        <menuItem title="Item 2" id="0Yg-h5-x2J"/>
+                                                                                        <menuItem title="Item 3" id="AIB-HF-Dch"/>
+                                                                                    </items>
+                                                                                </menu>
+                                                                            </popUpButtonCell>
+                                                                            <connections>
+                                                                                <binding destination="-2" name="content" keyPath="conditionalItemsController.arrangedObjects" id="Noh-wq-Amp">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="-2" name="contentValues" keyPath="conditionalItemsController.arrangedObjects.titleWithParentTitle" previousBinding="Noh-wq-Amp" id="com-5p-gsx">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                        <string key="NSNullPlaceholder">--</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="yAf-wa-0As" name="selectedObject" keyPath="objectValue.optionalInstallConditionalReference" previousBinding="com-5p-gsx" id="kng-N0-g6O"/>
+                                                                            </connections>
+                                                                        </popUpButton>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                     </tableColumns>
+                                                    <connections>
+                                                        <binding destination="80" name="content" keyPath="arrangedObjects" id="wzL-t2-Ilh"/>
+                                                        <binding destination="80" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="wzL-t2-Ilh" id="1sV-nP-bRf"/>
+                                                        <outlet property="delegate" destination="-2" id="Zfy-Tc-t0v"/>
+                                                    </connections>
                                                 </tableView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -386,16 +589,16 @@
                         <tabViewItem label="Updates" identifier="Item 5" id="4">
                             <view key="view" id="60">
                                 <rect key="frame" x="10" y="25" width="759" height="485"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="61">
                                         <rect key="frame" x="17" y="41" width="725" height="438"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="ZIV-gg-GJ4">
                                             <rect key="frame" x="1" y="17" width="723" height="420"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="396" id="64" customClass="ManifestItemTableView">
+                                                <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="396" viewBased="YES" id="64" customClass="ManifestItemTableView">
                                                     <rect key="frame" x="0.0" y="0.0" width="723" height="420"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -414,9 +617,46 @@
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="84" name="value" keyPath="arrangedObjects.dictValue" id="91"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="Qfw-Ho-TFX">
+                                                                    <rect key="frame" x="1" y="1" width="410" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="vCh-kB-9IM">
+                                                                            <rect key="frame" x="10" y="4" width="32" height="32"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="hab-uH-Lwf"/>
+                                                                            <connections>
+                                                                                <binding destination="Qfw-Ho-TFX" name="value" keyPath="objectValue.image" id="Wt9-Je-kUn"/>
+                                                                            </connections>
+                                                                        </imageView>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="BGD-Xp-uvn">
+                                                                            <rect key="frame" x="50" y="19" width="359" height="17"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="NFh-ya-Y87">
+                                                                                <font key="font" metaFont="system"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="Qfw-Ho-TFX" name="value" keyPath="objectValue.title" id="yDh-ai-F0S"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Lf4-b0-moa">
+                                                                            <rect key="frame" x="50" y="4" width="359" height="14"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="gF4-wW-ZcS">
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="Qfw-Ho-TFX" name="value" keyPath="objectValue.subtitle" id="bVg-4d-iXq"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                         <tableColumn width="307" minWidth="10" maxWidth="3.4028234663852886e+38" id="394">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
@@ -434,22 +674,50 @@
                                                                 </menu>
                                                             </popUpButtonCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                            <connections>
-                                                                <binding destination="246" name="content" keyPath="arrangedObjects" id="403">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="246" name="contentValues" keyPath="arrangedObjects.titleWithParentTitle" previousBinding="403" id="515">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder">--</string>
-                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
-                                                                <binding destination="84" name="selectedObject" keyPath="arrangedObjects.managedUpdateConditionalReference" previousBinding="515" id="516"/>
-                                                            </connections>
+                                                            <prototypeCellViews>
+                                                                <tableCellView id="pYd-Ht-qTz">
+                                                                    <rect key="frame" x="414" y="1" width="307" height="40"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    <subviews>
+                                                                        <popUpButton id="4j4-3Q-xgM">
+                                                                            <rect key="frame" x="3" y="11" width="301" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                            <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="b7c-VJ-4WR" id="sT1-6o-BUt">
+                                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                                <font key="font" metaFont="smallSystem"/>
+                                                                                <menu key="menu" title="OtherViews" id="S8q-si-T03">
+                                                                                    <items>
+                                                                                        <menuItem title="Item 1" state="on" id="b7c-VJ-4WR"/>
+                                                                                        <menuItem title="Item 2" id="ocy-Jd-ilt"/>
+                                                                                        <menuItem title="Item 3" id="7ou-ob-cR6"/>
+                                                                                    </items>
+                                                                                </menu>
+                                                                            </popUpButtonCell>
+                                                                            <connections>
+                                                                                <binding destination="-2" name="content" keyPath="conditionalItemsController.arrangedObjects" id="zm3-4O-FuU">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="-2" name="contentValues" keyPath="conditionalItemsController.arrangedObjects.titleWithParentTitle" previousBinding="zm3-4O-FuU" id="VSu-TV-Taa">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                                        <string key="NSNullPlaceholder">--</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="pYd-Ht-qTz" name="selectedObject" keyPath="objectValue.managedUpdateConditionalReference" previousBinding="VSu-TV-Taa" id="Tv8-QG-x33"/>
+                                                                            </connections>
+                                                                        </popUpButton>
+                                                                    </subviews>
+                                                                </tableCellView>
+                                                            </prototypeCellViews>
                                                         </tableColumn>
                                                     </tableColumns>
+                                                    <connections>
+                                                        <binding destination="84" name="content" keyPath="arrangedObjects" id="TAD-85-uNE"/>
+                                                        <binding destination="84" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="TAD-85-uNE" id="u2U-7F-eJV"/>
+                                                        <outlet property="delegate" destination="-2" id="SUC-Iq-gOm"/>
+                                                    </connections>
                                                 </tableView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -632,13 +900,13 @@
                                                                         <bool key="NSInsertsNullPlaceholder" value="YES"/>
                                                                     </dictionary>
                                                                 </binding>
+                                                                <binding destination="105" name="selectedObject" keyPath="arrangedObjects.includedManifestConditionalReference" previousBinding="517" id="518"/>
                                                                 <binding destination="246" name="contentValues" keyPath="arrangedObjects.titleWithParentTitle" previousBinding="436" id="517">
                                                                     <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder">--</string>
                                                                         <bool key="NSInsertsNullPlaceholder" value="YES"/>
+                                                                        <string key="NSNullPlaceholder">--</string>
                                                                     </dictionary>
                                                                 </binding>
-                                                                <binding destination="105" name="selectedObject" keyPath="arrangedObjects.includedManifestConditionalReference" previousBinding="517" id="518"/>
                                                             </connections>
                                                         </tableColumn>
                                                     </tableColumns>
@@ -788,7 +1056,7 @@
                                             <rect key="frame" x="1" y="119" width="238" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="460">
+                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="460">
                                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
@@ -806,44 +1074,44 @@
         </customView>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="69" userLabel="Managed Installs">
             <connections>
-                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedInstalls" id="230"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="73"/>
+                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedInstalls" id="230"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="76" userLabel="Managed Uninstalls">
             <connections>
-                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedUninstalls" id="231"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="77"/>
+                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedUninstalls" id="231"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="80" userLabel="Optional Installs">
             <connections>
-                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allOptionalInstalls" id="232"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="81"/>
+                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allOptionalInstalls" id="232"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="84" userLabel="Managed Updates">
             <connections>
-                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedUpdates" id="233"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="85"/>
+                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allManagedUpdates" id="233"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="CatalogInfo" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="95" userLabel="Catalogs">
             <connections>
-                <binding destination="-3" name="contentSet" keyPath="delegate.manifestsArrayController.selection.catalogInfos" id="98"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="96"/>
+                <binding destination="-3" name="contentSet" keyPath="delegate.manifestsArrayController.selection.catalogInfos" id="98"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="105" userLabel="Included Manifests">
             <connections>
-                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allIncludedManifests" id="444"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="106"/>
+                <binding destination="-3" name="contentArray" keyPath="delegate.manifestsArrayController.selection.allIncludedManifests" id="444"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="ConditionalItem" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="246" userLabel="Conditional Items">
             <connections>
-                <binding destination="-3" name="contentSet" keyPath="delegate.manifestsArrayController.selection.conditionalItems" id="292"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="247"/>
+                <binding destination="-3" name="contentSet" keyPath="delegate.manifestsArrayController.selection.conditionalItems" id="292"/>
             </connections>
         </arrayController>
         <treeController mode="entity" entityName="ConditionalItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" id="465" userLabel="Conditional Items Tree">

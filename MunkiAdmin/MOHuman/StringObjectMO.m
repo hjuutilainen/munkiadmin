@@ -4,6 +4,7 @@
 #import "ConditionalItemMO.h"
 #import "ManifestMO.h"
 #import "CatalogMO.h"
+#import "IconImageMO.h"
 
 @implementation StringObjectMO
 
@@ -77,6 +78,7 @@
     [self didChangeValueForKey:@"includedManifestConditionalReference"];
 }
 
+
 - (NSArray *)siblingPackagesWhenReferencedFromManifest:(ManifestMO *)manifest
 {
     if (manifest == nil) {
@@ -121,7 +123,8 @@
     return array;
 }
 
-- (NSDictionary *)dictValue
+
+- (NSString *)subtitle
 {
     NSString *subtitle;
     
@@ -170,6 +173,13 @@
             }
         }
     }
+    return subtitle;
+}
+
+
+- (NSDictionary *)dictValue
+{
+    NSString *subtitle = [self subtitle];
 
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			self.title, @"title",
@@ -177,6 +187,7 @@
             subtitle, @"subtitle",
 			nil];
 }
+
 
 - (NSDictionary *)dictValueForNestedManifests
 {
@@ -191,6 +202,20 @@
     } else {
         return [[self.manifestsWithSameTitle objectAtIndex:0] dictValue];
     }
+}
+
+
+- (NSImage *)image
+{
+    NSUInteger numPkgs = [self.packagesWithSameTitle count];
+    if (numPkgs > 0) {
+        NSSortDescriptor *byVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
+        NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
+        IconImageMO *iconImage = [[foundPkgs objectAtIndex:0] iconImage];
+        return iconImage.image;
+    }
+    
+    return [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
 }
 
 
