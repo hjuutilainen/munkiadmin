@@ -102,11 +102,9 @@ static dispatch_queue_t serialQueue;
 {
     BOOL returnValue = NO;
     
-    NSManagedObjectContext *moc = [aPackage managedObjectContext];
+    //NSManagedObjectContext *moc = [aPackage managedObjectContext];
     
     NSURL *sourceURL = aPackage.packageInfoURL;
-    DirectoryMO *originalDir = [[MACoreDataManager sharedManager] directoryWithURL:[sourceURL URLByDeletingLastPathComponent] managedObjectContext:moc];
-    DirectoryMO *targetDir = [[MACoreDataManager sharedManager] directoryWithURL:[targetURL URLByDeletingLastPathComponent] managedObjectContext:moc];
     
     /*
      Deal with the pkginfo file first
@@ -120,8 +118,7 @@ static dispatch_queue_t serialQueue;
          File was succesfully moved so update the object with a new location
          */
         [aPackage setPackageInfoURL:targetURL];
-        [aPackage removeSourceListItemsObject:originalDir];
-        [aPackage addSourceListItemsObject:targetDir];
+        [aPackage setPackageInfoParentDirectoryURL:[targetURL URLByDeletingLastPathComponent]];
         returnValue = YES;
     } else {
         /*
