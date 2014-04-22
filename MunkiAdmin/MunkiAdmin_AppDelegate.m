@@ -2279,7 +2279,7 @@
     allPackagesSmartItem.type = @"smart";
     allPackagesSmartItem.parent = newSourceListItem2;
     allPackagesSmartItem.originalIndexValue = 10;
-    allPackagesSmartItem.filterPredicate = nil;
+    allPackagesSmartItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
     
     DirectoryMO *newPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
     newPackagesSmartItem.title = @"Last 30 Days";
