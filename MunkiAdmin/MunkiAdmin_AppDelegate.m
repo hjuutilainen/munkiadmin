@@ -2266,6 +2266,42 @@
     [aPackage addSourceListItemsObject:aDir];
 }
 
+- (void)configureSourceListRepositorySection
+{
+    PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
+    newSourceListItem2.title = @"REPOSITORY";
+    newSourceListItem2.originalIndexValue = 0;
+    newSourceListItem2.parent = nil;
+    newSourceListItem2.isGroupItemValue = YES;
+    
+    DirectoryMO *allPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    allPackagesSmartItem.title = @"All Packages";
+    allPackagesSmartItem.type = @"smart";
+    allPackagesSmartItem.parent = newSourceListItem2;
+    allPackagesSmartItem.originalIndexValue = 10;
+    allPackagesSmartItem.filterPredicate = nil;
+    
+    DirectoryMO *newPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    newPackagesSmartItem.title = @"Last 30 Days";
+    newPackagesSmartItem.type = @"smart";
+    newPackagesSmartItem.parent = newSourceListItem2;
+    newPackagesSmartItem.originalIndexValue = 20;
+    NSDate *now = [NSDate date];
+    NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+    dayComponent.day = -30;
+    NSDate *thirtyDaysAgo = [[NSCalendar currentCalendar] dateByAddingComponents:dayComponent toDate:now options:0];
+    NSPredicate *thirtyDaysAgoPredicate = [NSPredicate predicateWithFormat:@"packageDateCreated >= %@", thirtyDaysAgo];
+    newPackagesSmartItem.filterPredicate = thirtyDaysAgoPredicate;
+    
+    DirectoryMO *appleUpdatesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
+    appleUpdatesSmartItem.title = @"Apple Updates";
+    appleUpdatesSmartItem.type = @"smart";
+    appleUpdatesSmartItem.parent = newSourceListItem2;
+    appleUpdatesSmartItem.originalIndexValue = 30;
+    NSPredicate *appleUpdatesPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
+    appleUpdatesSmartItem.filterPredicate = appleUpdatesPredicate;
+}
+
 - (void)configureSourceListDirectoriesSection
 {
     MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
@@ -2291,7 +2327,8 @@
     basePkgsInfoDirectory.type = @"regular";
     basePkgsInfoDirectory.parent = directoriesGroupItem;
     basePkgsInfoDirectory.originalIndexValue = 10;
-
+    basePkgsInfoDirectory.filterPredicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", self.pkgsInfoURL];
+    
     
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -2301,7 +2338,7 @@
 	{
 		NSNumber *isDir;
 		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-		if ([isDir boolValue]) {            
+		if ([isDir boolValue]) {
             NSFetchRequest *checkForExistingRequest = [[NSFetchRequest alloc] init];
             [checkForExistingRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
             NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", anURL];
@@ -2312,9 +2349,12 @@
                 newDirectory.originalURL = anURL;
                 newDirectory.originalIndexValue = 10;
                 newDirectory.type = @"regular";
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", anURL];
+                newDirectory.filterPredicate = predicate;
                 NSString *newTitle;
                 [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
                 newDirectory.title = newTitle;
+                
                 NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
                 if ([parentDirectory isEqual:self.pkgsInfoURL]) {
                     newDirectory.parent = basePkgsInfoDirectory;
@@ -2344,20 +2384,13 @@
 		NSLog(@"Scanning selected repo for packages");
 	}
 	
-    PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
-    newSourceListItem2.title = @"REPOSITORY";
-    newSourceListItem2.originalIndexValue = 0;
-    newSourceListItem2.parent = nil;
-    newSourceListItem2.isGroupItemValue = YES;
-    
-    DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    newDirectory.title = @"All Packages";
-    newDirectory.type = @"smart";
-    newDirectory.parent = newSourceListItem2;
-    newDirectory.originalIndexValue = 10;
+    /*
+     Setup the REPOSITORIES section for side bar
+     */
+    [self configureSourceListRepositorySection];
     
     /*
-     Setup the directory items for side bar
+     Setup the DIRECTORIES section for side bar
      */
     [self configureSourceListDirectoriesSection];
     

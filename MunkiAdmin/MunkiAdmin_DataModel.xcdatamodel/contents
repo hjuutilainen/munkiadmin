@@ -198,6 +198,7 @@
         <attribute name="packageInfoDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="packageInfoDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="packageInfoDateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="packageInfoParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="packageInfoURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="packageURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="titleWithVersion" optional="YES" attributeType="String" syncable="YES"/>
@@ -227,6 +228,7 @@
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="packageInfos" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
+        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
@@ -292,9 +294,9 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1033"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1048"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="163"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
     </elements>

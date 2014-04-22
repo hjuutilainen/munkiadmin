@@ -25,20 +25,7 @@
 @end
 
 @implementation PackagesView
-@synthesize tripleSplitView;
-@synthesize leftPlaceHolder;
-@synthesize middlePlaceHolder;
-@synthesize rightPlaceHolder;
-@synthesize packagesTableView;
-@synthesize packagesArrayController;
-@synthesize directoriesTreeController;
-@synthesize directoriesOutlineView;
-@synthesize descriptionTextView;
-@synthesize notesTextView;
-@synthesize notesDescriptionSplitView;
-@synthesize packagesTableViewMenu;
-@synthesize packageInfoPathControl;
-@synthesize installerItemPathControl;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,6 +36,33 @@
     
     return self;
 }
+
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+    /*
+     Update the mainCompoundPredicate everytime the subcomponents are updated
+     */
+    if ([key isEqualToString:@"mainCompoundPredicate"])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"packagesMainFilterPredicate", @"searchFieldPredicate", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+	
+    return keyPaths;
+}
+
+
+- (NSPredicate *)mainCompoundPredicate
+{
+    /*
+     Combine the selected source list item predicate and the possible search field predicate
+     */
+    return [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.packagesMainFilterPredicate, self.searchFieldPredicate, nil]];
+}
+
 
 - (void)awakeFromNib
 {
@@ -62,6 +76,7 @@
     
     [self.directoriesOutlineView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
     [self.directoriesOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    [self.directoriesOutlineView setDelegate:self];
     
     /*
      Configure sorting
@@ -148,6 +163,19 @@
 
 #pragma mark -
 #pragma mark NSOutlineView view delegates
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+{
+    /*
+     Source list selection changed, update the package list filter predicate
+     */
+    NSArray *selectedSourceListItems = [self.directoriesTreeController selectedObjects];
+    if ([selectedSourceListItems count] > 0) {
+        id selectedItem = [selectedSourceListItems objectAtIndex:0];
+        NSPredicate *productFilter = [selectedItem filterPredicate];
+        [self setPackagesMainFilterPredicate:productFilter];
+    }
+}
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {

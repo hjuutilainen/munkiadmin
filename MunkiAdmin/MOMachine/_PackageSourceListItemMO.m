@@ -4,6 +4,7 @@
 #import "_PackageSourceListItemMO.h"
 
 const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes = {
+	.filterPredicate = @"filterPredicate",
 	.isGroupItem = @"isGroupItem",
 	.originalIndex = @"originalIndex",
 	.title = @"title",
@@ -58,6 +59,13 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic filterPredicate;
+
+
 
 
 

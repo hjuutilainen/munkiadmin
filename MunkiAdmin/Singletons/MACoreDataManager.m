@@ -93,6 +93,8 @@
         // Did not find existing object, create a new one.
         directory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:moc];
         directory.originalURL = anURL;
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", anURL];
+        directory.filterPredicate = predicate;
     } else {
         // Existing directory found.
         directory = [[moc executeFetchRequest:checkForExisting error:nil] objectAtIndex:0];

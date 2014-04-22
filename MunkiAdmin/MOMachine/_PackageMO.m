@@ -50,6 +50,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.packageInfoDateCreated = @"packageInfoDateCreated",
 	.packageInfoDateLastOpened = @"packageInfoDateLastOpened",
 	.packageInfoDateModified = @"packageInfoDateModified",
+	.packageInfoParentDirectoryURL = @"packageInfoParentDirectoryURL",
 	.packageInfoURL = @"packageInfoURL",
 	.packageURL = @"packageURL",
 	.titleWithVersion = @"titleWithVersion",
@@ -691,6 +692,13 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 
 
 @dynamic packageInfoDateModified;
+
+
+
+
+
+
+@dynamic packageInfoParentDirectoryURL;
 
 
 

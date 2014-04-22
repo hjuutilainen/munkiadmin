@@ -310,19 +310,6 @@
     defaultIcon.image = pkgicon;
     defaultIcon.originalURL = nil;
     
-    
-    DirectoryMO *allPackagesSmartDirectory;
-    NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
-    [fetchBaseDirectory setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"All Packages"];
-    [fetchBaseDirectory setPredicate:parentPredicate];
-    NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
-    if (foundItems > 0) {
-        allPackagesSmartDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
-    } else {
-        allPackagesSmartDirectory = nil;
-    }
-    
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
@@ -330,11 +317,8 @@
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;
         NSArray *catalogsFromPkginfo = [originalPkginfo objectForKey:@"catalogs"];
         
-        // Link to DirectoryMO object
-        
-        DirectoryMO *aDir = [[MACoreDataManager sharedManager] directoryWithURL:[currentPackage.packageInfoURL URLByDeletingLastPathComponent] managedObjectContext:moc];
-        [currentPackage addSourceListItemsObject:aDir];
-        [currentPackage addSourceListItemsObject:allPackagesSmartDirectory];
+        NSURL *parentDirectoryURL = [currentPackage.packageInfoURL URLByDeletingLastPathComponent];
+        currentPackage.packageInfoParentDirectoryURL = parentDirectoryURL;
         
         // Loop through the catalog objects we already know about
         

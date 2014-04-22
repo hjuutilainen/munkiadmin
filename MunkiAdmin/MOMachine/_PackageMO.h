@@ -51,6 +51,7 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *packageInfoDateCreated;
 	__unsafe_unretained NSString *packageInfoDateLastOpened;
 	__unsafe_unretained NSString *packageInfoDateModified;
+	__unsafe_unretained NSString *packageInfoParentDirectoryURL;
 	__unsafe_unretained NSString *packageInfoURL;
 	__unsafe_unretained NSString *packageURL;
 	__unsafe_unretained NSString *titleWithVersion;
@@ -143,6 +144,7 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@class NSObject;
 @class NSObject;
 @class NSObject;
 
@@ -659,6 +661,16 @@ extern const struct PackageMOFetchedProperties {
 
 
 //- (BOOL)validatePackageInfoDateModified:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) id packageInfoParentDirectoryURL;
+
+
+
+//- (BOOL)validatePackageInfoParentDirectoryURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -1198,6 +1210,12 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSDate*)primitivePackageInfoDateModified;
 - (void)setPrimitivePackageInfoDateModified:(NSDate*)value;
+
+
+
+
+- (id)primitivePackageInfoParentDirectoryURL;
+- (void)setPrimitivePackageInfoParentDirectoryURL:(id)value;
 
 
 

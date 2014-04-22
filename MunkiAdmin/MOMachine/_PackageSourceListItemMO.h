@@ -5,6 +5,7 @@
 
 
 extern const struct PackageSourceListItemMOAttributes {
+	__unsafe_unretained NSString *filterPredicate;
 	__unsafe_unretained NSString *isGroupItem;
 	__unsafe_unretained NSString *originalIndex;
 	__unsafe_unretained NSString *title;
@@ -24,6 +25,7 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 @class PackageMO;
 @class PackageSourceListItemMO;
 
+@class NSObject;
 
 
 
@@ -37,6 +39,16 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (PackageSourceListItemMOID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) id filterPredicate;
+
+
+
+//- (BOOL)validateFilterPredicate:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -129,6 +141,12 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 @end
 
 @interface _PackageSourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (id)primitiveFilterPredicate;
+- (void)setPrimitiveFilterPredicate:(id)value;
+
+
 
 
 - (NSNumber*)primitiveIsGroupItem;
