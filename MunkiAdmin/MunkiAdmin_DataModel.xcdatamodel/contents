@@ -30,6 +30,14 @@
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="catalogInfos" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="catalogInfos" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
+    <entity name="Category" representedClassName="CategoryMO" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="categorySourceListReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategorySourceListItem" inverseName="categoryReference" inverseEntity="CategorySourceListItem" syncable="YES"/>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="category" inverseEntity="Package" syncable="YES"/>
+    </entity>
+    <entity name="CategorySourceListItem" representedClassName="CategorySourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES">
+        <relationship name="categoryReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="categorySourceListReference" inverseEntity="Category" syncable="YES"/>
+    </entity>
     <entity name="ConditionalItem" representedClassName="ConditionalItemMO" syncable="YES">
         <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -155,7 +163,6 @@
         <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="munki_developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -205,6 +212,7 @@
         <relationship name="blockingApplications" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="blockingApplicationReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogInfo" inverseName="package" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
         <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packages" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="packages" inverseEntity="Category" syncable="YES"/>
         <relationship name="iconImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IconImage" inverseName="packages" inverseEntity="IconImage" syncable="YES"/>
         <relationship name="installerChoicesItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InstallerChoicesItem" inverseName="package" inverseEntity="InstallerChoicesItem" indexed="YES" syncable="YES"/>
         <relationship name="installerEnvironmentVariables" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallerEnvironmentVariable" inverseName="packages" inverseEntity="InstallerEnvironmentVariable" indexed="YES" syncable="YES"/>
@@ -297,5 +305,7 @@
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="148"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
+        <element name="Category" positionX="9" positionY="153" width="128" height="88"/>
+        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="58"/>
     </elements>
 </model>

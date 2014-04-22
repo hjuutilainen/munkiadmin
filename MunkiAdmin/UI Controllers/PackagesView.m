@@ -78,6 +78,14 @@
     [self.directoriesOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     [self.directoriesOutlineView setDelegate:self];
     
+    // The basic recipe for a sidebar. Note that the selectionHighlightStyle is set to NSTableViewSelectionHighlightStyleSourceList in the nib
+    [self.directoriesOutlineView sizeLastColumnToFit];
+    //[self.directoriesOutlineView reloadData];
+    [self.directoriesOutlineView setFloatsGroupRows:NO];
+    
+    // NSTableViewRowSizeStyleDefault should be used, unless the user has picked an explicit size. In that case, it should be stored out and re-used.
+    [self.directoriesOutlineView setRowSizeStyle:NSTableViewRowSizeStyleDefault];
+    
     /*
      Configure sorting
      */
@@ -186,6 +194,20 @@
     }
 }
 
+- (NSView *)outlineView:(NSOutlineView *)ov viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    NSTableCellView *view = nil;
+    
+    if ([[item representedObject] isGroupItemValue]) {
+        view = [ov makeViewWithIdentifier:@"HeaderCell" owner:self];
+    } else {
+        view = [ov makeViewWithIdentifier:@"DataCell" owner:self];
+    }
+    
+    return view;
+}
+
+/*
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
     id objectValue = nil;
@@ -201,6 +223,7 @@
     
     return objectValue;
 }
+ */
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
@@ -262,25 +285,49 @@
         NSArray *dragTypes = [[info draggingPasteboard] types];
         if ([dragTypes containsObject:NSURLPboardType]) {
             
-            DirectoryMO *targetDir = [proposedParentItem representedObject];
-                        
-            NSPasteboard *pasteboard = [info draggingPasteboard];
-            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-            NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                     [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
-            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
-            for (NSURL *uri in urls) {
-                NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
-                NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
-                PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
-                NSString *currentFileName = [[droppedPackage packageInfoURL] lastPathComponent];
-                NSURL *targetURL = [targetDir.originalURL URLByAppendingPathComponent:currentFileName];
+            if ([[proposedParentItem representedObject] isKindOfClass:[DirectoryMO class]]) {
+            
+                DirectoryMO *targetDir = [proposedParentItem representedObject];
+                            
+                NSPasteboard *pasteboard = [info draggingPasteboard];
+                NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+                NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+                for (NSURL *uri in urls) {
+                    NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
+                    NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                    PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
+                    NSString *currentFileName = [[droppedPackage packageInfoURL] lastPathComponent];
+                    NSURL *targetURL = [targetDir.originalURL URLByAppendingPathComponent:currentFileName];
+                    
+                    /*
+                     Ask permission to move the installer item as well
+                     */
+                    BOOL allowMove = [self shouldMoveInstallerItemWithPkginfo];
+                    [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
+                }
+            } else if ([[proposedParentItem representedObject] isKindOfClass:[CategorySourceListItemMO class]]) {
+                CategorySourceListItemMO *targetCategorySourceList = [proposedParentItem representedObject];
                 
-                /*
-                 Ask permission to move the installer item as well
-                 */
-                BOOL allowMove = [self shouldMoveInstallerItemWithPkginfo];
-                [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
+                NSPasteboard *pasteboard = [info draggingPasteboard];
+                NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+                NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+                for (NSURL *uri in urls) {
+                    NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
+                    NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                    PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
+                    
+                    if (targetCategorySourceList.categoryReference != nil) {
+                        NSLog(@"Existing category: %@, New category: %@", droppedPackage.category.title, targetCategorySourceList.title);
+                        droppedPackage.category = targetCategorySourceList.categoryReference;
+                    } else {
+                        NSLog(@"Existing category: %@, New category: None", droppedPackage.category.title);
+                        droppedPackage.category = nil;
+                    }
+                }
             }
         }
         return YES;
@@ -304,7 +351,10 @@
          Only allow dropping on regular folders
          */
         DirectoryMO *targetDir = [item representedObject];
-        if (![targetDir.type isEqualToString:@"regular"]) {
+        if (([[item representedObject] isKindOfClass:[CategorySourceListItemMO class]])) {
+            return NSDragOperationMove;
+        }
+        else if (![targetDir.type isEqualToString:@"regular"]) {
             return NSDragOperationNone;
         }
         

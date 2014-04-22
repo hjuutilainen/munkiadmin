@@ -29,6 +29,10 @@
 		F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */; };
 		F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */; };
 		F527FF1F10FC871B000B29B6 /* CatalogInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */; };
+		F5292073190665B600F02C00 /* CategoryMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5292072190665B600F02C00 /* CategoryMO.m */; };
+		F5292076190665C400F02C00 /* _CategoryMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5292075190665C400F02C00 /* _CategoryMO.m */; };
+		F529207919066FD800F02C00 /* CategorySourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F529207819066FD800F02C00 /* CategorySourceListItemMO.m */; };
+		F529207C19066FE300F02C00 /* _CategorySourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F529207B19066FE300F02C00 /* _CategorySourceListItemMO.m */; };
 		F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */; };
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
 		F5299AAC10FB75E00074CFEA /* open alt.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AAB10FB75E00074CFEA /* open alt.tiff */; };
@@ -175,6 +179,14 @@
 		F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogsArrayController.m; sourceTree = "<group>"; };
 		F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogInfosArrayController.h; sourceTree = "<group>"; };
 		F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogInfosArrayController.m; sourceTree = "<group>"; };
+		F5292071190665B600F02C00 /* CategoryMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMO.h; sourceTree = "<group>"; };
+		F5292072190665B600F02C00 /* CategoryMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMO.m; sourceTree = "<group>"; };
+		F5292074190665C400F02C00 /* _CategoryMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CategoryMO.h; sourceTree = "<group>"; };
+		F5292075190665C400F02C00 /* _CategoryMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CategoryMO.m; sourceTree = "<group>"; };
+		F529207719066FD800F02C00 /* CategorySourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySourceListItemMO.h; sourceTree = "<group>"; };
+		F529207819066FD800F02C00 /* CategorySourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySourceListItemMO.m; sourceTree = "<group>"; };
+		F529207A19066FE300F02C00 /* _CategorySourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CategorySourceListItemMO.h; sourceTree = "<group>"; };
+		F529207B19066FE300F02C00 /* _CategorySourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CategorySourceListItemMO.m; sourceTree = "<group>"; };
 		F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packagesMultipleIcon2.png; path = MunkiAdmin/Graphics/packagesMultipleIcon2.png; sourceTree = "<group>"; };
 		F5299A5810FB6AB00074CFEA /* PackageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageArrayController.h; sourceTree = "<group>"; };
 		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
@@ -411,6 +423,10 @@
 				F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */,
 				F5DFC89A129546E600B68F4F /* CatalogMO.h */,
 				F5DFC87D129546E300B68F4F /* CatalogMO.m */,
+				F5292071190665B600F02C00 /* CategoryMO.h */,
+				F5292072190665B600F02C00 /* CategoryMO.m */,
+				F529207719066FD800F02C00 /* CategorySourceListItemMO.h */,
+				F529207819066FD800F02C00 /* CategorySourceListItemMO.m */,
 				FE679A4B14E1110F0047A9EE /* ConditionalItemMO.h */,
 				FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */,
 				FE0F4E6E14FB61590081AEFF /* DirectoryMO.h */,
@@ -593,6 +609,10 @@
 				F5DFC8AB129546E800B68F4F /* _CatalogInfoMO.m */,
 				F5DFC8CA129546ED00B68F4F /* _CatalogMO.h */,
 				F5DFC8AD129546E900B68F4F /* _CatalogMO.m */,
+				F5292074190665C400F02C00 /* _CategoryMO.h */,
+				F5292075190665C400F02C00 /* _CategoryMO.m */,
+				F529207A19066FE300F02C00 /* _CategorySourceListItemMO.h */,
+				F529207B19066FE300F02C00 /* _CategorySourceListItemMO.m */,
 				FE679A4914E1110F0047A9EE /* _ConditionalItemMO.h */,
 				FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */,
 				FE0F4E6C14FB61590081AEFF /* _DirectoryMO.h */,
@@ -864,6 +884,7 @@
 				F5DFC882129546E300B68F4F /* ItemToCopyMO.m in Sources */,
 				F5DFC884129546E300B68F4F /* ManagedInstallMO.m in Sources */,
 				F5DFC886129546E400B68F4F /* ManagedUninstallMO.m in Sources */,
+				F529207C19066FE300F02C00 /* _CategorySourceListItemMO.m in Sources */,
 				F5DFC888129546E400B68F4F /* ManagedUpdateMO.m in Sources */,
 				F5DFC88A129546E400B68F4F /* ManifestInfoMO.m in Sources */,
 				F5DFC88C129546E400B68F4F /* ManifestMO.m in Sources */,
@@ -872,6 +893,7 @@
 				F5DFC892129546E500B68F4F /* PackageMO.m in Sources */,
 				F5DFC894129546E500B68F4F /* ReceiptMO.m in Sources */,
 				F5DFC896129546E500B68F4F /* StringObjectMO.m in Sources */,
+				F5292076190665C400F02C00 /* _CategoryMO.m in Sources */,
 				F5DFC8A8129546E800B68F4F /* _ApplicationMO.m in Sources */,
 				F5DFC8AA129546E800B68F4F /* _ApplicationProxyMO.m in Sources */,
 				F5DFC8AC129546E800B68F4F /* _CatalogInfoMO.m in Sources */,
@@ -913,6 +935,8 @@
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
 				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
+				F5292073190665B600F02C00 /* CategoryMO.m in Sources */,
+				F529207919066FD800F02C00 /* CategorySourceListItemMO.m in Sources */,
 				F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */,
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,

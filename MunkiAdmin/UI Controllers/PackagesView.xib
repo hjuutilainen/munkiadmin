@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PackagesView">
             <connections>
-                <outlet property="directoriesOutlineView" destination="81" id="105"/>
+                <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
                 <outlet property="directoriesTreeController" destination="89" id="93"/>
                 <outlet property="installerItemPathControl" destination="184" id="605"/>
                 <outlet property="leftPlaceHolder" destination="10" id="71"/>
@@ -35,52 +35,102 @@
                             <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="80">
-                                    <rect key="frame" x="0.0" y="0.0" width="225" height="689"/>
+                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="NCB-Fd-tPJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <clipView key="contentView" id="cb3-fc-nQh">
-                                        <rect key="frame" x="0.0" y="0.0" width="225" height="689"/>
+                                    <clipView key="contentView" id="alN-m9-UKr">
+                                        <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="systemDefault" indentationPerLevel="14" outlineTableColumn="85" id="81">
-                                                <rect key="frame" x="0.0" y="0.0" width="225" height="689"/>
+                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hd8-dm-A3l" id="DKg-el-RkD">
+                                                <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn editable="NO" width="222" minWidth="16" maxWidth="1000" id="85">
+                                                    <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="222" minWidth="16" maxWidth="1000" id="hd8-dm-A3l">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                         </tableHeaderCell>
-                                                        <textFieldCell key="dataCell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="88" customClass="ImageAndTitleCell">
-                                                            <font key="font" metaFont="smallSystem"/>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="0Uh-A7-8LH">
+                                                            <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="89" name="value" keyPath="arrangedObjects.dictValue" id="115"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView identifier="HeaderCell" id="U0a-qT-bmD">
+                                                                <rect key="frame" x="1" y="0.0" width="222" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" id="igI-Gt-cPK">
+                                                                        <rect key="frame" x="0.0" y="1" width="222" height="14"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="jYB-G3-DzW">
+                                                                            <font key="font" metaFont="smallSystemBold"/>
+                                                                            <color key="textColor" red="0.43921568630000002" green="0.4941176471" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="U0a-qT-bmD" name="value" keyPath="objectValue.title" id="iyb-6w-c1t"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="igI-Gt-cPK" id="bEH-se-Tlg"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                            <tableCellView identifier="DataCell" id="Vev-Um-kUe">
+                                                                <rect key="frame" x="1" y="17" width="222" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <imageView id="9NX-Sn-1dq">
+                                                                        <rect key="frame" x="3" y="0.0" width="17" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="vHp-Ys-25C"/>
+                                                                        <connections>
+                                                                            <binding destination="Vev-Um-kUe" name="value" keyPath="objectValue.icon" id="2wc-vA-54j"/>
+                                                                        </connections>
+                                                                    </imageView>
+                                                                    <textField verticalHuggingPriority="750" id="zYW-Au-gCl">
+                                                                        <rect key="frame" x="25" y="0.0" width="197" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="CBD-Le-tQK">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="Vev-Um-kUe" name="value" keyPath="objectValue.title" id="Yps-CG-ifY"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="imageView" destination="9NX-Sn-1dq" id="qcQ-9x-8fN"/>
+                                                                    <outlet property="textField" destination="zYW-Au-gCl" id="FWD-hx-zCB"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                 </tableColumns>
                                                 <connections>
-                                                    <binding destination="89" name="content" keyPath="arrangedObjects" id="91"/>
-                                                    <binding destination="89" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="91" id="107"/>
-                                                    <outlet property="dataSource" destination="-2" id="112"/>
-                                                    <outlet property="delegate" destination="-2" id="111"/>
+                                                    <binding destination="89" name="content" keyPath="arrangedObjects" id="D0k-RL-52Y"/>
+                                                    <binding destination="89" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="D0k-RL-52Y" id="583-mE-9xC"/>
+                                                    <outlet property="dataSource" destination="-2" id="TSq-Gl-wOE"/>
+                                                    <outlet property="delegate" destination="-2" id="84T-wU-548"/>
                                                 </connections>
                                             </outlineView>
                                         </subviews>
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </clipView>
-                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="82">
-                                        <rect key="frame" x="1" y="119" width="182" height="15"/>
+                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="IFp-jD-mlU">
+                                        <rect key="frame" x="1" y="119" width="238" height="15"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
-                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="84">
+                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="AD2-60-5hc">
                                         <rect key="frame" x="224" y="17" width="15" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
@@ -319,28 +369,28 @@
                                                         <string key="NSPredicateFormat">munki_name contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="predicate3" keyPath="searchFieldPredicate" previousBinding="5Zm-Ih-SK1" id="VEB-HC-Llp">
-                                                    <dictionary key="options">
-                                                        <string key="NSDisplayName">Display Name</string>
-                                                        <string key="NSPredicateFormat">munki_display_name contains[cd] $value</string>
-                                                    </dictionary>
-                                                </binding>
                                                 <binding destination="-2" name="predicate4" keyPath="searchFieldPredicate" previousBinding="VEB-HC-Llp" id="DCc-mQ-c5W">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Description</string>
                                                         <string key="NSPredicateFormat">munki_description contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="predicate5" keyPath="searchFieldPredicate" previousBinding="DCc-mQ-c5W" id="ueV-9F-cVz">
+                                                <binding destination="-2" name="predicate3" keyPath="searchFieldPredicate" previousBinding="5Zm-Ih-SK1" id="VEB-HC-Llp">
                                                     <dictionary key="options">
-                                                        <string key="NSDisplayName">Admin Notes</string>
-                                                        <string key="NSPredicateFormat">munki_notes contains[cd] $value</string>
+                                                        <string key="NSDisplayName">Display Name</string>
+                                                        <string key="NSPredicateFormat">munki_display_name contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="-2" name="predicate" keyPath="searchFieldPredicate" id="hXJ-sV-nD1">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Any</string>
                                                         <string key="NSPredicateFormat">munki_name contains[cd] $value OR munki_display_name contains[cd] $value OR munki_description contains[cd] $value OR munki_notes contains[cd] $value</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="-2" name="predicate5" keyPath="searchFieldPredicate" previousBinding="DCc-mQ-c5W" id="ueV-9F-cVz">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayName">Admin Notes</string>
+                                                        <string key="NSPredicateFormat">munki_notes contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
                                             </connections>
@@ -957,7 +1007,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="352">
-                                <rect key="frame" x="174" y="1" width="16" height="54"/>
+                                <rect key="frame" x="175" y="1" width="15" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -1001,7 +1051,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="360">
-                                <rect key="frame" x="174" y="1" width="16" height="55"/>
+                                <rect key="frame" x="175" y="1" width="15" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -1027,6 +1077,7 @@
         </splitView>
     </objects>
     <resources>
+        <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSFollowLinkFreestandingTemplate" width="10" height="10"/>
     </resources>
 </document>

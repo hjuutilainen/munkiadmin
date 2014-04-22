@@ -8,7 +8,6 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.hasUnstagedChanges = @"hasUnstagedChanges",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
-	.munki_category = @"munki_category",
 	.munki_description = @"munki_description",
 	.munki_developer = @"munki_developer",
 	.munki_display_name = @"munki_display_name",
@@ -60,6 +59,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.blockingApplications = @"blockingApplications",
 	.catalogInfos = @"catalogInfos",
 	.catalogs = @"catalogs",
+	.category = @"category",
 	.iconImage = @"iconImage",
 	.installerChoicesItems = @"installerChoicesItems",
 	.installerEnvironmentVariables = @"installerEnvironmentVariables",
@@ -246,13 +246,6 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_ {
 	[self setPrimitiveMunki_autoremove:[NSNumber numberWithBool:value_]];
 }
-
-
-
-
-
-@dynamic munki_category;
-
 
 
 
@@ -762,6 +755,10 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	[self didAccessValueForKey:@"catalogs"];
 	return result;
 }
+	
+
+@dynamic category;
+
 	
 
 @dynamic iconImage;

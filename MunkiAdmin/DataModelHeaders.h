@@ -12,6 +12,8 @@
 #import "ApplicationMO.h"
 #import "CatalogInfoMO.h"
 #import "CatalogMO.h"
+#import "CategoryMO.h"
+#import "CategorySourceListItemMO.h"
 #import "ConditionalItemMO.h"
 #import "DirectoryMO.h"
 #import "IconImageMO.h"

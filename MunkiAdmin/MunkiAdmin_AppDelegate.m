@@ -2234,6 +2234,59 @@
 	
 }
 
+- (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc
+{
+    id theItem = nil;
+    NSFetchRequest *fetchProducts = [[NSFetchRequest alloc] init];
+    [fetchProducts setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
+    [fetchProducts setPredicate:[NSPredicate predicateWithFormat:@"title == %@", title]];
+    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchProducts error:nil];
+    if (numFoundCatalogs == 0) {
+        theItem = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:moc];
+        [theItem setTitle:title];
+    } else {
+        theItem = [[moc executeFetchRequest:fetchProducts error:nil] objectAtIndex:0];
+    }
+    return theItem;
+}
+
+- (void)configureSourceListCategoriesSection
+{
+    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:self.managedObjectContext];
+    mainCategoriesItem.originalIndexValue = 1;
+    mainCategoriesItem.parent = nil;
+    mainCategoriesItem.isGroupItemValue = YES;
+    
+    CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:self.managedObjectContext];
+    noCategoriesSmartItem.type = @"smart";
+    noCategoriesSmartItem.parent = mainCategoriesItem;
+    noCategoriesSmartItem.originalIndexValue = 10;
+    noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
+    noCategoriesSmartItem.categoryReference = nil;
+        
+    /*
+     Fetch all categories and create source list items
+     */
+    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
+    
+    [fetchForCatalogs setEntity:categoryEntityDescr];
+    NSUInteger numFoundCatalogs = [self.managedObjectContext countForFetchRequest:fetchForCatalogs error:nil];
+    if (numFoundCatalogs != 0) {
+        NSArray *allCatalogs = [self.managedObjectContext executeFetchRequest:fetchForCatalogs error:nil];
+        [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
+            CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:self.managedObjectContext];
+            categorySourceListItem.type = @"regular";
+            categorySourceListItem.parent = mainCategoriesItem;
+            categorySourceListItem.originalIndexValue = 20;
+            NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
+            categorySourceListItem.filterPredicate = catalogPredicate;
+            categorySourceListItem.categoryReference = category;
+            
+        }];
+    }
+}
+
 
 - (void)configureSourceListRepositorySection
 {
@@ -2286,7 +2339,7 @@
     } else {
         directoriesGroupItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
         directoriesGroupItem.title = @"DIRECTORIES";
-        directoriesGroupItem.originalIndexValue = 1;
+        directoriesGroupItem.originalIndexValue = 2;
         directoriesGroupItem.parent = nil;
         directoriesGroupItem.isGroupItemValue = YES;
     }
@@ -2359,6 +2412,11 @@
     [self configureSourceListRepositorySection];
     
     /*
+     Setup the CATEGORIES section for side bar
+     */
+    //[self configureSourceListCategoriesSection];
+    
+    /*
      Setup the DIRECTORIES section for side bar
      */
     [self configureSourceListDirectoriesSection];
@@ -2386,6 +2444,12 @@
 	}
     
     [self.operationQueue addOperation:packageRelationships];
+    
+    NSBlockOperation *createCategorySourceList = [NSBlockOperation blockOperationWithBlock:^{
+        [[NSApp delegate] configureSourceListCategoriesSection];
+    }];
+    [createCategorySourceList addDependency:packageRelationships];
+    [self.operationQueue addOperation:createCategorySourceList];
 }
 
 - (void)scanCurrentRepoForCatalogFiles

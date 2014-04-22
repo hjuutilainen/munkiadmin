@@ -9,7 +9,6 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *hasUnstagedChanges;
 	__unsafe_unretained NSString *munki_RestartAction;
 	__unsafe_unretained NSString *munki_autoremove;
-	__unsafe_unretained NSString *munki_category;
 	__unsafe_unretained NSString *munki_description;
 	__unsafe_unretained NSString *munki_developer;
 	__unsafe_unretained NSString *munki_display_name;
@@ -61,6 +60,7 @@ extern const struct PackageMORelationships {
 	__unsafe_unretained NSString *blockingApplications;
 	__unsafe_unretained NSString *catalogInfos;
 	__unsafe_unretained NSString *catalogs;
+	__unsafe_unretained NSString *category;
 	__unsafe_unretained NSString *iconImage;
 	__unsafe_unretained NSString *installerChoicesItems;
 	__unsafe_unretained NSString *installerEnvironmentVariables;
@@ -82,6 +82,7 @@ extern const struct PackageMOFetchedProperties {
 @class StringObjectMO;
 @class CatalogInfoMO;
 @class CatalogMO;
+@class CategoryMO;
 @class IconImageMO;
 @class InstallerChoicesItemMO;
 @class InstallerEnvironmentVariableMO;
@@ -95,7 +96,6 @@ extern const struct PackageMOFetchedProperties {
 @class StringObjectMO;
 @class StringObjectMO;
 @class StringObjectMO;
-
 
 
 
@@ -207,16 +207,6 @@ extern const struct PackageMOFetchedProperties {
 - (void)setMunki_autoremoveValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_autoremove:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* munki_category;
-
-
-
-//- (BOOL)validateMunki_category:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -725,6 +715,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, strong) CategoryMO *category;
+
+//- (BOOL)validateCategory:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) IconImageMO *iconImage;
 
 //- (BOOL)validateIconImage:(id*)value_ error:(NSError**)error_;
@@ -920,12 +917,6 @@ extern const struct PackageMOFetchedProperties {
 
 - (BOOL)primitiveMunki_autoremoveValue;
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_;
-
-
-
-
-- (NSString*)primitiveMunki_category;
-- (void)setPrimitiveMunki_category:(NSString*)value;
 
 
 
@@ -1237,6 +1228,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveCatalogs;
 - (void)setPrimitiveCatalogs:(NSMutableSet*)value;
+
+
+
+- (CategoryMO*)primitiveCategory;
+- (void)setPrimitiveCategory:(CategoryMO*)value;
 
 
 

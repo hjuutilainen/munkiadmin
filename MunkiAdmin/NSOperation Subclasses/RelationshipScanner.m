@@ -283,6 +283,7 @@
     NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
     NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
     
     
     /*
@@ -309,6 +310,16 @@
     NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
     defaultIcon.image = pkgicon;
     defaultIcon.originalURL = nil;
+    
+    PackageSourceListItemMO *categoriesGroupItem = nil;
+    NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
+    [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:moc]];
+    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"CATEGORIES"];
+    [groupItemRequest setPredicate:parentPredicate];
+    NSUInteger foundItems = [moc countForFetchRequest:groupItemRequest error:nil];
+    if (foundItems > 0) {
+        categoriesGroupItem = [[moc executeFetchRequest:groupItemRequest error:nil] objectAtIndex:0];
+    }
     
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
@@ -433,6 +444,28 @@
                 currentPackage.iconImage = icon;
             } else {
                 currentPackage.iconImage = defaultIcon;
+            }
+        }
+        
+        /*
+         Deal with the package category
+         */
+        if ([originalPkginfo objectForKey:@"category"] != nil) {
+            NSFetchRequest *fetchForCategory = [[NSFetchRequest alloc] init];
+            [fetchForCategory setEntity:categoryEntityDescr];
+            
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"category"]];
+            [fetchForCategory setPredicate:predicate];
+            
+            NSUInteger numFoundCategories = [moc countForFetchRequest:fetchForCategory error:nil];
+            CategoryMO *category = nil;
+            if (numFoundCategories > 0) {
+                category = [[moc executeFetchRequest:fetchForCategory error:nil] objectAtIndex:0];
+                currentPackage.category = category;
+            } else {
+                category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
+                category.title = [originalPkginfo objectForKey:@"category"];
+                [category addPackagesObject:currentPackage];
             }
         }
     }];

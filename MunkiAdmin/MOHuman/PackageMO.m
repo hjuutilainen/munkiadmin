@@ -220,6 +220,10 @@
             //NSLog(@"Got nil value for key: %@", [obj description]);
         }
 	}];
+    
+    if (self.category != nil) {
+        [tmpDict setValue:self.category.title forKey:@"category"];
+    }
 	
 	
 	// ==========
