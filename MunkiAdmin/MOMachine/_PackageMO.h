@@ -72,7 +72,6 @@ extern const struct PackageMORelationships {
 	__unsafe_unretained NSString *receipts;
 	__unsafe_unretained NSString *referencingStringObjects;
 	__unsafe_unretained NSString *requirements;
-	__unsafe_unretained NSString *sourceListItems;
 	__unsafe_unretained NSString *supportedArchitectures;
 	__unsafe_unretained NSString *updateFor;
 } PackageMORelationships;
@@ -94,7 +93,6 @@ extern const struct PackageMOFetchedProperties {
 @class ReceiptMO;
 @class StringObjectMO;
 @class StringObjectMO;
-@class PackageSourceListItemMO;
 @class StringObjectMO;
 @class StringObjectMO;
 
@@ -804,13 +802,6 @@ extern const struct PackageMOFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *sourceListItems;
-
-- (NSMutableSet*)sourceListItemsSet;
-
-
-
-
 @property (nonatomic, strong) NSSet *supportedArchitectures;
 
 - (NSMutableSet*)supportedArchitecturesSet;
@@ -884,11 +875,6 @@ extern const struct PackageMOFetchedProperties {
 - (void)removeRequirements:(NSSet*)value_;
 - (void)addRequirementsObject:(StringObjectMO*)value_;
 - (void)removeRequirementsObject:(StringObjectMO*)value_;
-
-- (void)addSourceListItems:(NSSet*)value_;
-- (void)removeSourceListItems:(NSSet*)value_;
-- (void)addSourceListItemsObject:(PackageSourceListItemMO*)value_;
-- (void)removeSourceListItemsObject:(PackageSourceListItemMO*)value_;
 
 - (void)addSupportedArchitectures:(NSSet*)value_;
 - (void)removeSupportedArchitectures:(NSSet*)value_;
@@ -1306,11 +1292,6 @@ extern const struct PackageMOFetchedProperties {
 
 - (NSMutableSet*)primitiveRequirements;
 - (void)setPrimitiveRequirements:(NSMutableSet*)value;
-
-
-
-- (NSMutableSet*)primitiveSourceListItems;
-- (void)setPrimitiveSourceListItems:(NSMutableSet*)value;
 
 
 

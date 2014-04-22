@@ -14,7 +14,6 @@ extern const struct PackageSourceListItemMOAttributes {
 
 extern const struct PackageSourceListItemMORelationships {
 	__unsafe_unretained NSString *children;
-	__unsafe_unretained NSString *packages;
 	__unsafe_unretained NSString *parent;
 } PackageSourceListItemMORelationships;
 
@@ -22,7 +21,6 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 } PackageSourceListItemMOFetchedProperties;
 
 @class PackageSourceListItemMO;
-@class PackageMO;
 @class PackageSourceListItemMO;
 
 @class NSObject;
@@ -109,13 +107,6 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *packages;
-
-- (NSMutableSet*)packagesSet;
-
-
-
-
 @property (nonatomic, strong) PackageSourceListItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
@@ -132,11 +123,6 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 - (void)removeChildren:(NSSet*)value_;
 - (void)addChildrenObject:(PackageSourceListItemMO*)value_;
 - (void)removeChildrenObject:(PackageSourceListItemMO*)value_;
-
-- (void)addPackages:(NSSet*)value_;
-- (void)removePackages:(NSSet*)value_;
-- (void)addPackagesObject:(PackageMO*)value_;
-- (void)removePackagesObject:(PackageMO*)value_;
 
 @end
 
@@ -182,11 +168,6 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 - (NSMutableSet*)primitiveChildren;
 - (void)setPrimitiveChildren:(NSMutableSet*)value;
-
-
-
-- (NSMutableSet*)primitivePackages;
-- (void)setPrimitivePackages:(NSMutableSet*)value;
 
 
 

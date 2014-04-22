@@ -196,6 +196,5 @@
 - (void)selectRepoAtURL:(NSURL *)newURL;
 - (void)changeItemView;
 - (void)configureSourceListDirectoriesSection;
-- (void)configureContainersForPackage:(PackageMO *)aPackage;
 
 @end

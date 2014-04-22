@@ -554,9 +554,6 @@
     else if (numFoundPkgs == 1) {
         PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
         
-        // Add the newly created package to any needed containers
-        [self configureContainersForPackage:createdPkg];
-        
         // Select the newly created package
         [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
         
@@ -1297,9 +1294,6 @@
             }
             else if (numFoundPkgs == 1) {
                 PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
-                
-                // Add the newly created package to any needed containers
-                [self configureContainersForPackage:createdPkg];
                 
                 // Select the newly created package
                 [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
@@ -2240,31 +2234,6 @@
 	
 }
 
-- (void)configureContainersForPackage:(PackageMO *)aPackage
-{
-    NSManagedObjectContext *moc = self.managedObjectContext;
-
-    NSFetchRequest *getAllDirectories = [[NSFetchRequest alloc] init];
-    [getAllDirectories setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-    NSArray *allDirectories = [moc executeFetchRequest:getAllDirectories error:nil];
-    
-    DirectoryMO *basePkginfoDirectory;
-    NSFetchRequest *fetchBaseDirectory = [[NSFetchRequest alloc] init];
-    [fetchBaseDirectory setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-    NSPredicate *allPackagesItemPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"All Packages"];
-    [fetchBaseDirectory setPredicate:allPackagesItemPredicate];
-    NSUInteger foundItems = [moc countForFetchRequest:fetchBaseDirectory error:nil];
-    if (foundItems > 0) {
-        basePkginfoDirectory = [[moc executeFetchRequest:fetchBaseDirectory error:nil] objectAtIndex:0];
-        [aPackage addSourceListItemsObject:basePkginfoDirectory];
-    } else {
-        basePkginfoDirectory = nil;
-    }
-    
-    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [aPackage.packageInfoURL URLByDeletingLastPathComponent]];
-    DirectoryMO *aDir = [[allDirectories filteredArrayUsingPredicate:parentPredicate] objectAtIndex:0];
-    [aPackage addSourceListItemsObject:aDir];
-}
 
 - (void)configureSourceListRepositorySection
 {

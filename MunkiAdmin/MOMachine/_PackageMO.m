@@ -71,7 +71,6 @@ const struct PackageMORelationships PackageMORelationships = {
 	.receipts = @"receipts",
 	.referencingStringObjects = @"referencingStringObjects",
 	.requirements = @"requirements",
-	.sourceListItems = @"sourceListItems",
 	.supportedArchitectures = @"supportedArchitectures",
 	.updateFor = @"updateFor",
 };
@@ -877,19 +876,6 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"requirements"];
   
 	[self didAccessValueForKey:@"requirements"];
-	return result;
-}
-	
-
-@dynamic sourceListItems;
-
-	
-- (NSMutableSet*)sourceListItemsSet {
-	[self willAccessValueForKey:@"sourceListItems"];
-  
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"sourceListItems"];
-  
-	[self didAccessValueForKey:@"sourceListItems"];
 	return result;
 }
 	

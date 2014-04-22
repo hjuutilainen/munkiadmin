@@ -13,7 +13,6 @@ const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes
 
 const struct PackageSourceListItemMORelationships PackageSourceListItemMORelationships = {
 	.children = @"children",
-	.packages = @"packages",
 	.parent = @"parent",
 };
 
@@ -145,19 +144,6 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"children"];
   
 	[self didAccessValueForKey:@"children"];
-	return result;
-}
-	
-
-@dynamic packages;
-
-	
-- (NSMutableSet*)packagesSet {
-	[self willAccessValueForKey:@"packages"];
-  
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
-	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 	
