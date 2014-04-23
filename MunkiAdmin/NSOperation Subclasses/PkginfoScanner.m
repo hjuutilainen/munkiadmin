@@ -152,12 +152,35 @@
                     aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
                 }
                 
+                /*
+                 Get the "_metadata" key
+                 */
+                NSDictionary *munki_metadata = [self.sourceDict objectForKey:@"_metadata"];
+                __block NSDate *pkginfoDateCreatedFromMetadata = nil;
+                [munki_metadata enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
+                    if (([key isEqualToString:@"creation_date"]) && ([obj isKindOfClass:[NSDate class]])) {
+                        pkginfoDateCreatedFromMetadata = obj;
+                    }
+                }];
+                
+                /*
+                 This pkginfo is a file on disk
+                 */
 				if (self.sourceURL != nil) {
 					aNewPackage.packageInfoURL = self.sourceURL;
                     
-                    NSDate *pkginfoDateCreated;
-                    [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateCreated forKey:NSURLCreationDateKey error:nil];
-                    aNewPackage.packageInfoDateCreated = pkginfoDateCreated;
+                    /*
+                     If this package has a creation_date in its _metadata, use it
+                     instead of the actual file creation date.
+                     */
+                    if (pkginfoDateCreatedFromMetadata != nil) {
+                        aNewPackage.packageInfoDateCreated = pkginfoDateCreatedFromMetadata;
+                    } else {
+                        NSDate *pkginfoDateCreated;
+                        [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateCreated forKey:NSURLCreationDateKey error:nil];
+                        aNewPackage.packageInfoDateCreated = pkginfoDateCreated;
+                    }
                     
                     NSDate *pkginfoDateLastOpened;
                     [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateLastOpened forKey:NSURLContentAccessDateKey error:nil];
@@ -167,18 +190,33 @@
                     [aNewPackage.packageInfoURL getResourceValue:&pkginfoDateModified forKey:NSURLContentModificationDateKey error:nil];
                     aNewPackage.packageInfoDateModified = pkginfoDateModified;
                     
-				} else {
+				}
+                /*
+                 This pkginfo does not exist on disk (yet).
+                 */
+                else {
                     NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
                     NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
                     NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
 					newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
 					aNewPackage.packageInfoURL = newPkginfoURL;
                     
-                    aNewPackage.packageInfoDateCreated = [NSDate date];
+                    /*
+                     If this package has a creation_date in its _metadata, use it
+                     instead of the actual file creation date.
+                     */
+                    if (pkginfoDateCreatedFromMetadata != nil) {
+                        aNewPackage.packageInfoDateCreated = pkginfoDateCreatedFromMetadata;
+                    } else {
+                        aNewPackage.packageInfoDateCreated = [NSDate date];
+                    }
                     aNewPackage.packageInfoDateModified = [NSDate date];
                     aNewPackage.packageInfoDateLastOpened = [NSDate date];
 				}
                 
+                /*
+                 Get the installer item properties if this pkginfo has one.
+                 */
                 if (aNewPackage.packageURL != nil) {
                     NSFileManager *fm = [NSFileManager defaultManager];
                     if ([fm fileExistsAtPath:[aNewPackage.packageURL relativePath]]) {
