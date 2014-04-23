@@ -2447,12 +2447,6 @@
 	}
     
     [self.operationQueue addOperation:packageRelationships];
-    
-    NSBlockOperation *createCategorySourceList = [NSBlockOperation blockOperationWithBlock:^{
-        [[NSApp delegate] configureSourceListCategoriesSection];
-    }];
-    [createCategorySourceList addDependency:packageRelationships];
-    [self.operationQueue addOperation:createCategorySourceList];
 }
 
 - (void)scanCurrentRepoForCatalogFiles

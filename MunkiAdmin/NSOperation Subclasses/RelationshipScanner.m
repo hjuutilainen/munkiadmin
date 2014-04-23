@@ -267,6 +267,60 @@
     return nil;
 }
 
+- (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc
+{
+    id theItem = nil;
+    NSFetchRequest *fetchProducts = [[NSFetchRequest alloc] init];
+    [fetchProducts setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
+    [fetchProducts setPredicate:[NSPredicate predicateWithFormat:@"title == %@", title]];
+    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchProducts error:nil];
+    if (numFoundCatalogs == 0) {
+        theItem = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:moc];
+        [theItem setTitle:title];
+    } else {
+        theItem = [[moc executeFetchRequest:fetchProducts error:nil] objectAtIndex:0];
+    }
+    return theItem;
+}
+
+- (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc
+{
+    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+    mainCategoriesItem.originalIndexValue = 1;
+    mainCategoriesItem.parent = nil;
+    mainCategoriesItem.isGroupItemValue = YES;
+    
+    CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:moc];
+    noCategoriesSmartItem.type = @"smart";
+    noCategoriesSmartItem.parent = mainCategoriesItem;
+    noCategoriesSmartItem.originalIndexValue = 10;
+    noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
+    noCategoriesSmartItem.categoryReference = nil;
+    
+    /*
+     Fetch all categories and create source list items
+     */
+    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
+    NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [fetchForCatalogs setSortDescriptors:@[sortByTitle]];
+    [fetchForCatalogs setEntity:categoryEntityDescr];
+    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
+    if (numFoundCatalogs != 0) {
+        NSArray *allCatalogs = [moc executeFetchRequest:fetchForCatalogs error:nil];
+        [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
+            CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:moc];
+            categorySourceListItem.type = @"regular";
+            categorySourceListItem.parent = mainCategoriesItem;
+            categorySourceListItem.originalIndexValue = 20;
+            NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
+            categorySourceListItem.filterPredicate = catalogPredicate;
+            categorySourceListItem.categoryReference = category;
+            
+        }];
+    }
+}
+
 
 - (void)scanPkginfos
 {
@@ -291,12 +345,12 @@
      */
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
-    [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
+    //[getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
     self.allPackages = [moc executeFetchRequest:getPackages error:nil];
     
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
-    [getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
+    //[getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
     self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
     
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
@@ -461,7 +515,7 @@
             CategoryMO *category = nil;
             if (numFoundCategories > 0) {
                 category = [[moc executeFetchRequest:fetchForCategory error:nil] objectAtIndex:0];
-                currentPackage.category = category;
+                [category addPackagesObject:currentPackage];
             } else {
                 category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
                 category.title = [originalPkginfo objectForKey:@"category"];
@@ -478,6 +532,11 @@
         ApplicationMO *currentApplication = (ApplicationMO *)obj;
         [currentApplication updateLatestPackage];
     }];
+    
+    /*
+     Create the source list items for category objects
+     */
+    [self configureSourceListCategoriesSection:moc];
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
