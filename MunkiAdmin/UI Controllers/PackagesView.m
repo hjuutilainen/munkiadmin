@@ -357,10 +357,10 @@
                     PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
                     
                     if (targetCategorySourceList.categoryReference != nil) {
-                        NSLog(@"Existing category: %@, New category: %@", droppedPackage.category.title, targetCategorySourceList.title);
+                        //NSLog(@"Existing category: %@, New category: %@", droppedPackage.category.title, targetCategorySourceList.title);
                         droppedPackage.category = targetCategorySourceList.categoryReference;
                     } else {
-                        NSLog(@"Existing category: %@, New category: None", droppedPackage.category.title);
+                        //NSLog(@"Existing category: %@, New category: None", droppedPackage.category.title);
                         droppedPackage.category = nil;
                     }
                 }
