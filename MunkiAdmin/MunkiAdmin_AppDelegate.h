@@ -196,5 +196,6 @@
 - (void)selectRepoAtURL:(NSURL *)newURL;
 - (void)changeItemView;
 - (void)configureSourceListDirectoriesSection;
+- (void)configureSourceListCategoriesSection;
 
 @end

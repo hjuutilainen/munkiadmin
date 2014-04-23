@@ -8,6 +8,8 @@
 #import <Cocoa/Cocoa.h>
 #import "GradientBackgroundView.h"
 
+@class MARequestStringValueController;
+
 @interface PackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
     
 }
@@ -30,5 +32,6 @@
 @property (strong) NSPredicate *packagesMainFilterPredicate;
 @property (readonly, strong) NSPredicate *mainCompoundPredicate;
 @property (strong) NSPredicate *searchFieldPredicate;
+@property (strong) MARequestStringValueController *createNewCategoryController;
 
 @end

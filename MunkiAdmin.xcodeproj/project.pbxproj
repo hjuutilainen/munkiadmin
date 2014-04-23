@@ -59,6 +59,8 @@
 		F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */; };
 		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
+		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
+		F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F58548151906F643001E4527 /* MARequestStringValueController.xib */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* GradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* GradientButtonBarView.m */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
@@ -226,6 +228,9 @@
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoAssimilator.m; sourceTree = "<group>"; };
 		F5836985166C9147003E1442 /* PkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PkginfoAssimilator.xib; sourceTree = "<group>"; };
+		F58548131906F643001E4527 /* MARequestStringValueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MARequestStringValueController.h; sourceTree = "<group>"; };
+		F58548141906F643001E4527 /* MARequestStringValueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MARequestStringValueController.m; sourceTree = "<group>"; };
+		F58548151906F643001E4527 /* MARequestStringValueController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MARequestStringValueController.xib; sourceTree = "<group>"; };
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = UserDefaults.plist; path = MunkiAdmin/UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* GradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* GradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonBarView.m; sourceTree = "<group>"; };
@@ -682,6 +687,9 @@
 				FEDAA470144D50B1005C8B6F /* ManifestDetailView.h */,
 				FEDAA471144D50B1005C8B6F /* ManifestDetailView.m */,
 				FEDAA472144D50B1005C8B6F /* ManifestDetailView.xib */,
+				F58548131906F643001E4527 /* MARequestStringValueController.h */,
+				F58548141906F643001E4527 /* MARequestStringValueController.m */,
+				F58548151906F643001E4527 /* MARequestStringValueController.xib */,
 				FE0EAC5814FE4D02003C55E9 /* MATableView.h */,
 				FE0EAC5914FE4D02003C55E9 /* MATableView.m */,
 				FE1C6B76145A797D00BC815F /* PackageNameEditor.h */,
@@ -803,6 +811,7 @@
 				F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */,
 				F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */,
 				F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */,
+				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
 				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
 				F5F63383111824CC007CC030 /* packageIcon2.png in Resources */,
@@ -927,6 +936,7 @@
 				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,
 				FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */,
 				FE0F4E6514FB564F0081AEFF /* PackagesView.m in Sources */,
+				F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */,
 				FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */,
 				FE0F4E7114FB61590081AEFF /* DirectoryMO.m in Sources */,
 				FE0F4E7A14FB804C0081AEFF /* _PackageSourceListItemMO.m in Sources */,

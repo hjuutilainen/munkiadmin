@@ -182,6 +182,21 @@
     }
 }
 
+- (CategoryMO *)createCategoryWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (title == nil) {
+        return nil;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    CategoryMO *newCategory = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
+    newCategory.title = title;
+    return newCategory;
+}
+
 # pragma mark -
 # pragma mark Helpers
 

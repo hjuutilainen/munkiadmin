@@ -12,6 +12,7 @@
 @class CatalogMO;
 @class ManifestMO;
 @class InstallsItemMO;
+@class CategoryMO;
 
 @interface MACoreDataManager : NSObject {
     
@@ -24,6 +25,7 @@
 - (CatalogMO *)createCatalogWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (ManifestMO *)createManifestWithURL:(NSURL *)fileURL inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (ManifestMO *)createManifestWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (CategoryMO *)createCategoryWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
 
 @end

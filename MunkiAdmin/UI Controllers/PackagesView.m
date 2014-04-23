@@ -12,7 +12,9 @@
 #import "ImageAndTitleCell.h"
 #import "DataModelHeaders.h"
 #import "MunkiRepositoryManager.h"
+#import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
+#import "MARequestStringValueController.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f
@@ -66,6 +68,8 @@
 
 - (void)awakeFromNib
 {
+    self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
     
@@ -146,6 +150,17 @@
     self.packagesTableView.headerView.menu = menu;
     
     /*
+     Create menu for the source list
+     */
+    NSMenu *sourceListMenu = [[NSMenu alloc] initWithTitle:@""];
+    NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+                                                action:@selector(createNewCategory)
+                                         keyEquivalent:@""];
+    mi.target = self;
+    [sourceListMenu addItem:mi];
+    self.directoriesOutlineView.menu = sourceListMenu;
+    
+    /*
      Set the target and action for path controls (pkginfo and installer item)
      */
     [self.packageInfoPathControl setTarget:self];
@@ -166,6 +181,27 @@
 		NSTableColumn *col = [mi representedObject];
 		[mi setState:col.isHidden ? NSOffState : NSOnState];
 	}
+}
+
+
+- (void)createNewCategory
+{
+    self.createNewCategoryController.windowTitle = @"New Category";
+    self.createNewCategoryController.okButtonTitle = @"Create";
+    self.createNewCategoryController.labelText = @"Category Title:";
+    NSWindow *window = [self.createNewCategoryController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue inManagedObjectContext:nil];
+        [[NSApp delegate] configureSourceListCategoriesSection];
+        [self.directoriesTreeController rearrangeObjects];
+    }
+}
+
+- (IBAction)createNewCategoryAction:(id)sender
+{
+    [self createNewCategory];
 }
 
 

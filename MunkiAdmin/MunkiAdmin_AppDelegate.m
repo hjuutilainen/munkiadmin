@@ -2269,7 +2269,8 @@
      */
     NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:self.managedObjectContext];
     NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
-    
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [fetchForCatalogs setSortDescriptors:@[sortByTitle]];
     [fetchForCatalogs setEntity:categoryEntityDescr];
     NSUInteger numFoundCatalogs = [self.managedObjectContext countForFetchRequest:fetchForCatalogs error:nil];
     if (numFoundCatalogs != 0) {
