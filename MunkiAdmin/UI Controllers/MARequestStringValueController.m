@@ -18,13 +18,19 @@
 {
     self = [super initWithWindow:window];
     if (self) {
-        self.okButtonTitle = NSLocalizedString(@"OK", @"OK button default value");
-        self.cancelButtonTitle = NSLocalizedString(@"Cancel", @"Cancel button default value");
-        self.stringValue = @"";
-        self.labelText = NSLocalizedString(@"Title:", @"Label text default value");;
-        self.windowTitle = @"Window";
+        [self setDefaultValues];
     }
     return self;
+}
+
+- (void)setDefaultValues
+{
+    self.okButtonTitle = NSLocalizedString(@"OK", @"OK button default value");
+    self.cancelButtonTitle = NSLocalizedString(@"Cancel", @"Cancel button default value");
+    self.stringValue = @"";
+    self.labelText = NSLocalizedString(@"Title:", @"Label text default value");;
+    self.windowTitle = @"Window";
+    self.descriptionText = @"";
 }
 
 - (void)windowDidLoad

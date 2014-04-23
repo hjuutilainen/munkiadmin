@@ -17,6 +17,7 @@
 @property (strong) NSString *okButtonTitle;
 @property (strong) NSString *cancelButtonTitle;
 
+- (void)setDefaultValues;
 - (IBAction)okAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 

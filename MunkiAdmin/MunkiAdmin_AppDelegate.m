@@ -2313,8 +2313,10 @@
     NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
     dayComponent.day = -30;
     NSDate *thirtyDaysAgo = [[NSCalendar currentCalendar] dateByAddingComponents:dayComponent toDate:now options:0];
-    NSPredicate *thirtyDaysAgoPredicate = [NSPredicate predicateWithFormat:@"packageDateCreated >= %@", thirtyDaysAgo];
+    NSPredicate *thirtyDaysAgoPredicate = [NSPredicate predicateWithFormat:@"packageInfoDateCreated >= %@", thirtyDaysAgo];
     newPackagesSmartItem.filterPredicate = thirtyDaysAgoPredicate;
+    NSSortDescriptor *sortByDateCreated = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:NO];
+    newPackagesSmartItem.sortDescriptor = sortByDateCreated;
     
     DirectoryMO *appleUpdatesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
     appleUpdatesSmartItem.title = @"Apple Updates";

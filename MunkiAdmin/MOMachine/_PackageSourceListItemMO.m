@@ -7,6 +7,7 @@ const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes
 	.filterPredicate = @"filterPredicate",
 	.isGroupItem = @"isGroupItem",
 	.originalIndex = @"originalIndex",
+	.sortDescriptor = @"sortDescriptor",
 	.title = @"title",
 	.type = @"type",
 };
@@ -116,6 +117,13 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
 	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
+
+
+
+
+
+@dynamic sortDescriptor;
+
 
 
 

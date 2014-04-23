@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -32,11 +32,11 @@
     </entity>
     <entity name="Category" representedClassName="CategoryMO" syncable="YES">
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="categorySourceListReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategorySourceListItem" inverseName="categoryReference" inverseEntity="CategorySourceListItem" syncable="YES"/>
+        <relationship name="categorySourceListReference" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CategorySourceListItem" inverseName="categoryReference" inverseEntity="CategorySourceListItem" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="category" inverseEntity="Package" syncable="YES"/>
     </entity>
     <entity name="CategorySourceListItem" representedClassName="CategorySourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES">
-        <relationship name="categoryReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="categorySourceListReference" inverseEntity="Category" syncable="YES"/>
+        <relationship name="categoryReference" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Category" inverseName="categorySourceListReference" inverseEntity="Category" syncable="YES"/>
     </entity>
     <entity name="ConditionalItem" representedClassName="ConditionalItemMO" syncable="YES">
         <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES"/>
@@ -238,6 +238,7 @@
         <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sortDescriptor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="parent" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
@@ -286,6 +287,8 @@
         <element name="ApplicationProxy" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Catalog" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CatalogInfo" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Category" positionX="9" positionY="153" width="128" height="90"/>
+        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="60"/>
         <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
         <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
@@ -302,10 +305,8 @@
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1033"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="148"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
-        <element name="Category" positionX="9" positionY="153" width="128" height="88"/>
-        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="58"/>
     </elements>
 </model>

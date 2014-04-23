@@ -97,8 +97,9 @@
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortByMunkiName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByMunkiVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [self.directoriesTreeController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex,sortByTitle, nil]];
-    [self.packagesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByMunkiName, sortByMunkiVersion, nil]];
+    [self.directoriesTreeController setSortDescriptors:@[sortByIndex, sortByTitle]];
+    [self.packagesArrayController setSortDescriptors:@[sortByMunkiName, sortByMunkiVersion]];
+    self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion];
     
     self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
@@ -139,9 +140,16 @@
     NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
     for (NSTableColumn *col in tableColumnsSorted) {
-        NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
-                                                    action:@selector(toggleColumn:)
-                                             keyEquivalent:@""];
+        NSMenuItem *mi = nil;
+        if ([[col identifier] isEqualToString:@"packagesTableColumnIcon"]) {
+            mi = [[NSMenuItem alloc] initWithTitle:@"Icon"
+                                            action:@selector(toggleColumn:)
+                                     keyEquivalent:@""];
+        } else {
+            mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+                                            action:@selector(toggleColumn:)
+                                     keyEquivalent:@""];
+        }
         mi.target = self;
         mi.representedObject = col;
         [menu addItem:mi];
@@ -153,11 +161,20 @@
      Create menu for the source list
      */
     NSMenu *sourceListMenu = [[NSMenu alloc] initWithTitle:@""];
-    NSMenuItem *mi = [[NSMenuItem alloc] initWithTitle:@"New Category..."
-                                                action:@selector(createNewCategory)
-                                         keyEquivalent:@""];
-    mi.target = self;
-    [sourceListMenu addItem:mi];
+    NSMenuItem *newCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+                                                                 action:@selector(createNewCategory)
+                                                          keyEquivalent:@""];
+    newCategoryMenuItem.target = self;
+    [sourceListMenu addItem:newCategoryMenuItem];
+    
+    NSMenuItem *renameCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Category..."
+                                                                 action:@selector(renameCategory)
+                                                          keyEquivalent:@""];
+    renameCategoryMenuItem.target = self;
+    [sourceListMenu addItem:renameCategoryMenuItem];
+    
+    sourceListMenu.delegate = self;
+    sourceListMenu.autoenablesItems = NO;
     self.directoriesOutlineView.menu = sourceListMenu;
     
     /*
@@ -169,34 +186,100 @@
     [self.installerItemPathControl setAction:@selector(didSelectPathControlItem:)];
 }
 
--(void)toggleColumn:(id)sender
+- (void)toggleColumn:(id)sender
 {
 	NSTableColumn *col = [sender representedObject];
 	[col setHidden:![col isHidden]];
 }
 
--(void)menuWillOpen:(NSMenu *)menu
+- (void)menuWillOpen:(NSMenu *)menu
 {
-	for (NSMenuItem *mi in menu.itemArray) {
-		NSTableColumn *col = [mi representedObject];
-		[mi setState:col.isHidden ? NSOffState : NSOnState];
-	}
+    /*
+     The column header menu
+     */
+    if (menu == self.packagesTableView.headerView.menu) {
+        for (NSMenuItem *mi in menu.itemArray) {
+            NSTableColumn *col = [mi representedObject];
+            [mi setState:col.isHidden ? NSOffState : NSOnState];
+        }
+    }
+    
+    /*
+     The source list menu
+     */
+    else if (menu == self.directoriesOutlineView.menu) {
+        NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+        id clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+        if ([clickedObject isKindOfClass:[CategorySourceListItemMO class]]) {
+            /*
+             Clicked on category objects
+             */
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
+                    [menuItem setEnabled:NO];
+                } else {
+                    [menuItem setEnabled:YES];
+                }
+            }
+        } else {
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                [menuItem setEnabled:NO];
+            }
+        }
+    }
+}
+
+- (void)renameCategory
+{
+    /*
+     Get the category item that was right-clicked
+     */
+    NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+    CategorySourceListItemMO *clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+    CategoryMO *clickedCategory = clickedObject.categoryReference;
+    
+    /*
+     Ask for a new title
+     */
+    [self.createNewCategoryController setDefaultValues];
+    self.createNewCategoryController.windowTitle = @"Rename Category";
+    self.createNewCategoryController.okButtonTitle = @"Rename";
+    self.createNewCategoryController.labelText = @"Category Title:";
+    self.createNewCategoryController.stringValue = clickedObject.title;
+    NSWindow *window = [self.createNewCategoryController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    /*
+     Perform the actual rename
+     */
+    if (result == NSModalResponseOK) {
+        [[MACoreDataManager sharedManager] renameCategory:clickedCategory
+                                                 newTitle:self.createNewCategoryController.stringValue
+                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        [[NSApp delegate] configureSourceListCategoriesSection];
+        [self.directoriesTreeController rearrangeObjects];
+    }
 }
 
 
 - (void)createNewCategory
 {
+    [self.createNewCategoryController setDefaultValues];
     self.createNewCategoryController.windowTitle = @"New Category";
     self.createNewCategoryController.okButtonTitle = @"Create";
     self.createNewCategoryController.labelText = @"Category Title:";
+    self.createNewCategoryController.descriptionText = @"Attention! The category is written in to the pkginfo files. Empty categories will not be saved when MunkiAdmin quits.";
     NSWindow *window = [self.createNewCategoryController window];
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue inManagedObjectContext:nil];
+        [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
+                                            inManagedObjectContext:nil];
         [[NSApp delegate] configureSourceListCategoriesSection];
         [self.directoriesTreeController rearrangeObjects];
+        
     }
+    [self.createNewCategoryController setDefaultValues];
 }
 
 - (IBAction)createNewCategoryAction:(id)sender
@@ -217,7 +300,13 @@
     if ([selectedSourceListItems count] > 0) {
         id selectedItem = [selectedSourceListItems objectAtIndex:0];
         NSPredicate *productFilter = [selectedItem filterPredicate];
+        NSSortDescriptor *productSort = [selectedItem sortDescriptor];
         [self setPackagesMainFilterPredicate:productFilter];
+        if (productSort != nil) {
+            [self.packagesArrayController setSortDescriptors:@[productSort]];
+        } else {
+            [self.packagesArrayController setSortDescriptors:self.defaultSortDescriptors];
+        }
     }
 }
 

@@ -197,6 +197,45 @@
     return newCategory;
 }
 
+- (BOOL)renameCategory:(CategoryMO *)category newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    /*
+     Check if this rename operation makes sense...
+     */
+    if (category == nil) {
+        return NO;
+    }
+    if ([category.title isEqualToString:newTitle]) {
+        return NO;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    /*
+     Check for existing category with this title
+     */
+    NSFetchRequest *checkForExisting = [[NSFetchRequest alloc] init];
+    [checkForExisting setEntity:[NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", newTitle];
+    [checkForExisting setPredicate:predicate];
+    NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
+    if (foundItems > 0) {
+        NSLog(@"Can't rename. Found existing category with title: %@", newTitle);
+        return NO;
+    }
+    
+    category.title = newTitle;
+    category.categorySourceListReference.title = newTitle;
+    
+    for (PackageMO *aPackage in category.packages) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
+    
+    return YES;
+}
+
 # pragma mark -
 # pragma mark Helpers
 

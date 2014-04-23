@@ -32,6 +32,7 @@
 @property (strong) NSPredicate *packagesMainFilterPredicate;
 @property (readonly, strong) NSPredicate *mainCompoundPredicate;
 @property (strong) NSPredicate *searchFieldPredicate;
+@property (strong) NSArray *defaultSortDescriptors;
 @property (strong) MARequestStringValueController *createNewCategoryController;
 
 @end

@@ -13,20 +13,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
-            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="312" height="103"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="746"/>
+            <rect key="contentRect" x="196" y="240" width="402" height="129"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="312" height="103"/>
+                <rect key="frame" x="0.0" y="0.0" width="402" height="129"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0p2-P5-vRT">
-                        <rect key="frame" x="215" y="13" width="82" height="32"/>
+                        <rect key="frame" x="306" y="12" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="4fL-i1-SXF"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bys-JM-hwG">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -40,11 +37,8 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z9T-ii-X65">
-                        <rect key="frame" x="133" y="13" width="82" height="32"/>
+                        <rect key="frame" x="224" y="12" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="HGm-Ch-B8i"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4Tu-Ep-u5o">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -58,7 +52,7 @@ Gw
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TTB-wr-wlp">
-                        <rect key="frame" x="66" y="61" width="225" height="22"/>
+                        <rect key="frame" x="68" y="87" width="314" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="HkG-fL-QEM">
                             <font key="font" metaFont="system"/>
@@ -74,10 +68,10 @@ Gw
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lgQ-Ng-fTW">
-                        <rect key="frame" x="18" y="64" width="42" height="17"/>
+                        <rect key="frame" x="18" y="89" width="44" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label:" id="NAH-2u-6ec">
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -85,18 +79,34 @@ Gw
                             <binding destination="-2" name="value" keyPath="labelText" id="uxF-Il-P9H"/>
                         </connections>
                     </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pGM-1m-jrf">
+                        <rect key="frame" x="18" y="60" width="366" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Multiline Label" id="fGN-Bh-J8g">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="value" keyPath="descriptionText" id="T86-rJ-g5f"/>
+                        </connections>
+                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="TTB-wr-wlp" firstAttribute="leading" secondItem="lgQ-Ng-fTW" secondAttribute="trailing" constant="8" id="6co-gJ-NEk"/>
-                    <constraint firstAttribute="bottom" secondItem="0p2-P5-vRT" secondAttribute="bottom" constant="20" id="7Wg-jS-yhU"/>
-                    <constraint firstItem="0p2-P5-vRT" firstAttribute="leading" secondItem="z9T-ii-X65" secondAttribute="trailing" constant="12" id="Cwc-tz-OsB"/>
-                    <constraint firstItem="0p2-P5-vRT" firstAttribute="top" secondItem="TTB-wr-wlp" secondAttribute="bottom" constant="20" id="Eg5-y2-p8M"/>
-                    <constraint firstItem="lgQ-Ng-fTW" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="22" id="GRL-cq-05L"/>
-                    <constraint firstAttribute="trailing" secondItem="TTB-wr-wlp" secondAttribute="trailing" constant="21" id="GwT-tt-wQH"/>
-                    <constraint firstItem="TTB-wr-wlp" firstAttribute="baseline" secondItem="lgQ-Ng-fTW" secondAttribute="baseline" constant="1" id="Nnh-So-RYO"/>
-                    <constraint firstAttribute="trailing" secondItem="0p2-P5-vRT" secondAttribute="trailing" constant="21" id="cY7-uu-E3i"/>
-                    <constraint firstItem="lgQ-Ng-fTW" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="dqR-ZP-pNa"/>
-                    <constraint firstItem="z9T-ii-X65" firstAttribute="centerY" secondItem="0p2-P5-vRT" secondAttribute="centerY" id="vuO-lU-ou8"/>
+                    <constraint firstAttribute="trailing" secondItem="TTB-wr-wlp" secondAttribute="trailing" constant="20" id="3Dg-DO-7J1"/>
+                    <constraint firstItem="TTB-wr-wlp" firstAttribute="leading" secondItem="lgQ-Ng-fTW" secondAttribute="trailing" constant="8" id="8C7-cR-hdX"/>
+                    <constraint firstItem="0p2-P5-vRT" firstAttribute="leading" secondItem="z9T-ii-X65" secondAttribute="trailing" constant="12" id="BeQ-6e-qun"/>
+                    <constraint firstItem="pGM-1m-jrf" firstAttribute="leading" secondItem="lgQ-Ng-fTW" secondAttribute="leading" id="DXW-lV-qZd"/>
+                    <constraint firstAttribute="trailing" secondItem="0p2-P5-vRT" secondAttribute="trailing" constant="20" id="Hlr-bQ-dlB"/>
+                    <constraint firstItem="z9T-ii-X65" firstAttribute="top" secondItem="pGM-1m-jrf" secondAttribute="bottom" constant="20" symbolic="YES" id="J5q-pp-V13"/>
+                    <constraint firstItem="lgQ-Ng-fTW" firstAttribute="centerY" secondItem="TTB-wr-wlp" secondAttribute="centerY" constant="0.5" id="O4Q-DI-ORQ"/>
+                    <constraint firstItem="z9T-ii-X65" firstAttribute="width" secondItem="0p2-P5-vRT" secondAttribute="width" id="RAr-pi-Hh9"/>
+                    <constraint firstItem="lgQ-Ng-fTW" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="UOi-K4-826"/>
+                    <constraint firstItem="lgQ-Ng-fTW" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="23" id="UUe-dC-Bde"/>
+                    <constraint firstAttribute="bottom" secondItem="0p2-P5-vRT" secondAttribute="bottom" constant="19" id="ZU9-Lb-bVT"/>
+                    <constraint firstItem="z9T-ii-X65" firstAttribute="centerY" secondItem="0p2-P5-vRT" secondAttribute="centerY" id="bed-s3-fjE"/>
+                    <constraint firstItem="pGM-1m-jrf" firstAttribute="trailing" secondItem="TTB-wr-wlp" secondAttribute="trailing" id="e7F-C4-2hB"/>
+                    <constraint firstItem="pGM-1m-jrf" firstAttribute="top" secondItem="TTB-wr-wlp" secondAttribute="bottom" constant="13" id="soZ-Eu-buo"/>
                 </constraints>
             </view>
             <connections>
