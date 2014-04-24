@@ -719,6 +719,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self.blockingApplicationsArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
     [self.supportedArchitecturesArrayController setSortDescriptors:[NSArray arrayWithObject:sortStringObjectsByTitle]];
     
+    [self.categoriesArrayController setSortDescriptors:@[sortStringObjectsByTitle]];
+    [self.developersArrayController setSortDescriptors:@[sortStringObjectsByTitle]];
+    
     NSSortDescriptor *sortByChoiceIdentifier = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceIdentifier" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByChoiceAttribute = [NSSortDescriptor sortDescriptorWithKey:@"munki_choiceAttribute" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.installerChoicesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByChoiceIdentifier, sortByChoiceAttribute, nil]];

@@ -2250,6 +2250,44 @@
     return theItem;
 }
 
+- (void)configureSourceListDevelopersSection
+{
+    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:self.managedObjectContext];
+    mainDevelopersItem.originalIndexValue = 1;
+    mainDevelopersItem.parent = nil;
+    mainDevelopersItem.isGroupItemValue = YES;
+    
+    DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:self.managedObjectContext];
+    noDeveloperSmartItem.type = @"smart";
+    noDeveloperSmartItem.parent = mainDevelopersItem;
+    noDeveloperSmartItem.originalIndexValue = 10;
+    noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
+    noDeveloperSmartItem.developerReference = nil;
+    
+    /*
+     Fetch all developers and create source list items
+     */
+    NSEntityDescription *developerEntityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [fetchRequest setSortDescriptors:@[sortByTitle]];
+    [fetchRequest setEntity:developerEntityDescr];
+    NSUInteger numFoundDevelopers = [self.managedObjectContext countForFetchRequest:fetchRequest error:nil];
+    if (numFoundDevelopers != 0) {
+        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
+            DeveloperSourceListItemMO *developerSourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:self.managedObjectContext];
+            developerSourceListItem.type = @"regular";
+            developerSourceListItem.parent = mainDevelopersItem;
+            developerSourceListItem.originalIndexValue = 20;
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
+            developerSourceListItem.filterPredicate = predicate;
+            developerSourceListItem.developerReference = developer;
+            
+        }];
+    }
+}
+
 - (void)configureSourceListCategoriesSection
 {
     PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:self.managedObjectContext];

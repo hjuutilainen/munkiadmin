@@ -283,6 +283,44 @@
     return theItem;
 }
 
+- (void)configureSourceListDevelopersSection:(NSManagedObjectContext *)moc
+{
+    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+    mainDevelopersItem.originalIndexValue = 1;
+    mainDevelopersItem.parent = nil;
+    mainDevelopersItem.isGroupItemValue = YES;
+    
+    DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
+    noDeveloperSmartItem.type = @"smart";
+    noDeveloperSmartItem.parent = mainDevelopersItem;
+    noDeveloperSmartItem.originalIndexValue = 10;
+    noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
+    noDeveloperSmartItem.developerReference = nil;
+    
+    /*
+     Fetch all developers and create source list items
+     */
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [fetchRequest setSortDescriptors:@[sortByTitle]];
+    [fetchRequest setEntity:entityDescr];
+    NSUInteger numFoundDevelopers = [moc countForFetchRequest:fetchRequest error:nil];
+    if (numFoundDevelopers != 0) {
+        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+        [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
+            DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
+            sourceListItem.type = @"regular";
+            sourceListItem.parent = mainDevelopersItem;
+            sourceListItem.originalIndexValue = 20;
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
+            sourceListItem.filterPredicate = predicate;
+            sourceListItem.developerReference = developer;
+            
+        }];
+    }
+}
+
 - (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc
 {
     PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
@@ -338,6 +376,7 @@
     NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
     NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
     NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
+    NSEntityDescription *developerEntityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
     
     
     /*
@@ -522,6 +561,28 @@
                 [category addPackagesObject:currentPackage];
             }
         }
+        
+        /*
+         Deal with the package developer
+         */
+        if ([originalPkginfo objectForKey:@"developer"] != nil) {
+            NSFetchRequest *fetchForDeveloper = [[NSFetchRequest alloc] init];
+            [fetchForDeveloper setEntity:developerEntityDescr];
+            
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"developer"]];
+            [fetchForDeveloper setPredicate:predicate];
+            
+            NSUInteger numFoundDevelopers = [moc countForFetchRequest:fetchForDeveloper error:nil];
+            DeveloperMO *developer = nil;
+            if (numFoundDevelopers > 0) {
+                developer = [[moc executeFetchRequest:fetchForDeveloper error:nil] objectAtIndex:0];
+                [developer addPackagesObject:currentPackage];
+            } else {
+                developer = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:moc];
+                developer.title = [originalPkginfo objectForKey:@"developer"];
+                [developer addPackagesObject:currentPackage];
+            }
+        }
     }];
     
     /*
@@ -537,6 +598,12 @@
      Create the source list items for category objects
      */
     [self configureSourceListCategoriesSection:moc];
+    
+    /*
+     Create the source list items for developer objects
+     */
+    [self configureSourceListDevelopersSection:moc];
+    
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     

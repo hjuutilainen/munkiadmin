@@ -69,6 +69,7 @@
 - (void)awakeFromNib
 {
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
@@ -173,6 +174,18 @@
     renameCategoryMenuItem.target = self;
     [sourceListMenu addItem:renameCategoryMenuItem];
     
+    NSMenuItem *newDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
+                                                                    action:@selector(createNewDeveloper)
+                                                             keyEquivalent:@""];
+    newDeveloperMenuItem.target = self;
+    [sourceListMenu addItem:newDeveloperMenuItem];
+    
+    NSMenuItem *renameDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Developer..."
+                                                                  action:@selector(renameDeveloper)
+                                                           keyEquivalent:@""];
+    renameDeveloperMenuItem.target = self;
+    [sourceListMenu addItem:renameDeveloperMenuItem];
+    
     sourceListMenu.delegate = self;
     sourceListMenu.autoenablesItems = NO;
     self.directoriesOutlineView.menu = sourceListMenu;
@@ -210,6 +223,9 @@
     else if (menu == self.directoriesOutlineView.menu) {
         NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
         id clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+        for (NSMenuItem *menuItem in menu.itemArray) {
+            [menuItem setEnabled:NO];
+        }
         if ([clickedObject isKindOfClass:[CategorySourceListItemMO class]]) {
             /*
              Clicked on category objects
@@ -217,8 +233,23 @@
             for (NSMenuItem *menuItem in menu.itemArray) {
                 if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
                     [menuItem setEnabled:NO];
-                } else {
+                } else if ([menuItem.title isEqualToString:@"New Category..."] || [menuItem.title isEqualToString:@"Rename Category..."]) {
                     [menuItem setEnabled:YES];
+                } else {
+                    [menuItem setEnabled:NO];
+                }
+            }
+        } else if ([clickedObject isKindOfClass:[DeveloperSourceListItemMO class]]) {
+            /*
+             Clicked on developer objects
+             */
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                    [menuItem setEnabled:NO];
+                } else if ([menuItem.title isEqualToString:@"New Developer..."] || [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                    [menuItem setEnabled:YES];
+                } else {
+                    [menuItem setEnabled:NO];
                 }
             }
         } else {
@@ -283,6 +314,63 @@
         
     }
     [self.createNewCategoryController setDefaultValues];
+}
+
+
+- (void)renameDeveloper
+{
+    /*
+     Get the category item that was right-clicked
+     */
+    NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+    DeveloperSourceListItemMO *clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+    DeveloperMO *clickedDeveloper = clickedObject.developerReference;
+    
+    /*
+     Ask for a new title
+     */
+    [self.createNewDeveloperController setDefaultValues];
+    self.createNewDeveloperController.windowTitleText = @"Rename Developer";
+    self.createNewDeveloperController.titleText = @"Rename Developer";
+    self.createNewDeveloperController.okButtonTitle = @"Rename";
+    self.createNewDeveloperController.labelText = @"New Name:";
+    self.createNewDeveloperController.descriptionText = [NSString stringWithFormat:@"Enter new name for the \"%@\" developer. The developer will be renamed in all referencing pkginfo files.", clickedObject.title];
+    self.createNewDeveloperController.stringValue = clickedObject.title;
+    NSWindow *window = [self.createNewDeveloperController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    /*
+     Perform the actual rename
+     */
+    if (result == NSModalResponseOK) {
+        [[MACoreDataManager sharedManager] renameDeveloper:clickedDeveloper
+                                                 newTitle:self.createNewDeveloperController.stringValue
+                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        [[NSApp delegate] configureSourceListDevelopersSection];
+        [self.directoriesTreeController rearrangeObjects];
+    }
+    [self.createNewDeveloperController setDefaultValues];
+}
+
+
+- (void)createNewDeveloper
+{
+    [self.createNewDeveloperController setDefaultValues];
+    self.createNewDeveloperController.windowTitleText = @"New Developer";
+    self.createNewDeveloperController.titleText = @"New Developer";
+    self.createNewDeveloperController.okButtonTitle = @"Create";
+    self.createNewDeveloperController.labelText = @"Name:";
+    self.createNewDeveloperController.descriptionText = @"Enter name for new developer. The developer is written in to the pkginfo files and empty developers will not be saved when MunkiAdmin quits.";
+    NSWindow *window = [self.createNewDeveloperController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:nil];
+        [[NSApp delegate] configureSourceListDevelopersSection];
+        [self.directoriesTreeController rearrangeObjects];
+        
+    }
+    [self.createNewDeveloperController setDefaultValues];
 }
 
 - (IBAction)createNewCategoryAction:(id)sender
@@ -454,6 +542,25 @@
                     } else {
                         //NSLog(@"Existing category: %@, New category: None", droppedPackage.category.title);
                         droppedPackage.category = nil;
+                    }
+                }
+            } else if ([[proposedParentItem representedObject] isKindOfClass:[DeveloperSourceListItemMO class]]) {
+                DeveloperSourceListItemMO *targetCategorySourceList = [proposedParentItem representedObject];
+                
+                NSPasteboard *pasteboard = [info draggingPasteboard];
+                NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+                NSDictionary *options = [NSDictionary dictionaryWithObject:
+                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+                for (NSURL *uri in urls) {
+                    NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
+                    NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                    PackageMO *droppedPackage = (PackageMO *)[moc objectRegisteredForID:objectID];
+                    
+                    if (targetCategorySourceList.developerReference != nil) {
+                        droppedPackage.developer = targetCategorySourceList.developerReference;
+                    } else {
+                        droppedPackage.developer = nil;
                     }
                 }
             }

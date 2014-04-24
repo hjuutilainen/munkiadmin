@@ -59,6 +59,8 @@
 @property (weak) IBOutlet NSArrayController *installerChoicesArrayController;
 @property (weak) IBOutlet NSArrayController *catalogInfosArrayController;
 @property (weak) IBOutlet NSArrayController *installerEnvironmentVariablesArrayController;
+@property (weak) IBOutlet NSArrayController *categoriesArrayController;
+@property (weak) IBOutlet NSArrayController *developersArrayController;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;

@@ -50,6 +50,14 @@
         <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="optionalInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="children" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
     </entity>
+    <entity name="Developer" representedClassName="DeveloperMO" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="developerSourceListReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DeveloperSourceListItem" inverseName="developerReference" inverseEntity="DeveloperSourceListItem" syncable="YES"/>
+        <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="developer" inverseEntity="Package" syncable="YES"/>
+    </entity>
+    <entity name="DeveloperSourceListItem" representedClassName="DeveloperSourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES">
+        <relationship name="developerReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer" inverseName="developerSourceListReference" inverseEntity="Developer" syncable="YES"/>
+    </entity>
     <entity name="Directory" representedClassName="DirectoryMO" parentEntity="PackageSourceListItem" syncable="YES">
         <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <fetchedProperty name="childPackages" optional="YES" transient="YES" syncable="YES">
@@ -213,6 +221,7 @@
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogInfo" inverseName="package" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
         <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packages" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="packages" inverseEntity="Category" syncable="YES"/>
+        <relationship name="developer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer" inverseName="packages" inverseEntity="Developer" syncable="YES"/>
         <relationship name="iconImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IconImage" inverseName="packages" inverseEntity="IconImage" syncable="YES"/>
         <relationship name="installerChoicesItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InstallerChoicesItem" inverseName="package" inverseEntity="InstallerChoicesItem" indexed="YES" syncable="YES"/>
         <relationship name="installerEnvironmentVariables" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallerEnvironmentVariable" inverseName="packages" inverseEntity="InstallerEnvironmentVariable" indexed="YES" syncable="YES"/>
@@ -303,10 +312,12 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1033"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1050"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
+        <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
+        <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
     </elements>
 </model>

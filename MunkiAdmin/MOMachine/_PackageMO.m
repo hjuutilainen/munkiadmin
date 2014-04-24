@@ -60,6 +60,7 @@ const struct PackageMORelationships PackageMORelationships = {
 	.catalogInfos = @"catalogInfos",
 	.catalogs = @"catalogs",
 	.category = @"category",
+	.developer = @"developer",
 	.iconImage = @"iconImage",
 	.installerChoicesItems = @"installerChoicesItems",
 	.installerEnvironmentVariables = @"installerEnvironmentVariables",
@@ -758,6 +759,10 @@ const struct PackageMOFetchedProperties PackageMOFetchedProperties = {
 	
 
 @dynamic category;
+
+	
+
+@dynamic developer;
 
 	
 

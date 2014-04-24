@@ -34,5 +34,6 @@
 @property (strong) NSPredicate *searchFieldPredicate;
 @property (strong) NSArray *defaultSortDescriptors;
 @property (strong) MARequestStringValueController *createNewCategoryController;
+@property (strong) MARequestStringValueController *createNewDeveloperController;
 
 @end

@@ -221,8 +221,18 @@
         }
 	}];
     
+    /*
+     Category
+     */
     if (self.category != nil) {
         [tmpDict setValue:self.category.title forKey:@"category"];
+    }
+    
+    /*
+     Developer
+     */
+    if (self.developer != nil) {
+        [tmpDict setValue:self.developer.title forKey:@"developer"];
     }
 	
 	

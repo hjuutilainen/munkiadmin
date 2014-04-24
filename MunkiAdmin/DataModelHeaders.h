@@ -15,6 +15,8 @@
 #import "CategoryMO.h"
 #import "CategorySourceListItemMO.h"
 #import "ConditionalItemMO.h"
+#import "DeveloperMO.h"
+#import "DeveloperSourceListItemMO.h"
 #import "DirectoryMO.h"
 #import "IconImageMO.h"
 #import "InstallerChoicesItemMO.h"

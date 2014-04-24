@@ -236,6 +236,60 @@
     return YES;
 }
 
+- (DeveloperMO *)createDeveloperWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (title == nil) {
+        return nil;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    DeveloperMO *newDeveloper = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:moc];
+    newDeveloper.title = title;
+    return newDeveloper;
+}
+
+- (BOOL)renameDeveloper:(DeveloperMO *)developer newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    /*
+     Check if this rename operation makes sense...
+     */
+    if (developer == nil) {
+        return NO;
+    }
+    if ([developer.title isEqualToString:newTitle]) {
+        return NO;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    /*
+     Check for existing developer with this title
+     */
+    NSFetchRequest *checkForExisting = [[NSFetchRequest alloc] init];
+    [checkForExisting setEntity:[NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", newTitle];
+    [checkForExisting setPredicate:predicate];
+    NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
+    if (foundItems > 0) {
+        NSLog(@"Can't rename. Found existing developer with title: %@", newTitle);
+        return NO;
+    }
+    
+    developer.title = newTitle;
+    developer.developerSourceListReference.title = newTitle;
+    
+    for (PackageMO *aPackage in developer.packages) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
+    
+    return YES;
+}
+
 # pragma mark -
 # pragma mark Helpers
 

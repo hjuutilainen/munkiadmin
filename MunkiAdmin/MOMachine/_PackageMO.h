@@ -61,6 +61,7 @@ extern const struct PackageMORelationships {
 	__unsafe_unretained NSString *catalogInfos;
 	__unsafe_unretained NSString *catalogs;
 	__unsafe_unretained NSString *category;
+	__unsafe_unretained NSString *developer;
 	__unsafe_unretained NSString *iconImage;
 	__unsafe_unretained NSString *installerChoicesItems;
 	__unsafe_unretained NSString *installerEnvironmentVariables;
@@ -83,6 +84,7 @@ extern const struct PackageMOFetchedProperties {
 @class CatalogInfoMO;
 @class CatalogMO;
 @class CategoryMO;
+@class DeveloperMO;
 @class IconImageMO;
 @class InstallerChoicesItemMO;
 @class InstallerEnvironmentVariableMO;
@@ -722,6 +724,13 @@ extern const struct PackageMOFetchedProperties {
 
 
 
+@property (nonatomic, strong) DeveloperMO *developer;
+
+//- (BOOL)validateDeveloper:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) IconImageMO *iconImage;
 
 //- (BOOL)validateIconImage:(id*)value_ error:(NSError**)error_;
@@ -1233,6 +1242,11 @@ extern const struct PackageMOFetchedProperties {
 
 - (CategoryMO*)primitiveCategory;
 - (void)setPrimitiveCategory:(CategoryMO*)value;
+
+
+
+- (DeveloperMO*)primitiveDeveloper;
+- (void)setPrimitiveDeveloper:(DeveloperMO*)value;
 
 
 

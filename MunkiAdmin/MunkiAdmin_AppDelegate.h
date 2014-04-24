@@ -197,5 +197,6 @@
 - (void)changeItemView;
 - (void)configureSourceListDirectoriesSection;
 - (void)configureSourceListCategoriesSection;
+- (void)configureSourceListDevelopersSection;
 
 @end
