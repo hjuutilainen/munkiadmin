@@ -242,9 +242,11 @@
      Ask for a new title
      */
     [self.createNewCategoryController setDefaultValues];
-    self.createNewCategoryController.windowTitle = @"Rename Category";
+    self.createNewCategoryController.windowTitleText = @"Rename Category";
+    self.createNewCategoryController.titleText = @"Rename Category";
     self.createNewCategoryController.okButtonTitle = @"Rename";
-    self.createNewCategoryController.labelText = @"Category Title:";
+    self.createNewCategoryController.labelText = @"New Name:";
+    self.createNewCategoryController.descriptionText = [NSString stringWithFormat:@"Enter new name for the \"%@\" category. The category will be renamed in all referencing pkginfo files.", clickedObject.title];
     self.createNewCategoryController.stringValue = clickedObject.title;
     NSWindow *window = [self.createNewCategoryController window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -265,10 +267,11 @@
 - (void)createNewCategory
 {
     [self.createNewCategoryController setDefaultValues];
-    self.createNewCategoryController.windowTitle = @"New Category";
+    self.createNewCategoryController.windowTitleText = @"New Category";
+    self.createNewCategoryController.titleText = @"New Category";
     self.createNewCategoryController.okButtonTitle = @"Create";
-    self.createNewCategoryController.labelText = @"Category Title:";
-    self.createNewCategoryController.descriptionText = @"Attention! The category is written in to the pkginfo files. Empty categories will not be saved when MunkiAdmin quits.";
+    self.createNewCategoryController.labelText = @"Name:";
+    self.createNewCategoryController.descriptionText = @"Enter name for new category. The category is written in to the pkginfo files and empty categories will not be saved when MunkiAdmin quits.";
     NSWindow *window = [self.createNewCategoryController window];
     NSInteger result = [NSApp runModalForWindow:window];
     

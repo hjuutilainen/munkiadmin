@@ -27,9 +27,10 @@
 {
     self.okButtonTitle = NSLocalizedString(@"OK", @"OK button default value");
     self.cancelButtonTitle = NSLocalizedString(@"Cancel", @"Cancel button default value");
-    self.stringValue = @"";
+    self.stringValue = nil;
+    self.titleText = @"";
     self.labelText = NSLocalizedString(@"Title:", @"Label text default value");;
-    self.windowTitle = @"Window";
+    self.windowTitleText = @"Window";
     self.descriptionText = @"";
 }
 

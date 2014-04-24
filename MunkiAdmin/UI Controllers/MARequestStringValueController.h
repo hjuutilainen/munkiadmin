@@ -10,10 +10,11 @@
 
 @interface MARequestStringValueController : NSWindowController
 
-@property (strong) NSString *stringValue;
-@property (strong) NSString *labelText;
-@property (strong) NSString *windowTitle;
+@property (strong) NSString *titleText;
 @property (strong) NSString *descriptionText;
+@property (strong) NSString *labelText;
+@property (strong) NSString *stringValue;
+@property (strong) NSString *windowTitleText;
 @property (strong) NSString *okButtonTitle;
 @property (strong) NSString *cancelButtonTitle;
 
