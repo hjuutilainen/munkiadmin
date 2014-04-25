@@ -279,6 +279,20 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (void)copyCategoryFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (source.category != nil) {
+        target.category = source.category;
+    }
+}
+
+- (void)copyDeveloperFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (source.developer != nil) {
+        target.developer = source.developer;
+    }
+}
+
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
     NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
@@ -297,9 +311,10 @@ static dispatch_queue_t serialQueue;
                            @"supported_architectures",
                            @"update_for",
                            nil];
+    NSArray *specialKeys = @[@"category", @"developer"];
     
     for (NSString *keyName in munkiKeys) {
-        if (![arrayKeys containsObject:keyName] && [self.pkginfoAssimilateKeys containsObject:keyName]) {
+        if (![arrayKeys containsObject:keyName] && ![specialKeys containsObject:keyName] && [self.pkginfoAssimilateKeys containsObject:keyName]) {
             NSString *munkiadminKeyName = [NSString stringWithFormat:@"munki_%@", keyName];
             id sourceValue = [sourcePackage valueForKey:munkiadminKeyName];
             [targetPackage setValue:sourceValue forKey:munkiadminKeyName];
@@ -315,6 +330,12 @@ static dispatch_queue_t serialQueue;
             }
             else if ([keyName isEqualToString:@"installer_environment"]) {
                 [self copyInstallerEnvironmentVariablesFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
+            }
+            else if ([keyName isEqualToString:@"category"]) {
+                [self copyCategoryFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
+            }
+            else if ([keyName isEqualToString:@"developer"]) {
+                [self copyDeveloperFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
             }
         }
     }
@@ -1783,6 +1804,9 @@ static dispatch_queue_t serialQueue;
     [newPkginfoAssimilateKeys removeObject:@"installer_item_location"];
     [newPkginfoAssimilateKeys removeObject:@"installer_item_size"];
     [newPkginfoAssimilateKeys removeObject:@"package_path"];
+    
+    [newPkginfoAssimilateKeys addObject:@"category"];
+    [newPkginfoAssimilateKeys addObject:@"developer"];
     
 	self.pkginfoAssimilateKeys = [NSArray arrayWithArray:newPkginfoAssimilateKeys];
 	

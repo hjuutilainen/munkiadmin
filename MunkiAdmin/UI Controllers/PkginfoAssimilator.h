@@ -47,7 +47,9 @@
 @property BOOL assimilate_items_to_copy;
 
 @property BOOL assimilate_autoremove;
+@property BOOL assimilate_category;
 @property BOOL assimilate_description;
+@property BOOL assimilate_developer;
 @property BOOL assimilate_display_name;
 @property BOOL assimilate_installable_condition;
 @property BOOL assimilate_maximum_os_version;

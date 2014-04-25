@@ -27,8 +27,7 @@
 	}
     self = [super initWithWindow:window];
     if (self) {
-        NSArray *basicKeys = [NSArray arrayWithObjects:
-                              @"assimilate_autoremove",
+        NSArray *basicKeys = @[@"assimilate_autoremove",
                               @"assimilate_description",
                               @"assimilate_display_name",
                               @"assimilate_installable_condition",
@@ -39,35 +38,34 @@
                               @"assimilate_unattended_install",
                               @"assimilate_unattended_uninstall",
                               @"assimilate_uninstallable",
-                              @"assimilate_uninstaller_item_location",
-                              nil];
-        NSArray *scriptKeys = [NSArray arrayWithObjects:
-                              @"assimilate_installcheck_script",
-                              @"assimilate_preinstall_script",
-                              @"assimilate_postinstall_script",
-                              @"assimilate_preuninstall_script",
-                              @"assimilate_postuninstall_script",
-                              @"assimilate_uninstall_method",
-                              @"assimilate_uninstall_script",
-                              @"assimilate_uninstallcheck_script",
-                              nil];
-        NSArray *arrayKeys = [NSArray arrayWithObjects:
-                              @"assimilate_blocking_applications",
-                              @"assimilate_installer_choices_xml",
-                              @"assimilate_installs_items",
-                              @"assimilate_items_to_copy",
-                              @"assimilate_requires",
-                              @"assimilate_supported_architectures",
-                              @"assimilate_update_for",
-                              nil];
-        keyGroups = [[NSDictionary alloc] initWithObjectsAndKeys:
-                     basicKeys, @"basicKeys",
-                     scriptKeys, @"scriptKeys",
-                     arrayKeys, @"arrayKeys",
-                     nil];
+                              @"assimilate_uninstaller_item_location"];
         
-        defaultsKeysToLoop = [[NSArray alloc] initWithObjects:
-                              @"assimilate_autoremove",
+        NSArray *scriptKeys = @[@"assimilate_installcheck_script",
+                              @"assimilate_preinstall_script",
+                              @"assimilate_postinstall_script",
+                              @"assimilate_preuninstall_script",
+                              @"assimilate_postuninstall_script",
+                              @"assimilate_uninstall_method",
+                              @"assimilate_uninstall_script",
+                              @"assimilate_uninstallcheck_script"];
+        
+        NSArray *arrayKeys = @[@"assimilate_blocking_applications",
+                              @"assimilate_installer_choices_xml",
+                              @"assimilate_installs_items",
+                              @"assimilate_items_to_copy",
+                              @"assimilate_requires",
+                              @"assimilate_supported_architectures",
+                              @"assimilate_update_for"];
+        
+        NSArray *specialKeys = @[@"assimilate_category",
+                                 @"assimilate_developer"];
+        
+        keyGroups = @{basicKeys: @"basicKeys",
+                      scriptKeys: @"scriptKeys",
+                      arrayKeys: @"arrayKeys",
+                      specialKeys: @"specialKeys"};
+        
+        defaultsKeysToLoop = @[@"assimilate_autoremove",
                               @"assimilate_blocking_applications",
                               @"assimilate_description",
                               @"assimilate_display_name",
@@ -93,8 +91,7 @@
                               @"assimilate_uninstallable",
                               @"assimilate_uninstallcheck_script",
                               @"assimilate_uninstaller_item_location",
-                              @"assimilate_update_for",
-                              nil];
+                              @"assimilate_update_for"];
     }
     
     return self;
@@ -133,8 +130,20 @@
     
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
     MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
-        
-    // Blocking applications
+    
+    /*
+     Developer and category
+     */
+    if (self.assimilate_category) {
+        [repoManager copyCategoryFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
+    }
+    if (self.assimilate_developer) {
+        [repoManager copyDeveloperFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
+    }
+    
+    /*
+     Blocking applications
+     */
     if (self.assimilate_blocking_applications) {
         for (StringObjectMO *blockingApp in self.sourcePkginfo.blockingApplications) {
             StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -144,7 +153,9 @@
         }
     }
     
-    // Requires
+    /*
+     Requires
+     */
     if (self.assimilate_requires) {
         for (StringObjectMO *requiresItem in self.sourcePkginfo.requirements) {
             StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -154,7 +165,9 @@
         }
     }
     
-    // Update for
+    /*
+     Update for
+     */
     if (self.assimilate_update_for) {
         for (StringObjectMO *updateForItem in self.sourcePkginfo.updateFor) {
             StringObjectMO *newUpdateForItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -164,7 +177,9 @@
         }
     }
     
-    // Supported architectures
+    /*
+     Supported architectures
+     */
     if (self.assimilate_supported_architectures) {
         for (StringObjectMO *supportedArch in self.sourcePkginfo.supportedArchitectures) {
             StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -174,17 +189,23 @@
         }
     }
     
-    // Installs
+    /*
+     Installs
+     */
     if (self.assimilate_installs_items) {
         [repoManager copyInstallsItemsFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
     
-    // Installer choices XML
+    /*
+     Installer choices XML
+     */
     if (self.assimilate_installer_choices_xml) {
         [repoManager copyInstallerChoicesFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
     
-    // Items to copy
+    /*
+     Items to copy
+     */
     if (self.assimilate_items_to_copy) {
         [repoManager copyItemsToCopyItemsFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
@@ -269,6 +290,10 @@
         [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
     }
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"arrayKeys"]) {
+        BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
+        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+    }
+    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"specialKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
     }
