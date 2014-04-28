@@ -134,6 +134,7 @@
     [self.rightPlaceHolder setFrame:rightFrame];
     
     self.categoriesSubMenu.delegate = self;
+    self.developersSubMenu.delegate = self;
     
     /*
      Create a contextual menu for customizing table columns
@@ -273,6 +274,45 @@
 }
 
 
+- (void)assignSelectedPackagesToDeveloper:(DeveloperMO *)developer
+{
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        package.developer = developer;
+        package.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)assignSelectedPackagesToDeveloperAction:(id)sender
+{
+    DeveloperMO *developer = [sender representedObject];
+    [self assignSelectedPackagesToDeveloper:developer];
+}
+
+- (void)createNewDeveloperAndAssignSelectedPackages
+{
+    [self.createNewDeveloperController setDefaultValues];
+    self.createNewDeveloperController.windowTitleText = @"New Developer";
+    self.createNewDeveloperController.titleText = @"New Developer";
+    self.createNewDeveloperController.okButtonTitle = @"Create";
+    self.createNewDeveloperController.labelText = @"Name:";
+    self.createNewDeveloperController.descriptionText = @"Enter name for new developer. The developer is written in to the pkginfo files and empty developers will not be saved when MunkiAdmin quits.";
+    NSWindow *window = [self.createNewDeveloperController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        DeveloperMO *newDeveloper = [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:nil];
+        for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+            package.developer = newDeveloper;
+            package.hasUnstagedChangesValue = YES;
+        }
+        [[NSApp delegate] configureSourceListDevelopersSection];
+        [self.directoriesTreeController rearrangeObjects];
+        
+    }
+    [self.createNewDeveloperController setDefaultValues];
+}
+
+
 - (void)renameDeveloper
 {
     /*
@@ -342,6 +382,77 @@
 {
 	NSTableColumn *col = [sender representedObject];
 	[col setHidden:![col isHidden]];
+}
+
+- (void)developerSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    /*
+     Get the developer names for selected packages
+     */
+    NSArray *selectedPackageDevelopers = [self.packagesArrayController.selectedObjects valueForKeyPath:@"@distinctUnionOfObjects.developer.title"];
+    
+    /*
+     Get selected packages whose developer is nil
+     */
+    NSPredicate *nilDeveloperPred = [NSPredicate predicateWithFormat:@"developer == %@", [NSNull null]];
+    NSArray *nilDeveloperPackages = [self.packagesArrayController.selectedObjects filteredArrayUsingPredicate:nilDeveloperPred];
+    
+    /*
+     Create the first menu items
+     */
+    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
+                                                                  action:@selector(createNewDeveloperAndAssignSelectedPackages)
+                                                           keyEquivalent:@""];
+    createAndAddMenuItem.target = self;
+    [menu addItem:createAndAddMenuItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    NSMenuItem *unknownDeveloperItem = [[NSMenuItem alloc] initWithTitle:@"Unknown"
+                                                                   action:@selector(assignSelectedPackagesToDeveloperAction:)
+                                                            keyEquivalent:@""];
+    if ([nilDeveloperPackages count] > 0 && [selectedPackageDevelopers count] == 0) {
+        unknownDeveloperItem.state = NSOnState;
+    } else if ([nilDeveloperPackages count] > 0 && [selectedPackageDevelopers count] > 0) {
+        unknownDeveloperItem.state = NSMixedState;
+    } else {
+        unknownDeveloperItem.state = NSOffState;
+    }
+    
+    unknownDeveloperItem.target = self;
+    [menu addItem:unknownDeveloperItem];
+    
+    /*
+     Create a menu item for each developer object
+     */
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    for (DeveloperMO *developer in fetchResults) {
+        NSMenuItem *developerItem = [[NSMenuItem alloc] initWithTitle:developer.title
+                                                              action:@selector(assignSelectedPackagesToDeveloperAction:)
+                                                       keyEquivalent:@""];
+        developerItem.representedObject = developer;
+        if ([selectedPackageDevelopers count] == 1 && [developer.title isEqualToString:selectedPackageDevelopers[0]]) {
+            if ([nilDeveloperPackages count] > 0) {
+                developerItem.state = NSMixedState;
+            } else {
+                developerItem.state = NSOnState;
+            }
+        } else if ([selectedPackageDevelopers count] > 1 && [selectedPackageDevelopers containsObject:developer.title]) {
+            developerItem.state = NSMixedState;
+        } else {
+            developerItem.state = NSOffState;
+        }
+        
+        developerItem.target = self;
+        [menu addItem:developerItem];
+    }
 }
 
 - (void)categoriesSubMenuWillOpen:(NSMenu *)menu
@@ -500,6 +611,13 @@
      */
     else if (menu == self.categoriesSubMenu) {
         [self categoriesSubMenuWillOpen:menu];
+    }
+    
+    /*
+     Packages table view developer submenu
+     */
+    else if (menu == self.developersSubMenu) {
+        [self developerSubMenuWillOpen:menu];
     }
 }
 

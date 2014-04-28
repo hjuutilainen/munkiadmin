@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PackagesView">
             <connections>
                 <outlet property="categoriesSubMenu" destination="Qzs-E6-IR3" id="SBQ-bR-DqD"/>
+                <outlet property="developersSubMenu" destination="flY-IG-Ti7" id="m0a-em-nDW"/>
                 <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
                 <outlet property="directoriesTreeController" destination="89" id="93"/>
                 <outlet property="installerItemPathControl" destination="184" id="605"/>
@@ -974,7 +975,23 @@
                 <menuItem isSeparatorItem="YES" id="eQx-OH-zdJ"/>
                 <menuItem title="Category" id="EZ5-FN-9r1">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Category" id="Qzs-E6-IR3"/>
+                    <menu key="submenu" title="Category" id="Qzs-E6-IR3">
+                        <items>
+                            <menuItem title="Item" id="fnR-Ww-Pdn">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Developer" id="5cZ-Vv-tWh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Developer" id="flY-IG-Ti7">
+                        <items>
+                            <menuItem title="Item" id="mJs-d2-PRN">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
             </items>
         </menu>

@@ -27,6 +27,7 @@
 @property (weak) IBOutlet NSSplitView *notesDescriptionSplitView;
 @property (weak) IBOutlet NSMenu *packagesTableViewMenu;
 @property (weak) IBOutlet NSMenu *categoriesSubMenu;
+@property (weak) IBOutlet NSMenu *developersSubMenu;
 @property (weak) IBOutlet NSPathControl *packageInfoPathControl;
 @property (weak) IBOutlet NSPathControl *installerItemPathControl;
 
