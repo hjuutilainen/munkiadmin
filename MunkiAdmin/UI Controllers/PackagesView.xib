@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PackagesView">
             <connections>
+                <outlet property="categoriesSubMenu" destination="Qzs-E6-IR3" id="SBQ-bR-DqD"/>
                 <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
                 <outlet property="directoriesTreeController" destination="89" id="93"/>
                 <outlet property="installerItemPathControl" destination="184" id="605"/>
@@ -35,14 +36,14 @@
                             <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="NCB-Fd-tPJ">
+                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="NCB-Fd-tPJ">
                                     <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" id="alN-m9-UKr">
                                         <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hd8-dm-A3l" id="DKg-el-RkD">
+                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hd8-dm-A3l" id="DKg-el-RkD">
                                                 <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="0.0"/>
@@ -969,6 +970,11 @@
                     <connections>
                         <action selector="startPkginfoAssimilatorAction:" target="-1" id="604"/>
                     </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="eQx-OH-zdJ"/>
+                <menuItem title="Category" id="EZ5-FN-9r1">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Category" id="Qzs-E6-IR3"/>
                 </menuItem>
             </items>
         </menu>

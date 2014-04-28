@@ -133,6 +133,7 @@
 	[self.middlePlaceHolder setFrame:centerFrame];
     [self.rightPlaceHolder setFrame:rightFrame];
     
+    self.categoriesSubMenu.delegate = self;
     
     /*
      Create a contextual menu for customizing table columns
@@ -162,29 +163,6 @@
      Create menu for the source list
      */
     NSMenu *sourceListMenu = [[NSMenu alloc] initWithTitle:@""];
-    NSMenuItem *newCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
-                                                                 action:@selector(createNewCategory)
-                                                          keyEquivalent:@""];
-    newCategoryMenuItem.target = self;
-    [sourceListMenu addItem:newCategoryMenuItem];
-    
-    NSMenuItem *renameCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Category..."
-                                                                 action:@selector(renameCategory)
-                                                          keyEquivalent:@""];
-    renameCategoryMenuItem.target = self;
-    [sourceListMenu addItem:renameCategoryMenuItem];
-    
-    NSMenuItem *newDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
-                                                                    action:@selector(createNewDeveloper)
-                                                             keyEquivalent:@""];
-    newDeveloperMenuItem.target = self;
-    [sourceListMenu addItem:newDeveloperMenuItem];
-    
-    NSMenuItem *renameDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Developer..."
-                                                                  action:@selector(renameDeveloper)
-                                                           keyEquivalent:@""];
-    renameDeveloperMenuItem.target = self;
-    [sourceListMenu addItem:renameDeveloperMenuItem];
     
     sourceListMenu.delegate = self;
     sourceListMenu.autoenablesItems = NO;
@@ -197,67 +175,6 @@
     [self.packageInfoPathControl setAction:@selector(didSelectPathControlItem:)];
     [self.installerItemPathControl setTarget:self];
     [self.installerItemPathControl setAction:@selector(didSelectPathControlItem:)];
-}
-
-- (void)toggleColumn:(id)sender
-{
-	NSTableColumn *col = [sender representedObject];
-	[col setHidden:![col isHidden]];
-}
-
-- (void)menuWillOpen:(NSMenu *)menu
-{
-    /*
-     The column header menu
-     */
-    if (menu == self.packagesTableView.headerView.menu) {
-        for (NSMenuItem *mi in menu.itemArray) {
-            NSTableColumn *col = [mi representedObject];
-            [mi setState:col.isHidden ? NSOffState : NSOnState];
-        }
-    }
-    
-    /*
-     The source list menu
-     */
-    else if (menu == self.directoriesOutlineView.menu) {
-        NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
-        id clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
-        for (NSMenuItem *menuItem in menu.itemArray) {
-            [menuItem setEnabled:NO];
-        }
-        if ([clickedObject isKindOfClass:[CategorySourceListItemMO class]]) {
-            /*
-             Clicked on category objects
-             */
-            for (NSMenuItem *menuItem in menu.itemArray) {
-                if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
-                    [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Category..."] || [menuItem.title isEqualToString:@"Rename Category..."]) {
-                    [menuItem setEnabled:YES];
-                } else {
-                    [menuItem setEnabled:NO];
-                }
-            }
-        } else if ([clickedObject isKindOfClass:[DeveloperSourceListItemMO class]]) {
-            /*
-             Clicked on developer objects
-             */
-            for (NSMenuItem *menuItem in menu.itemArray) {
-                if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Rename Developer..."]) {
-                    [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Developer..."] || [menuItem.title isEqualToString:@"Rename Developer..."]) {
-                    [menuItem setEnabled:YES];
-                } else {
-                    [menuItem setEnabled:NO];
-                }
-            }
-        } else {
-            for (NSMenuItem *menuItem in menu.itemArray) {
-                [menuItem setEnabled:NO];
-            }
-        }
-    }
 }
 
 - (void)renameCategory
@@ -314,6 +231,45 @@
         
     }
     [self.createNewCategoryController setDefaultValues];
+}
+
+- (void)createNewCategoryAndAddSelectedPackages
+{
+    [self.createNewCategoryController setDefaultValues];
+    self.createNewCategoryController.windowTitleText = @"New Category";
+    self.createNewCategoryController.titleText = @"New Category";
+    self.createNewCategoryController.okButtonTitle = @"Create";
+    self.createNewCategoryController.labelText = @"Name:";
+    self.createNewCategoryController.descriptionText = @"Enter name for new category. The category is written in to the pkginfo files and empty categories will not be saved when MunkiAdmin quits.";
+    NSWindow *window = [self.createNewCategoryController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        CategoryMO *newCategory = [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
+                                                                      inManagedObjectContext:nil];
+        for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+            package.category = newCategory;
+            package.hasUnstagedChangesValue = YES;
+        }
+        [[NSApp delegate] configureSourceListCategoriesSection];
+        [self.directoriesTreeController rearrangeObjects];
+        
+    }
+    [self.createNewCategoryController setDefaultValues];
+}
+
+- (void)addSelectedPackagesToCategory:(CategoryMO *)category
+{
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        package.category = category;
+        package.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)addSelectedPackagesToCategoryAction:(id)sender
+{
+    CategoryMO *category = [sender representedObject];
+    [self addSelectedPackagesToCategory:category];
 }
 
 
@@ -376,6 +332,175 @@
 - (IBAction)createNewCategoryAction:(id)sender
 {
     [self createNewCategory];
+}
+
+#pragma mark -
+#pragma mark NSMenu delegates
+
+
+- (void)toggleColumn:(id)sender
+{
+	NSTableColumn *col = [sender representedObject];
+	[col setHidden:![col isHidden]];
+}
+
+- (void)categoriesSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    /*
+     Get the category titles for selected packages
+     */
+    NSArray *selectedPackageCategories = [self.packagesArrayController.selectedObjects valueForKeyPath:@"@distinctUnionOfObjects.category.title"];
+    
+    /*
+     Get selected packages whose category is nil
+     */
+    NSPredicate *nilCategoryPred = [NSPredicate predicateWithFormat:@"category == %@", [NSNull null]];
+    NSArray *nilCategoryPackages = [self.packagesArrayController.selectedObjects filteredArrayUsingPredicate:nilCategoryPred];
+    
+    /*
+     Create the first menu items
+     */
+    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+                                                                  action:@selector(createNewCategoryAndAddSelectedPackages)
+                                                           keyEquivalent:@""];
+    createAndAddMenuItem.target = self;
+    [menu addItem:createAndAddMenuItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    NSMenuItem *uncategorizedMenuItem = [[NSMenuItem alloc] initWithTitle:@"Uncategorized"
+                                                                   action:@selector(addSelectedPackagesToCategoryAction:)
+                                                            keyEquivalent:@""];
+    if ([nilCategoryPackages count] > 0 && [selectedPackageCategories count] == 0) {
+        uncategorizedMenuItem.state = NSOnState;
+    } else if ([nilCategoryPackages count] > 0 && [selectedPackageCategories count] > 0) {
+        uncategorizedMenuItem.state = NSMixedState;
+    } else {
+        uncategorizedMenuItem.state = NSOffState;
+    }
+    
+    uncategorizedMenuItem.target = self;
+    [menu addItem:uncategorizedMenuItem];
+    
+    /*
+     Create a menu item for each category object
+     */
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    for (CategoryMO *category in fetchResults) {
+        NSMenuItem *categoryItem = [[NSMenuItem alloc] initWithTitle:category.title
+                                                              action:@selector(addSelectedPackagesToCategoryAction:)
+                                                       keyEquivalent:@""];
+        categoryItem.representedObject = category;
+        if ([selectedPackageCategories count] == 1 && [category.title isEqualToString:selectedPackageCategories[0]]) {
+            if ([nilCategoryPackages count] > 0) {
+                categoryItem.state = NSMixedState;
+            } else {
+                categoryItem.state = NSOnState;
+            }
+        } else if ([selectedPackageCategories count] > 1 && [selectedPackageCategories containsObject:category.title]) {
+            categoryItem.state = NSMixedState;
+        } else {
+            categoryItem.state = NSOffState;
+        }
+        
+        categoryItem.target = self;
+        [menu addItem:categoryItem];
+    }
+}
+
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    /*
+     The column header menu
+     */
+    if (menu == self.packagesTableView.headerView.menu) {
+        for (NSMenuItem *mi in menu.itemArray) {
+            NSTableColumn *col = [mi representedObject];
+            [mi setState:col.isHidden ? NSOffState : NSOnState];
+        }
+    }
+    
+    /*
+     The source list menu
+     */
+    else if (menu == self.directoriesOutlineView.menu) {
+        [menu removeAllItems];
+        
+        NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+        id clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+        for (NSMenuItem *menuItem in menu.itemArray) {
+            [menuItem setEnabled:NO];
+        }
+        if ([clickedObject isKindOfClass:[CategorySourceListItemMO class]]) {
+            /*
+             Clicked on category objects
+             */
+            NSMenuItem *newCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+                                                                         action:@selector(createNewCategory)
+                                                                  keyEquivalent:@""];
+            newCategoryMenuItem.target = self;
+            [menu addItem:newCategoryMenuItem];
+            
+            NSMenuItem *renameCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Category..."
+                                                                            action:@selector(renameCategory)
+                                                                     keyEquivalent:@""];
+            renameCategoryMenuItem.target = self;
+            [menu addItem:renameCategoryMenuItem];
+            
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
+                    [menuItem setEnabled:NO];
+                } else if ([menuItem.title isEqualToString:@"New Category..."] || [menuItem.title isEqualToString:@"Rename Category..."]) {
+                    [menuItem setEnabled:YES];
+                } else {
+                    [menuItem setEnabled:NO];
+                }
+            }
+        } else if ([clickedObject isKindOfClass:[DeveloperSourceListItemMO class]]) {
+            /*
+             Clicked on developer objects
+             */
+            NSMenuItem *newDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
+                                                                          action:@selector(createNewDeveloper)
+                                                                   keyEquivalent:@""];
+            newDeveloperMenuItem.target = self;
+            [menu addItem:newDeveloperMenuItem];
+            
+            NSMenuItem *renameDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Developer..."
+                                                                             action:@selector(renameDeveloper)
+                                                                      keyEquivalent:@""];
+            renameDeveloperMenuItem.target = self;
+            [menu addItem:renameDeveloperMenuItem];
+            
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                    [menuItem setEnabled:NO];
+                } else if ([menuItem.title isEqualToString:@"New Developer..."] || [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                    [menuItem setEnabled:YES];
+                } else {
+                    [menuItem setEnabled:NO];
+                }
+            }
+        } else {
+            for (NSMenuItem *menuItem in menu.itemArray) {
+                [menuItem setEnabled:NO];
+            }
+        }
+    }
+    
+    /*
+     Packages table view category submenu
+     */
+    else if (menu == self.categoriesSubMenu) {
+        [self categoriesSubMenuWillOpen:menu];
+    }
 }
 
 
