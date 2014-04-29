@@ -15,6 +15,7 @@
 #import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MARequestStringValueController.h"
+#import "IconEditor.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f
@@ -70,6 +71,7 @@
 {
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    self.iconEditor = [[IconEditor alloc] initWithWindowNibName:@"IconEditor"];
     
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
@@ -176,6 +178,18 @@
     [self.packageInfoPathControl setAction:@selector(didSelectPathControlItem:)];
     [self.installerItemPathControl setTarget:self];
     [self.installerItemPathControl setAction:@selector(didSelectPathControlItem:)];
+}
+
+- (IBAction)editIconAction:(id)sender
+{
+    self.iconEditor.packageToEdit = self.packagesArrayController.selectedObjects[0];
+    
+    NSWindow *window = [self.iconEditor window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        
+    }
 }
 
 - (void)renameCategory

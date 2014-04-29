@@ -9,6 +9,7 @@
 #import "GradientBackgroundView.h"
 
 @class MARequestStringValueController;
+@class IconEditor;
 
 @interface PackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
     
@@ -37,5 +38,6 @@
 @property (strong) NSArray *defaultSortDescriptors;
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;
+@property (strong) IconEditor *iconEditor;
 
 @end

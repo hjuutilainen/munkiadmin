@@ -108,6 +108,8 @@
 		F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C1129546EB00B68F4F /* _PackageMO.m */; };
 		F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */; };
 		F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */; };
+		F5EA6ABA190F7ED100362FEE /* IconEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA6AB8190F7ED100362FEE /* IconEditor.m */; };
+		F5EA6ABB190F7ED100362FEE /* IconEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5EA6AB9190F7ED100362FEE /* IconEditor.xib */; };
 		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
@@ -320,6 +322,10 @@
 		F5DFC8D4129546EE00B68F4F /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
 		F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _StringObjectMO.h; sourceTree = "<group>"; };
+		F5EA6AB7190F7ED100362FEE /* IconEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconEditor.h; sourceTree = "<group>"; };
+		F5EA6AB8190F7ED100362FEE /* IconEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconEditor.m; sourceTree = "<group>"; };
+		F5EA6AB9190F7ED100362FEE /* IconEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IconEditor.xib; sourceTree = "<group>"; };
+		F5EA6ABC190F80E900362FEE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon2.png; path = MunkiAdmin/Graphics/manifestIcon2.png; sourceTree = "<group>"; };
 		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon2.png; path = MunkiAdmin/Graphics/packageIcon2.png; sourceTree = "<group>"; };
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon3.png; path = MunkiAdmin/Graphics/catalogIcon3.png; sourceTree = "<group>"; };
@@ -593,6 +599,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F5EA6ABC190F80E900362FEE /* QuartzCore.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -733,6 +740,9 @@
 				FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */,
 				FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */,
 				FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */,
+				F5EA6AB7190F7ED100362FEE /* IconEditor.h */,
+				F5EA6AB8190F7ED100362FEE /* IconEditor.m */,
+				F5EA6AB9190F7ED100362FEE /* IconEditor.xib */,
 			);
 			name = "UI Controllers";
 			path = "MunkiAdmin/UI Controllers";
@@ -840,6 +850,7 @@
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* ManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
+				F5EA6ABB190F7ED100362FEE /* IconEditor.xib in Resources */,
 				FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */,
 				FE1C6B7B145A7A0300BC815F /* PackageNameEditor.xib in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
@@ -967,6 +978,7 @@
 				FE0F4E7B14FB804C0081AEFF /* PackageSourceListItemMO.m in Sources */,
 				FE0F4E7E14FB86B40081AEFF /* ImageAndTitleCell.m in Sources */,
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
+				F5EA6ABA190F7ED100362FEE /* IconEditor.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
 				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
 				F5292073190665B600F02C00 /* CategoryMO.m in Sources */,
