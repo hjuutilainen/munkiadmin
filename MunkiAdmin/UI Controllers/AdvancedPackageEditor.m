@@ -14,6 +14,8 @@
 #import "PackageNameEditor.h"
 #import "InstallsItemEditor.h"
 #import "MACoreDataManager.h"
+#import "MARequestStringValueController.h"
+#import "IconEditor.h"
 
 #define kMinSplitViewWidth      300.0f
 
@@ -181,6 +183,74 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
 	}
 }
+
+
+- (void)createNewCategory
+{
+    [self.createNewCategoryController setDefaultValues];
+    self.createNewCategoryController.windowTitleText = @"New Category";
+    self.createNewCategoryController.titleText = @"New Category";
+    self.createNewCategoryController.okButtonTitle = @"Create";
+    self.createNewCategoryController.labelText = @"Name:";
+    self.createNewCategoryController.descriptionText = @"Enter name for new category. The category is written in to the pkginfo files and empty categories will not be saved when MunkiAdmin quits.";
+    NSWindow *window = [self.createNewCategoryController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        CategoryMO *newCategory = [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
+                                                                      inManagedObjectContext:nil];
+        [self.categoriesArrayController prepareContent];
+        
+        if (newCategory != nil) {
+            self.pkginfoToEdit.category = newCategory;
+            self.pkginfoToEdit.hasUnstagedChangesValue = YES;
+        }
+        
+        [[NSApp delegate] configureSourceListCategoriesSection];
+        [[NSApp delegate] updateSourceList];
+        
+    }
+    [self.createNewCategoryController setDefaultValues];
+}
+
+- (IBAction)createNewCategoryAction:(id)sender
+{
+    [self createNewCategory];
+}
+
+
+- (void)createNewDeveloper
+{
+    [self.createNewDeveloperController setDefaultValues];
+    self.createNewDeveloperController.windowTitleText = @"New Developer";
+    self.createNewDeveloperController.titleText = @"New Developer";
+    self.createNewDeveloperController.okButtonTitle = @"Create";
+    self.createNewDeveloperController.labelText = @"Name:";
+    self.createNewDeveloperController.descriptionText = @"Enter name for new developer. The developer is written in to the pkginfo files and empty developers will not be saved when MunkiAdmin quits.";
+    NSWindow *window = [self.createNewDeveloperController window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        DeveloperMO *newDeveloper = [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue
+                                                                         inManagedObjectContext:nil];
+        [self.developersArrayController prepareContent];
+        
+        if (newDeveloper != nil) {
+            self.pkginfoToEdit.developer = newDeveloper;
+            self.pkginfoToEdit.hasUnstagedChangesValue = YES;
+        }
+        [[NSApp delegate] configureSourceListDevelopersSection];
+        [[NSApp delegate] updateSourceList];
+    }
+    
+    [self.createNewDeveloperController setDefaultValues];
+}
+
+- (IBAction)createNewDeveloperAction:(id)sender
+{
+    [self createNewDeveloper];
+}
+
 
 - (void)commitChangesToCurrentPackage
 {
@@ -621,6 +691,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     self.installsItemEditor = [[InstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
     self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    self.iconEditor = [[IconEditor alloc] initWithWindowNibName:@"IconEditor"];
     
     [self configureTableViews];
     

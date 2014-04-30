@@ -11,6 +11,8 @@
 @class PackageNameEditor;
 @class InstallsItemEditor;
 @class PackageMO;
+@class MARequestStringValueController;
+@class IconEditor;
 
 @interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
      
@@ -22,6 +24,8 @@
 - (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
 - (IBAction)renameCurrentPackageAction:(id)sender;
+- (IBAction)createNewCategoryAction:(id)sender;
+- (IBAction)createNewDeveloperAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 - (void)commitChangesToCurrentPackage;
@@ -32,6 +36,9 @@
 @property (weak) PackageMO *pkginfoToEdit;
 @property (strong) InstallsItemEditor *installsItemEditor;
 @property (strong) PackageNameEditor *packageNameEditor;
+@property (strong) MARequestStringValueController *createNewCategoryController;
+@property (strong) MARequestStringValueController *createNewDeveloperController;
+@property (strong) IconEditor *iconEditor;
 @property NSModalSession modalSession;
 @property (weak) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (weak) IBOutlet NSTabView *mainTabView;

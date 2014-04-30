@@ -923,7 +923,7 @@
                 <binding destination="-2" name="filterPredicate" keyPath="mainCompoundPredicate" id="o3B-Za-E1y"/>
             </connections>
         </arrayController>
-        <treeController mode="entity" entityName="PackageSourceListItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" id="89" userLabel="Directories">
+        <treeController mode="entity" entityName="PackageSourceListItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" selectsInsertedObjects="NO" id="89" userLabel="Directories">
             <connections>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="90"/>
             </connections>

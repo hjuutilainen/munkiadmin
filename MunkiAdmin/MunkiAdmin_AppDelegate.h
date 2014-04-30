@@ -28,8 +28,6 @@
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
-    PackagesView *packagesViewController;
-    ManifestDetailView *manifestDetailViewController;
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;
     AdvancedPackageEditor *advancedPackageEditor;
@@ -60,6 +58,8 @@
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
 @property (strong) PackageNameEditor *packageNameEditor;
+@property (strong) PackagesView *packagesViewController;
+@property (strong) ManifestDetailView *manifestDetailViewController;
 @property (strong) NSTimer *operationTimer;
 
 # pragma mark -
@@ -198,5 +198,6 @@
 - (void)configureSourceListDirectoriesSection;
 - (void)configureSourceListCategoriesSection;
 - (void)configureSourceListDevelopersSection;
+- (void)updateSourceList;
 
 @end

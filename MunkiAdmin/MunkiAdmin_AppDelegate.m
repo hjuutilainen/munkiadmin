@@ -50,7 +50,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
+    NSURL *selectedURL = (NSURL *)[[[[self.packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
     if (selectedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
     }
@@ -61,7 +61,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    NSURL *selectedURL = (NSURL *)[[[[packagesViewController packagesArrayController] selectedObjects] lastObject] packageURL];
+    NSURL *selectedURL = (NSURL *)[[[[self.packagesViewController packagesArrayController] selectedObjects] lastObject] packageURL];
     if (selectedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
     }
@@ -122,6 +122,11 @@
 		NSLog(@"Can't find %@. Check the paths to munki tools.", makecatalogsPath);
 		return NO;
 	}
+}
+
+- (void)updateSourceList
+{
+    [self.packagesViewController.directoriesTreeController rearrangeObjects];
 }
 
 - (void)deleteAllManagedObjects
@@ -395,8 +400,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
-    packagesViewController = [[PackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
-    manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
+    self.packagesViewController = [[PackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
+    self.manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
@@ -425,7 +430,7 @@
 	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-        currentWholeView = [packagesViewController view];
+        currentWholeView = [self.packagesViewController view];
 		[self.mainSegmentedControl setSelectedSegment:0];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
@@ -439,7 +444,7 @@
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
 		self.selectedViewTag = 2;
 		self.selectedViewDescr = @"Manifests";
-		currentDetailView = [manifestDetailViewController view];
+		currentDetailView = [self.manifestDetailViewController view];
 		currentSourceView = self.manifestsListView;
         currentWholeView = self.mainSplitView;
 		[self.mainSegmentedControl setSelectedSegment:2];
@@ -447,7 +452,7 @@
 	else {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-        currentWholeView = [packagesViewController view];
+        currentWholeView = [self.packagesViewController view];
 		[self.mainSegmentedControl setSelectedSegment:0];
 	}
     	
@@ -555,7 +560,7 @@
         PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
         
         // Select the newly created package
-        [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+        [[self.packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
         
         // Run the assimilator
         if ([self.defaults boolForKey:@"assimilate_enabled"]) {
@@ -1046,7 +1051,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    PackageMO *firstSelected = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+    PackageMO *firstSelected = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
     
     if (!firstSelected) return;
     
@@ -1074,7 +1079,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
 	
-	NSArray *selectedPackages = [[packagesViewController packagesArrayController] selectedObjects];
+	NSArray *selectedPackages = [[self.packagesViewController packagesArrayController] selectedObjects];
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
@@ -1296,7 +1301,7 @@
                 PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
                 
                 // Select the newly created package
-                [[packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+                [[self.packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
                 
                 // Run the assimilator
                 if ([self.defaults boolForKey:@"assimilate_enabled"]) {
@@ -1343,19 +1348,19 @@
         [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
         [self.allPackagesArrayController setSelectionIndex:0];
     }
-    [[packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
-    [[packagesViewController packagesArrayController] setEntityName:@"Package"];
-    if ([[packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
-        [[packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
-        [[packagesViewController packagesArrayController] setSelectionIndex:0];
+    [[self.packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
+    [[self.packagesViewController packagesArrayController] setEntityName:@"Package"];
+    if ([[self.packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
+        [[self.packagesViewController packagesArrayController] setAutomaticallyPreparesContent:YES];
+        [[self.packagesViewController packagesArrayController] setSelectionIndex:0];
     }
-    [[packagesViewController directoriesTreeController] setManagedObjectContext:[self managedObjectContext]];
-    [[packagesViewController directoriesTreeController] setEntityName:@"PackageSourceListItem"];
-    if ([[packagesViewController directoriesTreeController] fetchWithRequest:nil merge:YES error:nil]) {
-        [[packagesViewController directoriesTreeController] setAutomaticallyPreparesContent:YES];
-        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+    [[self.packagesViewController directoriesTreeController] setManagedObjectContext:[self managedObjectContext]];
+    [[self.packagesViewController directoriesTreeController] setEntityName:@"PackageSourceListItem"];
+    if ([[self.packagesViewController directoriesTreeController] fetchWithRequest:nil merge:YES error:nil]) {
+        [[self.packagesViewController directoriesTreeController] setAutomaticallyPreparesContent:YES];
+        [[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
         NSUInteger defaultIndexes[] = {0,0};
-        [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
+        [[self.packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
     [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.packageInfosArrayController setEntityName:@"PackageInfo"];
@@ -1389,8 +1394,8 @@
     [self.applicationsArrayController setManagedObjectContext:nil];
     [self.packageInfosArrayController setManagedObjectContext:nil];
     [self.allPackagesArrayController setManagedObjectContext:nil];
-    [[packagesViewController packagesArrayController] setManagedObjectContext:nil];
-    [[packagesViewController directoriesTreeController] setManagedObjectContext:nil];
+    [[self.packagesViewController packagesArrayController] setManagedObjectContext:nil];
+    [[self.packagesViewController directoriesTreeController] setManagedObjectContext:nil];
     [self.manifestsArrayController setManagedObjectContext:nil];
 }
 
@@ -1405,9 +1410,9 @@
     } else if ([mode isEqualToString:@"manifests"]) {
         
         // Configure packages view source list
-        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        [[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
         NSUInteger defaultIndexes[] = {0,0};
-        [[packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
+        [[self.packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
 }
 
@@ -1462,9 +1467,9 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    if (currentWholeView == [packagesViewController view]) {
+    if (currentWholeView == [self.packagesViewController view]) {
         
-        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
+        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] lastObject];
         if (!object) return;
         
         [[[self managedObjectContext] undoManager] beginUndoGrouping];
@@ -1499,12 +1504,12 @@
     [advancedPackageEditor commitChangesToCurrentPackage];
     
     // Change selection
-    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
-    if ([currentIndexes lastIndex] < [[[packagesViewController packagesArrayController] arrangedObjects] count] - 1) {
-        [[packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
+    NSIndexSet *currentIndexes = [[self.packagesViewController packagesArrayController] selectionIndexes];
+    if ([currentIndexes lastIndex] < [[[self.packagesViewController packagesArrayController] arrangedObjects] count] - 1) {
+        [[self.packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
         
         // Populate new values
-        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
         [advancedPackageEditor setPkginfoToEdit:object];
         [advancedPackageEditor setDefaultValuesFromPackage:object];
     }
@@ -1516,12 +1521,12 @@
     [advancedPackageEditor commitChangesToCurrentPackage];
     
     // Change selection
-    NSIndexSet *currentIndexes = [[packagesViewController packagesArrayController] selectionIndexes];
+    NSIndexSet *currentIndexes = [[self.packagesViewController packagesArrayController] selectionIndexes];
     if ([currentIndexes lastIndex] > 0) {
-        [[packagesViewController packagesArrayController] setSelectionIndex:([currentIndexes lastIndex] - 1)];
+        [[self.packagesViewController packagesArrayController] setSelectionIndex:([currentIndexes lastIndex] - 1)];
         
         // Populate new values
-        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
         [advancedPackageEditor setPkginfoToEdit:object];
         [advancedPackageEditor setDefaultValuesFromPackage:object];
     }
@@ -1533,9 +1538,9 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    if (currentWholeView == [packagesViewController view]) {
+    if (currentWholeView == [self.packagesViewController view]) {
         
-        PackageMO *object = [[[packagesViewController packagesArrayController] selectedObjects] lastObject];
+        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] lastObject];
         if (!object) return;
         
         [[[self managedObjectContext] undoManager] beginUndoGrouping];
@@ -1603,10 +1608,10 @@
     }
     
     NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
-    NSArray *selectedConditionalItems = [[manifestDetailViewController conditionsTreeController] selectedObjects];
+    NSArray *selectedConditionalItems = [[self.manifestDetailViewController conditionsTreeController] selectedObjects];
     
     for (ManifestMO *selectedManifest in selectedManifests) {
-        if ([[[manifestDetailViewController conditionsTreeController] selectedObjects] count] == 0) {
+        if ([[[self.manifestDetailViewController conditionsTreeController] selectedObjects] count] == 0) {
             ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:self.managedObjectContext];
             newConditionalItem.munki_condition = thePredicateString;
             newConditionalItem.manifest = selectedManifest;
@@ -1655,7 +1660,7 @@
 
 - (IBAction)editConditionalItemAction:(id)sender
 {
-    ConditionalItemMO *selectedCondition = [[manifestDetailViewController.conditionsTreeController selectedObjects] lastObject];
+    ConditionalItemMO *selectedCondition = [[self.manifestDetailViewController.conditionsTreeController selectedObjects] lastObject];
     
     @try {
         NSPredicate *predicateToEdit = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
@@ -1684,7 +1689,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (ConditionalItemMO *aConditionalItem in [manifestDetailViewController.conditionsTreeController selectedObjects]) {
+    for (ConditionalItemMO *aConditionalItem in [self.manifestDetailViewController.conditionsTreeController selectedObjects]) {
         [self.managedObjectContext deleteObject:aConditionalItem];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1714,7 +1719,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (StringObjectMO *anIncludedManifest in [manifestDetailViewController.includedManifestsController selectedObjects]) {
+    for (StringObjectMO *anIncludedManifest in [self.manifestDetailViewController.includedManifestsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anIncludedManifest];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1754,7 +1759,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (StringObjectMO *aManagedInstall in [manifestDetailViewController.managedInstallsController selectedObjects]) {
+    for (StringObjectMO *aManagedInstall in [self.manifestDetailViewController.managedInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedInstall];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1785,7 +1790,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (StringObjectMO *aManagedUninstall in [manifestDetailViewController.managedUninstallsController selectedObjects]) {
+    for (StringObjectMO *aManagedUninstall in [self.manifestDetailViewController.managedUninstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUninstall];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1816,7 +1821,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (StringObjectMO *aManagedUpdate in [manifestDetailViewController.managedUpdatesController selectedObjects]) {
+    for (StringObjectMO *aManagedUpdate in [self.manifestDetailViewController.managedUpdatesController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUpdate];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -1847,7 +1852,7 @@
 {
     ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
     
-    for (StringObjectMO *anOptionalInstall in [manifestDetailViewController.optionalInstallsController selectedObjects]) {
+    for (StringObjectMO *anOptionalInstall in [self.manifestDetailViewController.optionalInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anOptionalInstall];
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
@@ -2911,9 +2916,9 @@
 {
 	switch ([sender tag]) {
 		case 1:
-			if (currentWholeView != [packagesViewController view]) {
+			if (currentWholeView != [self.packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-                currentWholeView = [packagesViewController view];
+                currentWholeView = [self.packagesViewController view];
                 currentDetailView = nil;
                 currentSourceView = nil;
                 [self.mainSegmentedControl setSelectedSegment:0];
@@ -2931,10 +2936,10 @@
 			}
 			break;
 		case 3:
-			if (currentDetailView != [manifestDetailViewController view]) {
+			if (currentDetailView != [self.manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
                 currentWholeView = self.mainSplitView;
-				currentDetailView = [manifestDetailViewController view];
+				currentDetailView = [self.manifestDetailViewController view];
 				currentSourceView = self.manifestsListView;
 				[self.mainSegmentedControl setSelectedSegment:2];
 				[self changeItemView];
@@ -2949,11 +2954,11 @@
 {
 	switch ([sender selectedSegment]) {
 		case 0:
-            if (currentWholeView != [packagesViewController view]) {
+            if (currentWholeView != [self.packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
                 currentDetailView = nil;
                 currentSourceView = nil;
-                currentWholeView = [packagesViewController view];
+                currentWholeView = [self.packagesViewController view];
 				[self changeItemView];
             }
 			break;
@@ -2967,10 +2972,10 @@
             }
 			break;
 		case 2:
-            if (currentDetailView != [manifestDetailViewController view]) {
+            if (currentDetailView != [self.manifestDetailViewController view]) {
 				self.selectedViewDescr = @"Manifests";
                 currentWholeView = self.mainSplitView;
-				currentDetailView = [manifestDetailViewController view];
+				currentDetailView = [self.manifestDetailViewController view];
 				currentSourceView = self.manifestsListView;
 				[self changeItemView];
             }
@@ -3016,17 +3021,17 @@
 
 - (void)changeItemView
 {
-    if (currentWholeView == [packagesViewController view]) {
+    if (currentWholeView == [self.packagesViewController view]) {
         // remove the old subview
         [self removeSubviews];
         
-        [[self.window contentView] addSubview:[packagesViewController view]];
-        [[packagesViewController view] setFrame:[[self.window contentView] frame]];
-        [[packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
-        [[packagesViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        [[packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
-        [[packagesViewController directoriesOutlineView] reloadData];
-        [[packagesViewController packagesArrayController] rearrangeObjects];
+        [[self.window contentView] addSubview:[self.packagesViewController view]];
+        [[self.packagesViewController view] setFrame:[[self.window contentView] frame]];
+        [[self.packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
+        [[self.packagesViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        [[self.packagesViewController directoriesOutlineView] reloadData];
+        [[self.packagesViewController packagesArrayController] rearrangeObjects];
     } else {
         // remove the old subview
         [self removeSubviews];

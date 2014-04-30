@@ -192,6 +192,19 @@
         moc = [[NSApp delegate] managedObjectContext];
     }
     
+    /*
+     Check for existing category with this title
+     */
+    NSFetchRequest *checkForExisting = [[NSFetchRequest alloc] init];
+    [checkForExisting setEntity:[NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", title];
+    [checkForExisting setPredicate:predicate];
+    NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
+    if (foundItems > 0) {
+        NSLog(@"Can't create. Found existing category with title: %@", title);
+        return nil;
+    }
+    
     CategoryMO *newCategory = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
     newCategory.title = title;
     return newCategory;
@@ -244,6 +257,18 @@
     
     if (moc == nil) {
         moc = [[NSApp delegate] managedObjectContext];
+    }
+    /*
+     Check for existing developer with this title
+     */
+    NSFetchRequest *checkForExisting = [[NSFetchRequest alloc] init];
+    [checkForExisting setEntity:[NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", title];
+    [checkForExisting setPredicate:predicate];
+    NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
+    if (foundItems > 0) {
+        NSLog(@"Can't create. Found existing developer with title: %@", title);
+        return nil;
     }
     
     DeveloperMO *newDeveloper = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:moc];
