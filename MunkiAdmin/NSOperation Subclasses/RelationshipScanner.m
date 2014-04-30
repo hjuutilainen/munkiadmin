@@ -309,14 +309,17 @@
     if (numFoundDevelopers != 0) {
         NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
         [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
-            DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
-            sourceListItem.type = @"regular";
-            sourceListItem.parent = mainDevelopersItem;
-            sourceListItem.originalIndexValue = 20;
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
-            sourceListItem.filterPredicate = predicate;
-            sourceListItem.developerReference = developer;
-            
+            NSArray *devPackageNames = [developer.packages valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+            NSInteger requiredCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
+            if ([devPackageNames count] >= requiredCount) {
+                DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
+                sourceListItem.type = @"regular";
+                sourceListItem.parent = mainDevelopersItem;
+                sourceListItem.originalIndexValue = 20;
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
+                sourceListItem.filterPredicate = predicate;
+                sourceListItem.developerReference = developer;
+            }
         }];
     }
 }
