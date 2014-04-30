@@ -11,6 +11,8 @@
                 <outlet property="developersSubMenu" destination="flY-IG-Ti7" id="m0a-em-nDW"/>
                 <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
                 <outlet property="directoriesTreeController" destination="89" id="93"/>
+                <outlet property="iconSubMenu" destination="rma-hJ-pCg" id="cB2-W8-Rer"/>
+                <outlet property="iconsSubMenu" destination="rma-hJ-pCg" id="XDg-Rc-ps1"/>
                 <outlet property="installerItemPathControl" destination="184" id="605"/>
                 <outlet property="leftPlaceHolder" destination="10" id="71"/>
                 <outlet property="middlePlaceHolder" destination="4" id="72"/>
@@ -934,12 +936,6 @@
                         <action selector="getInfoAction:" target="-1" id="309"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Edit Icon..." id="a8r-7r-aC3">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="editIconAction:" target="-2" id="ze3-jd-wOC"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Rename..." id="550">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -979,6 +975,16 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="eQx-OH-zdJ"/>
+                <menuItem title="Icon" id="PzF-0P-0Mj">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Icon" id="rma-hJ-pCg">
+                        <items>
+                            <menuItem title="Item" id="auu-KS-dbx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Category" id="EZ5-FN-9r1">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Category" id="Qzs-E6-IR3">

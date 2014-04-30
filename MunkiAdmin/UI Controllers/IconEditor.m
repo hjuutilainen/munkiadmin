@@ -8,6 +8,7 @@
 
 #import "IconEditor.h"
 #import "MunkiAdmin_AppDelegate.h"
+#import "MunkiRepositoryManager.h"
 
 @interface IconEditor ()
 
@@ -21,6 +22,7 @@
     if (self) {
         self.resizeOnSave = YES;
         self.useInSiblingPackages = YES;
+        self.windowTitle = @"Window";
     }
     return self;
 }
@@ -30,6 +32,37 @@
     [super windowDidLoad];
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+	
+    /*
+     Update the window title if package array changes
+     */
+    if ([key isEqualToString:@"windowTitle"])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"packagesToEdit", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+	
+    return keyPaths;
+}
+
+- (NSString *)windowTitle
+{
+    __block NSString *newTitle = @"Icon for";
+    NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    [[packageNames sortedArrayUsingSelector:@selector(localizedStandardCompare:)] enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+        if (idx == 0) {
+            newTitle = [newTitle stringByAppendingFormat:@" %@", obj];
+        } else if (idx == ([packageNames count] - 1)) {
+            newTitle = [newTitle stringByAppendingFormat:@" and %@", obj];
+        } else {
+            newTitle = [newTitle stringByAppendingFormat:@", %@", obj];
+        }
+    }];
+    return newTitle;
+}
 
 - (NSImage *)scaleImage:(NSImage *)image toSize:(NSSize)targetSize
 {
@@ -127,14 +160,67 @@
          set the icon_name key
          */
         if (self.useInSiblingPackages) {
+            
             /*
-             TODO
+             Get the individual 'name' keys for selected packages
              */
+            NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+            
+            NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+            NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+            MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+            
+            [packageNames enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+                
+                NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj];
+                defaultIconURL = [defaultIconURL URLByAppendingPathExtension:@"png"];
+                
+                // Find all packages with this name
+                NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
+                [getSiblings setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
+                NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"munki_name == %@", obj];
+                [getSiblings setPredicate:siblingPred];
+                NSArray *siblingPackages = [moc executeFetchRequest:getSiblings error:nil];
+                
+                if ([[sheet URL] isEqualTo:defaultIconURL]) {
+                    /*
+                     User saved to the default location for this package name
+                     */
+                    for (PackageMO *aSibling in siblingPackages) {
+                        [repoManager clearCustomIconForPackage:aSibling];
+                    }
+                } else {
+                    /*
+                     User chose a custom location and/or name for this package name
+                     */
+                    for (PackageMO *aSibling in siblingPackages) {
+                        [repoManager setIconNameFromURL:[sheet URL] forPackage:aSibling];
+                    }
+                }
+            }];
         } else {
-            /*
-             TODO
-             */
+            [self.packagesToEdit enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
+                NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+                NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj.munki_name];
+                defaultIconURL = [defaultIconURL URLByAppendingPathExtension:@"png"];
+                
+                if ([[sheet URL] isEqualTo:defaultIconURL]) {
+                    /*
+                     User saved to the default location
+                     */
+                    NSLog(@"Using default: \"%@\"", [sheet URL]);
+                    [[MunkiRepositoryManager sharedManager] updateIconForPackage:obj];
+                } else {
+                    /*
+                     User chose a custom location and/or name
+                     */
+                    [[MunkiRepositoryManager sharedManager] setIconNameFromURL:[sheet URL] forPackage:obj];
+                }
+            }];
         }
+        
+        self.currentImage = nil;
+        self.packagesToEdit = nil;
         
         /*
          Close the icon editor window
@@ -167,8 +253,14 @@
      */
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     [savePanel setDirectoryURL:[[NSApp delegate] iconsURL]];
-	[savePanel setCanSelectHiddenExtension:YES];
-    NSString *filename = [self.packageToEdit.munki_name stringByAppendingPathExtension:@"png"];
+	[savePanel setCanSelectHiddenExtension:NO];
+    NSString *filename;
+    NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    if ([packageNames count] == 1) {
+        filename = [(NSString *)packageNames[0] stringByAppendingPathExtension:@"png"];
+    } else {
+        filename = @"New Icon.png";
+    }
     [savePanel setNameFieldStringValue:filename];
 	
     [savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
@@ -183,6 +275,8 @@
 
 - (IBAction)cancelAction:(id)sender
 {
+    self.currentImage = nil;
+    self.packagesToEdit = nil;
     [[self window] orderOut:sender];
     [NSApp stopModalWithCode:NSModalResponseCancel];
 }
@@ -217,16 +311,21 @@
     }
 }
 
-- (IBAction)chooseFileAction:(id)sender
+- (void)chooseSourceImage
 {
-	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setCanSelectHiddenExtension:YES];
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.message = @"Choose an image to create an icon or choose any other file to extract its icon.";
 	[openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
 		if (result == NSFileHandlingPanelOKButton) {
             [openPanel orderOut:nil];
             [self openImageURL:[openPanel URL]];
         }
 	}];
+}
+
+- (IBAction)chooseFileAction:(id)sender
+{
+	[self chooseSourceImage];
 }
 
 @end

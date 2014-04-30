@@ -54,6 +54,10 @@
               newName:(NSString *)newName
               cascade:(BOOL)shouldCascade;
 
+- (void)updateIconForPackage:(PackageMO *)currentPackage;
+- (void)clearCustomIconForPackage:(PackageMO *)package;
+- (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;
+
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
@@ -67,5 +71,6 @@
 - (NSSet *)modifiedPackagesSinceLastSave;
 - (void)updateMunkiVersions;
 - (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error;
+- (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL;
 
 @end

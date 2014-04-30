@@ -137,6 +137,8 @@
     
     self.categoriesSubMenu.delegate = self;
     self.developersSubMenu.delegate = self;
+    self.iconSubMenu.delegate = self;
+    self.iconSubMenu.autoenablesItems = NO;
     
     /*
      Create a contextual menu for customizing table columns
@@ -182,7 +184,9 @@
 
 - (IBAction)editIconAction:(id)sender
 {
-    self.iconEditor.packageToEdit = self.packagesArrayController.selectedObjects[0];
+    PackageMO *firstPackage = self.packagesArrayController.selectedObjects[0];
+    self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
+    self.iconEditor.currentImage = firstPackage.iconImage.image;
     
     NSWindow *window = [self.iconEditor window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -388,6 +392,44 @@
     [self createNewCategory];
 }
 
+
+- (IBAction)clearCustomIconAction:(id)sender
+{
+    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    [self.packagesArrayController.selectedObjects enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
+        [repoManager clearCustomIconForPackage:obj];
+    }];
+}
+
+- (IBAction)createIconForNameAction:(id)sender
+{
+    self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
+    self.iconEditor.useInSiblingPackages = YES;
+    self.iconEditor.currentImage = nil;
+    
+    NSWindow *window = [self.iconEditor window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
+- (IBAction)createIconForPackageAction:(id)sender
+{
+    self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
+    self.iconEditor.useInSiblingPackages = NO;
+    self.iconEditor.currentImage = nil;
+    
+    NSWindow *window = [self.iconEditor window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
+
 #pragma mark -
 #pragma mark NSMenu delegates
 
@@ -540,6 +582,67 @@
     }
 }
 
+- (void)iconSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    /*
+     Get the category titles for selected packages
+     */
+    NSArray *selectedPackageNames = [self.packagesArrayController.selectedObjects valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
+    
+    /*
+     Create the menu items
+     */
+    NSPredicate *iconNotNilPredicate = [NSPredicate predicateWithFormat:@"munki_icon_name != %@", [NSNull null]];
+    NSArray *iconNotNilPackages = [self.packagesArrayController.selectedObjects filteredArrayUsingPredicate:iconNotNilPredicate];
+    
+    NSMenuItem *clearCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clear Custom Icon"
+                                                                 action:@selector(clearCustomIconAction:)
+                                                          keyEquivalent:@""];
+    
+    if ([iconNotNilPackages count] > 0) {
+        [clearCustomMenuItem setEnabled:YES];
+    } else {
+        [clearCustomMenuItem setEnabled:NO];
+    }
+    clearCustomMenuItem.target = self;
+    [menu addItem:clearCustomMenuItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    if ([selectedPackageNames count] == 1) {
+        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Create Icon for Name \"%@\"...", selectedPackageNames[0]]
+                                                                           action:@selector(createIconForNameAction:)
+                                                                    keyEquivalent:@""];
+        
+        createIconForNameMenuItem.target = self;
+        [menu addItem:createIconForNameMenuItem];
+        
+        PackageMO *selectedPackage = self.packagesArrayController.selectedObjects[0];
+        NSString *menuItemTitle;
+        if ([self.packagesArrayController.selectedObjects count] == 1) {
+            menuItemTitle = [NSString stringWithFormat:@"Create Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
+        } else {
+            menuItemTitle = @"Create Icon for Selected Packages...";
+        }
+        NSMenuItem *createIconForPackageMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
+                                                                              action:@selector(createIconForPackageAction:)
+                                                                       keyEquivalent:@""];
+        
+        createIconForPackageMenuItem.target = self;
+        [menu addItem:createIconForPackageMenuItem];
+    } else {
+        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Create Icon for Selected Packages..."
+                                                                           action:@selector(createIconForNameAction:)
+                                                                    keyEquivalent:@""];
+        
+        createIconForNameMenuItem.target = self;
+        [menu addItem:createIconForNameMenuItem];
+    }
+}
+
+
 - (void)menuWillOpen:(NSMenu *)menu
 {
     /*
@@ -621,17 +724,24 @@
     }
     
     /*
-     Packages table view category submenu
+     Packages table view Category submenu
      */
     else if (menu == self.categoriesSubMenu) {
         [self categoriesSubMenuWillOpen:menu];
     }
     
     /*
-     Packages table view developer submenu
+     Packages table view Developer submenu
      */
     else if (menu == self.developersSubMenu) {
         [self developerSubMenuWillOpen:menu];
+    }
+    
+    /*
+     Packages table view Icon submenu
+     */
+    else if (menu == self.iconSubMenu) {
+        [self iconSubMenuWillOpen:menu];
     }
 }
 

@@ -13,9 +13,12 @@
 @interface IconEditor : NSWindowController
 
 @property (weak) IBOutlet NSImageView *imageView;
-@property (weak) PackageMO *packageToEdit;
+@property (strong) NSArray *packagesToEdit;
 @property (strong) NSImage *currentImage;
+@property (nonatomic, strong) NSString *windowTitle;
 @property BOOL resizeOnSave;
 @property BOOL useInSiblingPackages;
+
+- (void)chooseSourceImage;
 
 @end

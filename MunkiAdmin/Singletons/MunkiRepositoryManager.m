@@ -1122,6 +1122,117 @@ static dispatch_queue_t serialQueue;
 }
 
 
+- (IconImageMO *)createIconImageFromURL:(NSURL *)url managedObjectContext:(NSManagedObjectContext *)moc
+{
+    /*
+     Search the context for an existing icon for the provided URL. If there's none, create a new icon object.
+     Passing nil for the URL returns the default pkginfo icon (icon for .pkg file type).
+     */
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc]];
+    NSPredicate *predicate;
+    if (url != nil) {
+        predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", url];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"originalURL = nil"];
+    }
+    [fetchRequest setPredicate:predicate];
+    
+    // Check the result count before fetching the actual object(s).
+    NSUInteger numFound = [moc countForFetchRequest:fetchRequest error:nil];
+    
+    // No existing icon found, create a new one
+    if (numFound == 0) {
+        IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
+        newIconImage.originalURL = url;
+        NSImage *image = [[NSImage alloc] initByReferencingURL:url];
+        newIconImage.image = image;
+        return newIconImage;
+    }
+    
+    // One existing icon found, fetch and reuse it.
+    else if (numFound == 1) {
+        IconImageMO *existingIconImage = [[moc executeFetchRequest:fetchRequest error:nil] objectAtIndex:0];
+        return existingIconImage;
+    }
+    
+    // Something went terribly wrong if we got here...
+    else {
+        NSLog(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
+        NSLog(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
+    }
+    
+    return nil;
+}
+
+- (void)updateIconForPackage:(PackageMO *)package
+{
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    
+    /*
+     Create a default icon for packages without a custom icon
+     */
+    IconImageMO *defaultIcon = [self createIconImageFromURL:nil managedObjectContext:moc];
+    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+    defaultIcon.image = pkgicon;
+    defaultIcon.originalURL = nil;
+    
+    if ((package.munki_icon_name != nil) && (![package.munki_icon_name isEqualToString:@""])) {
+        NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_icon_name];
+        if ([[iconURL pathExtension] isEqualToString:@""]) {
+            iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+        }
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+            IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+            package.iconImage = icon;
+        } else {
+            package.iconImage = defaultIcon;
+        }
+    } else {
+        NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_name];
+        iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+            IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+            package.iconImage = icon;
+        } else {
+            package.iconImage = defaultIcon;
+        }
+    }
+}
+
+- (void)clearCustomIconForPackage:(PackageMO *)package
+{
+    if (package.munki_icon_name != nil) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+            NSString *aDescr = [NSString stringWithFormat:@"Cleared custom icon_name in pkginfo file %@", package.relativePath];
+            NSLog(@"%@", aDescr);
+        }
+        package.iconImage = nil;
+        package.munki_icon_name = nil;
+        package.hasUnstagedChangesValue = YES;
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+            NSString *aDescr = [NSString stringWithFormat:@"Custom icon_name is already empty in pkginfo file %@", package.relativePath];
+            NSLog(@"%@", aDescr);
+        }
+    }
+    [self updateIconForPackage:package];
+}
+
+- (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package
+{
+    NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+    NSString *relativePath = [self relativePathToChildURL:iconURL parentURL:mainIconsURL];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+        NSString *aDescr = [NSString stringWithFormat:@"Changed icon_name to \"%@\" in pkginfo file %@", relativePath, package.relativePath];
+        NSLog(@"%@", aDescr);
+    }
+    package.munki_icon_name = relativePath;
+    [self updateIconForPackage:package];
+    package.hasUnstagedChangesValue = YES;
+}
+
+
 # pragma mark -
 # pragma mark Writing to the repository
 

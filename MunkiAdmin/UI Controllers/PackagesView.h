@@ -29,6 +29,7 @@
 @property (weak) IBOutlet NSMenu *packagesTableViewMenu;
 @property (weak) IBOutlet NSMenu *categoriesSubMenu;
 @property (weak) IBOutlet NSMenu *developersSubMenu;
+@property (weak) IBOutlet NSMenu *iconSubMenu;
 @property (weak) IBOutlet NSPathControl *packageInfoPathControl;
 @property (weak) IBOutlet NSPathControl *installerItemPathControl;
 
