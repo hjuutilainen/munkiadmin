@@ -305,7 +305,6 @@
      */
     else {
         NSImage *image = [[NSWorkspace sharedWorkspace] iconForFile:[url path]];
-        [image setScalesWhenResized:YES];
         [image setSize:NSMakeSize(1024.0, 1024.0)];
         self.currentImage = image;
     }
