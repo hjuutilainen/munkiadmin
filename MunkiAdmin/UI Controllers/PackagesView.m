@@ -405,7 +405,12 @@
 {
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
     self.iconEditor.useInSiblingPackages = YES;
-    self.iconEditor.currentImage = nil;
+    
+    PackageMO *pkg = self.packagesArrayController.selectedObjects[0];
+    NSImage *image = pkg.iconImage.image;
+    NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
+    [image setSize:[bestRepresentation size]];
+    self.iconEditor.currentImage = image;
     
     NSWindow *window = [self.iconEditor window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -419,7 +424,12 @@
 {
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
     self.iconEditor.useInSiblingPackages = NO;
-    self.iconEditor.currentImage = nil;
+    
+    PackageMO *pkg = self.packagesArrayController.selectedObjects[0];
+    NSImage *image = pkg.iconImage.image;
+    NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
+    [image setSize:[bestRepresentation size]];
+    self.iconEditor.currentImage = image;
     
     NSWindow *window = [self.iconEditor window];
     NSInteger result = [NSApp runModalForWindow:window];

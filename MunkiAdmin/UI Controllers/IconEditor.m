@@ -298,6 +298,8 @@
      */
     if ([[NSWorkspace sharedWorkspace] type:typeIdentifier conformsToType:@"public.image"]) {
         NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
+        NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
+        [image setSize:[bestRepresentation size]];
         self.currentImage = image;
     }
     /*
