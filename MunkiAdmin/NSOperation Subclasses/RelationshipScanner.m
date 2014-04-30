@@ -520,14 +520,16 @@
          If not, check if there's an icon mathing the "name" key. If both of these fail,
          use a default icon (which is the icon for .pkg file type).
          */
-        if (currentPackage.munki_icon_name != nil) {
-            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
+        if ((currentPackage.munki_icon_name != nil) && (![currentPackage.munki_icon_name isEqualToString:@""])) {
+            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_icon_name];
             if ([[iconURL pathExtension] isEqualToString:@""]) {
                 iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             }
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
                 IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
                 currentPackage.iconImage = icon;
+            } else {
+                currentPackage.iconImage = defaultIcon;
             }
         } else {
             NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
