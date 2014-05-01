@@ -137,6 +137,12 @@
      */
     if (returnCode == NSOKButton)
     {
+        NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+        MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+        
+        /*
+         Create a PNG file from the image (resizing it if necessary)
+         */
         NSData *imageData;
         NSSize newSize = NSMakeSize(512.0, 512.0);
         if (self.resizeOnSave && [self.currentImage size].width > newSize.width) {
@@ -146,18 +152,41 @@
         }
         NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:imageData];
         NSData *pngData = [rep representationUsingType:NSPNGFileType properties:nil];
-        [pngData writeToURL:[sheet URL] atomically:YES];
-        
         NSError *writeError;
         if (![pngData writeToURL:[sheet URL] options:NSDataWritingAtomic error:&writeError]) {
             NSLog(@"%@", writeError);
+            [NSApp presentError:writeError];
+            return;
         }
         
         /*
-         The write was successful
+         The write was successful.
          
-         If the icon save path is not the default one,
-         set the icon_name key
+         The first thing to do is to check if there is an existing image for the saved URL
+         */
+        NSFetchRequest *checkForExistingImage = [[NSFetchRequest alloc] init];
+        [checkForExistingImage setEntity:[NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc]];
+        NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"originalURL == %@", [sheet URL]];
+        [checkForExistingImage setPredicate:siblingPred];
+        NSArray *foundIconImages = [moc executeFetchRequest:checkForExistingImage error:nil];
+        if ([foundIconImages count] == 1) {
+            /*
+             User has probably replaced an existing icon during the save.
+             We need to reload the image from disk
+             */
+            IconImageMO *foundIconImage = foundIconImages[0];
+            foundIconImage.image = nil;
+            NSImage *image = [[NSImage alloc] initByReferencingURL:[sheet URL]];
+            foundIconImage.image = image;
+            
+        } else if ([foundIconImages count] > 1) {
+            NSLog(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");
+        } else {
+            // This is the way it should be...
+        }
+        
+        /*
+         Use the created icon in every package with the selected names
          */
         if (self.useInSiblingPackages) {
             
@@ -165,11 +194,7 @@
              Get the individual 'name' keys for selected packages
              */
             NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-            
-            NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
             NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
-            MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
-            
             [packageNames enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
                 
                 NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj];
@@ -198,7 +223,11 @@
                     }
                 }
             }];
-        } else {
+        }
+        /*
+         Use the created icon only for the selected packages only
+         */
+        else {
             [self.packagesToEdit enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
                 NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
                 NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj.munki_name];
@@ -208,13 +237,12 @@
                     /*
                      User saved to the default location
                      */
-                    NSLog(@"Using default: \"%@\"", [sheet URL]);
-                    [[MunkiRepositoryManager sharedManager] updateIconForPackage:obj];
+                    [repoManager clearCustomIconForPackage:obj];
                 } else {
                     /*
                      User chose a custom location and/or name
                      */
-                    [[MunkiRepositoryManager sharedManager] setIconNameFromURL:[sheet URL] forPackage:obj];
+                    [repoManager setIconNameFromURL:[sheet URL] forPackage:obj];
                 }
             }];
         }
