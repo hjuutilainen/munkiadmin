@@ -51,6 +51,7 @@ Please let me know if you are testing, using or just planning to use MunkiAdmin 
 * CocoaDev [MultiPanePreferences](http://www.cocoadev.com/index.pl?MultiPanePreferences)
 * Cathy Shive for [NSCell example code](http://katidev.com/blog/2008/02/22/styling-an-nstableview-dttah/)
 * MunkiAdmin uses developer icons created by these wonderful people:
+    * [IKONS by Piotr Kwiatkowski](http://www.ikons.piotrkwiatkowski.co.uk)
     * [Glyphish Pro](http://www.glyphish.com)
     * [Jonatan Castro Fernández](http://www.midtonedesign.com)
     * Jonas Rask Design
