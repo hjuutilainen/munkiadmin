@@ -12,17 +12,18 @@
 
 - (NSImage *)icon
 {
+    NSImage *image;
     if ([self.type isEqualToString:@"regular"]) {
-        NSImage *image = [NSImage imageNamed:NSImageNameActionTemplate];
+        image = [NSImage imageNamed:@"developerTemplate"];
         [image setTemplate:YES];
-        return image;
     } else if ([self.type isEqualToString:@"smart"]) {
-        return [NSImage imageNamed:NSImageNameFolderSmart];
-    } else {
-        NSImage *image = [NSImage imageNamed:NSImageNameFolder];
+        image = [NSImage imageNamed:@"developerUnknownTemplate"];
         [image setTemplate:YES];
-        return image;
+    } else {
+        image = [NSImage imageNamed:@"developerTemplate"];
+        [image setTemplate:YES];
     }
+    return image;
 }
 
 @end

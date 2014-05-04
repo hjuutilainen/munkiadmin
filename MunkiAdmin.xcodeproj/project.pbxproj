@@ -60,6 +60,9 @@
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
+		F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D4721916284C002FFF2B /* tagTemplate.pdf */; };
+		F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D476191630C4002FFF2B /* developerTemplate.pdf */; };
+		F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */; };
 		F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */; };
 		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
@@ -236,6 +239,9 @@
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		F569D4721916284C002FFF2B /* tagTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = tagTemplate.pdf; path = MunkiAdmin/Graphics/tagTemplate.pdf; sourceTree = "<group>"; };
+		F569D476191630C4002FFF2B /* developerTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerTemplate.pdf; path = MunkiAdmin/Graphics/developerTemplate.pdf; sourceTree = "<group>"; };
+		F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerUnknownTemplate.pdf; path = MunkiAdmin/Graphics/developerUnknownTemplate.pdf; sourceTree = "<group>"; };
 		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
 		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
@@ -569,6 +575,9 @@
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
 				F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */,
 				F525FB94165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png */,
+				F569D4721916284C002FFF2B /* tagTemplate.pdf */,
+				F569D476191630C4002FFF2B /* developerTemplate.pdf */,
+				F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */,
 				F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */,
 				F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */,
 				F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */,
@@ -840,6 +849,7 @@
 				F5299AB910FB76D20074CFEA /* edit.tiff in Resources */,
 				F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */,
 				F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */,
+				F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */,
 				F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */,
 				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
@@ -857,6 +867,8 @@
 				FEED6897149F3A7E006ABA1E /* AdvancedPackageEditor.xib in Resources */,
 				FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */,
 				FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */,
+				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
+				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
 				F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */,
 				F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */,
 				F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */,

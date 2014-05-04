@@ -12,17 +12,17 @@
 
 - (NSImage *)icon
 {
+    NSImage *image;
     if ([self.type isEqualToString:@"regular"]) {
-        NSImage *categoryImage = categoryImage = [NSImage imageNamed:NSImageNameActionTemplate];
-        [categoryImage setTemplate:YES];
-        return categoryImage;
+        image = [NSImage imageNamed:@"tagTemplate"];
+        [image setTemplate:YES];
     } else if ([self.type isEqualToString:@"smart"]) {
-        return [NSImage imageNamed:NSImageNameFolderSmart];
+        image = [NSImage imageNamed:NSImageNameFolderSmart];
     } else {
-        NSImage *categoryImage = [NSImage imageNamed:NSImageNameBookmarksTemplate];
-        [categoryImage setTemplate:YES];
-        return categoryImage;
+        image = [NSImage imageNamed:@"tagTemplate"];
+        [image setTemplate:YES];
     }
+    return image;
 }
 
 @end
