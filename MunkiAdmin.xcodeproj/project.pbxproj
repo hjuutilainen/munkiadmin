@@ -39,14 +39,6 @@
 		F529207C19066FE300F02C00 /* _CategorySourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F529207B19066FE300F02C00 /* _CategorySourceListItemMO.m */; };
 		F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */; };
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
-		F5299AAC10FB75E00074CFEA /* open alt.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AAB10FB75E00074CFEA /* open alt.tiff */; };
-		F5299AB010FB76270074CFEA /* install.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AAF10FB76270074CFEA /* install.tiff */; };
-		F5299AB710FB76D20074CFEA /* archive.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB110FB76D20074CFEA /* archive.tiff */; };
-		F5299AB810FB76D20074CFEA /* copy doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB210FB76D20074CFEA /* copy doc.tiff */; };
-		F5299AB910FB76D20074CFEA /* edit.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB310FB76D20074CFEA /* edit.tiff */; };
-		F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB410FB76D20074CFEA /* refresh.tiff */; };
-		F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB510FB76D20074CFEA /* terminal.tiff */; };
-		F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5299AB610FB76D20074CFEA /* trash.tiff */; };
 		F5299AD910FB78620074CFEA /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299AD810FB78620074CFEA /* MyCell.m */; };
 		F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* PkginfoScanner.m */; };
 		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
@@ -209,14 +201,6 @@
 		F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packagesMultipleIcon2.png; path = MunkiAdmin/Graphics/packagesMultipleIcon2.png; sourceTree = "<group>"; };
 		F5299A5810FB6AB00074CFEA /* PackageArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageArrayController.h; sourceTree = "<group>"; };
 		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
-		F5299AAB10FB75E00074CFEA /* open alt.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "open alt.tiff"; path = "MunkiAdmin/Graphics/open alt.tiff"; sourceTree = "<group>"; };
-		F5299AAF10FB76270074CFEA /* install.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = install.tiff; path = MunkiAdmin/Graphics/install.tiff; sourceTree = "<group>"; };
-		F5299AB110FB76D20074CFEA /* archive.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = archive.tiff; path = MunkiAdmin/Graphics/archive.tiff; sourceTree = "<group>"; };
-		F5299AB210FB76D20074CFEA /* copy doc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "copy doc.tiff"; path = "MunkiAdmin/Graphics/copy doc.tiff"; sourceTree = "<group>"; };
-		F5299AB310FB76D20074CFEA /* edit.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = edit.tiff; path = MunkiAdmin/Graphics/edit.tiff; sourceTree = "<group>"; };
-		F5299AB410FB76D20074CFEA /* refresh.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = refresh.tiff; path = MunkiAdmin/Graphics/refresh.tiff; sourceTree = "<group>"; };
-		F5299AB510FB76D20074CFEA /* terminal.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = terminal.tiff; path = MunkiAdmin/Graphics/terminal.tiff; sourceTree = "<group>"; };
-		F5299AB610FB76D20074CFEA /* trash.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = trash.tiff; path = MunkiAdmin/Graphics/trash.tiff; sourceTree = "<group>"; };
 		F5299AD710FB78620074CFEA /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
 		F5299AD810FB78620074CFEA /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
 		F53269A1125AF75C00AF967C /* PkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoScanner.h; sourceTree = "<group>"; };
@@ -571,36 +555,31 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FEB749FD147F9C20004EC366 /* unused */,
+				F5F6339411182934007CC030 /* catalogIcon3.png */,
+				F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */,
+				F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */,
+				F569D476191630C4002FFF2B /* developerTemplate.pdf */,
+				F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
+				F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */,
+				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
+				F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */,
+				F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */,
+				8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */,
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
 				F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */,
 				F525FB94165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png */,
-				F569D4721916284C002FFF2B /* tagTemplate.pdf */,
-				F569D476191630C4002FFF2B /* developerTemplate.pdf */,
-				F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */,
-				F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */,
-				F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */,
-				F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */,
 				F5CD0ACE15EC965600BBC11F /* openRepositoryTemplate.pdf */,
-				F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */,
-				F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */,
-				F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */,
-				F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */,
-				F5B2996015E78704008BE0EF /* packageIcon_32x32.png */,
-				F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */,
 				F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */,
 				F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */,
-				F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */,
-				F5F6339411182934007CC030 /* catalogIcon3.png */,
-				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
 				F5F63380111824CC007CC030 /* packageIcon2.png */,
-				F5299AB110FB76D20074CFEA /* archive.tiff */,
-				F5299AB210FB76D20074CFEA /* copy doc.tiff */,
-				F5299AAF10FB76270074CFEA /* install.tiff */,
-				F5299AAB10FB75E00074CFEA /* open alt.tiff */,
-				8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
+				F5B2996015E78704008BE0EF /* packageIcon_32x32.png */,
+				F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */,
+				F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */,
+				F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */,
+				F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */,
+				F569D4721916284C002FFF2B /* tagTemplate.pdf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -775,17 +754,6 @@
 			path = "MunkiAdmin/NSOperation Subclasses";
 			sourceTree = "<group>";
 		};
-		FEB749FD147F9C20004EC366 /* unused */ = {
-			isa = PBXGroup;
-			children = (
-				F5299AB310FB76D20074CFEA /* edit.tiff */,
-				F5299AB410FB76D20074CFEA /* refresh.tiff */,
-				F5299AB510FB76D20074CFEA /* terminal.tiff */,
-				F5299AB610FB76D20074CFEA /* trash.tiff */,
-			);
-			name = unused;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -842,15 +810,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */,
-				F5299AAC10FB75E00074CFEA /* open alt.tiff in Resources */,
-				F5299AB010FB76270074CFEA /* install.tiff in Resources */,
-				F5299AB710FB76D20074CFEA /* archive.tiff in Resources */,
-				F5299AB810FB76D20074CFEA /* copy doc.tiff in Resources */,
-				F5299AB910FB76D20074CFEA /* edit.tiff in Resources */,
-				F5299ABA10FB76D20074CFEA /* refresh.tiff in Resources */,
-				F5299ABB10FB76D20074CFEA /* terminal.tiff in Resources */,
 				F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */,
-				F5299ABC10FB76D20074CFEA /* trash.tiff in Resources */,
 				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
 				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
