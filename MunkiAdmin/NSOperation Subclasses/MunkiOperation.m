@@ -84,7 +84,18 @@
 	
 	NSArray *newArguments;
 	if ([self.command isEqualToString:@"makepkginfo"]) {
-		newArguments = [NSArray arrayWithObject:[self.targetURL relativePath]];
+        /*
+         Get default makepkginfo options from NSUserDefaults (if any)
+         */
+        NSArray *optionsFromDefaults = [[NSUserDefaults standardUserDefaults] arrayForKey:@"makepkginfoDefaultOptions"];
+        NSMutableArray *combinedOptions = [NSMutableArray new];
+        if (optionsFromDefaults != nil) {
+            [combinedOptions addObjectsFromArray:optionsFromDefaults];
+            [combinedOptions addObject:[self.targetURL relativePath]];
+            newArguments = [NSArray arrayWithArray:combinedOptions];
+        } else {
+            newArguments = [NSArray arrayWithObject:[self.targetURL relativePath]];
+        }
 	} else if ([self.command isEqualToString:@"installsitem"]) {
 		newArguments = [NSArray arrayWithObjects:@"--file", [self.targetURL relativePath], nil];
 	} else {
