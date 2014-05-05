@@ -697,29 +697,32 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     [self configureTableViews];
     
-    // Set a code-friendly font for the script views
-    NSFont *scriptFont = [NSFont userFixedPitchFontOfSize:11.0];
+    /*
+     Set a code-friendly font for the script views.
+     If the size is 0 or negative, this uses the fixed-pitch font at the default size.
+     */
+    NSFont *scriptFont = [NSFont userFixedPitchFontOfSize:0.0];
     
     // Configure the script text views
-    [[self.preinstallScriptTextView textStorage] setFont:scriptFont];
+    [self.preinstallScriptTextView setFont:scriptFont];
     self.preinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.postinstallScriptTextView textStorage] setFont:scriptFont];
+    [self.postinstallScriptTextView setFont:scriptFont];
     self.postinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.uninstallScriptTextView textStorage] setFont:scriptFont];
+    [self.uninstallScriptTextView setFont:scriptFont];
     self.uninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.preuninstallScriptTextView textStorage] setFont:scriptFont];
+    [self.preuninstallScriptTextView setFont:scriptFont];
     self.preuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.postuninstallScriptTextView textStorage] setFont:scriptFont];
+    [self.postuninstallScriptTextView setFont:scriptFont];
     self.postuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.installCheckScriptTextView textStorage] setFont:scriptFont];
+    [self.installCheckScriptTextView setFont:scriptFont];
     self.installCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
-    [[self.uninstallCheckScriptTextView textStorage] setFont:scriptFont];
+    [self.uninstallCheckScriptTextView setFont:scriptFont];
     self.uninstallCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
     
