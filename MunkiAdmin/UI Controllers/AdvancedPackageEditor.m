@@ -206,7 +206,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
             self.pkginfoToEdit.hasUnstagedChangesValue = YES;
         }
         
-        [[NSApp delegate] configureSourceListCategoriesSection];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
         [[NSApp delegate] updateSourceList];
         
     }
@@ -239,7 +239,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
             self.pkginfoToEdit.developer = newDeveloper;
             self.pkginfoToEdit.hasUnstagedChangesValue = YES;
         }
-        [[NSApp delegate] configureSourceListDevelopersSection];
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
         [[NSApp delegate] updateSourceList];
     }
     

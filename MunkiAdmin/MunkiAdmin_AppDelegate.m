@@ -41,8 +41,7 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
-	[preferencesController showWindow:self];
+	[self.preferencesController showWindow:self];
 }
 
 - (IBAction)showPkginfoInFinderAction:(id)sender
@@ -408,6 +407,7 @@
     advancedPackageEditor = [[AdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
     pkginfoAssimilator = [[PkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
+    self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
     
     
 	// Configure segmented control
@@ -635,7 +635,7 @@
     /*
      Rescan the main pkginfo dir for any newly created directories
      */
-    [self configureSourceListDirectoriesSection];
+    [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:self.managedObjectContext];
     
     
     /*
@@ -1278,7 +1278,7 @@
         if (saved) {
             
             // Rescan the main pkginfo dir for any newly created directories
-            [self configureSourceListDirectoriesSection];
+            [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:self.managedObjectContext];
             
             // Create a scanner job but run it without an operation queue
             PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
@@ -2239,211 +2239,6 @@
 	
 }
 
-- (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc
-{
-    id theItem = nil;
-    NSFetchRequest *fetchProducts = [[NSFetchRequest alloc] init];
-    [fetchProducts setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
-    [fetchProducts setPredicate:[NSPredicate predicateWithFormat:@"title == %@", title]];
-    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchProducts error:nil];
-    if (numFoundCatalogs == 0) {
-        theItem = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:moc];
-        [theItem setTitle:title];
-    } else {
-        theItem = [[moc executeFetchRequest:fetchProducts error:nil] objectAtIndex:0];
-    }
-    return theItem;
-}
-
-- (void)configureSourceListDevelopersSection
-{
-    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:self.managedObjectContext];
-    mainDevelopersItem.originalIndexValue = 1;
-    mainDevelopersItem.parent = nil;
-    mainDevelopersItem.isGroupItemValue = YES;
-    
-    DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:self.managedObjectContext];
-    noDeveloperSmartItem.type = @"smart";
-    noDeveloperSmartItem.parent = mainDevelopersItem;
-    noDeveloperSmartItem.originalIndexValue = 10;
-    noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
-    noDeveloperSmartItem.developerReference = nil;
-    
-    /*
-     Fetch all developers and create source list items
-     */
-    NSEntityDescription *developerEntityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [fetchRequest setSortDescriptors:@[sortByTitle]];
-    [fetchRequest setEntity:developerEntityDescr];
-    NSUInteger numFoundDevelopers = [self.managedObjectContext countForFetchRequest:fetchRequest error:nil];
-    if (numFoundDevelopers != 0) {
-        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-        [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
-            NSArray *devPackageNames = [developer.packages valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-            NSInteger requiredCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
-            if ([devPackageNames count] >= requiredCount) {
-                DeveloperSourceListItemMO *developerSourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:self.managedObjectContext];
-                developerSourceListItem.type = @"regular";
-                developerSourceListItem.parent = mainDevelopersItem;
-                developerSourceListItem.originalIndexValue = 20;
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
-                developerSourceListItem.filterPredicate = predicate;
-                developerSourceListItem.developerReference = developer;
-            }
-        }];
-    }
-}
-
-- (void)configureSourceListCategoriesSection
-{
-    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:self.managedObjectContext];
-    mainCategoriesItem.originalIndexValue = 1;
-    mainCategoriesItem.parent = nil;
-    mainCategoriesItem.isGroupItemValue = YES;
-    
-    CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:self.managedObjectContext];
-    noCategoriesSmartItem.type = @"smart";
-    noCategoriesSmartItem.parent = mainCategoriesItem;
-    noCategoriesSmartItem.originalIndexValue = 10;
-    noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
-    noCategoriesSmartItem.categoryReference = nil;
-        
-    /*
-     Fetch all categories and create source list items
-     */
-    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [fetchForCatalogs setSortDescriptors:@[sortByTitle]];
-    [fetchForCatalogs setEntity:categoryEntityDescr];
-    NSUInteger numFoundCatalogs = [self.managedObjectContext countForFetchRequest:fetchForCatalogs error:nil];
-    if (numFoundCatalogs != 0) {
-        NSArray *allCatalogs = [self.managedObjectContext executeFetchRequest:fetchForCatalogs error:nil];
-        [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
-            CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:self.managedObjectContext];
-            categorySourceListItem.type = @"regular";
-            categorySourceListItem.parent = mainCategoriesItem;
-            categorySourceListItem.originalIndexValue = 20;
-            NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
-            categorySourceListItem.filterPredicate = catalogPredicate;
-            categorySourceListItem.categoryReference = category;
-            
-        }];
-    }
-}
-
-
-- (void)configureSourceListRepositorySection
-{
-    PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
-    newSourceListItem2.title = @"REPOSITORY";
-    newSourceListItem2.originalIndexValue = 0;
-    newSourceListItem2.parent = nil;
-    newSourceListItem2.isGroupItemValue = YES;
-    
-    DirectoryMO *allPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    allPackagesSmartItem.title = @"All Packages";
-    allPackagesSmartItem.type = @"smart";
-    allPackagesSmartItem.parent = newSourceListItem2;
-    allPackagesSmartItem.originalIndexValue = 10;
-    allPackagesSmartItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
-    
-    DirectoryMO *newPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    newPackagesSmartItem.title = @"Last 30 Days";
-    newPackagesSmartItem.type = @"smart";
-    newPackagesSmartItem.parent = newSourceListItem2;
-    newPackagesSmartItem.originalIndexValue = 20;
-    NSDate *now = [NSDate date];
-    NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
-    dayComponent.day = -30;
-    NSDate *thirtyDaysAgo = [[NSCalendar currentCalendar] dateByAddingComponents:dayComponent toDate:now options:0];
-    NSPredicate *thirtyDaysAgoPredicate = [NSPredicate predicateWithFormat:@"packageInfoDateCreated >= %@", thirtyDaysAgo];
-    newPackagesSmartItem.filterPredicate = thirtyDaysAgoPredicate;
-    NSSortDescriptor *sortByDateCreated = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:NO];
-    newPackagesSmartItem.sortDescriptor = sortByDateCreated;
-    
-    DirectoryMO *appleUpdatesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-    appleUpdatesSmartItem.title = @"Apple Updates";
-    appleUpdatesSmartItem.type = @"smart";
-    appleUpdatesSmartItem.parent = newSourceListItem2;
-    appleUpdatesSmartItem.originalIndexValue = 30;
-    NSPredicate *appleUpdatesPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
-    appleUpdatesSmartItem.filterPredicate = appleUpdatesPredicate;
-}
-
-- (void)configureSourceListDirectoriesSection
-{
-    MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
-    
-    PackageSourceListItemMO *directoriesGroupItem = nil;
-    NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
-    [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext]];
-    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"DIRECTORIES"];
-    [groupItemRequest setPredicate:parentPredicate];
-    NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:groupItemRequest error:nil];
-    if (foundItems > 0) {
-        directoriesGroupItem = [[self.managedObjectContext executeFetchRequest:groupItemRequest error:nil] objectAtIndex:0];
-    } else {
-        directoriesGroupItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:self.managedObjectContext];
-        directoriesGroupItem.title = @"DIRECTORIES";
-        directoriesGroupItem.originalIndexValue = 2;
-        directoriesGroupItem.parent = nil;
-        directoriesGroupItem.isGroupItemValue = YES;
-    }
-    
-    DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:self.pkgsInfoURL managedObjectContext:self.managedObjectContext];
-    basePkgsInfoDirectory.title = @"pkgsinfo";
-    basePkgsInfoDirectory.type = @"regular";
-    basePkgsInfoDirectory.parent = directoriesGroupItem;
-    basePkgsInfoDirectory.originalIndexValue = 10;
-    basePkgsInfoDirectory.filterPredicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", self.pkgsInfoURL];
-    
-    
-    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
-	NSFileManager *fm = [NSFileManager defaultManager];
-        
-	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-	for (NSURL *anURL in pkgsInfoDirEnum)
-	{
-		NSNumber *isDir;
-		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-		if ([isDir boolValue]) {
-            NSFetchRequest *checkForExistingRequest = [[NSFetchRequest alloc] init];
-            [checkForExistingRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
-            NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", anURL];
-            [checkForExistingRequest setPredicate:parentPredicate];
-            NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:checkForExistingRequest error:nil];
-            if (foundItems == 0) {
-                DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:self.managedObjectContext];
-                newDirectory.originalURL = anURL;
-                newDirectory.originalIndexValue = 10;
-                newDirectory.type = @"regular";
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", anURL];
-                newDirectory.filterPredicate = predicate;
-                NSString *newTitle;
-                [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
-                newDirectory.title = newTitle;
-                
-                NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
-                if ([parentDirectory isEqual:self.pkgsInfoURL]) {
-                    newDirectory.parent = basePkgsInfoDirectory;
-                } else {
-                    NSFetchRequest *parentRequest = [[NSFetchRequest alloc] init];
-                    [parentRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:self.managedObjectContext]];
-                    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
-                    [parentRequest setPredicate:parentPredicate];
-                    NSUInteger foundItems = [self.managedObjectContext countForFetchRequest:parentRequest error:nil];
-                    if (foundItems > 0) {
-                        DirectoryMO *parent = [[self.managedObjectContext executeFetchRequest:parentRequest error:nil] objectAtIndex:0];
-                        newDirectory.parent = parent;
-                    }
-                }
-            }
-        }
-	}
-}
 
 - (void)scanCurrentRepoForPackages
 {
@@ -2458,17 +2253,17 @@
     /*
      Setup the REPOSITORIES section for side bar
      */
-    [self configureSourceListRepositorySection];
-    
-    /*
-     Setup the CATEGORIES section for side bar
-     */
-    //[self configureSourceListCategoriesSection];
+    [[MACoreDataManager sharedManager] configureSourceListRepositorySection:self.managedObjectContext];
     
     /*
      Setup the DIRECTORIES section for side bar
      */
-    [self configureSourceListDirectoriesSection];
+    [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:self.managedObjectContext];
+    
+    /*
+     Setup the INSTALLER TYPES section for side bar
+     */
+    [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:self.managedObjectContext];
     
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -3014,9 +2809,9 @@
         [[self.packagesViewController view] setFrame:[[self.window contentView] frame]];
         [[self.packagesViewController view] setFrameOrigin:NSMakePoint(0,0)];
         [[self.packagesViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-        [[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
-        [[self.packagesViewController directoriesOutlineView] reloadData];
-        [[self.packagesViewController packagesArrayController] rearrangeObjects];
+        //[[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
+        //[[self.packagesViewController directoriesOutlineView] reloadData];
+        //[[self.packagesViewController packagesArrayController] rearrangeObjects];
     } else {
         // remove the old subview
         [self removeSubviews];

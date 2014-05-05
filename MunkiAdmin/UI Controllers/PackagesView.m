@@ -225,7 +225,7 @@
         [[MACoreDataManager sharedManager] renameCategory:clickedCategory
                                                  newTitle:self.createNewCategoryController.stringValue
                                    inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[NSApp delegate] configureSourceListCategoriesSection];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
     }
 }
@@ -245,7 +245,7 @@
     if (result == NSModalResponseOK) {
         [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
                                             inManagedObjectContext:nil];
-        [[NSApp delegate] configureSourceListCategoriesSection];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -270,7 +270,7 @@
             package.category = newCategory;
             package.hasUnstagedChangesValue = YES;
         }
-        [[NSApp delegate] configureSourceListCategoriesSection];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -323,7 +323,7 @@
             package.developer = newDeveloper;
             package.hasUnstagedChangesValue = YES;
         }
-        [[NSApp delegate] configureSourceListDevelopersSection];
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -360,7 +360,7 @@
         [[MACoreDataManager sharedManager] renameDeveloper:clickedDeveloper
                                                  newTitle:self.createNewDeveloperController.stringValue
                                    inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[NSApp delegate] configureSourceListDevelopersSection];
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
     }
     [self.createNewDeveloperController setDefaultValues];
@@ -380,7 +380,7 @@
     
     if (result == NSModalResponseOK) {
         [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:nil];
-        [[NSApp delegate] configureSourceListDevelopersSection];
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
         
     }

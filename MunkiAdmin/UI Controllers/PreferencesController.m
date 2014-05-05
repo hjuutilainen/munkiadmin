@@ -7,6 +7,7 @@
 //
 
 #import "PreferencesController.h"
+#import "MACoreDataManager.h"
 
 
 @implementation PreferencesController
@@ -20,7 +21,7 @@
     [generalItem setPaletteLabel:@"General"];
     [generalItem setLabel:@"General"];
     [generalItem setToolTip:@"General preference options."];
-    [generalItem setImage:[NSImage imageNamed:@"NSPreferencesGeneral"]];
+    [generalItem setImage:[NSImage imageNamed:NSImageNamePreferencesGeneral]];
     [generalItem setTarget:self];
     [generalItem setAction:@selector(switchViews:)];
     [items setObject:generalItem forKey:@"General"];
@@ -53,10 +54,20 @@
     [advancedItem setPaletteLabel:@"Advanced"];
     [advancedItem setLabel:@"Advanced"];
     [advancedItem setToolTip:@"Advanced options."];
-    [advancedItem setImage:[NSImage imageNamed:@"NSAdvanced"]];
+    [advancedItem setImage:[NSImage imageNamed:NSImageNameAdvanced]];
     [advancedItem setTarget:self];
     [advancedItem setAction:@selector(switchViews:)];
     [items setObject:advancedItem forKey:@"Advanced"];
+    
+    NSToolbarItem *appearanceItem;
+	appearanceItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Appearance"];
+    [appearanceItem setPaletteLabel:@"Appearance"];
+    [appearanceItem setLabel:@"Appearance"];
+    [appearanceItem setToolTip:@"Appearance options."];
+    [appearanceItem setImage:[NSImage imageNamed:NSImageNameColorPanel]];
+    [appearanceItem setTarget:self];
+    [appearanceItem setAction:@selector(switchViews:)];
+    [items setObject:appearanceItem forKey:@"Appearance"];
 	
     //any other items you want to add, do so here.
     //after you are done, just do all the toolbar stuff.
@@ -66,12 +77,29 @@
     [toolbar setDelegate:self];
     [toolbar setAllowsUserCustomization:NO];
     [toolbar setAutosavesConfiguration:NO];
-    [myWindow setToolbar:toolbar];
-	[myWindow setShowsResizeIndicator:NO];
-	[myWindow setShowsToolbarButton:NO];
-    [myWindow center];
-	[myWindow makeKeyAndOrderFront:self];
+    [self.preferencesWindow setToolbar:toolbar];
+	[self.preferencesWindow setShowsResizeIndicator:NO];
+	[self.preferencesWindow setShowsToolbarButton:NO];
+    [self.preferencesWindow center];
+	[self.preferencesWindow makeKeyAndOrderFront:self];
     [self switchViews:nil];
+    
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.sidebarInstallerTypesVisible"
+                                                                 options:NSKeyValueObservingOptionNew
+                                                                 context:NULL];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.sidebarCategoriesVisible"
+                                                                 options:NSKeyValueObservingOptionNew
+                                                                 context:NULL];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.sidebarDevelopersVisible"
+                                                                 options:NSKeyValueObservingOptionNew
+                                                                 context:NULL];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.sidebarDirectoriesVisible"
+                                                                 options:NSKeyValueObservingOptionNew
+                                                                 context:NULL];
 }
 
 - (void)switchViews:(NSToolbarItem *)item
@@ -85,31 +113,47 @@
     }
 	
     NSView *prefsView;
-    [myWindow setTitle:sender];
+    [self.preferencesWindow setTitle:sender];
 	
     if ([sender isEqualToString:@"General"]) {
-        prefsView = generalView;
+        prefsView = self.generalView;
     } else if ([sender isEqualToString:@"Munki"]) {
-        prefsView = munkiView;
+        prefsView = self.munkiView;
     } else if ([sender isEqualToString:@"Import Options"]) {
-        prefsView = importOptionsView;
+        prefsView = self.importOptionsView;
     } else if ([sender isEqualToString:@"Advanced"]) {
-        prefsView = advancedView;
+        prefsView = self.advancedView;
+    } else if ([sender isEqualToString:@"Appearance"]) {
+        prefsView = self.appearanceView;
     } else {
-        prefsView = munkiView;
+        prefsView = self.munkiView;
     }
 	
-    NSView *tempView = [[NSView alloc] initWithFrame:[[myWindow contentView] frame]];
-    [myWindow setContentView:tempView];
+    NSView *tempView = [[NSView alloc] initWithFrame:[[self.preferencesWindow contentView] frame]];
+    [self.preferencesWindow setContentView:tempView];
     
-    NSRect newFrame = [myWindow frame];
-    newFrame.size.height = [prefsView frame].size.height + ([myWindow frame].size.height - [[myWindow contentView] frame].size.height);
+    NSRect newFrame = [self.preferencesWindow frame];
+    newFrame.size.height = [prefsView frame].size.height + ([self.preferencesWindow frame].size.height - [[self.preferencesWindow contentView] frame].size.height);
     newFrame.size.width = [prefsView frame].size.width;
-    newFrame.origin.y += ([[myWindow contentView] frame].size.height - [prefsView frame].size.height);
+    newFrame.origin.y += ([[self.preferencesWindow contentView] frame].size.height - [prefsView frame].size.height);
     
-    [myWindow setShowsResizeIndicator:YES];
-    [myWindow setFrame:newFrame display:YES animate:YES];
-    [myWindow setContentView:prefsView];
+    [self.preferencesWindow setShowsResizeIndicator:YES];
+    [self.preferencesWindow setFrame:newFrame display:YES animate:YES];
+    [self.preferencesWindow setContentView:prefsView];
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"values.sidebarInstallerTypesVisible"]) {
+        [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:[[NSApp delegate] managedObjectContext]];
+    } else if ([keyPath isEqualToString:@"values.sidebarCategoriesVisible"]) {
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+    } else if ([keyPath isEqualToString:@"values.sidebarDevelopersVisible"]) {
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+    } else if ([keyPath isEqualToString:@"values.sidebarDirectoriesVisible"]) {
+        [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:[[NSApp delegate] managedObjectContext]];
+    }
 }
 
 # pragma mark -
@@ -127,7 +171,7 @@
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)theToolbar
 {
-    return [NSArray arrayWithObjects:@"General", @"Munki", @"Import Options", @"Advanced", nil];
+    return [NSArray arrayWithObjects:@"General", @"Appearance", @"Munki", @"Import Options", @"Advanced", nil];
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers: (NSToolbar *)toolbar

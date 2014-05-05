@@ -267,101 +267,6 @@
     return nil;
 }
 
-- (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc
-{
-    id theItem = nil;
-    NSFetchRequest *fetchProducts = [[NSFetchRequest alloc] init];
-    [fetchProducts setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
-    [fetchProducts setPredicate:[NSPredicate predicateWithFormat:@"title == %@", title]];
-    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchProducts error:nil];
-    if (numFoundCatalogs == 0) {
-        theItem = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:moc];
-        [theItem setTitle:title];
-    } else {
-        theItem = [[moc executeFetchRequest:fetchProducts error:nil] objectAtIndex:0];
-    }
-    return theItem;
-}
-
-- (void)configureSourceListDevelopersSection:(NSManagedObjectContext *)moc
-{
-    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:moc];
-    mainDevelopersItem.originalIndexValue = 1;
-    mainDevelopersItem.parent = nil;
-    mainDevelopersItem.isGroupItemValue = YES;
-    
-    DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
-    noDeveloperSmartItem.type = @"smart";
-    noDeveloperSmartItem.parent = mainDevelopersItem;
-    noDeveloperSmartItem.originalIndexValue = 10;
-    noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
-    noDeveloperSmartItem.developerReference = nil;
-    
-    /*
-     Fetch all developers and create source list items
-     */
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [fetchRequest setSortDescriptors:@[sortByTitle]];
-    [fetchRequest setEntity:entityDescr];
-    NSUInteger numFoundDevelopers = [moc countForFetchRequest:fetchRequest error:nil];
-    if (numFoundDevelopers != 0) {
-        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
-        [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
-            NSArray *devPackageNames = [developer.packages valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-            NSInteger requiredCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
-            if ([devPackageNames count] >= requiredCount) {
-                DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
-                sourceListItem.type = @"regular";
-                sourceListItem.parent = mainDevelopersItem;
-                sourceListItem.originalIndexValue = 20;
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
-                sourceListItem.filterPredicate = predicate;
-                sourceListItem.developerReference = developer;
-            }
-        }];
-    }
-}
-
-- (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc
-{
-    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
-    mainCategoriesItem.originalIndexValue = 1;
-    mainCategoriesItem.parent = nil;
-    mainCategoriesItem.isGroupItemValue = YES;
-    
-    CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:moc];
-    noCategoriesSmartItem.type = @"smart";
-    noCategoriesSmartItem.parent = mainCategoriesItem;
-    noCategoriesSmartItem.originalIndexValue = 10;
-    noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
-    noCategoriesSmartItem.categoryReference = nil;
-    
-    /*
-     Fetch all categories and create source list items
-     */
-    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
-    NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [fetchForCatalogs setSortDescriptors:@[sortByTitle]];
-    [fetchForCatalogs setEntity:categoryEntityDescr];
-    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
-    if (numFoundCatalogs != 0) {
-        NSArray *allCatalogs = [moc executeFetchRequest:fetchForCatalogs error:nil];
-        [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
-            CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:moc];
-            categorySourceListItem.type = @"regular";
-            categorySourceListItem.parent = mainCategoriesItem;
-            categorySourceListItem.originalIndexValue = 20;
-            NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
-            categorySourceListItem.filterPredicate = catalogPredicate;
-            categorySourceListItem.categoryReference = category;
-            
-        }];
-    }
-}
-
 
 - (void)scanPkginfos
 {
@@ -602,12 +507,12 @@
     /*
      Create the source list items for category objects
      */
-    [self configureSourceListCategoriesSection:moc];
+    [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:moc];
     
     /*
      Create the source list items for developer objects
      */
-    [self configureSourceListDevelopersSection:moc];
+    [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:moc];
     
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];

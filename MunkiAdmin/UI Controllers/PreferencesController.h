@@ -13,14 +13,15 @@
 	
 	NSMutableDictionary *items;
 	NSToolbar *toolbar;
-	
-	IBOutlet NSWindow *myWindow;
-	IBOutlet NSView *generalView;
-	IBOutlet NSView *munkiView;
-    IBOutlet NSView *advancedView;
-    IBOutlet NSView *importOptionsView;
 
 }
+
+@property (weak) IBOutlet NSWindow *preferencesWindow;
+@property (weak) IBOutlet NSView *generalView;
+@property (weak) IBOutlet NSView *munkiView;
+@property (weak) IBOutlet NSView *advancedView;
+@property (weak) IBOutlet NSView *importOptionsView;
+@property (weak) IBOutlet NSView *appearanceView;
 
 - (void)switchViews:(NSToolbarItem *)item;
 

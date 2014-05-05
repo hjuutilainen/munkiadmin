@@ -60,6 +60,8 @@
 		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
 		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
 		F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F58548151906F643001E4527 /* MARequestStringValueController.xib */; };
+		F593259F191794050079398B /* InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F593259E191794050079398B /* InstallerTypeSourceListItemMO.m */; };
+		F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* GradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* GradientButtonBarView.m */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
@@ -235,6 +237,10 @@
 		F58548131906F643001E4527 /* MARequestStringValueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MARequestStringValueController.h; sourceTree = "<group>"; };
 		F58548141906F643001E4527 /* MARequestStringValueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MARequestStringValueController.m; sourceTree = "<group>"; };
 		F58548151906F643001E4527 /* MARequestStringValueController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MARequestStringValueController.xib; sourceTree = "<group>"; };
+		F593259D191794050079398B /* InstallerTypeSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerTypeSourceListItemMO.h; sourceTree = "<group>"; };
+		F593259E191794050079398B /* InstallerTypeSourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerTypeSourceListItemMO.m; sourceTree = "<group>"; };
+		F59325A0191794150079398B /* _InstallerTypeSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerTypeSourceListItemMO.h; sourceTree = "<group>"; };
+		F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerTypeSourceListItemMO.m; sourceTree = "<group>"; };
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = UserDefaults.plist; path = MunkiAdmin/UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* GradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* GradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonBarView.m; sourceTree = "<group>"; };
@@ -454,6 +460,8 @@
 				FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */,
 				265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */,
 				265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */,
+				F593259D191794050079398B /* InstallerTypeSourceListItemMO.h */,
+				F593259E191794050079398B /* InstallerTypeSourceListItemMO.m */,
 				F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */,
 				F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */,
 				F5DFC89B129546E600B68F4F /* InstallsItemMO.h */,
@@ -643,6 +651,8 @@
 				FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */,
 				265049FC172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.h */,
 				265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */,
+				F59325A0191794150079398B /* _InstallerTypeSourceListItemMO.h */,
+				F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */,
 				F506342E172FA97000EF7728 /* _InstallsItemCustomKeyMO.h */,
 				F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */,
 				F5DFC8CB129546ED00B68F4F /* _InstallsItemMO.h */,
@@ -925,6 +935,7 @@
 				F5DFC8C0129546EB00B68F4F /* _PackageInfoMO.m in Sources */,
 				F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */,
 				F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */,
+				F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */,
 				F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */,
 				F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */,
 				F50AC6AF12B9FDC30069EB00 /* ManifestItemArrayController.m in Sources */,
@@ -938,6 +949,7 @@
 				FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */,
 				FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */,
 				FEEBE375145FC5750004791A /* RelationshipScanner.m in Sources */,
+				F593259F191794050079398B /* InstallerTypeSourceListItemMO.m in Sources */,
 				FEED6894149F3A44006ABA1E /* AdvancedPackageEditor.m in Sources */,
 				FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */,
 				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,

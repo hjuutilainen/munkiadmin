@@ -24,6 +24,7 @@
 @class AdvancedPackageEditor;
 @class PredicateEditor;
 @class PkginfoAssimilator;
+@class PreferencesController;
 
 
 @interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
@@ -45,7 +46,6 @@
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;
 	
-	PreferencesController *preferencesController;
 }
 
 @property (weak) IBOutlet NSArrayController *installsItemsArrayController;
@@ -60,6 +60,7 @@
 @property (strong) PackageNameEditor *packageNameEditor;
 @property (strong) PackagesView *packagesViewController;
 @property (strong) ManifestDetailView *manifestDetailViewController;
+@property (strong) PreferencesController *preferencesController;
 @property (strong) NSTimer *operationTimer;
 
 # pragma mark -
@@ -195,9 +196,6 @@
 - (void)deleteAllManagedObjects;
 - (void)selectRepoAtURL:(NSURL *)newURL;
 - (void)changeItemView;
-- (void)configureSourceListDirectoriesSection;
-- (void)configureSourceListCategoriesSection;
-- (void)configureSourceListDevelopersSection;
 - (void)updateSourceList;
 
 @end

@@ -21,6 +21,7 @@
 #import "IconImageMO.h"
 #import "InstallerChoicesItemMO.h"
 #import "InstallerEnvironmentVariableMO.h"
+#import "InstallerTypeSourceListItemMO.h"
 #import "InstallsItemMO.h"
 #import "InstallsItemCustomKeyMO.h"
 #import "ItemToCopyMO.h"

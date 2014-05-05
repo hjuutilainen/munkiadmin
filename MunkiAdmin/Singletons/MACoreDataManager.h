@@ -31,5 +31,12 @@
 - (DeveloperMO *)createDeveloperWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (BOOL)renameDeveloper:(DeveloperMO *)developer newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc;
+- (void)configureSourcelistItems:(NSManagedObjectContext *)moc;
+- (void)configureSourceListDirectoriesSection:(NSManagedObjectContext *)moc;
+- (void)configureSourceListDevelopersSection:(NSManagedObjectContext *)moc;
+- (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc;
+- (void)configureSourceListRepositorySection:(NSManagedObjectContext *)moc;
+- (void)configureSourceListInstallerTypesSection:(NSManagedObjectContext *)moc;
 
 @end

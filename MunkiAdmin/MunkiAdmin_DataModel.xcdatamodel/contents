@@ -32,11 +32,11 @@
     </entity>
     <entity name="Category" representedClassName="CategoryMO" syncable="YES">
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="categorySourceListReference" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CategorySourceListItem" inverseName="categoryReference" inverseEntity="CategorySourceListItem" syncable="YES"/>
+        <relationship name="categorySourceListReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CategorySourceListItem" inverseName="categoryReference" inverseEntity="CategorySourceListItem" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="category" inverseEntity="Package" syncable="YES"/>
     </entity>
     <entity name="CategorySourceListItem" representedClassName="CategorySourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES">
-        <relationship name="categoryReference" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Category" inverseName="categorySourceListReference" inverseEntity="Category" syncable="YES"/>
+        <relationship name="categoryReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="categorySourceListReference" inverseEntity="Category" syncable="YES"/>
     </entity>
     <entity name="ConditionalItem" representedClassName="ConditionalItemMO" syncable="YES">
         <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES"/>
@@ -82,6 +82,7 @@
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installerEnvironmentVariables" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
+    <entity name="InstallerTypeSourceListItem" representedClassName="InstallerTypeSourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES"/>
     <entity name="InstallsItem" representedClassName="InstallsItemMO" syncable="YES">
         <attribute name="munki_CFBundleIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_CFBundleName" optional="YES" attributeType="String" syncable="YES"/>
@@ -297,8 +298,10 @@
         <element name="Catalog" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CatalogInfo" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Category" positionX="9" positionY="153" width="128" height="90"/>
-        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="60"/>
+        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="58"/>
         <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
+        <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
         <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
         <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
         <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="120"/>
@@ -317,7 +320,6 @@
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
-        <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
-        <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
+        <element name="InstallerTypeSourceListItem" positionX="9" positionY="153" width="128" height="45"/>
     </elements>
 </model>
