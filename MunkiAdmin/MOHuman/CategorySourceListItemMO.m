@@ -13,11 +13,9 @@
 - (NSImage *)icon
 {
     NSImage *image;
-    if ([self.type isEqualToString:@"regular"]) {
-        image = [NSImage imageNamed:@"tagTemplate"];
+    if ([self.title isEqualToString:@"Uncategorized"] && [self.type isEqualToString:@"smart"]) {
+        image = [NSImage imageNamed:@"tagMultipleTemplate"];
         [image setTemplate:YES];
-    } else if ([self.type isEqualToString:@"smart"]) {
-        image = [NSImage imageNamed:NSImageNameFolderSmart];
     } else {
         image = [NSImage imageNamed:@"tagTemplate"];
         [image setTemplate:YES];
