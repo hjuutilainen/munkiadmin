@@ -99,10 +99,11 @@
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortByMunkiName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByMunkiDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByMunkiVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.directoriesTreeController setSortDescriptors:@[sortByIndex, sortByTitle]];
     [self.packagesArrayController setSortDescriptors:@[sortByMunkiName, sortByMunkiVersion]];
-    self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion];
+    self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion, sortByMunkiDisplayName];
     
     self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
@@ -768,10 +769,10 @@
     if ([selectedSourceListItems count] > 0) {
         id selectedItem = [selectedSourceListItems objectAtIndex:0];
         NSPredicate *productFilter = [selectedItem filterPredicate];
-        NSSortDescriptor *productSort = [selectedItem sortDescriptor];
+        NSArray *productSortDescriptors = [selectedItem sortDescriptors];
         [self setPackagesMainFilterPredicate:productFilter];
-        if (productSort != nil) {
-            [self.packagesArrayController setSortDescriptors:@[productSort]];
+        if (productSortDescriptors != nil) {
+            [self.packagesArrayController setSortDescriptors:productSortDescriptors];
         } else {
             [self.packagesArrayController setSortDescriptors:self.defaultSortDescriptors];
         }

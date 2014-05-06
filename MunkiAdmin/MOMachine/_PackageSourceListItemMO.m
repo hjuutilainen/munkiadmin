@@ -7,7 +7,7 @@ const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes
 	.filterPredicate = @"filterPredicate",
 	.isGroupItem = @"isGroupItem",
 	.originalIndex = @"originalIndex",
-	.sortDescriptor = @"sortDescriptor",
+	.sortDescriptors = @"sortDescriptors",
 	.title = @"title",
 	.type = @"type",
 };
@@ -122,7 +122,7 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 
 
 
-@dynamic sortDescriptor;
+@dynamic sortDescriptors;
 
 
 

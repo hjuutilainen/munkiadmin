@@ -595,7 +595,10 @@
     NSPredicate *thirtyDaysAgoPredicate = [NSPredicate predicateWithFormat:@"packageInfoDateCreated >= %@", thirtyDaysAgo];
     newPackagesSmartItem.filterPredicate = thirtyDaysAgoPredicate;
     NSSortDescriptor *sortByDateCreated = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:NO];
-    newPackagesSmartItem.sortDescriptor = sortByDateCreated;
+    NSSortDescriptor *sortByMunkiName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByMunkiDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByMunkiVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
+    newPackagesSmartItem.sortDescriptors = @[sortByDateCreated, sortByMunkiName, sortByMunkiVersion, sortByMunkiDisplayName];
 }
 
 

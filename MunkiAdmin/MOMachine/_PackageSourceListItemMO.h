@@ -8,7 +8,7 @@ extern const struct PackageSourceListItemMOAttributes {
 	__unsafe_unretained NSString *filterPredicate;
 	__unsafe_unretained NSString *isGroupItem;
 	__unsafe_unretained NSString *originalIndex;
-	__unsafe_unretained NSString *sortDescriptor;
+	__unsafe_unretained NSString *sortDescriptors;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *type;
 } PackageSourceListItemMOAttributes;
@@ -82,11 +82,11 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-@property (nonatomic, strong) id sortDescriptor;
+@property (nonatomic, strong) id sortDescriptors;
 
 
 
-//- (BOOL)validateSortDescriptor:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSortDescriptors:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -165,8 +165,8 @@ extern const struct PackageSourceListItemMOFetchedProperties {
 
 
 
-- (id)primitiveSortDescriptor;
-- (void)setPrimitiveSortDescriptor:(id)value;
+- (id)primitiveSortDescriptors;
+- (void)setPrimitiveSortDescriptors:(id)value;
 
 
 
