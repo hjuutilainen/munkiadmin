@@ -377,6 +377,9 @@
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
                 sourceListItem.filterPredicate = predicate;
                 sourceListItem.developerReference = developer;
+            } else {
+                DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
+                [moc deleteObject:sourceListItem];
             }
         }];
     }

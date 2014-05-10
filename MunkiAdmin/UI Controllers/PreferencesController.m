@@ -8,6 +8,7 @@
 
 #import "PreferencesController.h"
 #import "MACoreDataManager.h"
+#import "MunkiAdmin_AppDelegate.h"
 
 
 @implementation PreferencesController
@@ -84,6 +85,10 @@
 	[self.preferencesWindow makeKeyAndOrderFront:self];
     [self switchViews:nil];
     
+    /*
+     Add observers for the sidebar related defaults keys.
+     We need to update the sidebar when these change.
+     */
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
                                                               forKeyPath:@"values.sidebarInstallerTypesVisible"
                                                                  options:NSKeyValueObservingOptionNew
@@ -98,6 +103,10 @@
                                                                  context:NULL];
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
                                                               forKeyPath:@"values.sidebarDirectoriesVisible"
+                                                                 options:NSKeyValueObservingOptionNew
+                                                                 context:NULL];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.sidebarDeveloperMinimumNumberOfPackageNames"
                                                                  options:NSKeyValueObservingOptionNew
                                                                  context:NULL];
 }
@@ -145,15 +154,21 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    /*
+     Reconfigure the package view sidebar if related defaults change
+     */
     if ([keyPath isEqualToString:@"values.sidebarInstallerTypesVisible"]) {
         [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:[[NSApp delegate] managedObjectContext]];
     } else if ([keyPath isEqualToString:@"values.sidebarCategoriesVisible"]) {
         [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
     } else if ([keyPath isEqualToString:@"values.sidebarDevelopersVisible"]) {
         [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+    } else if ([keyPath isEqualToString:@"values.sidebarDeveloperMinimumNumberOfPackageNames"]) {
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
     } else if ([keyPath isEqualToString:@"values.sidebarDirectoriesVisible"]) {
         [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:[[NSApp delegate] managedObjectContext]];
     }
+    [[NSApp delegate] updateSourceList];
 }
 
 # pragma mark -
