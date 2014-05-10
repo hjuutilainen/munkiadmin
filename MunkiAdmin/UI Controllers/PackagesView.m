@@ -15,7 +15,7 @@
 #import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MARequestStringValueController.h"
-#import "IconEditor.h"
+#import "MAIconEditor.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f
@@ -71,7 +71,7 @@
 {
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
-    self.iconEditor = [[IconEditor alloc] initWithWindowNibName:@"IconEditor"];
+    self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
     
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];

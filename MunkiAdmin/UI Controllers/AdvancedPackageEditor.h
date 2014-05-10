@@ -12,7 +12,7 @@
 @class InstallsItemEditor;
 @class PackageMO;
 @class MARequestStringValueController;
-@class IconEditor;
+@class MAIconEditor;
 
 @interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
      
@@ -38,7 +38,7 @@
 @property (strong) PackageNameEditor *packageNameEditor;
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;
-@property (strong) IconEditor *iconEditor;
+@property (strong) MAIconEditor *iconEditor;
 @property NSModalSession modalSession;
 @property (weak) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (weak) IBOutlet NSTabView *mainTabView;

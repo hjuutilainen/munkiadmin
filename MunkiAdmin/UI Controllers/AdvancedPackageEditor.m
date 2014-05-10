@@ -15,7 +15,7 @@
 #import "InstallsItemEditor.h"
 #import "MACoreDataManager.h"
 #import "MARequestStringValueController.h"
-#import "IconEditor.h"
+#import "MAIconEditor.h"
 
 #define kMinSplitViewWidth      300.0f
 
@@ -693,7 +693,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
-    self.iconEditor = [[IconEditor alloc] initWithWindowNibName:@"IconEditor"];
+    self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
     
     [self configureTableViews];
     

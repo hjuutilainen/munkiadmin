@@ -10,7 +10,7 @@
 #import "DataModelHeaders.h"
 
 
-@interface IconEditor : NSWindowController
+@interface MAIconEditor : NSWindowController
 
 @property (weak) IBOutlet NSImageView *imageView;
 @property (strong) NSArray *packagesToEdit;

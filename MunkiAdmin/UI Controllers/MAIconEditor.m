@@ -6,15 +6,15 @@
 //
 //
 
-#import "IconEditor.h"
+#import "MAIconEditor.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MunkiRepositoryManager.h"
 
-@interface IconEditor ()
+@interface MAIconEditor ()
 
 @end
 
-@implementation IconEditor
+@implementation MAIconEditor
 
 - (id)initWithWindow:(NSWindow *)window
 {
