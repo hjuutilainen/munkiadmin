@@ -212,7 +212,7 @@
         NSSortDescriptor *byVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
         NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
         IconImageMO *iconImage = [[foundPkgs objectAtIndex:0] iconImage];
-        return iconImage.image;
+        return iconImage.imageRepresentation;
     }
     
     return [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];

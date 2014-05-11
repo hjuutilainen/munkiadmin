@@ -175,9 +175,9 @@
              We need to reload the image from disk
              */
             IconImageMO *foundIconImage = foundIconImages[0];
-            foundIconImage.image = nil;
+            foundIconImage.imageRepresentation = nil;
             NSImage *image = [[NSImage alloc] initByReferencingURL:[sheet URL]];
-            foundIconImage.image = image;
+            foundIconImage.imageRepresentation = image;
             
         } else if ([foundIconImages count] > 1) {
             NSLog(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");

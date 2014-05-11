@@ -248,7 +248,7 @@
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
         newIconImage.originalURL = url;
         NSImage *image = [[NSImage alloc] initByReferencingURL:url];
-        newIconImage.image = image;
+        newIconImage.imageRepresentation = image;
         return newIconImage;
     }
     
@@ -309,7 +309,7 @@
      */
     IconImageMO *defaultIcon = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
     NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
-    defaultIcon.image = pkgicon;
+    defaultIcon.imageRepresentation = pkgicon;
     defaultIcon.originalURL = nil;
     
     PackageSourceListItemMO *categoriesGroupItem = nil;

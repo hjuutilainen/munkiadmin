@@ -73,7 +73,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="1763">
-                        <rect key="frame" x="142" y="126" width="49" height="17"/>
+                        <rect key="frame" x="141" y="126" width="50" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Status:" id="1764">
                             <font key="font" metaFont="systemBold"/>
@@ -977,7 +977,7 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="20" headerView="1266" id="845">
-                                <rect key="frame" x="0.0" y="0.0" width="764.5" height="490"/>
+                                <rect key="frame" x="0.0" y="0.0" width="764" height="490"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1007,7 +1007,7 @@ Gw
                                         <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="NcN-wK-qsx"/>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <connections>
-                                            <binding destination="869" name="value" keyPath="arrangedObjects.package.iconImage.image" id="pAj-2L-41B"/>
+                                            <binding destination="869" name="value" keyPath="arrangedObjects.package.iconImage.imageRepresentation" id="nzg-bc-f4g"/>
                                         </connections>
                                     </tableColumn>
                                     <tableColumn editable="NO" width="206.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
@@ -1026,7 +1026,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_name" id="892"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="218.015625" minWidth="40" maxWidth="1000" id="848">
+                                    <tableColumn editable="NO" width="217.015625" minWidth="40" maxWidth="1000" id="848">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1063,7 +1063,7 @@ Gw
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="844">
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="844">
                         <rect key="frame" x="1" y="491" width="764" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>

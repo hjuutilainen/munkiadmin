@@ -57,6 +57,7 @@
 - (void)updateIconForPackage:(PackageMO *)currentPackage;
 - (void)clearCustomIconForPackage:(PackageMO *)package;
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;
+- (void)scanIconsDirectoryForImages;
 
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;

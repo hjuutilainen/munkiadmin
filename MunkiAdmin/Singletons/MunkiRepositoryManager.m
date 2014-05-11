@@ -1146,7 +1146,7 @@ static dispatch_queue_t serialQueue;
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
         newIconImage.originalURL = url;
         NSImage *image = [[NSImage alloc] initByReferencingURL:url];
-        newIconImage.image = image;
+        newIconImage.imageRepresentation = image;
         return newIconImage;
     }
     
@@ -1174,7 +1174,7 @@ static dispatch_queue_t serialQueue;
      */
     IconImageMO *defaultIcon = [self createIconImageFromURL:nil managedObjectContext:moc];
     NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
-    defaultIcon.image = pkgicon;
+    defaultIcon.imageRepresentation = pkgicon;
     defaultIcon.originalURL = nil;
     
     if ((package.munki_icon_name != nil) && (![package.munki_icon_name isEqualToString:@""])) {
@@ -1230,6 +1230,45 @@ static dispatch_queue_t serialQueue;
     package.munki_icon_name = relativePath;
     [self updateIconForPackage:package];
     package.hasUnstagedChangesValue = YES;
+}
+
+- (void)scanIconsDirectoryForImages
+{
+    /*
+     Go through every file in <repo>/icons directory and create an IconImage object
+     if missing. Most of the files should have it already if used in any pkginfos.
+     */
+    NSURL *directoryURL = [[NSApp delegate] iconsURL];
+    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+    
+    NSArray *keys = @[NSURLTypeIdentifierKey, NSURLLocalizedNameKey];
+    
+    NSDirectoryEnumerator *dirEnum;
+    NSDirectoryEnumerationOptions options = (NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles);
+    dirEnum = [[NSFileManager defaultManager] enumeratorAtURL:directoryURL
+                                   includingPropertiesForKeys:keys
+                                                      options:options
+                                                 errorHandler:^(NSURL *url, NSError *error) {
+                                                     return YES;
+                                                 }];
+    for (NSURL *url in dirEnum) {
+        /*
+         Get the uniform type identifier (UTI) for the URL
+         */
+        NSString *typeIdentifier;
+        NSError *error;
+        if (![url getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:&error]) {
+            NSLog(@"%@", error);
+            continue;
+        }
+        
+        /*
+         If this is an image file, create an IconImage object.
+         */
+        if ([workspace type:typeIdentifier conformsToType:@"public.image"]) {
+            [self createIconImageFromURL:url managedObjectContext:[[NSApp delegate] managedObjectContext]];
+        }
+    }
 }
 
 

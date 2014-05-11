@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -77,7 +77,7 @@
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="XiS-Zg-et1"/>
                                                                                 <connections>
-                                                                                    <binding destination="Wbg-iw-aCd" name="value" keyPath="objectValue.latestPackage.iconImage.image" id="O9V-Ef-rh1"/>
+                                                                                    <binding destination="Wbg-iw-aCd" name="value" keyPath="objectValue.latestPackage.iconImage.imageRepresentation" id="ZfI-hX-umF"/>
                                                                                 </connections>
                                                                             </imageView>
                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="OVf-ZU-lzK">
@@ -210,7 +210,7 @@
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSApplicationIcon" id="UcP-Ln-UEb"/>
                                                                                 <connections>
-                                                                                    <binding destination="Cj0-L2-Q9s" name="value" keyPath="objectValue.iconImage.image" id="2af-8W-Nkx"/>
+                                                                                    <binding destination="Cj0-L2-Q9s" name="value" keyPath="objectValue.iconImage.imageRepresentation" id="bdr-8c-a2w"/>
                                                                                 </connections>
                                                                             </imageView>
                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="9Dx-MJ-wXj">

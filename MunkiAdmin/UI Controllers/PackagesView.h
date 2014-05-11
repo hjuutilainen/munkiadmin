@@ -10,6 +10,7 @@
 
 @class MARequestStringValueController;
 @class MAIconEditor;
+@class MAIconChooser;
 
 @interface PackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
     
@@ -40,5 +41,6 @@
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;
 @property (strong) MAIconEditor *iconEditor;
+@property (strong) MAIconChooser *iconChooser;
 
 @end

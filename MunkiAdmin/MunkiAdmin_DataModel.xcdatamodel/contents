@@ -65,7 +65,7 @@
         </fetchedProperty>
     </entity>
     <entity name="IconImage" representedClassName="IconImageMO" syncable="YES">
-        <attribute name="image" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="imageRepresentation" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="iconImage" inverseEntity="Package" syncable="YES"/>
     </entity>

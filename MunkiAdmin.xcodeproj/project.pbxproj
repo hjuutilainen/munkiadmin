@@ -49,6 +49,9 @@
 		F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */; };
 		F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */; };
 		F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */; };
+		F562D4F3191DF15A000F136C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F562D4F2191DF15A000F136C /* Quartz.framework */; };
+		F562D4F7191DF18C000F136C /* MAIconChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = F562D4F5191DF18C000F136C /* MAIconChooser.m */; };
+		F562D4F8191DF18C000F136C /* MAIconChooser.xib in Resources */ = {isa = PBXBuildFile; fileRef = F562D4F6191DF18C000F136C /* MAIconChooser.xib */; };
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
 		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
 		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
@@ -221,6 +224,10 @@
 		F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImageMO.m; sourceTree = "<group>"; };
 		F5629EE11901A8F3008B6CB9 /* _IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _IconImageMO.h; sourceTree = "<group>"; };
 		F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _IconImageMO.m; sourceTree = "<group>"; };
+		F562D4F2191DF15A000F136C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		F562D4F4191DF18C000F136C /* MAIconChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAIconChooser.h; sourceTree = "<group>"; };
+		F562D4F5191DF18C000F136C /* MAIconChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAIconChooser.m; sourceTree = "<group>"; };
+		F562D4F6191DF18C000F136C /* MAIconChooser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAIconChooser.xib; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
 		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
@@ -384,6 +391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F562D4F3191DF15A000F136C /* Quartz.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,6 +606,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F562D4F2191DF15A000F136C /* Quartz.framework */,
 				F5EA6ABC190F80E900362FEE /* QuartzCore.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
@@ -712,6 +721,9 @@
 				F5063429172FA43C00EF7728 /* InstallsItemEditor.h */,
 				F506342A172FA43C00EF7728 /* InstallsItemEditor.m */,
 				F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */,
+				F562D4F4191DF18C000F136C /* MAIconChooser.h */,
+				F562D4F5191DF18C000F136C /* MAIconChooser.m */,
+				F562D4F6191DF18C000F136C /* MAIconChooser.xib */,
 				F5EA6AB7190F7ED100362FEE /* MAIconEditor.h */,
 				F5EA6AB8190F7ED100362FEE /* MAIconEditor.m */,
 				F5EA6AB9190F7ED100362FEE /* MAIconEditor.xib */,
@@ -854,6 +866,7 @@
 				F5CD0ACF15EC965600BBC11F /* openRepositoryTemplate.pdf in Resources */,
 				F5CD0AD215EC981500BBC11F /* saveTemplate.pdf in Resources */,
 				F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */,
+				F562D4F8191DF18C000F136C /* MAIconChooser.xib in Resources */,
 				F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */,
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
@@ -934,6 +947,7 @@
 				F5DFC8BA129546EA00B68F4F /* _ManifestInfoMO.m in Sources */,
 				F5DFC8BC129546EB00B68F4F /* _ManifestMO.m in Sources */,
 				F5DFC8BE129546EB00B68F4F /* _OptionalInstallMO.m in Sources */,
+				F562D4F7191DF18C000F136C /* MAIconChooser.m in Sources */,
 				F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */,
 				F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */,
 				F5DFC8C0129546EB00B68F4F /* _PackageInfoMO.m in Sources */,

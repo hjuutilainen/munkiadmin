@@ -5,7 +5,7 @@
 
 
 extern const struct IconImageMOAttributes {
-	__unsafe_unretained NSString *image;
+	__unsafe_unretained NSString *imageRepresentation;
 	__unsafe_unretained NSString *originalURL;
 } IconImageMOAttributes;
 
@@ -34,11 +34,11 @@ extern const struct IconImageMOFetchedProperties {
 
 
 
-@property (nonatomic, strong) id image;
+@property (nonatomic, strong) id imageRepresentation;
 
 
 
-//- (BOOL)validateImage:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateImageRepresentation:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -76,8 +76,8 @@ extern const struct IconImageMOFetchedProperties {
 @interface _IconImageMO (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (id)primitiveImage;
-- (void)setPrimitiveImage:(id)value;
+- (id)primitiveImageRepresentation;
+- (void)setPrimitiveImageRepresentation:(id)value;
 
 
 

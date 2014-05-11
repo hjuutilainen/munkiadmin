@@ -16,6 +16,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 #import "MARequestStringValueController.h"
 #import "MAIconEditor.h"
+#import "MAIconChooser.h"
 
 #define kMinSplitViewWidth      200.0f
 #define kMaxSplitViewWidth      400.0f
@@ -72,6 +73,7 @@
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
+    self.iconChooser = [[MAIconChooser alloc] initWithWindowNibName:@"MAIconChooser"];
     
     [self.packagesTableView setTarget:[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
@@ -187,7 +189,7 @@
 {
     PackageMO *firstPackage = self.packagesArrayController.selectedObjects[0];
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
-    self.iconEditor.currentImage = firstPackage.iconImage.image;
+    self.iconEditor.currentImage = firstPackage.iconImage.imageRepresentation;
     
     NSWindow *window = [self.iconEditor window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -402,13 +404,39 @@
     }];
 }
 
+- (IBAction)chooseIconForNameAction:(id)sender
+{
+    self.iconChooser.packagesToEdit = self.packagesArrayController.selectedObjects;
+    self.iconChooser.useInSiblingPackages = YES;
+    
+    NSWindow *window = [self.iconChooser window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
+- (IBAction)chooseIconForPackageAction:(id)sender
+{
+    self.iconChooser.packagesToEdit = self.packagesArrayController.selectedObjects;
+    self.iconChooser.useInSiblingPackages = NO;
+    
+    NSWindow *window = [self.iconChooser window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
 - (IBAction)createIconForNameAction:(id)sender
 {
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
     self.iconEditor.useInSiblingPackages = YES;
     
     PackageMO *pkg = self.packagesArrayController.selectedObjects[0];
-    NSImage *image = pkg.iconImage.image;
+    NSImage *image = pkg.iconImage.imageRepresentation;
     NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
     [image setSize:[bestRepresentation size]];
     self.iconEditor.currentImage = image;
@@ -427,7 +455,7 @@
     self.iconEditor.useInSiblingPackages = NO;
     
     PackageMO *pkg = self.packagesArrayController.selectedObjects[0];
-    NSImage *image = pkg.iconImage.image;
+    NSImage *image = pkg.iconImage.imageRepresentation;
     NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
     [image setSize:[bestRepresentation size]];
     self.iconEditor.currentImage = image;
@@ -623,19 +651,41 @@
     [menu addItem:[NSMenuItem separatorItem]];
     
     if ([selectedPackageNames count] == 1) {
-        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Create Icon for Name \"%@\"...", selectedPackageNames[0]]
+        PackageMO *selectedPackage = self.packagesArrayController.selectedObjects[0];
+        
+        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Choose Existing Icon for Name \"%@\"...", selectedPackageNames[0]]
+                                                                           action:@selector(chooseIconForNameAction:)
+                                                                    keyEquivalent:@""];
+        
+        chooseIconForNameMenuItem.target = self;
+        [menu addItem:chooseIconForNameMenuItem];
+        
+        NSString *menuItemTitle;
+        if ([self.packagesArrayController.selectedObjects count] == 1) {
+            menuItemTitle = [NSString stringWithFormat:@"Choose Existing Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
+        } else {
+            menuItemTitle = @"Choose Existing Icon for Selected Packages...";
+        }
+        NSMenuItem *chooseIconForPackageMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
+                                                                              action:@selector(chooseIconForPackageAction:)
+                                                                       keyEquivalent:@""];
+        
+        chooseIconForPackageMenuItem.target = self;
+        [menu addItem:chooseIconForPackageMenuItem];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Create New Icon for Name \"%@\"...", selectedPackageNames[0]]
                                                                            action:@selector(createIconForNameAction:)
                                                                     keyEquivalent:@""];
         
         createIconForNameMenuItem.target = self;
         [menu addItem:createIconForNameMenuItem];
         
-        PackageMO *selectedPackage = self.packagesArrayController.selectedObjects[0];
-        NSString *menuItemTitle;
         if ([self.packagesArrayController.selectedObjects count] == 1) {
-            menuItemTitle = [NSString stringWithFormat:@"Create Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
+            menuItemTitle = [NSString stringWithFormat:@"Create New Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
         } else {
-            menuItemTitle = @"Create Icon for Selected Packages...";
+            menuItemTitle = @"Create New Icon for Selected Packages...";
         }
         NSMenuItem *createIconForPackageMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                                               action:@selector(createIconForPackageAction:)
@@ -644,8 +694,14 @@
         createIconForPackageMenuItem.target = self;
         [menu addItem:createIconForPackageMenuItem];
     } else {
-        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Create Icon for Selected Packages..."
-                                                                           action:@selector(createIconForNameAction:)
+        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Choose Existing Icon for Selected Packages..."
+                                                                           action:@selector(chooseIconForPackageAction:)
+                                                                    keyEquivalent:@""];
+        
+        chooseIconForNameMenuItem.target = self;
+        [menu addItem:chooseIconForNameMenuItem];
+        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Create New Icon for Selected Packages..."
+                                                                           action:@selector(createIconForPackageAction:)
                                                                     keyEquivalent:@""];
         
         createIconForNameMenuItem.target = self;

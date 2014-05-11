@@ -4,7 +4,7 @@
 #import "_IconImageMO.h"
 
 const struct IconImageMOAttributes IconImageMOAttributes = {
-	.image = @"image",
+	.imageRepresentation = @"imageRepresentation",
 	.originalURL = @"originalURL",
 };
 
@@ -48,7 +48,7 @@ const struct IconImageMOFetchedProperties IconImageMOFetchedProperties = {
 
 
 
-@dynamic image;
+@dynamic imageRepresentation;
 
 
 

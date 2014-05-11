@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <plugIn identifier="com.apple.imagekit.ibplugin" version="5056"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MAIconChooser">
+            <connections>
+                <outlet property="imageBrowserView" destination="KLJ-ks-4qp" id="U9U-rE-n53"/>
+                <outlet property="imagesArrayController" destination="tJz-ZL-y1g" id="vD4-KE-VVW"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="521" height="543"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="746"/>
+            <value key="minSize" type="size" width="400" height="300"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="521" height="543"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" id="Lyd-Z5-kUi">
+                        <rect key="frame" x="420" y="13" width="87" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Choose" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HHO-kH-gQd">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="chooseAction:" target="-2" id="F8v-Ry-F0t"/>
+                            <binding destination="tJz-ZL-y1g" name="enabled" keyPath="selectedObjects.originalURL" id="31w-Vv-4er">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                    <integer key="NSNullPlaceholder" value="0"/>
+                                    <string key="NSValueTransformerName">NSIsNotNil</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="JP9-aU-HMS">
+                        <rect key="frame" x="333" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Thx-yV-cqb">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelAction:" target="-2" id="7bs-Ti-qNa"/>
+                        </connections>
+                    </button>
+                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="139.75" horizontalPageScroll="10" verticalLineScroll="140" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="rL0-3G-gsE">
+                        <rect key="frame" x="-1" y="119" width="523" height="384"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" copiesOnScroll="NO" id="QVJ-AO-Jgo">
+                            <rect key="frame" x="0.0" y="0.0" width="523" height="384"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.43204939365386963" allowsMultipleSelection="NO" id="KLJ-ks-4qp">
+                                    <rect key="frame" x="0.0" y="0.0" width="523" height="384"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <ikCellsStyle key="cellsStyleMask" none="YES" titled="YES"/>
+                                    <autoresizingMask key="contentResizingMask" heightSizable="YES"/>
+                                    <size key="cellSize" width="100" height="100"/>
+                                    <connections>
+                                        <binding destination="tJz-ZL-y1g" name="content" keyPath="arrangedObjects" id="kDc-b1-GAD"/>
+                                        <binding destination="-2" name="zoomValue" keyPath="imageBrowserViewZoom" previousBinding="3SP-O9-vBg" id="V87-oj-lOO"/>
+                                        <binding destination="tJz-ZL-y1g" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="kDc-b1-GAD" id="3SP-O9-vBg"/>
+                                    </connections>
+                                </ikImageBrowserView>
+                            </subviews>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="O1C-lH-47u">
+                            <rect key="frame" x="0.0" y="410" width="508" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="7qn-Y4-b0E">
+                            <rect key="frame" x="508" y="0.0" width="15" height="410"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="5hj-cs-8tU">
+                        <rect key="frame" x="0.0" y="116" width="521" height="5"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <font key="titleFont" metaFont="system"/>
+                    </box>
+                    <customView id="I8V-nj-Gn7" customClass="GradientBackgroundView">
+                        <rect key="frame" x="0.0" y="503" width="521" height="40"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <searchField verticalHuggingPriority="750" id="7TR-HF-QGs">
+                                <rect key="frame" x="361" y="9" width="140" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="Nwc-lY-iEc">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </searchFieldCell>
+                                <connections>
+                                    <binding destination="tJz-ZL-y1g" name="predicate" keyPath="filterPredicate" id="JRO-Rs-FWA">
+                                        <dictionary key="options">
+                                            <string key="NSDisplayName">predicate</string>
+                                            <string key="NSPredicateFormat">imageTitle contains[cd] $value</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </searchField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Uep-VL-glH">
+                                <rect key="frame" x="249" y="13" width="106" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label" id="DZQ-cb-sTf">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="tJz-ZL-y1g" name="displayPatternValue1" keyPath="arrangedObjects.@count" id="zP5-nK-zqq">
+                                        <dictionary key="options">
+                                            <string key="NSDisplayPattern">%{value1}@ icons</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <slider verticalHuggingPriority="750" id="ABc-Op-79w">
+                                <rect key="frame" x="38" y="11" width="92" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <sliderCell key="cell" controlSize="small" continuous="YES" state="on" alignment="left" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="qyU-fu-JwS"/>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="imageBrowserViewZoom" id="L32-eB-yNP"/>
+                                </connections>
+                            </slider>
+                            <imageView id="61O-V0-nOa">
+                                <rect key="frame" x="20" y="16" width="10" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSUser" id="ABb-Eb-UG0"/>
+                            </imageView>
+                            <imageView id="ROD-Lq-bM3">
+                                <rect key="frame" x="138" y="15" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSUser" id="X5D-mc-M51"/>
+                            </imageView>
+                        </subviews>
+                    </customView>
+                    <box autoresizesSubviews="NO" title="Options" borderType="line" id="yhG-mH-q6P">
+                        <rect key="frame" x="17" y="57" width="487" height="54"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <view key="contentView">
+                            <rect key="frame" x="1" y="1" width="485" height="38"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <button id="dOW-d7-BgY">
+                                    <rect key="frame" x="16" y="12" width="322" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Use icon in other packages with the same name" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MKt-Al-Kfh">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="-2" name="value" keyPath="useInSiblingPackages" id="zTL-9n-LFB"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </box>
+                </subviews>
+            </view>
+            <connections>
+                <binding destination="-2" name="title" keyPath="windowTitle" id="ueL-Nm-CXo"/>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+        </window>
+        <arrayController mode="entity" entityName="IconImage" fetchPredicateFormat="originalURL != nil" automaticallyPreparesContent="YES" selectsInsertedObjects="NO" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="tJz-ZL-y1g">
+            <connections>
+                <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="kUM-HH-4qc"/>
+            </connections>
+        </arrayController>
+    </objects>
+    <resources>
+        <image name="NSUser" width="32" height="32"/>
+    </resources>
+</document>
