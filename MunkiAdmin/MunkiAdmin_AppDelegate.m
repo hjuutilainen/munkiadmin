@@ -9,7 +9,7 @@
 #import "MAPkginfoScanner.h"
 #import "MAManifestScanner.h"
 #import "MAMunkiOperation.h"
-#import "RelationshipScanner.h"
+#import "MARelationshipScanner.h"
 #import "MAFileCopyOperation.h"
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
@@ -658,7 +658,7 @@
     }
     
     // We need to do a relationship scan after creating a pkginfo file
-    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
     [self.operationQueue addOperation:packageRelationships];
     
@@ -810,7 +810,7 @@
                 }
                 
                 // Running item is MunkiOperation
-                else if ([firstOpItem isKindOfClass:[RelationshipScanner class]]) {
+                else if ([firstOpItem isKindOfClass:[MARelationshipScanner class]]) {
                     self.jobDescription = @"Organizing package relationships";
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem currentJobDescription]];
                 }
@@ -911,7 +911,7 @@
     
     if ([[NSFileManager defaultManager] copyItemAtURL:currentURL toURL:newURL error:nil]) {
         
-        RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+        MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
         manifestRelationships.delegate = self;
         
         MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:newURL];
@@ -1008,7 +1008,7 @@
     ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:nil];
     
-    RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+    MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
     
     MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL];
@@ -1938,7 +1938,7 @@
     copyOp.delegate = self;
 }
 
-- (void)setupMakepkginfoOperation:(MAMunkiOperation *)theOp withDependingOperation:(RelationshipScanner *)relScan
+- (void)setupMakepkginfoOperation:(MAMunkiOperation *)theOp withDependingOperation:(MARelationshipScanner *)relScan
 {
     [relScan addDependency:theOp];
     theOp.delegate = self;
@@ -1950,7 +1950,7 @@
     
     [self disableAllBindings];
     
-    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
     
     NSMutableArray *operationsToAdd = [[NSMutableArray alloc] init];
@@ -2268,7 +2268,7 @@
 	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
-    RelationshipScanner *packageRelationships = [RelationshipScanner pkginfoScanner];
+    MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
 
 	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
@@ -2394,7 +2394,7 @@
 	}
     [[moc undoManager] enableUndoRegistration];
     
-    RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
+    MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
 	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
 		MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL];

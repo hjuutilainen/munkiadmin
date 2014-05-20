@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface RelationshipScanner : NSOperation {
+@interface MARelationshipScanner : NSOperation {
     
 }
 

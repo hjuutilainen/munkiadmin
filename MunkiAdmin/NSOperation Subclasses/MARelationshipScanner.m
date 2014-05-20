@@ -5,12 +5,12 @@
 //  Created by Juutilainen Hannes on 1.11.2011.
 //
 
-#import "RelationshipScanner.h"
+#import "MARelationshipScanner.h"
 #import "DataModelHeaders.h"
 #import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
 
-@implementation RelationshipScanner
+@implementation MARelationshipScanner
 
 - (NSUserDefaults *)defaults
 {
