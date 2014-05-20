@@ -20,7 +20,7 @@
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
 @class MAPackageNameEditor;
-@class PackagesView;
+@class MAPackagesView;
 @class MAAdvancedPackageEditor;
 @class PredicateEditor;
 @class PkginfoAssimilator;
@@ -58,7 +58,7 @@
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
 @property (strong) MAPackageNameEditor *packageNameEditor;
-@property (strong) PackagesView *packagesViewController;
+@property (strong) MAPackagesView *packagesViewController;
 @property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) PreferencesController *preferencesController;
 @property (strong) NSTimer *operationTimer;

@@ -12,7 +12,7 @@
 @class MAIconEditor;
 @class MAIconChooser;
 
-@interface PackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
+@interface MAPackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
     
 }
 

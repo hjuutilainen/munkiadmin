@@ -116,8 +116,8 @@
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
 		F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */; };
 		FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0EAC5914FE4D02003C55E9 /* MATableView.m */; };
-		FE0F4E6514FB564F0081AEFF /* PackagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6314FB564F0081AEFF /* PackagesView.m */; };
-		FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE0F4E6414FB564F0081AEFF /* PackagesView.xib */; };
+		FE0F4E6514FB564F0081AEFF /* MAPackagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6314FB564F0081AEFF /* MAPackagesView.m */; };
+		FE0F4E6614FB564F0081AEFF /* MAPackagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE0F4E6414FB564F0081AEFF /* MAPackagesView.xib */; };
 		FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6D14FB61590081AEFF /* _DirectoryMO.m */; };
 		FE0F4E7114FB61590081AEFF /* DirectoryMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6F14FB61590081AEFF /* DirectoryMO.m */; };
 		FE0F4E7A14FB804C0081AEFF /* _PackageSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E7714FB804B0081AEFF /* _PackageSourceListItemMO.m */; };
@@ -338,9 +338,9 @@
 		F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiOperation.m; sourceTree = "<group>"; };
 		FE0EAC5814FE4D02003C55E9 /* MATableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATableView.h; sourceTree = "<group>"; };
 		FE0EAC5914FE4D02003C55E9 /* MATableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATableView.m; sourceTree = "<group>"; };
-		FE0F4E6214FB564F0081AEFF /* PackagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackagesView.h; sourceTree = "<group>"; };
-		FE0F4E6314FB564F0081AEFF /* PackagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackagesView.m; sourceTree = "<group>"; };
-		FE0F4E6414FB564F0081AEFF /* PackagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PackagesView.xib; sourceTree = "<group>"; };
+		FE0F4E6214FB564F0081AEFF /* MAPackagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPackagesView.h; sourceTree = "<group>"; };
+		FE0F4E6314FB564F0081AEFF /* MAPackagesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPackagesView.m; sourceTree = "<group>"; };
+		FE0F4E6414FB564F0081AEFF /* MAPackagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPackagesView.xib; sourceTree = "<group>"; };
 		FE0F4E6C14FB61590081AEFF /* _DirectoryMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DirectoryMO.h; sourceTree = "<group>"; };
 		FE0F4E6D14FB61590081AEFF /* _DirectoryMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DirectoryMO.m; sourceTree = "<group>"; };
 		FE0F4E6E14FB61590081AEFF /* DirectoryMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryMO.h; sourceTree = "<group>"; };
@@ -738,9 +738,9 @@
 				FE1C6B76145A797D00BC815F /* MAPackageNameEditor.h */,
 				FE1C6B77145A797D00BC815F /* MAPackageNameEditor.m */,
 				FE1C6B7A145A7A0300BC815F /* MAPackageNameEditor.xib */,
-				FE0F4E6214FB564F0081AEFF /* PackagesView.h */,
-				FE0F4E6314FB564F0081AEFF /* PackagesView.m */,
-				FE0F4E6414FB564F0081AEFF /* PackagesView.xib */,
+				FE0F4E6214FB564F0081AEFF /* MAPackagesView.h */,
+				FE0F4E6314FB564F0081AEFF /* MAPackagesView.m */,
+				FE0F4E6414FB564F0081AEFF /* MAPackagesView.xib */,
 				F5836983166C9147003E1442 /* PkginfoAssimilator.h */,
 				F5836984166C9147003E1442 /* PkginfoAssimilator.m */,
 				F5836985166C9147003E1442 /* PkginfoAssimilator.xib */,
@@ -852,7 +852,7 @@
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 				FEED6897149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib in Resources */,
 				FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */,
-				FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */,
+				FE0F4E6614FB564F0081AEFF /* MAPackagesView.xib in Resources */,
 				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
 				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
 				F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */,
@@ -972,7 +972,7 @@
 				FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */,
 				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,
 				FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */,
-				FE0F4E6514FB564F0081AEFF /* PackagesView.m in Sources */,
+				FE0F4E6514FB564F0081AEFF /* MAPackagesView.m in Sources */,
 				F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */,
 				FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */,
 				FE0F4E7114FB61590081AEFF /* DirectoryMO.m in Sources */,

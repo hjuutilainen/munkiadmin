@@ -8,7 +8,7 @@
 // http://cocoa.agilemonks.com/2011/09/25/add-a-contextual-menu-to-hideshow-columns-in-an-nstableview/
 
 
-#import "PackagesView.h"
+#import "MAPackagesView.h"
 #import "MAImageAndTitleCell.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
@@ -24,11 +24,11 @@
 #define kMinSplitViewHeight     80.0f
 #define kMaxSplitViewHeight     400.0f
 
-@interface PackagesView ()
+@interface MAPackagesView ()
 
 @end
 
-@implementation PackagesView
+@implementation MAPackagesView
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
