@@ -18,7 +18,7 @@
 @class MAPreferences;
 @class MAManifestDetailView;
 @class SelectPkginfoItemsWindow;
-@class SelectManifestItemsWindow;
+@class MASelectManifestItemsWindow;
 @class MAPackageNameEditor;
 @class MAPackagesView;
 @class MAAdvancedPackageEditor;
@@ -30,7 +30,7 @@
 @interface MAMunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
     SelectPkginfoItemsWindow *addItemsWindowController;
-    SelectManifestItemsWindow *selectManifestsWindowController;
+    MASelectManifestItemsWindow *selectManifestsWindowController;
     MAAdvancedPackageEditor *advancedPackageEditor;
     MAPredicateEditor *predicateEditor;
     MAPkginfoAssimilator *pkginfoAssimilator;

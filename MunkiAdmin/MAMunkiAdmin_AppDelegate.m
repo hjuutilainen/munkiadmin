@@ -13,7 +13,7 @@
 #import "MAFileCopyOperation.h"
 #import "MAManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
-#import "SelectManifestItemsWindow.h"
+#import "MASelectManifestItemsWindow.h"
 #import "MAPackageNameEditor.h"
 #import "MAAdvancedPackageEditor.h"
 #import "MAPredicateEditor.h"
@@ -402,7 +402,7 @@
     self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"MAPackagesView" bundle:nil];
     self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"MAManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
-    selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
+    selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
     self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"MAPackageNameEditor"];
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"MAAdvancedPackageEditor"];
     predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];

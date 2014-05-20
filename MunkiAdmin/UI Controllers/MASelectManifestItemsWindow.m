@@ -5,9 +5,9 @@
 //  Created by Juutilainen Hannes on 21.10.2011.
 //
 
-#import "SelectManifestItemsWindow.h"
+#import "MASelectManifestItemsWindow.h"
 
-@implementation SelectManifestItemsWindow
+@implementation MASelectManifestItemsWindow
 
 @dynamic originalPredicate;
 

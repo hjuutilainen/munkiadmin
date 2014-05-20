@@ -134,8 +134,8 @@
 		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
 		FEAC7C1F14E3F65B00487016 /* MAPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */; };
 		FEAC7C2214E3F66E00487016 /* MAPredicateEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */; };
-		FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */; };
-		FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */; };
+		FEC30F2014516376006747F6 /* MASelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* MASelectManifestItemsWindow.m */; };
+		FEC30F2214516392006747F6 /* MASelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* MASelectManifestItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* MAManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* MAManifestDetailView.m */; };
 		FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEDAA472144D50B1005C8B6F /* MAManifestDetailView.xib */; };
 		FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */ = {isa = PBXBuildFile; fileRef = FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */; };
@@ -370,9 +370,9 @@
 		FEAC7C1D14E3F65B00487016 /* MAPredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPredicateEditor.h; sourceTree = "<group>"; };
 		FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPredicateEditor.m; sourceTree = "<group>"; };
 		FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPredicateEditor.xib; sourceTree = "<group>"; };
-		FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectManifestItemsWindow.h; sourceTree = "<group>"; };
-		FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectManifestItemsWindow.m; sourceTree = "<group>"; };
-		FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectManifestItemsWindow.xib; sourceTree = "<group>"; };
+		FEC30F1E14516376006747F6 /* MASelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASelectManifestItemsWindow.h; sourceTree = "<group>"; };
+		FEC30F1F14516376006747F6 /* MASelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASelectManifestItemsWindow.m; sourceTree = "<group>"; };
+		FEC30F2114516392006747F6 /* MASelectManifestItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASelectManifestItemsWindow.xib; sourceTree = "<group>"; };
 		FEDAA470144D50B1005C8B6F /* MAManifestDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestDetailView.h; sourceTree = "<group>"; };
 		FEDAA471144D50B1005C8B6F /* MAManifestDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestDetailView.m; sourceTree = "<group>"; };
 		FEDAA472144D50B1005C8B6F /* MAManifestDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestDetailView.xib; sourceTree = "<group>"; };
@@ -750,9 +750,9 @@
 				F564874811B504520061B190 /* MAPreferences.xib */,
 				F564873711B503830061B190 /* MAPreferences.h */,
 				F564873811B503830061B190 /* MAPreferences.m */,
-				FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */,
-				FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */,
-				FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */,
+				FEC30F1E14516376006747F6 /* MASelectManifestItemsWindow.h */,
+				FEC30F1F14516376006747F6 /* MASelectManifestItemsWindow.m */,
+				FEC30F2114516392006747F6 /* MASelectManifestItemsWindow.xib */,
 				FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */,
 				FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */,
 				FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */,
@@ -847,7 +847,7 @@
 				FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
 				F5EA6ABB190F7ED100362FEE /* MAIconEditor.xib in Resources */,
-				FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */,
+				FEC30F2214516392006747F6 /* MASelectManifestItemsWindow.xib in Resources */,
 				FE1C6B7B145A7A0300BC815F /* MAPackageNameEditor.xib in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 				FEED6897149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib in Resources */,
@@ -963,7 +963,7 @@
 				FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */,
 				FEDAA473144D50B1005C8B6F /* MAManifestDetailView.m in Sources */,
 				FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */,
-				FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */,
+				FEC30F2014516376006747F6 /* MASelectManifestItemsWindow.m in Sources */,
 				FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */,
 				FE1C6B78145A797D00BC815F /* MAPackageNameEditor.m in Sources */,
 				FEEBE375145FC5750004791A /* MARelationshipScanner.m in Sources */,

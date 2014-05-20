@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 #import "GradientBackgroundView.h"
 
-@interface SelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
+@interface MASelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
     NSPredicate *originalPredicate;
 }
 
