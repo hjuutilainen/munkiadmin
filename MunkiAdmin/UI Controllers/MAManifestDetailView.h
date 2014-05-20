@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ManifestDetailView : NSViewController <NSTableViewDelegate> {
+@interface MAManifestDetailView : NSViewController <NSTableViewDelegate> {
     
 }
 

@@ -5,12 +5,12 @@
 //  Created by Juutilainen Hannes on 18.10.2011.
 //
 
-#import "ManifestDetailView.h"
+#import "MAManifestDetailView.h"
 #import "DataModelHeaders.h"
 
 NSString *ConditionalItemType = @"ConditionalItemType";
 
-@implementation ManifestDetailView
+@implementation MAManifestDetailView
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

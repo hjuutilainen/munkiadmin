@@ -11,7 +11,7 @@
 #import "MAMunkiOperation.h"
 #import "MARelationshipScanner.h"
 #import "MAFileCopyOperation.h"
-#import "ManifestDetailView.h"
+#import "MAManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
 #import "PackageNameEditor.h"
@@ -400,7 +400,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
     self.packagesViewController = [[PackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
-    self.manifestDetailViewController = [[ManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
+    self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
     self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];

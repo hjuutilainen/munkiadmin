@@ -16,7 +16,7 @@
 @class PackageArrayController;
 @class ManifestsArrayController;
 @class PreferencesController;
-@class ManifestDetailView;
+@class MAManifestDetailView;
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
 @class PackageNameEditor;
@@ -59,7 +59,7 @@
 
 @property (strong) PackageNameEditor *packageNameEditor;
 @property (strong) PackagesView *packagesViewController;
-@property (strong) ManifestDetailView *manifestDetailViewController;
+@property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) PreferencesController *preferencesController;
 @property (strong) NSTimer *operationTimer;
 

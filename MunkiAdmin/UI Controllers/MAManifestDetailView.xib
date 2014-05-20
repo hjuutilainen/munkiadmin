@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ManifestDetailView">
+        <customObject id="-2" userLabel="File's Owner" customClass="MAManifestDetailView">
             <connections>
                 <outlet property="catalogsController" destination="95" id="104"/>
                 <outlet property="catalogsTableView" destination="28" id="225"/>
@@ -33,18 +33,18 @@
                     <tabViewItems>
                         <tabViewItem label="Installs" identifier="1" id="9">
                             <view key="view" id="10">
-                                <rect key="frame" x="10" y="25" width="759" height="485"/>
+                                <rect key="frame" x="10" y="29" width="759" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="12">
-                                        <rect key="frame" x="17" y="41" width="725" height="438"/>
+                                        <rect key="frame" x="17" y="41" width="725" height="434"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="4Mt-m0-Q4I">
-                                            <rect key="frame" x="1" y="17" width="723" height="420"/>
+                                            <rect key="frame" x="1" y="17" width="723" height="416"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="40" headerView="236" viewBased="YES" id="15" customClass="ManifestItemTableView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="723" height="420"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="723" height="416"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
