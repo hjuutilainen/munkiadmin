@@ -399,15 +399,15 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
-    self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"PackagesView" bundle:nil];
-    self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
+    self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"MAPackagesView" bundle:nil];
+    self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"MAManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
-    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
-    advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
-    predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
-    pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
-    self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
+    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"MAPackageNameEditor"];
+    advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"MAAdvancedPackageEditor"];
+    predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
+    pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"MAPkginfoAssimilator"];
+    self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
     
     
 	// Configure segmented control

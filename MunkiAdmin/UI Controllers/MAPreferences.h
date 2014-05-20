@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface PreferencesController : NSWindowController <NSToolbarDelegate> {
+@interface MAPreferences : NSWindowController <NSToolbarDelegate> {
 	
 	NSMutableDictionary *items;
 	NSToolbar *toolbar;

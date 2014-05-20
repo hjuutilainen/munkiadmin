@@ -6,12 +6,12 @@
 //  Copyright 2010. All rights reserved.
 //
 
-#import "PreferencesController.h"
+#import "MAPreferences.h"
 #import "MACoreDataManager.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 
 
-@implementation PreferencesController
+@implementation MAPreferences
 
 - (void)awakeFromNib
 {

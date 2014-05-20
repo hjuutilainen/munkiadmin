@@ -689,8 +689,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 {
     [super windowDidLoad];
     
-    self.installsItemEditor = [[MAInstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
-    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    self.installsItemEditor = [[MAInstallsItemEditor alloc] initWithWindowNibName:@"MAInstallsItemEditor"];
+    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"MAPackageNameEditor"];
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];

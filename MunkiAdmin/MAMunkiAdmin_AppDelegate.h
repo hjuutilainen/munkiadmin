@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "PreferencesController.h"
+#import "MAPreferences.h"
 #import "PackageInfosArrayController.h"
 #import "CatalogsArrayController.h"
 #import "DataModelHeaders.h"
@@ -15,7 +15,7 @@
 @class ApplicationsArrayController;
 @class PackageArrayController;
 @class ManifestsArrayController;
-@class PreferencesController;
+@class MAPreferences;
 @class MAManifestDetailView;
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
@@ -24,7 +24,7 @@
 @class MAAdvancedPackageEditor;
 @class MAPredicateEditor;
 @class MAPkginfoAssimilator;
-@class PreferencesController;
+@class MAPreferences;
 
 
 @interface MAMunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
@@ -60,7 +60,7 @@
 @property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) MAPackagesView *packagesViewController;
 @property (strong) MAManifestDetailView *manifestDetailViewController;
-@property (strong) PreferencesController *preferencesController;
+@property (strong) MAPreferences *preferencesController;
 @property (strong) NSTimer *operationTimer;
 
 # pragma mark -

@@ -53,8 +53,8 @@
 		F562D4F7191DF18C000F136C /* MAIconChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = F562D4F5191DF18C000F136C /* MAIconChooser.m */; };
 		F562D4F8191DF18C000F136C /* MAIconChooser.xib in Resources */ = {isa = PBXBuildFile; fileRef = F562D4F6191DF18C000F136C /* MAIconChooser.xib */; };
 		F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */; };
-		F564873911B503830061B190 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* PreferencesController.m */; };
-		F564874911B504520061B190 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* Preferences.xib */; };
+		F564873911B503830061B190 /* MAPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F564873811B503830061B190 /* MAPreferences.m */; };
+		F564874911B504520061B190 /* MAPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = F564874811B504520061B190 /* MAPreferences.xib */; };
 		F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D4721916284C002FFF2B /* tagTemplate.pdf */; };
 		F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D476191630C4002FFF2B /* developerTemplate.pdf */; };
 		F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */; };
@@ -230,9 +230,9 @@
 		F562D4F6191DF18C000F136C /* MAIconChooser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAIconChooser.xib; sourceTree = "<group>"; };
 		F5630B9D11009974001CEC6C /* PackageInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageInfosArrayController.h; sourceTree = "<group>"; };
 		F5630B9E11009974001CEC6C /* PackageInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageInfosArrayController.m; sourceTree = "<group>"; };
-		F564873711B503830061B190 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
-		F564873811B503830061B190 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
-		F564874811B504520061B190 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		F564873711B503830061B190 /* MAPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPreferences.h; sourceTree = "<group>"; };
+		F564873811B503830061B190 /* MAPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPreferences.m; sourceTree = "<group>"; };
+		F564874811B504520061B190 /* MAPreferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MAPreferences.xib; sourceTree = "<group>"; };
 		F569D4721916284C002FFF2B /* tagTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = tagTemplate.pdf; path = MunkiAdmin/Graphics/tagTemplate.pdf; sourceTree = "<group>"; };
 		F569D476191630C4002FFF2B /* developerTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerTemplate.pdf; path = MunkiAdmin/Graphics/developerTemplate.pdf; sourceTree = "<group>"; };
 		F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerUnknownTemplate.pdf; path = MunkiAdmin/Graphics/developerUnknownTemplate.pdf; sourceTree = "<group>"; };
@@ -747,9 +747,9 @@
 				FEAC7C1D14E3F65B00487016 /* MAPredicateEditor.h */,
 				FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */,
 				FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */,
-				F564874811B504520061B190 /* Preferences.xib */,
-				F564873711B503830061B190 /* PreferencesController.h */,
-				F564873811B503830061B190 /* PreferencesController.m */,
+				F564874811B504520061B190 /* MAPreferences.xib */,
+				F564873711B503830061B190 /* MAPreferences.h */,
+				F564873811B503830061B190 /* MAPreferences.m */,
 				FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */,
 				FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */,
 				FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */,
@@ -841,7 +841,7 @@
 				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
 				F5F63383111824CC007CC030 /* packageIcon2.png in Resources */,
 				F5F6339511182934007CC030 /* catalogIcon3.png in Resources */,
-				F564874911B504520061B190 /* Preferences.xib in Resources */,
+				F564874911B504520061B190 /* MAPreferences.xib in Resources */,
 				F59279F01917BC8F0028276C /* tagMultipleTemplate.pdf in Resources */,
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */,
@@ -913,7 +913,7 @@
 				F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */,
 				F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */,
 				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,
-				F564873911B503830061B190 /* PreferencesController.m in Sources */,
+				F564873911B503830061B190 /* MAPreferences.m in Sources */,
 				F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
 				F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */,
