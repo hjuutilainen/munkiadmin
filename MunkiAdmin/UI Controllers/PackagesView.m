@@ -13,7 +13,7 @@
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "MARequestStringValueController.h"
 #import "MAIconEditor.h"
 #import "MAIconChooser.h"

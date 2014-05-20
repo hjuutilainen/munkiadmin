@@ -8,7 +8,7 @@
 #import "PackageNameEditor.h"
 #import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @implementation PackageNameEditor
 

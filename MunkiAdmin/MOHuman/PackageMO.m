@@ -8,7 +8,7 @@
 #import "InstallerEnvironmentVariableMO.h"
 #import "ItemToCopyMO.h"
 #import "StringObjectMO.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @implementation PackageMO
 

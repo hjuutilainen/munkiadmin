@@ -6,7 +6,7 @@
 //
 
 #import "MAManifestScanner.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 
 @implementation MAManifestScanner

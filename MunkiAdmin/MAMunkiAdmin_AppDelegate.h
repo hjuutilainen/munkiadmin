@@ -27,7 +27,7 @@
 @class PreferencesController;
 
 
-@interface MunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
+@interface MAMunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;

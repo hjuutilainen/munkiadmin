@@ -8,7 +8,7 @@
 
 #import "MAIconChooser.h"
 #import "MAMunkiRepositoryManager.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @interface MAIconChooser ()
 

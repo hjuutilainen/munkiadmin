@@ -7,7 +7,7 @@
 //
 
 #import "MAIconEditor.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 
 @interface MAIconEditor ()

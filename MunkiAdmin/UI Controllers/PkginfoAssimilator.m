@@ -7,7 +7,7 @@
 //
 
 #import "PkginfoAssimilator.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
 

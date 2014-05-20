@@ -8,7 +8,7 @@
 
 #import "PreferencesController.h"
 #import "MACoreDataManager.h"
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 
 @implementation PreferencesController

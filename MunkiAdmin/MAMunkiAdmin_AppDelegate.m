@@ -5,7 +5,7 @@
 //  Created by Hannes Juutilainen on 11.1.2010.
 //
 
-#import "MunkiAdmin_AppDelegate.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "MAPkginfoScanner.h"
 #import "MAManifestScanner.h"
 #import "MAMunkiOperation.h"
@@ -25,7 +25,7 @@
 
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
 
-@implementation MunkiAdmin_AppDelegate
+@implementation MAMunkiAdmin_AppDelegate
 
 # pragma mark -
 # pragma mark Property Implementation Directives
