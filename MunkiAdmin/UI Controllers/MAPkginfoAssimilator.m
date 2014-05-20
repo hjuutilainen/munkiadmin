@@ -6,18 +6,18 @@
 //
 //
 
-#import "PkginfoAssimilator.h"
+#import "MAPkginfoAssimilator.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
 
-@interface PkginfoAssimilator () {
+@interface MAPkginfoAssimilator () {
     
 }
 
 @end
 
-@implementation PkginfoAssimilator
+@implementation MAPkginfoAssimilator
 
 
 - (id)initWithWindow:(NSWindow *)window

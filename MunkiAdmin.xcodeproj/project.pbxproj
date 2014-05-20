@@ -59,8 +59,8 @@
 		F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D476191630C4002FFF2B /* developerTemplate.pdf */; };
 		F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */; };
 		F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */; };
-		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
-		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
+		F5836986166C9147003E1442 /* MAPkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */; };
+		F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */; };
 		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
 		F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F58548151906F643001E4527 /* MARequestStringValueController.xib */; };
 		F59279F01917BC8F0028276C /* tagMultipleTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F59279EF1917BC8F0028276C /* tagMultipleTemplate.pdf */; };
@@ -239,9 +239,9 @@
 		F56AC798166F2F0200FD5438 /* MAMunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMunkiRepositoryManager.h; sourceTree = "<group>"; };
 		F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
-		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoAssimilator.h; sourceTree = "<group>"; };
-		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoAssimilator.m; sourceTree = "<group>"; };
-		F5836985166C9147003E1442 /* PkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PkginfoAssimilator.xib; sourceTree = "<group>"; };
+		F5836983166C9147003E1442 /* MAPkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoAssimilator.h; sourceTree = "<group>"; };
+		F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoAssimilator.m; sourceTree = "<group>"; };
+		F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPkginfoAssimilator.xib; sourceTree = "<group>"; };
 		F58548131906F643001E4527 /* MARequestStringValueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MARequestStringValueController.h; sourceTree = "<group>"; };
 		F58548141906F643001E4527 /* MARequestStringValueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MARequestStringValueController.m; sourceTree = "<group>"; };
 		F58548151906F643001E4527 /* MARequestStringValueController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MARequestStringValueController.xib; sourceTree = "<group>"; };
@@ -741,9 +741,9 @@
 				FE0F4E6214FB564F0081AEFF /* MAPackagesView.h */,
 				FE0F4E6314FB564F0081AEFF /* MAPackagesView.m */,
 				FE0F4E6414FB564F0081AEFF /* MAPackagesView.xib */,
-				F5836983166C9147003E1442 /* PkginfoAssimilator.h */,
-				F5836984166C9147003E1442 /* PkginfoAssimilator.m */,
-				F5836985166C9147003E1442 /* PkginfoAssimilator.xib */,
+				F5836983166C9147003E1442 /* MAPkginfoAssimilator.h */,
+				F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */,
+				F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */,
 				FEAC7C1D14E3F65B00487016 /* PredicateEditor.h */,
 				FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */,
 				FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */,
@@ -870,7 +870,7 @@
 				F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */,
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
-				F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */,
+				F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */,
 				F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -982,7 +982,7 @@
 				FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */,
 				F5EA6ABA190F7ED100362FEE /* MAIconEditor.m in Sources */,
 				FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */,
-				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
+				F5836986166C9147003E1442 /* MAPkginfoAssimilator.m in Sources */,
 				F5292073190665B600F02C00 /* CategoryMO.m in Sources */,
 				F529207919066FD800F02C00 /* CategorySourceListItemMO.m in Sources */,
 				F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */,

@@ -10,7 +10,7 @@
 
 @class PackageMO;
 
-@interface PkginfoAssimilator : NSWindowController {
+@interface MAPkginfoAssimilator : NSWindowController {
     
     NSUndoManager *undoManager;
     

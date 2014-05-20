@@ -18,7 +18,7 @@
 #import "MAAdvancedPackageEditor.h"
 #import "PredicateEditor.h"
 #import "MAPackagesView.h"
-#import "PkginfoAssimilator.h"
+#import "MAPkginfoAssimilator.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
@@ -406,7 +406,7 @@
     self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
-    pkginfoAssimilator = [[PkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
+    pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];
     self.preferencesController = [[PreferencesController alloc] initWithWindowNibName:@"Preferences"];
     
     

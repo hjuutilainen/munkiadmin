@@ -23,7 +23,7 @@
 @class MAPackagesView;
 @class MAAdvancedPackageEditor;
 @class PredicateEditor;
-@class PkginfoAssimilator;
+@class MAPkginfoAssimilator;
 @class PreferencesController;
 
 
@@ -33,7 +33,7 @@
     SelectManifestItemsWindow *selectManifestsWindowController;
     MAAdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
-    PkginfoAssimilator *pkginfoAssimilator;
+    MAPkginfoAssimilator *pkginfoAssimilator;
 	
 	// The current master and detail view
 	// that we are displaying
