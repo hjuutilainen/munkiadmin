@@ -9,7 +9,7 @@
 #import "ManifestMO.h"
 #import "ManifestInfoMO.h"
 
-@interface ManifestScanner : NSOperation {
+@interface MAManifestScanner : NSOperation {
     NSArray *apps;
     NSArray *packages;
 }

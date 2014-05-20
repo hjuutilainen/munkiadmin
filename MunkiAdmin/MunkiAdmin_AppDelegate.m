@@ -7,7 +7,7 @@
 
 #import "MunkiAdmin_AppDelegate.h"
 #import "PkginfoScanner.h"
-#import "ManifestScanner.h"
+#import "MAManifestScanner.h"
 #import "MunkiOperation.h"
 #import "RelationshipScanner.h"
 #import "MAFileCopyOperation.h"
@@ -783,7 +783,7 @@
                 }
                 
                 // Running item is ManifestScanner
-                else if ([firstOpItem isKindOfClass:[ManifestScanner class]]) {
+                else if ([firstOpItem isKindOfClass:[MAManifestScanner class]]) {
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
                     self.jobDescription = @"Scanning Manifests";
                 }
@@ -914,7 +914,7 @@
         RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
         manifestRelationships.delegate = self;
         
-        ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:newURL];
+        MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:newURL];
         scanOp.delegate = self;
         [manifestRelationships addDependency:scanOp];
         [self.operationQueue addOperation:scanOp];
@@ -1011,7 +1011,7 @@
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
     
-    ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL];
+    MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL];
     scanOp.delegate = self;
     [manifestRelationships addDependency:scanOp];
     [self.operationQueue addOperation:scanOp];
@@ -2397,7 +2397,7 @@
     RelationshipScanner *manifestRelationships = [RelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
 	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
-		ManifestScanner *scanOp = [[ManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL];
+		MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL];
 		scanOp.delegate = self;
         [manifestRelationships addDependency:scanOp];
 		[self.operationQueue addOperation:scanOp];

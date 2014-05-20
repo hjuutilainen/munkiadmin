@@ -5,11 +5,11 @@
 //  Created by Hannes Juutilainen on 6.10.2010.
 //
 
-#import "ManifestScanner.h"
+#import "MAManifestScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 
-@implementation ManifestScanner
+@implementation MAManifestScanner
 
 - (NSUserDefaults *)defaults
 {

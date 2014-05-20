@@ -46,7 +46,7 @@
 		F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */; };
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
 		F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */; };
-		F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */; };
+		F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */; };
 		F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */; };
 		F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */; };
 		F562D4F3191DF15A000F136C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F562D4F2191DF15A000F136C /* Quartz.framework */; };
@@ -217,8 +217,8 @@
 		F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "catalogIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/catalogIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon_32x32.png; path = MunkiAdmin/Graphics/manifestIcon_32x32.png; sourceTree = "<group>"; };
 		F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "manifestIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/manifestIcon_32x32@2x.png"; sourceTree = "<group>"; };
-		F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestScanner.h; sourceTree = "<group>"; };
-		F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestScanner.m; sourceTree = "<group>"; };
+		F555BD41125C6AE8000D9DF6 /* MAManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestScanner.h; sourceTree = "<group>"; };
+		F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestScanner.m; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MunkiAdmin.entitlements; path = MunkiAdmin/MunkiAdmin.entitlements; sourceTree = "<group>"; };
 		F5629EDE1901A8E5008B6CB9 /* IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImageMO.h; sourceTree = "<group>"; };
 		F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImageMO.m; sourceTree = "<group>"; };
@@ -766,8 +766,8 @@
 			children = (
 				FE9F2CD01459586C00D0E687 /* MAFileCopyOperation.h */,
 				FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */,
-				F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */,
-				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
+				F555BD41125C6AE8000D9DF6 /* MAManifestScanner.h */,
+				F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */,
 				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
 				F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */,
 				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
@@ -915,7 +915,7 @@
 				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,
 				F564873911B503830061B190 /* PreferencesController.m in Sources */,
 				F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */,
-				F555BD43125C6AE8000D9DF6 /* ManifestScanner.m in Sources */,
+				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
 				F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */,
 				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
 				F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */,
