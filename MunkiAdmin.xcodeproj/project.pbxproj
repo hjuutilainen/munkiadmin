@@ -132,8 +132,8 @@
 		FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */; };
 		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
 		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
-		FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */; };
-		FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */; };
+		FEAC7C1F14E3F65B00487016 /* MAPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */; };
+		FEAC7C2214E3F66E00487016 /* MAPredicateEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */; };
 		FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */; };
 		FEC30F2214516392006747F6 /* SelectManifestItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */; };
 		FEDAA473144D50B1005C8B6F /* MAManifestDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDAA471144D50B1005C8B6F /* MAManifestDetailView.m */; };
@@ -367,9 +367,9 @@
 		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
 		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
 		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
-		FEAC7C1D14E3F65B00487016 /* PredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PredicateEditor.h; sourceTree = "<group>"; };
-		FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PredicateEditor.m; sourceTree = "<group>"; };
-		FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PredicateEditor.xib; sourceTree = "<group>"; };
+		FEAC7C1D14E3F65B00487016 /* MAPredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPredicateEditor.h; sourceTree = "<group>"; };
+		FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPredicateEditor.m; sourceTree = "<group>"; };
+		FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPredicateEditor.xib; sourceTree = "<group>"; };
 		FEC30F1E14516376006747F6 /* SelectManifestItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectManifestItemsWindow.h; sourceTree = "<group>"; };
 		FEC30F1F14516376006747F6 /* SelectManifestItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectManifestItemsWindow.m; sourceTree = "<group>"; };
 		FEC30F2114516392006747F6 /* SelectManifestItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectManifestItemsWindow.xib; sourceTree = "<group>"; };
@@ -744,9 +744,9 @@
 				F5836983166C9147003E1442 /* MAPkginfoAssimilator.h */,
 				F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */,
 				F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */,
-				FEAC7C1D14E3F65B00487016 /* PredicateEditor.h */,
-				FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */,
-				FEAC7C2114E3F66E00487016 /* PredicateEditor.xib */,
+				FEAC7C1D14E3F65B00487016 /* MAPredicateEditor.h */,
+				FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */,
+				FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */,
 				F564874811B504520061B190 /* Preferences.xib */,
 				F564873711B503830061B190 /* PreferencesController.h */,
 				F564873811B503830061B190 /* PreferencesController.m */,
@@ -851,7 +851,7 @@
 				FE1C6B7B145A7A0300BC815F /* MAPackageNameEditor.xib in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 				FEED6897149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib in Resources */,
-				FEAC7C2214E3F66E00487016 /* PredicateEditor.xib in Resources */,
+				FEAC7C2214E3F66E00487016 /* MAPredicateEditor.xib in Resources */,
 				FE0F4E6614FB564F0081AEFF /* MAPackagesView.xib in Resources */,
 				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
 				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
@@ -971,7 +971,7 @@
 				FEED6894149F3A44006ABA1E /* MAAdvancedPackageEditor.m in Sources */,
 				FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */,
 				FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */,
-				FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */,
+				FEAC7C1F14E3F65B00487016 /* MAPredicateEditor.m in Sources */,
 				FE0F4E6514FB564F0081AEFF /* MAPackagesView.m in Sources */,
 				F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */,
 				FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */,

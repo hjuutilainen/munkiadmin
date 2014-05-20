@@ -9,7 +9,7 @@
 
 @class ConditionalItemMO;
 
-@interface PredicateEditor : NSWindowController {
+@interface MAPredicateEditor : NSWindowController {
     
 }
 @property (strong) NSString *customPredicateString;

@@ -5,12 +5,12 @@
 //  Created by Juutilainen Hannes on 9.2.2012.
 //
 
-#import "PredicateEditor.h"
+#import "MAPredicateEditor.h"
 #import "ConditionalItemMO.h"
 
 #define DEFAULT_PREDICATE @"os_vers == '' AND arch == ''"
 
-@implementation PredicateEditor
+@implementation MAPredicateEditor
 
 - (id)initWithWindow:(NSWindow *)window
 {
