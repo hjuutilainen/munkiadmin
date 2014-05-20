@@ -5,7 +5,7 @@
 //  Created by Juutilainen Hannes on 19.12.2011.
 //
 
-#import "AdvancedPackageEditor.h"
+#import "MAAdvancedPackageEditor.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
@@ -19,7 +19,7 @@
 
 #define kMinSplitViewWidth      300.0f
 
-@implementation AdvancedPackageEditor
+@implementation MAAdvancedPackageEditor
 
 NSString *installsPboardType = @"installsPboardType";
 NSString *itemsToCopyPboardType = @"itemsToCopyPboardType";

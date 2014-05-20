@@ -21,7 +21,7 @@
 @class SelectManifestItemsWindow;
 @class PackageNameEditor;
 @class PackagesView;
-@class AdvancedPackageEditor;
+@class MAAdvancedPackageEditor;
 @class PredicateEditor;
 @class PkginfoAssimilator;
 @class PreferencesController;
@@ -31,7 +31,7 @@
 {
     SelectPkginfoItemsWindow *addItemsWindowController;
     SelectManifestItemsWindow *selectManifestsWindowController;
-    AdvancedPackageEditor *advancedPackageEditor;
+    MAAdvancedPackageEditor *advancedPackageEditor;
     PredicateEditor *predicateEditor;
     PkginfoAssimilator *pkginfoAssimilator;
 	

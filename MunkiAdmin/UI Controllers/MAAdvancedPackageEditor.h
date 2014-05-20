@@ -14,7 +14,7 @@
 @class MARequestStringValueController;
 @class MAIconEditor;
 
-@interface AdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
+@interface MAAdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
      
     NSUndoManager *undoManager;
     
