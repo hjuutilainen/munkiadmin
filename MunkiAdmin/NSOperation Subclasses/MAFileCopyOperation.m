@@ -5,9 +5,9 @@
 //  Created by Juutilainen Hannes on 27.10.2011.
 //
 
-#import "FileCopyOperation.h"
+#import "MAFileCopyOperation.h"
 
-@implementation FileCopyOperation
+@implementation MAFileCopyOperation
 
 - (NSUserDefaults *)defaults
 {

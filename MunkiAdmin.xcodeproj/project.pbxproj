@@ -129,7 +129,7 @@
 		FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */; };
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
 		FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */; };
-		FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */; };
+		FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */; };
 		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
 		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
 		FEAC7C1F14E3F65B00487016 /* PredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* PredicateEditor.m */; };
@@ -362,8 +362,8 @@
 		FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE781BA1144C0CCE0089E941 /* InstallerChoicesItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerChoicesItemMO.h; sourceTree = "<group>"; };
 		FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerChoicesItemMO.m; sourceTree = "<group>"; };
-		FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCopyOperation.h; sourceTree = "<group>"; };
-		FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCopyOperation.m; sourceTree = "<group>"; };
+		FE9F2CD01459586C00D0E687 /* MAFileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAFileCopyOperation.h; sourceTree = "<group>"; };
+		FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAFileCopyOperation.m; sourceTree = "<group>"; };
 		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
 		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
 		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
@@ -764,8 +764,8 @@
 		FEB749F7147F98F3004EC366 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				FE9F2CD01459586C00D0E687 /* FileCopyOperation.h */,
-				FE9F2CD11459586C00D0E687 /* FileCopyOperation.m */,
+				FE9F2CD01459586C00D0E687 /* MAFileCopyOperation.h */,
+				FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */,
 				F555BD41125C6AE8000D9DF6 /* ManifestScanner.h */,
 				F555BD42125C6AE8000D9DF6 /* ManifestScanner.m */,
 				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
@@ -964,7 +964,7 @@
 				FEDAA473144D50B1005C8B6F /* ManifestDetailView.m in Sources */,
 				FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */,
 				FEC30F2014516376006747F6 /* SelectManifestItemsWindow.m in Sources */,
-				FE9F2CD21459586C00D0E687 /* FileCopyOperation.m in Sources */,
+				FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */,
 				FE1C6B78145A797D00BC815F /* PackageNameEditor.m in Sources */,
 				FEEBE375145FC5750004791A /* RelationshipScanner.m in Sources */,
 				F593259F191794050079398B /* InstallerTypeSourceListItemMO.m in Sources */,

@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface FileCopyOperation : NSOperation {
+@interface MAFileCopyOperation : NSOperation {
     
 }
 

@@ -10,7 +10,7 @@
 #import "ManifestScanner.h"
 #import "MunkiOperation.h"
 #import "RelationshipScanner.h"
-#import "FileCopyOperation.h"
+#import "MAFileCopyOperation.h"
 #import "ManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
@@ -804,7 +804,7 @@
                 }
                 
                 // Running item is MunkiOperation
-                else if ([firstOpItem isKindOfClass:[FileCopyOperation class]]) {
+                else if ([firstOpItem isKindOfClass:[MAFileCopyOperation class]]) {
                     self.jobDescription = @"Copying";
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem sourceURL] lastPathComponent]];
                 }
@@ -1932,7 +1932,7 @@
 
 # pragma mark - pkginfo
 
-- (void)setupCopyOperation:(FileCopyOperation *)copyOp withDependingOperation:(MunkiOperation *)depOp
+- (void)setupCopyOperation:(MAFileCopyOperation *)copyOp withDependingOperation:(MunkiOperation *)depOp
 {
     [depOp addDependency:copyOp];
     copyOp.delegate = self;
@@ -1965,7 +1965,7 @@
                         NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
-                        FileCopyOperation *copyOp = [FileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
+                        MAFileCopyOperation *copyOp = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
                         theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
                         [self setupCopyOperation:copyOp withDependingOperation:theOp];
                         [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
