@@ -6,7 +6,7 @@
 //
 
 #import "MunkiAdmin_AppDelegate.h"
-#import "PkginfoScanner.h"
+#import "MAPkginfoScanner.h"
 #import "MAManifestScanner.h"
 #import "MAMunkiOperation.h"
 #import "RelationshipScanner.h"
@@ -538,7 +538,7 @@
     /*
      Create a scanner job but run it without an operation queue
      */
-    PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:saveURL];
+    MAPkginfoScanner *scanOp = [MAPkginfoScanner scannerWithURL:saveURL];
     scanOp.canModify = YES;
     scanOp.delegate = self;
     [scanOp start];
@@ -777,7 +777,7 @@
         for (id firstOpItem in [self.operationQueue operations]) {
             if ([firstOpItem isExecuting]) {
                 // Running item is PkginfoScanner
-                if ([firstOpItem isKindOfClass:[PkginfoScanner class]]) {
+                if ([firstOpItem isKindOfClass:[MAPkginfoScanner class]]) {
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
                     self.jobDescription = @"Scanning Packages";
                 }
@@ -1281,7 +1281,7 @@
             [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:self.managedObjectContext];
             
             // Create a scanner job but run it without an operation queue
-            PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:newPkginfoURL];
+            MAPkginfoScanner *scanOp = [MAPkginfoScanner scannerWithURL:newPkginfoURL];
             scanOp.canModify = YES;
             scanOp.delegate = self;
             [scanOp start];
@@ -2277,7 +2277,7 @@
 		NSNumber *isDir;
 		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
 		if (![isDir boolValue]) {
-			PkginfoScanner *scanOp = [PkginfoScanner scannerWithURL:anURL];
+			MAPkginfoScanner *scanOp = [MAPkginfoScanner scannerWithURL:anURL];
 			scanOp.delegate = self;
             [packageRelationships addDependency:scanOp];
 			[self.operationQueue addOperation:scanOp];

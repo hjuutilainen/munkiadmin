@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface PkginfoScanner : NSOperation {
+@interface MAPkginfoScanner : NSOperation {
     
 }
 

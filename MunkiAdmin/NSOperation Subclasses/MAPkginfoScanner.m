@@ -5,14 +5,14 @@
 //  Created by Hannes Juutilainen on 5.10.2010.
 //
 
-#import "PkginfoScanner.h"
+#import "MAPkginfoScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 
 
-@implementation PkginfoScanner
+@implementation MAPkginfoScanner
 
 - (NSUserDefaults *)defaults
 {

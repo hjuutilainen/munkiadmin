@@ -40,7 +40,7 @@
 		F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */; };
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
 		F5299AD910FB78620074CFEA /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299AD810FB78620074CFEA /* MyCell.m */; };
-		F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* PkginfoScanner.m */; };
+		F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */; };
 		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
 		F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */; };
 		F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */; };
@@ -209,8 +209,8 @@
 		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
 		F5299AD710FB78620074CFEA /* MyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
 		F5299AD810FB78620074CFEA /* MyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
-		F53269A1125AF75C00AF967C /* PkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoScanner.h; sourceTree = "<group>"; };
-		F53269A2125AF75C00AF967C /* PkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoScanner.m; sourceTree = "<group>"; };
+		F53269A1125AF75C00AF967C /* MAPkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoScanner.h; sourceTree = "<group>"; };
+		F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoScanner.m; sourceTree = "<group>"; };
 		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
 		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
 		F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon_32x32.png; path = MunkiAdmin/Graphics/catalogIcon_32x32.png; sourceTree = "<group>"; };
@@ -770,8 +770,8 @@
 				F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */,
 				F5FF373E125D9D7900AD5BC1 /* MAMunkiOperation.h */,
 				F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */,
-				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
-				F53269A2125AF75C00AF967C /* PkginfoScanner.m */,
+				F53269A1125AF75C00AF967C /* MAPkginfoScanner.h */,
+				F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */,
 				FEEBE373145FC5750004791A /* RelationshipScanner.h */,
 				FEEBE374145FC5750004791A /* RelationshipScanner.m */,
 			);
@@ -914,7 +914,7 @@
 				F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */,
 				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,
 				F564873911B503830061B190 /* PreferencesController.m in Sources */,
-				F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */,
+				F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
 				F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */,
 				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
