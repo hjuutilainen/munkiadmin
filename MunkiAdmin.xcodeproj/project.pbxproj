@@ -58,7 +58,7 @@
 		F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D4721916284C002FFF2B /* tagTemplate.pdf */; };
 		F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D476191630C4002FFF2B /* developerTemplate.pdf */; };
 		F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */; };
-		F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */; };
+		F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */; };
 		F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* PkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* PkginfoAssimilator.xib */; };
 		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
@@ -236,8 +236,8 @@
 		F569D4721916284C002FFF2B /* tagTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = tagTemplate.pdf; path = MunkiAdmin/Graphics/tagTemplate.pdf; sourceTree = "<group>"; };
 		F569D476191630C4002FFF2B /* developerTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerTemplate.pdf; path = MunkiAdmin/Graphics/developerTemplate.pdf; sourceTree = "<group>"; };
 		F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = developerUnknownTemplate.pdf; path = MunkiAdmin/Graphics/developerUnknownTemplate.pdf; sourceTree = "<group>"; };
-		F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiRepositoryManager.h; sourceTree = "<group>"; };
-		F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiRepositoryManager.m; sourceTree = "<group>"; };
+		F56AC798166F2F0200FD5438 /* MAMunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMunkiRepositoryManager.h; sourceTree = "<group>"; };
+		F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* PkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* PkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PkginfoAssimilator.m; sourceTree = "<group>"; };
@@ -701,8 +701,8 @@
 		F5D052551744B40F00487101 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				F56AC798166F2F0200FD5438 /* MunkiRepositoryManager.h */,
-				F56AC799166F2F0200FD5438 /* MunkiRepositoryManager.m */,
+				F56AC798166F2F0200FD5438 /* MAMunkiRepositoryManager.h */,
+				F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */,
 				F5D052521744B36400487101 /* MACoreDataManager.h */,
 				F5D052531744B36400487101 /* MACoreDataManager.m */,
 			);
@@ -985,7 +985,7 @@
 				F5836986166C9147003E1442 /* PkginfoAssimilator.m in Sources */,
 				F5292073190665B600F02C00 /* CategoryMO.m in Sources */,
 				F529207919066FD800F02C00 /* CategorySourceListItemMO.m in Sources */,
-				F56AC79A166F2F0200FD5438 /* MunkiRepositoryManager.m in Sources */,
+				F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */,
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,
 				F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */,

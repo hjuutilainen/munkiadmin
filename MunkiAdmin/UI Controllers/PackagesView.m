@@ -11,7 +11,7 @@
 #import "PackagesView.h"
 #import "ImageAndTitleCell.h"
 #import "DataModelHeaders.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MARequestStringValueController.h"
@@ -398,7 +398,7 @@
 
 - (IBAction)clearCustomIconAction:(id)sender
 {
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
     [self.packagesArrayController.selectedObjects enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
         [repoManager clearCustomIconForPackage:obj];
     }];
@@ -955,7 +955,7 @@
                      Ask permission to move the installer item as well
                      */
                     BOOL allowMove = [self shouldMoveInstallerItemWithPkginfo];
-                    [[MunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
+                    [[MAMunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
                 }
             } else if ([[proposedParentItem representedObject] isKindOfClass:[CategorySourceListItemMO class]]) {
                 CategorySourceListItemMO *targetCategorySourceList = [proposedParentItem representedObject];
@@ -1118,7 +1118,7 @@
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             
             for (NSURL *uri in urls) {
-                BOOL canImport = [[MunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
+                BOOL canImport = [[MAMunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
                 if (canImport) {
                     [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
                     result = NSDragOperationCopy;
@@ -1154,7 +1154,7 @@
             
             NSMutableArray *temporarySupportedURLs = [[NSMutableArray alloc] init];
             for (NSURL *uri in urls) {
-                BOOL canImport = [[MunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
+                BOOL canImport = [[MAMunkiRepositoryManager sharedManager] canImportURL:uri error:nil];
                 if (canImport) {
                     [temporarySupportedURLs addObject:uri];
                 }

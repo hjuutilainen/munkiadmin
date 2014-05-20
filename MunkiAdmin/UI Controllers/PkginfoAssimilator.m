@@ -9,7 +9,7 @@
 #import "PkginfoAssimilator.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 
 @interface PkginfoAssimilator () {
     
@@ -129,7 +129,7 @@
     }
     
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
     
     /*
      Developer and category

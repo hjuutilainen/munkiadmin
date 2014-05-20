@@ -13,7 +13,7 @@
 @class ManifestMO;
 @class InstallsItemMO;
 
-@interface MunkiRepositoryManager : NSObject {
+@interface MAMunkiRepositoryManager : NSObject {
     
 }
 
@@ -30,7 +30,7 @@
 @property (strong) NSDictionary *installerChoicesKeyMappings;
 @property (strong) NSDictionary *itemsToCopyKeyMappings;
 
-+ (MunkiRepositoryManager *)sharedManager;
++ (MAMunkiRepositoryManager *)sharedManager;
 
 - (BOOL)movePackage:(PackageMO *)aPackage toURL:(NSURL *)targetURL moveInstaller:(BOOL)moveInstaller;
 - (void)copyInstallerEnvironmentVariablesFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;

@@ -8,7 +8,7 @@
 #import "PkginfoScanner.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 
 
@@ -66,7 +66,7 @@
 	@try {
 		@autoreleasepool {
             
-			MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+			MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
             MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
             
 			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];

@@ -8,7 +8,7 @@
 #import "AdvancedPackageEditor.h"
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "MunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "PackageNameEditor.h"

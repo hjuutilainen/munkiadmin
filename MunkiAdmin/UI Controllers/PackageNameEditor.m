@@ -6,7 +6,7 @@
 //
 
 #import "PackageNameEditor.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
 
@@ -34,7 +34,7 @@
 
 - (void)configureRenameOperation
 {
-    NSDictionary *referencingDict = [[MunkiRepositoryManager sharedManager] referencingItemsForPackage:self.packageToRename];
+    NSDictionary *referencingDict = [[MAMunkiRepositoryManager sharedManager] referencingItemsForPackage:self.packageToRename];
     NSMutableArray *changeDescriptionsForPackage = [[NSMutableArray alloc] init];
     NSImage *manifestIcon = [NSImage imageNamed:@"manifestIcon_32x32"];
     NSImage *packageIcon = [NSImage imageNamed:@"packageIcon_32x32"];
@@ -222,7 +222,7 @@
 
 - (void)okAction:(id)sender;
 {
-    [[MunkiRepositoryManager sharedManager] renamePackage:self.packageToRename newName:self.changedName cascade:self.shouldRenameAll];
+    [[MAMunkiRepositoryManager sharedManager] renamePackage:self.packageToRename newName:self.changedName cascade:self.shouldRenameAll];
     
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSOKButton];

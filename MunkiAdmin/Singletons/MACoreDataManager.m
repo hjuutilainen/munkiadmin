@@ -8,7 +8,7 @@
 
 #import "MACoreDataManager.h"
 #import "MunkiAdmin_AppDelegate.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 
 /*
@@ -39,7 +39,7 @@
      Get the supported keys from NSUserDefaults and set object properties
      */
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [[[MunkiRepositoryManager sharedManager] installsKeyMappings] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [[[MAMunkiRepositoryManager sharedManager] installsKeyMappings] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         id value = [dict objectForKey:obj];
         if (value != nil) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"])

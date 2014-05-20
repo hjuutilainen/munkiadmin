@@ -6,7 +6,7 @@
 //
 //
 
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MACoreDataManager.h"
@@ -14,7 +14,7 @@
 /*
  * Private interface
  */
-@interface MunkiRepositoryManager ()
+@interface MAMunkiRepositoryManager ()
 
 @property (readwrite, strong) NSArray *pkginfoAssimilateKeys;
 @property (readwrite, strong) NSArray *pkginfoAssimilateKeysForAuto;
@@ -30,7 +30,7 @@
 @end
 
 
-@implementation MunkiRepositoryManager
+@implementation MAMunkiRepositoryManager
 
 @dynamic makecatalogsInstalled;
 @dynamic makepkginfoInstalled;
@@ -40,7 +40,7 @@
 # pragma mark -
 # pragma mark Singleton methods
 
-static MunkiRepositoryManager *sharedOperationManager = nil;
+static MAMunkiRepositoryManager *sharedOperationManager = nil;
 static dispatch_queue_t serialQueue;
 
 + (id)allocWithZone:(NSZone *)zone {
@@ -56,11 +56,11 @@ static dispatch_queue_t serialQueue;
     return sharedOperationManager;
 }
 
-+ (MunkiRepositoryManager *)sharedManager {
++ (MAMunkiRepositoryManager *)sharedManager {
     static dispatch_once_t onceQueue;
     
     dispatch_once(&onceQueue, ^{
-        sharedOperationManager = [[MunkiRepositoryManager alloc] init];
+        sharedOperationManager = [[MAMunkiRepositoryManager alloc] init];
     });
     
     return sharedOperationManager;

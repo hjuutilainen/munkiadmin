@@ -19,7 +19,7 @@
 #import "PredicateEditor.h"
 #import "PackagesView.h"
 #import "PkginfoAssimilator.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
 
@@ -274,7 +274,7 @@
 
 - (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
 {
-    if ([[MunkiRepositoryManager sharedManager] canImportURL:url error:outError]) {
+    if ([[MAMunkiRepositoryManager sharedManager] canImportURL:url error:outError]) {
         return YES;
     } else {
         return NO;
@@ -564,7 +564,7 @@
         
         // Run the assimilator
         if ([self.defaults boolForKey:@"assimilate_enabled"]) {
-            MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+            MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
             [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
         }
     }
@@ -701,7 +701,7 @@
     if (([keyPath isEqualToString:@"values.makepkginfoPath"]) ||
         ([keyPath isEqualToString:@"values.makecatalogsPath"]))
     {
-        [[MunkiRepositoryManager sharedManager] updateMunkiVersions];
+        [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
     }
 }
 
@@ -875,7 +875,7 @@
     /*
      The actual renaming is handled by MunkiRepositoryManager
      */
-    [[MunkiRepositoryManager sharedManager] moveManifest:selectedManifest toURL:newURL cascade:YES];
+    [[MAMunkiRepositoryManager sharedManager] moveManifest:selectedManifest toURL:newURL cascade:YES];
     
 }
 
@@ -973,7 +973,7 @@
         [[self.managedObjectContext undoManager] beginUndoGrouping];
         [[self.managedObjectContext undoManager] setActionName:messageText];
 		for (ManifestMO *aManifest in selectedManifests) {
-            [[MunkiRepositoryManager sharedManager] removeManifest:aManifest withReferences:YES];
+            [[MAMunkiRepositoryManager sharedManager] removeManifest:aManifest withReferences:YES];
 		}
         [[self.managedObjectContext undoManager] endUndoGrouping];
 	}
@@ -1033,7 +1033,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
+    for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
     if (self.packageNameEditor.packageToRename) {
@@ -1102,7 +1102,7 @@
 	NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
 		for (PackageMO *aPackage in selectedPackages) {
-            [[MunkiRepositoryManager sharedManager] removePackage:aPackage withInstallerItem:YES withReferences:YES];
+            [[MAMunkiRepositoryManager sharedManager] removePackage:aPackage withInstallerItem:YES withReferences:YES];
 		}
 	}
 }
@@ -1305,7 +1305,7 @@
                 
                 // Run the assimilator
                 if ([self.defaults boolForKey:@"assimilate_enabled"]) {
-                    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+                    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
                     [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
                 }
                 
@@ -1453,7 +1453,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
-    for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
+    for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
@@ -1490,7 +1490,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
-    for (PackageMO *aPackage in [[MunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
+    for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
@@ -2092,8 +2092,8 @@
 	if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	[[MunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
-	[[MunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
+	[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
+	[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
 	[self selectRepoAtURL:self.repoURL];
 }
 
@@ -2619,10 +2619,10 @@
 - (IBAction) saveAction:(id)sender {
 	
 	if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
-		[[MunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
+		[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
 	}
 	if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
-		[[MunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
+		[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
 	}
 	if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
 		[self updateCatalogs];

@@ -7,7 +7,7 @@
 //
 
 #import "MAIconChooser.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 #import "MunkiAdmin_AppDelegate.h"
 
 @interface MAIconChooser ()
@@ -91,7 +91,7 @@
     NSSortDescriptor *sortByPath = [NSSortDescriptor sortDescriptorWithKey:@"imageTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
     self.imagesArrayController.sortDescriptors = @[sortByPath];
     
-    [[MunkiRepositoryManager sharedManager] scanIconsDirectoryForImages];
+    [[MAMunkiRepositoryManager sharedManager] scanIconsDirectoryForImages];
 }
 
 - (IBAction)chooseAction:(id)sender
@@ -107,7 +107,7 @@
     NSURL *selectedURL = selectedImage.originalURL;
     
     NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-    MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
     
     /*
      Use the selected icon in every package with the selected names

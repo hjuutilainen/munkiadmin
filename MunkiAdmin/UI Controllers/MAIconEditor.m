@@ -8,7 +8,7 @@
 
 #import "MAIconEditor.h"
 #import "MunkiAdmin_AppDelegate.h"
-#import "MunkiRepositoryManager.h"
+#import "MAMunkiRepositoryManager.h"
 
 @interface MAIconEditor ()
 
@@ -138,7 +138,7 @@
     if (returnCode == NSOKButton)
     {
         NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
-        MunkiRepositoryManager *repoManager = [MunkiRepositoryManager sharedManager];
+        MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
         
         /*
          Create a PNG file from the image (resizing it if necessary)
