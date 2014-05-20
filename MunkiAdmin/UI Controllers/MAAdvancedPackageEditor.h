@@ -9,7 +9,7 @@
 
 @class SelectPkginfoItemsWindow;
 @class PackageNameEditor;
-@class InstallsItemEditor;
+@class MAInstallsItemEditor;
 @class PackageMO;
 @class MARequestStringValueController;
 @class MAIconEditor;
@@ -34,7 +34,7 @@
 
 @property (weak) id delegate;
 @property (weak) PackageMO *pkginfoToEdit;
-@property (strong) InstallsItemEditor *installsItemEditor;
+@property (strong) MAInstallsItemEditor *installsItemEditor;
 @property (strong) PackageNameEditor *packageNameEditor;
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;

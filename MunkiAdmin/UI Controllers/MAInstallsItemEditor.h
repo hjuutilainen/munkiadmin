@@ -10,7 +10,7 @@
 
 @class InstallsItemMO;
 
-@interface InstallsItemEditor : NSWindowController <NSTableViewDelegate> {
+@interface MAInstallsItemEditor : NSWindowController <NSTableViewDelegate> {
     NSUndoManager *undoManager;
 }
 

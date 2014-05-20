@@ -20,8 +20,8 @@
 		F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7419090E0E009F6D28 /* DeveloperMO.m */; };
 		F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7619090E0E009F6D28 /* DeveloperSourceListItemMO.m */; };
 		F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */; };
-		F506342C172FA43C00EF7728 /* InstallsItemEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342A172FA43C00EF7728 /* InstallsItemEditor.m */; };
-		F506342D172FA43C00EF7728 /* InstallsItemEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */; };
+		F506342C172FA43C00EF7728 /* MAInstallsItemEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342A172FA43C00EF7728 /* MAInstallsItemEditor.m */; };
+		F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */; };
 		F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */; };
 		F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */; };
 		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
@@ -173,9 +173,9 @@
 		F5018E7619090E0E009F6D28 /* DeveloperSourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperSourceListItemMO.m; sourceTree = "<group>"; };
 		F5063425172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
-		F5063429172FA43C00EF7728 /* InstallsItemEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallsItemEditor.h; sourceTree = "<group>"; };
-		F506342A172FA43C00EF7728 /* InstallsItemEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallsItemEditor.m; sourceTree = "<group>"; };
-		F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstallsItemEditor.xib; sourceTree = "<group>"; };
+		F5063429172FA43C00EF7728 /* MAInstallsItemEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAInstallsItemEditor.h; sourceTree = "<group>"; };
+		F506342A172FA43C00EF7728 /* MAInstallsItemEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAInstallsItemEditor.m; sourceTree = "<group>"; };
+		F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAInstallsItemEditor.xib; sourceTree = "<group>"; };
 		F506342E172FA97000EF7728 /* _InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
 		F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
 		F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
@@ -718,9 +718,9 @@
 				FEED6896149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib */,
 				FE0F4E7C14FB86B40081AEFF /* ImageAndTitleCell.h */,
 				FE0F4E7D14FB86B40081AEFF /* ImageAndTitleCell.m */,
-				F5063429172FA43C00EF7728 /* InstallsItemEditor.h */,
-				F506342A172FA43C00EF7728 /* InstallsItemEditor.m */,
-				F506342B172FA43C00EF7728 /* InstallsItemEditor.xib */,
+				F5063429172FA43C00EF7728 /* MAInstallsItemEditor.h */,
+				F506342A172FA43C00EF7728 /* MAInstallsItemEditor.m */,
+				F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */,
 				F562D4F4191DF18C000F136C /* MAIconChooser.h */,
 				F562D4F5191DF18C000F136C /* MAIconChooser.m */,
 				F562D4F6191DF18C000F136C /* MAIconChooser.xib */,
@@ -871,7 +871,7 @@
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
 				F5836987166C9147003E1442 /* PkginfoAssimilator.xib in Resources */,
-				F506342D172FA43C00EF7728 /* InstallsItemEditor.xib in Resources */,
+				F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,7 +989,7 @@
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,
 				F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */,
-				F506342C172FA43C00EF7728 /* InstallsItemEditor.m in Sources */,
+				F506342C172FA43C00EF7728 /* MAInstallsItemEditor.m in Sources */,
 				F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */,
 				F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */,
 				F5D052541744B36400487101 /* MACoreDataManager.m in Sources */,

@@ -6,11 +6,11 @@
 //
 //
 
-#import "InstallsItemEditor.h"
+#import "MAInstallsItemEditor.h"
 #import "InstallsItemMO.h"
 #import "InstallsItemCustomKeyMO.h"
 
-@interface InstallsItemEditor ()
+@interface MAInstallsItemEditor ()
 
 @property (readwrite, strong) NSArray *versionComparisonKeys;
 
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation InstallsItemEditor
+@implementation MAInstallsItemEditor
 
 - (id)initWithWindow:(NSWindow *)window
 {
