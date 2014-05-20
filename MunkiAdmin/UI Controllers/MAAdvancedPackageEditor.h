@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class SelectPkginfoItemsWindow;
-@class PackageNameEditor;
+@class MAPackageNameEditor;
 @class MAInstallsItemEditor;
 @class PackageMO;
 @class MARequestStringValueController;
@@ -35,7 +35,7 @@
 @property (weak) id delegate;
 @property (weak) PackageMO *pkginfoToEdit;
 @property (strong) MAInstallsItemEditor *installsItemEditor;
-@property (strong) PackageNameEditor *packageNameEditor;
+@property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;
 @property (strong) MAIconEditor *iconEditor;

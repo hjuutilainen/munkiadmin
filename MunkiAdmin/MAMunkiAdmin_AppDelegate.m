@@ -14,7 +14,7 @@
 #import "MAManifestDetailView.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "SelectManifestItemsWindow.h"
-#import "PackageNameEditor.h"
+#import "MAPackageNameEditor.h"
 #import "MAAdvancedPackageEditor.h"
 #import "PredicateEditor.h"
 #import "PackagesView.h"
@@ -403,7 +403,7 @@
     self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"ManifestDetailView" bundle:nil];
     addItemsWindowController = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[SelectManifestItemsWindow alloc] initWithWindowNibName:@"SelectManifestItemsWindow"];
-    self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"AdvancedPackageEditor"];
     predicateEditor = [[PredicateEditor alloc] initWithWindowNibName:@"PredicateEditor"];
     pkginfoAssimilator = [[PkginfoAssimilator alloc] initWithWindowNibName:@"PkginfoAssimilator"];

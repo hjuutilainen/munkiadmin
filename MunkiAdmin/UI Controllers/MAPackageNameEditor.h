@@ -9,7 +9,7 @@
 
 @class PackageMO;
 
-@interface PackageNameEditor : NSWindowController {
+@interface MAPackageNameEditor : NSWindowController {
     NSUndoManager *undoManager;
 }
 

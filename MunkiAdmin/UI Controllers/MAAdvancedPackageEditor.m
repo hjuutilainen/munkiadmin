@@ -11,7 +11,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MAMunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
-#import "PackageNameEditor.h"
+#import "MAPackageNameEditor.h"
 #import "MAInstallsItemEditor.h"
 #import "MACoreDataManager.h"
 #import "MARequestStringValueController.h"
@@ -690,7 +690,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [super windowDidLoad];
     
     self.installsItemEditor = [[MAInstallsItemEditor alloc] initWithWindowNibName:@"InstallsItemEditor"];
-    self.packageNameEditor = [[PackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
+    self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"PackageNameEditor"];
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];

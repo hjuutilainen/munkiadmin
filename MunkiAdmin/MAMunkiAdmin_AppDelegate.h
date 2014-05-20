@@ -19,7 +19,7 @@
 @class MAManifestDetailView;
 @class SelectPkginfoItemsWindow;
 @class SelectManifestItemsWindow;
-@class PackageNameEditor;
+@class MAPackageNameEditor;
 @class PackagesView;
 @class MAAdvancedPackageEditor;
 @class PredicateEditor;
@@ -57,7 +57,7 @@
 @property (weak) IBOutlet PackageInfosArrayController *packageInfosArrayController;
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
 
-@property (strong) PackageNameEditor *packageNameEditor;
+@property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) PackagesView *packagesViewController;
 @property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) PreferencesController *preferencesController;

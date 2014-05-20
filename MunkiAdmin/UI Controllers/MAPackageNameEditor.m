@@ -5,12 +5,12 @@
 //  Created by Juutilainen Hannes on 28.10.2011.
 //
 
-#import "PackageNameEditor.h"
+#import "MAPackageNameEditor.h"
 #import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 
-@implementation PackageNameEditor
+@implementation MAPackageNameEditor
 
 - (id)initWithWindow:(NSWindow *)window
 {
