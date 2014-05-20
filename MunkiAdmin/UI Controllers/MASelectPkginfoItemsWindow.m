@@ -5,10 +5,10 @@
 //  Created by Juutilainen Hannes on 19.10.2011.
 //
 
-#import "SelectPkginfoItemsWindow.h"
+#import "MASelectPkginfoItemsWindow.h"
 #import "DataModelHeaders.h"
 
-@implementation SelectPkginfoItemsWindow
+@implementation MASelectPkginfoItemsWindow
 
 @dynamic shouldHideAddedItems;
 

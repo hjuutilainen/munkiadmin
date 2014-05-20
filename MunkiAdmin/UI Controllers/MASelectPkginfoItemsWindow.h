@@ -10,7 +10,7 @@
 #import "ApplicationsArrayController.h"
 #import "GradientBackgroundView.h"
 
-@interface SelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
+@interface MASelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
     BOOL shouldHideAddedItems;
 }
 

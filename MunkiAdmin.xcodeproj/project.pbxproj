@@ -130,8 +130,8 @@
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
 		FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */; };
 		FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */; };
-		FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */; };
-		FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */; };
+		FEABB248144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABB247144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m */; };
+		FEABB24A144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEABB249144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib */; };
 		FEAC7C1F14E3F65B00487016 /* MAPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */; };
 		FEAC7C2214E3F66E00487016 /* MAPredicateEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */; };
 		FEC30F2014516376006747F6 /* MASelectManifestItemsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC30F1F14516376006747F6 /* MASelectManifestItemsWindow.m */; };
@@ -364,9 +364,9 @@
 		FE781BA2144C0CCE0089E941 /* InstallerChoicesItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallerChoicesItemMO.m; sourceTree = "<group>"; };
 		FE9F2CD01459586C00D0E687 /* MAFileCopyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAFileCopyOperation.h; sourceTree = "<group>"; };
 		FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAFileCopyOperation.m; sourceTree = "<group>"; };
-		FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
-		FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
-		FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
+		FEABB246144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASelectPkginfoItemsWindow.h; sourceTree = "<group>"; };
+		FEABB247144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASelectPkginfoItemsWindow.m; sourceTree = "<group>"; };
+		FEABB249144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASelectPkginfoItemsWindow.xib; sourceTree = "<group>"; };
 		FEAC7C1D14E3F65B00487016 /* MAPredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPredicateEditor.h; sourceTree = "<group>"; };
 		FEAC7C1E14E3F65B00487016 /* MAPredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPredicateEditor.m; sourceTree = "<group>"; };
 		FEAC7C2114E3F66E00487016 /* MAPredicateEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPredicateEditor.xib; sourceTree = "<group>"; };
@@ -753,9 +753,9 @@
 				FEC30F1E14516376006747F6 /* MASelectManifestItemsWindow.h */,
 				FEC30F1F14516376006747F6 /* MASelectManifestItemsWindow.m */,
 				FEC30F2114516392006747F6 /* MASelectManifestItemsWindow.xib */,
-				FEABB246144EB39B0006BDE8 /* SelectPkginfoItemsWindow.h */,
-				FEABB247144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m */,
-				FEABB249144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib */,
+				FEABB246144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.h */,
+				FEABB247144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m */,
+				FEABB249144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib */,
 			);
 			name = "UI Controllers";
 			path = "MunkiAdmin/UI Controllers";
@@ -845,7 +845,7 @@
 				F59279F01917BC8F0028276C /* tagMultipleTemplate.pdf in Resources */,
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */,
-				FEABB24A144EB3AF0006BDE8 /* SelectPkginfoItemsWindow.xib in Resources */,
+				FEABB24A144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib in Resources */,
 				F5EA6ABB190F7ED100362FEE /* MAIconEditor.xib in Resources */,
 				FEC30F2214516392006747F6 /* MASelectManifestItemsWindow.xib in Resources */,
 				FE1C6B7B145A7A0300BC815F /* MAPackageNameEditor.xib in Resources */,
@@ -962,7 +962,7 @@
 				FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */,
 				FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */,
 				FEDAA473144D50B1005C8B6F /* MAManifestDetailView.m in Sources */,
-				FEABB248144EB39B0006BDE8 /* SelectPkginfoItemsWindow.m in Sources */,
+				FEABB248144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m in Sources */,
 				FEC30F2014516376006747F6 /* MASelectManifestItemsWindow.m in Sources */,
 				FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */,
 				FE1C6B78145A797D00BC815F /* MAPackageNameEditor.m in Sources */,

@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class SelectPkginfoItemsWindow;
+@class MASelectPkginfoItemsWindow;
 @class MAPackageNameEditor;
 @class MAInstallsItemEditor;
 @class PackageMO;
@@ -18,7 +18,7 @@
      
     NSUndoManager *undoManager;
     
-    SelectPkginfoItemsWindow *pkginfoSelector;
+    MASelectPkginfoItemsWindow *pkginfoSelector;
 }
 
 - (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;

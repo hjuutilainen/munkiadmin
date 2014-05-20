@@ -10,7 +10,7 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MAMunkiOperation.h"
-#import "SelectPkginfoItemsWindow.h"
+#import "MASelectPkginfoItemsWindow.h"
 #import "MAPackageNameEditor.h"
 #import "MAInstallsItemEditor.h"
 #import "MACoreDataManager.h"
@@ -726,7 +726,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.uninstallCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     
     
-    pkginfoSelector = [[SelectPkginfoItemsWindow alloc] initWithWindowNibName:@"SelectPkginfoItemsWindow"];
+    pkginfoSelector = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     
     NSSortDescriptor *osVersionSorter = [NSSortDescriptor sortDescriptorWithKey:nil
                                                                      ascending:NO 
