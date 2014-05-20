@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "PackageMO.h"
 
-@interface MyCell : NSTextFieldCell {
+@interface MAImageTitleSubtitleCell : NSTextFieldCell {
 	
 }
 

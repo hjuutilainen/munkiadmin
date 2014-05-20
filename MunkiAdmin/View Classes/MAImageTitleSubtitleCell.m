@@ -1,9 +1,9 @@
 // Thanks to Cathy Shive, http://katidev.com/blog/2008/02/22/styling-an-nstableview-dttah/
 // Modified by Hannes Juutilainen
 
-#import "MyCell.h"
+#import "MAImageTitleSubtitleCell.h"
 
-@implementation MyCell
+@implementation MAImageTitleSubtitleCell
 
 - (void)awakeFromNib
 {
