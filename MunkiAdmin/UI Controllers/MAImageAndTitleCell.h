@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ImageAndTitleCell : NSTextFieldCell
+@interface MAImageAndTitleCell : NSTextFieldCell
 {
 	NSMutableDictionary * aTitleAttributes;
 	NSMutableDictionary * aSubtitleAttributes;

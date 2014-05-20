@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ImageAndTitleCell.h"
+#import "MAImageAndTitleCell.h"
 
-@implementation ImageAndTitleCell
+@implementation MAImageAndTitleCell
 
 @synthesize aTitleAttributes;
 @synthesize aSubtitleAttributes;
