@@ -24,7 +24,7 @@
 		F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */; };
 		F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */; };
 		F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */; };
-		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
+		F508094F1105900E0058C7AC /* MAApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* MAApplicationsArrayController.m */; };
 		F508522E11084C39001DAD73 /* MAGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* MAGradientBackgroundView.m */; };
 		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
 		F50AC6AF12B9FDC30069EB00 /* ManifestItemArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */; };
@@ -41,7 +41,6 @@
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
 		F5299AD910FB78620074CFEA /* MAImageTitleSubtitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299AD810FB78620074CFEA /* MAImageTitleSubtitleCell.m */; };
 		F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */; };
-		F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */; };
 		F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */; };
 		F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */; };
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
@@ -180,8 +179,8 @@
 		F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
 		F5063430172FA97000EF7728 /* InstallsItemCustomKeyMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallsItemCustomKeyMO.h; sourceTree = "<group>"; };
 		F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
-		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsArrayController.h; sourceTree = "<group>"; };
-		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationsArrayController.m; sourceTree = "<group>"; };
+		F508094D1105900E0058C7AC /* MAApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAApplicationsArrayController.h; sourceTree = "<group>"; };
+		F508094E1105900E0058C7AC /* MAApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAApplicationsArrayController.m; sourceTree = "<group>"; };
 		F508522C11084C39001DAD73 /* MAGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientBackgroundView.h; sourceTree = "<group>"; };
 		F508522D11084C39001DAD73 /* MAGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientBackgroundView.m; sourceTree = "<group>"; };
 		F508526C11085A5A001DAD73 /* ManifestsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestsArrayController.h; sourceTree = "<group>"; };
@@ -211,8 +210,6 @@
 		F5299AD810FB78620074CFEA /* MAImageTitleSubtitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAImageTitleSubtitleCell.m; sourceTree = "<group>"; };
 		F53269A1125AF75C00AF967C /* MAPkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoScanner.h; sourceTree = "<group>"; };
 		F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoScanner.m; sourceTree = "<group>"; };
-		F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationInfosArrayController.h; sourceTree = "<group>"; };
-		F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationInfosArrayController.m; sourceTree = "<group>"; };
 		F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon_32x32.png; path = MunkiAdmin/Graphics/catalogIcon_32x32.png; sourceTree = "<group>"; };
 		F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "catalogIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/catalogIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon_32x32.png; path = MunkiAdmin/Graphics/manifestIcon_32x32.png; sourceTree = "<group>"; };
@@ -525,10 +522,8 @@
 		26C5620F178C961400B38215 /* Array Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F5428B091112DF0F00F16D20 /* ApplicationInfosArrayController.h */,
-				F5428B0A1112DF0F00F16D20 /* ApplicationInfosArrayController.m */,
-				F508094D1105900E0058C7AC /* ApplicationsArrayController.h */,
-				F508094E1105900E0058C7AC /* ApplicationsArrayController.m */,
+				F508094D1105900E0058C7AC /* MAApplicationsArrayController.h */,
+				F508094E1105900E0058C7AC /* MAApplicationsArrayController.m */,
 				F527FF1D10FC871B000B29B6 /* CatalogInfosArrayController.h */,
 				F527FF1E10FC871B000B29B6 /* CatalogInfosArrayController.m */,
 				F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */,
@@ -908,11 +903,10 @@
 				F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */,
 				F527FF1F10FC871B000B29B6 /* CatalogInfosArrayController.m in Sources */,
 				F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */,
-				F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */,
+				F508094F1105900E0058C7AC /* MAApplicationsArrayController.m in Sources */,
 				F508522E11084C39001DAD73 /* MAGradientBackgroundView.m in Sources */,
 				F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */,
 				F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */,
-				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,
 				F564873911B503830061B190 /* MAPreferences.m in Sources */,
 				F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,

@@ -5,10 +5,10 @@
 //  Created by Hannes Juutilainen on 19.1.2010.
 //
 
-#import "ApplicationsArrayController.h"
+#import "MAApplicationsArrayController.h"
 
 
-@implementation ApplicationsArrayController
+@implementation MAApplicationsArrayController
 
 - (void)awakeFromNib
 {

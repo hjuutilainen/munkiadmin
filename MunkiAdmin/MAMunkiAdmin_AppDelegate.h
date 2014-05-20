@@ -12,7 +12,7 @@
 #import "CatalogsArrayController.h"
 #import "DataModelHeaders.h"
 
-@class ApplicationsArrayController;
+@class MAApplicationsArrayController;
 @class PackageArrayController;
 @class ManifestsArrayController;
 @class MAPreferences;
@@ -52,7 +52,7 @@
 @property (weak) IBOutlet NSArrayController *itemsToCopyArrayController;
 @property (weak) IBOutlet NSArrayController *receiptsArrayController;
 @property (weak) IBOutlet PackageArrayController *pkgsForAddingArrayController;
-@property (weak) IBOutlet ApplicationsArrayController *pkgGroupsForAddingArrayController;
+@property (weak) IBOutlet MAApplicationsArrayController *pkgGroupsForAddingArrayController;
 @property (weak) IBOutlet NSView *makepkginfoOptionsView;
 @property (weak) IBOutlet PackageInfosArrayController *packageInfosArrayController;
 @property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
@@ -85,7 +85,7 @@
 
 # pragma mark -
 # pragma mark IBOutlet declarations
-@property (strong) IBOutlet ApplicationsArrayController *applicationsArrayController;
+@property (strong) IBOutlet MAApplicationsArrayController *applicationsArrayController;
 @property (strong) IBOutlet PackageArrayController *allPackagesArrayController;
 @property (strong) IBOutlet ManifestsArrayController *manifestsArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *manifestInfosArrayController;

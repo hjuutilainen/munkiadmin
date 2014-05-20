@@ -726,7 +726,7 @@ Gw
                 <outlet property="prefixTextField" destination="1409" id="1463"/>
             </connections>
         </arrayController>
-        <arrayController mode="entity" entityName="Application" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="645" userLabel="All Applications" customClass="ApplicationsArrayController">
+        <arrayController mode="entity" entityName="Application" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="645" userLabel="All Applications" customClass="MAApplicationsArrayController">
             <declaredKeys>
                 <string>munki_version.@max</string>
                 <string>packagesmunki_version.@max</string>

@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface ApplicationsArrayController : NSArrayController {
+@interface MAApplicationsArrayController : NSArrayController {
 
 	IBOutlet id applicationsTableView;
 }
