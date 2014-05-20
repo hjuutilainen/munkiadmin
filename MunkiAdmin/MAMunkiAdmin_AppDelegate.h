@@ -8,13 +8,9 @@
 #import <Cocoa/Cocoa.h>
 
 #import "MAPreferences.h"
-#import "PackageInfosArrayController.h"
-#import "CatalogsArrayController.h"
+#import "MAPackageInfosArrayController.h"
 #import "DataModelHeaders.h"
 
-@class MAApplicationsArrayController;
-@class PackageArrayController;
-@class ManifestsArrayController;
 @class MAPreferences;
 @class MAManifestDetailView;
 @class MASelectPkginfoItemsWindow;
@@ -48,14 +44,13 @@
 	
 }
 
-@property (weak) IBOutlet NSArrayController *installsItemsArrayController;
-@property (weak) IBOutlet NSArrayController *itemsToCopyArrayController;
-@property (weak) IBOutlet NSArrayController *receiptsArrayController;
-@property (weak) IBOutlet PackageArrayController *pkgsForAddingArrayController;
-@property (weak) IBOutlet MAApplicationsArrayController *pkgGroupsForAddingArrayController;
+//@property (weak) IBOutlet NSArrayController *installsItemsArrayController;
+//@property (weak) IBOutlet NSArrayController *itemsToCopyArrayController;
+//@property (weak) IBOutlet NSArrayController *receiptsArrayController;
+//@property (weak) IBOutlet NSArrayController *pkgGroupsForAddingArrayController;
 @property (weak) IBOutlet NSView *makepkginfoOptionsView;
-@property (weak) IBOutlet PackageInfosArrayController *packageInfosArrayController;
-@property (weak) IBOutlet CatalogsArrayController *allCatalogsArrayController;
+@property (weak) IBOutlet MAPackageInfosArrayController *packageInfosArrayController;
+@property (weak) IBOutlet NSArrayController *allCatalogsArrayController;
 
 @property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) MAPackagesView *packagesViewController;
@@ -85,9 +80,9 @@
 
 # pragma mark -
 # pragma mark IBOutlet declarations
-@property (strong) IBOutlet MAApplicationsArrayController *applicationsArrayController;
-@property (strong) IBOutlet PackageArrayController *allPackagesArrayController;
-@property (strong) IBOutlet ManifestsArrayController *manifestsArrayController;
+//@property (strong) IBOutlet NSArrayController *applicationsArrayController;
+//@property (strong) IBOutlet NSArrayController *allPackagesArrayController;
+@property (strong) IBOutlet NSArrayController *manifestsArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *manifestInfosArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *managedInstallsArrayController;
 @property (nonatomic, strong) IBOutlet NSArrayController *managedUpdatesArrayController;

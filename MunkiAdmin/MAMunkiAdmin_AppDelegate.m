@@ -21,7 +21,7 @@
 #import "MAPkginfoAssimilator.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
-#import "ManifestsArrayController.h"
+//#import "ManifestsArrayController.h"
 
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
 
@@ -481,6 +481,7 @@
 	[self.managedUpdatesArrayController setSortDescriptors:appSorters];
 	[self.optionalInstallsArrayController setSortDescriptors:appSorters];
     
+    /*
     NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES];
     [self.installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
     
@@ -491,6 +492,11 @@
     NSSortDescriptor *sortReceiptsByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES];
     NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
     [self.receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
+    */
+     
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [self.allCatalogsArrayController setSortDescriptors:@[sortByTitle]];
+    [self.manifestsArrayController setSortDescriptors:@[sortByTitle]];
 	
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
@@ -1342,12 +1348,14 @@
 
 - (void)enableAllBindings
 {
+    /*
     [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.allPackagesArrayController setEntityName:@"Package"];
     if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
         [self.allPackagesArrayController setAutomaticallyPreparesContent:YES];
         [self.allPackagesArrayController setSelectionIndex:0];
     }
+     */
     [[self.packagesViewController packagesArrayController] setManagedObjectContext:[self managedObjectContext]];
     [[self.packagesViewController packagesArrayController] setEntityName:@"Package"];
     if ([[self.packagesViewController packagesArrayController] fetchWithRequest:nil merge:YES error:nil]) {
@@ -1374,12 +1382,13 @@
         [self.manifestsArrayController setAutomaticallyPreparesContent:YES];
         [self.manifestsArrayController setSelectionIndex:0];
     }
+    /*
     [self.applicationsArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.applicationsArrayController setEntityName:@"Application"];
     if (![self.applicationsArrayController fetchWithRequest:nil merge:YES error:nil]) {
         [self.applicationsArrayController setAutomaticallyPreparesContent:YES];
         [self.applicationsArrayController setSelectionIndex:0];
-    }
+    }*/
     [self.allCatalogsArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.allCatalogsArrayController setEntityName:@"Catalog"];
     if (![self.allCatalogsArrayController fetchWithRequest:nil merge:YES error:nil]) {
@@ -1391,9 +1400,9 @@
 - (void)disableAllBindings
 {
     [self.allCatalogsArrayController setManagedObjectContext:nil];
-    [self.applicationsArrayController setManagedObjectContext:nil];
+    //[self.applicationsArrayController setManagedObjectContext:nil];
     [self.packageInfosArrayController setManagedObjectContext:nil];
-    [self.allPackagesArrayController setManagedObjectContext:nil];
+    //[self.allPackagesArrayController setManagedObjectContext:nil];
     [[self.packagesViewController packagesArrayController] setManagedObjectContext:nil];
     [[self.packagesViewController directoriesTreeController] setManagedObjectContext:nil];
     [self.manifestsArrayController setManagedObjectContext:nil];
@@ -2849,18 +2858,6 @@
     self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 }
 
-- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
-{
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
-	}
-	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
-		currentDetailView = self.applicationsDetailView;
-	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {
-		currentDetailView = self.catalogsDetailView;
-	}
-	[self changeItemView];
-}
 
 #pragma mark -
 #pragma mark NSSplitView delegates
