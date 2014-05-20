@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface ManifestItemTableView : NSTableView {
+@interface MAManifestItemTableView : NSTableView {
 
 }
 

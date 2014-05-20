@@ -5,10 +5,10 @@
 //  Created by Hannes Juutilainen on 16.12.2010.
 //
 
-#import "ManifestItemTableView.h"
+#import "MAManifestItemTableView.h"
 
 
-@implementation ManifestItemTableView
+@implementation MAManifestItemTableView
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent
 {
