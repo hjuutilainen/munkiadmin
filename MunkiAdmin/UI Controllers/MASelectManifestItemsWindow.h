@@ -6,15 +6,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "GradientBackgroundView.h"
+#import "MAGradientBackgroundView.h"
 
 @interface MASelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
     NSPredicate *originalPredicate;
 }
 
 @property (strong) NSPredicate *originalPredicate;
-@property (weak) IBOutlet GradientBackgroundView *existingSearchBgView;
-@property (weak) IBOutlet GradientBackgroundView *customValueBgView;
+@property (weak) IBOutlet MAGradientBackgroundView *existingSearchBgView;
+@property (weak) IBOutlet MAGradientBackgroundView *customValueBgView;
 @property (weak) IBOutlet NSTextField *customValueTextField;
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSArrayController *manifestsArrayController;

@@ -25,7 +25,7 @@
 		F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342F172FA97000EF7728 /* _InstallsItemCustomKeyMO.m */; };
 		F5063433172FA97000EF7728 /* InstallsItemCustomKeyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */; };
 		F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508094E1105900E0058C7AC /* ApplicationsArrayController.m */; };
-		F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* GradientBackgroundView.m */; };
+		F508522E11084C39001DAD73 /* MAGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F508522D11084C39001DAD73 /* MAGradientBackgroundView.m */; };
 		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
 		F50AC6AF12B9FDC30069EB00 /* ManifestItemArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */; };
 		F50AC6E412BA04360069EB00 /* ManifestItemTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50AC6E312BA04360069EB00 /* ManifestItemTableView.m */; };
@@ -182,8 +182,8 @@
 		F5063431172FA97000EF7728 /* InstallsItemCustomKeyMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallsItemCustomKeyMO.m; sourceTree = "<group>"; };
 		F508094D1105900E0058C7AC /* ApplicationsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsArrayController.h; sourceTree = "<group>"; };
 		F508094E1105900E0058C7AC /* ApplicationsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationsArrayController.m; sourceTree = "<group>"; };
-		F508522C11084C39001DAD73 /* GradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBackgroundView.h; sourceTree = "<group>"; };
-		F508522D11084C39001DAD73 /* GradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBackgroundView.m; sourceTree = "<group>"; };
+		F508522C11084C39001DAD73 /* MAGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientBackgroundView.h; sourceTree = "<group>"; };
+		F508522D11084C39001DAD73 /* MAGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientBackgroundView.m; sourceTree = "<group>"; };
 		F508526C11085A5A001DAD73 /* ManifestsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestsArrayController.h; sourceTree = "<group>"; };
 		F508526D11085A5A001DAD73 /* ManifestsArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestsArrayController.m; sourceTree = "<group>"; };
 		F50AC6AD12B9FDC30069EB00 /* ManifestItemArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManifestItemArrayController.h; sourceTree = "<group>"; };
@@ -508,8 +508,8 @@
 		26C5620E178C93A100B38215 /* View Classes */ = {
 			isa = PBXGroup;
 			children = (
-				F508522C11084C39001DAD73 /* GradientBackgroundView.h */,
-				F508522D11084C39001DAD73 /* GradientBackgroundView.m */,
+				F508522C11084C39001DAD73 /* MAGradientBackgroundView.h */,
+				F508522D11084C39001DAD73 /* MAGradientBackgroundView.m */,
 				F59B724613698044008229E8 /* GradientButtonBarView.h */,
 				F59B724713698044008229E8 /* GradientButtonBarView.m */,
 				F50AC6E212BA04360069EB00 /* ManifestItemTableView.h */,
@@ -909,7 +909,7 @@
 				F527FF1F10FC871B000B29B6 /* CatalogInfosArrayController.m in Sources */,
 				F5630B9F11009974001CEC6C /* PackageInfosArrayController.m in Sources */,
 				F508094F1105900E0058C7AC /* ApplicationsArrayController.m in Sources */,
-				F508522E11084C39001DAD73 /* GradientBackgroundView.m in Sources */,
+				F508522E11084C39001DAD73 /* MAGradientBackgroundView.m in Sources */,
 				F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */,
 				F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */,
 				F5428B0B1112DF0F00F16D20 /* ApplicationInfosArrayController.m in Sources */,

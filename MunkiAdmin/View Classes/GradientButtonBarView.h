@@ -6,10 +6,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "GradientBackgroundView.h"
+#import "MAGradientBackgroundView.h"
 
 
-@interface GradientButtonBarView : GradientBackgroundView {
+@interface GradientButtonBarView : MAGradientBackgroundView {
 @private
     
 }

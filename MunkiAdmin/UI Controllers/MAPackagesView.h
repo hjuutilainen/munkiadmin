@@ -6,7 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "GradientBackgroundView.h"
+#import "MAGradientBackgroundView.h"
 
 @class MARequestStringValueController;
 @class MAIconEditor;
@@ -19,7 +19,7 @@
 @property (weak) IBOutlet NSSplitView *tripleSplitView;
 @property (weak) IBOutlet NSView *leftPlaceHolder;
 @property (weak) IBOutlet NSView *middlePlaceHolder;
-@property (weak) IBOutlet GradientBackgroundView *rightPlaceHolder;
+@property (weak) IBOutlet MAGradientBackgroundView *rightPlaceHolder;
 @property (weak) IBOutlet NSTableView *packagesTableView;
 @property (weak) IBOutlet NSArrayController *packagesArrayController;
 @property (weak) IBOutlet NSTreeController *directoriesTreeController;

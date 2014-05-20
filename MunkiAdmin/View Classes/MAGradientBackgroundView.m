@@ -5,10 +5,10 @@
 //  Created by Hannes Juutilainen on 21.1.2010.
 //
 
-#import "GradientBackgroundView.h"
+#import "MAGradientBackgroundView.h"
 
 
-@implementation GradientBackgroundView
+@implementation MAGradientBackgroundView
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];

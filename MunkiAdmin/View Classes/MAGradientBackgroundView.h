@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface GradientBackgroundView : NSView {
+@interface MAGradientBackgroundView : NSView {
     
 }
 
