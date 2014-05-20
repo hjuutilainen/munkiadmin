@@ -9,7 +9,7 @@
 #import "MAGradientBackgroundView.h"
 
 
-@interface GradientButtonBarView : MAGradientBackgroundView {
+@interface MAGradientButtonBarView : MAGradientBackgroundView {
 @private
     
 }

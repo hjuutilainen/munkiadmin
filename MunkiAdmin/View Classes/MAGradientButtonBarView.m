@@ -5,10 +5,10 @@
 //  Created by Juutilainen Hannes on 28.4.2011.
 //
 
-#import "GradientButtonBarView.h"
+#import "MAGradientButtonBarView.h"
 
 
-@implementation GradientButtonBarView
+@implementation MAGradientButtonBarView
 
 - (id)initWithFrame:(NSRect)frame
 {
