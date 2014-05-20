@@ -5,10 +5,10 @@
 //  Created by Hannes Juutilainen on 7.10.2010.
 //
 
-#import "MunkiOperation.h"
+#import "MAMunkiOperation.h"
 
 
-@implementation MunkiOperation
+@implementation MAMunkiOperation
 
 
 + (id)makecatalogsOperationWithTarget:(NSURL *)target

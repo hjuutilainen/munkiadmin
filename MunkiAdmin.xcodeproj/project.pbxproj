@@ -114,7 +114,7 @@
 		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
-		F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */; };
+		F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */; };
 		FE0EAC5A14FE4D02003C55E9 /* MATableView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0EAC5914FE4D02003C55E9 /* MATableView.m */; };
 		FE0F4E6514FB564F0081AEFF /* PackagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E6314FB564F0081AEFF /* PackagesView.m */; };
 		FE0F4E6614FB564F0081AEFF /* PackagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE0F4E6414FB564F0081AEFF /* PackagesView.xib */; };
@@ -334,8 +334,8 @@
 		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon2.png; path = MunkiAdmin/Graphics/manifestIcon2.png; sourceTree = "<group>"; };
 		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon2.png; path = MunkiAdmin/Graphics/packageIcon2.png; sourceTree = "<group>"; };
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon3.png; path = MunkiAdmin/Graphics/catalogIcon3.png; sourceTree = "<group>"; };
-		F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiOperation.h; sourceTree = "<group>"; };
-		F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiOperation.m; sourceTree = "<group>"; };
+		F5FF373E125D9D7900AD5BC1 /* MAMunkiOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMunkiOperation.h; sourceTree = "<group>"; };
+		F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiOperation.m; sourceTree = "<group>"; };
 		FE0EAC5814FE4D02003C55E9 /* MATableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATableView.h; sourceTree = "<group>"; };
 		FE0EAC5914FE4D02003C55E9 /* MATableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATableView.m; sourceTree = "<group>"; };
 		FE0F4E6214FB564F0081AEFF /* PackagesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackagesView.h; sourceTree = "<group>"; };
@@ -768,8 +768,8 @@
 				FE9F2CD11459586C00D0E687 /* MAFileCopyOperation.m */,
 				F555BD41125C6AE8000D9DF6 /* MAManifestScanner.h */,
 				F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */,
-				F5FF373E125D9D7900AD5BC1 /* MunkiOperation.h */,
-				F5FF373F125D9D7900AD5BC1 /* MunkiOperation.m */,
+				F5FF373E125D9D7900AD5BC1 /* MAMunkiOperation.h */,
+				F5FF373F125D9D7900AD5BC1 /* MAMunkiOperation.m */,
 				F53269A1125AF75C00AF967C /* PkginfoScanner.h */,
 				F53269A2125AF75C00AF967C /* PkginfoScanner.m */,
 				FEEBE373145FC5750004791A /* RelationshipScanner.h */,
@@ -916,7 +916,7 @@
 				F564873911B503830061B190 /* PreferencesController.m in Sources */,
 				F53269A3125AF75C00AF967C /* PkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
-				F5FF3740125D9D7900AD5BC1 /* MunkiOperation.m in Sources */,
+				F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */,
 				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
 				F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */,
 				F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */,

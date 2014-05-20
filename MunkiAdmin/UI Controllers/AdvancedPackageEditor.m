@@ -9,7 +9,7 @@
 #import "DataModelHeaders.h"
 #import "MunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
-#import "MunkiOperation.h"
+#import "MAMunkiOperation.h"
 #import "SelectPkginfoItemsWindow.h"
 #import "PackageNameEditor.h"
 #import "InstallsItemEditor.h"
@@ -173,7 +173,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
-					MunkiOperation *theOp = [MunkiOperation installsItemFromURL:fileToAdd];
+					MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:fileToAdd];
 					theOp.delegate = self;
 					[[[NSApp delegate] operationQueue] addOperation:theOp];
 				}
@@ -576,7 +576,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
         NSArray *fileURLs = [pasteboard readObjectsForClasses:classes options:options];
         for (NSURL *url in fileURLs) {
-            MunkiOperation *theOp = [MunkiOperation installsItemFromURL:url];
+            MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:url];
             theOp.delegate = self;
             [[[NSApp delegate] operationQueue] addOperation:theOp];
         }

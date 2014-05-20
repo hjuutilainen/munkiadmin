@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface MunkiOperation : NSOperation {
+@interface MAMunkiOperation : NSOperation {
     
 }
 

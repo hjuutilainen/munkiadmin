@@ -8,7 +8,7 @@
 #import "MunkiAdmin_AppDelegate.h"
 #import "PkginfoScanner.h"
 #import "MAManifestScanner.h"
-#import "MunkiOperation.h"
+#import "MAMunkiOperation.h"
 #import "RelationshipScanner.h"
 #import "MAFileCopyOperation.h"
 #import "ManifestDetailView.h"
@@ -789,7 +789,7 @@
                 }
                 
                 // Running item is MunkiOperation
-                else if ([firstOpItem isKindOfClass:[MunkiOperation class]]) {
+                else if ([firstOpItem isKindOfClass:[MAMunkiOperation class]]) {
                     NSString *munkiCommand = [firstOpItem command];
                     if ([munkiCommand isEqualToString:@"makecatalogs"]) {
                         self.jobDescription = @"Running makecatalogs";
@@ -1932,13 +1932,13 @@
 
 # pragma mark - pkginfo
 
-- (void)setupCopyOperation:(MAFileCopyOperation *)copyOp withDependingOperation:(MunkiOperation *)depOp
+- (void)setupCopyOperation:(MAFileCopyOperation *)copyOp withDependingOperation:(MAMunkiOperation *)depOp
 {
     [depOp addDependency:copyOp];
     copyOp.delegate = self;
 }
 
-- (void)setupMakepkginfoOperation:(MunkiOperation *)theOp withDependingOperation:(RelationshipScanner *)relScan
+- (void)setupMakepkginfoOperation:(MAMunkiOperation *)theOp withDependingOperation:(RelationshipScanner *)relScan
 {
     [relScan addDependency:theOp];
     theOp.delegate = self;
@@ -1956,7 +1956,7 @@
     NSMutableArray *operationsToAdd = [[NSMutableArray alloc] init];
     for (NSURL *fileToAdd in filesToAdd) {
         if (fileToAdd != nil) {
-            MunkiOperation *theOp;
+            MAMunkiOperation *theOp;
             
             if (![[fileToAdd relativePath] hasPrefix:[self.pkgsURL relativePath]]) {
                 if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) &&
@@ -1966,7 +1966,7 @@
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
                         MAFileCopyOperation *copyOp = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
-                        theOp = [MunkiOperation makepkginfoOperationWithSource:newTarget];
+                        theOp = [MAMunkiOperation makepkginfoOperationWithSource:newTarget];
                         [self setupCopyOperation:copyOp withDependingOperation:theOp];
                         [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
                         [operationsToAdd addObject:copyOp];
@@ -1977,13 +1977,13 @@
                     }
                     
                 } else {
-                    theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                    theOp = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
                     [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
                     [operationsToAdd addObject:theOp];
                 }
                 
             } else {
-                theOp = [MunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                theOp = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
                 [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
                 [operationsToAdd addObject:theOp];
             }
@@ -2036,7 +2036,7 @@
 			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
-					MunkiOperation *theOp = [MunkiOperation installsItemFromURL:fileToAdd];
+					MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:fileToAdd];
 					theOp.delegate = self;
 					[self.operationQueue addOperation:theOp];
 				}
@@ -2061,7 +2061,7 @@
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
 		
-		MunkiOperation *op = [MunkiOperation makecatalogsOperationWithTarget:self.repoURL];
+		MAMunkiOperation *op = [MAMunkiOperation makecatalogsOperationWithTarget:self.repoURL];
 		op.delegate = self;
 		[self.operationQueue addOperation:op];
 		[self showProgressPanel];
@@ -2076,7 +2076,7 @@
 {
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
-        MunkiOperation *op = [[MunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil];
+        MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil];
         op.delegate = self;
         [self.operationQueue addOperation:op];
         [self showProgressPanel];
