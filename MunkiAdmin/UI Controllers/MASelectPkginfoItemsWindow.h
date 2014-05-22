@@ -6,6 +6,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "PackageArrayController.h"
+#import "MAApplicationsArrayController.h"
 #import "MAGradientBackgroundView.h"
 
 @interface MASelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
@@ -20,8 +22,8 @@
 @property (strong) NSPredicate *hideGroupedAppleUpdatesPredicate;
 @property (strong) NSPredicate *hideIndividualAppleUpdatesPredicate;
 @property BOOL shouldHideAddedItems;
-@property (weak) IBOutlet NSArrayController *individualPkgsArrayController;
-@property (weak) IBOutlet NSArrayController *groupedPkgsArrayController;
+@property (weak) IBOutlet PackageArrayController *individualPkgsArrayController;
+@property (weak) IBOutlet MAApplicationsArrayController *groupedPkgsArrayController;
 @property (weak) IBOutlet NSTabView *tabView;
 @property NSInteger currentMode;
 @property (weak) IBOutlet NSTextField *customValueTextField;

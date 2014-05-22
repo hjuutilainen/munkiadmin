@@ -170,13 +170,6 @@
     self.hideIndividualAppleUpdatesPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type != %@", keyName];
     
     [self updateGroupedSearchPredicate];
-    [self updateIndividualSearchPredicate];
-    
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
-    NSSortDescriptor *sortByDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
-	[self.individualPkgsArrayController setSortDescriptors:@[sortByTitle, sortByVersion]];
-	[self.groupedPkgsArrayController setSortDescriptors:@[sortByTitle, sortByDisplayName]];
 }
 
 @end

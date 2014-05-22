@@ -5,11 +5,11 @@
 //  Created by Hannes Juutilainen on 15.1.2010.
 //
 
-#import "MAPackageInfosArrayController.h"
+#import "PackageInfosArrayController.h"
 #import "PackageInfoMO.h"
 
 
-@implementation MAPackageInfosArrayController
+@implementation PackageInfosArrayController
 
 @synthesize catalogsTableView;
 

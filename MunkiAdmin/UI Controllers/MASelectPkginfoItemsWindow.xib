@@ -372,7 +372,7 @@ Gw
         </window>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <arrayController mode="entity" entityName="Application" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="31" userLabel="Package Groups for Adding">
+        <arrayController mode="entity" entityName="Application" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="31" userLabel="Package Groups for Adding" customClass="MAApplicationsArrayController">
             <declaredKeys>
                 <string>dictValue</string>
             </declaredKeys>
@@ -380,7 +380,7 @@ Gw
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="34"/>
             </connections>
         </arrayController>
-        <arrayController mode="entity" entityName="Package" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="32" userLabel="Packages for Adding">
+        <arrayController mode="entity" entityName="Package" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="32" userLabel="Packages for Adding" customClass="PackageArrayController">
             <declaredKeys>
                 <string>dictValue</string>
             </declaredKeys>
