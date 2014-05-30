@@ -123,13 +123,13 @@
     }
     
 	
-	NSString *error;
+	NSError *error;
 	NSPropertyListFormat format;
 	id plist;
-	plist = [NSPropertyListSerialization propertyListFromData:makepkginfoTaskData
-											 mutabilityOption:NSPropertyListImmutable
-													   format:&format
-											 errorDescription:&error];
+    plist = [NSPropertyListSerialization propertyListWithData:makepkginfoTaskData
+                                                      options:NSPropertyListImmutable
+                                                       format:&format
+                                                        error:&error];
 	
 	if (!plist) {
 		if ([self.defaults boolForKey:@"debug"]) {
