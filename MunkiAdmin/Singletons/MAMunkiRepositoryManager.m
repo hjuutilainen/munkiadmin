@@ -10,6 +10,7 @@
 #import "DataModelHeaders.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MACoreDataManager.h"
+#import "MADiskImageOperation.h"
 
 /*
  * Private interface
@@ -74,6 +75,8 @@ static dispatch_queue_t serialQueue;
         if (obj) {
             [self setupMappings];
             [self updateMunkiVersions];
+            _diskImageQueue = [NSOperationQueue new];
+            [_diskImageQueue setMaxConcurrentOperationCount:1];
         }
     });
     
@@ -1269,6 +1272,181 @@ static dispatch_queue_t serialQueue;
             [self createIconImageFromURL:url managedObjectContext:[[NSApp delegate] managedObjectContext]];
         }
     }
+}
+
+
+# pragma mark -
+# pragma mark Icon extraction
+
+- (NSImage *)iconForApplicationAtURL:(NSURL *)applicationURL
+{
+    NSURL *appInfoPlistURL = [applicationURL URLByAppendingPathComponent:@"Contents/Info.plist"];
+    NSDictionary *appInfoPlist = [NSDictionary dictionaryWithContentsOfURL:appInfoPlistURL];
+    NSString *bundleIconName;
+    if (appInfoPlist[@"CFBundleIconFile"]) {
+        bundleIconName = appInfoPlist[@"CFBundleIconFile"];
+    } else {
+        bundleIconName = [[applicationURL lastPathComponent] stringByDeletingPathExtension];
+    }
+    NSURL *iconURL = [applicationURL URLByAppendingPathComponent:@"Contents/Resources"];
+    iconURL = [iconURL URLByAppendingPathComponent:bundleIconName];
+    if ([[iconURL pathExtension] isEqualToString:@""]) {
+        iconURL = [iconURL URLByAppendingPathExtension:@"icns"];
+    }
+    NSImage *image = [[NSImage alloc] initWithContentsOfURL:iconURL];
+    NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
+    [image setSize:[bestRepresentation size]];
+    return image;
+}
+
+
+- (void)iconSuggestionsForPackage:(PackageMO *)package
+                completionHandler:(void (^)(NSArray *images))completionHandler
+                  progressHandler:(void (^)(double progress, NSString *description))progressHandler
+{
+    NSURL *installerItemURL = package.packageURL;
+    NSString *installerType = package.munki_installer_type;
+    
+    if ([installerType isEqualToString:@"copy_from_dmg"]) {
+        
+        NSMutableArray *sourceItemPaths = [NSMutableArray new];
+        for (ItemToCopyMO *itemToCopy in package.itemsToCopy) {
+            if ([itemToCopy.munki_source_item hasSuffix:@".app"]) {
+                [sourceItemPaths addObject:itemToCopy.munki_source_item];
+            }
+        }
+        __block NSArray *blockSourceItemPaths = [NSArray arrayWithArray:sourceItemPaths];
+        
+        MADiskImageOperation *attachOperation = [MADiskImageOperation attachOperationWithURL:installerItemURL];
+        [attachOperation setProgressCallback:^(double progress, NSString *description) {
+            if (progressHandler != nil) {
+                progressHandler(progress, description);
+            }
+        }];
+        
+        /*
+         Add a handler to be called when the image mounts.
+         */
+        __block NSMutableArray *extractedImages = [NSMutableArray new];
+        __block NSMutableArray *mountpointsScanned = [NSMutableArray new];
+        [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
+            if ([blockSourceItemPaths count] > 0) {
+                /*
+                 This is a copy_from_dmg item with at least one
+                 application bundle in the source item array. The best guess
+                 at this point is to just get icons for them.
+                 */
+                for (NSString *mountpoint in mountpoints) {
+                    for (NSString *sourceItem in blockSourceItemPaths) {
+                        NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
+                        NSURL *itemURL = [mountpointURL URLByAppendingPathComponent:sourceItem];
+                        NSImage *image = [self iconForApplicationAtURL:itemURL];
+                        [extractedImages addObject:image];
+                    }
+                    
+                    if (!alreadyMounted) {
+                        [mountpointsScanned addObject:mountpoint];
+                    }
+                }
+            } else {
+                /*
+                 This is a copy_from_dmg item but it didn't have any application
+                 bundles in its source items. We need to scan the whole mountpoint
+                 for icon (.icns) files.
+                 */
+                for (NSString *mountpoint in mountpoints) {
+                    NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
+                    NSArray *newImages = [self findAllIcnsFilesAtURL:mountpointURL];
+                    [extractedImages addObjectsFromArray:newImages];
+                    
+                    if (!alreadyMounted) {
+                        [mountpointsScanned addObject:mountpoint];
+                    }
+                }
+            }
+        }];
+        
+        /*
+         Add a handler to be called when the mount operation is complete.
+         This gives the extracted images to the caller for further processing.
+         */
+        [attachOperation setDidFinishCallback:^{
+            /*
+             Create detach operations for any mountpoints we created
+             */
+            NSMutableArray *operationsToAdd = [NSMutableArray new];
+            for (NSString *mountpoint in mountpointsScanned) {
+                MADiskImageOperation *detach = [MADiskImageOperation detachOperationWithMountpoints:@[mountpoint]];
+                [detach setProgressCallback:^(double progress, NSString *description) {
+                    if (progressHandler != nil) {
+                        progressHandler(progress, description);
+                    }
+                }];
+                [operationsToAdd addObject:detach];
+            }
+            
+            /*
+             Create block operation to call completion handler after we're all done.
+             */
+            NSBlockOperation *doneOp = [NSBlockOperation blockOperationWithBlock:^{
+                if (completionHandler != nil) {
+                    completionHandler([NSArray arrayWithArray:extractedImages]);
+                }
+            }];
+            
+            /*
+             Completion handler should be called after all detach operations are
+             done so create dependencies for them.
+             */
+            for (id operation in operationsToAdd) {
+                [doneOp addDependency:operation];
+            }
+            [operationsToAdd addObject:doneOp];
+            [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+        }];
+        
+        /*
+         And finally run the attach operation to actually do all of the above
+         */
+        [self.diskImageQueue addOperation:attachOperation];
+        
+    }
+    
+    else if (installerType == nil) {
+        NSLog(@"Processing Apple installer package item...");
+    }
+}
+
+- (NSArray *)findAllIcnsFilesAtURL:(NSURL *)mountpointURL
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:mountpointURL
+                                          includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
+                                                             options:nil
+                                                        errorHandler:nil];
+    NSMutableArray *mutableImages = [NSMutableArray array];
+    for (NSURL *fileURL in enumerator) {
+        NSString *filename;
+        [fileURL getResourceValue:&filename
+                           forKey:NSURLNameKey
+                            error:nil];
+        NSNumber *isDirectory;
+        [fileURL getResourceValue:&isDirectory
+                           forKey:NSURLIsDirectoryKey
+                            error:nil];
+        NSString *typeIdentifier;
+        [fileURL getResourceValue:&typeIdentifier
+                           forKey:NSURLTypeIdentifierKey
+                            error:nil];
+        if ([workspace type:typeIdentifier conformsToType:@"com.apple.icns"]) {
+            NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
+            NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
+            [image setSize:[bestRepresentation size]];
+            [mutableImages addObject:image];
+        }
+    }
+    return [NSArray arrayWithArray:mutableImages];
 }
 
 

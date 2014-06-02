@@ -29,6 +29,7 @@
 @property (strong) NSDictionary *installsKeyMappings;
 @property (strong) NSDictionary *installerChoicesKeyMappings;
 @property (strong) NSDictionary *itemsToCopyKeyMappings;
+@property (strong) NSOperationQueue *diskImageQueue;
 
 + (MAMunkiRepositoryManager *)sharedManager;
 
@@ -58,6 +59,10 @@
 - (void)clearCustomIconForPackage:(PackageMO *)package;
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;
 - (void)scanIconsDirectoryForImages;
+
+- (void)iconSuggestionsForPackage:(PackageMO *)package
+                completionHandler:(void (^)(NSArray *images))completionHandler
+                  progressHandler:(void (^)(double progress, NSString *description))progressHandler;
 
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;

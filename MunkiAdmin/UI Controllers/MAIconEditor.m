@@ -20,9 +20,10 @@
 {
     self = [super initWithWindow:window];
     if (self) {
-        self.resizeOnSave = YES;
-        self.useInSiblingPackages = YES;
-        self.windowTitle = @"Window";
+        _resizeOnSave = YES;
+        _useInSiblingPackages = YES;
+        _windowTitle = @"Window";
+        [_progressIndicator setUsesThreadedAnimation:YES];
     }
     return self;
 }
@@ -259,6 +260,48 @@
     } else {
         // User cancelled the save
     }
+}
+
+- (IBAction)extractAction:(id)sender
+{
+    PackageMO *pkg = self.packagesToEdit[0];
+    [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {
+        
+    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressIndicator setIndeterminate:YES];
+        [self.progressDescription setStringValue:@"Starting..."];
+        [self.progressIndicator startAnimation:self];
+    });
+    
+    [[MAMunkiRepositoryManager sharedManager] iconSuggestionsForPackage:pkg completionHandler:^(NSArray *images) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([images count] == 1) {
+                self.currentImage = images[0];
+            } else if ([images count] > 1) {
+                self.currentImage = images[0];
+            } else {
+                NSLog(@"No images...");
+                NSAlert *alert = [[NSAlert alloc] init];
+                alert.messageText = @"No images found";
+                [alert addButtonWithTitle:@"OK"];
+                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                    
+                }];
+            }
+            
+            [self.progressIndicator stopAnimation:self];
+            [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
+        });
+    } progressHandler:^(double progress, NSString *description) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressDescription setStringValue:description];
+        });
+    }];
+    
+    
+    
 }
 
 - (IBAction)saveAction:(id)sender
