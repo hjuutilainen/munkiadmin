@@ -11,6 +11,7 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MACoreDataManager.h"
 #import "MADiskImageOperation.h"
+#import "MAPackageExtractOperation.h"
 
 /*
  * Private interface
@@ -1300,15 +1301,29 @@ static dispatch_queue_t serialQueue;
 }
 
 
+/*
+ TODO: This needs to be refactored to smaller pieces
+ */
 - (void)iconSuggestionsForPackage:(PackageMO *)package
                 completionHandler:(void (^)(NSArray *images))completionHandler
                   progressHandler:(void (^)(double progress, NSString *description))progressHandler
 {
+    /*
+     Get some package properties that we're going to need later
+     */
     NSURL *installerItemURL = package.packageURL;
     NSString *installerType = package.munki_installer_type;
     
+    /*
+     Currently we support extraction for copy_from_dmg and installer package types
+     and they obviously need to be handled very differently.
+     */
     if ([installerType isEqualToString:@"copy_from_dmg"]) {
         
+        /*
+         Go through the items_to_copy array to see if it contains any
+         application bundles. This would be the most simple extraction.
+         */
         NSMutableArray *sourceItemPaths = [NSMutableArray new];
         for (ItemToCopyMO *itemToCopy in package.itemsToCopy) {
             if ([itemToCopy.munki_source_item hasSuffix:@".app"]) {
@@ -1333,7 +1348,7 @@ static dispatch_queue_t serialQueue;
             if ([blockSourceItemPaths count] > 0) {
                 /*
                  This is a copy_from_dmg item with at least one
-                 application bundle in the source item array. The best guess
+                 application bundle in the items_to_copy array. The best guess
                  at this point is to just get icons for them.
                  */
                 for (NSString *mountpoint in mountpoints) {
@@ -1352,7 +1367,7 @@ static dispatch_queue_t serialQueue;
             } else {
                 /*
                  This is a copy_from_dmg item but it didn't have any application
-                 bundles in its source items. We need to scan the whole mountpoint
+                 bundles in its items_to_copy items. We need to scan the whole mountpoint
                  for icon (.icns) files.
                  */
                 for (NSString *mountpoint in mountpoints) {
@@ -1414,7 +1429,197 @@ static dispatch_queue_t serialQueue;
     }
     
     else if (installerType == nil) {
-        NSLog(@"Processing Apple installer package item...");
+        /*
+         This is an installer package type
+         */
+        
+        NSArray *packageExtensions = @[@"pkg", @"mpkg"];
+        NSArray *diskImageExtensions = @[@"dmg", @"iso"];
+        
+        /*
+         Check if this is a package or a package wrapped in a disk image
+         */
+        if ([packageExtensions containsObject:[installerItemURL pathExtension]]) {
+            /*
+             Package (and assume it is a flat package for now)
+             */
+            __block NSMutableArray *extractedImages = [NSMutableArray new];
+            MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:installerItemURL];
+            [extractOp setProgressCallback:^(double progress, NSString *description) {
+                if (progressHandler != nil) {
+                    progressHandler(progress, description);
+                }
+            }];
+            
+            [extractOp setDidExtractHandler:^(NSURL *extractCache) {
+                NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
+                [extractedImages addObjectsFromArray:newImages];
+            }];
+            
+            [extractOp setDidFinishCallback:^{
+                /*
+                 Create detach operations for any mountpoints we created
+                 */
+                NSMutableArray *operationsToAdd = [NSMutableArray new];
+                
+                /*
+                 Create block operation to call completion handler after we're all done.
+                 */
+                NSBlockOperation *doneOp = [NSBlockOperation blockOperationWithBlock:^{
+                    if (completionHandler != nil) {
+                        completionHandler([NSArray arrayWithArray:extractedImages]);
+                    }
+                }];
+                
+                /*
+                 Completion handler should be called after all detach operations are
+                 done so create dependencies for them.
+                 */
+                for (id operation in operationsToAdd) {
+                    [doneOp addDependency:operation];
+                }
+                [operationsToAdd addObject:doneOp];
+                [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+            }];
+            
+            /*
+             And finally run the attach operation to actually do all of the above
+             */
+            [self.diskImageQueue addOperation:extractOp];
+        }
+        
+        else if ([diskImageExtensions containsObject:[installerItemURL pathExtension]]) {
+            /*
+             This is an installer package wrapped in a disk image.
+             We need to mount it first so create a mount operation and create
+             an extract operation in the didMountHandler.
+             */
+            __block NSString *munkiPackagePath;
+            if (package.munki_package_path) {
+                munkiPackagePath = [NSString stringWithString:package.munki_package_path];
+            }
+            
+            MADiskImageOperation *attachOperation = [MADiskImageOperation attachOperationWithURL:installerItemURL];
+            [attachOperation setProgressCallback:^(double progress, NSString *description) {
+                if (progressHandler != nil) {
+                    progressHandler(progress, description);
+                }
+            }];
+            
+            /*
+             Add a handler to be called when the image mounts.
+             */
+            __block NSMutableArray *extractedImages = [NSMutableArray new];
+            __block NSMutableArray *mountpointsScanned = [NSMutableArray new];
+            [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
+                
+                for (NSString *mountpoint in mountpoints) {
+                    
+                    /*
+                     Determine the package location
+                     */
+                    NSURL *packageURL = nil;
+                    if (munkiPackagePath) {
+                        packageURL = [[NSURL fileURLWithPath:mountpoint] URLByAppendingPathComponent:munkiPackagePath];
+                    } else {
+                        NSFileManager *fileManager = [NSFileManager defaultManager];
+                        NSDirectoryEnumerator *dirEnumerator = [fileManager enumeratorAtURL:[NSURL fileURLWithPath:mountpoint]
+                                                                 includingPropertiesForKeys:@[NSURLTypeIdentifierKey]
+                                                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                               errorHandler:nil];
+                        
+                        // An array to store the all the enumerated file names in
+                        NSMutableArray *packages = [NSMutableArray array];
+                        
+                        // Enumerate the dirEnumerator results, each value is stored in allURLs
+                        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+                        for (NSURL *theURL in dirEnumerator) {
+                            NSString *typeIdentifier;
+                            [theURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
+                            //NSLog(@"%@ %@", typeIdentifier, theURL);
+                            if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package-archive"]) {
+                                // Flat package
+                                [packages addObject:theURL];
+                            } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package"]) {
+                                // Bundle package (.pkg)
+                                [packages addObject:theURL];
+                            } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-meta-package"]) {
+                                // Bundle package (.mpkg)
+                                [packages addObject:theURL];
+                            }
+                        }
+                        if (packages) {
+                            //NSLog(@"%@", packages);
+                            packageURL = packages[0];
+                        }
+                    }
+                    
+                    MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:packageURL];
+                    [extractOp setProgressCallback:^(double progress, NSString *description) {
+                        if (progressHandler != nil) {
+                            progressHandler(progress, description);
+                        }
+                    }];
+                    
+                    [extractOp setDidExtractHandler:^(NSURL *extractCache) {
+                        NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
+                        [extractedImages addObjectsFromArray:newImages];
+                    }];
+                    
+                    //[extractOp setDidFinishCallback:^{}];
+                    [self.diskImageQueue addOperation:extractOp];
+                    
+                    if (!alreadyMounted) {
+                        [mountpointsScanned addObject:mountpoint];
+                    }
+                }
+            }];
+            
+            /*
+             Add a handler to be called when the mount operation is complete.
+             This gives the extracted images to the caller for further processing.
+             */
+            [attachOperation setDidFinishCallback:^{
+                /*
+                 Create detach operations for any mountpoints we created
+                 */
+                NSMutableArray *operationsToAdd = [NSMutableArray new];
+                for (NSString *mountpoint in mountpointsScanned) {
+                    MADiskImageOperation *detach = [MADiskImageOperation detachOperationWithMountpoints:@[mountpoint]];
+                    [detach setProgressCallback:^(double progress, NSString *description) {
+                        if (progressHandler != nil) {
+                            progressHandler(progress, description);
+                        }
+                    }];
+                    [operationsToAdd addObject:detach];
+                }
+                
+                /*
+                 Create block operation to call completion handler after we're all done.
+                 */
+                NSBlockOperation *doneOp = [NSBlockOperation blockOperationWithBlock:^{
+                    if (completionHandler != nil) {
+                        completionHandler([NSArray arrayWithArray:extractedImages]);
+                    }
+                }];
+                
+                /*
+                 Completion handler should be called after all detach operations are
+                 done so create dependencies for them.
+                 */
+                for (id operation in operationsToAdd) {
+                    [doneOp addDependency:operation];
+                }
+                [operationsToAdd addObject:doneOp];
+                [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+            }];
+            
+            /*
+             And finally run the attach operation to actually do all of the above
+             */
+            [self.diskImageQueue addOperation:attachOperation];
+            
+        }
     }
 }
 
