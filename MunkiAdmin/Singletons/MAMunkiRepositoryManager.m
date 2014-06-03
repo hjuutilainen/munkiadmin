@@ -1341,7 +1341,8 @@ static dispatch_queue_t serialQueue;
                         NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
                         NSURL *itemURL = [mountpointURL URLByAppendingPathComponent:sourceItem];
                         NSImage *image = [self iconForApplicationAtURL:itemURL];
-                        [extractedImages addObject:image];
+                        NSDictionary *itemDict = @{@"image": image, @"URL": itemURL};
+                        [extractedImages addObject:itemDict];
                     }
                     
                     if (!alreadyMounted) {
@@ -1443,7 +1444,8 @@ static dispatch_queue_t serialQueue;
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
             NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
             [image setSize:[bestRepresentation size]];
-            [mutableImages addObject:image];
+            NSDictionary *itemDict = @{@"image": image, @"URL": fileURL};
+            [mutableImages addObject:itemDict];
         }
     }
     return [NSArray arrayWithArray:mutableImages];

@@ -29,6 +29,7 @@
 		F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F508526D11085A5A001DAD73 /* ManifestsArrayController.m */; };
 		F50AC6AF12B9FDC30069EB00 /* ManifestItemArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */; };
 		F50AC6E412BA04360069EB00 /* MAManifestItemTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F50AC6E312BA04360069EB00 /* MAManifestItemTableView.m */; };
+		F514A714193DA44000C9027C /* MAImageBrowserItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F514A713193DA44000C9027C /* MAImageBrowserItem.m */; };
 		F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F525FB94165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png */; };
 		F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */; };
 		F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F527FE5710FC766E000B29B6 /* CatalogsArrayController.m */; };
@@ -190,6 +191,8 @@
 		F50AC6AE12B9FDC30069EB00 /* ManifestItemArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManifestItemArrayController.m; sourceTree = "<group>"; };
 		F50AC6E212BA04360069EB00 /* MAManifestItemTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestItemTableView.h; sourceTree = "<group>"; };
 		F50AC6E312BA04360069EB00 /* MAManifestItemTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestItemTableView.m; sourceTree = "<group>"; };
+		F514A712193DA44000C9027C /* MAImageBrowserItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAImageBrowserItem.h; sourceTree = "<group>"; };
+		F514A713193DA44000C9027C /* MAImageBrowserItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAImageBrowserItem.m; sourceTree = "<group>"; };
 		F525FB94165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MunkiAdminIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/MunkiAdminIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MunkiAdminIcon_32x32.png; path = MunkiAdmin/Graphics/MunkiAdminIcon_32x32.png; sourceTree = "<group>"; };
 		F527FE5610FC766E000B29B6 /* CatalogsArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogsArrayController.h; sourceTree = "<group>"; };
@@ -722,6 +725,8 @@
 				F5EA6AB9190F7ED100362FEE /* MAIconEditor.xib */,
 				FE0F4E7C14FB86B40081AEFF /* MAImageAndTitleCell.h */,
 				FE0F4E7D14FB86B40081AEFF /* MAImageAndTitleCell.m */,
+				F514A712193DA44000C9027C /* MAImageBrowserItem.h */,
+				F514A713193DA44000C9027C /* MAImageBrowserItem.m */,
 				F5063429172FA43C00EF7728 /* MAInstallsItemEditor.h */,
 				F506342A172FA43C00EF7728 /* MAInstallsItemEditor.m */,
 				F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */,
@@ -917,6 +922,7 @@
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
 				F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */,
 				F565BC9D193719E1006884CA /* MADiskImageOperation.m in Sources */,
+				F514A714193DA44000C9027C /* MAImageBrowserItem.m in Sources */,
 				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
 				F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */,
 				F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */,

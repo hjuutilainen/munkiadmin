@@ -9,6 +9,7 @@
 #import "MAIconEditor.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
+#import "MAImageBrowserItem.h"
 
 @interface MAIconEditor ()
 
@@ -24,6 +25,8 @@
         _useInSiblingPackages = YES;
         _windowTitle = @"Window";
         [_progressIndicator setUsesThreadedAnimation:YES];
+        [_imageBrowserView setDelegate:self];
+        _imageBrowserItems = nil;
     }
     return self;
 }
@@ -31,6 +34,52 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    
+    /*
+     Configure the initial settings
+     */
+    self.imageBrowserView.zoomValue = 0.5;
+    self.imageBrowserView.allowsMultipleSelection = NO;
+    self.imageBrowserView.allowsReordering = NO;
+    self.imageBrowserView.animates = YES;
+    self.imageBrowserView.draggingDestinationDelegate = self;
+    self.imageBrowserView.cellsStyleMask = IKCellsStyleTitled;
+    self.imageBrowserView.intercellSpacing = NSMakeSize(20.0, 20.0);
+    self.imageBrowserView.delegate = self;
+    //self.imageBrowserView.canControlQuickLookPanel = YES;
+    
+    /*
+     Set the image browser view background color
+     */
+    CALayer *backgroundLayer = [CALayer layer];
+    CGColorRef backgroundColor = CGColorCreateGenericGray(1.0, 1.0);
+    backgroundLayer.backgroundColor = backgroundColor;
+    self.imageBrowserView.backgroundLayer = backgroundLayer;
+    
+    /*
+     Change the title font
+     */
+    NSMutableParagraphStyle *paraphStyle = [[NSMutableParagraphStyle alloc] init];
+	[paraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
+	[paraphStyle setAlignment:NSCenterTextAlignment];
+	
+	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+	[attributes setObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];
+	[attributes setObject:paraphStyle forKey:NSParagraphStyleAttributeName];
+	[attributes setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+	[self.imageBrowserView setValue:attributes forKey:IKImageBrowserCellsTitleAttributesKey];
+	
+	NSMutableDictionary *highlightedAttributes = [[NSMutableDictionary alloc] init];
+	[highlightedAttributes setObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];
+	[highlightedAttributes setObject:paraphStyle forKey:NSParagraphStyleAttributeName];
+	[highlightedAttributes setObject:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
+	[self.imageBrowserView setValue:highlightedAttributes forKey:IKImageBrowserCellsHighlightedTitleAttributesKey];
+    
+    /*
+     Set sorting
+     */
+    NSSortDescriptor *sortByPath = [NSSortDescriptor sortDescriptorWithKey:@"imageTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.imageBrowserItemsArrayController.sortDescriptors = @[sortByPath];
 }
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
@@ -277,20 +326,51 @@
     
     [[MAMunkiRepositoryManager sharedManager] iconSuggestionsForPackage:pkg completionHandler:^(NSArray *images) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            /*
+             Single image was extracted, use it
+             */
             if ([images count] == 1) {
-                self.currentImage = images[0];
-            } else if ([images count] > 1) {
-                self.currentImage = images[0];
-            } else {
-                NSLog(@"No images...");
-                NSAlert *alert = [[NSAlert alloc] init];
-                alert.messageText = @"No images found";
-                [alert addButtonWithTitle:@"OK"];
-                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
-                    
+                NSDictionary *imageDict = images[0];
+                self.currentImage = imageDict[@"image"];
+            }
+            
+            /*
+             Multiple images extracted, ask the user to choose which one to use
+             */
+            else if ([images count] > 1) {
+                self.imageBrowserItems = nil;
+                NSMutableArray *newImages = [NSMutableArray new];
+                for (NSDictionary *imageDict in images) {
+                    MAImageBrowserItem *newItem = [[MAImageBrowserItem alloc] init];
+                    newItem.image = imageDict[@"image"];
+                    newItem.imageTitle = [(NSURL *)imageDict[@"URL"] lastPathComponent];
+                    newItem.imageUID = [[NSUUID UUID] UUIDString];
+                    [newImages addObject:newItem];
+                }
+                self.imageBrowserItems = [NSSet setWithArray:newImages];
+                [self.window beginSheet:self.imageBrowserWindow completionHandler:^(NSModalResponse returnCode) {
+                    if (returnCode == NSModalResponseOK) {
+                        MAImageBrowserItem *selectedItem = [self.imageBrowserItemsArrayController selectedObjects][0];
+                        self.currentImage = (NSImage *)[selectedItem imageRepresentation];
+                    } else {
+                        // User cancelled the selection
+                    }
                 }];
             }
             
+            /*
+             No images found
+             */
+            else {
+                NSAlert *alert = [[NSAlert alloc] init];
+                alert.messageText = @"No images found";
+                [alert addButtonWithTitle:@"OK"];
+                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+            }
+            
+            /*
+             Dismiss the progress sheet
+             */
             [self.progressIndicator stopAnimation:self];
             [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
         });
@@ -398,6 +478,37 @@
 - (IBAction)chooseFileAction:(id)sender
 {
 	[self chooseSourceImage];
+}
+
+
+# pragma mark -
+# pragma mark Image browser window
+
+- (IBAction)chooseImageFromImageBrowserAction:(id)sender
+{
+    [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseOK];
+}
+
+- (IBAction)cancelImageBrowserAction:(id)sender
+{
+    [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseCancel];
+}
+
+
+- (void)imageBrowserSelectionDidChange:(IKImageBrowserView *)aBrowser
+{
+    //NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event
+{
+    //NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasDoubleClickedAtIndex:(NSUInteger)index
+{
+    [self chooseImageFromImageBrowserAction:self];
+    
 }
 
 @end

@@ -22,6 +22,8 @@
 @property BOOL useInSiblingPackages;
 
 // Image browser window
+@property (strong) NSSet *imageBrowserItems;
+@property (weak) IBOutlet NSArrayController *imageBrowserItemsArrayController;
 @property (weak) IBOutlet NSWindow *imageBrowserWindow;
 @property (weak) IBOutlet IKImageBrowserView *imageBrowserView;
 

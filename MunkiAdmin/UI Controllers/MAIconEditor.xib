@@ -8,6 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAIconEditor">
             <connections>
+                <outlet property="imageBrowserItemsArrayController" destination="OZY-gj-J7v" id="Cx3-yL-Dv2"/>
+                <outlet property="imageBrowserView" destination="gws-PG-aEi" id="I78-d5-4Ez"/>
                 <outlet property="imageBrowserWindow" destination="pq4-lM-zUe" id="lNY-J3-w8X"/>
                 <outlet property="imageView" destination="syJ-27-Pvi" id="W7H-bf-mVN"/>
                 <outlet property="progressDescription" destination="3aO-vP-GT9" id="Nbb-05-crJ"/>
@@ -135,26 +137,29 @@ Gw
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="pq4-lM-zUe" userLabel="Image Browser Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="163" y="199" width="366" height="355"/>
+            <rect key="contentRect" x="163" y="199" width="509" height="547"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
             <value key="minSize" type="size" width="366" height="355"/>
             <view key="contentView" id="b28-zq-QTB">
-                <rect key="frame" x="0.0" y="0.0" width="366" height="355"/>
+                <rect key="frame" x="0.0" y="0.0" width="509" height="547"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" id="LGs-zt-1Ya">
-                        <rect key="frame" x="270" y="13" width="82" height="32"/>
+                        <rect key="frame" x="408" y="13" width="87" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mCX-xF-dqU">
+                        <buttonCell key="cell" type="push" title="Choose" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mCX-xF-dqU">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <string key="keyEquivalent" base64-UTF8="YES">
 DQ
 </string>
                         </buttonCell>
+                        <connections>
+                            <action selector="chooseImageFromImageBrowserAction:" target="-2" id="AcU-R4-NKG"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" id="ZlB-T8-QW9">
-                        <rect key="frame" x="188" y="13" width="82" height="32"/>
+                        <rect key="frame" x="328" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jFk-Lp-UT1">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -163,19 +168,27 @@ DQ
 Gw
 </string>
                         </buttonCell>
+                        <connections>
+                            <action selector="cancelImageBrowserAction:" target="-2" id="fJl-aQ-dtx"/>
+                        </connections>
                     </button>
-                    <scrollView autohidesScrollers="YES" horizontalLineScroll="133.71427917480469" horizontalPageScroll="10" verticalLineScroll="120" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="rQN-Ti-2gN">
-                        <rect key="frame" x="-1" y="61" width="368" height="295"/>
+                    <scrollView autohidesScrollers="YES" horizontalLineScroll="139" horizontalPageScroll="10" verticalLineScroll="139" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="rQN-Ti-2gN">
+                        <rect key="frame" x="-1" y="61" width="511" height="430"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" copiesOnScroll="NO" id="LFx-22-tqj">
-                            <rect key="frame" x="1" y="1" width="366" height="293"/>
+                            <rect key="frame" x="1" y="1" width="509" height="428"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.49451136589050293" id="gws-PG-aEi">
-                                    <rect key="frame" x="0.0" y="0.0" width="366" height="293"/>
+                                <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.46692961454391479" allowsMultipleSelection="NO" allowsEmptySelection="NO" id="gws-PG-aEi">
+                                    <rect key="frame" x="0.0" y="0.0" width="509" height="428"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <ikCellsStyle key="cellsStyleMask" none="YES" titled="YES"/>
                                     <autoresizingMask key="contentResizingMask" heightSizable="YES"/>
-                                    <size key="cellSize" width="100" height="100"/>
+                                    <size key="cellSize" width="119" height="119"/>
+                                    <connections>
+                                        <binding destination="OZY-gj-J7v" name="content" keyPath="arrangedObjects.self" id="DMO-88-Hkj"/>
+                                        <binding destination="OZY-gj-J7v" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="DMO-88-Hkj" id="8bv-E4-l5i"/>
+                                    </connections>
                                 </ikImageBrowserView>
                             </subviews>
                         </clipView>
@@ -188,6 +201,15 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="YHH-ZU-NVW">
+                        <rect key="frame" x="18" y="510" width="473" height="17"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multiple icons were extracted from installer item:" id="Osy-Bx-J5M">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
         </window>
@@ -216,5 +238,10 @@ Gw
                 </subviews>
             </view>
         </window>
+        <arrayController automaticallyRearrangesObjects="YES" id="OZY-gj-J7v" userLabel="Image Browser Items">
+            <connections>
+                <binding destination="-2" name="contentSet" keyPath="imageBrowserItems" id="HxT-pt-ybA"/>
+            </connections>
+        </arrayController>
     </objects>
 </document>
