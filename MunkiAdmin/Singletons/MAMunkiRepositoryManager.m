@@ -1313,6 +1313,17 @@ static dispatch_queue_t serialQueue;
      */
     NSURL *installerItemURL = package.packageURL;
     NSString *installerType = package.munki_installer_type;
+    MAMunkiRepositoryManager * __weak weakSelf = self;
+    
+    __block NSMutableArray *extractedImages = [NSMutableArray new];
+    __block NSMutableArray *mountpointsScanned = [NSMutableArray new];
+    
+    void (^progressHandlerTemp)(double progress, NSString *description);
+    progressHandlerTemp = ^(double progress, NSString *description){
+        if (progressHandler != nil) {
+            progressHandler(progress, description);
+        }
+    };
     
     /*
      Currently we support extraction for copy_from_dmg and installer package types
@@ -1333,17 +1344,11 @@ static dispatch_queue_t serialQueue;
         __block NSArray *blockSourceItemPaths = [NSArray arrayWithArray:sourceItemPaths];
         
         MADiskImageOperation *attachOperation = [MADiskImageOperation attachOperationWithURL:installerItemURL];
-        [attachOperation setProgressCallback:^(double progress, NSString *description) {
-            if (progressHandler != nil) {
-                progressHandler(progress, description);
-            }
-        }];
+        [attachOperation setProgressCallback:progressHandlerTemp];
         
         /*
          Add a handler to be called when the image mounts.
          */
-        __block NSMutableArray *extractedImages = [NSMutableArray new];
-        __block NSMutableArray *mountpointsScanned = [NSMutableArray new];
         [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
             if ([blockSourceItemPaths count] > 0) {
                 /*
@@ -1355,7 +1360,7 @@ static dispatch_queue_t serialQueue;
                     for (NSString *sourceItem in blockSourceItemPaths) {
                         NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
                         NSURL *itemURL = [mountpointURL URLByAppendingPathComponent:sourceItem];
-                        NSImage *image = [self iconForApplicationAtURL:itemURL];
+                        NSImage *image = [weakSelf iconForApplicationAtURL:itemURL];
                         NSDictionary *itemDict = @{@"image": image, @"URL": itemURL};
                         [extractedImages addObject:itemDict];
                     }
@@ -1372,7 +1377,7 @@ static dispatch_queue_t serialQueue;
                  */
                 for (NSString *mountpoint in mountpoints) {
                     NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
-                    NSArray *newImages = [self findAllIcnsFilesAtURL:mountpointURL];
+                    NSArray *newImages = [weakSelf findAllIcnsFilesAtURL:mountpointURL];
                     [extractedImages addObjectsFromArray:newImages];
                     
                     if (!alreadyMounted) {
@@ -1393,11 +1398,7 @@ static dispatch_queue_t serialQueue;
             NSMutableArray *operationsToAdd = [NSMutableArray new];
             for (NSString *mountpoint in mountpointsScanned) {
                 MADiskImageOperation *detach = [MADiskImageOperation detachOperationWithMountpoints:@[mountpoint]];
-                [detach setProgressCallback:^(double progress, NSString *description) {
-                    if (progressHandler != nil) {
-                        progressHandler(progress, description);
-                    }
-                }];
+                [detach setProgressCallback:progressHandlerTemp];
                 [operationsToAdd addObject:detach];
             }
             
@@ -1418,13 +1419,13 @@ static dispatch_queue_t serialQueue;
                 [doneOp addDependency:operation];
             }
             [operationsToAdd addObject:doneOp];
-            [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+            [weakSelf.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
         }];
         
         /*
          And finally run the attach operation to actually do all of the above
          */
-        [self.diskImageQueue addOperation:attachOperation];
+        [weakSelf.diskImageQueue addOperation:attachOperation];
         
     }
     
@@ -1443,25 +1444,15 @@ static dispatch_queue_t serialQueue;
             /*
              Package (and assume it is a flat package for now)
              */
-            __block NSMutableArray *extractedImages = [NSMutableArray new];
             MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:installerItemURL];
-            [extractOp setProgressCallback:^(double progress, NSString *description) {
-                if (progressHandler != nil) {
-                    progressHandler(progress, description);
-                }
-            }];
+            [extractOp setProgressCallback:progressHandlerTemp];
             
             [extractOp setDidExtractHandler:^(NSURL *extractCache) {
-                NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
+                NSArray *newImages = [weakSelf findAllIcnsFilesAtURL:extractCache];
                 [extractedImages addObjectsFromArray:newImages];
             }];
             
             [extractOp setDidFinishCallback:^{
-                /*
-                 Create detach operations for any mountpoints we created
-                 */
-                NSMutableArray *operationsToAdd = [NSMutableArray new];
-                
                 /*
                  Create block operation to call completion handler after we're all done.
                  */
@@ -1470,22 +1461,13 @@ static dispatch_queue_t serialQueue;
                         completionHandler([NSArray arrayWithArray:extractedImages]);
                     }
                 }];
-                
-                /*
-                 Completion handler should be called after all detach operations are
-                 done so create dependencies for them.
-                 */
-                for (id operation in operationsToAdd) {
-                    [doneOp addDependency:operation];
-                }
-                [operationsToAdd addObject:doneOp];
-                [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+                [weakSelf.diskImageQueue addOperation:doneOp];
             }];
             
             /*
              And finally run the attach operation to actually do all of the above
              */
-            [self.diskImageQueue addOperation:extractOp];
+            [weakSelf.diskImageQueue addOperation:extractOp];
         }
         
         else if ([diskImageExtensions containsObject:[installerItemURL pathExtension]]) {
@@ -1500,17 +1482,11 @@ static dispatch_queue_t serialQueue;
             }
             
             MADiskImageOperation *attachOperation = [MADiskImageOperation attachOperationWithURL:installerItemURL];
-            [attachOperation setProgressCallback:^(double progress, NSString *description) {
-                if (progressHandler != nil) {
-                    progressHandler(progress, description);
-                }
-            }];
+            [attachOperation setProgressCallback:progressHandlerTemp];
             
             /*
              Add a handler to be called when the image mounts.
              */
-            __block NSMutableArray *extractedImages = [NSMutableArray new];
-            __block NSMutableArray *mountpointsScanned = [NSMutableArray new];
             [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
                 
                 for (NSString *mountpoint in mountpoints) {
@@ -1555,11 +1531,7 @@ static dispatch_queue_t serialQueue;
                     }
                     
                     MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:packageURL];
-                    [extractOp setProgressCallback:^(double progress, NSString *description) {
-                        if (progressHandler != nil) {
-                            progressHandler(progress, description);
-                        }
-                    }];
+                    [extractOp setProgressCallback:progressHandlerTemp];
                     
                     [extractOp setDidExtractHandler:^(NSURL *extractCache) {
                         NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
@@ -1567,7 +1539,7 @@ static dispatch_queue_t serialQueue;
                     }];
                     
                     //[extractOp setDidFinishCallback:^{}];
-                    [self.diskImageQueue addOperation:extractOp];
+                    [weakSelf.diskImageQueue addOperation:extractOp];
                     
                     if (!alreadyMounted) {
                         [mountpointsScanned addObject:mountpoint];
@@ -1586,11 +1558,7 @@ static dispatch_queue_t serialQueue;
                 NSMutableArray *operationsToAdd = [NSMutableArray new];
                 for (NSString *mountpoint in mountpointsScanned) {
                     MADiskImageOperation *detach = [MADiskImageOperation detachOperationWithMountpoints:@[mountpoint]];
-                    [detach setProgressCallback:^(double progress, NSString *description) {
-                        if (progressHandler != nil) {
-                            progressHandler(progress, description);
-                        }
-                    }];
+                    [detach setProgressCallback:progressHandlerTemp];
                     [operationsToAdd addObject:detach];
                 }
                 
@@ -1611,13 +1579,13 @@ static dispatch_queue_t serialQueue;
                     [doneOp addDependency:operation];
                 }
                 [operationsToAdd addObject:doneOp];
-                [self.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
+                [weakSelf.diskImageQueue addOperations:operationsToAdd waitUntilFinished:NO];
             }];
             
             /*
              And finally run the attach operation to actually do all of the above
              */
-            [self.diskImageQueue addOperation:attachOperation];
+            [weakSelf.diskImageQueue addOperation:attachOperation];
             
         }
     }
