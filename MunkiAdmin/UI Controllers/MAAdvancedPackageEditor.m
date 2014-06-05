@@ -774,36 +774,23 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                                                                       ascending:YES
                                                                        selector:@selector(localizedStandardCompare:)];
     
-    self.osVersions = [[NSArray arrayWithObjects:
-                        @"10.5",
-                        @"10.5.8",
-                        @"10.5.99",
-                        @"10.6",
-                        @"10.6.8", 
-                        @"10.6.99", 
-                        @"10.7",
-                        @"10.7.5",
-                        @"10.7.99",
-                        @"10.8",
-                        @"10.8.5",
-                        @"10.8.99",
-                        @"10.9",
-                        @"10.9.2",
-                        @"10.9.99",
-                        nil] 
-                       sortedArrayUsingDescriptors:[NSArray arrayWithObject:osVersionSorter]];
+    NSArray *newOsVersions = @[@"10.5", @"10.5.8", @"10.5.99",
+                               @"10.6", @"10.6.8", @"10.6.99",
+                               @"10.7", @"10.7.5", @"10.7.99",
+                               @"10.8", @"10.8.5", @"10.8.99",
+                               @"10.9", @"10.9.3", @"10.9.99",
+                               @"10.10"];
+    self.osVersions = [newOsVersions sortedArrayUsingDescriptors:@[osVersionSorter]];
     
-    self.installerTypes = [[NSArray arrayWithObjects:
-                            @"copy_from_dmg",
-                            @"apple_update_metadata",
-                            @"nopkg",
-                            @"AdobeSetup",
-                            @"AdobeUberInstaller",
-                            @"AdobeAcrobatUpdater",
-                            @"AdobeCS5AAMEEPackage",
-                            @"AdobeCS5PatchInstaller",
-                            nil]
-                           sortedArrayUsingDescriptors:[NSArray arrayWithObject:installerTypeSorter]];
+    NSArray *newInstallerTypes = @[@"copy_from_dmg",
+                                   @"apple_update_metadata",
+                                   @"nopkg",
+                                   @"AdobeSetup",
+                                   @"AdobeUberInstaller",
+                                   @"AdobeAcrobatUpdater",
+                                   @"AdobeCS5AAMEEPackage",
+                                   @"AdobeCS5PatchInstaller"];
+    self.installerTypes = [newInstallerTypes sortedArrayUsingDescriptors:@[installerTypeSorter]];
     
     [[MAMunkiRepositoryManager sharedManager] scanIconsDirectoryForImages];
     [self updateIconNameComboBoxAutoCompleteList];
