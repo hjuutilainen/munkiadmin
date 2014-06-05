@@ -157,7 +157,7 @@
      */
     
     /*
-     Get the package type (directory of file)
+     Get the type by checking if the package is a file or a directory (bundle)
      */
     NSNumber *isDirectory;
     [self.packageURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
