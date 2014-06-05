@@ -1190,10 +1190,11 @@
 		NSString *newRepoPath = [newRepoURL relativePath];
 		NSFileManager *fm = [NSFileManager defaultManager];
 		BOOL catalogsDirCreated = [fm createDirectoryAtPath:[newRepoPath stringByAppendingPathComponent:@"catalogs"] withIntermediateDirectories:YES attributes:nil error:nil];
+        BOOL iconsDirCreated = [fm createDirectoryAtPath:[newRepoPath stringByAppendingPathComponent:@"icons"] withIntermediateDirectories:YES attributes:nil error:nil];
 		BOOL manifestsDirCreated = [fm createDirectoryAtPath:[newRepoPath stringByAppendingPathComponent:@"manifests"] withIntermediateDirectories:YES attributes:nil error:nil];
 		BOOL pkgsDirCreated = [fm createDirectoryAtPath:[newRepoPath stringByAppendingPathComponent:@"pkgs"] withIntermediateDirectories:YES attributes:nil error:nil];
 		BOOL pkgsinfoDirCreated = [fm createDirectoryAtPath:[newRepoPath stringByAppendingPathComponent:@"pkgsinfo"] withIntermediateDirectories:YES attributes:nil error:nil];
-		if (catalogsDirCreated && manifestsDirCreated && pkgsDirCreated && pkgsinfoDirCreated) {
+		if (catalogsDirCreated && iconsDirCreated && manifestsDirCreated && pkgsDirCreated && pkgsinfoDirCreated) {
 			[self selectRepoAtURL:newRepoURL];
 		} else {
 			NSLog(@"Can't create repository: %@", newRepoPath);
