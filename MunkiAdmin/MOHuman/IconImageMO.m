@@ -10,6 +10,18 @@
 
 @implementation IconImageMO
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    if ([key isEqualToString:@"imageTitle"])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"originalURL", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+	
+    return keyPaths;
+}
+
 - (void)setImageRepresentation:(NSImage *)imageRep {
     [self willChangeValueForKey:@"imageRepresentation"];
     [self setPrimitiveImageRepresentation:imageRep];
