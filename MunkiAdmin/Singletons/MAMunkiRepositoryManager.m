@@ -922,6 +922,38 @@ static dispatch_queue_t serialQueue;
             
         }
         
+        /*
+         Rename the icon file if needed
+         */
+        if (aPackage.munki_icon_name == nil || [aPackage.munki_icon_name isEqualToString:@""]) {
+            /*
+             This package is not using a custom icon so it expects to find an icon using the name key
+             */
+            IconImageMO *iconImage = aPackage.iconImage;
+            if (iconImage.originalURL != nil) {
+                /*
+                 And the package actually has an icon file on disk
+                 */
+                NSString *originalExtension = [iconImage.originalURL pathExtension];
+                NSURL *newIconURL = [[[iconImage.originalURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:newName] URLByAppendingPathExtension:originalExtension];
+                if (![newIconURL isEqualTo:iconImage.originalURL]) {
+                    NSError *moveError;
+                    if ([[NSFileManager defaultManager] moveItemAtURL:iconImage.originalURL toURL:newIconURL error:&moveError]) {
+                        iconImage.originalURL = newIconURL;
+                    }
+                    
+                    /*
+                     Modify the icon_name in packages which use custom icon.
+                     */
+                    for (PackageMO *iconPackage in iconImage.packages) {
+                        if (iconPackage.munki_icon_name != nil) {
+                            [self setIconNameFromURL:newIconURL forPackage:iconPackage];
+                        }
+                    }
+                }
+            }
+        }
+        
         
         /*
          Rename references with the old name. These might include:
