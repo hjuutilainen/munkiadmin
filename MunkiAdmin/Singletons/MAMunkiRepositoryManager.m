@@ -802,6 +802,25 @@ static dispatch_queue_t serialQueue;
         for (StringObjectMO *aReference in referencingObjectsWithVersion) {
             [moc deleteObject:aReference];
         }
+        
+        /*
+         Remove the icon if it is not used anymore
+         */
+        IconImageMO *packageIcon = aPackage.iconImage;
+        if ([packageIcon.packages count] == 1) {
+            if ([[packageIcon.packages anyObject] isEqualTo:aPackage] && packageIcon.originalURL != nil) {
+                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Package icon doesn't have any other references, removing...");
+                [wp recycleURLs:@[packageIcon.originalURL] completionHandler:nil];
+                [moc deleteObject:packageIcon];
+            }
+        } else if ([packageIcon.packages count] > 1) {
+            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Package icon still has other references, leaving...");
+            for (PackageMO *package in packageIcon.packages) {
+                if (![package isEqualTo:aPackage]) {
+                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Icon referenced from %@", package.titleWithVersion);
+                }
+            }
+        }
     }
     
     /*
