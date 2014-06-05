@@ -12,6 +12,7 @@
 @class PackageMO;
 @class ManifestMO;
 @class InstallsItemMO;
+@class IconImageMO;
 
 @interface MAMunkiRepositoryManager : NSObject {
     
@@ -55,6 +56,7 @@
               newName:(NSString *)newName
               cascade:(BOOL)shouldCascade;
 
+- (IconImageMO *)createIconImageFromURL:(NSURL *)url managedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateIconForPackage:(PackageMO *)currentPackage;
 - (void)clearCustomIconForPackage:(PackageMO *)package;
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;

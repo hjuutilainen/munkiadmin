@@ -9,6 +9,7 @@
 #import "DataModelHeaders.h"
 #import "MACoreDataManager.h"
 #import "MAMunkiAdmin_AppDelegate.h"
+#import "MAMunkiRepositoryManager.h"
 
 @implementation MARelationshipScanner
 
@@ -307,10 +308,7 @@
     /*
      Create a default icon for packages without a custom icon
      */
-    IconImageMO *defaultIcon = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
-    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
-    defaultIcon.imageRepresentation = pkgicon;
-    defaultIcon.originalURL = nil;
+    IconImageMO *defaultIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:nil managedObjectContext:moc];
     
     PackageSourceListItemMO *categoriesGroupItem = nil;
     NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];

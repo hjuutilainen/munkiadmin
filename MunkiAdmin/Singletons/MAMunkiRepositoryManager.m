@@ -1157,7 +1157,7 @@ static dispatch_queue_t serialQueue;
     if (url != nil) {
         predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", url];
     } else {
-        predicate = [NSPredicate predicateWithFormat:@"originalURL = nil"];
+        predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [NSNull null]];
     }
     [fetchRequest setPredicate:predicate];
     
@@ -1167,9 +1167,16 @@ static dispatch_queue_t serialQueue;
     // No existing icon found, create a new one
     if (numFound == 0) {
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
-        newIconImage.originalURL = url;
-        NSImage *image = [[NSImage alloc] initByReferencingURL:url];
-        newIconImage.imageRepresentation = image;
+        if (url != nil) {
+            newIconImage.originalURL = url;
+            NSImage *image = [[NSImage alloc] initByReferencingURL:url];
+            newIconImage.imageRepresentation = image;
+        } else {
+            newIconImage.originalURL = nil;
+            NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+            newIconImage.imageRepresentation = pkgicon;
+        }
+        
         return newIconImage;
     }
     
