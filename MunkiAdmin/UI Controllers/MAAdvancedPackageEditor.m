@@ -684,6 +684,45 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self.supportedArchitecturesTableView setDataSource:self];
 }
 
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    [[MAMunkiRepositoryManager sharedManager] updateIconForPackage:self.pkginfoToEdit];
+}
+
+- (void)comboBoxSelectionDidChange:(NSNotification *)notification
+{
+    if ([self.iconNameComboBox objectValueOfSelectedItem]) {
+        self.iconNameComboBox.stringValue = [self.iconNameComboBox objectValueOfSelectedItem];
+        self.pkginfoToEdit.munki_icon_name = [self.iconNameComboBox objectValueOfSelectedItem];
+        [[MAMunkiRepositoryManager sharedManager] updateIconForPackage:self.pkginfoToEdit];
+    }
+    
+}
+
+- (void)updateIconNameComboBoxAutoCompleteList
+{
+    /*
+     Get all available icon names for the combo box autocomplete list
+     */
+    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL != %@", [NSNull null]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"originalURL.path" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+    NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    NSMutableArray *newIconNameSuggestions = [NSMutableArray new];
+    if (self.pkginfoToEdit.munki_icon_name) {
+        [newIconNameSuggestions addObject:self.pkginfoToEdit.munki_icon_name];
+    }
+    for (IconImageMO *image in fetchResults) {
+        NSString *relativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:image.originalURL parentURL:mainIconsURL];
+        [newIconNameSuggestions addObject:relativePath];
+    }
+    self.iconNameSuggestions = [[NSArray arrayWithArray:newIconNameSuggestions] valueForKeyPath:@"@distinctUnionOfObjects.self"];
+}
+
 
 - (void)windowDidLoad
 {
@@ -765,6 +804,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                             @"AdobeCS5PatchInstaller",
                             nil]
                            sortedArrayUsingDescriptors:[NSArray arrayWithObject:installerTypeSorter]];
+    
+    [[MAMunkiRepositoryManager sharedManager] scanIconsDirectoryForImages];
+    [self updateIconNameComboBoxAutoCompleteList];
+    [self.iconNameComboBox setDelegate:self];
     
     // Set the force_install_after_date date picker to use UTC
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
@@ -899,7 +942,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     } else {
         self.temp_blocking_applications_include_empty = NO;
     }
-
+    
+    [self updateIconNameComboBoxAutoCompleteList];
 }
 
 #pragma mark -

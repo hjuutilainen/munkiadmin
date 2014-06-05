@@ -14,7 +14,7 @@
 @class MARequestStringValueController;
 @class MAIconEditor;
 
-@interface MAAdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate> {
+@interface MAAdvancedPackageEditor : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSMenuDelegate, NSComboBoxDelegate> {
      
     NSUndoManager *undoManager;
     
@@ -68,6 +68,7 @@
 @property (weak) IBOutlet NSArrayController *installerEnvironmentVariablesArrayController;
 @property (weak) IBOutlet NSArrayController *categoriesArrayController;
 @property (weak) IBOutlet NSArrayController *developersArrayController;
+@property (weak) IBOutlet NSComboBox *iconNameComboBox;
 
 @property BOOL                  temp_force_install_after_date_enabled;
 @property BOOL                  temp_postinstall_script_enabled;
@@ -88,5 +89,6 @@
 @property (strong) NSString    *temp_uninstallcheck_script;
 @property (strong) NSArray     *osVersions;
 @property (strong) NSArray     *installerTypes;
+@property (strong) NSArray     *iconNameSuggestions;
 
 @end
