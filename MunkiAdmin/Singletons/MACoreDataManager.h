@@ -28,8 +28,10 @@
 - (ManifestMO *)createManifestWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (CategoryMO *)createCategoryWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (BOOL)renameCategory:(CategoryMO *)category newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (BOOL)deleteCategory:(CategoryMO *)category inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (DeveloperMO *)createDeveloperWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (BOOL)renameDeveloper:(DeveloperMO *)developer newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (BOOL)deleteDeveloper:(DeveloperMO *)developer inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc;
 - (void)configureSourcelistItems:(NSManagedObjectContext *)moc;

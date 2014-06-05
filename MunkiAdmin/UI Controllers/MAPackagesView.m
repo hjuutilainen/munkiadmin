@@ -212,11 +212,11 @@
      Ask for a new title
      */
     [self.createNewCategoryController setDefaultValues];
-    self.createNewCategoryController.windowTitleText = @"Rename Category";
-    self.createNewCategoryController.titleText = @"Rename Category";
+    self.createNewCategoryController.windowTitleText = @"";
+    self.createNewCategoryController.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", clickedObject.title];;
     self.createNewCategoryController.okButtonTitle = @"Rename";
     self.createNewCategoryController.labelText = @"New Name:";
-    self.createNewCategoryController.descriptionText = [NSString stringWithFormat:@"Enter new name for the \"%@\" category. The category will be renamed in all referencing pkginfo files.", clickedObject.title];
+    self.createNewCategoryController.descriptionText = [NSString stringWithFormat:@"Enter new name for the category \"%@\". The category will be renamed in all referencing pkginfo files.", clickedObject.title];
     self.createNewCategoryController.stringValue = clickedObject.title;
     NSWindow *window = [self.createNewCategoryController window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -230,6 +230,36 @@
                                    inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
         [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
+    }
+}
+
+
+- (void)deleteCategory
+{
+    /*
+     Get the category item that was right-clicked
+     */
+    NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+    CategorySourceListItemMO *clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+    CategoryMO *clickedCategory = clickedObject.categoryReference;
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [NSString stringWithFormat:@"Delete \"%@\"?", clickedObject.title];
+    alert.informativeText = [NSString stringWithFormat:@"Are you sure you want to delete the category \"%@\"? Category reference will be removed from any packages using it.", clickedObject.title];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert addButtonWithTitle:@"Cancel"];
+    NSInteger result = [alert runModal];
+    
+    /*
+     Perform the actual deletion
+     */
+    if (result == NSAlertFirstButtonReturn) {
+        [[MACoreDataManager sharedManager] deleteCategory:clickedCategory
+                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+        [self.directoriesTreeController rearrangeObjects];
+    } else {
+        // User cancelled
     }
 }
 
@@ -337,7 +367,7 @@
 - (void)renameDeveloper
 {
     /*
-     Get the category item that was right-clicked
+     Get the developer item that was right-clicked
      */
     NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
     DeveloperSourceListItemMO *clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
@@ -347,11 +377,11 @@
      Ask for a new title
      */
     [self.createNewDeveloperController setDefaultValues];
-    self.createNewDeveloperController.windowTitleText = @"Rename Developer";
-    self.createNewDeveloperController.titleText = @"Rename Developer";
+    self.createNewDeveloperController.windowTitleText = @"";
+    self.createNewDeveloperController.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", clickedObject.title];
     self.createNewDeveloperController.okButtonTitle = @"Rename";
     self.createNewDeveloperController.labelText = @"New Name:";
-    self.createNewDeveloperController.descriptionText = [NSString stringWithFormat:@"Enter new name for the \"%@\" developer. The developer will be renamed in all referencing pkginfo files.", clickedObject.title];
+    self.createNewDeveloperController.descriptionText = [NSString stringWithFormat:@"Enter new name for the developer \"%@\". The developer will be renamed in all referencing pkginfo files.", clickedObject.title];
     self.createNewDeveloperController.stringValue = clickedObject.title;
     NSWindow *window = [self.createNewDeveloperController window];
     NSInteger result = [NSApp runModalForWindow:window];
@@ -367,6 +397,36 @@
         [self.directoriesTreeController rearrangeObjects];
     }
     [self.createNewDeveloperController setDefaultValues];
+}
+
+
+- (void)deleteDeveloper
+{
+    /*
+     Get the developer item that was right-clicked
+     */
+    NSInteger clickedRow = [self.directoriesOutlineView clickedRow];
+    DeveloperSourceListItemMO *clickedObject = [[self.directoriesOutlineView itemAtRow:clickedRow] representedObject];
+    DeveloperMO *clickedDeveloper = clickedObject.developerReference;
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = [NSString stringWithFormat:@"Delete \"%@\"?", clickedObject.title];
+    alert.informativeText = [NSString stringWithFormat:@"Are you sure you want to delete the developer \"%@\"? The developer will be removed from all referencing pkginfo files.", clickedObject.title];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert addButtonWithTitle:@"Cancel"];
+    NSInteger result = [alert runModal];
+    
+    /*
+     Perform the actual deletion
+     */
+    if (result == NSAlertFirstButtonReturn) {
+        [[MACoreDataManager sharedManager] deleteDeveloper:clickedDeveloper
+                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        [self.directoriesTreeController rearrangeObjects];
+    } else {
+        // User cancelled
+    }
 }
 
 
@@ -735,10 +795,20 @@
             renameCategoryMenuItem.target = self;
             [menu addItem:renameCategoryMenuItem];
             
+            NSMenuItem *deleteCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Category..."
+                                                                            action:@selector(deleteCategory)
+                                                                     keyEquivalent:@""];
+            deleteCategoryMenuItem.target = self;
+            [menu addItem:deleteCategoryMenuItem];
+            
             for (NSMenuItem *menuItem in menu.itemArray) {
                 if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
                     [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Category..."] || [menuItem.title isEqualToString:@"Rename Category..."]) {
+                } else if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Delete Category..."]) {
+                    [menuItem setEnabled:NO];
+                } else if ([menuItem.title isEqualToString:@"New Category..."]
+                           || [menuItem.title isEqualToString:@"Rename Category..."]
+                           || [menuItem.title isEqualToString:@"Delete Category..."]) {
                     [menuItem setEnabled:YES];
                 } else {
                     [menuItem setEnabled:NO];
@@ -760,10 +830,20 @@
             renameDeveloperMenuItem.target = self;
             [menu addItem:renameDeveloperMenuItem];
             
+            NSMenuItem *deleteDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Developer..."
+                                                                            action:@selector(deleteDeveloper)
+                                                                     keyEquivalent:@""];
+            deleteDeveloperMenuItem.target = self;
+            [menu addItem:deleteDeveloperMenuItem];
+            
             for (NSMenuItem *menuItem in menu.itemArray) {
                 if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Rename Developer..."]) {
                     [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Developer..."] || [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                } else if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Delete Developer..."]) {
+                    [menuItem setEnabled:NO];
+                } else if ([menuItem.title isEqualToString:@"New Developer..."]
+                           || [menuItem.title isEqualToString:@"Rename Developer..."]
+                           || [menuItem.title isEqualToString:@"Delete Developer..."]) {
                     [menuItem setEnabled:YES];
                 } else {
                     [menuItem setEnabled:NO];

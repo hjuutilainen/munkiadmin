@@ -249,6 +249,46 @@
     return YES;
 }
 
+- (BOOL)deleteCategory:(CategoryMO *)category inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (category == nil) {
+        return NO;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    for (PackageMO *aPackage in category.packages) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
+    
+    [moc deleteObject:category.categorySourceListReference];
+    [moc deleteObject:category];
+    
+    return YES;
+}
+
+- (BOOL)deleteDeveloper:(DeveloperMO *)developer inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (developer == nil) {
+        return NO;
+    }
+    
+    if (moc == nil) {
+        moc = [[NSApp delegate] managedObjectContext];
+    }
+    
+    for (PackageMO *aPackage in developer.packages) {
+        aPackage.hasUnstagedChangesValue = YES;
+    }
+    
+    [moc deleteObject:developer.developerSourceListReference];
+    [moc deleteObject:developer];
+    
+    return YES;
+}
+
 - (DeveloperMO *)createDeveloperWithTitle:(NSString *)title inManagedObjectContext:(NSManagedObjectContext *)moc
 {
     if (title == nil) {
