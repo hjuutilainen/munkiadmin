@@ -107,7 +107,7 @@
     [self.packagesArrayController setSortDescriptors:@[sortByMunkiName, sortByMunkiVersion]];
     self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion, sortByMunkiDisplayName];
     
-    self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
+    self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
     [self.descriptionTextView setFont:[NSFont systemFontOfSize:11.0]];
