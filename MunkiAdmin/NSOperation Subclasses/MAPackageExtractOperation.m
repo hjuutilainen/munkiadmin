@@ -264,7 +264,7 @@
     if (self.progressCallback) {
         self.progressCallback(1.0, @"Cleaning...");
     }
-    //[self cleanCache];
+    [self cleanCache];
     
     
     if (self.progressCallback) {
