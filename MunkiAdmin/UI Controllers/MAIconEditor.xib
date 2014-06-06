@@ -173,14 +173,14 @@ Gw
                         </connections>
                     </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="139" horizontalPageScroll="10" verticalLineScroll="139" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="rQN-Ti-2gN">
-                        <rect key="frame" x="-1" y="61" width="511" height="430"/>
+                        <rect key="frame" x="-1" y="61" width="511" height="437"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" copiesOnScroll="NO" id="LFx-22-tqj">
-                            <rect key="frame" x="1" y="1" width="509" height="428"/>
+                            <rect key="frame" x="1" y="1" width="509" height="435"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.46692961454391479" allowsMultipleSelection="NO" allowsEmptySelection="NO" id="gws-PG-aEi">
-                                    <rect key="frame" x="0.0" y="0.0" width="509" height="428"/>
+                                <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.46225017309188843" allowsMultipleSelection="NO" allowsEmptySelection="NO" id="gws-PG-aEi">
+                                    <rect key="frame" x="0.0" y="0.0" width="509" height="435"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <ikCellsStyle key="cellsStyleMask" none="YES" titled="YES"/>
                                     <autoresizingMask key="contentResizingMask" heightSizable="YES"/>
@@ -201,15 +201,21 @@ Gw
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="YHH-ZU-NVW">
-                        <rect key="frame" x="18" y="510" width="473" height="17"/>
+                    <customView id="mWa-Y2-A4E" customClass="MAGradientBackgroundView">
+                        <rect key="frame" x="0.0" y="497" width="509" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multiple icons were extracted from installer item:" id="Osy-Bx-J5M">
-                            <font key="font" metaFont="systemBold"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="YHH-ZU-NVW">
+                                <rect key="frame" x="18" y="17" width="473" height="17"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Multiple icons were extracted from installer item:" id="Osy-Bx-J5M">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </customView>
                 </subviews>
             </view>
         </window>
