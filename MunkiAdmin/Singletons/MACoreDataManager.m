@@ -112,7 +112,7 @@
     CatalogMO *catalog;
     catalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
     catalog.title = title;
-    NSURL *catalogURL = [[[NSApp delegate] catalogsURL] URLByAppendingPathComponent:catalog.title];
+    NSURL *catalogURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] catalogsURL] URLByAppendingPathComponent:catalog.title];
     [[NSFileManager defaultManager] createFileAtPath:[catalogURL relativePath] contents:nil attributes:nil];
     
     // Loop through Package managed objects
@@ -148,7 +148,7 @@
     
     // Manifest name should be the relative path from manifests subdirectory
     NSArray *manifestComponents = [fileURL pathComponents];
-    NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+    NSArray *manifestDirComponents = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] pathComponents];
     NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
     [relativePathComponents removeObjectsInArray:manifestDirComponents];
     NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
@@ -172,7 +172,7 @@
     
     ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
     newManifest.title = title;
-    newManifest.manifestURL = (NSURL *)[[[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
+    newManifest.manifestURL = (NSURL *)[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
     newManifest.originalManifest = [NSDictionary dictionary];
     
     if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:YES]) {
@@ -189,7 +189,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     
     /*
@@ -223,7 +223,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     
     /*
@@ -256,7 +256,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     
     for (PackageMO *aPackage in category.packages) {
@@ -276,7 +276,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     
     for (PackageMO *aPackage in developer.packages) {
@@ -296,7 +296,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     /*
      Check for existing developer with this title
@@ -329,7 +329,7 @@
     }
     
     if (moc == nil) {
-        moc = [[NSApp delegate] managedObjectContext];
+        moc = [self appDelegateMoc];
     }
     
     /*
@@ -501,18 +501,18 @@
         directoriesGroupItem.isGroupItemValue = YES;
     }
     
-    DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:[[NSApp delegate] pkgsInfoURL] managedObjectContext:moc];
+    DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] managedObjectContext:moc];
     basePkgsInfoDirectory.title = @"pkgsinfo";
     basePkgsInfoDirectory.type = @"regular";
     basePkgsInfoDirectory.parent = directoriesGroupItem;
     basePkgsInfoDirectory.originalIndexValue = 10;
-    basePkgsInfoDirectory.filterPredicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", [[NSApp delegate] pkgsInfoURL]];
+    basePkgsInfoDirectory.filterPredicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL]];
     
     
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
-	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:[[NSApp delegate] pkgsInfoURL] includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
 	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
 		NSNumber *isDir;
@@ -535,7 +535,7 @@
                 newDirectory.title = newTitle;
                 
                 NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
-                if ([parentDirectory isEqual:[[NSApp delegate] pkgsInfoURL]]) {
+                if ([parentDirectory isEqual:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL]]) {
                     newDirectory.parent = basePkgsInfoDirectory;
                 } else {
                     NSFetchRequest *parentRequest = [[NSFetchRequest alloc] init];
@@ -654,6 +654,11 @@
 
 # pragma mark -
 # pragma mark Helpers
+
+- (NSManagedObjectContext *)appDelegateMoc
+{
+    return [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+}
 
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc
 {
