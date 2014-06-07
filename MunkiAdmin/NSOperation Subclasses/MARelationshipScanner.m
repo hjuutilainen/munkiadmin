@@ -31,8 +31,8 @@
 - (id)initWithMode:(NSInteger)mode {
 	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing relationship operation");
-		self.operationMode = mode;
-		self.currentJobDescription = @"Initializing relationship operation";
+		_operationMode = mode;
+		_currentJobDescription = @"Initializing relationship operation";
 		
 	}
 	return self;
@@ -274,7 +274,8 @@
     // Configure the context
     
     NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
-    [moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    [moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
     [moc setUndoManager:nil];
     [moc setMergePolicy:NSOverwriteMergePolicy];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -427,7 +428,7 @@
          use a default icon (which is the icon for .pkg file type).
          */
         if ((currentPackage.munki_icon_name != nil) && (![currentPackage.munki_icon_name isEqualToString:@""])) {
-            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_icon_name];
+            NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_icon_name];
             if ([[iconURL pathExtension] isEqualToString:@""]) {
                 iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             }
@@ -438,7 +439,7 @@
                 currentPackage.iconImage = defaultIcon;
             }
         } else {
-            NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
+            NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
             iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
                 IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
