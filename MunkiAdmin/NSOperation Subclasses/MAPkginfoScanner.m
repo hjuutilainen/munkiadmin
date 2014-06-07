@@ -34,9 +34,9 @@
 {
 	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
-		self.sourceDict = dict;
-		self.fileName = [self.sourceDict valueForKey:@"name"];
-		self.currentJobDescription = @"Initializing pkginfo scan operation";
+		_sourceDict = dict;
+		_fileName = [_sourceDict valueForKey:@"name"];
+		_currentJobDescription = @"Initializing pkginfo scan operation";
 	}
 	return self;
 }
@@ -45,9 +45,9 @@
 {
 	if ((self = [super init])) {
 		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing operation");
-		self.sourceURL = src;
-		self.fileName = [self.sourceURL lastPathComponent];
-		self.currentJobDescription = @"Initializing pkginfo scan operation";
+		_sourceURL = src;
+		_fileName = [_sourceURL lastPathComponent];
+		_currentJobDescription = @"Initializing pkginfo scan operation";
 	}
 	return self;
 }
@@ -68,11 +68,12 @@
             
 			MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
             MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
+            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
             
 			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
             [moc setUndoManager:nil];
             [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-			[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
+			[moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(contextDidSave:)
 														 name:NSManagedObjectContextDidSaveNotification
@@ -149,7 +150,7 @@
                 
                 // Check if we have installer_item_location and expand it to absolute URL
                 if (aNewPackage.munki_installer_item_location != nil) {
-                    aNewPackage.packageURL = [[[NSApp delegate] pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
+                    aNewPackage.packageURL = [[appDelegate pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
                 }
                 
                 /*
@@ -197,7 +198,7 @@
                 else {
                     NSString *newBaseName = [aNewPackage.munki_name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
                     NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, aNewPackage.munki_version];
-                    NSURL *newPkginfoURL = [[[NSApp delegate] pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
+                    NSURL *newPkginfoURL = [[appDelegate pkgsInfoURL] URLByAppendingPathComponent:newNameAndVersion];
 					newPkginfoURL = [newPkginfoURL URLByAppendingPathExtension:@"plist"];
 					aNewPackage.packageInfoURL = newPkginfoURL;
                     
