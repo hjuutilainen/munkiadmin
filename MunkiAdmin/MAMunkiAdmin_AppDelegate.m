@@ -2145,7 +2145,7 @@
                                                              options:nil
                                                                error:&addError]){
         [[NSApplication sharedApplication] presentError:addError];
-        persistentStoreCoordinator = nil;
+        _persistentStoreCoordinator = nil;
         return NO;
     }
     return YES;
@@ -2370,7 +2370,7 @@
              Manifest name should be the relative path from manifests subdirectory
              */
             NSArray *manifestComponents = [aManifestFile pathComponents];
-            NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+            NSArray *manifestDirComponents = [self.manifestsURL pathComponents];
             NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
             [relativePathComponents removeObjectsInArray:manifestDirComponents];
             NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
@@ -2503,6 +2503,10 @@
 # pragma mark -
 # pragma mark Core Data default methods
 
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize managedObjectContext = _managedObjectContext;
+
 /**
     Returns the support directory for the application, used to store the Core Data
     store file.  This code uses a directory named "MunkiAdmin" for
@@ -2525,10 +2529,10 @@
  
 - (NSManagedObjectModel *)managedObjectModel {
 
-    if (managedObjectModel) return managedObjectModel;
+    if (_managedObjectModel) return _managedObjectModel;
 	
-    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];    
-    return managedObjectModel;
+    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    return _managedObjectModel;
 }
 
 
@@ -2541,7 +2545,7 @@
 
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
 
-    if (persistentStoreCoordinator) return persistentStoreCoordinator;
+    if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
 
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
@@ -2563,18 +2567,18 @@
     }
     
     //NSURL *url = [NSURL fileURLWithPath: [applicationSupportDirectory stringByAppendingPathComponent: @"storedata"]];
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType 
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: mom];
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
                                                 configuration:nil 
                                                 URL:nil
                                                 options:nil 
                                                 error:&error]){
         [[NSApplication sharedApplication] presentError:error];
-        persistentStoreCoordinator = nil;
+        _persistentStoreCoordinator = nil;
         return nil;
     }    
 
-    return persistentStoreCoordinator;
+    return _persistentStoreCoordinator;
 }
 
 /**
@@ -2584,7 +2588,7 @@
  
 - (NSManagedObjectContext *) managedObjectContext {
 
-    if (managedObjectContext) return managedObjectContext;
+    if (_managedObjectContext) return _managedObjectContext;
 
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (!coordinator) {
@@ -2595,10 +2599,10 @@
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
-    managedObjectContext = [[NSManagedObjectContext alloc] init];
-    [managedObjectContext setPersistentStoreCoordinator: coordinator];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator: coordinator];
 
-    return managedObjectContext;
+    return _managedObjectContext;
 }
 
 /**
@@ -2654,7 +2658,7 @@
     /*
      This is not foolproof in any way but should catch most of the scenarios
      */
-    if ([managedObjectContext hasChanges]) {
+    if ([_managedObjectContext hasChanges]) {
         NSString *question = NSLocalizedString(@"Changes have not been saved yet. Quit anyway?", @"Quit without saves error question message");
         NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", @"Quit without saves error question info");
         NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");

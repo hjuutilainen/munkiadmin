@@ -27,7 +27,7 @@
 @class MAPreferences;
 
 
-@interface MAMunkiAdmin_AppDelegate : NSObject <NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
+@interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
 {
     MASelectPkginfoItemsWindow *addItemsWindowController;
     MASelectManifestItemsWindow *selectManifestsWindowController;
@@ -42,9 +42,6 @@
 	NSView *currentSourceView;
      
 	NSUserDefaults *defaults;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator;
-    NSManagedObjectModel *managedObjectModel;
-    NSManagedObjectContext *managedObjectContext;
 	
 }
 
