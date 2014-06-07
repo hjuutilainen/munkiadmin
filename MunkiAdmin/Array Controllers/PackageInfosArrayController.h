@@ -8,12 +8,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface PackageInfosArrayController : NSArrayController {
+@interface PackageInfosArrayController : NSArrayController <NSTableViewDelegate> {
 	
-	IBOutlet id __unsafe_unretained catalogsTableView;
-
 }
 
-@property (unsafe_unretained) IBOutlet id catalogsTableView;
+@property (weak) IBOutlet NSTableView *catalogsTableView;
 
 @end

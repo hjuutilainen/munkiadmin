@@ -58,8 +58,8 @@
 	
 	
 	
-	[catalogsTableView setDelegate:self];
-	[catalogsTableView setMenu:theMenu];
+	[self.catalogsTableView setDelegate:self];
+	[self.catalogsTableView setMenu:theMenu];
 	
 	// Reload the table view when contents change
 	//[self addObserver:self forKeyPath:@"arrangedObjects" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];

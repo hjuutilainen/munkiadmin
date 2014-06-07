@@ -8,10 +8,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface ManifestItemArrayController : NSArrayController {
-	id tableView;
+@interface ManifestItemArrayController : NSArrayController <NSTableViewDelegate> {
+    
 }
 
-@property (nonatomic, strong) IBOutlet id tableView;
+@property (weak) IBOutlet NSTableView *tableView;
 
 @end

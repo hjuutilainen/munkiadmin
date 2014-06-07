@@ -11,8 +11,6 @@
 
 @implementation ManifestItemArrayController
 
-@synthesize tableView;
-
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
@@ -51,8 +49,8 @@
 	
 	
 	
-	[tableView setDelegate:self];
-	[tableView setMenu:theMenu];
+	[self.tableView setDelegate:self];
+	[self.tableView setMenu:theMenu];
 	
 	// Reload the table view when contents change
 	//[self addObserver:self forKeyPath:@"arrangedObjects" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
@@ -90,7 +88,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {	
-	[tableView reloadData];
+	[self.tableView reloadData];
 	
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
