@@ -88,14 +88,14 @@ static dispatch_queue_t serialQueue;
 - (void)willStartOperations
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        //[[[NSApp delegate] progressBar] startAnimation:nil];
+        //[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] progressBar] startAnimation:nil];
     });
 }
 
 - (void)willEndOperations
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        //[[[NSApp delegate] progressBar] stopAnimation:nil];
+        //[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] progressBar] stopAnimation:nil];
     });
 }
 
@@ -141,8 +141,8 @@ static dispatch_queue_t serialQueue;
         /*
          First check if we have a matching relative subdirectory in ./pkgs
          */
-        NSURL *pkginfoDirectory = [[NSApp delegate] pkgsInfoURL];
-        NSURL *installerItemsDirectory = [[NSApp delegate] pkgsURL];
+        NSURL *pkginfoDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL];
+        NSURL *installerItemsDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsURL];
         
         NSNumber *isDirectory;
         [[targetURL URLByDeletingLastPathComponent] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
@@ -186,7 +186,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)copyStringObjectsOfType:(NSString *)type from:(PackageMO *)source target:(PackageMO *)target
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     if ([type isEqualToString:@"blocking_applications"]) {
         for (StringObjectMO *blockingApp in source.blockingApplications) {
             StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -299,7 +299,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
-    NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *mainMoc = [self appDelegateMoc];
     NSArray *arrayKeys = [NSArray arrayWithObjects:
                           @"blocking_applications",
                           @"installer_choices_xml",
@@ -350,7 +350,7 @@ static dispatch_queue_t serialQueue;
     /*
      Helper method to assimilate a package with previous version
      */
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSFetchRequest *fetchForApplicationsLoose = [[NSFetchRequest alloc] init];
     [fetchForApplicationsLoose setEntity:[NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc]];
     NSPredicate *applicationTitlePredicateLoose;
@@ -388,7 +388,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSURL *currentURL = (NSURL *)manifest.manifestURL;
     NSString *oldTitle = manifest.title;
     
@@ -399,7 +399,7 @@ static dispatch_queue_t serialQueue;
     
     // Manifest name should be the relative path from manifests subdirectory
     NSArray *manifestComponents = [newURL pathComponents];
-    NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+    NSArray *manifestDirComponents = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] pathComponents];
     NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
     [relativePathComponents removeObjectsInArray:manifestDirComponents];
     NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
@@ -469,7 +469,7 @@ static dispatch_queue_t serialQueue;
 {
     NSArray *referencingObjects = nil;
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSArray *stringObjectTypes = [NSArray arrayWithObjects:
                                   @"managedInstall",
                                   @"managedUninstall",
@@ -496,7 +496,7 @@ static dispatch_queue_t serialQueue;
 {
     NSArray *referencingObjects = nil;
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSArray *stringObjectTypes = @[@"includedManifest"];
     
     NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
@@ -518,7 +518,7 @@ static dispatch_queue_t serialQueue;
     NSString *packageNameWithVersion = aPackage.titleWithVersion;
     
     NSMutableDictionary *combined = [[NSMutableDictionary alloc] init];
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     
     // Get sibling packages
     NSMutableArray *packagesWithSameName = [[NSMutableArray alloc] init];
@@ -685,7 +685,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)removeManifest:(ManifestMO *)aManifest withReferences:(BOOL)removeReferences
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSString *name = aManifest.title;
     
     if (removeReferences) {
@@ -756,7 +756,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)removePackage:(PackageMO *)aPackage withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSWorkspace *wp = [NSWorkspace sharedWorkspace];
     
     NSString *name = aPackage.munki_name;
@@ -864,7 +864,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)renamePackage:(PackageMO *)aPackage newName:(NSString *)newName cascade:(BOOL)shouldCascade
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSString *oldName = aPackage.munki_name;
     NSString *oldNameWithVersion = aPackage.titleWithVersion;
     
@@ -1229,7 +1229,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)updateIconForPackage:(PackageMO *)package
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     
     /*
      Create a default icon for packages without a custom icon
@@ -1240,7 +1240,7 @@ static dispatch_queue_t serialQueue;
     defaultIcon.originalURL = nil;
     
     if ((package.munki_icon_name != nil) && (![package.munki_icon_name isEqualToString:@""])) {
-        NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_icon_name];
+        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_icon_name];
         if ([[iconURL pathExtension] isEqualToString:@""]) {
             iconURL = [iconURL URLByAppendingPathExtension:@"png"];
         }
@@ -1251,7 +1251,7 @@ static dispatch_queue_t serialQueue;
             package.iconImage = defaultIcon;
         }
     } else {
-        NSURL *iconURL = [[[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_name];
+        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_name];
         iconURL = [iconURL URLByAppendingPathExtension:@"png"];
         if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
             IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
@@ -1283,7 +1283,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package
 {
-    NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+    NSURL *mainIconsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
     NSString *relativePath = [self relativePathToChildURL:iconURL parentURL:mainIconsURL];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
         NSString *aDescr = [NSString stringWithFormat:@"Changed icon_name to \"%@\" in pkginfo file %@", relativePath, package.relativePath];
@@ -1300,7 +1300,7 @@ static dispatch_queue_t serialQueue;
      Go through every file in <repo>/icons directory and create an IconImage object
      if missing. Most of the files should have it already if used in any pkginfos.
      */
-    NSURL *directoryURL = [[NSApp delegate] iconsURL];
+    NSURL *directoryURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     
     NSArray *keys = @[NSURLTypeIdentifierKey, NSURLLocalizedNameKey];
@@ -1328,7 +1328,7 @@ static dispatch_queue_t serialQueue;
          If this is an image file, create an IconImage object.
          */
         if ([workspace type:typeIdentifier conformsToType:@"public.image"]) {
-            [self createIconImageFromURL:url managedObjectContext:[[NSApp delegate] managedObjectContext]];
+            [self createIconImageFromURL:url managedObjectContext:[self appDelegateMoc]];
         }
     }
 }
@@ -1692,7 +1692,7 @@ static dispatch_queue_t serialQueue;
 		NSLog(@"Getting modified manifests since last save");
 	}
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedManifests = [[NSMutableArray alloc] init];
     
     /*
@@ -1732,12 +1732,12 @@ static dispatch_queue_t serialQueue;
     /*
      * Finally fetch manifests that have been saved but not yet written to disk
      */
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:[self appDelegateMoc]];
     NSPredicate *unstagedChangesPredicate = [NSPredicate predicateWithFormat:@"hasUnstagedChanges == YES"];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
     [fetchRequest setPredicate:unstagedChangesPredicate];
-	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray *fetchResults = [[self appDelegateMoc] executeFetchRequest:fetchRequest error:nil];
     if ([fetchResults count] != 0) {
         [tempModifiedManifests addObjectsFromArray:fetchResults];
     }
@@ -1753,7 +1753,7 @@ static dispatch_queue_t serialQueue;
 		NSLog(@"Getting modified pkginfos since last save");
 	}
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedPackages = [[NSMutableArray alloc] init];
     
     /*
@@ -1793,12 +1793,12 @@ static dispatch_queue_t serialQueue;
     /*
      * Finally fetch packages that have been saved but not yet written to disk
      */
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:[self appDelegateMoc]];
     NSPredicate *unstagedChangesPredicate = [NSPredicate predicateWithFormat:@"hasUnstagedChanges == YES"];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
     [fetchRequest setPredicate:unstagedChangesPredicate];
-	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray *fetchResults = [[self appDelegateMoc] executeFetchRequest:fetchRequest error:nil];
     if ([fetchResults count] != 0) {
         [tempModifiedPackages addObjectsFromArray:fetchResults];
     }
@@ -2124,12 +2124,17 @@ static dispatch_queue_t serialQueue;
 # pragma mark -
 # pragma mark Helper methods
 
+- (NSManagedObjectContext *)appDelegateMoc
+{
+    return [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+}
+
 - (NSArray *)allObjectsForEntity:(NSString *)entityName
 {
-	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self appDelegateMoc]];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
-	NSArray *fetchResults = [[[NSApp delegate] managedObjectContext] executeFetchRequest:fetchRequest error:nil];
+	NSArray *fetchResults = [[self appDelegateMoc] executeFetchRequest:fetchRequest error:nil];
 	return fetchResults;
 }
 
@@ -2168,8 +2173,8 @@ static dispatch_queue_t serialQueue;
 {
     BOOL identical = NO;
     
-    NSURL *pkginfoDirectory = [[NSApp delegate] pkgsInfoURL];
-    NSURL *installerItemsDirectory = [[NSApp delegate] pkgsURL];
+    NSURL *pkginfoDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL];
+    NSURL *installerItemsDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsURL];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSDirectoryEnumerator *dirEnum = [fileManager enumeratorAtURL:pkginfoDirectory
