@@ -157,7 +157,8 @@
 		@autoreleasepool {
             
 			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
-			[moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
+            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+			[moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
             [moc setUndoManager:nil];
 			[[NSNotificationCenter defaultCenter] addObserver:self
 													 selector:@selector(contextDidSave:)
@@ -177,7 +178,7 @@
                  * Manifest name should be the relative path from manifests subdirectory
                  */
                 NSArray *manifestComponents = [self.sourceURL pathComponents];
-                NSArray *manifestDirComponents = [[[NSApp delegate] manifestsURL] pathComponents];
+                NSArray *manifestDirComponents = [[appDelegate manifestsURL] pathComponents];
                 NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
                 [relativePathComponents removeObjectsInArray:manifestDirComponents];
                 NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
