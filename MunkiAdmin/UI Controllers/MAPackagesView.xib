@@ -12,7 +12,6 @@
                 <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
                 <outlet property="directoriesTreeController" destination="89" id="93"/>
                 <outlet property="iconSubMenu" destination="rma-hJ-pCg" id="cB2-W8-Rer"/>
-                <outlet property="iconsSubMenu" destination="rma-hJ-pCg" id="XDg-Rc-ps1"/>
                 <outlet property="installerItemPathControl" destination="184" id="605"/>
                 <outlet property="leftPlaceHolder" destination="10" id="71"/>
                 <outlet property="middlePlaceHolder" destination="4" id="72"/>
@@ -39,14 +38,14 @@
                             <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="NCB-Fd-tPJ">
+                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="NCB-Fd-tPJ">
                                     <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" id="alN-m9-UKr">
                                         <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hd8-dm-A3l" id="DKg-el-RkD">
+                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hd8-dm-A3l" id="DKg-el-RkD">
                                                 <rect key="frame" x="0.0" y="0.0" width="225" height="688"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="0.0"/>
@@ -1019,17 +1018,17 @@
                             <rect key="frame" x="20" y="20" width="191" height="56"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" id="GDB-3X-xAf">
-                                <rect key="frame" x="1" y="1" width="174" height="54"/>
+                                <rect key="frame" x="1" y="1" width="189" height="54"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="354">
-                                        <rect key="frame" x="0.0" y="0.0" width="174" height="54"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="189" height="54"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="174" height="54"/>
+                                        <size key="minSize" width="189" height="54"/>
                                         <size key="maxSize" width="463" height="10000000"/>
                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="174" height="54"/>
+                                        <size key="minSize" width="189" height="54"/>
                                         <size key="maxSize" width="463" height="10000000"/>
                                         <connections>
                                             <binding destination="68" name="value" keyPath="selection.munki_description" id="362"/>
@@ -1066,17 +1065,17 @@
                             <rect key="frame" x="20" y="20" width="191" height="57"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" id="vsX-GN-cfH">
-                                <rect key="frame" x="1" y="1" width="174" height="55"/>
+                                <rect key="frame" x="1" y="1" width="189" height="55"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="358">
-                                        <rect key="frame" x="0.0" y="0.0" width="174" height="55"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="189" height="55"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="174" height="55"/>
+                                        <size key="minSize" width="189" height="55"/>
                                         <size key="maxSize" width="463" height="10000000"/>
                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="174" height="55"/>
+                                        <size key="minSize" width="189" height="55"/>
                                         <size key="maxSize" width="463" height="10000000"/>
                                     </textView>
                                 </subviews>
