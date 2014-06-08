@@ -75,7 +75,7 @@
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
     self.iconChooser = [[MAIconChooser alloc] initWithWindowNibName:@"MAIconChooser"];
     
-    [self.packagesTableView setTarget:[NSApp delegate]];
+    [self.packagesTableView setTarget:(MAMunkiAdmin_AppDelegate *)[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
     
     [self.packagesTableView setDelegate:self];
@@ -227,8 +227,8 @@
     if (result == NSModalResponseOK) {
         [[MACoreDataManager sharedManager] renameCategory:clickedCategory
                                                  newTitle:self.createNewCategoryController.stringValue
-                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+                                   inManagedObjectContext:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext]];
+        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext]];
         [self.directoriesTreeController rearrangeObjects];
     }
 }
@@ -254,9 +254,10 @@
      Perform the actual deletion
      */
     if (result == NSAlertFirstButtonReturn) {
-        [[MACoreDataManager sharedManager] deleteCategory:clickedCategory
-                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [cdManager deleteCategory:clickedCategory inManagedObjectContext:mainContext];
+        [cdManager configureSourceListCategoriesSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
     } else {
         // User cancelled
@@ -276,9 +277,10 @@
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
-                                            inManagedObjectContext:nil];
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [cdManager createCategoryWithTitle:self.createNewCategoryController.stringValue inManagedObjectContext:mainContext];
+        [cdManager configureSourceListCategoriesSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -297,13 +299,15 @@
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        CategoryMO *newCategory = [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
-                                                                      inManagedObjectContext:nil];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        CategoryMO *newCategory = [cdManager createCategoryWithTitle:self.createNewCategoryController.stringValue
+                                                                      inManagedObjectContext:mainContext];
         for (PackageMO *package in self.packagesArrayController.selectedObjects) {
             package.category = newCategory;
             package.hasUnstagedChangesValue = YES;
         }
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListCategoriesSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -351,12 +355,14 @@
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        DeveloperMO *newDeveloper = [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:nil];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        DeveloperMO *newDeveloper = [cdManager createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:mainContext];
         for (PackageMO *package in self.packagesArrayController.selectedObjects) {
             package.developer = newDeveloper;
             package.hasUnstagedChangesValue = YES;
         }
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListDevelopersSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -390,10 +396,10 @@
      Perform the actual rename
      */
     if (result == NSModalResponseOK) {
-        [[MACoreDataManager sharedManager] renameDeveloper:clickedDeveloper
-                                                 newTitle:self.createNewDeveloperController.stringValue
-                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [cdManager renameDeveloper:clickedDeveloper newTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:mainContext];
+        [cdManager configureSourceListDevelopersSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
     }
     [self.createNewDeveloperController setDefaultValues];
@@ -420,9 +426,11 @@
      Perform the actual deletion
      */
     if (result == NSAlertFirstButtonReturn) {
-        [[MACoreDataManager sharedManager] deleteDeveloper:clickedDeveloper
-                                   inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [cdManager deleteDeveloper:clickedDeveloper
+                                   inManagedObjectContext:mainContext];
+        [cdManager configureSourceListDevelopersSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
     } else {
         // User cancelled
@@ -442,8 +450,10 @@
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:nil];
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [cdManager createDeveloperWithTitle:self.createNewDeveloperController.stringValue inManagedObjectContext:mainContext];
+        [cdManager configureSourceListDevelopersSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
         
     }
@@ -568,7 +578,7 @@
     /*
      Create a menu item for each developer object
      */
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entityDescr];
@@ -639,7 +649,7 @@
     /*
      Create a menu item for each category object
      */
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entityDescr];
@@ -1226,7 +1236,7 @@
                 }
             }
             NSArray *supportedURLs = [NSArray arrayWithArray:temporarySupportedURLs];
-            [[NSApp delegate] addNewPackagesFromFileURLs:supportedURLs];
+            [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] addNewPackagesFromFileURLs:supportedURLs];
             return YES;
             
         } else {

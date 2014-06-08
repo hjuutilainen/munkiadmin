@@ -60,15 +60,17 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    [[[[NSApp delegate] managedObjectContext] undoManager] endUndoGrouping];
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    [[mainContext undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
-    [[[[NSApp delegate] managedObjectContext] undoManager] undoNestedGroup];
+    [[mainContext undoManager] undoNestedGroup];
 }
 
 
 - (void)renameCurrentPackage
 {
-    [[[[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    [[mainContext undoManager] beginUndoGrouping];
     self.packageNameEditor.packageToRename = self.pkginfoToEdit;
     [self.packageNameEditor configureRenameOperation];
     SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
@@ -124,9 +126,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    [[[[NSApp delegate] managedObjectContext] undoManager] endUndoGrouping];
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    [[mainContext undoManager] endUndoGrouping];
     if (returnCode == NSOKButton) return;
-    [[[[NSApp delegate] managedObjectContext] undoManager] undoNestedGroup];
+    [[mainContext undoManager] undoNestedGroup];
 }
 
 - (void)editInstallsItem
@@ -138,7 +141,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     if (!selected) {
         return;
     }
-    [[[[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
+    [[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
     self.installsItemEditor.itemToEdit = selected;
     [NSApp beginSheet:[self.installsItemEditor window]
 	   modalForWindow:[self window] modalDelegate:self
@@ -150,7 +153,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)installsItemDidFinish:(NSDictionary *)pkginfoPlist
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
 		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
@@ -167,15 +170,16 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-	if ([[NSApp delegate] makepkginfoInstalled]) {
-		NSArray *filesToAdd = [[NSApp delegate] chooseFiles];
+	if ([[MAMunkiRepositoryManager sharedManager] makepkginfoInstalled]) {
+        MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+		NSArray *filesToAdd = [appDelegate chooseFiles];
 		if (filesToAdd) {
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
 					MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:fileToAdd];
 					theOp.delegate = self;
-					[[[NSApp delegate] operationQueue] addOperation:theOp];
+					[[appDelegate operationQueue] addOperation:theOp];
 				}
 			}
 		}
@@ -197,8 +201,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        CategoryMO *newCategory = [[MACoreDataManager sharedManager] createCategoryWithTitle:self.createNewCategoryController.stringValue
-                                                                      inManagedObjectContext:nil];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+        NSManagedObjectContext *mainContext = [appDelegate managedObjectContext];
+        CategoryMO *newCategory = [cdManager createCategoryWithTitle:self.createNewCategoryController.stringValue
+                                                                      inManagedObjectContext:mainContext];
         [self.categoriesArrayController prepareContent];
         
         if (newCategory != nil) {
@@ -206,8 +213,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
             self.pkginfoToEdit.hasUnstagedChangesValue = YES;
         }
         
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
-        [[NSApp delegate] updateSourceList];
+        [cdManager configureSourceListCategoriesSection:mainContext];
+        [appDelegate updateSourceList];
         
     }
     [self.createNewCategoryController setDefaultValues];
@@ -231,16 +238,19 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSInteger result = [NSApp runModalForWindow:window];
     
     if (result == NSModalResponseOK) {
-        DeveloperMO *newDeveloper = [[MACoreDataManager sharedManager] createDeveloperWithTitle:self.createNewDeveloperController.stringValue
-                                                                         inManagedObjectContext:nil];
+        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+        NSManagedObjectContext *mainContext = [appDelegate managedObjectContext];
+        DeveloperMO *newDeveloper = [cdManager createDeveloperWithTitle:self.createNewDeveloperController.stringValue
+                                                                         inManagedObjectContext:mainContext];
         [self.developersArrayController prepareContent];
         
         if (newDeveloper != nil) {
             self.pkginfoToEdit.developer = newDeveloper;
             self.pkginfoToEdit.hasUnstagedChangesValue = YES;
         }
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
-        [[NSApp delegate] updateSourceList];
+        [cdManager configureSourceListDevelopersSection:mainContext];
+        [appDelegate updateSourceList];
     }
     
     [self.createNewDeveloperController setDefaultValues];
@@ -424,7 +434,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     firstResponder = [[self window] firstResponder];
     
     MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
-    NSManagedObjectContext *mainMoc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *mainMoc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     
     // Create new objects based on the destination and pasteboard contents
     if (firstResponder == self.installsTableView) {
@@ -434,7 +444,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         }
     } else if (firstResponder == self.receiptsTableView) {
         for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:receiptsPboardType]) {
-            ReceiptMO *newReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            ReceiptMO *newReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:mainMoc];
             newReceipt.munki_filename = [item objectForKey:@"filename"];
             newReceipt.munki_installed_size = [item objectForKey:@"installed_size"];
             newReceipt.munki_name = [item objectForKey:@"name"];
@@ -445,7 +455,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         }
     } else if (firstResponder == self.itemsToCopyTableView) {
         for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:itemsToCopyPboardType]) {
-            ItemToCopyMO *newItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            ItemToCopyMO *newItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:mainMoc];
             newItemToCopy.munki_destination_item = [item objectForKey:@"destination_item"];
             newItemToCopy.munki_destination_path = [item objectForKey:@"destination_path"];
             newItemToCopy.munki_group = [item objectForKey:@"group"];
@@ -456,7 +466,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         }
     } else if (firstResponder == self.installerChoicesXMLTableView) {
         for (NSDictionary *item in [self getItemsOfTypeFromPasteboard:installerChoicesXMLPboardType]) {
-            InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            InstallerChoicesItemMO *newInstallerChoicesItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:mainMoc];
             newInstallerChoicesItem.munki_attributeSetting = [item objectForKey:@"attributeSetting"];
             newInstallerChoicesItem.munki_choiceAttribute = [item objectForKey:@"choiceAttribute"];
             newInstallerChoicesItem.munki_choiceIdentifier = [item objectForKey:@"choiceIdentifier"];
@@ -464,14 +474,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         }
     } else if (firstResponder == self.blockingApplicationsTableView) {
         for (NSString *item in [self getItemsOfTypeFromPasteboard:stringObjectPboardType]) {
-            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainMoc];
             newStringObject.title = item;
             newStringObject.typeString = @"package";
             [self.pkginfoToEdit addBlockingApplicationsObject:newStringObject];
         }
     } else if (firstResponder == self.supportedArchitecturesTableView) {
         for (NSString *item in [self getItemsOfTypeFromPasteboard:stringObjectPboardType]) {
-            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            StringObjectMO *newStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainMoc];
             newStringObject.title = item;
             newStringObject.typeString = @"package";
             [self.pkginfoToEdit addSupportedArchitecturesObject:newStringObject];
@@ -578,7 +588,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         for (NSURL *url in fileURLs) {
             MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:url];
             theOp.delegate = self;
-            [[[NSApp delegate] operationQueue] addOperation:theOp];
+            [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] operationQueue] addOperation:theOp];
         }
         return YES;
     }
@@ -704,13 +714,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     /*
      Get all available icon names for the combo box autocomplete list
      */
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entityDescr];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL != %@", [NSNull null]]];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"originalURL.path" ascending:YES selector:@selector(localizedStandardCompare:)]]];
-    NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+    NSURL *mainIconsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     NSMutableArray *newIconNameSuggestions = [NSMutableArray new];
     if (self.pkginfoToEdit.munki_icon_name) {

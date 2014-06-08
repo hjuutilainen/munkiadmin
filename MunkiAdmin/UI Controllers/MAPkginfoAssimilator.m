@@ -128,7 +128,7 @@
         }
     }
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
     
     /*

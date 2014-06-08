@@ -187,7 +187,8 @@
      */
     if (returnCode == NSOKButton)
     {
-        NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+        MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+        NSManagedObjectContext *moc = [appDelegate managedObjectContext];
         MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
         
         /*
@@ -244,7 +245,7 @@
              Get the individual 'name' keys for selected packages
              */
             NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-            NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+            NSURL *mainIconsURL = [appDelegate iconsURL];
             [packageNames enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
                 
                 NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj];
@@ -279,7 +280,7 @@
          */
         else {
             [self.packagesToEdit enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
-                NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+                NSURL *mainIconsURL = [appDelegate iconsURL];
                 NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj.munki_name];
                 defaultIconURL = [defaultIconURL URLByAppendingPathExtension:@"png"];
                 
@@ -386,10 +387,12 @@
 
 - (IBAction)saveAction:(id)sender
 {
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    
     /*
      Create the 'icons' directory in munki repo if it's missing
      */
-    NSURL *iconsDirectory = [[NSApp delegate] iconsURL];
+    NSURL *iconsDirectory = [appDelegate iconsURL];
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:[iconsDirectory path]]) {
         NSError *dirCreateError;
@@ -403,7 +406,7 @@
      Present the save dialog
      */
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    [savePanel setDirectoryURL:[[NSApp delegate] iconsURL]];
+    [savePanel setDirectoryURL:[appDelegate iconsURL]];
 	[savePanel setCanSelectHiddenExtension:NO];
     NSString *filename;
     NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];

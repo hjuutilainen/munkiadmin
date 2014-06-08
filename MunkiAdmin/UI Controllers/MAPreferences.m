@@ -157,18 +157,20 @@
     /*
      Reconfigure the package view sidebar if related defaults change
      */
+    MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     if ([keyPath isEqualToString:@"values.sidebarInstallerTypesVisible"]) {
-        [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListInstallerTypesSection:mainContext];
     } else if ([keyPath isEqualToString:@"values.sidebarCategoriesVisible"]) {
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListCategoriesSection:mainContext];
     } else if ([keyPath isEqualToString:@"values.sidebarDevelopersVisible"]) {
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListDevelopersSection:mainContext];
     } else if ([keyPath isEqualToString:@"values.sidebarDeveloperMinimumNumberOfPackageNames"]) {
-        [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListDevelopersSection:mainContext];
     } else if ([keyPath isEqualToString:@"values.sidebarDirectoriesVisible"]) {
-        [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:[[NSApp delegate] managedObjectContext]];
+        [cdManager configureSourceListDirectoriesSection:mainContext];
     }
-    [[NSApp delegate] updateSourceList];
+    [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] updateSourceList];
 }
 
 # pragma mark -

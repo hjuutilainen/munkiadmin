@@ -7,6 +7,7 @@
 
 #import "MAManifestDetailView.h"
 #import "DataModelHeaders.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 NSString *ConditionalItemType = @"ConditionalItemType";
 
@@ -273,7 +274,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
             droppedConditional.parent = parentConditional;
         }
         
-        [[[NSApp delegate] managedObjectContext] refreshObject:droppedConditional.manifest mergeChanges:YES];
+        [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext] refreshObject:droppedConditional.manifest mergeChanges:YES];
     }
     
     [self.conditionsTreeController rearrangeObjects];

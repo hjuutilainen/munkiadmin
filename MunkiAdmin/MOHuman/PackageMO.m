@@ -58,7 +58,7 @@
 {
     NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:[self.packageInfoURL pathComponents]];
     
-    NSURL *repoURL = [[NSApp delegate] pkgsInfoURL];
+    NSURL *repoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL];
     NSArray *parentPathComponents = [NSArray arrayWithArray:[repoURL pathComponents]];
     NSArray *childPathComponents = [NSArray arrayWithArray:[self.packageInfoURL pathComponents]];
     

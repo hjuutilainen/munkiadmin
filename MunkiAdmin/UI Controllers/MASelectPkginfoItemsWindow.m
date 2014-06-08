@@ -7,6 +7,7 @@
 
 #import "MASelectPkginfoItemsWindow.h"
 #import "DataModelHeaders.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @implementation MASelectPkginfoItemsWindow
 
@@ -84,12 +85,13 @@
 
 - (NSArray *)selectionAsStringObjects
 {
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     NSMutableArray *items = [[NSMutableArray alloc] init];
     NSString *selectedTabViewLabel = [[[self tabView] selectedTabViewItem] label];
     if ([selectedTabViewLabel isEqualToString:@"Grouped"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding in Grouped mode");
         for (ApplicationMO *anApp in [[self groupedPkgsArrayController] selectedObjects]) {
-            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
             newItem.title = anApp.munki_name;
             newItem.originalApplication = anApp;
             [items addObject:newItem];
@@ -97,7 +99,7 @@
     } else if ([selectedTabViewLabel isEqualToString:@"Individual"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding in Individual mode");
         for (PackageMO *aPackage in [[self individualPkgsArrayController] selectedObjects]) {
-            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
             NSString *newTitle = [NSString stringWithFormat:@"%@-%@", aPackage.munki_name, aPackage.munki_version];
             newItem.title = newTitle;
             newItem.originalPackage = aPackage;
@@ -105,7 +107,7 @@
         }
     } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding in Custom mode");
-        StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:[[NSApp delegate] managedObjectContext]];
+        StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
         NSString *newTitle = [[self customValueTextField] stringValue];
         newItem.title = newTitle;
         [items addObject:newItem];

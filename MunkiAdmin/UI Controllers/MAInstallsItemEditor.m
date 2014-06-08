@@ -9,6 +9,7 @@
 #import "MAInstallsItemEditor.h"
 #import "InstallsItemMO.h"
 #import "InstallsItemCustomKeyMO.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @interface MAInstallsItemEditor ()
 
@@ -68,7 +69,7 @@
 
 - (IBAction)addNewCustomInstallAction:(id)sender
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     InstallsItemCustomKeyMO *newKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc];
     newKey.installsItem = self.itemToEdit;
     [moc refreshObject:self.itemToEdit mergeChanges:YES];
@@ -77,7 +78,7 @@
 
 - (IBAction)removeCustomInstallAction:(id)sender
 {
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     [self.customItemsArrayController.selectedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [moc deleteObject:obj];
     }];

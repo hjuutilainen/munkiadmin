@@ -20,7 +20,7 @@
 {
     self = [super initWithWindow:window];
     if (self) {
-        self.useInSiblingPackages = YES;
+        _useInSiblingPackages = YES;
     }
     return self;
 }
@@ -106,7 +106,8 @@
     IconImageMO *selectedImage = self.imagesArrayController.selectedObjects[0];
     NSURL *selectedURL = selectedImage.originalURL;
     
-    NSManagedObjectContext *moc = [[NSApp delegate] managedObjectContext];
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
     MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
     
     /*
@@ -118,7 +119,7 @@
          Get the individual 'name' keys for selected packages
          */
         NSArray *packageNames = [self.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-        NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+        NSURL *mainIconsURL = [appDelegate iconsURL];
         [packageNames enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
             
             NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj];
@@ -153,7 +154,7 @@
      */
     else {
         [self.packagesToEdit enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
-            NSURL *mainIconsURL = [[NSApp delegate] iconsURL];
+            NSURL *mainIconsURL = [appDelegate iconsURL];
             NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj.munki_name];
             defaultIconURL = [defaultIconURL URLByAppendingPathExtension:@"png"];
             
