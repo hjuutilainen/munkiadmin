@@ -34,7 +34,7 @@
 
 - (NSString *)imageUID {
     // Use the NSManagedObjectID for the entity to generate a unique string.
-    return [[self.objectID URIRepresentation] description];
+    return [[[self objectID] URIRepresentation] description];
 }
 
 - (NSString *)imageTitle

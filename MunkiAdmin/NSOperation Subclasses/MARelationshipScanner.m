@@ -311,16 +311,6 @@
      */
     IconImageMO *defaultIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:nil managedObjectContext:moc];
     
-    PackageSourceListItemMO *categoriesGroupItem = nil;
-    NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
-    [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:moc]];
-    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"CATEGORIES"];
-    [groupItemRequest setPredicate:parentPredicate];
-    NSUInteger foundItems = [moc countForFetchRequest:groupItemRequest error:nil];
-    if (foundItems > 0) {
-        categoriesGroupItem = [[moc executeFetchRequest:groupItemRequest error:nil] objectAtIndex:0];
-    }
-    
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;

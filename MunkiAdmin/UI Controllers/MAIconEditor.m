@@ -55,6 +55,7 @@
     CGColorRef backgroundColor = CGColorCreateGenericGray(1.0, 1.0);
     backgroundLayer.backgroundColor = backgroundColor;
     self.imageBrowserView.backgroundLayer = backgroundLayer;
+    CGColorRelease(backgroundColor);
     
     /*
      Change the title font
