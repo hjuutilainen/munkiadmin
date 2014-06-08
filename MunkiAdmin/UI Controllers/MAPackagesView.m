@@ -9,7 +9,6 @@
 
 
 #import "MAPackagesView.h"
-#import "MAImageAndTitleCell.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
