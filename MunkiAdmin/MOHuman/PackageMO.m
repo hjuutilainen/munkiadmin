@@ -239,14 +239,17 @@
 	// ==========
 	// catalogs
 	// ==========
+	NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+	NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+	
 	NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
-	for (CatalogInfoMO *catalogInfo in self.catalogInfos) {
+	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortByCatalogTitle, nil]]) {
 		if (([catalogInfo isEnabledForPackageValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
 			[catalogs addObject:[[catalogInfo catalog] title]];
 		}
 	}
 	
-	for (PackageInfoMO *packageInfo in self.packageInfos) {
+	for (PackageInfoMO *packageInfo in [self.packageInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByCatalogTitle]]) {
 		if (([packageInfo isEnabledForCatalogValue]) && (![catalogs containsObject:[packageInfo.catalog title]])) {
 			[catalogs addObject:[packageInfo.catalog title]];
 		} else if ((![packageInfo isEnabledForCatalogValue]) && ([catalogs containsObject:[packageInfo.catalog title]])) {
@@ -259,10 +262,7 @@
 			[tmpDict setObject:[NSArray array] forKey:@"catalogs"];
 		}
 	} else {
-        /*
-         Always sort catalogs by title
-         */
-		[tmpDict setObject:[catalogs sortedArrayUsingSelector:@selector(localizedStandardCompare:)] forKey:@"catalogs"];
+		[tmpDict setObject:catalogs forKey:@"catalogs"];
 	}
 	
 	
