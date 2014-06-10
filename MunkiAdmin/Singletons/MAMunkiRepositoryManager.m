@@ -119,7 +119,7 @@ static dispatch_queue_t serialQueue;
     
     if (moveSucceeded) {
         /*
-         File was succesfully moved so update the object with a new location
+         File was successfully moved so update the object with a new location
          */
         [aPackage setPackageInfoURL:targetURL];
         [aPackage setPackageInfoParentDirectoryURL:[targetURL URLByDeletingLastPathComponent]];
@@ -141,8 +141,9 @@ static dispatch_queue_t serialQueue;
         /*
          First check if we have a matching relative subdirectory in ./pkgs
          */
-        NSURL *pkginfoDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL];
-        NSURL *installerItemsDirectory = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsURL];
+        MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+        NSURL *pkginfoDirectory = [appDelegate pkgsInfoURL];
+        NSURL *installerItemsDirectory = [appDelegate pkgsURL];
         
         NSNumber *isDirectory;
         [[targetURL URLByDeletingLastPathComponent] getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
@@ -167,7 +168,7 @@ static dispatch_queue_t serialQueue;
                     returnValue = NO;
                 } else {
                     /*
-                     Installer item was succesfully moved, update the installer_item_location key
+                     Installer item was successfully moved, update the installer_item_location key
                      */
                     NSString *newInstallerItemPath = [self relativePathToChildURL:installerTargetURL parentURL:installerItemsDirectory];
                     aPackage.munki_installer_item_location = newInstallerItemPath;

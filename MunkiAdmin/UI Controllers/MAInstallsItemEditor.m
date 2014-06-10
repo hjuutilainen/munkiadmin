@@ -53,7 +53,7 @@
 - (void)updateVersionComparisonKeys
 {
     NSMutableArray *newKeyNames = [[NSMutableArray alloc] init];
-    [newKeyNames addObjectsFromArray:[NSArray arrayWithObjects:@"CFBundleShortVersionString", @"CFBundleVersion", nil]];
+    [newKeyNames addObjectsFromArray:@[@"CFBundleShortVersionString", @"CFBundleVersion"]];
     NSArray *customKeysFromInstallsItem = [[[self.itemToEdit.customKeys allObjects] valueForKeyPath:@"@distinctUnionOfObjects.customKeyName"] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
     if (customKeysFromInstallsItem) {
         [newKeyNames addObjectsFromArray:customKeysFromInstallsItem];

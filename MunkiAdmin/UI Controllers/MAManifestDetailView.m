@@ -25,54 +25,55 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 
 - (void)awakeFromNib
 {
-    [self.nestedManifestsTableView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+    [self.nestedManifestsTableView registerForDraggedTypes:@[NSURLPboardType]];
 	[self.nestedManifestsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
-    
-    [self.catalogsTableView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+
+    [self.catalogsTableView registerForDraggedTypes:@[NSURLPboardType]];
     [self.catalogsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
-    
-    [self.conditionsOutlineView registerForDraggedTypes:[NSArray arrayWithObject:ConditionalItemType]];
+
+    [self.conditionsOutlineView registerForDraggedTypes:@[ConditionalItemType]];
     [self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:YES];
     [self.conditionsOutlineView setAutoresizesSubviews:NO];
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedInstallsByTitle"]) {
-        [self.managedInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"sortManagedInstallsByTitle"]) {
+        [self.managedInstallsController setSortDescriptors:@[sortByTitle, sortByIndex]];
     } else {
-        [self.managedInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+        [self.managedInstallsController setSortDescriptors:@[sortByIndex, sortByTitle]];
+    }
+
+    if ([defaults boolForKey:@"sortManagedUpdatesByTitle"]) {
+        [self.managedUpdatesController setSortDescriptors:@[sortByTitle, sortByIndex]];
+    } else {
+        [self.managedUpdatesController setSortDescriptors:@[sortByIndex, sortByTitle]];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedUpdatesByTitle"]) {
-        [self.managedUpdatesController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    if ([defaults boolForKey:@"sortManagedUninstallsByTitle"]) {
+        [self.managedUninstallsController setSortDescriptors:@[sortByTitle, sortByIndex]];
     } else {
-        [self.managedUpdatesController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+        [self.managedUninstallsController setSortDescriptors:@[sortByIndex, sortByTitle]];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortManagedUninstallsByTitle"]) {
-        [self.managedUninstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
+    if ([defaults boolForKey:@"sortOptionalInstallsByTitle"]) {
+        [self.optionalInstallsController setSortDescriptors:@[sortByTitle, sortByIndex]];
     } else {
-        [self.managedUninstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
-    }
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortOptionalInstallsByTitle"]) {
-        [self.optionalInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByIndex, nil]];
-    } else {
-        [self.optionalInstallsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndex, sortByTitle, nil]];
+        [self.optionalInstallsController setSortDescriptors:@[sortByIndex, sortByTitle]];
     }
     
     NSSortDescriptor *sortByIndexInNestedManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInNestedManifest" ascending:YES selector:@selector(compare:)];
-    [self.includedManifestsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndexInNestedManifest, sortByTitle, nil]];
+    [self.includedManifestsController setSortDescriptors:@[sortByIndexInNestedManifest, sortByTitle]];
     
     NSSortDescriptor *sortByIndexInManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
     NSSortDescriptor *sortCatalogsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [self.catalogsController setSortDescriptors:[NSArray arrayWithObjects:sortByIndexInManifest, sortCatalogsByTitle, nil]];
+    [self.catalogsController setSortDescriptors:@[sortByIndexInManifest, sortCatalogsByTitle]];
     
     NSSortDescriptor *sortByCondition = [NSSortDescriptor sortDescriptorWithKey:@"munki_condition" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [self.conditionalItemsController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
-    [self.conditionsTreeController setSortDescriptors:[NSArray arrayWithObjects:sortByTitleWithParentTitle, sortByCondition, nil]];
+    [self.conditionalItemsController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
+    [self.conditionsTreeController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
     [self.conditionsOutlineView expandItem:nil expandChildren:YES];
 }
 
@@ -111,7 +112,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 				 proposedRow:(int)theRow 
 	   proposedDropOperation:(NSTableViewDropOperation)theDropOperation
 {
-	int result = NSDragOperationNone;
+	NSDragOperation result = NSDragOperationNone;
 	if (theTableView == self.nestedManifestsTableView) {
         if (theDropOperation == NSTableViewDropAbove) {
             result = NSDragOperationMove;
@@ -122,7 +123,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
         }
     }
 	
-    return (result);
+    return result;
 }
 
 - (void)makeRoomForCatalogsAtIndex:(NSInteger)index
@@ -190,21 +191,21 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 - (BOOL)tableView:(NSTableView *)theTableView acceptDrop:(id <NSDraggingInfo>)draggingInfo
 			  row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
 {
+    NSPasteboard *draggingPasteboard = [draggingInfo draggingPasteboard];
     if (theTableView == self.nestedManifestsTableView) {
-        NSArray *dragTypes = [[draggingInfo draggingPasteboard] types];
+        NSArray *dragTypes = [draggingPasteboard types];
         if ([dragTypes containsObject:NSURLPboardType]) {
             
-            NSPasteboard *pasteboard = [draggingInfo draggingPasteboard];
-            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-            NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                     [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSPasteboard *pasteboard = draggingPasteboard;
+            NSArray *classes = @[[NSURL class]];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             for (NSURL *uri in urls) {
                 NSManagedObjectContext *moc = [self.includedManifestsController managedObjectContext];
                 NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
                 StringObjectMO *mo = (StringObjectMO *)[moc objectRegisteredForID:objectID];
                 [self makeRoomForManifestsAtIndex:row];
-                mo.indexInNestedManifest = [NSNumber numberWithInt:row];
+                mo.indexInNestedManifest = @(row);
                 
             }
         }
@@ -213,20 +214,19 @@ NSString *ConditionalItemType = @"ConditionalItemType";
         
         return YES;
     } else if (theTableView == self.catalogsTableView) {
-        NSArray *dragTypes = [[draggingInfo draggingPasteboard] types];
+        NSArray *dragTypes = [draggingPasteboard types];
         if ([dragTypes containsObject:NSURLPboardType]) {
             
-            NSPasteboard *pasteboard = [draggingInfo draggingPasteboard];
-            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-            NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                     [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSPasteboard *pasteboard = draggingPasteboard;
+            NSArray *classes = @[[NSURL class]];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             for (NSURL *uri in urls) {
                 NSManagedObjectContext *moc = [self.catalogsController managedObjectContext];
                 NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
                 CatalogInfoMO *mo = (CatalogInfoMO *)[moc objectRegisteredForID:objectID];
                 [self makeRoomForCatalogsAtIndex:row];
-                mo.indexInManifest = [NSNumber numberWithInt:row];
+                mo.indexInManifest = @(row);
                 
             }
         }

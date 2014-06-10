@@ -714,13 +714,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     /*
      Get all available icon names for the combo box autocomplete list
      */
-    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc];
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setEntity:entityDescription];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL != %@", [NSNull null]]];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"originalURL.path" ascending:YES selector:@selector(localizedStandardCompare:)]]];
-    NSURL *mainIconsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
+    NSURL *mainIconsURL = [appDelegate iconsURL];
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     NSMutableArray *newIconNameSuggestions = [NSMutableArray new];
     if (self.pkginfoToEdit.munki_icon_name) {

@@ -60,20 +60,20 @@
     /*
      Change the title font
      */
-    NSMutableParagraphStyle *paraphStyle = [[NSMutableParagraphStyle alloc] init];
-	[paraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
-	[paraphStyle setAlignment:NSCenterTextAlignment];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+	paragraphStyle.lineBreakMode = NSLineBreakByTruncatingMiddle;
+	paragraphStyle.alignment = NSCenterTextAlignment;
 	
 	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-	[attributes setObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];
-	[attributes setObject:paraphStyle forKey:NSParagraphStyleAttributeName];
-	[attributes setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+	attributes[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
+	attributes[NSForegroundColorAttributeName] = [NSColor blackColor];
 	[self.imageBrowserView setValue:attributes forKey:IKImageBrowserCellsTitleAttributesKey];
 	
 	NSMutableDictionary *highlightedAttributes = [[NSMutableDictionary alloc] init];
-	[highlightedAttributes setObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];
-	[highlightedAttributes setObject:paraphStyle forKey:NSParagraphStyleAttributeName];
-	[highlightedAttributes setObject:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
+	highlightedAttributes[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
+    highlightedAttributes[NSParagraphStyleAttributeName] = paragraphStyle;
+	highlightedAttributes[NSForegroundColorAttributeName] = [NSColor whiteColor];
 	[self.imageBrowserView setValue:highlightedAttributes forKey:IKImageBrowserCellsHighlightedTitleAttributesKey];
     
     /*
@@ -139,7 +139,7 @@
         
         NSPoint thumbnailPoint = NSZeroPoint;
         
-        if (NSEqualSizes(imageSize, targetSize) == NO )
+        if (!NSEqualSizes(imageSize, targetSize))
         {
             
             float widthFactor  = targetWidth / width;
@@ -218,8 +218,8 @@
          */
         NSFetchRequest *checkForExistingImage = [[NSFetchRequest alloc] init];
         [checkForExistingImage setEntity:[NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc]];
-        NSPredicate *siblingPred = [NSPredicate predicateWithFormat:@"originalURL == %@", [sheet URL]];
-        [checkForExistingImage setPredicate:siblingPred];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", [sheet URL]];
+        [checkForExistingImage setPredicate:predicate];
         NSArray *foundIconImages = [moc executeFetchRequest:checkForExistingImage error:nil];
         if ([foundIconImages count] == 1) {
             /*

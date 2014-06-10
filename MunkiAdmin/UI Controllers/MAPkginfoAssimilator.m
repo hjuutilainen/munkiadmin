@@ -105,7 +105,7 @@
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
-    [self.allPackagesArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, sortByVersion, nil]];
+    [self.allPackagesArrayController setSortDescriptors:@[sortByTitle, sortByVersion]];
     
     
 }
@@ -283,19 +283,19 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
-        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+        [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"scriptKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
-        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+        [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"arrayKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
-        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+        [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
     for (NSString *assimilateKeyName in [keyGroups objectForKey:@"specialKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
-        [self setValue:[NSNumber numberWithBool:sourceValue] forKey:assimilateKeyName];
+        [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
     
     return self.modalSession;

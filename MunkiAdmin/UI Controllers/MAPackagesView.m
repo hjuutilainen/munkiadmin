@@ -147,7 +147,7 @@
      */
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
     NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
-    NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByHeaderString]];
+    NSArray *tableColumnsSorted = [self.packagesTableView.tableColumns sortedArrayUsingDescriptors:@[sortByHeaderString]];
     for (NSTableColumn *col in tableColumnsSorted) {
         NSMenuItem *mi = nil;
         if ([[col identifier] isEqualToString:@"packagesTableColumnIcon"]) {
@@ -224,10 +224,12 @@
      Perform the actual rename
      */
     if (result == NSModalResponseOK) {
-        [[MACoreDataManager sharedManager] renameCategory:clickedCategory
-                                                 newTitle:self.createNewCategoryController.stringValue
-                                   inManagedObjectContext:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext]];
-        [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext]];
+        MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
+        NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        [coreDataManager renameCategory:clickedCategory
+                               newTitle:self.createNewCategoryController.stringValue
+                 inManagedObjectContext:mainContext];
+        [coreDataManager configureSourceListCategoriesSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
     }
 }
@@ -253,10 +255,10 @@
      Perform the actual deletion
      */
     if (result == NSAlertFirstButtonReturn) {
-        MACoreDataManager *cdManager = [MACoreDataManager sharedManager];
+        MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
         NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
-        [cdManager deleteCategory:clickedCategory inManagedObjectContext:mainContext];
-        [cdManager configureSourceListCategoriesSection:mainContext];
+        [coreDataManager deleteCategory:clickedCategory inManagedObjectContext:mainContext];
+        [coreDataManager configureSourceListCategoriesSection:mainContext];
         [self.directoriesTreeController rearrangeObjects];
     } else {
         // User cancelled
@@ -578,9 +580,9 @@
      Create a menu item for each developer object
      */
     NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setEntity:entityDescription];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     for (DeveloperMO *developer in fetchResults) {
@@ -649,9 +651,9 @@
      Create a menu item for each category object
      */
     NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
-    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setEntity:entityDescription];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     for (CategoryMO *category in fetchResults) {
@@ -1016,8 +1018,7 @@
                             
                 NSPasteboard *pasteboard = [info draggingPasteboard];
                 NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-                NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
                 NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
                 for (NSURL *uri in urls) {
                     NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
@@ -1037,8 +1038,7 @@
                 
                 NSPasteboard *pasteboard = [info draggingPasteboard];
                 NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-                NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
                 NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
                 for (NSURL *uri in urls) {
                     NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
@@ -1058,8 +1058,7 @@
                 
                 NSPasteboard *pasteboard = [info draggingPasteboard];
                 NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-                NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                         [NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+                NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
                 NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
                 for (NSURL *uri in urls) {
                     NSManagedObjectContext *moc = [self.packagesArrayController managedObjectContext];
@@ -1115,7 +1114,7 @@
          */
         NSPasteboard *pasteboard = [info draggingPasteboard];
         NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-        NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+        NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
         NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
         for (NSURL *uri in urls) {
             if ([[uri scheme] isEqualToString:@"x-coredata"]) {
@@ -1174,7 +1173,7 @@
 
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
 {
-	int result = NSDragOperationNone;
+	NSDragOperation result = NSDragOperationNone;
     
     /*
      Packages table view validations
@@ -1188,8 +1187,7 @@
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-            NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                     [NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @YES};
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             
             for (NSURL *uri in urls) {
@@ -1207,7 +1205,7 @@
         }
     }
     
-    return (result);
+    return result;
 }
 
 
@@ -1223,8 +1221,7 @@
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-            NSDictionary *options = [NSDictionary dictionaryWithObject:
-                                     [NSNumber numberWithBool:YES] forKey:NSPasteboardURLReadingFileURLsOnlyKey];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @YES};
             NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
             
             NSMutableArray *temporarySupportedURLs = [[NSMutableArray alloc] init];
