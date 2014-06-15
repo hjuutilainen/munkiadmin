@@ -428,12 +428,23 @@
 	}];
 }
 
-- (IBAction)cancelAction:(id)sender
+- (void)stopEditingAndCancel:(id)sender
 {
     self.currentImage = nil;
     self.packagesToEdit = nil;
-    [[self window] orderOut:sender];
     [NSApp stopModalWithCode:NSModalResponseCancel];
+}
+
+- (BOOL)windowShouldClose:(id)sender
+{
+    [self stopEditingAndCancel:sender];
+    return YES;
+}
+
+- (IBAction)cancelAction:(id)sender
+{
+    [[self window] orderOut:sender];
+    [self stopEditingAndCancel:sender];
 }
 
 - (void)openImageURL:(NSURL *)url
