@@ -1453,7 +1453,7 @@
     if ([self.defaults boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
-    [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
+    [self.managedObjectContext refreshObject:[pkginfoAssimilator targetPkginfo] mergeChanges:YES];
     for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
