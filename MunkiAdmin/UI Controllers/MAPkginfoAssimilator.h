@@ -14,9 +14,6 @@
     
     NSUndoManager *undoManager;
     
-    NSArray *defaultsKeysToLoop;
-    NSDictionary *keyGroups;
-    
 }
 
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)targetPackage
@@ -36,6 +33,8 @@
 @property (weak) id delegate;
 @property (weak) PackageMO *sourcePkginfo;
 @property (weak) PackageMO *targetPkginfo;
+@property (strong) NSArray *defaultsKeysToLoop;
+@property (strong) NSDictionary *keyGroups;
 @property NSModalSession modalSession;
 
 @property BOOL assimilate_blocking_applications;
@@ -51,6 +50,7 @@
 @property BOOL assimilate_description;
 @property BOOL assimilate_developer;
 @property BOOL assimilate_display_name;
+@property BOOL assimilate_icon_name;
 @property BOOL assimilate_installable_condition;
 @property BOOL assimilate_maximum_os_version;
 @property BOOL assimilate_minimum_munki_version;

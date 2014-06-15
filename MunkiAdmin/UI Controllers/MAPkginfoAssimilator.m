@@ -28,70 +28,74 @@
     self = [super initWithWindow:window];
     if (self) {
         NSArray *basicKeys = @[@"assimilate_autoremove",
-                              @"assimilate_description",
-                              @"assimilate_display_name",
-                              @"assimilate_installable_condition",
-                              @"assimilate_maximum_os_version",
-                              @"assimilate_minimum_munki_version",
-                              @"assimilate_minimum_os_version",
-                              @"assimilate_name",
-                              @"assimilate_unattended_install",
-                              @"assimilate_unattended_uninstall",
-                              @"assimilate_uninstallable",
-                              @"assimilate_uninstaller_item_location"];
+                               @"assimilate_description",
+                               @"assimilate_display_name",
+                               @"assimilate_installable_condition",
+                               @"assimilate_maximum_os_version",
+                               @"assimilate_minimum_munki_version",
+                               @"assimilate_minimum_os_version",
+                               @"assimilate_name",
+                               @"assimilate_unattended_install",
+                               @"assimilate_unattended_uninstall",
+                               @"assimilate_uninstallable",
+                               @"assimilate_uninstaller_item_location"];
         
         NSArray *scriptKeys = @[@"assimilate_installcheck_script",
-                              @"assimilate_preinstall_script",
-                              @"assimilate_postinstall_script",
-                              @"assimilate_preuninstall_script",
-                              @"assimilate_postuninstall_script",
-                              @"assimilate_uninstall_method",
-                              @"assimilate_uninstall_script",
-                              @"assimilate_uninstallcheck_script"];
+                                @"assimilate_preinstall_script",
+                                @"assimilate_postinstall_script",
+                                @"assimilate_preuninstall_script",
+                                @"assimilate_postuninstall_script",
+                                @"assimilate_uninstall_method",
+                                @"assimilate_uninstall_script",
+                                @"assimilate_uninstallcheck_script"];
         
         NSArray *arrayKeys = @[@"assimilate_blocking_applications",
-                              @"assimilate_installer_choices_xml",
-                              @"assimilate_installs_items",
-                              @"assimilate_items_to_copy",
-                              @"assimilate_requires",
-                              @"assimilate_supported_architectures",
-                              @"assimilate_update_for"];
+                               @"assimilate_installer_choices_xml",
+                               @"assimilate_installs_items",
+                               @"assimilate_items_to_copy",
+                               @"assimilate_requires",
+                               @"assimilate_supported_architectures",
+                               @"assimilate_update_for"];
         
         NSArray *specialKeys = @[@"assimilate_category",
-                                 @"assimilate_developer"];
+                                 @"assimilate_developer",
+                                 @"assimilate_icon_name"];
         
-        keyGroups = @{basicKeys: @"basicKeys",
-                      scriptKeys: @"scriptKeys",
-                      arrayKeys: @"arrayKeys",
-                      specialKeys: @"specialKeys"};
+        _keyGroups = @{@"basicKeys": basicKeys,
+                       @"scriptKeys": scriptKeys,
+                       @"arrayKeys": arrayKeys,
+                       @"specialKeys": specialKeys};
         
-        defaultsKeysToLoop = @[@"assimilate_autoremove",
-                              @"assimilate_blocking_applications",
-                              @"assimilate_description",
-                              @"assimilate_display_name",
-                              @"assimilate_installable_condition",
-                              @"assimilate_installcheck_script",
-                              @"assimilate_installer_choices_xml",
-                              @"assimilate_installs_items",
-                              @"assimilate_items_to_copy",
-                              @"assimilate_maximum_os_version",
-                              @"assimilate_minimum_munki_version",
-                              @"assimilate_minimum_os_version",
-                              @"assimilate_name",
-                              @"assimilate_preinstall_script",
-                              @"assimilate_postinstall_script",
-                              @"assimilate_preuninstall_script",
-                              @"assimilate_postuninstall_script",
-                              @"assimilate_requires",
-                              @"assimilate_supported_architectures",
-                              @"assimilate_unattended_install",
-                              @"assimilate_unattended_uninstall",
-                              @"assimilate_uninstall_method",
-                              @"assimilate_uninstall_script",
-                              @"assimilate_uninstallable",
-                              @"assimilate_uninstallcheck_script",
-                              @"assimilate_uninstaller_item_location",
-                              @"assimilate_update_for"];
+        _defaultsKeysToLoop = @[@"assimilate_autoremove",
+                                @"assimilate_blocking_applications",
+                                @"assimilate_category",
+                                @"assimilate_description",
+                                @"assimilate_developer",
+                                @"assimilate_display_name",
+                                @"assimilate_icon_name",
+                                @"assimilate_installable_condition",
+                                @"assimilate_installcheck_script",
+                                @"assimilate_installer_choices_xml",
+                                @"assimilate_installs_items",
+                                @"assimilate_items_to_copy",
+                                @"assimilate_maximum_os_version",
+                                @"assimilate_minimum_munki_version",
+                                @"assimilate_minimum_os_version",
+                                @"assimilate_name",
+                                @"assimilate_preinstall_script",
+                                @"assimilate_postinstall_script",
+                                @"assimilate_preuninstall_script",
+                                @"assimilate_postuninstall_script",
+                                @"assimilate_requires",
+                                @"assimilate_supported_architectures",
+                                @"assimilate_unattended_install",
+                                @"assimilate_unattended_uninstall",
+                                @"assimilate_uninstall_method",
+                                @"assimilate_uninstall_script",
+                                @"assimilate_uninstallable",
+                                @"assimilate_uninstallcheck_script",
+                                @"assimilate_uninstaller_item_location",
+                                @"assimilate_update_for"];
     }
     
     return self;
@@ -112,7 +116,7 @@
 
 - (void)commitChangesToCurrentPackage
 {
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"basicKeys"]) {
         if ([[self valueForKey:assimilateKeyName] boolValue]) {
             NSString *munkiadminKeyName = [assimilateKeyName stringByReplacingOccurrencesOfString:@"assimilate_" withString:@"munki_"];
             id sourceValue = [self.sourcePkginfo valueForKey:munkiadminKeyName];
@@ -120,7 +124,7 @@
         }
     }
     
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"scriptKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"scriptKeys"]) {
         if ([[self valueForKey:assimilateKeyName] boolValue]) {
             NSString *munkiadminKeyName = [assimilateKeyName stringByReplacingOccurrencesOfString:@"assimilate_" withString:@"munki_"];
             id sourceValue = [self.sourcePkginfo valueForKey:munkiadminKeyName];
@@ -139,6 +143,13 @@
     }
     if (self.assimilate_developer) {
         [repoManager copyDeveloperFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
+    }
+    
+    /*
+     Icon
+     */
+    if (self.assimilate_icon_name) {
+        [repoManager copyIconNameFrom:self.sourcePkginfo target:self.targetPkginfo inManagedObjectContext:moc];
     }
     
     /*
@@ -242,7 +253,7 @@
 
 - (IBAction)enableAllAction:(id)sender
 {
-    for (NSString *aKey in defaultsKeysToLoop) {
+    for (NSString *aKey in self.defaultsKeysToLoop) {
         [self setValue:[NSNumber numberWithBool:YES] forKey:aKey];
     }
 }
@@ -250,7 +261,7 @@
 
 - (IBAction)disableAllAction:(id)sender
 {
-    for (NSString *aKey in defaultsKeysToLoop) {
+    for (NSString *aKey in self.defaultsKeysToLoop) {
         [self setValue:[NSNumber numberWithBool:NO] forKey:aKey];
     }
 }
@@ -281,19 +292,19 @@
     
     // Setup the default selection
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"basicKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"basicKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"scriptKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"scriptKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"arrayKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"arrayKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }
-    for (NSString *assimilateKeyName in [keyGroups objectForKey:@"specialKeys"]) {
+    for (NSString *assimilateKeyName in [self.keyGroups objectForKey:@"specialKeys"]) {
         BOOL sourceValue = [defaults boolForKey:assimilateKeyName];
         [self setValue:@(sourceValue) forKey:assimilateKeyName];
     }

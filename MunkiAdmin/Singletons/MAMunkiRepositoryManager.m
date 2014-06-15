@@ -298,6 +298,14 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (void)copyIconNameFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    if (source.munki_icon_name != nil) {
+        target.munki_icon_name = source.munki_icon_name;
+        [self updateIconForPackage:target];
+    }
+}
+
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
     NSManagedObjectContext *mainMoc = [self appDelegateMoc];
@@ -316,7 +324,7 @@ static dispatch_queue_t serialQueue;
                            @"supported_architectures",
                            @"update_for",
                            nil];
-    NSArray *specialKeys = @[@"category", @"developer"];
+    NSArray *specialKeys = @[@"category", @"developer", @"icon_name"];
     
     for (NSString *keyName in munkiKeys) {
         if (![arrayKeys containsObject:keyName] && ![specialKeys containsObject:keyName] && [self.pkginfoAssimilateKeys containsObject:keyName]) {
@@ -341,6 +349,9 @@ static dispatch_queue_t serialQueue;
             }
             else if ([keyName isEqualToString:@"developer"]) {
                 [self copyDeveloperFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
+            }
+            else if ([keyName isEqualToString:@"icon_name"]) {
+                [self copyIconNameFrom:sourcePackage target:targetPackage inManagedObjectContext:mainMoc];
             }
         }
     }
@@ -2374,6 +2385,7 @@ static dispatch_queue_t serialQueue;
     
     [newPkginfoAssimilateKeys addObject:@"category"];
     [newPkginfoAssimilateKeys addObject:@"developer"];
+    [newPkginfoAssimilateKeys addObject:@"icon_name"];
     
 	self.pkginfoAssimilateKeys = [NSArray arrayWithArray:newPkginfoAssimilateKeys];
 	
