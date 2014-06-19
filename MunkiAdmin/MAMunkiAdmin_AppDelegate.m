@@ -1688,7 +1688,7 @@
 
 - (IBAction)removeConditionalItemAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (ConditionalItemMO *aConditionalItem in [self.manifestDetailViewController.conditionsTreeController selectedObjects]) {
         [self.managedObjectContext deleteObject:aConditionalItem];
@@ -1702,13 +1702,21 @@
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aNestedManifest in [selectedManifest includedManifestsFaster]) {
+    for (StringObjectMO *aNestedManifest in selectedManifest.includedManifestsFaster) {
         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
         [tempPredicates addObject:newPredicate];
     }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aNestedManifest in conditional.includedManifests) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
     NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
     [tempPredicates addObject:denySelfPred];
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
@@ -1718,7 +1726,7 @@
 
 - (IBAction)removeIncludedManifestAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *anIncludedManifest in [self.manifestDetailViewController.includedManifestsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anIncludedManifest];
@@ -1743,13 +1751,21 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aManagedInstall in [selectedManifest managedInstallsFaster]) {
+    for (StringObjectMO *aManagedInstall in selectedManifest.managedInstallsFaster) {
         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
         [tempPredicates addObject:newPredicate];
     }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aManagedInstall in conditional.managedInstalls) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
     [addItemsWindowController updateGroupedSearchPredicate];
@@ -1758,7 +1774,7 @@
 
 - (IBAction)removeManagedInstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedInstall in [self.manifestDetailViewController.managedInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedInstall];
@@ -1774,13 +1790,21 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aManagedUninstall in [selectedManifest managedUninstallsFaster]) {
+    for (StringObjectMO *aManagedUninstall in selectedManifest.managedUninstallsFaster) {
         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUninstall.title];
         [tempPredicates addObject:newPredicate];
     }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aManagedUninstall in conditional.managedUninstalls) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUninstall.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
     [addItemsWindowController updateGroupedSearchPredicate];
@@ -1789,7 +1813,7 @@
 
 - (IBAction)removeManagedUninstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedUninstall in [self.manifestDetailViewController.managedUninstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUninstall];
@@ -1805,13 +1829,21 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aManagedUpdate in [selectedManifest managedUpdatesFaster]) {
+    for (StringObjectMO *aManagedUpdate in selectedManifest.managedUpdatesFaster) {
         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUpdate.title];
         [tempPredicates addObject:newPredicate];
     }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aManagedUpdate in conditional.managedUpdates) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedUpdate.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
     [addItemsWindowController updateGroupedSearchPredicate];
@@ -1820,7 +1852,7 @@
 
 - (IBAction)removeManagedUpdateAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedUpdate in [self.manifestDetailViewController.managedUpdatesController selectedObjects]) {
         [self.managedObjectContext deleteObject:aManagedUpdate];
@@ -1836,13 +1868,21 @@
 	   modalForWindow:self.window modalDelegate:self 
 	   didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *anOptionalInstall in [selectedManifest optionalInstallsFaster]) {
+    for (StringObjectMO *anOptionalInstall in selectedManifest.optionalInstallsFaster) {
         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", anOptionalInstall.title];
         [tempPredicates addObject:newPredicate];
     }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *anOptionalInstall in conditional.optionalInstalls) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", anOptionalInstall.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [addItemsWindowController setHideAddedPredicate:compPred];
     [addItemsWindowController updateGroupedSearchPredicate];
@@ -1851,7 +1891,7 @@
 
 - (IBAction)removeOptionalInstallAction:(id)sender
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *anOptionalInstall in [self.manifestDetailViewController.optionalInstallsController selectedObjects]) {
         [self.managedObjectContext deleteObject:anOptionalInstall];
