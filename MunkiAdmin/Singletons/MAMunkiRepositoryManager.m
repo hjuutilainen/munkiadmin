@@ -76,8 +76,8 @@ static dispatch_queue_t serialQueue;
         if (obj) {
             [self setupMappings];
             [self updateMunkiVersions];
-            _diskImageQueue = [NSOperationQueue new];
-            [_diskImageQueue setMaxConcurrentOperationCount:1];
+            self.diskImageQueue = [NSOperationQueue new];
+            self.diskImageQueue.maxConcurrentOperationCount = 1;
         }
     });
     
