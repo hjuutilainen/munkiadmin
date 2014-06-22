@@ -2,8 +2,11 @@
 
 @interface ManifestMO : _ManifestMO {}
 
-- (NSString *)fileName;
+@property (weak, readonly) NSString *manifestContentsDescription;
+@property (weak, readonly) NSImage *image;
+@property (weak, readonly) NSString *fileName;
+@property (weak, readonly) NSDictionary *manifestInfoDictionary;
+
 - (NSSet *)rootConditionalItems;
-- (NSDictionary *)manifestInfoDictionary;
 
 @end

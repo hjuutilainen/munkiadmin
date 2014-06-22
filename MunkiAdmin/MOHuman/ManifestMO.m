@@ -73,16 +73,20 @@
 	return tempArray;
 }
 
-
-- (NSDictionary *)dictValue
+- (NSImage *)image
 {
-	NSString *subtitle = @"";
+    return [NSImage imageNamed:@"manifestIcon_32x32"];
+}
+
+- (NSString *)manifestContentsDescription
+{
+    NSString *descriptionString = @"";
     
-    int manInCount = 0;
-    int manUnCount = 0;
-    int manUpCount = 0;
-    int optInCount = 0;
-    int incManCount = 0;
+    NSUInteger manInCount = 0;
+    NSUInteger manUnCount = 0;
+    NSUInteger manUpCount = 0;
+    NSUInteger optInCount = 0;
+    NSUInteger incManCount = 0;
     
     for (ConditionalItemMO *condition in self.conditionalItems) {
         manInCount += [condition.managedInstalls count];
@@ -99,29 +103,34 @@
     incManCount += [self.includedManifestsFaster count];
     
     if (manInCount > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%u installs, ", manInCount];
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu installs, ", (unsigned long)manInCount];
     }
     if (manUnCount > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%u uninstalls, ", manUnCount];
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu uninstalls, ", (unsigned long)manUnCount];
     }
     if (optInCount > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%u optional installs, ", optInCount];
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu optional installs, ", (unsigned long)optInCount];
     }
     if (manUpCount > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%u updates, ", manUpCount];
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu updates, ", (unsigned long)manUpCount];
     }
     if (incManCount > 0) {
-        subtitle = [subtitle stringByAppendingFormat:@"%u nested manifests", incManCount];
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu nested manifests", (unsigned long)incManCount];
     }
     
-    if ([subtitle isEqualToString:@""]) {
-        subtitle = @"Empty";
+    if ([descriptionString isEqualToString:@""]) {
+        descriptionString = @"Empty";
     }
-    subtitle = [subtitle stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
-    
+    descriptionString = [descriptionString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+    return descriptionString;
+}
+
+
+- (NSDictionary *)dictValue
+{
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			self.title, @"title",
-			subtitle, @"subtitle",
+			self.manifestContentsDescription, @"subtitle",
 			@"manifest", @"type",
 			nil];
 }

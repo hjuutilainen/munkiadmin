@@ -2,35 +2,59 @@
 
 @implementation ItemToCopyMO
 
-- (NSDictionary *)dictValue
+- (NSImage *)image
 {
-	NSString *title, *subtitle;
-	
-	BOOL hasSourceItem, hasDestinationPath, hasDestinationItem, hasUser, hasGroup, hasMode;
-	hasSourceItem = (self.munki_source_item != nil) ? TRUE : FALSE;
-	NSString *sourceItem = (hasSourceItem) ? self.munki_source_item : @"--";
-	
+    BOOL hasDestinationItem = (self.munki_destination_item != nil) ? TRUE : FALSE;
+    NSString *destinationItem = (hasDestinationItem) ? self.munki_destination_item : self.munki_source_item;
+    NSString *fullPath = [self.munki_destination_path stringByAppendingPathComponent:destinationItem];
+    NSWorkspace *wp = [NSWorkspace sharedWorkspace];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
+        return [wp iconForFile:fullPath];
+    } else {
+        return [wp iconForFileType:[fullPath pathExtension]];
+    }
+}
+
+- (NSString *)titleDescription
+{
+    BOOL hasSourceItem;
+    hasSourceItem = (self.munki_source_item != nil) ? TRUE : FALSE;
+    NSString *sourceItem = (hasSourceItem) ? self.munki_source_item : @"--";
+    return sourceItem;
+}
+
+- (NSString *)contentsDescription
+{
+    NSString *descriptionString;
+    
+    BOOL hasSourceItem, hasDestinationPath, hasDestinationItem, hasUser, hasGroup, hasMode;
+    hasSourceItem = (self.munki_source_item != nil) ? TRUE : FALSE;
+    NSString *sourceItem = (hasSourceItem) ? self.munki_source_item : @"--";
+    
     hasDestinationPath = (self.munki_destination_path != nil) ? TRUE : FALSE;
-	NSString *destinationPath = (hasDestinationPath) ? self.munki_destination_path : @"--";
+    NSString *destinationPath = (hasDestinationPath) ? self.munki_destination_path : @"--";
     
     hasDestinationItem = (self.munki_destination_item != nil) ? TRUE : FALSE;
-	NSString *destinationItem = (hasDestinationItem) ? self.munki_destination_item : sourceItem;
-	
+    NSString *destinationItem = (hasDestinationItem) ? self.munki_destination_item : sourceItem;
+    
     hasUser = (self.munki_user != nil) ? TRUE : FALSE;
-	NSString *user = (hasUser) ? self.munki_user : @"--";
-	
+    NSString *user = (hasUser) ? self.munki_user : @"--";
+    
     hasGroup = (self.munki_group != nil) ? TRUE : FALSE;
-	NSString *group = (hasGroup) ? self.munki_group : @"--";
-	
+    NSString *group = (hasGroup) ? self.munki_group : @"--";
+    
     hasMode = (self.munki_mode != nil) ? TRUE : FALSE;
-	NSString *mode = (hasMode) ? self.munki_mode : @"--";
-	
-	title = [NSString stringWithFormat:@"%@", sourceItem];
-	subtitle = [NSString stringWithFormat:@"%@/%@, %@:%@, %@", destinationPath, destinationItem, user, group, mode];
-	
+    NSString *mode = (hasMode) ? self.munki_mode : @"--";
+    
+    descriptionString = [NSString stringWithFormat:@"%@/%@, %@:%@, %@", destinationPath, destinationItem, user, group, mode];
+    return descriptionString;
+}
+
+- (NSDictionary *)dictValue
+{
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			title, @"title",
-			subtitle, @"subtitle",
+			self.titleDescription, @"title",
+			self.contentsDescription, @"subtitle",
 			@"itemtocopy", @"type",
 			nil];
 }

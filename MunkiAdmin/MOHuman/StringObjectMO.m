@@ -204,6 +204,21 @@
     }
 }
 
+- (NSString *)nestedManifestContentsDescription
+{
+    NSUInteger numManifests = [self.manifestsWithSameTitle count];
+    if (numManifests == 0) {
+        return @"--";
+    } else {
+        return [self.manifestsWithSameTitle[0] manifestContentsDescription];
+    }
+}
+
+- (NSImage *)nestedManifestImage
+{
+    return [NSImage imageNamed:@"manifestIcon_32x32"];
+}
+
 
 - (NSImage *)image
 {
