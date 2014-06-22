@@ -1,5 +1,7 @@
 #import "_PackageInfoMO.h"
 
 @interface PackageInfoMO : _PackageInfoMO {}
-// Custom logic goes here.
+
+@property (weak, readonly) NSDictionary *dictValue;
+
 @end

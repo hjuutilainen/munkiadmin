@@ -1,19 +1,21 @@
 #import "PackageInfoMO.h"
+#import "CatalogMO.h"
 
 @implementation PackageInfoMO
 
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+- (void)setIsEnabledForCatalog:(NSNumber *)isEnabledForCatalog
 {
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
-	// Define keys that depend on
-    if ([key isEqualToString:@"isEnabledForCatalog"])
-    {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"catalog.dictValue", nil];
-        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
-    } 
-		
-    return keyPaths;
+    [self willChangeValueForKey:@"isEnabledForCatalog"];
+    if (self.catalog) {
+        [self.catalog willChangeValueForKey:@"enabledPackagesDescription"];
+    }
+    
+    [self setPrimitiveValue:isEnabledForCatalog forKey:@"isEnabledForCatalog"];
+    
+    if (self.catalog) {
+        [self.catalog didChangeValueForKey:@"enabledPackagesDescription"];
+    }
+    [self didChangeValueForKey:@"isEnabledForCatalog"];
 }
 
 - (NSDictionary *)dictValue
