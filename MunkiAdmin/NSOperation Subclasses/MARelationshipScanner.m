@@ -154,12 +154,12 @@
                     newCatalogInfo.indexInManifestValue = 0;
                 } else if ([catalogs containsObject:catalogTitle]) {
                     newCatalogInfo.isEnabledForManifestValue = YES;
-                    newCatalogInfo.originalIndexValue = [catalogs indexOfObject:catalogTitle];
-                    newCatalogInfo.indexInManifestValue = [catalogs indexOfObject:catalogTitle];
+                    newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
+                    newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
                 } else {
                     newCatalogInfo.isEnabledForManifestValue = NO;
-                    newCatalogInfo.originalIndexValue = ([catalogs count] + 1);
-                    newCatalogInfo.indexInManifestValue = ([catalogs count] + 1);
+                    newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
+                    newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
                 }
             }
         }
@@ -339,7 +339,7 @@
                 
                 if ([[originalPkginfo objectForKey:@"catalogs"] containsObject:aCatalog.title]) {
                     newCatalogInfo.isEnabledForPackageValue = YES;
-                    newCatalogInfo.originalIndexValue = [[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title];
+                    newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title]];
                     newPackageInfo.isEnabledForCatalogValue = YES;
                 } else {
                     newCatalogInfo.isEnabledForPackageValue = NO;
@@ -353,12 +353,12 @@
         // Loop through the "catalogs" key in the original pkginfo
         // and create new catalog objects if necessary
         
-        [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id catalogObject, NSUInteger catalogIndex, BOOL *stopCatalogEnum) {
             
             NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
             [fetchForCatalogs setEntity:catalogEntityDescr];
             
-            NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", obj];
+            NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", catalogObject];
             [fetchForCatalogs setPredicate:catalogTitlePredicate];
             
             NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
@@ -370,13 +370,13 @@
             
             if (numFoundCatalogs == 0) {
                 CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
-                aNewCatalog.title = obj;
+                aNewCatalog.title = catalogObject;
                 [aNewCatalog addPackagesObject:currentPackage];
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
                 newCatalogInfo.package = currentPackage;
                 newCatalogInfo.catalog.title = aNewCatalog.title;
                 newCatalogInfo.isEnabledForPackageValue = YES;
-                newCatalogInfo.originalIndexValue = [catalogsFromPkginfo indexOfObject:obj];
+                newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogsFromPkginfo indexOfObject:catalogObject]];
                 [aNewCatalog addCatalogInfosObject:newCatalogInfo];
                 
                 PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
@@ -393,13 +393,13 @@
             else {
                 CatalogMO *foundCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
                 
-                if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:obj]) {
+                if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:catalogObject]) {
                     [foundCatalog addPackagesObject:currentPackage];
                     CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
                     newCatalogInfo.package = currentPackage;
                     newCatalogInfo.catalog.title = foundCatalog.title;
                     newCatalogInfo.isEnabledForPackageValue = YES;
-                    newCatalogInfo.originalIndexValue = [catalogsFromPkginfo indexOfObject:obj];
+                    newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogsFromPkginfo indexOfObject:catalogObject]];
                     [foundCatalog addCatalogInfosObject:newCatalogInfo];
                     PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
                     newPackageInfo.catalog = foundCatalog;

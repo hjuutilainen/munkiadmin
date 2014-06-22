@@ -242,14 +242,14 @@
 				[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
 					aNewReceipt.package = aNewPackage;
-                    aNewReceipt.originalIndexValue = idx;
-					[repoManager.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-						id value = [aReceipt objectForKey:obj];
+                    aNewReceipt.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+					[repoManager.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id receiptKey, id receiptObject, BOOL *stopMappingsEnum) {
+						id value = [aReceipt objectForKey:receiptObject];
 						if (value != nil) {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
-							[aNewReceipt setValue:value forKey:key];
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: %@", self.fileName, (unsigned long)idx, receiptObject, value);
+							[aNewReceipt setValue:value forKey:receiptKey];
 						} else {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, key);
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, receipt %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, receiptKey);
 						}
 					}];
 				}];
@@ -261,7 +261,7 @@
 				[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
                     InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
                     [aNewInstallsItem addPackagesObject:aNewPackage];
-                    aNewInstallsItem.originalIndexValue = idx;
+                    aNewInstallsItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 				}];
 				
 				/*
@@ -271,14 +271,14 @@
 				[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
 					aNewItemToCopy.package = aNewPackage;
-                    aNewItemToCopy.originalIndexValue = idx;
-					[repoManager.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-						id value = [anItemToCopy objectForKey:obj];
+                    aNewItemToCopy.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+					[repoManager.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id itemsToCopyKey, id itemsToCopyObject, BOOL *stopItemsToCopyMappingsEnum) {
+						id value = [anItemToCopy objectForKey:itemsToCopyObject];
 						if (value != nil) {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
-							[aNewItemToCopy setValue:value forKey:key];
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: %@", self.fileName, (unsigned long)idx, itemsToCopyObject, value);
+							[aNewItemToCopy setValue:value forKey:itemsToCopyKey];
 						} else {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, key);
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, itemsToCopyKey);
 						}
 					}];
 					if ([self.defaults boolForKey:@"items_to_copyUseDefaults"] && self.canModify) {
@@ -295,14 +295,14 @@
 				[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
 					aNewInstallerChoice.package = aNewPackage;
-                    aNewInstallerChoice.originalIndexValue = idx;
-					[repoManager.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-						id value = [aChoice objectForKey:obj];
+                    aNewInstallerChoice.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+					[repoManager.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id choiceKey, id choiceObject, BOOL *stopChoiceMappingEnum) {
+						id value = [aChoice objectForKey:choiceObject];
 						if (value != nil) {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: %@", self.fileName, (unsigned long)idx, obj, value);
-							[aNewInstallerChoice setValue:value forKey:key];
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: %@", self.fileName, (unsigned long)idx, choiceObject, value);
+							[aNewInstallerChoice setValue:value forKey:choiceKey];
 						} else {
-							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, key);
+							if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"%@, installer_choices_xml item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, choiceKey);
 						}
 					}];
 				}];
@@ -335,7 +335,7 @@
 					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 					newRequiredPkgInfo.title = obj;
 					newRequiredPkgInfo.typeString = @"requires";
-					newRequiredPkgInfo.originalIndexValue = idx;
+					newRequiredPkgInfo.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[aNewPackage addRequirementsObject:newRequiredPkgInfo];
 				}];
 				
@@ -348,7 +348,7 @@
 					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 					newRequiredPkgInfo.title = obj;
 					newRequiredPkgInfo.typeString = @"updateFor";
-					newRequiredPkgInfo.originalIndexValue = idx;
+					newRequiredPkgInfo.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[aNewPackage addUpdateForObject:newRequiredPkgInfo];
 				}];
                 
@@ -368,7 +368,7 @@
 					StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 					newBlockingApplication.title = obj;
 					newBlockingApplication.typeString = @"blockingApplication";
-					newBlockingApplication.originalIndexValue = idx;
+					newBlockingApplication.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[aNewPackage addBlockingApplicationsObject:newBlockingApplication];
 				}];
                 
@@ -381,7 +381,7 @@
 					StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
 					newSupportedArchitecture.title = obj;
 					newSupportedArchitecture.typeString = @"supportedArchitecture";
-					newSupportedArchitecture.originalIndexValue = idx;
+					newSupportedArchitecture.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[aNewPackage addSupportedArchitecturesObject:newSupportedArchitecture];
 				}];
 				

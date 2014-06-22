@@ -17,12 +17,12 @@
 	
 	// select the row that was clicked before showing the menu for the event
 	NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-	int row = [self rowAtPoint:mousePoint];
+	NSInteger row = [self rowAtPoint:mousePoint];
 	
 	// figure out if the row that was just clicked on is currently selected
-	if ([selectedRowIndexes containsIndex:row] == NO)
+	if ([selectedRowIndexes containsIndex:(NSUInteger)row] == NO)
 	{
-		[self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+		[self selectRowIndexes:[NSIndexSet indexSetWithIndex:(NSUInteger)row] byExtendingSelection:NO];
 	}
 	
 	return [super menuForEvent:theEvent];

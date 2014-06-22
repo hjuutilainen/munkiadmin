@@ -6,6 +6,7 @@
 //
 
 #import "MASelectManifestItemsWindow.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 
 @implementation MASelectManifestItemsWindow
 

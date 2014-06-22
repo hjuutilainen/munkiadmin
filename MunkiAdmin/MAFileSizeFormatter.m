@@ -15,9 +15,9 @@
         return nil;
     }
     
-    float bytes = [anObject floatValue];
+    double bytes = [anObject doubleValue];
     NSArray *suffix = [NSArray arrayWithObjects:@"B", @"KB", @"MB", @"GB", @"TB", nil];
-	int i = 1;
+	NSUInteger i = 1;
 	while(bytes > 1024)
 	{
 		bytes = bytes/1024.0;
@@ -29,7 +29,7 @@
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // Uses localized number formats.
     [formatter setAlwaysShowsDecimalSeparator:NO];
     
-    NSString *sizeInUnits = [formatter stringFromNumber:[NSNumber numberWithFloat:bytes]];
+    NSString *sizeInUnits = [formatter stringFromNumber:[NSNumber numberWithDouble:bytes]];
     
     return [NSString stringWithFormat:@"%@ %@", sizeInUnits, [suffix objectAtIndex:i]];
 }

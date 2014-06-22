@@ -127,23 +127,23 @@
     if ([sourceImage isValid])
     {
         NSSize imageSize = [sourceImage size];
-        float width  = imageSize.width;
-        float height = imageSize.height;
+        CGFloat width  = imageSize.width;
+        CGFloat height = imageSize.height;
         
-        float targetWidth  = targetSize.width;
-        float targetHeight = targetSize.height;
+        CGFloat targetWidth  = targetSize.width;
+        CGFloat targetHeight = targetSize.height;
         
-        float scaleFactor  = 0.0;
-        float scaledWidth  = targetWidth;
-        float scaledHeight = targetHeight;
+        CGFloat scaleFactor  = 0.0;
+        CGFloat scaledWidth  = targetWidth;
+        CGFloat scaledHeight = targetHeight;
         
         NSPoint thumbnailPoint = NSZeroPoint;
         
         if (!NSEqualSizes(imageSize, targetSize))
         {
             
-            float widthFactor  = targetWidth / width;
-            float heightFactor = targetHeight / height;
+            CGFloat widthFactor  = targetWidth / width;
+            CGFloat heightFactor = targetHeight / height;
             
             if (widthFactor < heightFactor) {
                 scaleFactor = widthFactor;

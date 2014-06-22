@@ -33,7 +33,7 @@
     self.customPredicateString = DEFAULT_PREDICATE;
 }
 
-- (void)saveAction:(id)sender;
+- (void)saveAction:(id)sender
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -43,7 +43,7 @@
     [NSApp endSheet:[self window] returnCode:NSOKButton];
 }
 
-- (void)cancelAction:(id)sender;
+- (void)cancelAction:(id)sender
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));

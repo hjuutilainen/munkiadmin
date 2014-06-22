@@ -353,7 +353,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
 }
 
-- (void)saveAction:(id)sender;
+- (void)saveAction:(id)sender
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -370,7 +370,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
 }
 
-- (void)cancelAction:(id)sender;
+- (void)cancelAction:(id)sender
 {    
     [[self window] orderOut:sender];
     [NSApp endModalSession:self.modalSession];

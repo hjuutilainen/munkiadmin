@@ -222,7 +222,7 @@
     }
 }
 
-- (IBAction)saveAction:(id)sender;
+- (IBAction)saveAction:(id)sender
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -239,7 +239,7 @@
     }
 }
 
-- (IBAction)cancelAction:(id)sender;
+- (IBAction)cancelAction:(id)sender
 {
     [[self window] orderOut:sender];
     [NSApp endModalSession:self.modalSession];

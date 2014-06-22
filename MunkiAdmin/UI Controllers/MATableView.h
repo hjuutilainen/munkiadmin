@@ -7,6 +7,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class MATableView;
+@protocol MATableViewDelegate <NSObject>
+- (void)tableViewDidEndAllEditing:(MATableView *)sender;
+@end
+
 @interface MATableView : NSTableView
 
 @end

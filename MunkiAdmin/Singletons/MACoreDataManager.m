@@ -408,7 +408,7 @@
         NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
         [results enumerateObjectsUsingBlock:^(DeveloperMO *developer, NSUInteger idx, BOOL *stop) {
             NSArray *devPackageNames = [developer.packages valueForKeyPath:@"@distinctUnionOfObjects.munki_name"];
-            NSInteger requiredCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
+            NSUInteger requiredCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
             if ([devPackageNames count] >= requiredCount) {
                 DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
                 sourceListItem.type = @"regular";
@@ -520,10 +520,9 @@
 		if ([isDir boolValue]) {
             NSFetchRequest *checkForExistingRequest = [[NSFetchRequest alloc] init];
             [checkForExistingRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-            NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", anURL];
-            [checkForExistingRequest setPredicate:parentPredicate];
-            NSUInteger foundItems = [moc countForFetchRequest:checkForExistingRequest error:nil];
-            if (foundItems == 0) {
+            [checkForExistingRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL == %@", anURL]];
+            NSUInteger numFoundDirectories = [moc countForFetchRequest:checkForExistingRequest error:nil];
+            if (numFoundDirectories == 0) {
                 DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:moc];
                 newDirectory.originalURL = anURL;
                 newDirectory.originalIndexValue = 10;
@@ -540,10 +539,9 @@
                 } else {
                     NSFetchRequest *parentRequest = [[NSFetchRequest alloc] init];
                     [parentRequest setEntity:[NSEntityDescription entityForName:@"Directory" inManagedObjectContext:moc]];
-                    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory];
-                    [parentRequest setPredicate:parentPredicate];
-                    NSUInteger foundItems = [moc countForFetchRequest:parentRequest error:nil];
-                    if (foundItems > 0) {
+                    [parentRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL == %@", parentDirectory]];
+                    NSUInteger numFoundParents = [moc countForFetchRequest:parentRequest error:nil];
+                    if (numFoundParents > 0) {
                         DirectoryMO *parent = [[moc executeFetchRequest:parentRequest error:nil] objectAtIndex:0];
                         newDirectory.parent = parent;
                     }

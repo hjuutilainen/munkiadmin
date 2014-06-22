@@ -133,7 +133,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
-	NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInManifest >= %@", [NSNumber numberWithInt:index]];
+	NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInManifest >= %@", [NSNumber numberWithInteger:index]];
 	[request setPredicate:indexPredicate];
 	
 	NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
@@ -143,7 +143,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 		NSArray *results = [moc executeFetchRequest:request error:nil];
 		for (CatalogInfoMO *aCatalogInfo in results) {
 			NSInteger currentIndex = [aCatalogInfo.indexInManifest integerValue];
-			aCatalogInfo.indexInManifestValue = currentIndex + 1;
+			aCatalogInfo.indexInManifest = [NSNumber numberWithInteger:currentIndex + 1];
 		}
 	}
 }
@@ -152,7 +152,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 {
 	NSInteger index = 0;
 	for (CatalogInfoMO *aCatalogInfo in [self.catalogsController arrangedObjects]) {
-		aCatalogInfo.indexInManifest = [NSNumber numberWithInt:index];
+		aCatalogInfo.indexInManifest = [NSNumber numberWithInteger:index];
 		index++;
 	}
 }
@@ -164,7 +164,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
-	NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInNestedManifest >= %@", [NSNumber numberWithInt:index]];
+	NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInNestedManifest >= %@", [NSNumber numberWithInteger:index]];
 	[request setPredicate:indexPredicate];
 	
 	NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
@@ -174,7 +174,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 		NSArray *results = [moc executeFetchRequest:request error:nil];
 		for (StringObjectMO *aNestedManifest in results) {
 			NSInteger currentIndex = [aNestedManifest.indexInNestedManifest integerValue];
-			aNestedManifest.indexInNestedManifestValue = currentIndex + 1;
+			aNestedManifest.indexInNestedManifest = [NSNumber numberWithInteger:currentIndex + 1];
 		}
 	}
 }
@@ -183,7 +183,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 {
 	NSInteger index = 0;
 	for (StringObjectMO *aNestedManifest in [self.includedManifestsController arrangedObjects]) {
-		aNestedManifest.indexInNestedManifest = [NSNumber numberWithInt:index];
+		aNestedManifest.indexInNestedManifest = [NSNumber numberWithInteger:index];
 		index++;
 	}
 }

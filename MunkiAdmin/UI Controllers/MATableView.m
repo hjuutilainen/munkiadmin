@@ -119,7 +119,7 @@
 {
 	NSIndexSet *selectedRowIndexes = [self selectedRowIndexes];
 	NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-	int row = [self rowAtPoint:mousePoint];
+	NSUInteger row = (NSUInteger)[self rowAtPoint:mousePoint];
 	if ([selectedRowIndexes containsIndex:row] == NO)
 	{
 		[self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];

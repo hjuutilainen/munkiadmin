@@ -100,7 +100,7 @@
 
 - (NSNumber *)numberOfKeys
 {
-    return [NSNumber numberWithInt:[self.pkgInfoDictionary count]];
+    return [NSNumber numberWithUnsignedInteger:[self.pkgInfoDictionary count]];
 }
 
 - (NSDictionary *)pkgInfoDictionary

@@ -39,13 +39,13 @@
     [super windowDidLoad];
 }
 
-- (IBAction)okAction:(id)sender;
+- (IBAction)okAction:(id)sender
 {
     [[self window] orderOut:sender];
     [NSApp stopModalWithCode:NSModalResponseOK];
 }
 
-- (IBAction)cancelAction:(id)sender;
+- (IBAction)cancelAction:(id)sender
 {
     [[self window] orderOut:sender];
     [NSApp stopModalWithCode:NSModalResponseCancel];

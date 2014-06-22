@@ -116,7 +116,7 @@
      Configure the main triple split view (sourcelist | packagelist | info)
      */
     float rightFrameWidth = kDefaultSplitViewWidth;
-	float dividerThickness = [self.tripleSplitView dividerThickness];
+	CGFloat dividerThickness = [self.tripleSplitView dividerThickness];
 	NSRect newFrame = [self.tripleSplitView frame];
 	NSRect leftFrame = [self.leftPlaceHolder frame];
     NSRect centerFrame = [self.middlePlaceHolder frame];
@@ -1320,7 +1320,7 @@
         NSView *center = [[sender subviews] objectAtIndex:1];
         NSView *right = [[sender subviews] objectAtIndex:2];
         
-        float dividerThickness = [sender dividerThickness];
+        CGFloat dividerThickness = [sender dividerThickness];
         NSRect newFrame = [sender frame];
         NSRect leftFrame = [left frame];
         NSRect centerFrame = [center frame];
@@ -1348,7 +1348,7 @@
         
         NSView *top = [[sender subviews] objectAtIndex:0];
         NSView *bottom = [[sender subviews] objectAtIndex:1];
-        float dividerThickness = [sender dividerThickness];
+        CGFloat dividerThickness = [sender dividerThickness];
         NSRect newFrame = [sender frame];
         NSRect topFrame = [top frame];
         NSRect bottomFrame = [bottom frame];

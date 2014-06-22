@@ -122,7 +122,7 @@
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
-                                                             options:nil
+                                                             options:0
                                                         errorHandler:nil];
     NSMutableArray *foundURLs = [NSMutableArray array];
     for (NSURL *fileURL in enumerator) {

@@ -744,7 +744,7 @@
 
 - (void)checkOperations:(NSTimer *)timer
 {	
-	int numOp = [self.operationQueue operationCount];
+	NSUInteger numOp = [self.operationQueue operationCount];
 	
     if (numOp < 1) {
 		// There are no more operations in queue
@@ -761,7 +761,7 @@
 	
 	else {
 		// Update progress
-		self.queueStatusDescription = [NSString stringWithFormat:@"%i items remaining", numOp - 1];
+		self.queueStatusDescription = [NSString stringWithFormat:@"%lu items remaining", numOp - 1];
 		if (numOp == 1) {
 			[self.progressIndicator setIndeterminate:YES];
 			[self.progressIndicator startAnimation:self];
@@ -1909,7 +1909,7 @@
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 newItem.title = aManifest.title;
                 newItem.typeString = @"includedManifest";
-                newItem.indexInNestedManifestValue = [selectedManifest.includedManifestsFaster count];
+                newItem.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:[selectedManifest.includedManifestsFaster count]];
                 [selectedManifest addIncludedManifestsFasterObject:newItem];
             }
         } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
@@ -1918,7 +1918,7 @@
             NSString *newTitle = [[selectManifestsWindowController customValueTextField] stringValue];
             newItem.title = newTitle;
             newItem.typeString = @"includedManifest";
-            newItem.indexInNestedManifestValue = [selectedManifest.includedManifestsFaster count];
+            newItem.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:[selectedManifest.includedManifestsFaster count]];
             [selectedManifest addIncludedManifestsFasterObject:newItem];
         }
         // Need to refresh fetched properties
@@ -2926,7 +2926,7 @@
 	
 	NSView *left = [[sender subviews] objectAtIndex:0];
 	NSView *right = [[sender subviews] objectAtIndex:1];
-	float dividerThickness = [sender dividerThickness];
+	CGFloat dividerThickness = [sender dividerThickness];
 	NSRect newFrame = [sender frame];
 	NSRect leftFrame = [left frame];
 	NSRect rightFrame = [right frame];

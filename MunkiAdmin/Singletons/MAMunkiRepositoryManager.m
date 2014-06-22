@@ -439,30 +439,30 @@ static dispatch_queue_t serialQueue;
                 
                 // This is a nested manifest under included_manifests
                 if (aReference.manifestReference) {
-                    ManifestMO *manifest = aReference.manifestReference;
+                    ManifestMO *manifestReference = aReference.manifestReference;
                     aReference.title = manifestRelativePath;
-                    manifest.hasUnstagedChangesValue = YES;
+                    manifestReference.hasUnstagedChangesValue = YES;
                     if ([self.defaults boolForKey:@"debug"]) {
                         NSString *aDescr = [NSString stringWithFormat:
                                             @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest %@",
                                             oldTitle,
                                             aReference.title,
-                                            manifest.title];
+                                            manifestReference.title];
                         NSLog(@"%@", aDescr);
                     }
                 }
                 // This is a conditional nested manifest
                 else if (aReference.includedManifestConditionalReference) {
                     ConditionalItemMO *conditional = aReference.includedManifestConditionalReference;
-                    ManifestMO *manifest = conditional.manifest;
+                    ManifestMO *manifestConditional = conditional.manifest;
                     aReference.title = manifestRelativePath;
-                    manifest.hasUnstagedChangesValue = YES;
+                    manifestConditional.hasUnstagedChangesValue = YES;
                     if ([self.defaults boolForKey:@"debug"]) {
                         NSString *aDescr = [NSString stringWithFormat:
                                             @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest \"%@\" under condition \"%@\"",
                                             oldTitle,
                                             aReference.title,
-                                            manifest.title,
+                                            manifestConditional.title,
                                             conditional.titleWithParentTitle];
                         NSLog(@"%@", aDescr);
                     }
@@ -1667,7 +1667,7 @@ static dispatch_queue_t serialQueue;
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:mountpointURL
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
-                                                             options:nil
+                                                             options:0
                                                         errorHandler:nil];
     NSMutableArray *mutableImages = [NSMutableArray array];
     for (NSURL *fileURL in enumerator) {
@@ -2310,7 +2310,7 @@ static dispatch_queue_t serialQueue;
      */
     if (![isRegularFile boolValue]) {
         if (error) {
-            NSUInteger errorCode = 1;
+            NSInteger errorCode = 1;
             NSString *description;
             NSString *recoverySuggestion;
             if ([isPackage boolValue]) {

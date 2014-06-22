@@ -69,6 +69,7 @@
 		F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* MAGradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* MAGradientButtonBarView.m */; };
+		F5A11C6D195706C6005A39AE /* Warnings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
 		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
 		F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */; };
@@ -255,6 +256,7 @@
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = UserDefaults.plist; path = MunkiAdmin/UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* MAGradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* MAGradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientButtonBarView.m; sourceTree = "<group>"; };
+		F5A11C6C195706C6005A39AE /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		F5B2996015E78704008BE0EF /* packageIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon_32x32.png; path = MunkiAdmin/Graphics/packageIcon_32x32.png; sourceTree = "<group>"; };
 		F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/packageIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageGroupIcon_32x32.png; path = MunkiAdmin/Graphics/packageGroupIcon_32x32.png; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
 			isa = PBXGroup;
 			children = (
+				F5A11C6C195706C6005A39AE /* Warnings.xcconfig */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				7756732906782D8800D1FEB8 /* Models */,
@@ -834,6 +837,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				F5A11C6D195706C6005A39AE /* Warnings.xcconfig in Resources */,
 				2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */,
 				F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */,
 				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
@@ -1022,6 +1026,7 @@
 /* Begin XCBuildConfiguration section */
 		26FC0A850875C7B200E6366F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1044,6 +1049,7 @@
 		};
 		26FC0A860875C7B200E6366F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1064,6 +1070,7 @@
 		};
 		26FC0A890875C7B200E6366F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1077,6 +1084,7 @@
 		};
 		26FC0A8A0875C7B200E6366F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

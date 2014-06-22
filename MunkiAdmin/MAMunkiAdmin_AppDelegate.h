@@ -165,6 +165,7 @@
 - (IBAction)showManifestInFinderAction:(id)sender;
 - (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
+- (IBAction)processAddNestedManifestAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
@@ -185,7 +186,9 @@
 - (NSArray *)chooseFiles;
 - (NSURL *)showSavePanel;
 
-
+- (void)mergeChanges:(NSNotification*)notification;
+- (void)relationshipScannerDidFinish:(NSString *)mode;
+- (void)scannerDidProcessPkginfo;
 - (void)scanCurrentRepoForManifests;
 - (void)scanCurrentRepoForIncludedManifests;
 - (void)scanCurrentRepoForPackages;

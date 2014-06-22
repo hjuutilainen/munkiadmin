@@ -85,13 +85,13 @@
     [self updateVersionComparisonKeys];
 }
 
-- (IBAction)okAction:(id)sender;
+- (IBAction)okAction:(id)sender
 {
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSOKButton];
 }
 
-- (IBAction)cancelAction:(id)sender;
+- (IBAction)cancelAction:(id)sender
 {
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSCancelButton];
