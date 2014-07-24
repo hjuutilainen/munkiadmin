@@ -756,24 +756,31 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     // Configure the script text views
     [self.preinstallScriptTextView setFont:scriptFont];
     self.preinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.preinstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.postinstallScriptTextView setFont:scriptFont];
     self.postinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.postinstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.uninstallScriptTextView setFont:scriptFont];
     self.uninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.uninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.preuninstallScriptTextView setFont:scriptFont];
     self.preuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.preuninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.postuninstallScriptTextView setFont:scriptFont];
     self.postuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.postuninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.installCheckScriptTextView setFont:scriptFont];
     self.installCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.installCheckScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.uninstallCheckScriptTextView setFont:scriptFont];
     self.uninstallCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.uninstallCheckScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     
     pkginfoSelector = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
