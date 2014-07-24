@@ -1561,7 +1561,12 @@ static dispatch_queue_t serialQueue;
              */
             [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
                 
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 for (NSString *mountpoint in mountpoints) {
+                    
+                    if ([defaults boolForKey:@"debug"]) {
+                        NSLog(@"Processing mountpoint: %@", mountpoint);
+                    }
                     
                     /*
                      Determine the package location
@@ -1666,6 +1671,7 @@ static dispatch_queue_t serialQueue;
 - (NSArray *)findAllIcnsFilesAtURL:(NSURL *)mountpointURL
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:mountpointURL
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
@@ -1686,6 +1692,9 @@ static dispatch_queue_t serialQueue;
                            forKey:NSURLTypeIdentifierKey
                             error:nil];
         if ([workspace type:typeIdentifier conformsToType:@"com.apple.icns"]) {
+            if ([defaults boolForKey:@"debug"]) {
+                NSLog(@"Found com.apple.icns file: %@", [fileURL path]);
+            }
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
             NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
             [image setSize:[bestRepresentation size]];

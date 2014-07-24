@@ -151,6 +151,11 @@
 
 - (void)extractPackage
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"MAPackageExtractOperation extracting...");
+    }
     
     /*
      TODO: Distribution packages
@@ -169,6 +174,10 @@
      */
     if ([isDirectory boolValue]) {
         
+        if ([defaults boolForKey:@"debug"]) {
+            NSLog(@"MAPackageExtractOperation processing bundle style package...");
+        }
+        
         NSURL *archiveURL = [self.packageURL URLByAppendingPathComponent:@"Contents/Archive.pax.gz"];
         if ([fileManager fileExistsAtPath:[archiveURL path]]) {
             /*
@@ -183,12 +192,20 @@
             }
             
             return;
+        } else {
+            if ([defaults boolForKey:@"debug"]) {
+                NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [archiveURL path]);
+                NSLog(@"MAPackageExtractOperation finding subpackages...");
+            }
         }
         
         /*
          Metapackage
          */
         for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:self.packageURL]) {
+            if ([defaults boolForKey:@"debug"]) {
+                NSLog(@"MAPackageExtractOperation found subpackage: %@", [url path]);
+            }
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
@@ -200,6 +217,10 @@
             }
             if ([fileManager fileExistsAtPath:[payloadURL path]]) {
                 [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
+            } else {
+                if ([defaults boolForKey:@"debug"]) {
+                    NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [payloadURL path]);
+                }
             }
         }
     }
@@ -208,12 +229,18 @@
      Flat package
      */
     else {
+        if ([defaults boolForKey:@"debug"]) {
+            NSLog(@"MAPackageExtractOperation processing flat package...");
+        }
         if (self.progressCallback) {
             self.progressCallback(1.0, @"Expanding package...");
         }
         NSURL *expandedURL = [self expandFlatPackage];
         
         for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:expandedURL]) {
+            if ([defaults boolForKey:@"debug"]) {
+                NSLog(@"MAPackageExtractOperation found subpackage: %@", [url path]);
+            }
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
@@ -224,6 +251,10 @@
             }
             if ([fileManager fileExistsAtPath:[payloadURL path]]) {
                 [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
+            } else {
+                if ([defaults boolForKey:@"debug"]) {
+                    NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [payloadURL path]);
+                }
             }
         }
     }
@@ -235,12 +266,18 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *cleanError;
     if (![fileManager removeItemAtURL:self.packageCacheURL error:&cleanError]) {
-        NSLog(@"Remove failed:\n%@", [cleanError description]);
+        NSLog(@"MAPackageExtractOperation Remove failed:\n%@", [cleanError description]);
     }
 }
 
 - (void)main
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"MAPackageExtractOperation starting...");
+    }
+    
     if (self.willStartCallback) {
         self.willStartCallback();
     }
@@ -254,6 +291,9 @@
      */
     [self extractPackage];
     
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"MAPackageExtractOperation running didExtractHandler...");
+    }
     if (self.didExtractHandler) {
         self.didExtractHandler(self.extractedPayloadsURL);
     }
@@ -261,12 +301,17 @@
     /*
      Clean everything
      */
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"MAPackageExtractOperation cleaning cache...");
+    }
     if (self.progressCallback) {
         self.progressCallback(1.0, @"Cleaning...");
     }
     [self cleanCache];
     
-    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"MAPackageExtractOperation running didFinishCallback...");
+    }
     if (self.progressCallback) {
         self.progressCallback(1.0, @"Done extracting...");
     }
