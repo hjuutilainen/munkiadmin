@@ -69,6 +69,8 @@
 
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;
+- (BOOL)backupPackage:(PackageMO *)aPackage;
+- (BOOL)backupManifest:(ManifestMO *)aManifest;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;
 
 - (void)assimilatePackage:(PackageMO *)targetPackage

@@ -24,6 +24,8 @@
 @property (readwrite, strong) NSString *makepkginfoVersion;
 @property (readwrite, strong) NSString *makecatalogsVersion;
 
+@property (readwrite, strong) NSDate *saveStartedDate;
+
 - (void)willStartOperations;
 - (void)willEndOperations;
 - (NSUserDefaults *)defaults;
@@ -1819,10 +1821,116 @@ static dispatch_queue_t serialQueue;
     return allModifiedPackages;
 }
 
+- (BOOL)backupManifest:(ManifestMO *)aManifest
+{
+    BOOL itemBackedUp = NO;
+    
+    if (self.saveStartedDate) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
+        NSString *formattedDateString = [dateFormatter stringFromDate:self.saveStartedDate];
+        NSURL *backupDirForCurrentSave = [[self manifestBackupDirectory] URLByAppendingPathComponent:formattedDateString];
+        NSURL *manifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
+        NSString *relativeManifestPath = [self relativePathToChildURL:aManifest.manifestURL parentURL:manifestsURL];
+        
+        NSURL *backupFileURL = [backupDirForCurrentSave URLByAppendingPathComponent:relativeManifestPath];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSError *dirCreateError = nil;
+        if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
+            NSLog(@"Failed to create backup directory: %@", [dirCreateError description]);
+            return NO;
+        }
+        
+        NSError *copyError = nil;
+        if (![fm copyItemAtURL:aManifest.manifestURL toURL:backupFileURL error:&copyError]) {
+            NSLog(@"Failed to copy: %@", [copyError description]);
+            return NO;
+        } else {
+            itemBackedUp = YES;
+        }
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+            NSLog(@"Error: saveStartedDate is nil");
+    }
+    
+    return itemBackedUp;
+}
+
+- (BOOL)backupPackage:(PackageMO *)aPackage
+{
+    BOOL itemBackedUp = NO;
+    
+    NSURL *backupDirForCurrentSave = nil;
+    
+    if (self.saveStartedDate) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
+        NSString *formattedDateString = [dateFormatter stringFromDate:self.saveStartedDate];
+        backupDirForCurrentSave = [[self pkginfoBackupDirectory] URLByAppendingPathComponent:formattedDateString];
+        NSURL *pkgsinfoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL];
+        NSString *relativePkginfoPath = [self relativePathToChildURL:aPackage.packageInfoURL parentURL:pkgsinfoURL];
+        
+        NSURL *backupFileURL = [backupDirForCurrentSave URLByAppendingPathComponent:relativePkginfoPath];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSError *dirCreateError = nil;
+        if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
+            NSLog(@"Failed to create backup directory: %@", [dirCreateError description]);
+            return NO;
+        }
+        
+        NSError *copyError = nil;
+        if (![fm copyItemAtURL:aPackage.packageInfoURL toURL:backupFileURL error:&copyError]) {
+            NSLog(@"Failed to copy: %@", [copyError description]);
+            return NO;
+        } else {
+            itemBackedUp = YES;
+        }
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+            NSLog(@"Error: saveStartedDate is nil");
+    }
+    
+    return itemBackedUp;
+}
+
+- (NSURL *)applicationSupportDirectory
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSURL *appSupportURL = [fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask][0];
+    NSURL *appDirectory = [appSupportURL URLByAppendingPathComponent:@"MunkiAdmin"];
+    return appDirectory;
+}
+
+- (NSURL *)backupDirectory
+{
+    return [[self applicationSupportDirectory] URLByAppendingPathComponent:@"Backups"];
+}
+
+- (NSURL *)pkginfoBackupDirectory
+{
+    return [[self applicationSupportDirectory] URLByAppendingPathComponent:@"pkgsinfo backups"];
+}
+
+- (NSURL *)manifestBackupDirectory
+{
+    return [[self applicationSupportDirectory] URLByAppendingPathComponent:@"manifests backups"];
+}
+
 - (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"Backing up pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+    }
+    
+    if ([defaults boolForKey:@"backupPkginfosBeforeWriting"]) {
+        [self backupPackage:aPackage];
+    }
+    
+    if ([defaults boolForKey:@"debug"]) {
         NSLog(@"Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+    }
     
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
         aPackage.originalPkginfo = plist;
@@ -1833,11 +1941,38 @@ static dispatch_queue_t serialQueue;
     }
 }
 
+- (BOOL)writeManifestPropertyList:(NSDictionary *)plist forManifest:(ManifestMO *)aManifest
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"Backing up manifest: %@", [(NSURL *)aManifest.manifestURL path]);
+    }
+    
+    if ([defaults boolForKey:@"backupManifestsBeforeWriting"]) {
+        [self backupManifest:aManifest];
+    }
+    
+    if ([defaults boolForKey:@"debug"]) {
+        NSLog(@"Writing new manifest: %@", [(NSURL *)aManifest.manifestURL path]);
+    }
+    
+    if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:YES]) {
+        aManifest.originalManifest = plist;
+        return YES;
+    } else {
+        NSLog(@"Error: Failed to write %@", [(NSURL *)aManifest.manifestURL path]);
+        return NO;
+    }
+}
+
 - (void)writePackagePropertyListsToDisk
 {
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write package property lists to disk");
 	}
+    
+    self.saveStartedDate = [NSDate date];
     
     /*
      * =============================================
@@ -1993,6 +2128,8 @@ static dispatch_queue_t serialQueue;
          */
         aPackage.hasUnstagedChangesValue = NO;
 	}
+    
+    self.saveStartedDate = nil;
 }
 
 
@@ -2001,6 +2138,8 @@ static dispatch_queue_t serialQueue;
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
 		NSLog(@"Was asked to write manifest property lists to disk");
 	}
+    
+    self.saveStartedDate = [NSDate date];
     
     /*
      * =============================================
@@ -2114,11 +2253,14 @@ static dispatch_queue_t serialQueue;
          This will be triggered if any value is changed.
          */
         else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
+                NSLog(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aManifest.manifestURL lastPathComponent]);
+            }
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
 				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
                     NSLog(@"Values differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
                 }
-				[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
+                [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 			} else {
 				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
                     NSLog(@"No changes detected");
@@ -2131,6 +2273,8 @@ static dispatch_queue_t serialQueue;
          */
         aManifest.hasUnstagedChangesValue = NO;
 	}
+    
+    self.saveStartedDate = nil;
 }
 
 # pragma mark -
