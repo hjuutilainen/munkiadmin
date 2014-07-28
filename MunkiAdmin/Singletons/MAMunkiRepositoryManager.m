@@ -1830,6 +1830,18 @@ static dispatch_queue_t serialQueue;
     return allModifiedPackages;
 }
 
+- (BOOL)repositoryHasUnstagedChanges
+{
+    NSUInteger numModifiedManifests = [[self modifiedManifestsSinceLastSave] count];
+    NSUInteger numModifiedPackages = [[self modifiedPackagesSinceLastSave] count];
+    
+    if ((numModifiedPackages > 0) || (numModifiedManifests > 0)) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (BOOL)backupManifest:(ManifestMO *)aManifest
 {
     BOOL itemBackedUp = NO;

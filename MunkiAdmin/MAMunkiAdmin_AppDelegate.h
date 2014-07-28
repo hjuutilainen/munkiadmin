@@ -79,6 +79,7 @@
 @property (strong) NSString *queueStatusDescription;
 @property (strong) NSString *jobDescription;
 @property (strong) NSString *addItemsType;
+@property BOOL repositoryHasUnstagedChanges;
 
 # pragma mark -
 # pragma mark IBOutlet declarations

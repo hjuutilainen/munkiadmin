@@ -397,6 +397,8 @@
 		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
 	}
     
+    self.repositoryHasUnstagedChanges = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
     self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"MAPackagesView" bundle:nil];
@@ -2662,27 +2664,37 @@
  */
  
 - (IBAction) saveAction:(id)sender {
-	
-	if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
-		[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
-	}
-	if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
-		[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
-	}
-	if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
-		[self updateCatalogs];
-	}
     
-    NSError *error = nil;
-    
+    /*
+     Save the managed object context before writing to repository
+     */
     if (![[self managedObjectContext] commitEditing]) {
         NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
     }
-    
+    NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
+    } else {
+        
+        /*
+         Write pkginfos and manifests only if managed object context saved
+         */
+        if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
+            [[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
+        }
+        if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
+            [[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
+        }
+        if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
+            [self updateCatalogs];
+        }
+        
+        /*
+         Save the in-memory context once more because we've modified the unstaged boolean values.
+         */
+        [[self managedObjectContext] save:nil];
     }
-	
+    
 	[self.applicationTableView reloadData];
 }
 
@@ -2698,7 +2710,10 @@
     /*
      This is not foolproof in any way but should catch most of the scenarios
      */
-    if ([_managedObjectContext hasChanges]) {
+    
+    BOOL hasUnstagedChanges = [[MAMunkiRepositoryManager sharedManager] repositoryHasUnstagedChanges];
+    
+    if (hasUnstagedChanges) {
         NSString *question = NSLocalizedString(@"Changes have not been saved yet. Quit anyway?", @"Quit without saves error question message");
         NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", @"Quit without saves error question info");
         NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");
