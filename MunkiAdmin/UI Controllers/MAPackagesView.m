@@ -1032,6 +1032,7 @@
                      */
                     BOOL allowMove = [self shouldMoveInstallerItemWithPkginfo];
                     [[MAMunkiRepositoryManager sharedManager] movePackage:droppedPackage toURL:targetURL moveInstaller:allowMove];
+                    droppedPackage.hasUnstagedChanges = @YES;
                 }
             } else if ([[proposedParentItem representedObject] isKindOfClass:[CategorySourceListItemMO class]]) {
                 CategorySourceListItemMO *targetCategorySourceList = [proposedParentItem representedObject];
@@ -1052,6 +1053,7 @@
                         //NSLog(@"Existing category: %@, New category: None", droppedPackage.category.title);
                         droppedPackage.category = nil;
                     }
+                    droppedPackage.hasUnstagedChanges = @YES;
                 }
             } else if ([[proposedParentItem representedObject] isKindOfClass:[DeveloperSourceListItemMO class]]) {
                 DeveloperSourceListItemMO *targetCategorySourceList = [proposedParentItem representedObject];
@@ -1070,6 +1072,7 @@
                     } else {
                         droppedPackage.developer = nil;
                     }
+                    droppedPackage.hasUnstagedChanges = @YES;
                 }
             }
         }
