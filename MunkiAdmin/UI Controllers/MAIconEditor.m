@@ -316,6 +316,21 @@
 - (IBAction)extractAction:(id)sender
 {
     PackageMO *pkg = self.packagesToEdit[0];
+    NSString *installerType = pkg.munki_installer_type;
+    
+    /*
+     Check the installer type before doing anything
+     */
+    if ((![installerType isEqualToString:@"copy_from_dmg"]) && (installerType != nil)) {
+        NSLog(@"Installer type %@ not supported...", installerType);
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"Installer type not supported";
+        alert.informativeText = [NSString stringWithFormat:@"MunkiAdmin can not extract icons from \"%@\" items.", installerType];
+        [alert addButtonWithTitle:@"OK"];
+        [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+        return;
+    }
+    
     [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {
         
     }];

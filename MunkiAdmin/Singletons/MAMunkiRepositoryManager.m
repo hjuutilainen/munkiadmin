@@ -1665,6 +1665,17 @@ static dispatch_queue_t serialQueue;
             [weakSelf.diskImageQueue addOperation:attachOperation];
             
         }
+    } else {
+        /*
+         Unsupported pkginfo type. Call completion handler with nil results.
+         */
+        NSBlockOperation *doneOp = [NSBlockOperation blockOperationWithBlock:^{
+            if (completionHandler != nil) {
+                completionHandler(nil);
+            }
+        }];
+        
+        [weakSelf.diskImageQueue addOperation:doneOp];
     }
 }
 
