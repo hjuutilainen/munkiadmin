@@ -2665,6 +2665,12 @@
  
 - (IBAction) saveAction:(id)sender {
     
+    NSSet *modifiedPackages = [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave];
+    NSSet *modifiedManifests = [[MAMunkiRepositoryManager sharedManager] modifiedManifestsSinceLastSave];
+    if ([self.defaults boolForKey:@"debug"]) {
+        NSLog(@"Modified manifests: %lu, pkginfos: %lu", (unsigned long)[modifiedManifests count], (unsigned long)[modifiedPackages count]);
+    }
+    
     /*
      Save the managed object context before writing to repository
      */
@@ -2675,6 +2681,13 @@
     if (![[self managedObjectContext] save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
     } else {
+        
+        for (PackageMO *aPackage in modifiedPackages) {
+            aPackage.hasUnstagedChanges = @YES;
+        }
+        for (ManifestMO *aManifest in modifiedManifests) {
+            aManifest.hasUnstagedChanges = @YES;
+        }
         
         /*
          Write pkginfos and manifests only if managed object context saved
