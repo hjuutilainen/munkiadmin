@@ -12,6 +12,7 @@
 #import "MACoreDataManager.h"
 #import "MADiskImageOperation.h"
 #import "MAPackageExtractOperation.h"
+#import "NSImage+PixelSize.h"
 
 /*
  * Private interface
@@ -1367,8 +1368,7 @@ static dispatch_queue_t serialQueue;
         iconURL = [iconURL URLByAppendingPathExtension:@"icns"];
     }
     NSImage *image = [[NSImage alloc] initWithContentsOfURL:iconURL];
-    NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
-    [image setSize:[bestRepresentation size]];
+    [image setSize:[image pixelSize]];
     return image;
 }
 
@@ -1707,8 +1707,7 @@ static dispatch_queue_t serialQueue;
                 NSLog(@"Found com.apple.icns file: %@", [fileURL path]);
             }
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
-            NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
-            [image setSize:[bestRepresentation size]];
+            [image setSize:[image pixelSize]];
             NSDictionary *itemDict = @{@"image": image, @"URL": fileURL};
             [mutableImages addObject:itemDict];
         }

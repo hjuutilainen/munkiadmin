@@ -10,6 +10,7 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MAImageBrowserItem.h"
+#import "NSImage+PixelSize.h"
 
 @interface MAIconEditor ()
 
@@ -197,7 +198,8 @@
          */
         NSData *imageData;
         NSSize newSize = NSMakeSize(512.0, 512.0);
-        if (self.resizeOnSave && [self.currentImage size].width > newSize.width) {
+        //NSLog(@"%@", NSStringFromSize([self.currentImage pixelSize]));
+        if (self.resizeOnSave && [self.currentImage pixelSize].width > newSize.width) {
             imageData = [[self scaleImage:self.currentImage toSize:newSize] TIFFRepresentation];
         } else {
             imageData = [self.currentImage TIFFRepresentation];

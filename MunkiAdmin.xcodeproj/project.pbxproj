@@ -60,6 +60,7 @@
 		F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D476191630C4002FFF2B /* developerTemplate.pdf */; };
 		F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */; };
 		F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */; };
+		F574C5581990DB3400646FF7 /* NSImage+PixelSize.m in Sources */ = {isa = PBXBuildFile; fileRef = F574C5571990DB3400646FF7 /* NSImage+PixelSize.m */; };
 		F5836986166C9147003E1442 /* MAPkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */; };
 		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
@@ -241,6 +242,8 @@
 		F56AC798166F2F0200FD5438 /* MAMunkiRepositoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMunkiRepositoryManager.h; sourceTree = "<group>"; };
 		F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiRepositoryManager.m; sourceTree = "<group>"; };
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
+		F574C5561990DB3400646FF7 /* NSImage+PixelSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+PixelSize.h"; path = "MunkiAdmin/NSImage+PixelSize.h"; sourceTree = "<group>"; };
+		F574C5571990DB3400646FF7 /* NSImage+PixelSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+PixelSize.m"; path = "MunkiAdmin/NSImage+PixelSize.m"; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* MAPkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoAssimilator.m; sourceTree = "<group>"; };
 		F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPkginfoAssimilator.xib; sourceTree = "<group>"; };
@@ -408,6 +411,8 @@
 				FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */,
 				77C8280B06725ACE000B614F /* MAMunkiAdmin_AppDelegate.h */,
 				77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */,
+				F574C5561990DB3400646FF7 /* NSImage+PixelSize.h */,
+				F574C5571990DB3400646FF7 /* NSImage+PixelSize.m */,
 				FEB749F7147F98F3004EC366 /* Operations */,
 				F5D052551744B40F00487101 /* Singletons */,
 				FEABB23F144EB0D40006BDE8 /* UI Controllers */,
@@ -990,6 +995,7 @@
 				F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */,
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,
+				F574C5581990DB3400646FF7 /* NSImage+PixelSize.m in Sources */,
 				F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */,
 				F506342C172FA43C00EF7728 /* MAInstallsItemEditor.m in Sources */,
 				F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */,
