@@ -159,7 +159,9 @@
                 NSDictionary *munki_metadata = [self.sourceDict objectForKey:@"_metadata"];
                 __block NSDate *pkginfoDateCreatedFromMetadata = nil;
                 [munki_metadata enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@ installer_environment key: %@, value: %@", self.fileName, key, obj);
+                    if ([self.defaults boolForKey:@"debugLogAllProperties"]) {
+                        NSLog(@"%@ _metadata key: %@, value: %@", self.fileName, key, obj);
+                    }
                     if (([key isEqualToString:@"creation_date"]) && ([obj isKindOfClass:[NSDate class]])) {
                         pkginfoDateCreatedFromMetadata = obj;
                     }
