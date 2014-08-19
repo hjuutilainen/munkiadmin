@@ -147,9 +147,42 @@
 }
 
 
+- (void)extractArchiveFromBundlePackageURL:(NSURL *)packageURL
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *archiveURL = [packageURL URLByAppendingPathComponent:@"Contents/Archive.pax.gz"];
+    NSURL *archiveExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[packageURL lastPathComponent] stringByDeletingPathExtension]];
+    if (![fileManager fileExistsAtPath:[archiveExtractedURL path]]) {
+        [fileManager createDirectoryAtURL:archiveExtractedURL withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    if ([fileManager fileExistsAtPath:[archiveURL path]]) {
+        [self dittoExtractSource:[archiveURL path] outPath:[archiveExtractedURL path]];
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+            NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [archiveURL path]);
+        }
+    }
+}
+
+- (void)extractPayloadFromExpandedPackageURL:(NSURL *)packageURL
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *payloadURL = [packageURL URLByAppendingPathComponent:@"Payload"];
+    NSURL *payloadExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[packageURL lastPathComponent] stringByDeletingPathExtension]];
+    if (![fileManager fileExistsAtPath:[payloadExtractedURL path]]) {
+        [fileManager createDirectoryAtURL:payloadExtractedURL withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    if ([fileManager fileExistsAtPath:[payloadURL path]]) {
+        [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+            NSLog(@"MAPackageExtractOperation error: Payload file doesn't exist: %@", [payloadURL path]);
+        }
+    }
+}
 
 
-- (void)extractPackage
+- (void)extractPackageAtURL:(NSURL *)packageURL
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -165,10 +198,8 @@
      Get the type by checking if the package is a file or a directory (bundle)
      */
     NSNumber *isDirectory;
-    [self.packageURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
+    [packageURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+        
     /*
      Bundle package
      */
@@ -178,50 +209,22 @@
             NSLog(@"MAPackageExtractOperation processing bundle style package...");
         }
         
-        NSURL *archiveURL = [self.packageURL URLByAppendingPathComponent:@"Contents/Archive.pax.gz"];
-        if ([fileManager fileExistsAtPath:[archiveURL path]]) {
-            /*
-             Single package with an archive
-             */
-            NSURL *payloadExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[archiveURL lastPathComponent] stringByDeletingPathExtension]];
-            if (![fileManager fileExistsAtPath:[payloadExtractedURL path]]) {
-                [fileManager createDirectoryAtURL:payloadExtractedURL withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            if ([fileManager fileExistsAtPath:[archiveURL path]]) {
-                [self dittoExtractSource:[archiveURL path] outPath:[payloadExtractedURL path]];
-            }
-            
-            return;
-        } else {
-            if ([defaults boolForKey:@"debug"]) {
-                NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [archiveURL path]);
-                NSLog(@"MAPackageExtractOperation finding subpackages...");
-            }
-        }
+        /*
+         Single package with an archive
+         */
+        [self extractArchiveFromBundlePackageURL:packageURL];
         
         /*
          Metapackage
          */
-        for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:self.packageURL]) {
+        for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:packageURL]) {
             if ([defaults boolForKey:@"debug"]) {
                 NSLog(@"MAPackageExtractOperation found subpackage: %@", [url path]);
             }
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
-            //NSLog(@"%@", url);
-            NSURL *payloadURL = [url URLByAppendingPathComponent:@"Contents/Archive.pax.gz"];
-            NSURL *payloadExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[url lastPathComponent] stringByDeletingPathExtension]];
-            if (![fileManager fileExistsAtPath:[payloadExtractedURL path]]) {
-                [fileManager createDirectoryAtURL:payloadExtractedURL withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            if ([fileManager fileExistsAtPath:[payloadURL path]]) {
-                [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
-            } else {
-                if ([defaults boolForKey:@"debug"]) {
-                    NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [payloadURL path]);
-                }
-            }
+            [self extractArchiveFromBundlePackageURL:url];
         }
     }
     
@@ -236,6 +239,7 @@
             self.progressCallback(1.0, @"Expanding package...");
         }
         NSURL *expandedURL = [self expandFlatPackage];
+        [self extractPayloadFromExpandedPackageURL:expandedURL];
         
         for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:expandedURL]) {
             if ([defaults boolForKey:@"debug"]) {
@@ -244,21 +248,10 @@
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
-            NSURL *payloadURL = [url URLByAppendingPathComponent:@"Payload"];
-            NSURL *payloadExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[url lastPathComponent] stringByDeletingPathExtension]];
-            if (![fileManager fileExistsAtPath:[payloadExtractedURL path]]) {
-                [fileManager createDirectoryAtURL:payloadExtractedURL withIntermediateDirectories:YES attributes:nil error:nil];
-            }
-            if ([fileManager fileExistsAtPath:[payloadURL path]]) {
-                [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
-            } else {
-                if ([defaults boolForKey:@"debug"]) {
-                    NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [payloadURL path]);
-                }
-            }
+            
+            [self extractPayloadFromExpandedPackageURL:url];
         }
     }
-    
 }
 
 - (void)cleanCache
@@ -289,7 +282,7 @@
     /*
      Extract
      */
-    [self extractPackage];
+    [self extractPackageAtURL:self.packageURL];
     
     if ([defaults boolForKey:@"debug"]) {
         NSLog(@"MAPackageExtractOperation running didExtractHandler...");
