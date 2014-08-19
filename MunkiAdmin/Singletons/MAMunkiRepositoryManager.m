@@ -1355,16 +1355,31 @@ static dispatch_queue_t serialQueue;
 - (NSImage *)iconForApplicationAtURL:(NSURL *)applicationURL
 {
     /*
-     Get the resource's normal icon
+     Extract icon from an .app bundle. It would've been a lot easier (and cleaner) to just use:
+     
+        [[NSWorkSpace sharedWorkspace] iconForFile:applicationURL]
+        or
+        [applicationURL getResourceValue:&iconImage forKey:NSURLEffectiveIconKey error:&error]
+     
+     but neither of those get the actual icon right when just quickly attaching and detaching the image.
+     The only solution that works is to find and read the app icon manually from file.
      */
-    NSImage *image = nil;
-    NSError *resourceError;
-    if ([applicationURL getResourceValue:&image forKey:NSURLEffectiveIconKey error:&resourceError]) {
-        [image setSize:[image pixelSize]];
-    } else {
-        NSLog(@"Failed to icon for URL %@", applicationURL);
-        NSLog(@"%@", resourceError);
+    
+    NSBundle *appBundle = [NSBundle bundleWithURL:applicationURL];
+    NSString *bundleIconName = [appBundle objectForInfoDictionaryKey:@"CFBundleIconFile"];
+    if (!bundleIconName) {
+        return nil;
     }
+    
+    NSURL *iconURL;
+    if ([[bundleIconName pathExtension] isEqualToString:@""]) {
+        iconURL = [appBundle URLForResource:bundleIconName withExtension:@"icns"];
+    } else if ([[bundleIconName pathExtension] isEqualToString:@"icns"]) {
+        iconURL = [appBundle URLForResource:bundleIconName withExtension:nil];
+    }
+    
+    NSImage *image = [[NSImage alloc] initWithContentsOfURL:iconURL];
+    [image setSize:[image pixelSize]];
     return image;
 }
 
