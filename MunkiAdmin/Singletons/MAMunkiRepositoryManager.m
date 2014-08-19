@@ -1354,21 +1354,17 @@ static dispatch_queue_t serialQueue;
 
 - (NSImage *)iconForApplicationAtURL:(NSURL *)applicationURL
 {
-    NSURL *appInfoPlistURL = [applicationURL URLByAppendingPathComponent:@"Contents/Info.plist"];
-    NSDictionary *appInfoPlist = [NSDictionary dictionaryWithContentsOfURL:appInfoPlistURL];
-    NSString *bundleIconName;
-    if (appInfoPlist[@"CFBundleIconFile"]) {
-        bundleIconName = appInfoPlist[@"CFBundleIconFile"];
+    /*
+     Get the resource's normal icon
+     */
+    NSImage *image = nil;
+    NSError *resourceError;
+    if ([applicationURL getResourceValue:&image forKey:NSURLEffectiveIconKey error:&resourceError]) {
+        [image setSize:[image pixelSize]];
     } else {
-        bundleIconName = [[applicationURL lastPathComponent] stringByDeletingPathExtension];
+        NSLog(@"Failed to icon for URL %@", applicationURL);
+        NSLog(@"%@", resourceError);
     }
-    NSURL *iconURL = [applicationURL URLByAppendingPathComponent:@"Contents/Resources"];
-    iconURL = [iconURL URLByAppendingPathComponent:bundleIconName];
-    if ([[iconURL pathExtension] isEqualToString:@""]) {
-        iconURL = [iconURL URLByAppendingPathExtension:@"icns"];
-    }
-    NSImage *image = [[NSImage alloc] initWithContentsOfURL:iconURL];
-    [image setSize:[image pixelSize]];
     return image;
 }
 
@@ -1433,8 +1429,10 @@ static dispatch_queue_t serialQueue;
                         NSURL *mountpointURL = [NSURL fileURLWithPath:mountpoint];
                         NSURL *itemURL = [mountpointURL URLByAppendingPathComponent:sourceItem];
                         NSImage *image = [weakSelf iconForApplicationAtURL:itemURL];
-                        NSDictionary *itemDict = @{@"image": image, @"URL": itemURL};
-                        [extractedImages addObject:itemDict];
+                        if (image) {
+                            NSDictionary *itemDict = @{@"image": image, @"URL": itemURL};
+                            [extractedImages addObject:itemDict];
+                        }
                     }
                     
                     if (!alreadyMounted) {
