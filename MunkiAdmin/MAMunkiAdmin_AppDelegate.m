@@ -322,7 +322,18 @@
 {
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
-    savePanel.directoryURL = self.pkgsInfoURL;
+    if (self.previousPkgSaveURL) {
+        MAMunkiRepositoryManager *repoManager = (MAMunkiRepositoryManager *)[MAMunkiRepositoryManager sharedManager];
+        NSString *relative = [repoManager relativePathToChildURL:self.previousPkgSaveURL parentURL:self.pkgsURL];
+        NSURL *pkgsinfoSubURL = [self.pkgsInfoURL URLByAppendingPathComponent:relative];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[pkgsinfoSubURL path] isDirectory:NULL]) {
+            savePanel.directoryURL = pkgsinfoSubURL;
+        } else {
+            savePanel.directoryURL = self.pkgsInfoURL;
+        }
+    } else {
+        savePanel.directoryURL = self.pkgsInfoURL;
+    }
     savePanel.title = @"Save pkginfo";
 	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
 	{
@@ -2008,6 +2019,7 @@
                         NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
+                        self.previousPkgSaveURL = [newTarget URLByDeletingLastPathComponent];
                         MAFileCopyOperation *copyOp = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
                         theOp = [MAMunkiOperation makepkginfoOperationWithSource:newTarget];
                         [self setupCopyOperation:copyOp withDependingOperation:theOp];

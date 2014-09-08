@@ -80,6 +80,8 @@
 @property (strong) NSString *jobDescription;
 @property (strong) NSString *addItemsType;
 @property BOOL repositoryHasUnstagedChanges;
+@property (strong) NSURL *previousPkgSaveURL;
+@property (strong) NSURL *previousPkginfoSaveURL;
 
 # pragma mark -
 # pragma mark IBOutlet declarations
