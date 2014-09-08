@@ -315,6 +315,12 @@
     }
 }
 
+- (void)iconBrowserDidEnd:(id)sender
+{
+    MAImageBrowserItem *selectedItem = [self.imageBrowserItemsArrayController selectedObjects][0];
+    self.currentImage = (NSImage *)[selectedItem imageRepresentation];
+}
+
 - (IBAction)extractAction:(id)sender
 {
     PackageMO *pkg = self.packagesToEdit[0];
@@ -329,13 +335,21 @@
         alert.messageText = @"Installer type not supported";
         alert.informativeText = [NSString stringWithFormat:@"MunkiAdmin can not extract icons from \"%@\" items.", installerType];
         [alert addButtonWithTitle:@"OK"];
-        [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+        if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
+            [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+        } else {
+            [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
+        }
         return;
     }
     
-    [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {
-        
-    }];
+    if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
+        [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {}];
+    } else {
+        [NSApp beginSheet:self.progressWindow
+           modalForWindow:[self window] modalDelegate:self
+           didEndSelector:nil contextInfo:nil];
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressIndicator setIndeterminate:YES];
@@ -367,14 +381,24 @@
                     [newImages addObject:newItem];
                 }
                 self.imageBrowserItems = [NSSet setWithArray:newImages];
-                [self.window beginSheet:self.imageBrowserWindow completionHandler:^(NSModalResponse returnCode) {
-                    if (returnCode == NSModalResponseOK) {
-                        MAImageBrowserItem *selectedItem = [self.imageBrowserItemsArrayController selectedObjects][0];
-                        self.currentImage = (NSImage *)[selectedItem imageRepresentation];
-                    } else {
-                        // User cancelled the selection
-                    }
-                }];
+                
+                if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
+                    [self.window beginSheet:self.imageBrowserWindow completionHandler:^(NSModalResponse returnCode) {
+                        if (returnCode == NSModalResponseOK) {
+                            MAImageBrowserItem *selectedItem = [self.imageBrowserItemsArrayController selectedObjects][0];
+                            self.currentImage = (NSImage *)[selectedItem imageRepresentation];
+                        } else {
+                            // User cancelled the selection
+                        }
+                    }];
+                } else {
+                    [self.progressWindow orderOut:sender];
+                    [NSApp endSheet:self.progressWindow returnCode:NSOKButton];
+                    
+                    [NSApp beginSheet:self.imageBrowserWindow
+                       modalForWindow:[self window] modalDelegate:self
+                       didEndSelector:@selector(iconBrowserDidEnd:) contextInfo:nil];
+                }
             }
             
             /*
@@ -384,14 +408,25 @@
                 NSAlert *alert = [[NSAlert alloc] init];
                 alert.messageText = @"No images found";
                 [alert addButtonWithTitle:@"OK"];
-                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
+                    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+                } else {
+                    [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
+                }
             }
             
             /*
              Dismiss the progress sheet
              */
+            
             [self.progressIndicator stopAnimation:self];
-            [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
+            
+            if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+                [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
+            } else {
+                [self.progressWindow orderOut:sender];
+                [NSApp endSheet:self.progressWindow returnCode:NSOKButton];
+            }
         });
     } progressHandler:^(double progress, NSString *description) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -518,12 +553,22 @@
 
 - (IBAction)chooseImageFromImageBrowserAction:(id)sender
 {
-    [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseOK];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseOK];
+    } else {
+        [self.imageBrowserWindow orderOut:sender];
+        [NSApp endSheet:self.imageBrowserWindow returnCode:NSOKButton];
+    }
 }
 
 - (IBAction)cancelImageBrowserAction:(id)sender
 {
-    [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseCancel];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseCancel];
+    } else {
+        [self.imageBrowserWindow orderOut:sender];
+        [NSApp endSheet:self.imageBrowserWindow returnCode:NSCancelButton];
+    }
 }
 
 
