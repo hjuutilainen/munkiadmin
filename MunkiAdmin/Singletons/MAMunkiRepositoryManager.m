@@ -1923,7 +1923,7 @@ static dispatch_queue_t serialQueue;
         }
         
         NSError *copyError = nil;
-        if (![fm copyItemAtURL:aPackage.packageInfoURL toURL:backupFileURL error:&copyError]) {
+        if (![fm copyItemAtURL:[aPackage.packageInfoURL filePathURL] toURL:[backupFileURL filePathURL] error:&copyError]) {
             NSLog(@"Failed to copy: %@", [copyError description]);
             return NO;
         } else {
