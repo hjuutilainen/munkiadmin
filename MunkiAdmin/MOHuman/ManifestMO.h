@@ -7,6 +7,6 @@
 @property (weak, readonly) NSString *fileName;
 @property (weak, readonly) NSDictionary *manifestInfoDictionary;
 
-- (NSSet *)rootConditionalItems;
+- (NSArray *)rootConditionalItems;
 
 @end
