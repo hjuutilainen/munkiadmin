@@ -173,8 +173,8 @@
     
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
-		[self.defaults setURL:[[openPanel URLs] objectAtIndex:0] forKey:@"openRepositoryLastDir"];
-		return [[openPanel URLs] objectAtIndex:0];
+        [self.defaults setURL:[openPanel URLs][0] forKey:@"openRepositoryLastDir"];
+		return [openPanel URLs][0];
 	} else {
 		return nil;
 	}
@@ -211,7 +211,7 @@
 	
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
-		return [[openPanel URLs] objectAtIndex:0];
+		return [openPanel URLs][0];
 	} else {
 		return nil;
 	}
@@ -228,7 +228,7 @@
 	
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
 	{
-		return [[openPanel URLs] objectAtIndex:0];
+		return [openPanel URLs][0];
 	} else {
 		return nil;
 	}
@@ -323,7 +323,7 @@
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
     if (self.previousPkgSaveURL) {
-        MAMunkiRepositoryManager *repoManager = (MAMunkiRepositoryManager *)[MAMunkiRepositoryManager sharedManager];
+        MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
         NSString *relative = [repoManager relativePathToChildURL:self.previousPkgSaveURL parentURL:self.pkgsURL];
         NSURL *pkgsinfoSubURL = [self.pkgsInfoURL URLByAppendingPathComponent:relative];
         if ([[NSFileManager defaultManager] fileExistsAtPath:[pkgsinfoSubURL path] isDirectory:NULL]) {
@@ -480,30 +480,30 @@
 	[self.progressIndicator setUsesThreadedAnimation:YES];
 		
 	// Define default repository contents
-    self.defaultRepoContents = [NSArray arrayWithObjects:@"catalogs", @"manifests", @"pkgsinfo", nil];
+    self.defaultRepoContents = @[@"catalogs", @"manifests", @"pkgsinfo"];
 	
 	// Set sort descriptors for array controllers
     NSSortDescriptor *sortManifestsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentManifest.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-	[self.manifestInfosArrayController setSortDescriptors:[NSArray arrayWithObject:sortManifestsByTitle]];
+    [self.manifestInfosArrayController setSortDescriptors:@[sortManifestsByTitle]];
 	
     NSSortDescriptor *sortAppProxiesByTitle = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortAppProxiesByDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"parentApplication.munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
-    NSArray *appSorters = [NSArray arrayWithObjects:sortAppProxiesByDisplayName, sortAppProxiesByTitle, nil];
+    NSArray *appSorters = @[sortAppProxiesByDisplayName, sortAppProxiesByTitle];
 	[self.managedInstallsArrayController setSortDescriptors:appSorters];
 	[self.managedUninstallsArrayController setSortDescriptors:appSorters];
 	[self.managedUpdatesArrayController setSortDescriptors:appSorters];
 	[self.optionalInstallsArrayController setSortDescriptors:appSorters];
     
     NSSortDescriptor *sortInstallsItems = [NSSortDescriptor sortDescriptorWithKey:@"munki_path" ascending:YES];
-    [self.installsItemsArrayController setSortDescriptors:[NSArray arrayWithObject:sortInstallsItems]];
+    [self.installsItemsArrayController setSortDescriptors:@[sortInstallsItems]];
     
     NSSortDescriptor *sortItemsToCopyByDestPath = [NSSortDescriptor sortDescriptorWithKey:@"munki_destination_path" ascending:YES];
     NSSortDescriptor *sortItemsToCopyBySource = [NSSortDescriptor sortDescriptorWithKey:@"munki_source_item" ascending:YES];
-    [self.itemsToCopyArrayController setSortDescriptors:[NSArray arrayWithObjects:sortItemsToCopyByDestPath, sortItemsToCopyBySource, nil]];
+    [self.itemsToCopyArrayController setSortDescriptors:@[sortItemsToCopyByDestPath, sortItemsToCopyBySource]];
     
     NSSortDescriptor *sortReceiptsByPackageID = [NSSortDescriptor sortDescriptorWithKey:@"munki_packageid" ascending:YES];
     NSSortDescriptor *sortReceiptsByName = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
-    [self.receiptsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortReceiptsByPackageID, sortReceiptsByName, nil]];
+    [self.receiptsArrayController setSortDescriptors:@[sortReceiptsByPackageID, sortReceiptsByName]];
 	
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
@@ -533,10 +533,10 @@
     /*
      Get the filename hint and the pkginfo
      */
-    NSString *filenameHint = [object objectForKey:@"filename"];
+    NSString *filenameHint = object[@"filename"];
     NSString *safeFilenameHint = [self safeFilenameFromString:filenameHint];
     
-    NSDictionary *pkginfo = [object objectForKey:@"pkginfo"];
+    NSDictionary *pkginfo = object[@"pkginfo"];
     
     /*
      Write the pkginfo
@@ -570,10 +570,10 @@
         // Didn't find anything
     }
     else if (numFoundPkgs == 1) {
-        PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+        PackageMO *createdPkg = [self.managedObjectContext executeFetchRequest:fetchForPackage error:nil][0];
         
         // Select the newly created package
-        [[self.packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+        [[self.packagesViewController packagesArrayController] setSelectedObjects:@[createdPkg]];
         
         // Run the assimilator
         if ([self.defaults boolForKey:@"assimilate_enabled"]) {
@@ -603,8 +603,8 @@
         /*
          Make sure this item has "filename" and "pkginfo" keys and make sure they are valid
          */
-        BOOL hasFilename = ([obj objectForKey:@"filename"]) ? TRUE : FALSE;
-        BOOL hasPkginfo = ([obj objectForKey:@"pkginfo"]) ? TRUE : FALSE;
+        BOOL hasFilename = (obj[@"filename"]) ? TRUE : FALSE;
+        BOOL hasPkginfo = (obj[@"pkginfo"]) ? TRUE : FALSE;
         
         if (!hasFilename || !hasPkginfo) {
             NSLog(@"Error: Pkginfo from notification object is not valid...");
@@ -612,14 +612,14 @@
             *stop = YES;
         }
         
-        id filenameHint = [obj objectForKey:@"filename"];
+        id filenameHint = obj[@"filename"];
         if (![filenameHint isKindOfClass:[NSString class]]) {
             NSLog(@"Error: Object for key \"filename\" is not a string...");
             allValid = NO;
             *stop = YES;
         }
         
-        id pkginfo = [obj objectForKey:@"pkginfo"];
+        id pkginfo = obj[@"pkginfo"];
         if (![pkginfo isKindOfClass:[NSDictionary class]]) {
             NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
             allValid = NO;
@@ -696,7 +696,7 @@
     /*
      Get the payload dictionaries from the notification and make sure it's safe to use
      */
-    id payloadDictionaries = [[aNotification userInfo] objectForKey:@"payloadDictionaries"];
+    id payloadDictionaries = [aNotification userInfo][@"payloadDictionaries"];
     if ((payloadDictionaries != nil) && ([payloadDictionaries isKindOfClass:[NSArray class]])) {
         
         NSArray *items = [NSArray arrayWithArray:payloadDictionaries];
@@ -867,7 +867,7 @@
 
 - (void)renameSelectedManifest
 {
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     /*
      Ask for a new location and name
@@ -907,7 +907,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
     NSString *newFilename = [selectedManifest fileName];
@@ -968,10 +968,10 @@
                            @"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.",
                            (unsigned long)[selectedManifests count]];
     } else if ([selectedManifests count] == 1) {
-        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [[selectedManifests objectAtIndex:0] title]];
+        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [selectedManifests[0] title]];
         informativeText = [NSString stringWithFormat:
                            @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
-                           [[selectedManifests objectAtIndex:0] title]];
+                           [selectedManifests[0] title]];
     } else {
         NSLog(@"No manifests selected, can't delete anything...");
         return;
@@ -1064,7 +1064,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
     
-    PackageMO *firstSelected = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+    PackageMO *firstSelected = [[self.packagesViewController packagesArrayController] selectedObjects][0];
     
     if (!firstSelected) return;
     
@@ -1100,7 +1100,7 @@
     [alert addButtonWithTitle:@"Cancel"];
     [alert setMessageText:@"Delete Packages"];
 	if ([selectedPackages count] == 1) {
-		PackageMO *singlePackage = [selectedPackages objectAtIndex:0];
+		PackageMO *singlePackage = selectedPackages[0];
 		[alert setInformativeText:[NSString stringWithFormat:
 								   @"Are you sure you want to delete %@ and its packageinfo file from the repository? This cannot be undone.", 
 								   singlePackage.munki_name]];
@@ -1166,7 +1166,7 @@
 
 - (void)enableAllPackagesForManifest
 {
-	ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+	ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = YES;
 	}
@@ -1179,7 +1179,7 @@
 
 - (void)disableAllPackagesForManifest
 {
-	ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+	ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = NO;
 	}
@@ -1233,7 +1233,7 @@
 	NSUInteger numFoundPkgs = [moc countForFetchRequest:fetchForPackage error:nil];
 	if (numFoundPkgs == 1) {
 		
-		PackageMO *aPkg = [[moc executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+		PackageMO *aPkg = [moc executeFetchRequest:fetchForPackage error:nil][0];
 		
 		NSFetchRequest *fetchForApplications = [[NSFetchRequest alloc] init];
 		[fetchForApplications setEntity:applicationEntityDescr];
@@ -1247,7 +1247,7 @@
 			// No matching Applications found.
 			NSLog(@"Assimilator found zero matching Applications for package.");
 		} else if (numFoundApplications == 1) {
-			ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+			ApplicationMO *existingApplication = [moc executeFetchRequest:fetchForApplications error:nil][0];
 			if ([existingApplication hasCommonDescription]) {
 				if ([self.defaults boolForKey:@"UseExistingDescriptionForPackages"]) {
 					aPkg.munki_description = [[existingApplication.packages anyObject] munki_description];
@@ -1278,8 +1278,8 @@
     if (pkginfoPlist) {
         
         // Extract a name for the new pkginfo item
-        NSString *name = [pkginfoPlist objectForKey:@"name"];
-        NSString *version = [pkginfoPlist objectForKey:@"version"];
+        NSString *name = pkginfoPlist[@"name"];
+        NSString *version = pkginfoPlist[@"version"];
         NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
         NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, version];
         NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:@"plist"];
@@ -1312,10 +1312,10 @@
                 // Didn't find anything
             }
             else if (numFoundPkgs == 1) {
-                PackageMO *createdPkg = [[self.managedObjectContext executeFetchRequest:fetchForPackage error:nil] objectAtIndex:0];
+                PackageMO *createdPkg = [self.managedObjectContext executeFetchRequest:fetchForPackage error:nil][0];
                 
                 // Select the newly created package
-                [[self.packagesViewController packagesArrayController] setSelectedObjects:[NSArray arrayWithObject:createdPkg]];
+                [[self.packagesViewController packagesArrayController] setSelectedObjects:@[createdPkg]];
                 
                 // Run the assimilator
                 if ([self.defaults boolForKey:@"assimilate_enabled"]) {
@@ -1439,14 +1439,14 @@
     NSPredicate *appleUpdates = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
     [fetchRequest setPredicate:appleUpdates];
     [fetchRequest setResultType:NSDictionaryResultType];
-    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:@"munki_name"]];
+    [fetchRequest setPropertiesToFetch:@[@"munki_name"]];
 	NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     NSArray *appleUpdateNames = [fetchResults valueForKeyPath:@"munki_name"];
     
     NSDistributedNotificationCenter *dnc = [NSDistributedNotificationCenter defaultCenter];
     [dnc postNotificationName:kMunkiAdminStatusChangeName
                        object:nil
-                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:readyToReceive], @"readyToReceive", appleUpdateNames, @"appleUpdateMetadataNames", nil]
+                     userInfo:@{@"readyToReceive" : @(readyToReceive), @"appleUpdateMetadataNames" : appleUpdateNames}
            deliverImmediately:YES];
 }
 
@@ -1523,7 +1523,7 @@
         [[self.packagesViewController packagesArrayController] setSelectionIndex:[currentIndexes lastIndex]+1];
         
         // Populate new values
-        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        PackageMO *object = [[self.packagesViewController packagesArrayController] selectedObjects][0];
         [advancedPackageEditor setPkginfoToEdit:object];
         [advancedPackageEditor setDefaultValuesFromPackage:object];
     }
@@ -1540,7 +1540,7 @@
         [[self.packagesViewController packagesArrayController] setSelectionIndex:([currentIndexes lastIndex] - 1)];
         
         // Populate new values
-        PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] objectAtIndex:0];
+        PackageMO *object = [[self.packagesViewController packagesArrayController] selectedObjects][0];
         [advancedPackageEditor setPkginfoToEdit:object];
         [advancedPackageEditor setDefaultValuesFromPackage:object];
     }
@@ -1655,7 +1655,7 @@
         thePredicateString = [predicateEditor.customTextField stringValue];
     }
     
-    ManifestMO *selectedManifest = [[self.manifestsArrayController selectedObjects] objectAtIndex:0];
+    ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     predicateEditor.conditionToEdit.munki_condition = thePredicateString;
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
@@ -1922,7 +1922,7 @@
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 newItem.title = aManifest.title;
                 newItem.typeString = @"includedManifest";
-                newItem.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:[selectedManifest.includedManifestsFaster count]];
+                newItem.indexInNestedManifest = @([selectedManifest.includedManifestsFaster count]);
                 [selectedManifest addIncludedManifestsFasterObject:newItem];
             }
         } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
@@ -1931,7 +1931,7 @@
             NSString *newTitle = [[selectManifestsWindowController customValueTextField] stringValue];
             newItem.title = newTitle;
             newItem.typeString = @"includedManifest";
-            newItem.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:[selectedManifest.includedManifestsFaster count]];
+            newItem.indexInNestedManifest = @([selectedManifest.includedManifestsFaster count]);
             [selectedManifest addIncludedManifestsFasterObject:newItem];
         }
         // Need to refresh fetched properties
@@ -2285,7 +2285,7 @@
 		aNewApplication.munki_description = aPkg.munki_description;
 		[aNewApplication addPackagesObject:aPkg];
 	} else if (numFoundApplications == 1) {
-		ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+		ApplicationMO *existingApplication = [moc executeFetchRequest:fetchForApplications error:nil][0];
 		[existingApplication addPackagesObject:aPkg];
 		
 	} else {
@@ -2320,7 +2320,7 @@
      */
     [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:self.managedObjectContext];
     
-	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
+	NSArray *keysToget = @[NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
     MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
@@ -2356,7 +2356,7 @@
 		NSLog(@"Scanning selected repo for catalogs");
 	}
 	
-	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
+	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
     [[moc undoManager] disableUndoRegistration];
@@ -2406,7 +2406,7 @@
 		NSLog(@"Scanning selected repo for manifests");
 	}
 	
-	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
+	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
     [[moc undoManager] disableUndoRegistration];
@@ -2482,7 +2482,7 @@
 		NSLog(@"Scanning selected repo for included manifests");
 	}
 	
-	NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLIsDirectoryKey, nil];
+	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
     [[moc undoManager] disableUndoRegistration];
@@ -2516,7 +2516,7 @@
 				manifest.title = filename;
 				manifest.manifestURL = aManifestFile;
 			} else {
-				manifest = [[moc executeFetchRequest:request error:nil] objectAtIndex:0];
+				manifest = [moc executeFetchRequest:request error:nil][0];
 				if ([self.defaults boolForKey:@"debug"]) {
 					NSLog(@"Found existing manifest %@", manifest.title);
 				}
@@ -2524,7 +2524,7 @@
 
 			
 			// Parse manifests included_manifests array
-			NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
+			NSArray *includedManifests = manifestInfoDict[@"included_manifests"];
 			for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
 				
 				ManifestInfoMO *newManifestInfo = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc];
@@ -2571,7 +2571,7 @@
 - (NSString *)applicationSupportDirectory {
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
+    NSString *basePath = ([paths count] > 0) ? paths[0] : NSTemporaryDirectory();
     return [basePath stringByAppendingPathComponent:@"MunkiAdmin"];
 }
 
@@ -2858,7 +2858,7 @@
 	NSArray *subViews = [self.detailViewPlaceHolder subviews];
 	if ([subViews count] > 0)
 	{
-		[[subViews objectAtIndex:0] removeFromSuperview];
+		[subViews[0] removeFromSuperview];
 	}
 	
 	[self.detailViewPlaceHolder displayIfNeeded];
@@ -2874,13 +2874,13 @@
     NSArray *detailSubViews = [self.detailViewPlaceHolder subviews];
 	if ([detailSubViews count] > 0)
 	{
-		[[detailSubViews objectAtIndex:0] removeFromSuperview];
+		[detailSubViews[0] removeFromSuperview];
 	}
 	
 	NSArray *sourceSubViews = [self.sourceViewPlaceHolder subviews];
 	if ([sourceSubViews count] > 0)
 	{
-		[[sourceSubViews objectAtIndex:0] removeFromSuperview];
+		[sourceSubViews[0] removeFromSuperview];
 	}
 }
 
@@ -2964,8 +2964,8 @@
 {
 	// Resize only the right side of the splitview
 	
-	NSView *left = [[sender subviews] objectAtIndex:0];
-	NSView *right = [[sender subviews] objectAtIndex:1];
+	NSView *left = [sender subviews][0];
+	NSView *right = [sender subviews][1];
 	CGFloat dividerThickness = [sender dividerThickness];
 	NSRect newFrame = [sender frame];
 	NSRect leftFrame = [left frame];

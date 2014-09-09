@@ -40,9 +40,7 @@
     NSView *currentWholeView;
 	NSView *currentDetailView;
 	NSView *currentSourceView;
-     
-	NSUserDefaults *defaults;
-	
+    
 }
 
 @property (weak) IBOutlet NSArrayController *installsItemsArrayController;
@@ -64,7 +62,7 @@
 # pragma mark Variable declarations
 @property (strong) NSString *selectedViewDescr;
 @property NSUInteger selectedViewTag;
-@property (weak, readonly) NSUserDefaults *defaults;
+@property (strong, readonly) NSUserDefaults *defaults;
 @property (strong) NSURL *repoURL;
 @property (strong) NSURL *pkgsURL;
 @property (strong) NSURL *pkgsInfoURL;
