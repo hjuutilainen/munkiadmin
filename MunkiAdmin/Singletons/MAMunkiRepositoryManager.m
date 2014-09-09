@@ -312,21 +312,17 @@ static dispatch_queue_t serialQueue;
 - (void)assimilatePackage:(PackageMO *)targetPackage sourcePackage:(PackageMO *)sourcePackage keys:(NSArray *)munkiKeys
 {
     NSManagedObjectContext *mainMoc = [self appDelegateMoc];
-    NSArray *arrayKeys = [NSArray arrayWithObjects:
-                          @"blocking_applications",
-                          @"installer_choices_xml",
-                          @"installs_items",
-                          @"requires",
-                          @"supported_architectures",
-                          @"update_for",
-                          @"installer_environment",
-                          nil];
-    NSArray *stringKeys = [NSArray arrayWithObjects:
-                           @"blocking_applications",
-                           @"requires",
-                           @"supported_architectures",
-                           @"update_for",
-                           nil];
+    NSArray *arrayKeys = @[@"blocking_applications",
+            @"installer_choices_xml",
+            @"installs_items",
+            @"requires",
+            @"supported_architectures",
+            @"update_for",
+            @"installer_environment"];
+    NSArray *stringKeys = @[@"blocking_applications",
+            @"requires",
+            @"supported_architectures",
+            @"update_for"];
     NSArray *specialKeys = @[@"category", @"developer", @"icon_name"];
     
     for (NSString *keyName in munkiKeys) {
@@ -378,17 +374,17 @@ static dispatch_queue_t serialQueue;
         // No matching Applications found.
         NSLog(@"Assimilator found zero matching Applications for package.");
     } else if (numFoundApplications == 1) {
-        ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplicationsLoose error:nil] objectAtIndex:0];
+        ApplicationMO *existingApplication = [moc executeFetchRequest:fetchForApplicationsLoose error:nil][0];
         
         // Get the latest package for comparison
         NSSortDescriptor *sortPkgsByVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:NO selector:@selector(localizedStandardCompare:)];
-        NSArray *results = [[existingApplication packages] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPkgsByVersion]];
+        NSArray *results = [[existingApplication packages] sortedArrayUsingDescriptors:@[sortPkgsByVersion]];
         PackageMO *latestPackage = nil;
         if ([results count] > 1) {
-            if ([[results objectAtIndex:0] isEqualTo:targetPackage]) {
-                latestPackage = [results objectAtIndex:1];
+            if ([results[0] isEqualTo:targetPackage]) {
+                latestPackage = results[1];
             } else {
-                latestPackage = [results objectAtIndex:0];
+                latestPackage = results[0];
             }
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
                 NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
@@ -434,8 +430,8 @@ static dispatch_queue_t serialQueue;
          */
         NSFetchRequest *getReferencingManifests = [[NSFetchRequest alloc] init];
         [getReferencingManifests setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
-        NSPredicate *referencingPred = [NSPredicate predicateWithFormat:@"title == %@ AND typeString == %@", oldTitle, @"includedManifest"];
-        [getReferencingManifests setPredicate:referencingPred];
+        NSPredicate *referencingPredicate = [NSPredicate predicateWithFormat:@"title == %@ AND typeString == %@", oldTitle, @"includedManifest"];
+        [getReferencingManifests setPredicate:referencingPredicate];
         if ([moc countForFetchRequest:getReferencingManifests error:nil] > 0) {
             NSArray *referencingObjects = [moc executeFetchRequest:getReferencingManifests error:nil];
             for (StringObjectMO *aReference in referencingObjects) {
@@ -485,14 +481,12 @@ static dispatch_queue_t serialQueue;
     NSArray *referencingObjects = nil;
     
     NSManagedObjectContext *moc = [self appDelegateMoc];
-    NSArray *stringObjectTypes = [NSArray arrayWithObjects:
-                                  @"managedInstall",
-                                  @"managedUninstall",
-                                  @"managedUpdate",
-                                  @"optionalInstall",
-                                  @"requires",
-                                  @"updateFor",
-                                  nil];
+    NSArray *stringObjectTypes = @[@"managedInstall",
+            @"managedUninstall",
+            @"managedUpdate",
+            @"optionalInstall",
+            @"requires",
+            @"updateFor"];
     
     NSFetchRequest *getReferencesByName = [[NSFetchRequest alloc] init];
     [getReferencesByName setEntity:[NSEntityDescription entityForName:@"StringObject" inManagedObjectContext:moc]];
@@ -547,7 +541,7 @@ static dispatch_queue_t serialQueue;
             [packagesWithSameName addObject:aSibling];
         }
     }
-    if (packagesWithSameName) [combined setObject:packagesWithSameName forKey:@"packagesWithSameName"];
+    if (packagesWithSameName) combined[@"packagesWithSameName"] = packagesWithSameName;
     
     // Manifests
     NSMutableArray *managedInstalls = [[NSMutableArray alloc] init];
@@ -606,18 +600,18 @@ static dispatch_queue_t serialQueue;
         }
     }
     
-    if (managedInstalls) [combined setObject:managedInstalls forKey:@"managedInstalls"];
-    if (managedUninstalls) [combined setObject:managedUninstalls forKey:@"managedUninstalls"];
-    if (managedUpdates) [combined setObject:managedUpdates forKey:@"managedUpdates"];
-    if (optionalInstalls) [combined setObject:optionalInstalls forKey:@"optionalInstalls"];
+    if (managedInstalls) combined[@"managedInstalls"] = managedInstalls;
+    if (managedUninstalls) combined[@"managedUninstalls"] = managedUninstalls;
+    if (managedUpdates) combined[@"managedUpdates"] = managedUpdates;
+    if (optionalInstalls) combined[@"optionalInstalls"] = optionalInstalls;
     
-    if (conditionalManagedInstalls) [combined setObject:conditionalManagedInstalls forKey:@"conditionalManagedInstalls"];
-    if (conditionalManagedUninstalls) [combined setObject:conditionalManagedUninstalls forKey:@"conditionalManagedUninstalls"];
-    if (conditionalManagedUpdates) [combined setObject:conditionalManagedUpdates forKey:@"conditionalManagedUpdates"];
-    if (conditionalOptionalInstalls) [combined setObject:conditionalOptionalInstalls forKey:@"conditionalOptionalInstalls"];
+    if (conditionalManagedInstalls) combined[@"conditionalManagedInstalls"] = conditionalManagedInstalls;
+    if (conditionalManagedUninstalls) combined[@"conditionalManagedUninstalls"] = conditionalManagedUninstalls;
+    if (conditionalManagedUpdates) combined[@"conditionalManagedUpdates"] = conditionalManagedUpdates;
+    if (conditionalOptionalInstalls) combined[@"conditionalOptionalInstalls"] = conditionalOptionalInstalls;
     
-    if (requiresItems) [combined setObject:requiresItems forKey:@"requiresItems"];
-    if (updateForItems) [combined setObject:updateForItems forKey:@"updateForItems"];
+    if (requiresItems) combined[@"requiresItems"] = requiresItems;
+    if (updateForItems) combined[@"updateForItems"] = updateForItems;
     
     
     /*
@@ -677,18 +671,18 @@ static dispatch_queue_t serialQueue;
         }
     }
     
-    if (managedInstallsWithVersion) [combined setObject:managedInstallsWithVersion forKey:@"managedInstallsWithVersion"];
-    if (managedUninstallsWithVersion) [combined setObject:managedUninstallsWithVersion forKey:@"managedUninstallsWithVersion"];
-    if (managedUpdatesWithVersion) [combined setObject:managedUpdatesWithVersion forKey:@"managedUpdatesWithVersion"];
-    if (optionalInstallsWithVersion) [combined setObject:optionalInstallsWithVersion forKey:@"optionalInstallsWithVersion"];
+    if (managedInstallsWithVersion) combined[@"managedInstallsWithVersion"] = managedInstallsWithVersion;
+    if (managedUninstallsWithVersion) combined[@"managedUninstallsWithVersion"] = managedUninstallsWithVersion;
+    if (managedUpdatesWithVersion) combined[@"managedUpdatesWithVersion"] = managedUpdatesWithVersion;
+    if (optionalInstallsWithVersion) combined[@"optionalInstallsWithVersion"] = optionalInstallsWithVersion;
     
-    if (conditionalManagedInstallsWithVersion) [combined setObject:conditionalManagedInstallsWithVersion forKey:@"conditionalManagedInstallsWithVersion"];
-    if (conditionalManagedUninstallsWithVersion) [combined setObject:conditionalManagedUninstallsWithVersion forKey:@"conditionalManagedUninstallsWithVersion"];
-    if (conditionalManagedUpdatesWithVersion) [combined setObject:conditionalManagedUpdatesWithVersion forKey:@"conditionalManagedUpdatesWithVersion"];
-    if (conditionalOptionalInstallsWithVersion) [combined setObject:conditionalOptionalInstallsWithVersion forKey:@"conditionalOptionalInstallsWithVersion"];
+    if (conditionalManagedInstallsWithVersion) combined[@"conditionalManagedInstallsWithVersion"] = conditionalManagedInstallsWithVersion;
+    if (conditionalManagedUninstallsWithVersion) combined[@"conditionalManagedUninstallsWithVersion"] = conditionalManagedUninstallsWithVersion;
+    if (conditionalManagedUpdatesWithVersion) combined[@"conditionalManagedUpdatesWithVersion"] = conditionalManagedUpdatesWithVersion;
+    if (conditionalOptionalInstallsWithVersion) combined[@"conditionalOptionalInstallsWithVersion"] = conditionalOptionalInstallsWithVersion;
     
-    if (requiresItemsWithVersion) [combined setObject:requiresItemsWithVersion forKey:@"requiresItemsWithVersion"];
-    if (updateForItemsWithVersion) [combined setObject:updateForItemsWithVersion forKey:@"updateForItemsWithVersion"];
+    if (requiresItemsWithVersion) combined[@"requiresItemsWithVersion"] = requiresItemsWithVersion;
+    if (updateForItemsWithVersion) combined[@"updateForItemsWithVersion"] = updateForItemsWithVersion;
     
     
     if (combined) {
@@ -857,9 +851,9 @@ static dispatch_queue_t serialQueue;
      */
     NSArray *objectsToDelete = nil;
     if ((aPackage.packageURL != nil) && removeInstallerItem) {
-        objectsToDelete = [NSArray arrayWithObjects:aPackage.packageURL, aPackage.packageInfoURL, nil];
+        objectsToDelete = @[aPackage.packageURL, aPackage.packageInfoURL];
     } else {
-        objectsToDelete = [NSArray arrayWithObjects:aPackage.packageInfoURL, nil];
+        objectsToDelete = @[aPackage.packageInfoURL];
     }
     
     for (NSURL *url in objectsToDelete) {
@@ -897,7 +891,7 @@ static dispatch_queue_t serialQueue;
         if ([moc countForFetchRequest:getApplication error:nil] > 0) {
             // Application object exists with the new name so use it
             NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-            ApplicationMO *app = [apps objectAtIndex:0];
+            ApplicationMO *app = apps[0];
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Found ApplicationMO: %@", app.munki_name);
             aPackage.munki_name = newName;
             aPackage.hasUnstagedChangesValue = YES;
@@ -1171,7 +1165,7 @@ static dispatch_queue_t serialQueue;
         if ([moc countForFetchRequest:getApplication error:nil] > 0) {
             // Application object exists with the new name so use it
             NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
-            ApplicationMO *app = [apps objectAtIndex:0];
+            ApplicationMO *app = apps[0];
             aPackage.munki_name = newName;
             aPackage.hasUnstagedChangesValue = YES;
             aPackage.parentApplication = app;
@@ -1229,7 +1223,7 @@ static dispatch_queue_t serialQueue;
     
     // One existing icon found, fetch and reuse it.
     else if (numFound == 1) {
-        IconImageMO *existingIconImage = [[moc executeFetchRequest:fetchRequest error:nil] objectAtIndex:0];
+        IconImageMO *existingIconImage = [moc executeFetchRequest:fetchRequest error:nil][0];
         return existingIconImage;
     }
     
@@ -2058,41 +2052,39 @@ static dispatch_queue_t serialQueue;
          */
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
-        NSArray *keysToDelete = [NSArray arrayWithObjects:
-                                 @"blocking_applications",
-                                 @"category",
-                                 @"description",
-                                 @"developer",
-                                 @"display_name",
-                                 @"force_install_after_date",
-                                 @"icon_name",
-                                 @"installable_condition",
-                                 @"installcheck_script",
-                                 @"installed_size",
-                                 @"installer_environment",
-                                 @"installer_item_hash",
-                                 @"installer_item_location",
-                                 @"installer_item_size",
-                                 @"installer_type",
-                                 @"installer_item_size",
-                                 @"installer_item_size",
-                                 @"maximum_os_version",
-                                 @"minimum_munki_version",
-                                 @"minimum_os_version",
-                                 @"notes",
-                                 @"package_path",
-                                 @"preinstall_script",
-                                 @"preuninstall_script",
-                                 @"postinstall_script",
-                                 @"postuninstall_script",
-                                 @"RestartAction",
-                                 @"supported_architectures",
-                                 @"uninstall_method",
-                                 @"uninstallcheck_script",
-                                 @"uninstaller_item_location",
-                                 @"uninstall_script",
-                                 @"version",
-                                 nil];
+        NSArray *keysToDelete = @[@"blocking_applications",
+                @"category",
+                @"description",
+                @"developer",
+                @"display_name",
+                @"force_install_after_date",
+                @"icon_name",
+                @"installable_condition",
+                @"installcheck_script",
+                @"installed_size",
+                @"installer_environment",
+                @"installer_item_hash",
+                @"installer_item_location",
+                @"installer_item_size",
+                @"installer_type",
+                @"installer_item_size",
+                @"installer_item_size",
+                @"maximum_os_version",
+                @"minimum_munki_version",
+                @"minimum_os_version",
+                @"notes",
+                @"package_path",
+                @"preinstall_script",
+                @"preuninstall_script",
+                @"postinstall_script",
+                @"postuninstall_script",
+                @"RestartAction",
+                @"supported_architectures",
+                @"uninstall_method",
+                @"uninstallcheck_script",
+                @"uninstaller_item_location",
+                @"uninstall_script",
+                @"version"];
         
         /*
          Determine which keys were removed
@@ -2225,15 +2217,13 @@ static dispatch_queue_t serialQueue;
          */
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedManifestKeys];
-        NSArray *keysToDelete = [NSArray arrayWithObjects:
-                                 @"catalogs",
-                                 @"conditional_items",
-                                 @"included_manifests",
-                                 @"managed_installs",
-                                 @"managed_uninstalls",
-                                 @"managed_updates",
-                                 @"optional_installs",
-                                 nil];
+        NSArray *keysToDelete = @[@"catalogs",
+                @"conditional_items",
+                @"included_manifests",
+                @"managed_installs",
+                @"managed_uninstalls",
+                @"managed_updates",
+                @"optional_installs"];
         
         /*
          Determine which keys were removed
@@ -2353,7 +2343,7 @@ static dispatch_queue_t serialQueue;
     
     [parentPathComponents enumerateObjectsUsingBlock:^(NSString *parentPathComponent, NSUInteger idx, BOOL *stop) {
         if (idx < [childPathComponents count]) {
-            NSString *childPathComponent = [childPathComponents objectAtIndex:idx];
+            NSString *childPathComponent = childPathComponents[idx];
             if ([childPathComponent isEqualToString:parentPathComponent]) {
                 [relativePathComponents removeObjectAtIndex:0];
             } else {
@@ -2378,9 +2368,7 @@ static dispatch_queue_t serialQueue;
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSDirectoryEnumerator *dirEnum = [fileManager enumeratorAtURL:pkginfoDirectory
-                                       includingPropertiesForKeys:[NSArray arrayWithObjects:
-                                                                   NSURLNameKey,
-                                                                   NSURLIsDirectoryKey,nil]
+                                       includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
                                                           options:NSDirectoryEnumerationSkipsHiddenFiles
                                                      errorHandler:nil];
     for (NSURL *theURL in dirEnum) {
@@ -2416,7 +2404,7 @@ static dispatch_queue_t serialQueue;
         NSFileHandle *filehandle = [pipe fileHandleForReading];
         NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
         [task setLaunchPath:launchPath];
-        [task setArguments:[NSArray arrayWithObject:@"--version"]];
+        [task setArguments:@[@"--version"]];
         [task setStandardOutput:pipe];
         [task launch];
         NSData *outputData = [filehandle readDataToEndOfFile];
@@ -2434,7 +2422,7 @@ static dispatch_queue_t serialQueue;
         NSFileHandle *filehandle = [pipe fileHandleForReading];
         NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"];
         [task setLaunchPath:launchPath];
-        [task setArguments:[NSArray arrayWithObject:@"--version"]];
+        [task setArguments:@[@"--version"]];
         [task setStandardOutput:pipe];
         [task launch];
         NSData *outputData = [filehandle readDataToEndOfFile];
@@ -2487,11 +2475,11 @@ static dispatch_queue_t serialQueue;
     /*
      Get some file properties
      */
-    NSArray *keys = [NSArray arrayWithObjects:NSURLIsPackageKey, NSURLIsDirectoryKey, NSURLIsRegularFileKey, nil];
+    NSArray *keys = @[NSURLIsPackageKey, NSURLIsDirectoryKey, NSURLIsRegularFileKey];
     NSDictionary *properties = [fileURL resourceValuesForKeys:keys error:nil];
     
-    NSNumber *isPackage = [properties objectForKey:NSURLIsPackageKey];
-    NSNumber *isRegularFile = [properties objectForKey:NSURLIsRegularFileKey];
+    NSNumber *isPackage = properties[NSURLIsPackageKey];
+    NSNumber *isRegularFile = properties[NSURLIsRegularFileKey];
     
     /*
      Do a very simple check and fail if the item isn't a regular file
@@ -2509,10 +2497,8 @@ static dispatch_queue_t serialQueue;
                 recoverySuggestion = NSLocalizedString(@"MunkiAdmin only supports regular files.", @"");
             }
             
-            NSDictionary *errorDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                             description, NSLocalizedDescriptionKey,
-                                             recoverySuggestion, NSLocalizedRecoverySuggestionErrorKey,
-                                             nil];
+            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey : description,
+                    NSLocalizedRecoverySuggestionErrorKey : recoverySuggestion};
             *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Import Error Domain"
                                                 code:errorCode
                                             userInfo:errorDictionary];
@@ -2537,14 +2523,16 @@ static dispatch_queue_t serialQueue;
     // Basic keys
 	NSMutableDictionary *newPkginfoBasicKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *pkginfoBasicKey in [self.defaults arrayForKey:@"pkginfoBasicKeys"]) {
-		[newPkginfoBasicKeyMappings setObject:pkginfoBasicKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoBasicKey]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", pkginfoBasicKey];
+        newPkginfoBasicKeyMappings[keyName] = pkginfoBasicKey;
 	}
 	self.pkginfoBasicKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoBasicKeyMappings];
     
     // Array keys
     NSMutableDictionary *newPkginfoArrayKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *pkginfoArrayKey in [self.defaults arrayForKey:@"pkginfoArrayKeys"]) {
-		[newPkginfoArrayKeyMappings setObject:pkginfoArrayKey forKey:[NSString stringWithFormat:@"munki_%@", pkginfoArrayKey]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", pkginfoArrayKey];
+        newPkginfoArrayKeyMappings[keyName] = pkginfoArrayKey;
 	}
 	self.pkginfoArrayKeyMappings = [NSDictionary dictionaryWithDictionary:newPkginfoArrayKeyMappings];
     
@@ -2580,28 +2568,32 @@ static dispatch_queue_t serialQueue;
 	// Receipt keys
 	NSMutableDictionary *newReceiptKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *receiptKey in [self.defaults arrayForKey:@"receiptKeys"]) {
-		[newReceiptKeyMappings setObject:receiptKey forKey:[NSString stringWithFormat:@"munki_%@", receiptKey]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", receiptKey];
+        newReceiptKeyMappings[keyName] = receiptKey;
 	}
 	self.receiptKeyMappings = [NSDictionary dictionaryWithDictionary:newReceiptKeyMappings];
 	
 	// Installs item keys
 	NSMutableDictionary *newInstallsKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *installsKey in [self.defaults arrayForKey:@"installsKeys"]) {
-		[newInstallsKeyMappings setObject:installsKey forKey:[NSString stringWithFormat:@"munki_%@", installsKey]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", installsKey];
+        newInstallsKeyMappings[keyName] = installsKey;
 	}
 	self.installsKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallsKeyMappings];
 	
 	// items_to_copy keys
 	NSMutableDictionary *newItemsToCopyKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *itemToCopy in [self.defaults arrayForKey:@"itemsToCopyKeys"]) {
-		[newItemsToCopyKeyMappings setObject:itemToCopy forKey:[NSString stringWithFormat:@"munki_%@", itemToCopy]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", itemToCopy];
+        newItemsToCopyKeyMappings[keyName] = itemToCopy;
 	}
 	self.itemsToCopyKeyMappings = [NSDictionary dictionaryWithDictionary:newItemsToCopyKeyMappings];
     
     // installer_choices_xml
     NSMutableDictionary *newInstallerChoicesKeyMappings = [[NSMutableDictionary alloc] init];
 	for (NSString *installerChoice in [self.defaults arrayForKey:@"installerChoicesKeys"]) {
-		[newInstallerChoicesKeyMappings setObject:installerChoice forKey:[NSString stringWithFormat:@"munki_%@", installerChoice]];
+        NSString *keyName = [NSString stringWithFormat:@"munki_%@", installerChoice];
+        newInstallerChoicesKeyMappings[keyName] = installerChoice;
 	}
 	self.installerChoicesKeyMappings = [NSDictionary dictionaryWithDictionary:newInstallerChoicesKeyMappings];
 }
