@@ -1916,13 +1916,32 @@ static dispatch_queue_t serialQueue;
             return NO;
         }
         
+        NSString *fileName = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
+        NSString *sourceDirPath = [[(NSURL *)aPackage.packageInfoURL path] stringByDeletingLastPathComponent];
+        NSString *destinationPath = [[backupFileURL path] stringByDeletingLastPathComponent];
+        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+        NSInteger tag = 0;
+        if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
+            return NO;
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+                NSLog(@"Copied %@ to %@", [(NSURL *)aPackage.packageInfoURL path], destinationPath);
+            }
+            itemBackedUp = YES;
+        }
+        
+        /*
         NSError *copyError = nil;
-        if (![fm copyItemAtURL:[aPackage.packageInfoURL filePathURL] toURL:[backupFileURL filePathURL] error:&copyError]) {
+        NSURL *packageInfoURL = [(NSURL *)aPackage.packageInfoURL filePathURL];
+        if (![fm copyItemAtURL:packageInfoURL toURL:[backupFileURL filePathURL] error:&copyError]) {
             NSLog(@"Failed to copy: %@", [copyError description]);
             return NO;
         } else {
+            NSLog(@"Copied %@", packageInfoURL);
             itemBackedUp = YES;
         }
+         */
+        
     } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
             NSLog(@"Error: saveStartedDate is nil");
