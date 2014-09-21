@@ -3,14 +3,8 @@
 
 #import "_CategorySourceListItemMO.h"
 
-const struct CategorySourceListItemMOAttributes CategorySourceListItemMOAttributes = {
-};
-
 const struct CategorySourceListItemMORelationships CategorySourceListItemMORelationships = {
 	.categoryReference = @"categoryReference",
-};
-
-const struct CategorySourceListItemMOFetchedProperties CategorySourceListItemMOFetchedProperties = {
 };
 
 @implementation CategorySourceListItemMOID
@@ -38,21 +32,11 @@ const struct CategorySourceListItemMOFetchedProperties CategorySourceListItemMOF
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic categoryReference;
 
-	
-
-
-
-
-
-
 @end
+

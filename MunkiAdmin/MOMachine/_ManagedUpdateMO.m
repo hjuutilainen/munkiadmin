@@ -3,14 +3,8 @@
 
 #import "_ManagedUpdateMO.h"
 
-const struct ManagedUpdateMOAttributes ManagedUpdateMOAttributes = {
-};
-
 const struct ManagedUpdateMORelationships ManagedUpdateMORelationships = {
 	.manifest = @"manifest",
-};
-
-const struct ManagedUpdateMOFetchedProperties ManagedUpdateMOFetchedProperties = {
 };
 
 @implementation ManagedUpdateMOID
@@ -38,21 +32,11 @@ const struct ManagedUpdateMOFetchedProperties ManagedUpdateMOFetchedProperties =
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic manifest;
 
-	
-
-
-
-
-
-
 @end
+

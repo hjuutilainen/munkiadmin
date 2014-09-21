@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct CatalogMOAttributes {
 	__unsafe_unretained NSString *title;
 } CatalogMOAttributes;
@@ -15,15 +14,10 @@ extern const struct CatalogMORelationships {
 	__unsafe_unretained NSString *packages;
 } CatalogMORelationships;
 
-extern const struct CatalogMOFetchedProperties {
-} CatalogMOFetchedProperties;
-
 @class CatalogInfoMO;
 @class ManifestMO;
 @class PackageInfoMO;
 @class PackageMO;
-
-
 
 @interface CatalogMOID : NSManagedObjectID {}
 @end
@@ -32,70 +26,55 @@ extern const struct CatalogMOFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (CatalogMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) CatalogMOID* objectID;
 
 @property (nonatomic, strong) NSString* title;
 
-
-
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSSet *catalogInfos;
 
 - (NSMutableSet*)catalogInfosSet;
 
-
-
-
 @property (nonatomic, strong) NSSet *manifests;
 
 - (NSMutableSet*)manifestsSet;
-
-
-
 
 @property (nonatomic, strong) NSSet *packageInfos;
 
 - (NSMutableSet*)packageInfosSet;
 
-
-
-
 @property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
-
-
-
-
 @end
 
-@interface _CatalogMO (CoreDataGeneratedAccessors)
-
+@interface _CatalogMO (CatalogInfosCoreDataGeneratedAccessors)
 - (void)addCatalogInfos:(NSSet*)value_;
 - (void)removeCatalogInfos:(NSSet*)value_;
 - (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
 - (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
 
+@end
+
+@interface _CatalogMO (ManifestsCoreDataGeneratedAccessors)
 - (void)addManifests:(NSSet*)value_;
 - (void)removeManifests:(NSSet*)value_;
 - (void)addManifestsObject:(ManifestMO*)value_;
 - (void)removeManifestsObject:(ManifestMO*)value_;
 
+@end
+
+@interface _CatalogMO (PackageInfosCoreDataGeneratedAccessors)
 - (void)addPackageInfos:(NSSet*)value_;
 - (void)removePackageInfos:(NSSet*)value_;
 - (void)addPackageInfosObject:(PackageInfoMO*)value_;
 - (void)removePackageInfosObject:(PackageInfoMO*)value_;
 
+@end
+
+@interface _CatalogMO (PackagesCoreDataGeneratedAccessors)
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
@@ -105,31 +84,19 @@ extern const struct CatalogMOFetchedProperties {
 
 @interface _CatalogMO (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
 
 - (NSMutableSet*)primitiveCatalogInfos;
 - (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
 
-
-
 - (NSMutableSet*)primitiveManifests;
 - (void)setPrimitiveManifests:(NSMutableSet*)value;
-
-
 
 - (NSMutableSet*)primitivePackageInfos;
 - (void)setPrimitivePackageInfos:(NSMutableSet*)value;
 
-
-
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
-
 
 @end

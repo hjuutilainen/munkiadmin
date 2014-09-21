@@ -3,14 +3,8 @@
 
 #import "_ManagedUninstallMO.h"
 
-const struct ManagedUninstallMOAttributes ManagedUninstallMOAttributes = {
-};
-
 const struct ManagedUninstallMORelationships ManagedUninstallMORelationships = {
 	.manifest = @"manifest",
-};
-
-const struct ManagedUninstallMOFetchedProperties ManagedUninstallMOFetchedProperties = {
 };
 
 @implementation ManagedUninstallMOID
@@ -38,21 +32,11 @@ const struct ManagedUninstallMOFetchedProperties ManagedUninstallMOFetchedProper
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic manifest;
 
-	
-
-
-
-
-
-
 @end
+

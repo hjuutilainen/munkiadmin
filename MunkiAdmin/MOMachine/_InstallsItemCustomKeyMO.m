@@ -12,9 +12,6 @@ const struct InstallsItemCustomKeyMORelationships InstallsItemCustomKeyMORelatio
 	.installsItem = @"installsItem",
 };
 
-const struct InstallsItemCustomKeyMOFetchedProperties InstallsItemCustomKeyMOFetchedProperties = {
-};
-
 @implementation InstallsItemCustomKeyMOID
 @end
 
@@ -40,35 +37,15 @@ const struct InstallsItemCustomKeyMOFetchedProperties InstallsItemCustomKeyMOFet
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic customKeyName;
-
-
-
-
-
 
 @dynamic customKeyValue;
 
-
-
-
-
-
 @dynamic installsItem;
 
-	
-
-
-
-
-
-
 @end
+

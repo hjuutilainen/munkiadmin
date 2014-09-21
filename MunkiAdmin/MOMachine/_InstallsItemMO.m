@@ -23,9 +23,6 @@ const struct InstallsItemMORelationships InstallsItemMORelationships = {
 	.packages = @"packages",
 };
 
-const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
-};
-
 @implementation InstallsItemMOID
 @end
 
@@ -51,7 +48,7 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -61,82 +58,27 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_CFBundleIdentifier;
-
-
-
-
-
 
 @dynamic munki_CFBundleName;
 
-
-
-
-
-
 @dynamic munki_CFBundleShortVersionString;
-
-
-
-
-
 
 @dynamic munki_CFBundleVersion;
 
-
-
-
-
-
 @dynamic munki_md5checksum;
-
-
-
-
-
 
 @dynamic munki_minosversion;
 
-
-
-
-
-
 @dynamic munki_path;
-
-
-
-
-
 
 @dynamic munki_type;
 
-
-
-
-
-
 @dynamic munki_version_comparison_key;
-
-
-
-
-
 
 @dynamic munki_version_comparison_key_value;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -144,7 +86,7 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -153,49 +95,32 @@ const struct InstallsItemMOFetchedProperties InstallsItemMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic originalInstallsItem;
 
-
-
-
-
-
 @dynamic customKeys;
 
-	
 - (NSMutableSet*)customKeysSet {
 	[self willAccessValueForKey:@"customKeys"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"customKeys"];
-  
+
 	[self didAccessValueForKey:@"customKeys"];
 	return result;
 }
-	
 
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

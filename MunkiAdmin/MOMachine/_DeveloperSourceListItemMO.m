@@ -3,14 +3,8 @@
 
 #import "_DeveloperSourceListItemMO.h"
 
-const struct DeveloperSourceListItemMOAttributes DeveloperSourceListItemMOAttributes = {
-};
-
 const struct DeveloperSourceListItemMORelationships DeveloperSourceListItemMORelationships = {
 	.developerReference = @"developerReference",
-};
-
-const struct DeveloperSourceListItemMOFetchedProperties DeveloperSourceListItemMOFetchedProperties = {
 };
 
 @implementation DeveloperSourceListItemMOID
@@ -38,21 +32,11 @@ const struct DeveloperSourceListItemMOFetchedProperties DeveloperSourceListItemM
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic developerReference;
 
-	
-
-
-
-
-
-
 @end
+

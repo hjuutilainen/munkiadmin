@@ -7,9 +7,6 @@ const struct DirectoryMOAttributes DirectoryMOAttributes = {
 	.originalURL = @"originalURL",
 };
 
-const struct DirectoryMORelationships DirectoryMORelationships = {
-};
-
 const struct DirectoryMOFetchedProperties DirectoryMOFetchedProperties = {
 	.childPackages = @"childPackages",
 };
@@ -39,26 +36,13 @@ const struct DirectoryMOFetchedProperties DirectoryMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic originalURL;
-
-
-
-
-
-
-
 
 @dynamic childPackages;
 
-
-
-
 @end
+

@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct DeveloperMOAttributes {
 	__unsafe_unretained NSString *title;
 } DeveloperMOAttributes;
@@ -13,13 +12,8 @@ extern const struct DeveloperMORelationships {
 	__unsafe_unretained NSString *packages;
 } DeveloperMORelationships;
 
-extern const struct DeveloperMOFetchedProperties {
-} DeveloperMOFetchedProperties;
-
 @class DeveloperSourceListItemMO;
 @class PackageMO;
-
-
 
 @interface DeveloperMOID : NSManagedObjectID {}
 @end
@@ -28,41 +22,23 @@ extern const struct DeveloperMOFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (DeveloperMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) DeveloperMOID* objectID;
 
 @property (nonatomic, strong) NSString* title;
 
-
-
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) DeveloperSourceListItemMO *developerSourceListReference;
 
 //- (BOOL)validateDeveloperSourceListReference:(id*)value_ error:(NSError**)error_;
 
-
-
-
 @property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
-
-
-
-
 @end
 
-@interface _DeveloperMO (CoreDataGeneratedAccessors)
-
+@interface _DeveloperMO (PackagesCoreDataGeneratedAccessors)
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
@@ -72,21 +48,13 @@ extern const struct DeveloperMOFetchedProperties {
 
 @interface _DeveloperMO (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
 
 - (DeveloperSourceListItemMO*)primitiveDeveloperSourceListReference;
 - (void)setPrimitiveDeveloperSourceListReference:(DeveloperSourceListItemMO*)value;
 
-
-
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
-
 
 @end

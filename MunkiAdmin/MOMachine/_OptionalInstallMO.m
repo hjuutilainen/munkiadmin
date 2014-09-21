@@ -3,14 +3,8 @@
 
 #import "_OptionalInstallMO.h"
 
-const struct OptionalInstallMOAttributes OptionalInstallMOAttributes = {
-};
-
 const struct OptionalInstallMORelationships OptionalInstallMORelationships = {
 	.manifest = @"manifest",
-};
-
-const struct OptionalInstallMOFetchedProperties OptionalInstallMOFetchedProperties = {
 };
 
 @implementation OptionalInstallMOID
@@ -38,21 +32,11 @@ const struct OptionalInstallMOFetchedProperties OptionalInstallMOFetchedProperti
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic manifest;
 
-	
-
-
-
-
-
-
 @end
+

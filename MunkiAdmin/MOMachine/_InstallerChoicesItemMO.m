@@ -14,9 +14,6 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 	.package = @"package",
 };
 
-const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetchedProperties = {
-};
-
 @implementation InstallerChoicesItemMOID
 @end
 
@@ -42,7 +39,7 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"munki_attributeSettingValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_attributeSetting"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -57,12 +54,7 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_attributeSetting;
-
-
 
 - (BOOL)munki_attributeSettingValue {
 	NSNumber *result = [self munki_attributeSetting];
@@ -70,7 +62,7 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 }
 
 - (void)setMunki_attributeSettingValue:(BOOL)value_ {
-	[self setMunki_attributeSetting:[NSNumber numberWithBool:value_]];
+	[self setMunki_attributeSetting:@(value_)];
 }
 
 - (BOOL)primitiveMunki_attributeSettingValue {
@@ -79,30 +71,14 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 }
 
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_ {
-	[self setPrimitiveMunki_attributeSetting:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveMunki_attributeSetting:@(value_)];
 }
-
-
-
-
 
 @dynamic munki_choiceAttribute;
 
-
-
-
-
-
 @dynamic munki_choiceIdentifier;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -110,7 +86,7 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -119,20 +95,10 @@ const struct InstallerChoicesItemMOFetchedProperties InstallerChoicesItemMOFetch
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic package;
 
-	
-
-
-
-
-
-
 @end
+

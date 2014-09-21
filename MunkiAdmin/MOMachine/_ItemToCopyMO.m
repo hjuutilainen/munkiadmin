@@ -17,9 +17,6 @@ const struct ItemToCopyMORelationships ItemToCopyMORelationships = {
 	.package = @"package",
 };
 
-const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
-};
-
 @implementation ItemToCopyMOID
 @end
 
@@ -45,7 +42,7 @@ const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -55,54 +52,19 @@ const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_destination_item;
-
-
-
-
-
 
 @dynamic munki_destination_path;
 
-
-
-
-
-
 @dynamic munki_group;
-
-
-
-
-
 
 @dynamic munki_mode;
 
-
-
-
-
-
 @dynamic munki_source_item;
-
-
-
-
-
 
 @dynamic munki_user;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -110,7 +72,7 @@ const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -119,20 +81,10 @@ const struct ItemToCopyMOFetchedProperties ItemToCopyMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic package;
 
-	
-
-
-
-
-
-
 @end
+

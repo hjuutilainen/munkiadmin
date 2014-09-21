@@ -16,9 +16,6 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 	.package = @"package",
 };
 
-const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
-};
-
 @implementation CatalogInfoMOID
 @end
 
@@ -44,7 +41,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"indexInManifestValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"indexInManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -69,12 +66,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic indexInManifest;
-
-
 
 - (int32_t)indexInManifestValue {
 	NSNumber *result = [self indexInManifest];
@@ -82,7 +74,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setIndexInManifestValue:(int32_t)value_ {
-	[self setIndexInManifest:[NSNumber numberWithInt:value_]];
+	[self setIndexInManifest:@(value_)];
 }
 
 - (int32_t)primitiveIndexInManifestValue {
@@ -91,16 +83,10 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIndexInManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInManifest:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveIndexInManifest:@(value_)];
 }
 
-
-
-
-
 @dynamic isEnabledForManifest;
-
-
 
 - (BOOL)isEnabledForManifestValue {
 	NSNumber *result = [self isEnabledForManifest];
@@ -108,7 +94,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForManifest:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -117,16 +103,10 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForManifest:@(value_)];
 }
 
-
-
-
-
 @dynamic isEnabledForPackage;
-
-
 
 - (BOOL)isEnabledForPackageValue {
 	NSNumber *result = [self isEnabledForPackage];
@@ -134,7 +114,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setIsEnabledForPackageValue:(BOOL)value_ {
-	[self setIsEnabledForPackage:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForPackage:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForPackageValue {
@@ -143,16 +123,10 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForPackage:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForPackage:@(value_)];
 }
 
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -160,7 +134,7 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -169,28 +143,14 @@ const struct CatalogInfoMOFetchedProperties CatalogInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic catalog;
 
-	
-
 @dynamic manifest;
-
-	
 
 @dynamic package;
 
-	
-
-
-
-
-
-
 @end
+

@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct InstallsItemMOAttributes {
 	__unsafe_unretained NSString *munki_CFBundleIdentifier;
 	__unsafe_unretained NSString *munki_CFBundleName;
@@ -24,22 +23,8 @@ extern const struct InstallsItemMORelationships {
 	__unsafe_unretained NSString *packages;
 } InstallsItemMORelationships;
 
-extern const struct InstallsItemMOFetchedProperties {
-} InstallsItemMOFetchedProperties;
-
 @class InstallsItemCustomKeyMO;
 @class PackageMO;
-
-
-
-
-
-
-
-
-
-
-
 
 @class NSObject;
 
@@ -50,160 +35,79 @@ extern const struct InstallsItemMOFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (InstallsItemMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) InstallsItemMOID* objectID;
 
 @property (nonatomic, strong) NSString* munki_CFBundleIdentifier;
 
-
-
 //- (BOOL)validateMunki_CFBundleIdentifier:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_CFBundleName;
 
-
-
 //- (BOOL)validateMunki_CFBundleName:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_CFBundleShortVersionString;
 
-
-
 //- (BOOL)validateMunki_CFBundleShortVersionString:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_CFBundleVersion;
 
-
-
 //- (BOOL)validateMunki_CFBundleVersion:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_md5checksum;
 
-
-
 //- (BOOL)validateMunki_md5checksum:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_minosversion;
 
-
-
 //- (BOOL)validateMunki_minosversion:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_path;
 
-
-
 //- (BOOL)validateMunki_path:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_type;
 
-
-
 //- (BOOL)validateMunki_type:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_version_comparison_key;
 
-
-
 //- (BOOL)validateMunki_version_comparison_key:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_version_comparison_key_value;
 
-
-
 //- (BOOL)validateMunki_version_comparison_key_value:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSNumber* originalIndex;
 
-
-
-@property int32_t originalIndexValue;
+@property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) id originalInstallsItem;
 
-
-
 //- (BOOL)validateOriginalInstallsItem:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSSet *customKeys;
 
 - (NSMutableSet*)customKeysSet;
 
-
-
-
 @property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
-
-
-
-
 @end
 
-@interface _InstallsItemMO (CoreDataGeneratedAccessors)
-
+@interface _InstallsItemMO (CustomKeysCoreDataGeneratedAccessors)
 - (void)addCustomKeys:(NSSet*)value_;
 - (void)removeCustomKeys:(NSSet*)value_;
 - (void)addCustomKeysObject:(InstallsItemCustomKeyMO*)value_;
 - (void)removeCustomKeysObject:(InstallsItemCustomKeyMO*)value_;
 
+@end
+
+@interface _InstallsItemMO (PackagesCoreDataGeneratedAccessors)
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
@@ -213,66 +117,35 @@ extern const struct InstallsItemMOFetchedProperties {
 
 @interface _InstallsItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSString*)primitiveMunki_CFBundleIdentifier;
 - (void)setPrimitiveMunki_CFBundleIdentifier:(NSString*)value;
-
-
-
 
 - (NSString*)primitiveMunki_CFBundleName;
 - (void)setPrimitiveMunki_CFBundleName:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_CFBundleShortVersionString;
 - (void)setPrimitiveMunki_CFBundleShortVersionString:(NSString*)value;
-
-
-
 
 - (NSString*)primitiveMunki_CFBundleVersion;
 - (void)setPrimitiveMunki_CFBundleVersion:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_md5checksum;
 - (void)setPrimitiveMunki_md5checksum:(NSString*)value;
-
-
-
 
 - (NSString*)primitiveMunki_minosversion;
 - (void)setPrimitiveMunki_minosversion:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_path;
 - (void)setPrimitiveMunki_path:(NSString*)value;
-
-
-
 
 - (NSString*)primitiveMunki_type;
 - (void)setPrimitiveMunki_type:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_version_comparison_key;
 - (void)setPrimitiveMunki_version_comparison_key:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_version_comparison_key_value;
 - (void)setPrimitiveMunki_version_comparison_key_value:(NSString*)value;
-
-
-
 
 - (NSNumber*)primitiveOriginalIndex;
 - (void)setPrimitiveOriginalIndex:(NSNumber*)value;
@@ -280,23 +153,13 @@ extern const struct InstallsItemMOFetchedProperties {
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-
-
-
 - (id)primitiveOriginalInstallsItem;
 - (void)setPrimitiveOriginalInstallsItem:(id)value;
-
-
-
-
 
 - (NSMutableSet*)primitiveCustomKeys;
 - (void)setPrimitiveCustomKeys:(NSMutableSet*)value;
 
-
-
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
-
 
 @end

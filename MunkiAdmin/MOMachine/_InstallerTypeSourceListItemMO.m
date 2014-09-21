@@ -3,15 +3,6 @@
 
 #import "_InstallerTypeSourceListItemMO.h"
 
-const struct InstallerTypeSourceListItemMOAttributes InstallerTypeSourceListItemMOAttributes = {
-};
-
-const struct InstallerTypeSourceListItemMORelationships InstallerTypeSourceListItemMORelationships = {
-};
-
-const struct InstallerTypeSourceListItemMOFetchedProperties InstallerTypeSourceListItemMOFetchedProperties = {
-};
-
 @implementation InstallerTypeSourceListItemMOID
 @end
 
@@ -37,17 +28,9 @@ const struct InstallerTypeSourceListItemMOFetchedProperties InstallerTypeSourceL
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
-
-
-
-
-
 @end
+

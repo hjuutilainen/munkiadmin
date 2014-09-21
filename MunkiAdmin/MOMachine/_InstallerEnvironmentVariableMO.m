@@ -13,9 +13,6 @@ const struct InstallerEnvironmentVariableMORelationships InstallerEnvironmentVar
 	.packages = @"packages",
 };
 
-const struct InstallerEnvironmentVariableMOFetchedProperties InstallerEnvironmentVariableMOFetchedProperties = {
-};
-
 @implementation InstallerEnvironmentVariableMOID
 @end
 
@@ -41,7 +38,7 @@ const struct InstallerEnvironmentVariableMOFetchedProperties InstallerEnvironmen
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -51,26 +48,11 @@ const struct InstallerEnvironmentVariableMOFetchedProperties InstallerEnvironmen
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_installer_environment_key;
-
-
-
-
-
 
 @dynamic munki_installer_environment_value;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -78,7 +60,7 @@ const struct InstallerEnvironmentVariableMOFetchedProperties InstallerEnvironmen
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -87,29 +69,19 @@ const struct InstallerEnvironmentVariableMOFetchedProperties InstallerEnvironmen
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

@@ -59,7 +59,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"indexInNestedManifestValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"indexInNestedManifest"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -74,12 +74,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic indexInNestedManifest;
-
-
 
 - (int32_t)indexInNestedManifestValue {
 	NSNumber *result = [self indexInNestedManifest];
@@ -87,7 +82,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setIndexInNestedManifestValue:(int32_t)value_ {
-	[self setIndexInNestedManifest:[NSNumber numberWithInt:value_]];
+	[self setIndexInNestedManifest:@(value_)];
 }
 
 - (int32_t)primitiveIndexInNestedManifestValue {
@@ -96,16 +91,10 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIndexInNestedManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInNestedManifest:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveIndexInNestedManifest:@(value_)];
 }
 
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -113,7 +102,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -122,98 +111,48 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic title;
 
-
-
-
-
-
 @dynamic typeString;
-
-
-
-
-
 
 @dynamic blockingApplicationReference;
 
-	
-
 @dynamic includedManifestConditionalReference;
-
-	
 
 @dynamic managedInstallConditionalReference;
 
-	
-
 @dynamic managedInstallReference;
-
-	
 
 @dynamic managedUninstallConditionalReference;
 
-	
-
 @dynamic managedUninstallReference;
-
-	
 
 @dynamic managedUpdateConditionalReference;
 
-	
-
 @dynamic managedUpdateReference;
-
-	
 
 @dynamic manifestReference;
 
-	
-
 @dynamic optionalInstallConditionalReference;
-
-	
 
 @dynamic optionalInstallReference;
 
-	
-
 @dynamic originalApplication;
-
-	
 
 @dynamic originalPackage;
 
-	
-
 @dynamic requiresReference;
-
-	
 
 @dynamic supportedArchitectureReference;
 
-	
-
 @dynamic updateForReference;
-
-	
-
-
 
 @dynamic manifestsWithSameTitle;
 
 @dynamic packagesWithSameTitle;
 
-
-
-
 @end
+

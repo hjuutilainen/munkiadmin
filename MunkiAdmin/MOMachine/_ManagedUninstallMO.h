@@ -4,52 +4,30 @@
 #import <CoreData/CoreData.h>
 #import "ApplicationProxyMO.h"
 
-extern const struct ManagedUninstallMOAttributes {
-} ManagedUninstallMOAttributes;
-
 extern const struct ManagedUninstallMORelationships {
 	__unsafe_unretained NSString *manifest;
 } ManagedUninstallMORelationships;
 
-extern const struct ManagedUninstallMOFetchedProperties {
-} ManagedUninstallMOFetchedProperties;
-
 @class ManifestMO;
 
-
-@interface ManagedUninstallMOID : NSManagedObjectID {}
+@interface ManagedUninstallMOID : ApplicationProxyMOID {}
 @end
 
 @interface _ManagedUninstallMO : ApplicationProxyMO {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (ManagedUninstallMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) ManagedUninstallMOID* objectID;
 
 @property (nonatomic, strong) ManifestMO *manifest;
 
 //- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
-@end
-
-@interface _ManagedUninstallMO (CoreDataGeneratedAccessors)
-
 @end
 
 @interface _ManagedUninstallMO (CoreDataGeneratedPrimitiveAccessors)
 
-
-
 - (ManifestMO*)primitiveManifest;
 - (void)setPrimitiveManifest:(ManifestMO*)value;
-
 
 @end

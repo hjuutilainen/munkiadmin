@@ -13,9 +13,6 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 	.parentManifest = @"parentManifest",
 };
 
-const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
-};
-
 @implementation ManifestInfoMOID
 @end
 
@@ -41,7 +38,7 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"isAvailableForEditingValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isAvailableForEditing"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -56,12 +53,7 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic isAvailableForEditing;
-
-
 
 - (BOOL)isAvailableForEditingValue {
 	NSNumber *result = [self isAvailableForEditing];
@@ -69,7 +61,7 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 }
 
 - (void)setIsAvailableForEditingValue:(BOOL)value_ {
-	[self setIsAvailableForEditing:[NSNumber numberWithBool:value_]];
+	[self setIsAvailableForEditing:@(value_)];
 }
 
 - (BOOL)primitiveIsAvailableForEditingValue {
@@ -78,16 +70,10 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_ {
-	[self setPrimitiveIsAvailableForEditing:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsAvailableForEditing:@(value_)];
 }
 
-
-
-
-
 @dynamic isEnabledForManifest;
-
-
 
 - (BOOL)isEnabledForManifestValue {
 	NSNumber *result = [self isEnabledForManifest];
@@ -95,7 +81,7 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForManifest:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -104,24 +90,12 @@ const struct ManifestInfoMOFetchedProperties ManifestInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForManifest:@(value_)];
 }
-
-
-
-
 
 @dynamic manifest;
 
-	
-
 @dynamic parentManifest;
 
-	
-
-
-
-
-
-
 @end
+

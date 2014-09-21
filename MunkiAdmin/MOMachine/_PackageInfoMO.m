@@ -14,9 +14,6 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 	.package = @"package",
 };
 
-const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
-};
-
 @implementation PackageInfoMOID
 @end
 
@@ -42,7 +39,7 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"isEnabledForCatalogValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabledForCatalog"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -57,12 +54,7 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic isEnabledForCatalog;
-
-
 
 - (BOOL)isEnabledForCatalogValue {
 	NSNumber *result = [self isEnabledForCatalog];
@@ -70,7 +62,7 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 }
 
 - (void)setIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForCatalog:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForCatalogValue {
@@ -79,16 +71,10 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForCatalog:@(value_)];
 }
 
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -96,7 +82,7 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -105,31 +91,14 @@ const struct PackageInfoMOFetchedProperties PackageInfoMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic title;
 
-
-
-
-
-
 @dynamic catalog;
-
-	
 
 @dynamic package;
 
-	
-
-
-
-
-
-
 @end
+

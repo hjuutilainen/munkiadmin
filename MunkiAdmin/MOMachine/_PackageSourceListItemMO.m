@@ -17,9 +17,6 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 	.parent = @"parent",
 };
 
-const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFetchedProperties = {
-};
-
 @implementation PackageSourceListItemMOID
 @end
 
@@ -45,7 +42,7 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"isGroupItemValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isGroupItem"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -60,19 +57,9 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 	return keyPaths;
 }
 
-
-
-
 @dynamic filterPredicate;
 
-
-
-
-
-
 @dynamic isGroupItem;
-
-
 
 - (BOOL)isGroupItemValue {
 	NSNumber *result = [self isGroupItem];
@@ -80,7 +67,7 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 }
 
 - (void)setIsGroupItemValue:(BOOL)value_ {
-	[self setIsGroupItem:[NSNumber numberWithBool:value_]];
+	[self setIsGroupItem:@(value_)];
 }
 
 - (BOOL)primitiveIsGroupItemValue {
@@ -89,16 +76,10 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 }
 
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_ {
-	[self setPrimitiveIsGroupItem:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsGroupItem:@(value_)];
 }
 
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -106,7 +87,7 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -115,54 +96,27 @@ const struct PackageSourceListItemMOFetchedProperties PackageSourceListItemMOFet
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic sortDescriptors;
 
-
-
-
-
-
 @dynamic title;
-
-
-
-
-
 
 @dynamic type;
 
-
-
-
-
-
 @dynamic children;
 
-	
 - (NSMutableSet*)childrenSet {
 	[self willAccessValueForKey:@"children"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"children"];
-  
+
 	[self didAccessValueForKey:@"children"];
 	return result;
 }
-	
 
 @dynamic parent;
 
-	
-
-
-
-
-
-
 @end
+

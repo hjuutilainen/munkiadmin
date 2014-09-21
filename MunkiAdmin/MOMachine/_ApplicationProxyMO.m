@@ -11,9 +11,6 @@ const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
 	.parentApplication = @"parentApplication",
 };
 
-const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProperties = {
-};
-
 @implementation ApplicationProxyMOID
 @end
 
@@ -39,7 +36,7 @@ const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProper
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"isEnabledValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isEnabled"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -49,12 +46,7 @@ const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProper
 	return keyPaths;
 }
 
-
-
-
 @dynamic isEnabled;
-
-
 
 - (BOOL)isEnabledValue {
 	NSNumber *result = [self isEnabled];
@@ -62,7 +54,7 @@ const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProper
 }
 
 - (void)setIsEnabledValue:(BOOL)value_ {
-	[self setIsEnabled:[NSNumber numberWithBool:value_]];
+	[self setIsEnabled:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledValue {
@@ -71,20 +63,10 @@ const struct ApplicationProxyMOFetchedProperties ApplicationProxyMOFetchedProper
 }
 
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabled:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabled:@(value_)];
 }
-
-
-
-
 
 @dynamic parentApplication;
 
-	
-
-
-
-
-
-
 @end
+

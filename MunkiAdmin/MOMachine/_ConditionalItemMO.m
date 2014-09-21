@@ -19,9 +19,6 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 	.parent = @"parent",
 };
 
-const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperties = {
-};
-
 @implementation ConditionalItemMOID
 @end
 
@@ -47,7 +44,7 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"originalIndexValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"originalIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -57,19 +54,9 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_condition;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -77,7 +64,7 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -86,102 +73,78 @@ const struct ConditionalItemMOFetchedProperties ConditionalItemMOFetchedProperti
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic children;
 
-	
 - (NSMutableSet*)childrenSet {
 	[self willAccessValueForKey:@"children"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"children"];
-  
+
 	[self didAccessValueForKey:@"children"];
 	return result;
 }
-	
 
 @dynamic includedManifests;
 
-	
 - (NSMutableSet*)includedManifestsSet {
 	[self willAccessValueForKey:@"includedManifests"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"includedManifests"];
-  
+
 	[self didAccessValueForKey:@"includedManifests"];
 	return result;
 }
-	
 
 @dynamic managedInstalls;
 
-	
 - (NSMutableSet*)managedInstallsSet {
 	[self willAccessValueForKey:@"managedInstalls"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstalls"];
-  
+
 	[self didAccessValueForKey:@"managedInstalls"];
 	return result;
 }
-	
 
 @dynamic managedUninstalls;
 
-	
 - (NSMutableSet*)managedUninstallsSet {
 	[self willAccessValueForKey:@"managedUninstalls"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUninstalls"];
-  
+
 	[self didAccessValueForKey:@"managedUninstalls"];
 	return result;
 }
-	
 
 @dynamic managedUpdates;
 
-	
 - (NSMutableSet*)managedUpdatesSet {
 	[self willAccessValueForKey:@"managedUpdates"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdates"];
-  
+
 	[self didAccessValueForKey:@"managedUpdates"];
 	return result;
 }
-	
 
 @dynamic manifest;
 
-	
-
 @dynamic optionalInstalls;
 
-	
 - (NSMutableSet*)optionalInstallsSet {
 	[self willAccessValueForKey:@"optionalInstalls"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstalls"];
-  
+
 	[self didAccessValueForKey:@"optionalInstalls"];
 	return result;
 }
-	
 
 @dynamic parent;
 
-	
-
-
-
-
-
-
 @end
+

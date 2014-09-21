@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct InstallerEnvironmentVariableMOAttributes {
 	__unsafe_unretained NSString *munki_installer_environment_key;
 	__unsafe_unretained NSString *munki_installer_environment_value;
@@ -14,14 +13,7 @@ extern const struct InstallerEnvironmentVariableMORelationships {
 	__unsafe_unretained NSString *packages;
 } InstallerEnvironmentVariableMORelationships;
 
-extern const struct InstallerEnvironmentVariableMOFetchedProperties {
-} InstallerEnvironmentVariableMOFetchedProperties;
-
 @class PackageMO;
-
-
-
-
 
 @interface InstallerEnvironmentVariableMOID : NSManagedObjectID {}
 @end
@@ -30,58 +22,31 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (InstallerEnvironmentVariableMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) InstallerEnvironmentVariableMOID* objectID;
 
 @property (nonatomic, strong) NSString* munki_installer_environment_key;
 
-
-
 //- (BOOL)validateMunki_installer_environment_key:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* munki_installer_environment_value;
 
-
-
 //- (BOOL)validateMunki_installer_environment_value:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSNumber* originalIndex;
 
-
-
-@property int32_t originalIndexValue;
+@property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
 //- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
-
-
-
-
 @end
 
-@interface _InstallerEnvironmentVariableMO (CoreDataGeneratedAccessors)
-
+@interface _InstallerEnvironmentVariableMO (PackagesCoreDataGeneratedAccessors)
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
@@ -91,18 +56,11 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 
 @interface _InstallerEnvironmentVariableMO (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSString*)primitiveMunki_installer_environment_key;
 - (void)setPrimitiveMunki_installer_environment_key:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveMunki_installer_environment_value;
 - (void)setPrimitiveMunki_installer_environment_value:(NSString*)value;
-
-
-
 
 - (NSNumber*)primitiveOriginalIndex;
 - (void)setPrimitiveOriginalIndex:(NSNumber*)value;
@@ -110,12 +68,7 @@ extern const struct InstallerEnvironmentVariableMOFetchedProperties {
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-
-
-
-
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
-
 
 @end

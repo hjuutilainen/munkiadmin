@@ -17,9 +17,6 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 	.package = @"package",
 };
 
-const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
-};
-
 @implementation ReceiptMOID
 @end
 
@@ -45,7 +42,7 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"munki_installed_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installed_size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -65,19 +62,9 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_filename;
 
-
-
-
-
-
 @dynamic munki_installed_size;
-
-
 
 - (int64_t)munki_installed_sizeValue {
 	NSNumber *result = [self munki_installed_size];
@@ -85,7 +72,7 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setMunki_installed_sizeValue:(int64_t)value_ {
-	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
+	[self setMunki_installed_size:@(value_)];
 }
 
 - (int64_t)primitiveMunki_installed_sizeValue {
@@ -94,23 +81,12 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
-	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
+	[self setPrimitiveMunki_installed_size:@(value_)];
 }
-
-
-
-
 
 @dynamic munki_name;
 
-
-
-
-
-
 @dynamic munki_optional;
-
-
 
 - (BOOL)munki_optionalValue {
 	NSNumber *result = [self munki_optional];
@@ -118,7 +94,7 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setMunki_optionalValue:(BOOL)value_ {
-	[self setMunki_optional:[NSNumber numberWithBool:value_]];
+	[self setMunki_optional:@(value_)];
 }
 
 - (BOOL)primitiveMunki_optionalValue {
@@ -127,30 +103,14 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setPrimitiveMunki_optionalValue:(BOOL)value_ {
-	[self setPrimitiveMunki_optional:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveMunki_optional:@(value_)];
 }
-
-
-
-
 
 @dynamic munki_packageid;
 
-
-
-
-
-
 @dynamic munki_version;
 
-
-
-
-
-
 @dynamic originalIndex;
-
-
 
 - (int32_t)originalIndexValue {
 	NSNumber *result = [self originalIndex];
@@ -158,7 +118,7 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -167,20 +127,10 @@ const struct ReceiptMOFetchedProperties ReceiptMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
-
-
-
-
 
 @dynamic package;
 
-	
-
-
-
-
-
-
 @end
+

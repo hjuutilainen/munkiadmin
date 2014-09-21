@@ -12,9 +12,6 @@ const struct CategoryMORelationships CategoryMORelationships = {
 	.packages = @"packages",
 };
 
-const struct CategoryMOFetchedProperties CategoryMOFetchedProperties = {
-};
-
 @implementation CategoryMOID
 @end
 
@@ -40,41 +37,24 @@ const struct CategoryMOFetchedProperties CategoryMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic title;
-
-
-
-
-
 
 @dynamic categorySourceListReference;
 
-	
-
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

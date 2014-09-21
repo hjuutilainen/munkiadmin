@@ -12,9 +12,6 @@ const struct IconImageMORelationships IconImageMORelationships = {
 	.packages = @"packages",
 };
 
-const struct IconImageMOFetchedProperties IconImageMOFetchedProperties = {
-};
-
 @implementation IconImageMOID
 @end
 
@@ -40,44 +37,24 @@ const struct IconImageMOFetchedProperties IconImageMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic imageRepresentation;
-
-
-
-
-
 
 @dynamic originalURL;
 
-
-
-
-
-
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

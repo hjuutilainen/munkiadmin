@@ -12,9 +12,6 @@ const struct DeveloperMORelationships DeveloperMORelationships = {
 	.packages = @"packages",
 };
 
-const struct DeveloperMOFetchedProperties DeveloperMOFetchedProperties = {
-};
-
 @implementation DeveloperMOID
 @end
 
@@ -40,41 +37,24 @@ const struct DeveloperMOFetchedProperties DeveloperMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic title;
-
-
-
-
-
 
 @dynamic developerSourceListReference;
 
-	
-
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

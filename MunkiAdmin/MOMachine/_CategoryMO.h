@@ -3,7 +3,6 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct CategoryMOAttributes {
 	__unsafe_unretained NSString *title;
 } CategoryMOAttributes;
@@ -13,13 +12,8 @@ extern const struct CategoryMORelationships {
 	__unsafe_unretained NSString *packages;
 } CategoryMORelationships;
 
-extern const struct CategoryMOFetchedProperties {
-} CategoryMOFetchedProperties;
-
 @class CategorySourceListItemMO;
 @class PackageMO;
-
-
 
 @interface CategoryMOID : NSManagedObjectID {}
 @end
@@ -28,41 +22,23 @@ extern const struct CategoryMOFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (CategoryMOID*)objectID;
-
-
-
-
+@property (nonatomic, readonly, strong) CategoryMOID* objectID;
 
 @property (nonatomic, strong) NSString* title;
 
-
-
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) CategorySourceListItemMO *categorySourceListReference;
 
 //- (BOOL)validateCategorySourceListReference:(id*)value_ error:(NSError**)error_;
 
-
-
-
 @property (nonatomic, strong) NSSet *packages;
 
 - (NSMutableSet*)packagesSet;
 
-
-
-
-
 @end
 
-@interface _CategoryMO (CoreDataGeneratedAccessors)
-
+@interface _CategoryMO (PackagesCoreDataGeneratedAccessors)
 - (void)addPackages:(NSSet*)value_;
 - (void)removePackages:(NSSet*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
@@ -72,21 +48,13 @@ extern const struct CategoryMOFetchedProperties {
 
 @interface _CategoryMO (CoreDataGeneratedPrimitiveAccessors)
 
-
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
 
 - (CategorySourceListItemMO*)primitiveCategorySourceListReference;
 - (void)setPrimitiveCategorySourceListReference:(CategorySourceListItemMO*)value;
 
-
-
 - (NSMutableSet*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet*)value;
-
 
 @end

@@ -4,38 +4,17 @@
 #import <CoreData/CoreData.h>
 #import "PackageSourceListItemMO.h"
 
-extern const struct InstallerTypeSourceListItemMOAttributes {
-} InstallerTypeSourceListItemMOAttributes;
-
-extern const struct InstallerTypeSourceListItemMORelationships {
-} InstallerTypeSourceListItemMORelationships;
-
-extern const struct InstallerTypeSourceListItemMOFetchedProperties {
-} InstallerTypeSourceListItemMOFetchedProperties;
-
-
-
-@interface InstallerTypeSourceListItemMOID : NSManagedObjectID {}
+@interface InstallerTypeSourceListItemMOID : PackageSourceListItemMOID {}
 @end
 
 @interface _InstallerTypeSourceListItemMO : PackageSourceListItemMO {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (InstallerTypeSourceListItemMOID*)objectID;
-
-
-
-
-
-
-@end
-
-@interface _InstallerTypeSourceListItemMO (CoreDataGeneratedAccessors)
+@property (nonatomic, readonly, strong) InstallerTypeSourceListItemMOID* objectID;
 
 @end
 
 @interface _InstallerTypeSourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
-
 
 @end

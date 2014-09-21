@@ -17,9 +17,6 @@ const struct ApplicationMORelationships ApplicationMORelationships = {
 	.referencingStringObjects = @"referencingStringObjects",
 };
 
-const struct ApplicationMOFetchedProperties ApplicationMOFetchedProperties = {
-};
-
 @implementation ApplicationMOID
 @end
 
@@ -45,94 +42,61 @@ const struct ApplicationMOFetchedProperties ApplicationMOFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic munki_description;
-
-
-
-
-
 
 @dynamic munki_display_name;
 
-
-
-
-
-
 @dynamic munki_name;
-
-
-
-
-
 
 @dynamic applicationProxies;
 
-	
 - (NSMutableSet*)applicationProxiesSet {
 	[self willAccessValueForKey:@"applicationProxies"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"applicationProxies"];
-  
+
 	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
 }
-	
 
 @dynamic latestPackage;
 
-	
-
 @dynamic manifests;
 
-	
 - (NSMutableSet*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
-  
+
 	[self didAccessValueForKey:@"manifests"];
 	return result;
 }
-	
 
 @dynamic packages;
 
-	
 - (NSMutableSet*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
-  
+
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
-	
 
 @dynamic referencingStringObjects;
 
-	
 - (NSMutableSet*)referencingStringObjectsSet {
 	[self willAccessValueForKey:@"referencingStringObjects"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
-  
+
 	[self didAccessValueForKey:@"referencingStringObjects"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+
