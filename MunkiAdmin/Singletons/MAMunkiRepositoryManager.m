@@ -1879,6 +1879,21 @@ static dispatch_queue_t serialQueue;
             return NO;
         }
         
+        NSString *fileName = [(NSURL *)aManifest.manifestURL lastPathComponent];
+        NSString *sourceDirPath = [[(NSURL *)aManifest.manifestURL path] stringByDeletingLastPathComponent];
+        NSString *destinationPath = [[backupFileURL path] stringByDeletingLastPathComponent];
+        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+        NSInteger tag = 0;
+        if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
+            return NO;
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+                NSLog(@"Copied %@ to %@", [(NSURL *)aManifest.manifestURL path], destinationPath);
+            }
+            itemBackedUp = YES;
+        }
+        
+        /*
         NSError *copyError = nil;
         if (![fm copyItemAtURL:aManifest.manifestURL toURL:backupFileURL error:&copyError]) {
             NSLog(@"Failed to copy: %@", [copyError description]);
@@ -1886,6 +1901,7 @@ static dispatch_queue_t serialQueue;
         } else {
             itemBackedUp = YES;
         }
+         */
     } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
             NSLog(@"Error: saveStartedDate is nil");
@@ -2296,7 +2312,7 @@ static dispatch_queue_t serialQueue;
         NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
-			[mergedManifestDict writeToURL:(NSURL *)aManifest.manifestURL atomically:YES];
+            [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 		}
         
         /*
