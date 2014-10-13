@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A388a" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -70,9 +70,9 @@
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="iconImage" inverseEntity="Package" syncable="YES"/>
     </entity>
     <entity name="InstallerChoicesItem" representedClassName="InstallerChoicesItemMO" syncable="YES">
-        <attribute name="munki_attributeSetting" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_choiceAttribute" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_choiceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_attributeSetting" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="munki_choiceAttribute" optional="YES" attributeType="String" defaultValueString="attribute" syncable="YES"/>
+        <attribute name="munki_choiceIdentifier" optional="YES" attributeType="String" defaultValueString="identifier" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="Package" inverseName="installerChoicesItems" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
@@ -304,7 +304,7 @@
         <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
         <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
         <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
-        <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="118"/>
         <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
         <element name="InstallerTypeSourceListItem" positionX="9" positionY="153" width="128" height="45"/>
         <element name="InstallsItem" positionX="0" positionY="0" width="128" height="255"/>
