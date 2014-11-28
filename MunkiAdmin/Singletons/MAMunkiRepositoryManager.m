@@ -1210,7 +1210,7 @@ static dispatch_queue_t serialQueue;
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
         if (url != nil) {
             newIconImage.originalURL = url;
-            NSImage *image = [[NSImage alloc] initByReferencingURL:url];
+            NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
             newIconImage.imageRepresentation = image;
         } else {
             newIconImage.originalURL = nil;
