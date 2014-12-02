@@ -2320,7 +2320,7 @@
      */
     [[MACoreDataManager sharedManager] configureSourceListInstallerTypesSection:self.managedObjectContext];
     
-	NSArray *keysToget = @[NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey];
+	NSArray *keysToget = @[NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, NSURLIsRegularFileKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
     MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
@@ -2329,16 +2329,22 @@
 	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
 	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
-		NSNumber *isDir;
-		[anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-		if (![isDir boolValue]) {
+		NSNumber *isRegularFile;
+		[anURL getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+		if ([isRegularFile boolValue]) {
 			MAPkginfoScanner *scanOp = [MAPkginfoScanner scannerWithURL:anURL];
 			scanOp.delegate = self;
             [packageRelationships addDependency:scanOp];
 			[self.operationQueue addOperation:scanOp];
 			
 		} else {
-            //NSLog(@"Got directory: %@", [anURL relativePath]);
+            if ([self.defaults boolForKey:@"debug"]) {
+                NSNumber *isDir;
+                [anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+                if (![isDir boolValue]) {
+                    NSLog(@"Not a regular file: %@", [anURL path]);
+                }
+            }
         }
 	}
     
