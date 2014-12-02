@@ -2238,12 +2238,12 @@
 			}
 		}
 		if (isRepo) {
-			self.repoURL = newURL;
-			self.pkgsURL = [self.repoURL URLByAppendingPathComponent:@"pkgs"];
-			self.pkgsInfoURL = [self.repoURL URLByAppendingPathComponent:@"pkgsinfo"];
-			self.catalogsURL = [self.repoURL URLByAppendingPathComponent:@"catalogs"];
-			self.manifestsURL = [self.repoURL URLByAppendingPathComponent:@"manifests"];
-            self.iconsURL = [self.repoURL URLByAppendingPathComponent:@"icons"];
+			self.repoURL = [newURL URLByResolvingSymlinksInPath];
+			self.pkgsURL = [[self.repoURL URLByAppendingPathComponent:@"pkgs"] URLByResolvingSymlinksInPath];
+			self.pkgsInfoURL = [[self.repoURL URLByAppendingPathComponent:@"pkgsinfo"] URLByResolvingSymlinksInPath];
+			self.catalogsURL = [[self.repoURL URLByAppendingPathComponent:@"catalogs"] URLByResolvingSymlinksInPath];
+			self.manifestsURL = [[self.repoURL URLByAppendingPathComponent:@"manifests"] URLByResolvingSymlinksInPath];
+            self.iconsURL = [[self.repoURL URLByAppendingPathComponent:@"icons"] URLByResolvingSymlinksInPath];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
             
