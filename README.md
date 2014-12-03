@@ -8,7 +8,7 @@ munki is a set of tools that allow administrators to define managed
 installs for client machines. Repositories are served from a standard
 web server.
 
-For more information, visit [Munki tools homepage](http://code.google.com/p/munki/)
+For more information, visit [Munki tools homepage](http://munki.github.io/munki/)
 
 
 # Important:
@@ -27,7 +27,7 @@ Latest version can be downloaded from the [Releases page](https://github.com/hju
 MunkiAdmin requires:
 
 * OS X 10.8 or later
-* [Munki](http://code.google.com/p/munki/) components installed (any recent version)
+* [Munki](http://munki.github.io/munki/) components installed (any recent version)
 
 ### Build from source:
 
