@@ -23,13 +23,13 @@
 
 + (id)installsItemFromURL:(NSURL *)sourceFile
 {
-	return [[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:[NSArray arrayWithObject:@"--file"]];
+	return [[self alloc] initWithCommand:@"installsitem" targetURL:sourceFile arguments:@[@"--file"]];
 }
 
 + (id)installsItemFromPath:(NSString *)pathToFile
 {
     NSURL *fileURL = [NSURL fileURLWithPath:pathToFile];
-	return [[self alloc] initWithCommand:@"installsitem" targetURL:fileURL arguments:[NSArray arrayWithObject:@"--file"]];
+	return [[self alloc] initWithCommand:@"installsitem" targetURL:fileURL arguments:@[@"--file"]];
 }
 
 - (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args
@@ -38,7 +38,9 @@
 		self.command = cmd;
 		self.targetURL = target;
 		self.arguments = args;
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing munki operation: %@, target: %@", self.command, [self.targetURL relativePath]);
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"Initializing munki operation: %@, target: %@", self.command, [self.targetURL relativePath]);
+        }
 		//self.currentJobDescription = @"Initializing pkginfo scan operaiton";
 		
 	}
@@ -58,16 +60,16 @@
 	NSFileHandle *filehandle = [makecatalogsPipe fileHandleForReading];
 	
 	NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
-	[makecatalogsTask setLaunchPath:launchPath];
-    [makecatalogsTask setStandardOutput:makecatalogsPipe];
+    makecatalogsTask.launchPath = launchPath;
+    makecatalogsTask.standardOutput = makecatalogsPipe;
     
     /*
      Check the "Disable sanity checks" preference
      */
     if ([self.defaults boolForKey:@"makecatalogsForceEnabled"]) {
-        [makecatalogsTask setArguments:@[@"--force", [self.targetURL relativePath]]];
+        makecatalogsTask.arguments = @[@"--force", [self.targetURL relativePath]];
     } else {
-        [makecatalogsTask setArguments:@[[self.targetURL relativePath]]];
+        makecatalogsTask.arguments = @[[self.targetURL relativePath]];
     }
     
 	/*
@@ -81,7 +83,7 @@
     /*
      Check the exit code even though makecatalogs (currently) always exits with 0
      */
-    int exitCode = [makecatalogsTask terminationStatus];
+    int exitCode = makecatalogsTask.terminationStatus;
     if (exitCode == 0) {
         if ([self.defaults boolForKey:@"debug"]) {
             NSLog(@"makecatalogs succeeded.");
@@ -115,19 +117,19 @@
             [combinedOptions addObject:[self.targetURL relativePath]];
             newArguments = [NSArray arrayWithArray:combinedOptions];
         } else {
-            newArguments = [NSArray arrayWithObject:[self.targetURL relativePath]];
+            newArguments = @[[self.targetURL relativePath]];
         }
 	} else if ([self.command isEqualToString:@"installsitem"]) {
-		newArguments = [NSArray arrayWithObjects:@"--file", [self.targetURL relativePath], nil];
+		newArguments = @[@"--file", [self.targetURL relativePath]];
 	} else {
         return nil;
     }
 	
 	NSString *launchPath = [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"];
-	[makepkginfoTask setLaunchPath:launchPath];
-	[makepkginfoTask setArguments:newArguments];
-	[makepkginfoTask setStandardOutput:makepkginfoPipe];
-    [makepkginfoTask setStandardError:makepkginfoErrorPipe];
+    makepkginfoTask.launchPath = launchPath;
+	makepkginfoTask.arguments = newArguments;
+	makepkginfoTask.standardOutput = makepkginfoPipe;
+    makepkginfoTask.standardError = makepkginfoErrorPipe;
 	[makepkginfoTask launch];
 	
 	NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
