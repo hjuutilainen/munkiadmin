@@ -59,18 +59,39 @@
 	
 	NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
 	[makecatalogsTask setLaunchPath:launchPath];
+    [makecatalogsTask setStandardOutput:makecatalogsPipe];
+    
+    /*
+     Check the "Disable sanity checks" preference
+     */
     if ([self.defaults boolForKey:@"makecatalogsForceEnabled"]) {
-        [makecatalogsTask setArguments:[NSArray arrayWithObjects:@"--force", [self.targetURL relativePath], nil]];
+        [makecatalogsTask setArguments:@[@"--force", [self.targetURL relativePath]]];
     } else {
-        [makecatalogsTask setArguments:[NSArray arrayWithObject:[self.targetURL relativePath]]];
+        [makecatalogsTask setArguments:@[[self.targetURL relativePath]]];
     }
-	[makecatalogsTask setStandardOutput:makecatalogsPipe];
+    
+	/*
+     Launch and read the output
+     */
 	[makecatalogsTask launch];
-	
 	NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
-	
-	NSString *makecatalogsResults;
-	makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData encoding:NSUTF8StringEncoding];
+	NSString *makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData
+                                                          encoding:NSUTF8StringEncoding];
+    
+    /*
+     Check the exit code even though makecatalogs (currently) always exits with 0
+     */
+    int exitCode = [makecatalogsTask terminationStatus];
+    if (exitCode == 0) {
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"makecatalogs succeeded.");
+        }
+    } else {
+        if ([self.defaults boolForKey:@"debug"]) {
+            NSLog(@"makecatalogs failed with code %i", exitCode);
+        }
+    }
+    
 	return makecatalogsResults;
 }
 
