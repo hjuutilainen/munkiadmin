@@ -1,0 +1,1 @@
+../../../NSHash/NSHash/NSString+NSHash.h
