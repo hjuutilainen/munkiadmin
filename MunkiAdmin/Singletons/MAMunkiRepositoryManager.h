@@ -59,6 +59,7 @@
 
 - (IconImageMO *)createIconImageFromURL:(NSURL *)url managedObjectContext:(NSManagedObjectContext *)moc;
 - (void)updateIconForPackage:(PackageMO *)currentPackage;
+- (void)updateIconHashForPackage:(PackageMO *)package;
 - (void)clearCustomIconForPackage:(PackageMO *)package;
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;
 - (void)scanIconsDirectoryForImages;

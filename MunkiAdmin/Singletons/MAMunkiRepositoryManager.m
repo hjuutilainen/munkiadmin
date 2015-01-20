@@ -13,6 +13,7 @@
 #import "MADiskImageOperation.h"
 #import "MAPackageExtractOperation.h"
 #import "NSImage+PixelSize.h"
+#import <NSHash/NSData+NSHash.h>
 
 /*
  * Private interface
@@ -1269,6 +1270,68 @@ static dispatch_queue_t serialQueue;
             package.iconImage = defaultIcon;
         }
     }
+}
+
+- (NSString *)calculateSHA256HashForURL:(NSURL *)url
+{
+    NSData *iconData = [NSData dataWithContentsOfURL:url];
+    NSData *sha256Data = [iconData SHA256];
+    NSUInteger dataLength = [sha256Data length];
+    NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:dataLength*2];
+    const unsigned char *dataBytes = [sha256Data bytes];
+    for (NSInteger idx = 0; idx < dataLength; ++idx) {
+        [iconSHA256HashString appendFormat:@"%02x", dataBytes[idx]];
+    }
+    return iconSHA256HashString;
+}
+
+- (void)updateIconHashForPackage:(PackageMO *)package
+{
+    //NSManagedObjectContext *moc = [self appDelegateMoc];
+    
+    /*
+     Create a default icon for packages without a custom icon
+     */
+    /*
+    IconImageMO *defaultIcon = [self createIconImageFromURL:nil managedObjectContext:moc];
+    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+    defaultIcon.imageRepresentation = pkgicon;
+    defaultIcon.originalURL = nil;
+     */
+    NSString *oldIconHash = package.munki_icon_hash;
+    
+    if ((package.munki_icon_name != nil) && (![package.munki_icon_name isEqualToString:@""])) {
+        /*
+         Package has a custom icon
+         */
+        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_icon_name];
+        if ([[iconURL pathExtension] isEqualToString:@""]) {
+            iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+        }
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+            NSString *iconSHA256HashString = [self calculateSHA256HashForURL:iconURL];
+            package.munki_icon_hash = iconSHA256HashString;
+        } else {
+            package.munki_icon_hash = nil;
+        }
+    } else {
+        /*
+         Package doesn't have an icon_name key. Check for icon mathing the package name.
+         */
+        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_name];
+        iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
+            NSString *iconSHA256HashString = [self calculateSHA256HashForURL:iconURL];
+            package.munki_icon_hash = iconSHA256HashString;
+        } else {
+            package.munki_icon_hash = nil;
+        }
+    }
+    
+    if (package.munki_icon_hash && (![oldIconHash isEqualToString:package.munki_icon_hash])) {
+        DDLogInfo(@"%@: updated icon_hash to %@", package.titleWithVersion, package.munki_icon_hash);
+    }
+    package.hasUnstagedChangesValue = YES;
 }
 
 - (void)clearCustomIconForPackage:(PackageMO *)package
@@ -2593,6 +2656,8 @@ static dispatch_queue_t serialQueue;
     [newPkginfoAssimilateKeys removeObject:@"installer_item_location"];
     [newPkginfoAssimilateKeys removeObject:@"installer_item_size"];
     [newPkginfoAssimilateKeys removeObject:@"package_path"];
+    [newPkginfoAssimilateKeys removeObject:@"icon_hash"];
+    [newPkginfoAssimilateKeys removeObject:@"PayloadIdentifier"];
     
     [newPkginfoAssimilateKeys addObject:@"category"];
     [newPkginfoAssimilateKeys addObject:@"developer"];
