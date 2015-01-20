@@ -14,6 +14,9 @@
 #import "MAPackageExtractOperation.h"
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 /*
  * Private interface
@@ -132,7 +135,7 @@ static dispatch_queue_t serialQueue;
         /*
          Moving the pkginfo file failed, bail out
          */
-        NSLog(@"Failed to move pkginfo with error: %@", pkginfoMoveError);
+        DDLogError(@"Failed to move pkginfo with error: %@", pkginfoMoveError);
         return NO;
     }
     
@@ -158,7 +161,7 @@ static dispatch_queue_t serialQueue;
             if (![fm fileExistsAtPath:[pkgsSubURL path]]) {
                 NSError *createError = nil;
                 if (![fm createDirectoryAtURL:pkgsSubURL withIntermediateDirectories:YES attributes:nil error:&createError]) {
-                    NSLog(@"%@", createError);
+                    DDLogError(@"%@", createError);
                 }
             }
             if ([fm fileExistsAtPath:[pkgsSubURL path]]) {
@@ -168,7 +171,7 @@ static dispatch_queue_t serialQueue;
                 NSURL *installerTargetURL = [pkgsSubURL URLByAppendingPathComponent:[installerSourceURL lastPathComponent]];
                 NSError *moveError = nil;
                 if (![fm moveItemAtURL:installerSourceURL toURL:installerTargetURL error:&moveError]) {
-                    NSLog(@"%@", moveError);
+                    DDLogError(@"%@", moveError);
                     returnValue = NO;
                 } else {
                     /*
@@ -180,7 +183,7 @@ static dispatch_queue_t serialQueue;
                     returnValue = YES;
                 }
             } else {
-                NSLog(@"Failed to move installer item. Directory not found: %@", [pkgsSubURL path]);
+                DDLogError(@"Failed to move installer item. Directory not found: %@", [pkgsSubURL path]);
                 returnValue = NO;
             }
         }
@@ -373,7 +376,7 @@ static dispatch_queue_t serialQueue;
     NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplicationsLoose error:nil];
     if (numFoundApplications == 0) {
         // No matching Applications found.
-        NSLog(@"Assimilator found zero matching Applications for package.");
+        DDLogInfo(@"Assimilator found zero matching Applications for package.");
     } else if (numFoundApplications == 1) {
         ApplicationMO *existingApplication = [moc executeFetchRequest:fetchForApplicationsLoose error:nil][0];
         
@@ -387,11 +390,10 @@ static dispatch_queue_t serialQueue;
             } else {
                 latestPackage = results[0];
             }
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
-                NSLog(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
+            DDLogInfo(@"Assimilating package with properties from: %@-%@", latestPackage.munki_name, latestPackage.munki_version);
             if (latestPackage != nil) [self assimilatePackage:targetPackage sourcePackage:latestPackage keys:munkiKeys];
         } else {
-            NSLog(@"No previous packages");
+            DDLogInfo(@"No previous packages");
         }
     }
 }
@@ -405,7 +407,7 @@ static dispatch_queue_t serialQueue;
     NSString *oldTitle = manifest.title;
     
     if (![[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
-        NSLog(@"Failed to rename manifest on disk");
+        DDLogError(@"Failed to rename manifest on disk");
         return;
     }
     
@@ -418,10 +420,8 @@ static dispatch_queue_t serialQueue;
     
     manifest.title = manifestRelativePath;
     manifest.manifestURL = newURL;
-    if ([self.defaults boolForKey:@"debug"]) {
-        NSString *aDescr = [NSString stringWithFormat:@"Renamed manifest \"%@\" to \"%@\"", oldTitle, manifest.title];
-        NSLog(@"%@", aDescr);
-    }
+    NSString *aDescr = [NSString stringWithFormat:@"Renamed manifest \"%@\" to \"%@\"", oldTitle, manifest.title];
+    DDLogInfo(@"%@", aDescr);
     
     if (shouldCascade) {
         /*
@@ -442,14 +442,12 @@ static dispatch_queue_t serialQueue;
                     ManifestMO *manifestReference = aReference.manifestReference;
                     aReference.title = manifestRelativePath;
                     manifestReference.hasUnstagedChangesValue = YES;
-                    if ([self.defaults boolForKey:@"debug"]) {
-                        NSString *aDescr = [NSString stringWithFormat:
-                                            @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest %@",
-                                            oldTitle,
-                                            aReference.title,
-                                            manifestReference.title];
-                        NSLog(@"%@", aDescr);
-                    }
+                    NSString *aDescr = [NSString stringWithFormat:
+                                        @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest %@",
+                                        oldTitle,
+                                        aReference.title,
+                                        manifestReference.title];
+                    DDLogInfo(@"%@", aDescr);
                 }
                 // This is a conditional nested manifest
                 else if (aReference.includedManifestConditionalReference) {
@@ -457,21 +455,19 @@ static dispatch_queue_t serialQueue;
                     ManifestMO *manifestConditional = conditional.manifest;
                     aReference.title = manifestRelativePath;
                     manifestConditional.hasUnstagedChangesValue = YES;
-                    if ([self.defaults boolForKey:@"debug"]) {
-                        NSString *aDescr = [NSString stringWithFormat:
-                                            @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest \"%@\" under condition \"%@\"",
-                                            oldTitle,
-                                            aReference.title,
-                                            manifestConditional.title,
-                                            conditional.titleWithParentTitle];
-                        NSLog(@"%@", aDescr);
-                    }
+                    NSString *aDescr = [NSString stringWithFormat:
+                                        @"Renamed included_manifests reference \"%@\" to \"%@\" in manifest \"%@\" under condition \"%@\"",
+                                        oldTitle,
+                                        aReference.title,
+                                        manifestConditional.title,
+                                        conditional.titleWithParentTitle];
+                    DDLogInfo(@"%@", aDescr);
                 }
                 
                 
             }
         } else {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects to rename");
+            DDLogInfo(@"No referencing objects to rename");
         }
     }
 }
@@ -496,7 +492,7 @@ static dispatch_queue_t serialQueue;
     if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
         referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
     } else {
-        //if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
+        DDLogVerbose(@"No referencing objects found with title \"%@\"", title);
     }
     return referencingObjects;
 }
@@ -516,7 +512,7 @@ static dispatch_queue_t serialQueue;
     if ([moc countForFetchRequest:getReferencesByName error:nil] > 0) {
         referencingObjects = [moc executeFetchRequest:getReferencesByName error:nil];
     } else {
-        //if ([self.defaults boolForKey:@"debug"]) NSLog(@"No referencing objects found with title \"%@\"", title);
+        DDLogVerbose(@"No referencing objects found with title \"%@\"", title);
     }
     return referencingObjects;
 }
@@ -702,9 +698,9 @@ static dispatch_queue_t serialQueue;
         NSArray *referencingObjects = [self referencingManifestStringObjectsWithTitle:name];
         if ([self.defaults boolForKey:@"debug"]) {
             if ((unsigned long)[referencingObjects count] > 0) {
-                NSLog(@"Found %li references for manifest \"%@\"", (unsigned long)[referencingObjects count], name);
+                DDLogInfo(@"Found %li references for manifest \"%@\"", (unsigned long)[referencingObjects count], name);
             } else {
-                NSLog(@"No references found for manifest \"%@\"", name);
+                DDLogInfo(@"No references found for manifest \"%@\"", name);
             }
         }
         for (StringObjectMO *aReference in referencingObjects) {
@@ -714,10 +710,8 @@ static dispatch_queue_t serialQueue;
             if (aReference.manifestReference) {
                 ManifestMO *manifest = aReference.manifestReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\"", aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\"", aReference.title, manifest.title];
+                DDLogInfo(@"%@", aDescr);
             }
             /*
              This reference is an included_manifest under a conditional item
@@ -726,10 +720,8 @@ static dispatch_queue_t serialQueue;
                 ConditionalItemMO *cond = aReference.includedManifestConditionalReference;
                 ManifestMO *manifest = aReference.includedManifestConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\" under condition \"%@\"", aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Removed included_manifests reference \"%@\" from manifest \"%@\" under condition \"%@\"", aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogInfo(@"%@", aDescr);
             }
             
             /*
@@ -738,9 +730,7 @@ static dispatch_queue_t serialQueue;
             [moc deleteObject:aReference];
         }
     } else {
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Not removing references for manifest \"%@\"", name);
-        }
+        DDLogInfo(@"Not removing references for manifest \"%@\"", name);
     }
     
     /*
@@ -750,9 +740,7 @@ static dispatch_queue_t serialQueue;
     objectsToDelete = @[aManifest.manifestURL];
     
     for (NSURL *url in objectsToDelete) {
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Deleting file %@", [url relativePath]);
-        }
+        DDLogInfo(@"Deleting file %@", [url relativePath]);
     }
     
     /*
@@ -783,7 +771,7 @@ static dispatch_queue_t serialQueue;
      This is the last pkginfo with this name and we are allowed to remove references
      */
     if ((numPackagesWithThisName == 1) && removeReferences) {
-        NSLog(@"Removing the last pkginfo with this name. Removing references too...");
+        DDLogInfo(@"Removing the last pkginfo with this name. Removing references too...");
         
         /*
          Check for and remove references to this package:
@@ -795,9 +783,7 @@ static dispatch_queue_t serialQueue;
          - update_for item in a package
          */
         NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:name];
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
-        }
+        DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
         for (StringObjectMO *aReference in referencingObjects) {
             [moc deleteObject:aReference];
         }
@@ -806,9 +792,7 @@ static dispatch_queue_t serialQueue;
          Remove versioned references too
          */
         NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:nameWithVersion];
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
-        }
+        DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
         for (StringObjectMO *aReference in referencingObjectsWithVersion) {
             [moc deleteObject:aReference];
         }
@@ -819,15 +803,15 @@ static dispatch_queue_t serialQueue;
         IconImageMO *packageIcon = aPackage.iconImage;
         if ([packageIcon.packages count] == 1) {
             if ([[packageIcon.packages anyObject] isEqualTo:aPackage] && packageIcon.originalURL != nil) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Package icon doesn't have any other references, removing...");
+                DDLogInfo(@"Package icon doesn't have any other references, removing...");
                 [wp recycleURLs:@[packageIcon.originalURL] completionHandler:nil];
                 [moc deleteObject:packageIcon];
             }
         } else if ([packageIcon.packages count] > 1) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Package icon still has other references, leaving...");
+            DDLogInfo(@"Package icon still has other references, leaving...");
             for (PackageMO *package in packageIcon.packages) {
                 if (![package isEqualTo:aPackage]) {
-                    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Icon referenced from %@", package.titleWithVersion);
+                    DDLogInfo(@"Icon referenced from %@", package.titleWithVersion);
                 }
             }
         }
@@ -837,14 +821,14 @@ static dispatch_queue_t serialQueue;
      This is the last pkginfo with this name but we were told to not touch referencing items
      */
     else if ((numPackagesWithThisName == 1) && !removeReferences) {
-        NSLog(@"Removing the last pkginfo with this name but not removing any references...");
+        DDLogInfo(@"Removing the last pkginfo with this name but not removing any references...");
     }
     
     /*
      There are other remaining pkginfos with the same name, don't touch any references
      */
     else {
-        NSLog(@"This name is used in %li other pkginfo items. Not removing references...", (unsigned long)numPackagesWithThisName - 1);
+        DDLogInfo(@"This name is used in %li other pkginfo items. Not removing references...", (unsigned long)numPackagesWithThisName - 1);
     }
     
     /*
@@ -858,9 +842,7 @@ static dispatch_queue_t serialQueue;
     }
     
     for (NSURL *url in objectsToDelete) {
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Deleting file %@", [url relativePath]);
-        }
+        DDLogInfo(@"Deleting file %@", [url relativePath]);
     }
     
     /*
@@ -893,7 +875,7 @@ static dispatch_queue_t serialQueue;
             // Application object exists with the new name so use it
             NSArray *apps = [moc executeFetchRequest:getApplication error:nil];
             ApplicationMO *app = apps[0];
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Found ApplicationMO: %@", app.munki_name);
+            DDLogInfo(@"Found ApplicationMO: %@", app.munki_name);
             aPackage.munki_name = newName;
             aPackage.hasUnstagedChangesValue = YES;
             aPackage.parentApplication = app;
@@ -905,10 +887,8 @@ static dispatch_queue_t serialQueue;
             aPackage.parentApplication = packageGroup; // Shouldn't need this...
         }
         
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
-            NSLog(@"%@", aDescr);
-        }
+        NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
+        DDLogInfo(@"%@", aDescr);
         
         // Get sibling packages
         NSFetchRequest *getSiblings = [[NSFetchRequest alloc] init];
@@ -919,10 +899,9 @@ static dispatch_queue_t serialQueue;
             NSArray *siblingPackages = [moc executeFetchRequest:getSiblings error:nil];
             for (PackageMO *aSibling in siblingPackages) {
                 if (aSibling != aPackage) {
-                    if ([self.defaults boolForKey:@"debug"]) {
-                        NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", aSibling.munki_name, newName, aSibling.relativePath];
-                        NSLog(@"%@", aDescr);
-                    }
+                    NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", aSibling.munki_name, newName, aSibling.relativePath];
+                    DDLogInfo(@"%@", aDescr);
+                    
                     aSibling.munki_name = newName;
                     aSibling.hasUnstagedChangesValue = YES;
                     aSibling.parentApplication = aPackage.parentApplication;
@@ -983,83 +962,63 @@ static dispatch_queue_t serialQueue;
             if (aReference.managedInstallReference) {
                 ManifestMO *manifest = aReference.managedInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUninstallReference) {
                 ManifestMO *manifest = aReference.managedUninstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUpdateReference) {
                 ManifestMO *manifest = aReference.managedUpdateReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.optionalInstallReference) {
                 ManifestMO *manifest = aReference.optionalInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             }
             
             else if (aReference.managedInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedInstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
                 
             } else if (aReference.managedUninstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUpdateConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.optionalInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             }
             
             else if (aReference.requiresReference) {
                 PackageMO *package = aReference.requiresReference;
                 package.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
+                DDLogDebug(@"%@", aDescr);
                 
             } else if (aReference.updateForReference) {
                 PackageMO *package = aReference.updateForReference;
                 package.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldName, aReference.title, package.titleWithVersion];
+                DDLogDebug(@"%@", aDescr);
             }
             
         }
@@ -1074,84 +1033,63 @@ static dispatch_queue_t serialQueue;
             if (aReference.managedInstallReference) {
                 ManifestMO *manifest = aReference.managedInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUninstallReference) {
                 ManifestMO *manifest = aReference.managedUninstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUpdateReference) {
                 ManifestMO *manifest = aReference.managedUpdateReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.optionalInstallReference) {
                 ManifestMO *manifest = aReference.optionalInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+                DDLogDebug(@"%@", aDescr);
             }
             
             else if (aReference.managedInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedInstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUninstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.managedUpdateConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             } else if (aReference.optionalInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
                 ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+                DDLogDebug(@"%@", aDescr);
             }
             
             else if (aReference.requiresReference) {
                 PackageMO *package = aReference.requiresReference;
                 package.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
+                DDLogDebug(@"%@", aDescr);
                 
             } else if (aReference.updateForReference) {
                 PackageMO *package = aReference.updateForReference;
                 package.hasUnstagedChangesValue = YES;
-                if ([self.defaults boolForKey:@"debug"]) {
-                    NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
-                    NSLog(@"%@", aDescr);
-                }
+                NSString *aDescr = [NSString stringWithFormat:@"Renamed requires reference \"%@\" to \"%@\" in package %@", oldNameWithVersion, aReference.title, package.titleWithVersion];
+                DDLogDebug(@"%@", aDescr);
             }
-            
         }
     }
     
@@ -1179,10 +1117,8 @@ static dispatch_queue_t serialQueue;
             aPackage.parentApplication = aNewApplication; // Shouldn't need this...
         }
         
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
-            NSLog(@"%@", aDescr);
-        }
+        NSString *aDescr = [NSString stringWithFormat:@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath];
+        DDLogDebug(@"%@", aDescr);
     }
 }
 
@@ -1230,8 +1166,8 @@ static dispatch_queue_t serialQueue;
     
     // Something went terribly wrong if we got here...
     else {
-        NSLog(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
-        NSLog(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
+        DDLogWarn(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
+        DDLogWarn(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
     }
     
     return nil;
@@ -1337,18 +1273,15 @@ static dispatch_queue_t serialQueue;
 - (void)clearCustomIconForPackage:(PackageMO *)package
 {
     if (package.munki_icon_name != nil) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            NSString *aDescr = [NSString stringWithFormat:@"Cleared custom icon_name in pkginfo file %@", package.relativePath];
-            NSLog(@"%@", aDescr);
-        }
+        NSString *aDescr = [NSString stringWithFormat:@"Cleared custom icon_name in pkginfo file %@", package.relativePath];
+        DDLogDebug(@"%@", aDescr);
+        
         package.iconImage = nil;
         package.munki_icon_name = nil;
         package.hasUnstagedChangesValue = YES;
     } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            NSString *aDescr = [NSString stringWithFormat:@"Custom icon_name is already empty in pkginfo file %@", package.relativePath];
-            NSLog(@"%@", aDescr);
-        }
+        NSString *aDescr = [NSString stringWithFormat:@"Custom icon_name is already empty in pkginfo file %@", package.relativePath];
+        DDLogDebug(@"%@", aDescr);
     }
     [self updateIconForPackage:package];
 }
@@ -1357,10 +1290,9 @@ static dispatch_queue_t serialQueue;
 {
     NSURL *mainIconsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
     NSString *relativePath = [self relativePathToChildURL:iconURL parentURL:mainIconsURL];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-        NSString *aDescr = [NSString stringWithFormat:@"Changed icon_name to \"%@\" in pkginfo file %@", relativePath, package.relativePath];
-        NSLog(@"%@", aDescr);
-    }
+    NSString *aDescr = [NSString stringWithFormat:@"Changed icon_name to \"%@\" in pkginfo file %@", relativePath, package.relativePath];
+    DDLogInfo(@"%@", aDescr);
+    
     package.munki_icon_name = relativePath;
     [self updateIconForPackage:package];
     package.hasUnstagedChangesValue = YES;
@@ -1392,7 +1324,7 @@ static dispatch_queue_t serialQueue;
         NSString *typeIdentifier;
         NSError *error;
         if (![url getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:&error]) {
-            NSLog(@"%@", error);
+            DDLogInfo(@"%@: %@", THIS_METHOD, error);
             continue;
         }
         
@@ -1631,12 +1563,9 @@ static dispatch_queue_t serialQueue;
              */
             [attachOperation setDidMountHandler:^(NSArray *mountpoints, BOOL alreadyMounted) {
                 
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 for (NSString *mountpoint in mountpoints) {
                     
-                    if ([defaults boolForKey:@"debug"]) {
-                        NSLog(@"Processing mountpoint: %@", mountpoint);
-                    }
+                    DDLogInfo(@"Processing mountpoint: %@", mountpoint);
                     
                     /*
                      Determine the package location
@@ -1659,7 +1588,7 @@ static dispatch_queue_t serialQueue;
                         for (NSURL *theURL in dirEnumerator) {
                             NSString *typeIdentifier;
                             [theURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
-                            //NSLog(@"%@ %@", typeIdentifier, theURL);
+                            //DDLogInfo(@"%@ %@", typeIdentifier, theURL);
                             if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package-archive"]) {
                                 // Flat package
                                 [packages addObject:theURL];
@@ -1672,7 +1601,7 @@ static dispatch_queue_t serialQueue;
                             }
                         }
                         if (packages) {
-                            //NSLog(@"%@", packages);
+                            //DDLogInfo(@"%@", packages);
                             packageURL = packages[0];
                         }
                     }
@@ -1752,7 +1681,6 @@ static dispatch_queue_t serialQueue;
 - (NSArray *)findAllIcnsFilesAtURL:(NSURL *)mountpointURL
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:mountpointURL
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
@@ -1773,9 +1701,7 @@ static dispatch_queue_t serialQueue;
                            forKey:NSURLTypeIdentifierKey
                             error:nil];
         if ([workspace type:typeIdentifier conformsToType:@"com.apple.icns"]) {
-            if ([defaults boolForKey:@"debug"]) {
-                NSLog(@"Found com.apple.icns file: %@", [fileURL path]);
-            }
+            DDLogInfo(@"Found com.apple.icns file: %@", [fileURL path]);
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
             [image setSize:[image pixelSize]];
             NSDictionary *itemDict = @{@"image": image, @"URL": fileURL};
@@ -1791,9 +1717,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSSet *)modifiedManifestsSinceLastSave
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-		NSLog(@"Getting modified manifests since last save");
-	}
+    DDLogInfo(@"Getting modified manifests since last save");
     
     NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedManifests = [[NSMutableArray alloc] init];
@@ -1852,9 +1776,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSSet *)modifiedPackagesSinceLastSave
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-		NSLog(@"Getting modified pkginfos since last save");
-	}
+    DDLogInfo(@"Getting modified pkginfos since last save");
     
     NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedPackages = [[NSMutableArray alloc] init];
@@ -1938,7 +1860,7 @@ static dispatch_queue_t serialQueue;
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError *dirCreateError = nil;
         if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
-            NSLog(@"Failed to create backup directory: %@", [dirCreateError description]);
+            DDLogError(@"Failed to create backup directory: %@", [dirCreateError description]);
             return NO;
         }
         
@@ -1950,24 +1872,21 @@ static dispatch_queue_t serialQueue;
         if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
             return NO;
         } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-                NSLog(@"Copied %@ to %@", [(NSURL *)aManifest.manifestURL path], destinationPath);
-            }
+            DDLogDebug(@"Copied %@ to %@", [(NSURL *)aManifest.manifestURL path], destinationPath);
             itemBackedUp = YES;
         }
         
         /*
         NSError *copyError = nil;
         if (![fm copyItemAtURL:aManifest.manifestURL toURL:backupFileURL error:&copyError]) {
-            NSLog(@"Failed to copy: %@", [copyError description]);
+            DDLogInfo(@"Failed to copy: %@", [copyError description]);
             return NO;
         } else {
             itemBackedUp = YES;
         }
          */
     } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
-            NSLog(@"Error: saveStartedDate is nil");
+        DDLogError(@"Error: saveStartedDate is nil");
     }
     
     return itemBackedUp;
@@ -1991,7 +1910,7 @@ static dispatch_queue_t serialQueue;
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError *dirCreateError = nil;
         if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
-            NSLog(@"Failed to create backup directory: %@", [dirCreateError description]);
+            DDLogError(@"Failed to create backup directory: %@", [dirCreateError description]);
             return NO;
         }
         
@@ -2003,9 +1922,7 @@ static dispatch_queue_t serialQueue;
         if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
             return NO;
         } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-                NSLog(@"Copied %@ to %@", [(NSURL *)aPackage.packageInfoURL path], destinationPath);
-            }
+            DDLogDebug(@"Copied %@ to %@", [(NSURL *)aPackage.packageInfoURL path], destinationPath);
             itemBackedUp = YES;
         }
         
@@ -2013,17 +1930,16 @@ static dispatch_queue_t serialQueue;
         NSError *copyError = nil;
         NSURL *packageInfoURL = [(NSURL *)aPackage.packageInfoURL filePathURL];
         if (![fm copyItemAtURL:packageInfoURL toURL:[backupFileURL filePathURL] error:&copyError]) {
-            NSLog(@"Failed to copy: %@", [copyError description]);
+            DDLogInfo(@"Failed to copy: %@", [copyError description]);
             return NO;
         } else {
-            NSLog(@"Copied %@", packageInfoURL);
+            DDLogInfo(@"Copied %@", packageInfoURL);
             itemBackedUp = YES;
         }
          */
         
     } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"])
-            NSLog(@"Error: saveStartedDate is nil");
+        DDLogError(@"Error: saveStartedDate is nil");
     }
     
     return itemBackedUp;
@@ -2056,23 +1972,19 @@ static dispatch_queue_t serialQueue;
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"Backing up pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-    }
+    DDLogDebug(@"Backing up pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
     
     if ([defaults boolForKey:@"backupPkginfosBeforeWriting"]) {
         [self backupPackage:aPackage];
     }
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-    }
+    DDLogDebug(@"Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
     
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
         aPackage.originalPkginfo = plist;
         return YES;
     } else {
-        NSLog(@"Error: Failed to write %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+        DDLogError(@"Error: Failed to write %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
         return NO;
     }
 }
@@ -2081,32 +1993,26 @@ static dispatch_queue_t serialQueue;
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"Backing up manifest: %@", [(NSURL *)aManifest.manifestURL path]);
-    }
+    DDLogDebug(@"Backing up manifest: %@", [(NSURL *)aManifest.manifestURL path]);
     
     if ([defaults boolForKey:@"backupManifestsBeforeWriting"]) {
         [self backupManifest:aManifest];
     }
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"Writing new manifest: %@", [(NSURL *)aManifest.manifestURL path]);
-    }
+    DDLogDebug(@"Writing new manifest: %@", [(NSURL *)aManifest.manifestURL path]);
     
     if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:YES]) {
         aManifest.originalManifest = plist;
         return YES;
     } else {
-        NSLog(@"Error: Failed to write %@", [(NSURL *)aManifest.manifestURL path]);
+        DDLogError(@"Error: Failed to write %@", [(NSURL *)aManifest.manifestURL path]);
         return NO;
     }
 }
 
 - (void)writePackagePropertyListsToDisk
 {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"Was asked to write package property lists to disk");
-	}
+    DDLogDebug(@"Was asked to write package property lists to disk");
     
     self.saveStartedDate = [NSDate date];
     
@@ -2119,9 +2025,7 @@ static dispatch_queue_t serialQueue;
 	
 	for (PackageMO *aPackage in [self modifiedPackagesSinceLastSave]) {
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-            NSLog(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-        }
+        DDLogDebug(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
         
         /*
          * ===============================================
@@ -2196,18 +2100,16 @@ static dispatch_queue_t serialQueue;
         NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
         [addedItems minusSet:originalKeysSet];
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            for (NSString *aKey in [removedItems allObjects]) {
-                if (![keysToDelete containsObject:aKey]) {
-                    NSLog(@"Key change: \"%@\" found in original pkginfo. Keeping it.", aKey);
-                } else {
-                    NSLog(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
-                }
-                
+        for (NSString *aKey in [removedItems allObjects]) {
+            if (![keysToDelete containsObject:aKey]) {
+                DDLogDebug(@"Key change: \"%@\" found in original pkginfo. Keeping it.", aKey);
+            } else {
+                DDLogDebug(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
             }
-            for (NSString *aKey in [addedItems allObjects]) {
-                NSLog(@"Key change: \"%@\" added by MunkiAdmin", aKey);
-            }
+            
+        }
+        for (NSString *aKey in [addedItems allObjects]) {
+            DDLogDebug(@"Key change: \"%@\" added by MunkiAdmin", aKey);
         }
         
         /*
@@ -2242,18 +2144,12 @@ static dispatch_queue_t serialQueue;
          Check for value changes
          */
         else {
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-                NSLog(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
-            }
+			DDLogDebug(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
             if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-                    NSLog(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-                }
+				DDLogDebug(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
 				[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
 			} else {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-                    NSLog(@"No changes detected");
-                }
+				DDLogDebug(@"No changes detected");
 			}
 		}
         
@@ -2269,9 +2165,7 @@ static dispatch_queue_t serialQueue;
 
 - (void)writeManifestPropertyListsToDisk
 {
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"Was asked to write manifest property lists to disk");
-	}
+	DDLogDebug(@"Was asked to write manifest property lists to disk");
     
     self.saveStartedDate = [NSDate date];
     
@@ -2284,9 +2178,7 @@ static dispatch_queue_t serialQueue;
 	
 	for (ManifestMO *aManifest in [self modifiedManifestsSinceLastSave]) {
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-            NSLog(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
-        }
+        DDLogDebug(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
         
         /*
          * ================================================
@@ -2335,18 +2227,16 @@ static dispatch_queue_t serialQueue;
         NSMutableSet *addedItems = [NSMutableSet setWithSet:newKeysSet];
         [addedItems minusSet:originalKeysSet];
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            for (NSString *aKey in [removedItems allObjects]) {
-                if (![keysToDelete containsObject:aKey]) {
-                    NSLog(@"Key change: \"%@\" found in original manifest. Keeping it.", aKey);
-                } else {
-                    NSLog(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
-                }
-                
+        for (NSString *aKey in [removedItems allObjects]) {
+            if (![keysToDelete containsObject:aKey]) {
+                DDLogDebug(@"Key change: \"%@\" found in original manifest. Keeping it.", aKey);
+            } else {
+                DDLogDebug(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
             }
-            for (NSString *aKey in [addedItems allObjects]) {
-                NSLog(@"Key change: \"%@\" added by MunkiAdmin", aKey);
-            }
+            
+        }
+        for (NSString *aKey in [addedItems allObjects]) {
+            DDLogDebug(@"Key change: \"%@\" added by MunkiAdmin", aKey);
         }
         
         /*
@@ -2374,7 +2264,7 @@ static dispatch_queue_t serialQueue;
          */
         NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
+			DDLogDebug(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
             [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 		}
         
@@ -2385,18 +2275,12 @@ static dispatch_queue_t serialQueue;
          This will be triggered if any value is changed.
          */
         else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-                NSLog(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aManifest.manifestURL lastPathComponent]);
-            }
+            DDLogDebug(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aManifest.manifestURL lastPathComponent]);
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-                    NSLog(@"Values differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
-                }
+				DDLogDebug(@"Values differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
                 [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 			} else {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) {
-                    NSLog(@"No changes detected");
-                }
+				DDLogDebug(@"No changes detected");
 			}
         }
         

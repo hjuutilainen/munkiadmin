@@ -7,6 +7,9 @@
 
 #import "MAPredicateEditor.h"
 #import "ConditionalItemMO.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 #define DEFAULT_PREDICATE @"os_vers == '' AND arch == ''"
 
@@ -35,9 +38,7 @@
 
 - (void)saveAction:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSOKButton];
@@ -45,9 +46,7 @@
 
 - (void)cancelAction:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     [[self window] orderOut:sender];
     [NSApp endSheet:[self window] returnCode:NSCancelButton];

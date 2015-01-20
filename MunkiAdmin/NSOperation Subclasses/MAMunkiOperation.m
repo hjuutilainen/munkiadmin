@@ -6,7 +6,9 @@
 //
 
 #import "MAMunkiOperation.h"
+#import "CocoaLumberjack.h"
 
+DDLogLevel ddLogLevel;
 
 @implementation MAMunkiOperation
 
@@ -38,11 +40,7 @@
 		self.command = cmd;
 		self.targetURL = target;
 		self.arguments = args;
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"Initializing munki operation: %@, target: %@", self.command, [self.targetURL relativePath]);
-        }
-		//self.currentJobDescription = @"Initializing pkginfo scan operaiton";
-		
+        DDLogDebug(@"Initializing munki operation: %@, target: %@", self.command, [self.targetURL relativePath]);
 	}
 	return self;
 }
@@ -85,13 +83,9 @@
      */
     int exitCode = makecatalogsTask.terminationStatus;
     if (exitCode == 0) {
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"makecatalogs succeeded.");
-        }
+        DDLogDebug(@"makecatalogs succeeded.");
     } else {
-        if ([self.defaults boolForKey:@"debug"]) {
-            NSLog(@"makecatalogs failed with code %i", exitCode);
-        }
+        DDLogError(@"makecatalogs failed with code %i", exitCode);
     }
     
 	return makecatalogsResults;
@@ -141,7 +135,7 @@
     NSString *errorString;
     errorString = [[NSString alloc] initWithData:makepkginfoTaskErrorData encoding:NSUTF8StringEncoding];
     if (![errorString isEqualToString:@""]) {
-        NSLog(@"makepkginfo reported error:\n%@", errorString);
+        DDLogError(@"makepkginfo reported error:\n%@", errorString);
         return nil;
     }
     
@@ -155,9 +149,7 @@
                                                         error:&error];
 	
 	if (!plist) {
-		if ([self.defaults boolForKey:@"debug"]) {
-			NSLog(@"MunkiOperation:makepkginfo:error:%@", [error description]);
-		}
+        DDLogError(@"MunkiOperation:makepkginfo:error:%@", [error description]);
 		return nil;
 	}
 	
@@ -174,14 +166,14 @@
             
 			if ([self.command isEqualToString:@"makecatalogs"]) {
 				NSString *results = [self makeCatalogs];
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makecatalogs");
-				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makecatalogs:results: %@", results);
+                DDLogDebug(@"MunkiOperation:makecatalogs");
+				DDLogVerbose(@"MunkiOperation:makecatalogs:results: %@", results);
 			}
 			
 			else if ([self.command isEqualToString:@"makepkginfo"]) {
 				NSDictionary *pkginfo = [self makepkginfo];
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:makepkginfo");
-				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+                DDLogDebug(@"MunkiOperation:makepkginfo");
+				DDLogVerbose(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 				if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
 					[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:)
 													withObject:pkginfo
@@ -191,8 +183,8 @@
 			
 			else if ([self.command isEqualToString:@"installsitem"]) {
 				NSDictionary *pkginfo = [self makepkginfo];
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"MunkiOperation:installsitem");
-				if ([self.defaults boolForKey:@"debugLogAllProperties"]) NSLog(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
+                DDLogDebug(@"MunkiOperation:installsitem");
+				DDLogVerbose(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 				if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
 					[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:)
 													withObject:pkginfo
@@ -201,7 +193,7 @@
 			}
 			
 			else {
-				NSLog(@"Command not recognized: %@", self.command);
+				DDLogDebug(@"Command not recognized: %@", self.command);
 			}
             
 		}

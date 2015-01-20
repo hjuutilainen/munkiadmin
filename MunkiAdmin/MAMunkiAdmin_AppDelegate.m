@@ -22,6 +22,9 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
 
@@ -38,17 +41,14 @@
 
 - (IBAction)openPreferencesAction:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	[self.preferencesController showWindow:self];
 }
 
 - (IBAction)showPkginfoInFinderAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     NSURL *selectedURL = (NSURL *)[[[[self.packagesViewController packagesArrayController] selectedObjects] lastObject] packageInfoURL];
     if (selectedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
@@ -57,9 +57,8 @@
 
 - (IBAction)showInstallerInFinderAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     NSURL *selectedURL = (NSURL *)[[[[self.packagesViewController packagesArrayController] selectedObjects] lastObject] packageURL];
     if (selectedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
@@ -68,9 +67,8 @@
 
 - (IBAction)showManifestInFinderAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     NSURL *selectedURL = (NSURL *)[[[self.manifestsArrayController selectedObjects] lastObject] manifestURL];
     if (selectedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[self.repoURL relativePath]];
@@ -99,40 +97,46 @@
 
 - (BOOL)makepkginfoInstalled
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	// Check if /usr/local/munki/makepkginfo exists
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSString *makepkginfoPath = [self.defaults stringForKey:@"makepkginfoPath"];
 	if ([fm fileExistsAtPath:makepkginfoPath]) {
 		return YES;
 	} else {
-		NSLog(@"Can't find %@. Check the paths to munki tools.", makepkginfoPath);
+		DDLogError(@"Can't find %@. Check the paths to munki tools.", makepkginfoPath);
 		return NO;
 	}
 }
 
 - (BOOL)makecatalogsInstalled
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	// Check if /usr/local/munki/makecatalogs exists
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSString *makecatalogsPath = [self.defaults stringForKey:@"makecatalogsPath"];
 	if ([fm fileExistsAtPath:makecatalogsPath]) {
 		return YES;
 	} else {
-		NSLog(@"Can't find %@. Check the paths to munki tools.", makecatalogsPath);
+		DDLogError(@"Can't find %@. Check the paths to munki tools.", makecatalogsPath);
 		return NO;
 	}
 }
 
 - (void)updateSourceList
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self.packagesViewController.directoriesTreeController rearrangeObjects];
 }
 
 - (void)deleteAllManagedObjects
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Deleting all managed objects (in-memory)");
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+	DDLogDebug(@"Deleting all managed objects (in-memory)");
+    
     NSManagedObjectContext *moc = [self managedObjectContext];
     
 	[moc processPendingChanges];
@@ -141,7 +145,7 @@
 	for (NSEntityDescription *entDescr in [[self managedObjectModel] entities]) {
 		@autoreleasepool {
 			NSArray *allObjects = [self allObjectsForEntity:[entDescr name]];
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
+			DDLogDebug(@"Deleting %lu objects from entity: %@", (unsigned long)[allObjects count], [entDescr name]);
 			for (id anObject in allObjects) {
 				[moc deleteObject:anObject];
 			}
@@ -153,6 +157,8 @@
 
 - (NSArray *)allObjectsForEntity:(NSString *)entityName
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
@@ -163,6 +169,8 @@
 
 - (NSURL *)chooseRepositoryFolder
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	openPanel.title = @"Select a munki Repository";
 	openPanel.allowsMultipleSelection = NO;
@@ -182,6 +190,8 @@
 
 - (NSArray *)chooseFolderForSave
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	openPanel.title = @"Select a save location";
 	openPanel.allowsMultipleSelection = NO;
@@ -199,6 +209,8 @@
 
 - (NSURL *)chooseDestinationDirectoryWithTitle:(NSString *)title message:(NSString *)message
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	openPanel.title = title;
     openPanel.message = message;
@@ -219,6 +231,8 @@
 
 - (NSURL *)chooseFile
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	openPanel.title = @"Select a File";
 	openPanel.allowsMultipleSelection = NO;
@@ -236,6 +250,8 @@
 
 - (NSArray *)chooseFiles
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
 	openPanel.title = @"Select a File";
 	openPanel.allowsMultipleSelection = YES;
@@ -254,6 +270,8 @@
 
 - (NSArray *)chooseFilesForMakepkginfo
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     openPanel.delegate = self;
 	openPanel.title = @"Select a File";
@@ -274,6 +292,8 @@
 
 - (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if ([[MAMunkiRepositoryManager sharedManager] canImportURL:url error:outError]) {
         return YES;
     } else {
@@ -283,6 +303,8 @@
 
 - (NSURL *)showSavePanelForCopyOperation:(NSString *)fileName
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
     savePanel.directoryURL = self.pkgsURL;
@@ -298,6 +320,8 @@
 
 - (NSURL *)showSavePanelForManifestWithTitle:(NSString *)title filename:(NSString *)filename message:(NSString *)message directoryURL:(NSURL *)url
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = filename;
     if (url) {
@@ -320,6 +344,8 @@
 
 - (NSURL *)showSavePanelForPkginfo:(NSString *)fileName
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
     if (self.previousPkgSaveURL) {
@@ -346,6 +372,8 @@
 
 - (NSURL *)showSavePanel
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = @"New Repository";
 	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
@@ -366,26 +394,28 @@
     
     /*
     if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
+		DDLogDebug(@"%@", NSStringFromSelector(_cmd));
 	}
     
     NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
     for (id anUpdatedObject in updatedObjects) {
-        NSLog(@"Updated: %@", anUpdatedObject);
+        DDLogError(@"Updated: %@", anUpdatedObject);
     }
     NSSet *deletedObjects = [[notification userInfo] objectForKey:NSDeletedObjectsKey];
     for (id aDeletedObject in deletedObjects) {
-        NSLog(@"Deleted: %@", aDeletedObject);
+        DDLogError(@"Deleted: %@", aDeletedObject);
     }
     NSSet *insertedObjects = [[notification userInfo] objectForKey:NSInsertedObjectsKey];
     for (id anInsertedObject in insertedObjects) {
-        NSLog(@"Updated: %@", anInsertedObject);
+        DDLogError(@"Updated: %@", anInsertedObject);
     }
     */
 }
 
 - (void)startObservingObjectsForChanges
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(managedObjectsDidChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
@@ -394,6 +424,8 @@
 
 - (void)stopObservingObjectsForChanges
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSManagedObjectContextObjectsDidChangeNotification
                                                   object:self.managedObjectContext];
@@ -403,10 +435,8 @@
 # pragma mark Application Startup
 
 - (void)awakeFromNib
-{	
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@: Setting up the app", NSStringFromSelector(_cmd));
-	}
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     self.repositoryHasUnstagedChanges = NO;
     
@@ -511,6 +541,8 @@
 
 - (NSString *)safeFilenameFromString:(NSString *)aFileName
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     // Do a lossy conversion
     NSData *data = [aFileName dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *tmpString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -530,6 +562,8 @@
 
 - (BOOL)processSingleSharedObject:(NSDictionary *)object saveDirectoryURL:(NSURL *)saveDirectory
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     /*
      Get the filename hint and the pkginfo
      */
@@ -544,7 +578,7 @@
     NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:safeFilenameHint];
     BOOL saved = [pkginfo writeToURL:saveURL atomically:YES];
     if (!saved) {
-        NSLog(@"Error: Failed to write %@...", [saveURL path]);
+        DDLogError(@"Error: Failed to write %@...", [saveURL path]);
         return NO;
     }
     
@@ -590,6 +624,8 @@
 
 - (void)processSharedPayloadDictionaries:(NSArray *)payloadDictionaries
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if (!payloadDictionaries) {
         return;
     }
@@ -607,21 +643,21 @@
         BOOL hasPkginfo = (obj[@"pkginfo"]) ? TRUE : FALSE;
         
         if (!hasFilename || !hasPkginfo) {
-            NSLog(@"Error: Pkginfo from notification object is not valid...");
+            DDLogError(@"Error: Pkginfo from notification object is not valid...");
             allValid = NO;
             *stop = YES;
         }
         
         id filenameHint = obj[@"filename"];
         if (![filenameHint isKindOfClass:[NSString class]]) {
-            NSLog(@"Error: Object for key \"filename\" is not a string...");
+            DDLogError(@"Error: Object for key \"filename\" is not a string...");
             allValid = NO;
             *stop = YES;
         }
         
         id pkginfo = obj[@"pkginfo"];
         if (![pkginfo isKindOfClass:[NSDictionary class]]) {
-            NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
+            DDLogError(@"Error: Object for key \"pkginfo\" is not a dictionary...");
             allValid = NO;
             *stop = YES;
         }
@@ -657,7 +693,7 @@
     __block BOOL wroteAll = YES;
     [payloadDictionaries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         if (![self processSingleSharedObject:obj saveDirectoryURL:saveDirectory]) {
-            NSLog(@"Error: Object for key \"pkginfo\" is not a dictionary...");
+            DDLogError(@"Error: Object for key \"pkginfo\" is not a dictionary...");
             wroteAll = NO;
             *stop = YES;
         }
@@ -688,6 +724,8 @@
 
 - (void)didReceiveSharedPkginfo:(NSNotification *)aNotification
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     /*
      Make MunkiAdmin the top-most app
      */
@@ -703,13 +741,15 @@
         [self processSharedPayloadDictionaries:items];
         
     } else {
-        NSLog(@"Error: Objects not in expected format...");
-        NSLog(@"UserInfo: %@", [[aNotification userInfo] description]);
+        DDLogError(@"Error: Objects not in expected format...");
+        DDLogError(@"UserInfo: %@", [[aNotification userInfo] description]);
     }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     // Update version information if paths have changed
     if (([keyPath isEqualToString:@"values.makepkginfoPath"]) ||
         ([keyPath isEqualToString:@"values.makecatalogsPath"]))
@@ -718,11 +758,68 @@
     }
 }
 
+- (DDLogLevel)ddLogLevelFromInteger:(NSInteger)i
+{
+    DDLogLevel level = DDLogLevelWarning;
+    switch (i) {
+        case 0:
+            level = DDLogLevelOff;
+            break;
+        case 1:
+            level = DDLogLevelError;
+            break;
+        case 2:
+            level = DDLogLevelWarning;
+            break;
+        case 3:
+            level = DDLogLevelInfo;
+            break;
+        case 4:
+            level = DDLogLevelDebug;
+            break;
+        case 5:
+            level = DDLogLevelVerbose;
+            break;
+        default:
+            level = DDLogLevelWarning;
+            break;
+    }
+    return level;
+}
+
+- (void)configureLogging
+{
+    /*
+     Log to ASL
+     */
+    //[DDLog addLogger:[DDASLLogger sharedInstance]];
+    
+    /*
+     Log to Xcode (if available)
+     */
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
+    /*
+     Log to ~/Library/Logs/MunkiAdmin/
+     */
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:fileLogger];
+    
+    NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:@"logLevel"];
+    if (logLevel) {
+        ddLogLevel = [self ddLogLevelFromInteger:[logLevel integerValue]];
+    }
+    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    [self configureLogging];
+    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     // Observe user defaults for changes in makepkginfo and makecatalogs paths
     NSUserDefaultsController *dc = [NSUserDefaultsController sharedUserDefaultsController];
@@ -756,7 +853,9 @@
 # pragma mark NSOperationQueue specific
 
 - (void)checkOperations:(NSTimer *)timer
-{	
+{
+    //DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSUInteger numOp = [self.operationQueue operationCount];
 	
     if (numOp < 1) {
@@ -834,9 +933,8 @@
 
 - (void)startOperationTimer
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	self.operationTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
 													  target:self
 													selector:@selector(checkOperations:)
@@ -846,6 +944,8 @@
 
 - (void)showProgressPanel
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[NSApp beginSheet:self.progressPanel
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
@@ -857,9 +957,10 @@
 
 - (IBAction)cancelOperationsAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	self.queueIsRunning = NO;
 	self.currentStatusDescription = @"Canceling all operations";
-	if ([self.defaults boolForKey:@"debug"]) NSLog(@"%@", self.currentStatusDescription);
+	DDLogDebug(@"%@", self.currentStatusDescription);
 	[self.operationQueue cancelAllOperations];
 }
 
@@ -867,6 +968,8 @@
 
 - (void)renameSelectedManifest
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     /*
@@ -881,7 +984,7 @@
                                                     message:message
                                                directoryURL:[currentURL URLByDeletingLastPathComponent]];
     if (!newURL) {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"User cancelled move/rename operation");
+        DDLogDebug(@"User cancelled move/rename operation");
         return;
     }
     
@@ -895,17 +998,14 @@
 
 - (IBAction)renameSelectedManifestAction:sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[self renameSelectedManifest];
 }
 
 - (void)duplicateSelectedManifest
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
@@ -918,7 +1018,7 @@
                                                     message:message
                                                directoryURL:nil];
     if (!newURL) {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"User cancelled duplicate operation");
+        DDLogError(@"User cancelled duplicate operation");
         return;
     }
     
@@ -935,23 +1035,20 @@
         
         [self showProgressPanel];
     } else {
-        NSLog(@"Failed to copy manifest on disk");
+        DDLogError(@"Failed to copy manifest on disk");
     }
 }
 
 - (IBAction)duplicateSelectedManifestAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self duplicateSelectedManifest];
 }
 
 - (void)deleteSelectedManifests
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
     
@@ -973,7 +1070,7 @@
                            @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
                            [selectedManifests[0] title]];
     } else {
-        NSLog(@"No manifests selected, can't delete anything...");
+        DDLogError(@"No manifests selected, can't delete anything...");
         return;
     }
     [alert setMessageText:messageText];
@@ -994,17 +1091,14 @@
 
 - (IBAction)deleteSelectedManifestsAction:sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[self deleteSelectedManifests];
 }
 
 - (void)createNewManifest
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSString *newFilename = NSLocalizedString(@"new-manifest", nil);
     NSString *message = NSLocalizedString(@"Choose a location and name for the new manifest. Location should be within your manifests directory.", nil);
@@ -1014,7 +1108,7 @@
                                                     message:message
                                                directoryURL:nil];
     if (!newURL) {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"User cancelled new manifest creation");
+        DDLogError(@"User cancelled new manifest creation");
         return;
     }
     
@@ -1035,6 +1129,8 @@
 
 - (IBAction)createNewManifestAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[self createNewManifest];
 }
 
@@ -1043,9 +1139,8 @@
 
 - (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
     }
@@ -1060,9 +1155,7 @@
 
 - (void)renameSelectedPackages
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     PackageMO *firstSelected = [[self.packagesViewController packagesArrayController] selectedObjects][0];
     
@@ -1082,15 +1175,14 @@
 
 - (IBAction)renameSelectedPackagesAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     [self renameSelectedPackages];
 }
 
 
 - (void)deleteSelectedPackages
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	NSArray *selectedPackages = [[self.packagesViewController packagesArrayController] selectedObjects];
 	
@@ -1127,9 +1219,7 @@
 
 - (void)createNewCatalog
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
@@ -1161,11 +1251,13 @@
 
 - (IBAction)createNewCatalogAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	[self createNewCatalog];
 }
 
 - (void)enableAllPackagesForManifest
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = YES;
@@ -1174,11 +1266,13 @@
 
 - (IBAction)enableAllPackagesForManifestAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	[self enableAllPackagesForManifest];
 }
 
 - (void)disableAllPackagesForManifest
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
 	for (ManagedInstallMO *managedInstall in [selectedManifest managedInstalls]) {
 		managedInstall.isEnabledValue = NO;
@@ -1187,6 +1281,7 @@
 
 - (IBAction)disableAllPackagesForManifestAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	[self disableAllPackagesForManifest];
 }
 
@@ -1194,9 +1289,7 @@
 
 - (IBAction)createNewRepository:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	NSURL *newRepoURL = [self showSavePanel];
 	if (newRepoURL != nil) {
@@ -1210,13 +1303,15 @@
 		if (catalogsDirCreated && iconsDirCreated && manifestsDirCreated && pkgsDirCreated && pkgsinfoDirCreated) {
 			[self selectRepoAtURL:newRepoURL];
 		} else {
-			NSLog(@"Can't create repository: %@", newRepoPath);
+			DDLogError(@"Can't create repository: %@", newRepoPath);
 		}
 	}
 }
 
 - (void)assimilatePackageProperties:(NSDictionary *)aPkgProps
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	// Fetch for Application objects
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
@@ -1245,7 +1340,7 @@
 		NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
 		if (numFoundApplications == 0) {
 			// No matching Applications found.
-			NSLog(@"Assimilator found zero matching Applications for package.");
+			DDLogError(@"Assimilator found zero matching Applications for package.");
 		} else if (numFoundApplications == 1) {
 			ApplicationMO *existingApplication = [moc executeFetchRequest:fetchForApplications error:nil][0];
 			if ([existingApplication hasCommonDescription]) {
@@ -1259,11 +1354,11 @@
 			}
 			
 		} else {
-			NSLog(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
+			DDLogError(@"Assimilator found multiple matching Applications for package. Can't decide on my own...");
 		}
 	}
 	else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't assimilate. %lu results found for package search", (unsigned long)numFoundPkgs);
+		DDLogError(@"Can't assimilate. %lu results found for package search", (unsigned long)numFoundPkgs);
 	}
 
 }
@@ -1273,6 +1368,8 @@
 
 - (void)makepkginfoDidFinish:(NSDictionary *)pkginfoPlist
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	// Callback from makepkginfo
     
     if (pkginfoPlist) {
@@ -1338,7 +1435,7 @@
             
         }
     } else {
-        NSLog(@"makepkginfo failed!");
+        DDLogError(@"makepkginfo failed!");
         NSAlert *makepkginfoFailedAlert = [NSAlert alertWithMessageText:@"Invalid pkginfo"
                                                           defaultButton:@"OK"
                                                         alternateButton:@""
@@ -1356,6 +1453,8 @@
 
 - (void)enableAllBindings
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self.allPackagesArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.allPackagesArrayController setEntityName:@"Package"];
     if ([self.allPackagesArrayController fetchWithRequest:nil merge:YES error:nil]) {
@@ -1404,6 +1503,8 @@
 
 - (void)disableAllBindings
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self.allCatalogsArrayController setManagedObjectContext:nil];
     [self.applicationsArrayController setManagedObjectContext:nil];
     [self.packageInfosArrayController setManagedObjectContext:nil];
@@ -1415,9 +1516,8 @@
 
 - (void)relationshipScannerDidFinish:(NSString *)mode
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if ([mode isEqualToString:@"pkgs"]) {
         
         
@@ -1452,10 +1552,9 @@
 
 - (void)mergeChanges:(NSNotification*)notification
 {
+    //DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSAssert([NSThread mainThread], @"Not on the main thread");
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Merging changes in main thread");
-	}
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
 }
 
@@ -1463,9 +1562,8 @@
 
 - (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self.managedObjectContext refreshObject:[pkginfoAssimilator targetPkginfo] mergeChanges:YES];
     for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
@@ -1478,9 +1576,8 @@
 
 - (IBAction)startPkginfoAssimilatorAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if (currentWholeView == [self.packagesViewController view]) {
         
         PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] lastObject];
@@ -1500,9 +1597,8 @@
 
 - (void)packageEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [self.managedObjectContext refreshObject:[advancedPackageEditor pkginfoToEdit] mergeChanges:YES];
     for (PackageMO *aPackage in [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave]) {
         aPackage.hasUnstagedChangesValue = YES;
@@ -1514,6 +1610,8 @@
 
 - (IBAction)selectNextPackageForEditing:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     // Commit any changes
     [advancedPackageEditor commitChangesToCurrentPackage];
     
@@ -1531,6 +1629,8 @@
 
 - (IBAction)selectPreviousPackageForEditing:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     // Commit any changes
     [advancedPackageEditor commitChangesToCurrentPackage];
     
@@ -1548,9 +1648,7 @@
 
 - (IBAction)getInfoAction:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     if (currentWholeView == [self.packagesViewController view]) {
         
@@ -1563,7 +1661,7 @@
         [advancedPackageEditor beginEditSessionWithObject:object delegate:self];
         
         if ([sender isKindOfClass:[NSButton class]]) {
-            switch ([sender tag]) {
+            switch ([(NSButton *)sender tag]) {
                 case 0: // Catalogs
                     [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
                     break;
@@ -1609,9 +1707,8 @@
 
 - (void)newPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if (returnCode == NSCancelButton) return;
     
     NSString *thePredicateString = nil;
@@ -1643,9 +1740,8 @@
 
 - (void)editPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if (returnCode == NSCancelButton) return;
     
     NSString *thePredicateString = nil;
@@ -1662,6 +1758,8 @@
 
 - (IBAction)addNewConditionalItemAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     predicateEditor.conditionToEdit = nil;
     [predicateEditor resetPredicateToDefault];
     
@@ -1674,6 +1772,8 @@
 
 - (IBAction)editConditionalItemAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ConditionalItemMO *selectedCondition = [[self.manifestDetailViewController.conditionsTreeController selectedObjects] lastObject];
     
     @try {
@@ -1691,7 +1791,7 @@
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"%@", exception);
+        DDLogError(@"%@", exception);
     }
     @finally {
         
@@ -1701,6 +1801,8 @@
 
 - (IBAction)removeConditionalItemAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (ConditionalItemMO *aConditionalItem in [self.manifestDetailViewController.conditionsTreeController selectedObjects]) {
@@ -1711,6 +1813,8 @@
 
 - (IBAction)addNewIncludedManifestAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [NSApp beginSheet:[selectManifestsWindowController window] 
 	   modalForWindow:self.window modalDelegate:nil 
 	   didEndSelector:nil contextInfo:nil];
@@ -1739,6 +1843,8 @@
 
 - (IBAction)removeIncludedManifestAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *anIncludedManifest in [self.manifestDetailViewController.includedManifestsController selectedObjects]) {
@@ -1749,15 +1855,16 @@
 
 - (void)addNewManagedInstallSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     if (returnCode == NSCancelButton) return;
     [self processAddItemsAction:sheet];
 }
 
 - (IBAction)addNewManagedInstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self.addItemsType = @"managedInstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
@@ -1787,6 +1894,8 @@
 
 - (IBAction)removeManagedInstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedInstall in [self.manifestDetailViewController.managedInstallsController selectedObjects]) {
@@ -1797,6 +1906,8 @@
 
 - (IBAction)addNewManagedUninstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self.addItemsType = @"managedUninstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
@@ -1826,6 +1937,8 @@
 
 - (IBAction)removeManagedUninstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedUninstall in [self.manifestDetailViewController.managedUninstallsController selectedObjects]) {
@@ -1836,6 +1949,8 @@
 
 - (IBAction)addNewManagedUpdateAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self.addItemsType = @"managedUpdate";
     
     [NSApp beginSheet:[addItemsWindowController window] 
@@ -1865,6 +1980,8 @@
 
 - (IBAction)removeManagedUpdateAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *aManagedUpdate in [self.manifestDetailViewController.managedUpdatesController selectedObjects]) {
@@ -1875,6 +1992,8 @@
 
 - (IBAction)addNewOptionalInstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self.addItemsType = @"optionalInstall";
     
     [NSApp beginSheet:[addItemsWindowController window] 
@@ -1904,6 +2023,8 @@
 
 - (IBAction)removeOptionalInstallAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     for (StringObjectMO *anOptionalInstall in [self.manifestDetailViewController.optionalInstallsController selectedObjects]) {
@@ -1914,10 +2035,12 @@
 
 - (IBAction)processAddNestedManifestAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     NSString *selectedTabViewLabel = [[[selectManifestsWindowController tabView] selectedTabViewItem] label];
     for (ManifestMO *selectedManifest in [self.manifestsArrayController selectedObjects]) {
         if ([selectedTabViewLabel isEqualToString:@"Existing"]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding nested manifest in Existing mode");
+            DDLogDebug(@"Adding nested manifest in Existing mode");
             for (ManifestMO *aManifest in [[selectManifestsWindowController manifestsArrayController] selectedObjects]) {
                 StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
                 newItem.title = aManifest.title;
@@ -1926,7 +2049,7 @@
                 [selectedManifest addIncludedManifestsFasterObject:newItem];
             }
         } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding nested manifest in Custom mode");
+            DDLogDebug(@"Adding nested manifest in Custom mode");
             StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:self.managedObjectContext];
             NSString *newTitle = [[selectManifestsWindowController customValueTextField] stringValue];
             newItem.title = newTitle;
@@ -1944,6 +2067,8 @@
 
 - (void)processAddItemsAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     for (ManifestMO *selectedManifest in [self.manifestsArrayController selectedObjects]) {
         for (StringObjectMO *selectedItem in [addItemsWindowController selectionAsStringObjects]) {
             selectedItem.typeString = self.addItemsType;
@@ -1970,6 +2095,8 @@
 
 - (IBAction)cancelAddNestedManifestsAction:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[NSApp endSheet:[selectManifestsWindowController window]];
 	[[selectManifestsWindowController window] close];
 }
@@ -1978,9 +2105,7 @@
 
 - (void)undoManagerDidUndo:(id)sender
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 }
 
 
@@ -1988,19 +2113,24 @@
 
 - (void)setupCopyOperation:(MAFileCopyOperation *)copyOp withDependingOperation:(MAMunkiOperation *)depOp
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [depOp addDependency:copyOp];
     copyOp.delegate = self;
 }
 
 - (void)setupMakepkginfoOperation:(MAMunkiOperation *)theOp withDependingOperation:(MARelationshipScanner *)relScan
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     [relScan addDependency:theOp];
     theOp.delegate = self;
 }
 
 - (void)addNewPackagesFromFileURLs:(NSArray *)filesToAdd
 {
-    if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu files to repository", (unsigned long)[filesToAdd count]);
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    DDLogDebug(@"Adding %lu files to repository", (unsigned long)[filesToAdd count]);
     
     [self disableAllBindings];
     
@@ -2013,10 +2143,10 @@
             MAMunkiOperation *theOp;
             
             if (![[fileToAdd relativePath] hasPrefix:[self.pkgsURL relativePath]]) {
-                if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) &&
-                    ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
-                    if ([self.defaults boolForKey:@"debug"])
-                        NSLog(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
+                if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) && ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
+                    
+                    DDLogDebug(@"%@ not within %@ -> Should copy", [fileToAdd relativePath], [self.pkgsURL relativePath]);
+                    
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
                         self.previousPkgSaveURL = [newTarget URLByDeletingLastPathComponent];
@@ -2027,8 +2157,7 @@
                         [operationsToAdd addObject:copyOp];
                         [operationsToAdd addObject:theOp];
                     } else {
-                        if ([self.defaults boolForKey:@"debug"])
-                            NSLog(@"User chose to cancel the copy operation for %@. Bailing out...", [fileToAdd relativePath]);
+                        DDLogDebug(@"User chose to cancel the copy operation for %@. Bailing out...", [fileToAdd relativePath]);
                     }
                     
                 } else {
@@ -2054,7 +2183,7 @@
         [self.operationQueue addOperation:enableBindingsOp];
         [self showProgressPanel];
     } else {
-        if ([self.defaults boolForKey:@"debug"]) NSLog(@"Re-enabling all bindings...");
+        DDLogDebug(@"Re-enabling all bindings...");
         NSBlockOperation *enableBindingsOp = [NSBlockOperation blockOperationWithBlock:^{
             [self performSelectorOnMainThread:@selector(enableAllBindings) withObject:nil waitUntilDone:YES];
         }];
@@ -2064,9 +2193,7 @@
 
 - (IBAction)addNewPackage:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
@@ -2074,7 +2201,7 @@
 			[self addNewPackagesFromFileURLs:filesToAdd];
 		}
 	} else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
         [self alertMunkiToolNotInstalled:@"makepkginfo"];
 	}
 }
@@ -2082,13 +2209,12 @@
 
 - (IBAction)addNewInstallsItem:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	if ([self makepkginfoInstalled]) {
 		NSArray *filesToAdd = [self chooseFiles];
 		if (filesToAdd) {
-			if ([self.defaults boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
+			DDLogDebug(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
 					MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:fileToAdd];
@@ -2099,7 +2225,7 @@
 			[self showProgressPanel];
 		}
 	} else {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
         [self alertMunkiToolNotInstalled:@"makepkginfo"];
 	}
 }
@@ -2109,9 +2235,7 @@
 
 - (void)updateCatalogs
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
@@ -2122,13 +2246,15 @@
 		[self showProgressPanel];
 		
 	} else {
-		NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
+		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
         [self alertMunkiToolNotInstalled:@"makecatalogs"];
 	}
 }
 
 - (IBAction)updateCatalogs:sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
         MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil];
@@ -2136,7 +2262,7 @@
         [self.operationQueue addOperation:op];
         [self showProgressPanel];
     } else {
-        NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
+        DDLogError(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
         [self alertMunkiToolNotInstalled:@"makecatalogs"];
     }
 }
@@ -2144,9 +2270,8 @@
 
 - (IBAction)writeChangesToDisk:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
 	[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
 	[self selectRepoAtURL:self.repoURL];
@@ -2158,9 +2283,8 @@
 
 - (IBAction)openRepository:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
 	NSURL *tempURL = [self chooseRepositoryFolder];
 	if (tempURL != nil) {
 		[self selectRepoAtURL:tempURL];
@@ -2169,15 +2293,15 @@
 
 - (IBAction)reloadRepositoryAction:sender
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	[self selectRepoAtURL:self.repoURL];
 }
 
 - (BOOL)resetPersistentStore
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     /*
      Delete all existing stores
      */
@@ -2207,9 +2331,8 @@
 
 - (void)selectRepoAtURL:(NSURL *)newURL
 {
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Selecting repo: %@", [newURL relativePath]);
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+	DDLogDebug(@"Opening repository at %@", [newURL path]);
     
     [self stopObservingObjectsForChanges];
     [self disableAllBindings];
@@ -2248,12 +2371,12 @@
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
             
 			[self scanCurrentRepoForCatalogFiles];
-			[self scanCurrentRepoForPackages];
+            [self scanCurrentRepoForPackages];
 			[self scanCurrentRepoForManifests];
 			
             [self showProgressPanel];
 		} else {
-			NSLog(@"Not a repo!");
+			DDLogError(@"Not a repo!");
             NSAlert *notRepoAlert = [NSAlert alertWithMessageText:@"Invalid repository"
                                                     defaultButton:@"OK"
                                                   alternateButton:@""
@@ -2289,7 +2412,7 @@
 		[existingApplication addPackagesObject:aPkg];
 		
 	} else {
-		NSLog(@"Found multiple Applications for package. This really shouldn't happen...");
+		DDLogError(@"Found multiple Applications for package. This really shouldn't happen...");
 	}
 	
 }
@@ -2301,9 +2424,7 @@
      Scan the current repo for already existing pkginfo files
      and create a new Package object for each of them
 	*/
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Scanning selected repo for packages");
-	}
+	DDLogDebug(@"Scanning selected repo for packages");
 	
     /*
      Setup the REPOSITORIES section for side bar
@@ -2342,7 +2463,7 @@
                 NSNumber *isDir;
                 [anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
                 if (![isDir boolValue]) {
-                    NSLog(@"Not a regular file: %@", [anURL path]);
+                    DDLogError(@"Not a regular file: %@", [anURL path]);
                 }
             }
         }
@@ -2357,10 +2478,7 @@
      Scan the current repo for already existing catalog files
      and create a new Catalog object for each of them
      */
-	
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Scanning selected repo for catalogs");
-	}
+	DDLogDebug(@"Scanning selected repo for catalogs");
 	
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -2407,10 +2525,7 @@
 	 Scan the current repo for already existing manifest files
 	 and create a new Manifest object for each of them
      */
-	
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Scanning selected repo for manifests");
-	}
+	DDLogDebug(@"Scanning selected repo for manifests");
 	
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -2483,10 +2598,7 @@
 	/*
      Scan the current repo for included manifests
      */
-    
-	if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"Scanning selected repo for included manifests");
-	}
+    DDLogDebug(@"Scanning selected repo for included manifests");
 	
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -2516,7 +2628,7 @@
 			NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
 			if (foundItems == 0) {
 				if ([self.defaults boolForKey:@"debug"]) {
-					NSLog(@"No match for manifest, creating new with name: %@", filename);
+					DDLogDebug(@"No match for manifest, creating new with name: %@", filename);
 				}
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = filename;
@@ -2524,7 +2636,7 @@
 			} else {
 				manifest = [moc executeFetchRequest:request error:nil][0];
 				if ([self.defaults boolForKey:@"debug"]) {
-					NSLog(@"Found existing manifest %@", manifest.title);
+					DDLogDebug(@"Found existing manifest %@", manifest.title);
 				}
 			}
 
@@ -2538,7 +2650,7 @@
 				newManifestInfo.manifest = manifest;
 				
 				if ([self.defaults boolForKey:@"debug"]) {
-					NSLog(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
+					DDLogDebug(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
 				}
 				
 				if (includedManifests == nil) {
@@ -2610,7 +2722,7 @@
     NSManagedObjectModel *mom = [self managedObjectModel];
     if (!mom) {
         NSAssert(NO, @"Managed object model is nil");
-        NSLog(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
+        DDLogError(@"%@:%@ No model to generate a store from", [self class], NSStringFromSelector(_cmd));
         return nil;
     }
 
@@ -2621,7 +2733,7 @@
     if ( ![fileManager fileExistsAtPath:applicationSupportDirectory isDirectory:NULL] ) {
 		if (![fileManager createDirectoryAtPath:applicationSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error]) {
             NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportDirectory,error]));
-            NSLog(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
+            DDLogError(@"Error creating application support directory at %@ : %@",applicationSupportDirectory,error);
             return nil;
 		}
     }
@@ -2685,15 +2797,13 @@
     
     NSSet *modifiedPackages = [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave];
     NSSet *modifiedManifests = [[MAMunkiRepositoryManager sharedManager] modifiedManifestsSinceLastSave];
-    if ([self.defaults boolForKey:@"debug"]) {
-        NSLog(@"Modified manifests: %lu, pkginfos: %lu", (unsigned long)[modifiedManifests count], (unsigned long)[modifiedPackages count]);
-    }
+    DDLogDebug(@"Modified manifests: %lu, pkginfos: %lu", (unsigned long)[modifiedManifests count], (unsigned long)[modifiedPackages count]);
     
     /*
      Save the managed object context before writing to repository
      */
     if (![[self managedObjectContext] commitEditing]) {
-        NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
+        DDLogError(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
     }
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
@@ -2783,9 +2893,9 @@
 # pragma mark -
 # pragma mark NSTabView delegates
 
-- (IBAction)selectViewAction:sender
+- (IBAction)selectViewAction:(id)sender
 {
-	switch ([sender tag]) {
+	switch ([(NSTabView *)sender tag]) {
 		case 1:
 			if (currentWholeView != [self.packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
@@ -2943,7 +3053,7 @@
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
     if ([self.defaults boolForKey:@"debug"]) {
-		NSLog(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
+		DDLogDebug(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
 	}
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
 		currentDetailView = self.applicationsDetailView;

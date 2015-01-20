@@ -7,6 +7,9 @@
 //
 
 #import "MADiskImageOperation.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @interface MADiskImageOperation ()
 // Private interface
@@ -62,16 +65,13 @@
     }
     NSArray *arguments = @[@"detach", self.mountpoints[0]];
     NSData *outputData = [self hdiutilTaskWithArguments:arguments standardInput:nil];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     /*
      If the task failed, try again with -force argument
      */
     if (outputData == nil) {
         
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"Detach failed, retrying with -force...");
-        }
+        DDLogDebug(@"Detach failed, retrying with -force...");
         arguments = @[@"detach", self.mountpoints[0], @"-force"];
         NSData *outputDataFromForced = [self hdiutilTaskWithArguments:arguments standardInput:nil];
         if (outputDataFromForced == nil) {
@@ -87,9 +87,9 @@
     else {
         NSString *outputString;
         outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
-        if (![outputString isEqualToString:@""] && [[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+        if (![outputString isEqualToString:@""]) {
             for (NSString *aLine in [outputString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
-                NSLog(@"%@", aLine);
+                DDLogDebug(@"%@", aLine);
             }
         }
         succeeded = YES;
@@ -232,7 +232,7 @@
     plist = [NSPropertyListSerialization propertyListWithData:firstPropertyList options:NSPropertyListImmutable format:&format error:&error];
     
     if (!plist) {
-        NSLog(@"NSPropertyListSerialization error: %@", [error description]);
+        DDLogError(@"NSPropertyListSerialization error: %@", [error description]);
         return nil;
     } else {
         return (NSDictionary *)plist;
@@ -241,10 +241,7 @@
 
 - (id)hdiutilTaskWithArguments:(NSArray *)arguments standardInput:(NSString *)inputString
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"Running hdiutil task with arguments: %@", arguments);
-    }
+    DDLogDebug(@"Running hdiutil task with arguments: %@", arguments);
     
     /*
      Construct the task
@@ -287,10 +284,10 @@
         NSString *errorString;
         errorString = [[NSString alloc] initWithData:taskErrorData encoding:NSUTF8StringEncoding];
         if (![errorString isEqualToString:@""]) {
-            NSLog(@"Task failed with error:\n%@", errorString);
+            DDLogDebug(@"Task failed with error:\n%@", errorString);
             return nil;
         } else {
-            NSLog(@"Task failed...");
+            DDLogDebug(@"Task failed...");
             return nil;
         }
     } else {
@@ -307,11 +304,7 @@
 
 - (void)main
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MADiskImageOperation starting...");
-    }
+    DDLogDebug(@"MADiskImageOperation starting...");
     
     if (self.willStartCallback) {
         self.willStartCallback();
@@ -326,9 +319,7 @@
      */
     if (self.operationType == MADiskImageOperationTypeAttach) {
         
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"MADiskImageOperation type is MADiskImageOperationTypeAttach");
-        }
+        DDLogDebug(@"MADiskImageOperation type is MADiskImageOperationTypeAttach");
         
         if (self.progressCallback) {
             self.progressCallback(0.2, @"Getting disk image info...");
@@ -371,18 +362,16 @@
      Detach operation
      */
     else if (self.operationType == MADiskImageOperationTypeDetach) {
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"MADiskImageOperation type is MADiskImageOperationTypeDetach");
-        }
+        DDLogDebug(@"MADiskImageOperation type is MADiskImageOperationTypeDetach");
         if (self.mountpoints) {
             if (self.progressCallback) {
                 self.progressCallback(0.4, @"Ejecting disk image...");
             }
             if (![self detach]) {
-                NSLog(@"Detaching %@ failed...", self.mountpoints[0]);
+                DDLogDebug(@"Detaching %@ failed...", self.mountpoints[0]);
             }
         } else {
-            NSLog(@"No mountpoints to detach...");
+            DDLogDebug(@"No mountpoints to detach...");
         }
     }
     
@@ -390,21 +379,15 @@
      Image info operation
      */
     else if (self.operationType == MADiskImageOperationTypeImageInfo) {
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"MADiskImageOperation type is MADiskImageOperationTypeImageInfo");
-        }
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"Type MADiskImageOperationTypeImageInfo not yet implemented");
-        }
+        DDLogDebug(@"MADiskImageOperation type is MADiskImageOperationTypeImageInfo");
+        DDLogDebug(@"Type MADiskImageOperationTypeImageInfo not yet implemented");
         // TODO
     }
     
     if (self.progressCallback) {
         self.progressCallback(1.0, @"");
     }
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MADiskImageOperation running didFinishCallback...");
-    }
+    DDLogDebug(@"MADiskImageOperation running didFinishCallback...");
     if (self.didFinishCallback) {
         self.didFinishCallback();
     }

@@ -10,6 +10,9 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiRepositoryManager.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @interface MAPkginfoAssimilator () {
     
@@ -22,9 +25,8 @@
 
 - (id)initWithWindow:(NSWindow *)window
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self = [super initWithWindow:window];
     if (self) {
         NSArray *basicKeys = @[@"assimilate_autoremove",
@@ -224,9 +226,7 @@
 
 - (IBAction)saveAction:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     [self commitChangesToCurrentPackage];
     
@@ -277,9 +277,8 @@
 
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)targetPackage source:(PackageMO *)sourcePackage delegate:(id)modalDelegate
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
     self.targetPkginfo = targetPackage;
     self.sourcePkginfo = nil;
     if (sourcePackage != nil) {

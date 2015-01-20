@@ -6,13 +6,11 @@
 //
 
 #import "MAFileCopyOperation.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @implementation MAFileCopyOperation
-
-- (NSUserDefaults *)defaults
-{
-	return [NSUserDefaults standardUserDefaults];
-}
 
 + (id)fileCopySourceURL:(NSURL *)src toTargetURL:(NSURL *)target
 {
@@ -21,7 +19,7 @@
 
 - (id)initWithSourceURL:(NSURL *)src targetURL:(NSURL *)target {
 	if ((self = [super init])) {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing manifest operation");
+		DDLogDebug(@"Initializing manifest operation");
 		self.sourceURL = src;
         self.targetURL = target;
 		self.fileName = [self.sourceURL lastPathComponent];
@@ -41,12 +39,12 @@
             [fm setDelegate:self];
             NSError *copyError = nil;
             
-            if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copying %@ to %@", self.fileName, [self.targetURL relativePath]);
+            DDLogDebug(@"Copying %@ to %@", self.fileName, [self.targetURL relativePath]);
             
             if ([fm copyItemAtURL:self.sourceURL toURL:self.targetURL error:&copyError]) {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Done copying");
+                DDLogDebug(@"Done copying");
             } else {
-                if ([self.defaults boolForKey:@"debug"]) NSLog(@"Copy failed with error: %@",[copyError description]);
+                DDLogError(@"Copy failed with error: %@",[copyError description]);
             }
             
 		}

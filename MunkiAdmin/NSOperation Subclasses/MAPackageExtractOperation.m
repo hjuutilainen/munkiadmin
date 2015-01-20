@@ -7,6 +7,9 @@
 //
 
 #import "MAPackageExtractOperation.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @interface MAPackageExtractOperation ()
 @property (strong) NSURL *packageCacheURL;
@@ -26,6 +29,7 @@
 - (id)initWithURL:(NSURL *)url
 {
     if ((self = [super init])) {
+        DDLogDebug(@"Initializing extract operation for %@", [url path]);
 		_packageURL = url;
         NSString *fileName;
         [url getResourceValue:&fileName forKey:NSURLNameKey error:nil];
@@ -75,6 +79,8 @@
     [task setArguments:@[@"-x", sourcePath, outputPath]];
     [task setCurrentDirectoryPath:outputPath];
     
+    DDLogDebug(@"Running /usr/bin/ditto with arguments: %@", task.arguments);
+    
     [task launch];
     [task waitUntilExit];
     
@@ -94,6 +100,8 @@
 	task.launchPath = launchPath;
 	task.arguments = @[@"--expand", sourcePath, outputPath];
 	task.standardOutput = outPipe;
+    
+    DDLogDebug(@"Running /usr/sbin/pkgutil with arguments: %@", task.arguments);
     
     [task launch];
     [task waitUntilExit];
@@ -138,7 +146,7 @@
         [fileURL getResourceValue:&typeIdentifier
                            forKey:NSURLTypeIdentifierKey
                             error:nil];
-        //NSLog(@"%@ %@", typeIdentifier, fileURL);
+        //DDLogDebug(@"%@ %@", typeIdentifier, fileURL);
         if ([workspace type:typeIdentifier conformsToType:type]) {
             [foundURLs addObject:fileURL];
         }
@@ -158,9 +166,7 @@
     if ([fileManager fileExistsAtPath:[archiveURL path]]) {
         [self dittoExtractSource:[archiveURL path] outPath:[archiveExtractedURL path]];
     } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            NSLog(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [archiveURL path]);
-        }
+        DDLogError(@"MAPackageExtractOperation error: Archive file doesn't exist: %@", [archiveURL path]);
     }
 }
 
@@ -175,20 +181,14 @@
     if ([fileManager fileExistsAtPath:[payloadURL path]]) {
         [self dittoExtractSource:[payloadURL path] outPath:[payloadExtractedURL path]];
     } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-            NSLog(@"MAPackageExtractOperation error: Payload file doesn't exist: %@", [payloadURL path]);
-        }
+        DDLogError(@"MAPackageExtractOperation error: Payload file doesn't exist: %@", [payloadURL path]);
     }
 }
 
 
 - (void)extractPackageAtURL:(NSURL *)packageURL
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MAPackageExtractOperation extracting...");
-    }
+    DDLogDebug(@"MAPackageExtractOperation extracting...");
     
     /*
      TODO: Distribution packages
@@ -205,9 +205,7 @@
      */
     if ([isDirectory boolValue]) {
         
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"MAPackageExtractOperation processing bundle style package...");
-        }
+        DDLogDebug(@"MAPackageExtractOperation processing bundle style package...");
         
         /*
          Single package with an archive
@@ -218,9 +216,7 @@
          Metapackage
          */
         for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:packageURL]) {
-            if ([defaults boolForKey:@"debug"]) {
-                NSLog(@"MAPackageExtractOperation found subpackage: %@", [url path]);
-            }
+            DDLogDebug(@"MAPackageExtractOperation found subpackage: %@", [url path]);
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
@@ -232,9 +228,7 @@
      Flat package
      */
     else {
-        if ([defaults boolForKey:@"debug"]) {
-            NSLog(@"MAPackageExtractOperation processing flat package...");
-        }
+        DDLogDebug(@"MAPackageExtractOperation processing flat package...");
         if (self.progressCallback) {
             self.progressCallback(1.0, @"Expanding package...");
         }
@@ -242,9 +236,7 @@
         [self extractPayloadFromExpandedPackageURL:expandedURL];
         
         for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:expandedURL]) {
-            if ([defaults boolForKey:@"debug"]) {
-                NSLog(@"MAPackageExtractOperation found subpackage: %@", [url path]);
-            }
+            DDLogDebug(@"MAPackageExtractOperation found subpackage: %@", [url path]);
             if (self.progressCallback) {
                 self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
             }
@@ -259,17 +251,13 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *cleanError;
     if (![fileManager removeItemAtURL:self.packageCacheURL error:&cleanError]) {
-        NSLog(@"MAPackageExtractOperation Remove failed:\n%@", [cleanError description]);
+        DDLogError(@"MAPackageExtractOperation Remove failed:\n%@", [cleanError description]);
     }
 }
 
 - (void)main
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MAPackageExtractOperation starting...");
-    }
+    DDLogDebug(@"MAPackageExtractOperation starting...");
     
     if (self.willStartCallback) {
         self.willStartCallback();
@@ -284,9 +272,7 @@
      */
     [self extractPackageAtURL:self.packageURL];
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MAPackageExtractOperation running didExtractHandler...");
-    }
+    DDLogDebug(@"MAPackageExtractOperation running didExtractHandler...");
     if (self.didExtractHandler) {
         self.didExtractHandler(self.extractedPayloadsURL);
     }
@@ -294,17 +280,13 @@
     /*
      Clean everything
      */
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MAPackageExtractOperation cleaning cache...");
-    }
+    DDLogDebug(@"MAPackageExtractOperation cleaning cache...");
     if (self.progressCallback) {
         self.progressCallback(1.0, @"Cleaning...");
     }
     [self cleanCache];
     
-    if ([defaults boolForKey:@"debug"]) {
-        NSLog(@"MAPackageExtractOperation running didFinishCallback...");
-    }
+    DDLogDebug(@"MAPackageExtractOperation running didFinishCallback...");
     if (self.progressCallback) {
         self.progressCallback(1.0, @"Done extracting...");
     }

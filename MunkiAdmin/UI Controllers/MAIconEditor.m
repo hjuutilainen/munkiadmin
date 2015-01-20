@@ -12,6 +12,9 @@
 #import "MAImageBrowserItem.h"
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @interface MAIconEditor ()
 
@@ -200,7 +203,7 @@
          */
         NSData *imageData;
         NSSize newSize = NSMakeSize(512.0, 512.0);
-        //NSLog(@"%@", NSStringFromSize([self.currentImage pixelSize]));
+        //DDLogDebug(@"%@", NSStringFromSize([self.currentImage pixelSize]));
         if (self.resizeOnSave && [self.currentImage pixelSize].width > newSize.width) {
             imageData = [[self scaleImage:self.currentImage toSize:newSize] TIFFRepresentation];
         } else {
@@ -210,7 +213,7 @@
         NSData *pngData = [rep representationUsingType:NSPNGFileType properties:nil];
         NSError *writeError;
         if (![pngData writeToURL:[sheet URL] options:NSDataWritingAtomic error:&writeError]) {
-            NSLog(@"%@", writeError);
+            DDLogError(@"%@", writeError);
             [NSApp presentError:writeError];
             return;
         }
@@ -236,7 +239,7 @@
             foundIconImage.imageRepresentation = image;
             
         } else if ([foundIconImages count] > 1) {
-            NSLog(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");
+            DDLogError(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");
         } else {
             // This is the way it should be...
         }
@@ -346,7 +349,7 @@
      Check the installer type before doing anything
      */
     if ((![installerType isEqualToString:@"copy_from_dmg"]) && (installerType != nil)) {
-        NSLog(@"Installer type %@ not supported...", installerType);
+        DDLogDebug(@"Installer type %@ not supported...", installerType);
         NSAlert *alert = [[NSAlert alloc] init];
         alert.messageText = @"Installer type not supported";
         alert.informativeText = [NSString stringWithFormat:@"MunkiAdmin can not extract icons from \"%@\" items.", installerType];
@@ -466,7 +469,7 @@
     if (![fm fileExistsAtPath:[iconsDirectory path]]) {
         NSError *dirCreateError;
         if (![fm createDirectoryAtURL:iconsDirectory withIntermediateDirectories:NO attributes:nil error:&dirCreateError]) {
-            NSLog(@"%@", dirCreateError);
+            DDLogError(@"%@", dirCreateError);
             return;
         }
     }
@@ -523,7 +526,7 @@
     NSString *typeIdentifier;
     NSError *error;
     if (![url getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:&error]) {
-        NSLog(@"%@", error);
+        DDLogError(@"%@", error);
         return;
     }
     
@@ -590,12 +593,12 @@
 
 - (void)imageBrowserSelectionDidChange:(IKImageBrowserView *)aBrowser
 {
-    //NSLog(@"%@", NSStringFromSelector(_cmd));
+    //DDLogDebug(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasRightClickedAtIndex:(NSUInteger)index withEvent:(NSEvent *)event
 {
-    //NSLog(@"%@", NSStringFromSelector(_cmd));
+    //DDLogDebug(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasDoubleClickedAtIndex:(NSUInteger)index

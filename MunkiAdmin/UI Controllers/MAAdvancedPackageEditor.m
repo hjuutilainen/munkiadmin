@@ -16,6 +16,9 @@
 #import "MACoreDataManager.h"
 #import "MARequestStringValueController.h"
 #import "MAIconEditor.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 #define kMinSplitViewWidth      300.0f
 
@@ -86,9 +89,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)addRequiresItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     if (returnCode == NSCancelButton) return;
     
     for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
@@ -106,9 +107,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)addUpdateForItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     if (returnCode == NSCancelButton) return;
     
     for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
@@ -156,25 +155,23 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
 	NSDictionary *installsItemProps = [[pkginfoPlist objectForKey:@"installs"] objectAtIndex:0];
 	if (installsItemProps != nil) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Got new dictionary from makepkginfo");
+		DDLogDebug(@"Got new dictionary from makepkginfo");
         InstallsItemMO *newInstallsItem = [[MACoreDataManager sharedManager] createInstallsItemFromDictionary:installsItemProps inManagedObjectContext:moc];
         [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
 	} else {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Error. Got nil from makepkginfo");
+		DDLogError(@"Error. Got nil from makepkginfo");
 	}
     
 }
 
 - (IBAction)addInstallsItemFromDiskAction:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	if ([[MAMunkiRepositoryManager sharedManager] makepkginfoInstalled]) {
         MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
 		NSArray *filesToAdd = [appDelegate chooseFiles];
 		if (filesToAdd) {
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
+			DDLogDebug(@"Adding %lu installs items", (unsigned long)[filesToAdd count]);
 			for (NSURL *fileToAdd in filesToAdd) {
 				if (fileToAdd != nil) {
 					MAMunkiOperation *theOp = [MAMunkiOperation installsItemFromURL:fileToAdd];
@@ -184,7 +181,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 			}
 		}
 	} else {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) NSLog(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+		DDLogError(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
 	}
 }
 
@@ -355,10 +352,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)saveAction:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     [self commitChangesToCurrentPackage];
         
     [[self window] orderOut:sender];
@@ -383,9 +377,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (id)initWithWindow:(NSWindow *)window
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.

@@ -10,6 +10,9 @@
 #import "MACoreDataManager.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 @implementation MARelationshipScanner
 
@@ -20,17 +23,18 @@
 
 + (id)pkginfoScanner
 {
+    DDLogDebug(@"Initializing pkginfo relationship operation");
 	return [[self alloc] initWithMode:0];
 }
 
 + (id)manifestScanner
 {
+    DDLogDebug(@"Initializing manifest relationship operation");
 	return [[self alloc] initWithMode:1];
 }
 
 - (id)initWithMode:(NSInteger)mode {
 	if ((self = [super init])) {
-		if ([self.defaults boolForKey:@"debug"]) NSLog(@"Initializing relationship operation");
 		_operationMode = mode;
 		_currentJobDescription = @"Initializing relationship operation";
 		
@@ -118,7 +122,7 @@
     
     // Loop through all known manifest objects
     // and configure contents for each
-    
+    DDLogDebug(@"Processing %lu manifests...", [self.allManifests count]);
     [self.allManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allManifests count]];
         ManifestMO *currentManifest = (ManifestMO *)obj;
@@ -149,14 +153,17 @@
                 [aCatalog addCatalogInfosObject:newCatalogInfo];
                 
                 if (catalogs == nil) {
+                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = NO;
                     newCatalogInfo.originalIndexValue = 0;
                     newCatalogInfo.indexInManifestValue = 0;
                 } else if ([catalogs containsObject:catalogTitle]) {
+                    DDLogVerbose(@"%@: catalog %@ --> enabled", currentManifest.fileName, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = YES;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
                     newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
                 } else {
+                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = NO;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
                     newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
@@ -170,6 +177,7 @@
         // PackageMO or ApplicationMO object
         
         for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
+            DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, aManagedInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedInstall.title];
             if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedInstall.originalApplication = matchingObject;
@@ -178,6 +186,7 @@
             }
         }
         for (StringObjectMO *aManagedUninstall in currentManifest.managedUninstallsFaster) {
+            DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, aManagedUninstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUninstall.title];
             if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedUninstall.originalApplication = matchingObject;
@@ -186,6 +195,7 @@
             }
         }
         for (StringObjectMO *aManagedUpdate in currentManifest.managedUpdatesFaster) {
+            DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, aManagedUpdate.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUpdate.title];
             if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedUpdate.originalApplication = matchingObject;
@@ -194,6 +204,7 @@
             }
         }
         for (StringObjectMO *anOptionalInstall in currentManifest.optionalInstallsFaster) {
+            DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, anOptionalInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:anOptionalInstall.title];
             if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 anOptionalInstall.originalApplication = matchingObject;
@@ -261,8 +272,8 @@
     
     // Something went terribly wrong if we got here...
     else {
-        NSLog(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
-        NSLog(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
+        DDLogError(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
+        DDLogError(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
     }
     
     return nil;
@@ -311,6 +322,7 @@
      */
     IconImageMO *defaultIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:nil managedObjectContext:moc];
     
+    DDLogDebug(@"Processing %lu packages...", [self.allPackages count]);
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
@@ -322,7 +334,7 @@
         currentPackage.packageInfoParentDirectoryURL = parentDirectoryURL;
         
         // Loop through the catalog objects we already know about
-        
+        DDLogDebug(@"%@: Looping through catalog objects we already know about...", currentPackage.titleWithVersion);
         for (CatalogMO *aCatalog in self.allCatalogs) {
             if (![existingCatalogTitles containsObject:aCatalog.title]) {
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -338,10 +350,12 @@
                 newPackageInfo.package = currentPackage;
                 
                 if ([[originalPkginfo objectForKey:@"catalogs"] containsObject:aCatalog.title]) {
+                    DDLogDebug(@"%@: Should be enabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
                     newCatalogInfo.isEnabledForPackageValue = YES;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title]];
                     newPackageInfo.isEnabledForCatalogValue = YES;
                 } else {
+                    DDLogDebug(@"%@: Should be disabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
                     newCatalogInfo.isEnabledForPackageValue = NO;
                     newCatalogInfo.originalIndexValue = 10000;
                     newPackageInfo.isEnabledForCatalogValue = NO;
@@ -352,7 +366,7 @@
         
         // Loop through the "catalogs" key in the original pkginfo
         // and create new catalog objects if necessary
-        
+        DDLogDebug(@"%@: Looping through catalogs key in the original pkginfo...", currentPackage.titleWithVersion);
         [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id catalogObject, NSUInteger catalogIndex, BOOL *stopCatalogEnum) {
             
             NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
@@ -369,6 +383,7 @@
             // Create it and add dependencies for it
             
             if (numFoundCatalogs == 0) {
+                DDLogDebug(@"%@: Should be enabled for new catalog %@", currentPackage.titleWithVersion, catalogObject);
                 CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
                 aNewCatalog.title = catalogObject;
                 [aNewCatalog addPackagesObject:currentPackage];
@@ -394,6 +409,7 @@
                 CatalogMO *foundCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
                 
                 if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:catalogObject]) {
+                    DDLogDebug(@"%@: Should be enabled for existing catalog %@", currentPackage.titleWithVersion, foundCatalog.title);
                     [foundCatalog addPackagesObject:currentPackage];
                     CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
                     newCatalogInfo.package = currentPackage;

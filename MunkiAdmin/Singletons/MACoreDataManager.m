@@ -10,6 +10,9 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
+#import "CocoaLumberjack.h"
+
+DDLogLevel ddLogLevel;
 
 /*
  * Private interface
@@ -43,10 +46,10 @@
         id value = [dict objectForKey:obj];
         if (value != nil) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"])
-                NSLog(@"Setting installs item key \"%@\" to \"%@\"", obj, value);
+                DDLogDebug(@"Setting installs item key \"%@\" to \"%@\"", obj, value);
             [newInstallsItem setValue:value forKey:key];
         } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) NSLog(@"Skipped nil value for key %@", key);
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debugLogAllProperties"]) DDLogDebug(@"Skipped nil value for key %@", key);
         }
     }];
     
@@ -57,7 +60,7 @@
     [dict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if (![[defaults arrayForKey:@"installsKeys"] containsObject:key]) {
             if ([defaults boolForKey:@"debugLogAllProperties"])
-                NSLog(@"Setting installs item custom key \"%@\" to \"%@\"", key, obj);
+                DDLogDebug(@"Setting installs item custom key \"%@\" to \"%@\"", key, obj);
             if (key && obj) {
                 InstallsItemCustomKeyMO *customKey = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc];
                 customKey.customKeyName = key;
@@ -201,7 +204,7 @@
     [checkForExisting setPredicate:predicate];
     NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
     if (foundItems > 0) {
-        NSLog(@"Can't create. Found existing category with title: %@", title);
+        DDLogError(@"Can't create. Found existing category with title: %@", title);
         return nil;
     }
     
@@ -235,7 +238,7 @@
     [checkForExisting setPredicate:predicate];
     NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
     if (foundItems > 0) {
-        NSLog(@"Can't rename. Found existing category with title: %@", newTitle);
+        DDLogError(@"Can't rename. Found existing category with title: %@", newTitle);
         return NO;
     }
     
@@ -307,7 +310,7 @@
     [checkForExisting setPredicate:predicate];
     NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
     if (foundItems > 0) {
-        NSLog(@"Can't create. Found existing developer with title: %@", title);
+        DDLogError(@"Can't create. Found existing developer with title: %@", title);
         return nil;
     }
     
@@ -341,7 +344,7 @@
     [checkForExisting setPredicate:predicate];
     NSUInteger foundItems = [moc countForFetchRequest:checkForExisting error:nil];
     if (foundItems > 0) {
-        NSLog(@"Can't rename. Found existing developer with title: %@", newTitle);
+        DDLogError(@"Can't rename. Found existing developer with title: %@", newTitle);
         return NO;
     }
     
