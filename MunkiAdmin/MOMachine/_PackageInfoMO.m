@@ -62,7 +62,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setIsEnabledForCatalog:@(value_)];
+	[self setIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsEnabledForCatalogValue {
@@ -71,7 +71,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForCatalog:@(value_)];
+	[self setPrimitiveIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic originalIndex;
@@ -82,7 +82,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -91,7 +91,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic title;

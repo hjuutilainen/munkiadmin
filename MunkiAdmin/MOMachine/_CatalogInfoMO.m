@@ -74,7 +74,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIndexInManifestValue:(int32_t)value_ {
-	[self setIndexInManifest:@(value_)];
+	[self setIndexInManifest:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveIndexInManifestValue {
@@ -83,7 +83,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIndexInManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInManifest:@(value_)];
+	[self setPrimitiveIndexInManifest:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic isEnabledForManifest;
@@ -94,7 +94,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:@(value_)];
+	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -103,7 +103,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:@(value_)];
+	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic isEnabledForPackage;
@@ -114,7 +114,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIsEnabledForPackageValue:(BOOL)value_ {
-	[self setIsEnabledForPackage:@(value_)];
+	[self setIsEnabledForPackage:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsEnabledForPackageValue {
@@ -123,7 +123,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForPackage:@(value_)];
+	[self setPrimitiveIsEnabledForPackage:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic originalIndex;
@@ -134,7 +134,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -143,7 +143,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic catalog;

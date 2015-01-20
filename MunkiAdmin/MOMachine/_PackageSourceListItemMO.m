@@ -6,10 +6,10 @@
 const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes = {
 	.filterPredicate = @"filterPredicate",
 	.isGroupItem = @"isGroupItem",
+	.itemType = @"itemType",
 	.originalIndex = @"originalIndex",
 	.sortDescriptors = @"sortDescriptors",
 	.title = @"title",
-	.type = @"type",
 };
 
 const struct PackageSourceListItemMORelationships PackageSourceListItemMORelationships = {
@@ -67,7 +67,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setIsGroupItemValue:(BOOL)value_ {
-	[self setIsGroupItem:@(value_)];
+	[self setIsGroupItem:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsGroupItemValue {
@@ -76,8 +76,10 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_ {
-	[self setPrimitiveIsGroupItem:@(value_)];
+	[self setPrimitiveIsGroupItem:[NSNumber numberWithBool:value_]];
 }
+
+@dynamic itemType;
 
 @dynamic originalIndex;
 
@@ -87,7 +89,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -96,14 +98,12 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic sortDescriptors;
 
 @dynamic title;
-
-@dynamic type;
 
 @dynamic children;
 

@@ -72,7 +72,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setMunki_installed_sizeValue:(int64_t)value_ {
-	[self setMunki_installed_size:@(value_)];
+	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
 - (int64_t)primitiveMunki_installed_sizeValue {
@@ -81,7 +81,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
-	[self setPrimitiveMunki_installed_size:@(value_)];
+	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
 @dynamic munki_name;
@@ -94,7 +94,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setMunki_optionalValue:(BOOL)value_ {
-	[self setMunki_optional:@(value_)];
+	[self setMunki_optional:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_optionalValue {
@@ -103,7 +103,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveMunki_optionalValue:(BOOL)value_ {
-	[self setPrimitiveMunki_optional:@(value_)];
+	[self setPrimitiveMunki_optional:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_packageid;
@@ -118,7 +118,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -127,7 +127,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic package;

@@ -82,7 +82,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setIndexInNestedManifestValue:(int32_t)value_ {
-	[self setIndexInNestedManifest:@(value_)];
+	[self setIndexInNestedManifest:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveIndexInNestedManifestValue {
@@ -91,7 +91,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIndexInNestedManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInNestedManifest:@(value_)];
+	[self setPrimitiveIndexInNestedManifest:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic originalIndex;
@@ -102,7 +102,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -111,7 +111,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic title;

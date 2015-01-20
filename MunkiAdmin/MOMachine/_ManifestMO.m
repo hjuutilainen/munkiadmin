@@ -79,7 +79,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 }
 
 - (void)setHasUnstagedChangesValue:(BOOL)value_ {
-	[self setHasUnstagedChanges:@(value_)];
+	[self setHasUnstagedChanges:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveHasUnstagedChangesValue {
@@ -88,7 +88,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 }
 
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
-	[self setPrimitiveHasUnstagedChanges:@(value_)];
+	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic manifestURL;

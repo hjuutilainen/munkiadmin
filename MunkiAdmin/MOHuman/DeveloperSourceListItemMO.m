@@ -13,10 +13,10 @@
 - (NSImage *)icon
 {
     NSImage *image;
-    if ([self.type isEqualToString:@"regular"]) {
+    if ([self.itemType isEqualToString:@"regular"]) {
         image = [NSImage imageNamed:@"developerTemplate"];
         [image setTemplate:YES];
-    } else if ([self.type isEqualToString:@"smart"]) {
+    } else if ([self.itemType isEqualToString:@"smart"]) {
         image = [NSImage imageNamed:@"developerUnknownTemplate"];
         [image setTemplate:YES];
     } else {

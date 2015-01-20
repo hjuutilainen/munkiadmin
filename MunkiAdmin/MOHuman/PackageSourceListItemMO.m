@@ -4,10 +4,10 @@
 
 - (NSImage *)icon
 {
-    if ([self.type isEqualToString:@"regular"]) {
+    if ([self.itemType isEqualToString:@"regular"]) {
         NSImage *regularFolder = [NSImage imageNamed:NSImageNameFolder];
         return regularFolder;
-    } else if ([self.type isEqualToString:@"smart"]) {
+    } else if ([self.itemType isEqualToString:@"smart"]) {
         return [NSImage imageNamed:@"NSFolderSmart"];
     } else if (self.isGroupItemValue) {
         return nil;

@@ -61,7 +61,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setIsAvailableForEditingValue:(BOOL)value_ {
-	[self setIsAvailableForEditing:@(value_)];
+	[self setIsAvailableForEditing:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsAvailableForEditingValue {
@@ -70,7 +70,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_ {
-	[self setPrimitiveIsAvailableForEditing:@(value_)];
+	[self setPrimitiveIsAvailableForEditing:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic isEnabledForManifest;
@@ -81,7 +81,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:@(value_)];
+	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -90,7 +90,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:@(value_)];
+	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic manifest;

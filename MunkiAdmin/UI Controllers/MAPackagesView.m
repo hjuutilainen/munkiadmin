@@ -475,6 +475,14 @@
     }];
 }
 
+- (IBAction)updateIconHashAction:(id)sender
+{
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    [self.packagesArrayController.selectedObjects enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
+        [repoManager updateIconHashForPackage:obj];
+    }];
+}
+
 - (IBAction)chooseIconForNameAction:(id)sender
 {
     self.iconChooser.packagesToEdit = self.packagesArrayController.selectedObjects;
@@ -704,6 +712,13 @@
     }
     clearCustomMenuItem.target = self;
     [menu addItem:clearCustomMenuItem];
+    
+    NSMenuItem *updateHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Update Icon Hash"
+                                                                 action:@selector(updateIconHashAction:)
+                                                          keyEquivalent:@""];
+    [updateHashMenuItem setEnabled:YES];
+    updateHashMenuItem.target = self;
+    [menu addItem:updateHashMenuItem];
     
     [menu addItem:[NSMenuItem separatorItem]];
     
@@ -1100,7 +1115,7 @@
         if (([[item representedObject] isKindOfClass:[CategorySourceListItemMO class]])) {
             return NSDragOperationMove;
         }
-        else if (![targetDir.type isEqualToString:@"regular"]) {
+        else if (![targetDir.itemType isEqualToString:@"regular"]) {
             return NSDragOperationNone;
         }
         

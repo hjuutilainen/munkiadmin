@@ -4,9 +4,9 @@
 
 - (NSImage *)icon
 {
-    if ([self.type isEqualToString:@"regular"]) {
+    if ([self.itemType isEqualToString:@"regular"]) {
         return [NSImage imageNamed:NSImageNameFolder];
-    } else if ([self.type isEqualToString:@"smart"]) {
+    } else if ([self.itemType isEqualToString:@"smart"]) {
         return [NSImage imageNamed:NSImageNameFolderSmart];
     } else {
         return [NSImage imageNamed:NSImageNameFolder];

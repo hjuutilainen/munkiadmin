@@ -6,6 +6,7 @@
 const struct PackageMOAttributes PackageMOAttributes = {
 	.hasEmptyBlockingApplications = @"hasEmptyBlockingApplications",
 	.hasUnstagedChanges = @"hasUnstagedChanges",
+	.munki_PayloadIdentifier = @"munki_PayloadIdentifier",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
 	.munki_description = @"munki_description",
@@ -14,6 +15,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_force_install_after_date = @"munki_force_install_after_date",
 	.munki_forced_install = @"munki_forced_install",
 	.munki_forced_uninstall = @"munki_forced_uninstall",
+	.munki_icon_hash = @"munki_icon_hash",
 	.munki_icon_name = @"munki_icon_name",
 	.munki_installable_condition = @"munki_installable_condition",
 	.munki_installcheck_script = @"munki_installcheck_script",
@@ -169,7 +171,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setHasEmptyBlockingApplicationsValue:(BOOL)value_ {
-	[self setHasEmptyBlockingApplications:@(value_)];
+	[self setHasEmptyBlockingApplications:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveHasEmptyBlockingApplicationsValue {
@@ -178,7 +180,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveHasEmptyBlockingApplicationsValue:(BOOL)value_ {
-	[self setPrimitiveHasEmptyBlockingApplications:@(value_)];
+	[self setPrimitiveHasEmptyBlockingApplications:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic hasUnstagedChanges;
@@ -189,7 +191,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setHasUnstagedChangesValue:(BOOL)value_ {
-	[self setHasUnstagedChanges:@(value_)];
+	[self setHasUnstagedChanges:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveHasUnstagedChangesValue {
@@ -198,8 +200,10 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
-	[self setPrimitiveHasUnstagedChanges:@(value_)];
+	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
 }
+
+@dynamic munki_PayloadIdentifier;
 
 @dynamic munki_RestartAction;
 
@@ -211,7 +215,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_autoremoveValue:(BOOL)value_ {
-	[self setMunki_autoremove:@(value_)];
+	[self setMunki_autoremove:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_autoremoveValue {
@@ -220,7 +224,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_ {
-	[self setPrimitiveMunki_autoremove:@(value_)];
+	[self setPrimitiveMunki_autoremove:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_description;
@@ -239,7 +243,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_forced_installValue:(BOOL)value_ {
-	[self setMunki_forced_install:@(value_)];
+	[self setMunki_forced_install:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_forced_installValue {
@@ -248,7 +252,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_forced_installValue:(BOOL)value_ {
-	[self setPrimitiveMunki_forced_install:@(value_)];
+	[self setPrimitiveMunki_forced_install:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_forced_uninstall;
@@ -259,7 +263,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_forced_uninstallValue:(BOOL)value_ {
-	[self setMunki_forced_uninstall:@(value_)];
+	[self setMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_forced_uninstallValue {
@@ -268,8 +272,10 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_ {
-	[self setPrimitiveMunki_forced_uninstall:@(value_)];
+	[self setPrimitiveMunki_forced_uninstall:[NSNumber numberWithBool:value_]];
 }
+
+@dynamic munki_icon_hash;
 
 @dynamic munki_icon_name;
 
@@ -285,7 +291,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_installed_sizeValue:(int64_t)value_ {
-	[self setMunki_installed_size:@(value_)];
+	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
 - (int64_t)primitiveMunki_installed_sizeValue {
@@ -294,7 +300,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
-	[self setPrimitiveMunki_installed_size:@(value_)];
+	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
 }
 
 @dynamic munki_installer_item_hash;
@@ -309,7 +315,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_installer_item_sizeValue:(int64_t)value_ {
-	[self setMunki_installer_item_size:@(value_)];
+	[self setMunki_installer_item_size:[NSNumber numberWithLongLong:value_]];
 }
 
 - (int64_t)primitiveMunki_installer_item_sizeValue {
@@ -318,7 +324,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_installer_item_sizeValue:(int64_t)value_ {
-	[self setPrimitiveMunki_installer_item_size:@(value_)];
+	[self setPrimitiveMunki_installer_item_size:[NSNumber numberWithLongLong:value_]];
 }
 
 @dynamic munki_installer_type;
@@ -353,7 +359,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_suppress_bundle_relocationValue:(BOOL)value_ {
-	[self setMunki_suppress_bundle_relocation:@(value_)];
+	[self setMunki_suppress_bundle_relocation:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_suppress_bundle_relocationValue {
@@ -362,7 +368,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_suppress_bundle_relocationValue:(BOOL)value_ {
-	[self setPrimitiveMunki_suppress_bundle_relocation:@(value_)];
+	[self setPrimitiveMunki_suppress_bundle_relocation:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_unattended_install;
@@ -373,7 +379,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_unattended_installValue:(BOOL)value_ {
-	[self setMunki_unattended_install:@(value_)];
+	[self setMunki_unattended_install:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_unattended_installValue {
@@ -382,7 +388,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_unattended_installValue:(BOOL)value_ {
-	[self setPrimitiveMunki_unattended_install:@(value_)];
+	[self setPrimitiveMunki_unattended_install:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_unattended_uninstall;
@@ -393,7 +399,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_unattended_uninstallValue:(BOOL)value_ {
-	[self setMunki_unattended_uninstall:@(value_)];
+	[self setMunki_unattended_uninstall:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_unattended_uninstallValue {
@@ -402,7 +408,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_unattended_uninstallValue:(BOOL)value_ {
-	[self setPrimitiveMunki_unattended_uninstall:@(value_)];
+	[self setPrimitiveMunki_unattended_uninstall:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_uninstall_method;
@@ -417,7 +423,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setMunki_uninstallableValue:(BOOL)value_ {
-	[self setMunki_uninstallable:@(value_)];
+	[self setMunki_uninstallable:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_uninstallableValue {
@@ -426,7 +432,7 @@ const struct PackageMORelationships PackageMORelationships = {
 }
 
 - (void)setPrimitiveMunki_uninstallableValue:(BOOL)value_ {
-	[self setPrimitiveMunki_uninstallable:@(value_)];
+	[self setPrimitiveMunki_uninstallable:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_uninstallcheck_script;

@@ -13,7 +13,7 @@
 - (NSImage *)icon
 {
     NSImage *image;
-    if ([self.title isEqualToString:@"Uncategorized"] && [self.type isEqualToString:@"smart"]) {
+    if ([self.title isEqualToString:@"Uncategorized"] && [self.itemType isEqualToString:@"smart"]) {
         image = [NSImage imageNamed:@"tagMultipleTemplate"];
         [image setTemplate:YES];
     } else {

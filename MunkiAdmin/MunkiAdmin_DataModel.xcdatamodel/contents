@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A388a" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C99d" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -178,6 +178,7 @@
         <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_icon_hash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_icon_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installable_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installcheck_script" optional="YES" attributeType="String" syncable="YES"/>
@@ -192,6 +193,7 @@
         <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_package_path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_PayloadIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postinstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postuninstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_script" optional="YES" attributeType="String" syncable="YES"/>
@@ -247,10 +249,10 @@
     <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
         <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="parent" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="children" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
     </entity>
@@ -316,9 +318,9 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1048"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1080"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="163"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
     </elements>

@@ -62,7 +62,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setMunki_attributeSettingValue:(BOOL)value_ {
-	[self setMunki_attributeSetting:@(value_)];
+	[self setMunki_attributeSetting:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveMunki_attributeSettingValue {
@@ -71,7 +71,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_ {
-	[self setPrimitiveMunki_attributeSetting:@(value_)];
+	[self setPrimitiveMunki_attributeSetting:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_choiceAttribute;
@@ -86,7 +86,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:@(value_)];
+	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -95,7 +95,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:@(value_)];
+	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
 }
 
 @dynamic package;

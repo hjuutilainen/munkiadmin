@@ -6,10 +6,10 @@
 extern const struct PackageSourceListItemMOAttributes {
 	__unsafe_unretained NSString *filterPredicate;
 	__unsafe_unretained NSString *isGroupItem;
+	__unsafe_unretained NSString *itemType;
 	__unsafe_unretained NSString *originalIndex;
 	__unsafe_unretained NSString *sortDescriptors;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *type;
 } PackageSourceListItemMOAttributes;
 
 extern const struct PackageSourceListItemMORelationships {
@@ -45,6 +45,10 @@ extern const struct PackageSourceListItemMORelationships {
 
 //- (BOOL)validateIsGroupItem:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* itemType;
+
+//- (BOOL)validateItemType:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
@@ -60,10 +64,6 @@ extern const struct PackageSourceListItemMORelationships {
 @property (nonatomic, strong) NSString* title;
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* type;
-
-//- (BOOL)validateType:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSSet *children;
 
@@ -93,6 +93,9 @@ extern const struct PackageSourceListItemMORelationships {
 
 - (BOOL)primitiveIsGroupItemValue;
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_;
+
+- (NSString*)primitiveItemType;
+- (void)setPrimitiveItemType:(NSString*)value;
 
 - (NSNumber*)primitiveOriginalIndex;
 - (void)setPrimitiveOriginalIndex:(NSNumber*)value;

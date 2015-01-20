@@ -11,6 +11,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MAImageBrowserItem.h"
 #import "NSImage+PixelSize.h"
+#import <NSHash/NSData+NSHash.h>
 
 @interface MAIconEditor ()
 
@@ -24,6 +25,7 @@
     if (self) {
         _resizeOnSave = YES;
         _useInSiblingPackages = YES;
+        _calculateHash = YES;
         _windowTitle = @"Window";
         [_progressIndicator setUsesThreadedAnimation:YES];
         [_imageBrowserView setDelegate:self];
@@ -240,6 +242,17 @@
         }
         
         /*
+         Get a SHA256 hash of the saved image
+         */
+        NSData *sha256Data = [pngData SHA256];
+        NSUInteger dataLength = [sha256Data length];
+        NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:dataLength*2];
+        const unsigned char *dataBytes = [sha256Data bytes];
+        for (NSInteger idx = 0; idx < dataLength; ++idx) {
+            [iconSHA256HashString appendFormat:@"%02x", dataBytes[idx]];
+        }
+        
+        /*
          Use the created icon in every package with the selected names
          */
         if (self.useInSiblingPackages) {
@@ -267,6 +280,7 @@
                      */
                     for (PackageMO *aSibling in siblingPackages) {
                         [repoManager clearCustomIconForPackage:aSibling];
+                        [aSibling setMunki_icon_hash:iconSHA256HashString];
                     }
                 } else {
                     /*
@@ -274,6 +288,7 @@
                      */
                     for (PackageMO *aSibling in siblingPackages) {
                         [repoManager setIconNameFromURL:[sheet URL] forPackage:aSibling];
+                        [aSibling setMunki_icon_hash:iconSHA256HashString];
                     }
                 }
             }];
@@ -298,6 +313,7 @@
                      */
                     [repoManager setIconNameFromURL:[sheet URL] forPackage:obj];
                 }
+                [obj setMunki_icon_hash:iconSHA256HashString];
             }];
         }
         

@@ -54,7 +54,7 @@ const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
 }
 
 - (void)setIsEnabledValue:(BOOL)value_ {
-	[self setIsEnabled:@(value_)];
+	[self setIsEnabled:[NSNumber numberWithBool:value_]];
 }
 
 - (BOOL)primitiveIsEnabledValue {
@@ -63,7 +63,7 @@ const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabled:@(value_)];
+	[self setPrimitiveIsEnabled:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic parentApplication;

@@ -6,6 +6,7 @@
 extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *hasEmptyBlockingApplications;
 	__unsafe_unretained NSString *hasUnstagedChanges;
+	__unsafe_unretained NSString *munki_PayloadIdentifier;
 	__unsafe_unretained NSString *munki_RestartAction;
 	__unsafe_unretained NSString *munki_autoremove;
 	__unsafe_unretained NSString *munki_description;
@@ -14,6 +15,7 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *munki_force_install_after_date;
 	__unsafe_unretained NSString *munki_forced_install;
 	__unsafe_unretained NSString *munki_forced_uninstall;
+	__unsafe_unretained NSString *munki_icon_hash;
 	__unsafe_unretained NSString *munki_icon_name;
 	__unsafe_unretained NSString *munki_installable_condition;
 	__unsafe_unretained NSString *munki_installcheck_script;
@@ -128,6 +130,10 @@ extern const struct PackageMORelationships {
 
 //- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* munki_PayloadIdentifier;
+
+//- (BOOL)validateMunki_PayloadIdentifier:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* munki_RestartAction;
 
 //- (BOOL)validateMunki_RestartAction:(id*)value_ error:(NSError**)error_;
@@ -171,6 +177,10 @@ extern const struct PackageMORelationships {
 - (void)setMunki_forced_uninstallValue:(BOOL)value_;
 
 //- (BOOL)validateMunki_forced_uninstall:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_icon_hash;
+
+//- (BOOL)validateMunki_icon_hash:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* munki_icon_name;
 
@@ -544,6 +554,9 @@ extern const struct PackageMORelationships {
 - (BOOL)primitiveHasUnstagedChangesValue;
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
 
+- (NSString*)primitiveMunki_PayloadIdentifier;
+- (void)setPrimitiveMunki_PayloadIdentifier:(NSString*)value;
+
 - (NSString*)primitiveMunki_RestartAction;
 - (void)setPrimitiveMunki_RestartAction:(NSString*)value;
 
@@ -576,6 +589,9 @@ extern const struct PackageMORelationships {
 
 - (BOOL)primitiveMunki_forced_uninstallValue;
 - (void)setPrimitiveMunki_forced_uninstallValue:(BOOL)value_;
+
+- (NSString*)primitiveMunki_icon_hash;
+- (void)setPrimitiveMunki_icon_hash:(NSString*)value;
 
 - (NSString*)primitiveMunki_icon_name;
 - (void)setPrimitiveMunki_icon_name:(NSString*)value;
