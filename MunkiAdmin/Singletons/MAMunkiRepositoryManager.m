@@ -1847,6 +1847,7 @@ static dispatch_queue_t serialQueue;
 - (BOOL)backupManifest:(ManifestMO *)aManifest
 {
     BOOL itemBackedUp = NO;
+    NSString *filename = [(NSURL *)aManifest.manifestURL lastPathComponent];
     
     if (self.saveStartedDate) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1860,7 +1861,7 @@ static dispatch_queue_t serialQueue;
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError *dirCreateError = nil;
         if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
-            DDLogError(@"Failed to create backup directory: %@", [dirCreateError description]);
+            DDLogError(@"%@: Failed to create backup directory: %@", filename, [dirCreateError description]);
             return NO;
         }
         
@@ -1870,9 +1871,10 @@ static dispatch_queue_t serialQueue;
         NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
         NSInteger tag = 0;
         if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
+            DDLogError(@"%@: Failed to copy to %@", filename, destinationPath);
             return NO;
         } else {
-            DDLogDebug(@"Copied %@ to %@", [(NSURL *)aManifest.manifestURL path], destinationPath);
+            DDLogDebug(@"%@: Copied to %@", filename, destinationPath);
             itemBackedUp = YES;
         }
         
@@ -1895,7 +1897,7 @@ static dispatch_queue_t serialQueue;
 - (BOOL)backupPackage:(PackageMO *)aPackage
 {
     BOOL itemBackedUp = NO;
-    
+    NSString *filename = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
     NSURL *backupDirForCurrentSave = nil;
     
     if (self.saveStartedDate) {
@@ -1910,7 +1912,7 @@ static dispatch_queue_t serialQueue;
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError *dirCreateError = nil;
         if (![fm createDirectoryAtURL:[backupFileURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&dirCreateError]) {
-            DDLogError(@"Failed to create backup directory: %@", [dirCreateError description]);
+            DDLogError(@"%@: Failed to create backup directory: %@", filename, [dirCreateError description]);
             return NO;
         }
         
@@ -1920,9 +1922,10 @@ static dispatch_queue_t serialQueue;
         NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
         NSInteger tag = 0;
         if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
+            DDLogError(@"%@: Failed to copy to %@", filename, destinationPath);
             return NO;
         } else {
-            DDLogDebug(@"Copied %@ to %@", [(NSURL *)aPackage.packageInfoURL path], destinationPath);
+            DDLogDebug(@"%@: Copied to %@", filename, destinationPath);
             itemBackedUp = YES;
         }
         
@@ -1971,20 +1974,19 @@ static dispatch_queue_t serialQueue;
 - (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    DDLogDebug(@"Backing up pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+    NSString *filename = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
     
     if ([defaults boolForKey:@"backupPkginfosBeforeWriting"]) {
+        DDLogDebug(@"%@: Backing up...", filename);
         [self backupPackage:aPackage];
     }
     
-    DDLogDebug(@"Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
-    
+    DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
         aPackage.originalPkginfo = plist;
         return YES;
     } else {
-        DDLogError(@"Error: Failed to write %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+        DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aPackage.packageInfoURL path]);
         return NO;
     }
 }
@@ -1992,20 +1994,19 @@ static dispatch_queue_t serialQueue;
 - (BOOL)writeManifestPropertyList:(NSDictionary *)plist forManifest:(ManifestMO *)aManifest
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    DDLogDebug(@"Backing up manifest: %@", [(NSURL *)aManifest.manifestURL path]);
+    NSString *filename = [(NSURL *)aManifest.manifestURL lastPathComponent];
     
     if ([defaults boolForKey:@"backupManifestsBeforeWriting"]) {
+        DDLogDebug(@"%@: Backing up...", filename);
         [self backupManifest:aManifest];
     }
     
-    DDLogDebug(@"Writing new manifest: %@", [(NSURL *)aManifest.manifestURL path]);
-    
+    DDLogDebug(@"%@: Writing new manifest to disk...", filename);
     if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:YES]) {
         aManifest.originalManifest = plist;
         return YES;
     } else {
-        DDLogError(@"Error: Failed to write %@", [(NSURL *)aManifest.manifestURL path]);
+        DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aManifest.manifestURL path]);
         return NO;
     }
 }
@@ -2025,7 +2026,8 @@ static dispatch_queue_t serialQueue;
 	
 	for (PackageMO *aPackage in [self modifiedPackagesSinceLastSave]) {
         
-        DDLogDebug(@"Checking pkginfo %@", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+        NSString *filename = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
+        DDLogDebug(@"%@: Checking pkginfo for changes...", filename);
         
         /*
          * ===============================================
@@ -2102,14 +2104,14 @@ static dispatch_queue_t serialQueue;
         
         for (NSString *aKey in [removedItems allObjects]) {
             if (![keysToDelete containsObject:aKey]) {
-                DDLogDebug(@"Key change: \"%@\" found in original pkginfo. Keeping it.", aKey);
+                DDLogDebug(@"%@: Key change: \"%@\" found in original pkginfo. Keeping it.", filename, aKey);
             } else {
-                DDLogDebug(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
+                DDLogDebug(@"%@: Key change: \"%@\" deleted by MunkiAdmin", filename, aKey);
             }
             
         }
         for (NSString *aKey in [addedItems allObjects]) {
-            DDLogDebug(@"Key change: \"%@\" added by MunkiAdmin", aKey);
+            DDLogDebug(@"%@: Key change: \"%@\" added by MunkiAdmin", filename, aKey);
         }
         
         /*
@@ -2144,12 +2146,12 @@ static dispatch_queue_t serialQueue;
          Check for value changes
          */
         else {
-			DDLogDebug(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aPackage.packageInfoURL lastPathComponent]);
+			DDLogDebug(@"%@: No changes in key array. Checking for value changes...", filename);
             if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
-				DDLogDebug(@"Values differ. Writing new pkginfo: %@", [(NSURL *)aPackage.packageInfoURL relativePath]);
+				DDLogDebug(@"%@: Values differ. Should write new pkginfo...", filename);
 				[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
 			} else {
-				DDLogDebug(@"No changes detected");
+				DDLogDebug(@"%@: No changes detected", filename);
 			}
 		}
         
@@ -2178,7 +2180,8 @@ static dispatch_queue_t serialQueue;
 	
 	for (ManifestMO *aManifest in [self modifiedManifestsSinceLastSave]) {
         
-        DDLogDebug(@"Checking manifest %@", [(NSURL *)aManifest.manifestURL lastPathComponent]);
+        NSString *filename = [(NSURL *)aManifest.manifestURL lastPathComponent];
+        DDLogDebug(@"%@: Checking manifest file for changes...", filename);
         
         /*
          * ================================================
@@ -2229,14 +2232,14 @@ static dispatch_queue_t serialQueue;
         
         for (NSString *aKey in [removedItems allObjects]) {
             if (![keysToDelete containsObject:aKey]) {
-                DDLogDebug(@"Key change: \"%@\" found in original manifest. Keeping it.", aKey);
+                DDLogDebug(@"%@: Key change: \"%@\" found in original manifest. Keeping it.", filename, aKey);
             } else {
-                DDLogDebug(@"Key change: \"%@\" deleted by MunkiAdmin", aKey);
+                DDLogDebug(@"%@: Key change: \"%@\" deleted by MunkiAdmin", filename, aKey);
             }
             
         }
         for (NSString *aKey in [addedItems allObjects]) {
-            DDLogDebug(@"Key change: \"%@\" added by MunkiAdmin", aKey);
+            DDLogDebug(@"%@: Key change: \"%@\" added by MunkiAdmin", filename, aKey);
         }
         
         /*
@@ -2264,7 +2267,7 @@ static dispatch_queue_t serialQueue;
          */
         NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
-			DDLogDebug(@"Keys differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
+			DDLogDebug(@"%@: Keys differ. Should write new manifest...", filename);
             [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 		}
         
@@ -2275,12 +2278,12 @@ static dispatch_queue_t serialQueue;
          This will be triggered if any value is changed.
          */
         else {
-            DDLogDebug(@"%@ No changes in key array. Checking for value changes.", [(NSURL *)aManifest.manifestURL lastPathComponent]);
+            DDLogDebug(@"%@: No changes in key array. Checking for value changes...", filename);
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
-				DDLogDebug(@"Values differ. Writing new manifest: %@", [(NSURL *)aManifest.manifestURL relativePath]);
+				DDLogDebug(@"%@: Values differ. Should write new manifest...", filename);
                 [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
 			} else {
-				DDLogDebug(@"No changes detected");
+				DDLogDebug(@"%@: No changes detected", filename);
 			}
         }
         
