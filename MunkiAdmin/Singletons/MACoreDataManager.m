@@ -389,7 +389,7 @@
     mainDevelopersItem.isGroupItemValue = YES;
     
     DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
-    noDeveloperSmartItem.type = @"smart";
+    noDeveloperSmartItem.itemType = @"smart";
     noDeveloperSmartItem.parent = mainDevelopersItem;
     noDeveloperSmartItem.originalIndexValue = 10;
     noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
@@ -411,7 +411,7 @@
             NSUInteger requiredCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
             if ([devPackageNames count] >= requiredCount) {
                 DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
-                sourceListItem.type = @"regular";
+                sourceListItem.itemType = @"regular";
                 sourceListItem.parent = mainDevelopersItem;
                 sourceListItem.originalIndexValue = 20;
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"developer.title == %@", developer.title];
@@ -442,7 +442,7 @@
     mainCategoriesItem.isGroupItemValue = YES;
     
     CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:moc];
-    noCategoriesSmartItem.type = @"smart";
+    noCategoriesSmartItem.itemType = @"smart";
     noCategoriesSmartItem.parent = mainCategoriesItem;
     noCategoriesSmartItem.originalIndexValue = 10;
     noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
@@ -461,7 +461,7 @@
         NSArray *allCatalogs = [moc executeFetchRequest:fetchForCatalogs error:nil];
         [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
             CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:moc];
-            categorySourceListItem.type = @"regular";
+            categorySourceListItem.itemType = @"regular";
             categorySourceListItem.parent = mainCategoriesItem;
             categorySourceListItem.originalIndexValue = 20;
             NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
@@ -503,7 +503,7 @@
     
     DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] managedObjectContext:moc];
     basePkgsInfoDirectory.title = @"pkgsinfo";
-    basePkgsInfoDirectory.type = @"regular";
+    basePkgsInfoDirectory.itemType = @"regular";
     basePkgsInfoDirectory.parent = directoriesGroupItem;
     basePkgsInfoDirectory.originalIndexValue = 10;
     basePkgsInfoDirectory.filterPredicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL]];
@@ -526,7 +526,7 @@
                 DirectoryMO *newDirectory = [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:moc];
                 newDirectory.originalURL = anURL;
                 newDirectory.originalIndexValue = 10;
-                newDirectory.type = @"regular";
+                newDirectory.itemType = @"regular";
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"packageInfoParentDirectoryURL == %@", anURL];
                 newDirectory.filterPredicate = predicate;
                 NSString *newTitle;
@@ -569,35 +569,35 @@
     
     InstallerTypeSourceListItemMO *copyFromDmgSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     copyFromDmgSmartItem.title = @"Copy from Disk Image";
-    copyFromDmgSmartItem.type = @"smart";
+    copyFromDmgSmartItem.itemType = @"smart";
     copyFromDmgSmartItem.parent = mainTypesItem;
     copyFromDmgSmartItem.originalIndexValue = 10;
     copyFromDmgSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"copy_from_dmg"];
     
     InstallerTypeSourceListItemMO *packagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     packagesSmartItem.title = @"Installer Package";
-    packagesSmartItem.type = @"smart";
+    packagesSmartItem.itemType = @"smart";
     packagesSmartItem.parent = mainTypesItem;
     packagesSmartItem.originalIndexValue = 20;
     packagesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@ OR munki_installer_type == nil", @""];
     
     InstallerTypeSourceListItemMO *nopkgSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     nopkgSmartItem.title = @"No Package";
-    nopkgSmartItem.type = @"smart";
+    nopkgSmartItem.itemType = @"smart";
     nopkgSmartItem.parent = mainTypesItem;
     nopkgSmartItem.originalIndexValue = 30;
     nopkgSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"nopkg"];
     
     InstallerTypeSourceListItemMO *appleUpdatesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     appleUpdatesSmartItem.title = @"Apple Update Metadata";
-    appleUpdatesSmartItem.type = @"smart";
+    appleUpdatesSmartItem.itemType = @"smart";
     appleUpdatesSmartItem.parent = mainTypesItem;
     appleUpdatesSmartItem.originalIndexValue = 40;
     appleUpdatesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
     
     InstallerTypeSourceListItemMO *adobeSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     adobeSmartItem.title = @"Adobe Installer";
-    adobeSmartItem.type = @"smart";
+    adobeSmartItem.itemType = @"smart";
     adobeSmartItem.parent = mainTypesItem;
     adobeSmartItem.originalIndexValue = 50;
     NSArray *adobePredicates = @[[NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeSetup"],
@@ -619,14 +619,14 @@
     
     PackageSourceListItemMO *allPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
     allPackagesSmartItem.title = @"All Packages";
-    allPackagesSmartItem.type = @"smart";
+    allPackagesSmartItem.itemType = @"smart";
     allPackagesSmartItem.parent = newSourceListItem2;
     allPackagesSmartItem.originalIndexValue = 10;
     allPackagesSmartItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
     
     PackageSourceListItemMO *newPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
     newPackagesSmartItem.title = @"Last 30 Days";
-    newPackagesSmartItem.type = @"smart";
+    newPackagesSmartItem.itemType = @"smart";
     newPackagesSmartItem.parent = newSourceListItem2;
     newPackagesSmartItem.originalIndexValue = 20;
     NSDate *now = [NSDate date];
