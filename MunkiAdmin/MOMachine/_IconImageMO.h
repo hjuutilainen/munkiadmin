@@ -4,6 +4,7 @@
 #import <CoreData/CoreData.h>
 
 extern const struct IconImageMOAttributes {
+	__unsafe_unretained NSString *fileSHA256Checksum;
 	__unsafe_unretained NSString *imageRepresentation;
 	__unsafe_unretained NSString *originalURL;
 } IconImageMOAttributes;
@@ -26,6 +27,10 @@ extern const struct IconImageMORelationships {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) IconImageMOID* objectID;
+
+@property (nonatomic, strong) NSString* fileSHA256Checksum;
+
+//- (BOOL)validateFileSHA256Checksum:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) id imageRepresentation;
 
@@ -50,6 +55,9 @@ extern const struct IconImageMORelationships {
 @end
 
 @interface _IconImageMO (CoreDataGeneratedPrimitiveAccessors)
+
+- (NSString*)primitiveFileSHA256Checksum;
+- (void)setPrimitiveFileSHA256Checksum:(NSString*)value;
 
 - (id)primitiveImageRepresentation;
 - (void)setPrimitiveImageRepresentation:(id)value;
