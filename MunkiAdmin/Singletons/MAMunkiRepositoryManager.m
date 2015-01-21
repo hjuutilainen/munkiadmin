@@ -1717,7 +1717,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSSet *)modifiedManifestsSinceLastSave
 {
-    DDLogInfo(@"Getting modified manifests since last save");
+    DDLogDebug(@"Getting modified manifests since last save");
     
     NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedManifests = [[NSMutableArray alloc] init];
@@ -1776,7 +1776,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSSet *)modifiedPackagesSinceLastSave
 {
-    DDLogInfo(@"Getting modified pkginfos since last save");
+    DDLogDebug(@"Getting modified pkginfos since last save");
     
     NSManagedObjectContext *moc = [self appDelegateMoc];
     NSMutableArray *tempModifiedPackages = [[NSMutableArray alloc] init];
@@ -2543,7 +2543,6 @@ static dispatch_queue_t serialQueue;
     [newPkginfoAssimilateKeys removeObject:@"installer_item_location"];
     [newPkginfoAssimilateKeys removeObject:@"installer_item_size"];
     [newPkginfoAssimilateKeys removeObject:@"package_path"];
-    [newPkginfoAssimilateKeys removeObject:@"icon_hash"];
     [newPkginfoAssimilateKeys removeObject:@"PayloadIdentifier"];
     
     [newPkginfoAssimilateKeys addObject:@"category"];
