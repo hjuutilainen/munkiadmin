@@ -69,6 +69,7 @@ DDLogLevel ddLogLevel;
     } else {
         makecatalogsTask.arguments = @[[self.targetURL relativePath]];
     }
+    DDLogDebug(@"Running %@ with arguments: %@", makecatalogsTask.launchPath, makecatalogsTask.arguments);
     
 	/*
      Launch and read the output
@@ -124,6 +125,8 @@ DDLogLevel ddLogLevel;
 	makepkginfoTask.arguments = newArguments;
 	makepkginfoTask.standardOutput = makepkginfoPipe;
     makepkginfoTask.standardError = makepkginfoErrorPipe;
+    
+    DDLogDebug(@"Running %@ with arguments: %@", makepkginfoTask.launchPath, makepkginfoTask.arguments);
 	[makepkginfoTask launch];
 	
 	NSData *makepkginfoTaskData = [filehandle readDataToEndOfFile];
@@ -149,7 +152,7 @@ DDLogLevel ddLogLevel;
                                                         error:&error];
 	
 	if (!plist) {
-        DDLogError(@"MunkiOperation:makepkginfo:error:%@", [error description]);
+        DDLogError(@"NSPropertyListSerialization propertyListWithData failed with error: %@", [error description]);
 		return nil;
 	}
 	
@@ -165,14 +168,14 @@ DDLogLevel ddLogLevel;
 		@autoreleasepool {
             
 			if ([self.command isEqualToString:@"makecatalogs"]) {
-				NSString *results = [self makeCatalogs];
                 DDLogDebug(@"MunkiOperation:makecatalogs");
+				NSString *results = [self makeCatalogs];
 				DDLogVerbose(@"MunkiOperation:makecatalogs:results: %@", results);
 			}
 			
 			else if ([self.command isEqualToString:@"makepkginfo"]) {
-				NSDictionary *pkginfo = [self makepkginfo];
                 DDLogDebug(@"MunkiOperation:makepkginfo");
+				NSDictionary *pkginfo = [self makepkginfo];
 				DDLogVerbose(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 				if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
 					[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:)
@@ -182,8 +185,8 @@ DDLogLevel ddLogLevel;
 			}
 			
 			else if ([self.command isEqualToString:@"installsitem"]) {
-				NSDictionary *pkginfo = [self makepkginfo];
                 DDLogDebug(@"MunkiOperation:installsitem");
+				NSDictionary *pkginfo = [self makepkginfo];
 				DDLogVerbose(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 				if ([self.delegate respondsToSelector:@selector(installsItemDidFinish:)]) {
 					[self.delegate performSelectorOnMainThread:@selector(installsItemDidFinish:)

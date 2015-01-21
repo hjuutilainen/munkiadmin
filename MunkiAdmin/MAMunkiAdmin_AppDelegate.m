@@ -393,9 +393,7 @@ DDLogLevel ddLogLevel;
      */
     
     /*
-    if ([self.defaults boolForKey:@"debug"]) {
-		DDLogDebug(@"%@", NSStringFromSelector(_cmd));
-	}
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSSet *updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
     for (id anUpdatedObject in updatedObjects) {
@@ -436,7 +434,11 @@ DDLogLevel ddLogLevel;
 
 - (void)awakeFromNib
 {
+    [self configureLogging];
+    
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    DDLogError(@"Starting MunkiAdmin version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
     
     self.repositoryHasUnstagedChanges = NO;
     
@@ -804,7 +806,10 @@ DDLogLevel ddLogLevel;
      */
     DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
     fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    fileLogger.maximumFileSize = 1024 * 1024 * 10; // rolling based solely on rollingFrequency above
+    NSNumber *maximumNumberOfLogFiles = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumNumberOfLogFiles"];
+    fileLogger.logFileManager.maximumNumberOfLogFiles = [maximumNumberOfLogFiles unsignedIntegerValue];
+    [fileLogger rollLogFileWithCompletionBlock:nil];
     [DDLog addLogger:fileLogger];
     
     NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:@"logLevel"];
@@ -817,8 +822,6 @@ DDLogLevel ddLogLevel;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self configureLogging];
-    
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     // Observe user defaults for changes in makepkginfo and makecatalogs paths
@@ -2459,12 +2462,10 @@ DDLogLevel ddLogLevel;
 			[self.operationQueue addOperation:scanOp];
 			
 		} else {
-            if ([self.defaults boolForKey:@"debug"]) {
-                NSNumber *isDir;
-                [anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-                if (![isDir boolValue]) {
-                    DDLogError(@"Not a regular file: %@", [anURL path]);
-                }
+            NSNumber *isDir;
+            [anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+            if (![isDir boolValue]) {
+                DDLogError(@"Not a regular file: %@", [anURL path]);
             }
         }
 	}
@@ -2627,17 +2628,13 @@ DDLogLevel ddLogLevel;
 			ManifestMO *manifest;
 			NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
 			if (foundItems == 0) {
-				if ([self.defaults boolForKey:@"debug"]) {
-					DDLogDebug(@"No match for manifest, creating new with name: %@", filename);
-				}
+				DDLogDebug(@"No match for manifest, creating new with name: %@", filename);
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = filename;
 				manifest.manifestURL = aManifestFile;
 			} else {
 				manifest = [moc executeFetchRequest:request error:nil][0];
-				if ([self.defaults boolForKey:@"debug"]) {
-					DDLogDebug(@"Found existing manifest %@", manifest.title);
-				}
+				DDLogDebug(@"Found existing manifest %@", manifest.title);
 			}
 
 			
@@ -2649,9 +2646,7 @@ DDLogLevel ddLogLevel;
 				newManifestInfo.parentManifest = aManifest;
 				newManifestInfo.manifest = manifest;
 				
-				if ([self.defaults boolForKey:@"debug"]) {
-					DDLogDebug(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
-				}
+				DDLogDebug(@"Linking nested manifest %@ -> %@", manifest.title, newManifestInfo.parentManifest.title);
 				
 				if (includedManifests == nil) {
 					newManifestInfo.isEnabledForManifestValue = NO;
@@ -2793,7 +2788,7 @@ DDLogLevel ddLogLevel;
     are presented to the user.
  */
  
-- (IBAction) saveAction:(id)sender {
+- (IBAction)saveAction:(id)sender {
     
     NSSet *modifiedPackages = [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave];
     NSSet *modifiedManifests = [[MAMunkiRepositoryManager sharedManager] modifiedManifestsSinceLastSave];
@@ -2874,6 +2869,7 @@ DDLogLevel ddLogLevel;
             return NSTerminateNow;
         }
     }
+    DDLogError(@"Terminating MunkiAdmin version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
     return NSTerminateNow;
 }
 
@@ -3052,9 +3048,7 @@ DDLogLevel ddLogLevel;
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-    if ([self.defaults boolForKey:@"debug"]) {
-		DDLogDebug(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
-	}
+    DDLogDebug(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
 		currentDetailView = self.applicationsDetailView;
 	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {
