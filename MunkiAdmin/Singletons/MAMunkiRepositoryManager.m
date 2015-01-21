@@ -1146,13 +1146,18 @@ static dispatch_queue_t serialQueue;
     if (numFound == 0) {
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
         if (url != nil) {
+            DDLogDebug(@"Creating new icon object from %@", [url path]);
             newIconImage.originalURL = url;
-            NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
+            NSData *imageData = [NSData dataWithContentsOfURL:url];
+            newIconImage.fileSHA256Checksum = [self calculateSHA256HashForData:imageData];
+            NSImage *image = [[NSImage alloc] initWithData:imageData];
             newIconImage.imageRepresentation = image;
         } else {
+            DDLogDebug(@"Creating new icon object for pkg file type");
             newIconImage.originalURL = nil;
             NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
             newIconImage.imageRepresentation = pkgicon;
+            newIconImage.fileSHA256Checksum = nil;
         }
         
         return newIconImage;
@@ -1160,6 +1165,12 @@ static dispatch_queue_t serialQueue;
     
     // One existing icon found, fetch and reuse it.
     else if (numFound == 1) {
+        if (url) {
+            DDLogDebug(@"Reusing existing icon object for %@", [url path]);
+        } else {
+            DDLogDebug(@"Reusing existing icon object for pkg file type");
+        }
+        
         IconImageMO *existingIconImage = [moc executeFetchRequest:fetchRequest error:nil][0];
         return existingIconImage;
     }
@@ -1206,12 +1217,12 @@ static dispatch_queue_t serialQueue;
             package.iconImage = defaultIcon;
         }
     }
+    [self updateIconHashForPackage:package];
 }
 
-- (NSString *)calculateSHA256HashForURL:(NSURL *)url
+- (NSString *)calculateSHA256HashForData:(NSData *)data
 {
-    NSData *iconData = [NSData dataWithContentsOfURL:url];
-    NSData *sha256Data = [iconData SHA256];
+    NSData *sha256Data = [data SHA256];
     NSUInteger dataLength = [sha256Data length];
     NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:dataLength*2];
     const unsigned char *dataBytes = [sha256Data bytes];
@@ -1221,52 +1232,38 @@ static dispatch_queue_t serialQueue;
     return iconSHA256HashString;
 }
 
+- (NSString *)calculateSHA256HashForURL:(NSURL *)url
+{
+    NSData *iconData = [NSData dataWithContentsOfURL:url];
+    return [self calculateSHA256HashForData:iconData];
+}
+
 - (void)updateIconHashForPackage:(PackageMO *)package
 {
-    //NSManagedObjectContext *moc = [self appDelegateMoc];
+    DDLogDebug(@"%@: Updating icon_hash for package...", package.titleWithVersion);
     
     /*
-     Create a default icon for packages without a custom icon
+     Get the current icon_hash
      */
+    NSString *originalIconHash = package.munki_icon_hash;
+    
     /*
-    IconImageMO *defaultIcon = [self createIconImageFromURL:nil managedObjectContext:moc];
-    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
-    defaultIcon.imageRepresentation = pkgicon;
-    defaultIcon.originalURL = nil;
+     Get the hash for the icon file on disk. This may be nil if
+     the package doesn't have an icon.
      */
-    NSString *oldIconHash = package.munki_icon_hash;
+    NSString *iconImageFileHash = package.iconImage.fileSHA256Checksum;
     
-    if ((package.munki_icon_name != nil) && (![package.munki_icon_name isEqualToString:@""])) {
-        /*
-         Package has a custom icon
-         */
-        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_icon_name];
-        if ([[iconURL pathExtension] isEqualToString:@""]) {
-            iconURL = [iconURL URLByAppendingPathExtension:@"png"];
-        }
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-            NSString *iconSHA256HashString = [self calculateSHA256HashForURL:iconURL];
-            package.munki_icon_hash = iconSHA256HashString;
-        } else {
-            package.munki_icon_hash = nil;
-        }
-    } else {
-        /*
-         Package doesn't have an icon_name key. Check for icon mathing the package name.
-         */
-        NSURL *iconURL = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL] URLByAppendingPathComponent:package.munki_name];
-        iconURL = [iconURL URLByAppendingPathExtension:@"png"];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-            NSString *iconSHA256HashString = [self calculateSHA256HashForURL:iconURL];
-            package.munki_icon_hash = iconSHA256HashString;
-        } else {
-            package.munki_icon_hash = nil;
-        }
+    /*
+     If we have a hash, update it
+     */
+    if (iconImageFileHash) {
+        package.munki_icon_hash = iconImageFileHash;
     }
     
-    if (package.munki_icon_hash && (![oldIconHash isEqualToString:package.munki_icon_hash])) {
-        DDLogInfo(@"%@: updated icon_hash to %@", package.titleWithVersion, package.munki_icon_hash);
+    if (package.munki_icon_hash && (![originalIconHash isEqualToString:package.munki_icon_hash])) {
+        DDLogInfo(@"%@: Updated icon_hash to %@", package.titleWithVersion, package.munki_icon_hash);
     }
+    
     package.hasUnstagedChangesValue = YES;
 }
 

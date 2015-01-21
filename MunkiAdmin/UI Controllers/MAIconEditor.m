@@ -203,8 +203,8 @@ DDLogLevel ddLogLevel;
          */
         NSData *imageData;
         NSSize newSize = NSMakeSize(512.0, 512.0);
-        //DDLogDebug(@"%@", NSStringFromSize([self.currentImage pixelSize]));
         if (self.resizeOnSave && [self.currentImage pixelSize].width > newSize.width) {
+            DDLogDebug(@"Resizing image to fit 512x512...");
             imageData = [[self scaleImage:self.currentImage toSize:newSize] TIFFRepresentation];
         } else {
             imageData = [self.currentImage TIFFRepresentation];
@@ -217,6 +217,7 @@ DDLogLevel ddLogLevel;
             [NSApp presentError:writeError];
             return;
         }
+        DDLogDebug(@"Wrote image to %@", [[sheet URL] path]);
         
         /*
          The write was successful.
@@ -233,9 +234,12 @@ DDLogLevel ddLogLevel;
              User has probably replaced an existing icon during the save.
              We need to reload the image from disk
              */
+            DDLogDebug(@"Saved URL points to an existing image object. Need to reload the image from disk...");
             IconImageMO *foundIconImage = foundIconImages[0];
             foundIconImage.imageRepresentation = nil;
-            NSImage *image = [[NSImage alloc] initByReferencingURL:[sheet URL]];
+            NSData *imageData = [NSData dataWithContentsOfURL:[sheet URL]];
+            foundIconImage.fileSHA256Checksum = [repoManager calculateSHA256HashForData:imageData];
+            NSImage *image = [[NSImage alloc] initWithData:imageData];
             foundIconImage.imageRepresentation = image;
             
         } else if ([foundIconImages count] > 1) {
@@ -245,21 +249,10 @@ DDLogLevel ddLogLevel;
         }
         
         /*
-         Get a SHA256 hash of the saved image
-         */
-        NSData *sha256Data = [pngData SHA256];
-        NSUInteger dataLength = [sha256Data length];
-        NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:dataLength*2];
-        const unsigned char *dataBytes = [sha256Data bytes];
-        for (NSInteger idx = 0; idx < dataLength; ++idx) {
-            [iconSHA256HashString appendFormat:@"%02x", dataBytes[idx]];
-        }
-        
-        /*
          Use the created icon in every package with the selected names
          */
         if (self.useInSiblingPackages) {
-            
+            DDLogDebug(@"Image should be used in other packages with the same name...");
             /*
              Get the individual 'name' keys for selected packages
              */
@@ -281,17 +274,17 @@ DDLogLevel ddLogLevel;
                     /*
                      User saved to the default location for this package name
                      */
+                    DDLogDebug(@"Image was saved in default location. Clearing custom icon_name if set...");
                     for (PackageMO *aSibling in siblingPackages) {
                         [repoManager clearCustomIconForPackage:aSibling];
-                        [aSibling setMunki_icon_hash:iconSHA256HashString];
                     }
                 } else {
                     /*
                      User chose a custom location and/or name for this package name
                      */
+                    DDLogDebug(@"Image was not saved in default location. Setting custom icon_name...");
                     for (PackageMO *aSibling in siblingPackages) {
                         [repoManager setIconNameFromURL:[sheet URL] forPackage:aSibling];
-                        [aSibling setMunki_icon_hash:iconSHA256HashString];
                     }
                 }
             }];
@@ -300,6 +293,7 @@ DDLogLevel ddLogLevel;
          Use the created icon only for the selected packages only
          */
         else {
+            DDLogDebug(@"Image should be used in selected packages only...");
             [self.packagesToEdit enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
                 NSURL *mainIconsURL = [appDelegate iconsURL];
                 NSURL *defaultIconURL = [mainIconsURL URLByAppendingPathComponent:obj.munki_name];
@@ -309,14 +303,15 @@ DDLogLevel ddLogLevel;
                     /*
                      User saved to the default location
                      */
+                    DDLogDebug(@"Image was saved in default location. Clearing custom icon_name if set...");
                     [repoManager clearCustomIconForPackage:obj];
                 } else {
                     /*
                      User chose a custom location and/or name
                      */
+                    DDLogDebug(@"Image was not saved in default location. Setting custom icon_name...");
                     [repoManager setIconNameFromURL:[sheet URL] forPackage:obj];
                 }
-                [obj setMunki_icon_hash:iconSHA256HashString];
             }];
         }
         
