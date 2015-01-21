@@ -236,50 +236,6 @@ DDLogLevel ddLogLevel;
 }
 
 
-- (IconImageMO *)createIconImageFromURL:(NSURL *)url managedObjectContext:(NSManagedObjectContext *)moc
-{
-    /*
-     Search the context for an existing icon for the provided URL. If there's none, create a new icon object.
-     Passing nil for the URL returns the default pkginfo icon (icon for .pkg file type).
-     */
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"IconImage" inManagedObjectContext:moc]];
-    NSPredicate *predicate;
-    if (url != nil) {
-        predicate = [NSPredicate predicateWithFormat:@"originalURL == %@", url];
-    } else {
-        predicate = [NSPredicate predicateWithFormat:@"originalURL = nil"];
-    }
-    [fetchRequest setPredicate:predicate];
-    
-    // Check the result count before fetching the actual object(s).
-    NSUInteger numFound = [moc countForFetchRequest:fetchRequest error:nil];
-    
-    // No existing icon found, create a new one
-    if (numFound == 0) {
-        IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
-        newIconImage.originalURL = url;
-        NSImage *image = [[NSImage alloc] initByReferencingURL:url];
-        newIconImage.imageRepresentation = image;
-        return newIconImage;
-    }
-    
-    // One existing icon found, fetch and reuse it.
-    else if (numFound == 1) {
-        IconImageMO *existingIconImage = [[moc executeFetchRequest:fetchRequest error:nil] objectAtIndex:0];
-        return existingIconImage;
-    }
-    
-    // Something went terribly wrong if we got here...
-    else {
-        DDLogError(@"Found multiple existing icon objects for URL. This really shouldn't happen...");
-        DDLogError(@"%@", [moc executeFetchRequest:fetchRequest error:nil]);
-    }
-    
-    return nil;
-}
-
-
 - (void)scanPkginfos
 {
     // Configure the context
@@ -439,7 +395,7 @@ DDLogLevel ddLogLevel;
                 iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             }
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:moc];
                 currentPackage.iconImage = icon;
             } else {
                 currentPackage.iconImage = defaultIcon;
@@ -448,7 +404,7 @@ DDLogLevel ddLogLevel;
             NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
             iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [self createIconImageFromURL:iconURL managedObjectContext:moc];
+                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:moc];
                 currentPackage.iconImage = icon;
             } else {
                 currentPackage.iconImage = defaultIcon;
