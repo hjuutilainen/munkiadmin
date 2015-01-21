@@ -2848,6 +2848,7 @@ DDLogLevel ddLogLevel;
      */
     
     BOOL hasUnstagedChanges = [[MAMunkiRepositoryManager sharedManager] repositoryHasUnstagedChanges];
+    NSApplicationTerminateReply reply = NSTerminateNow;
     
     if (hasUnstagedChanges) {
         NSString *question = NSLocalizedString(@"Changes have not been saved yet. Quit anyway?", @"Quit without saves error question message");
@@ -2864,13 +2865,13 @@ DDLogLevel ddLogLevel;
         NSInteger answer = [alert runModal];
         
         if (answer == NSAlertSecondButtonReturn) {
-            return NSTerminateCancel;
+            reply = NSTerminateCancel;
         } else {
-            return NSTerminateNow;
+            reply = NSTerminateNow;
         }
     }
     DDLogError(@"Terminating MunkiAdmin version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
-    return NSTerminateNow;
+    return reply;
 }
 
 
