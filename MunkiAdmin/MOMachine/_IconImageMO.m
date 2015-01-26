@@ -4,7 +4,6 @@
 #import "_IconImageMO.h"
 
 const struct IconImageMOAttributes IconImageMOAttributes = {
-	.fileSHA256Checksum = @"fileSHA256Checksum",
 	.imageRepresentation = @"imageRepresentation",
 	.originalURL = @"originalURL",
 };
@@ -41,8 +40,6 @@ const struct IconImageMORelationships IconImageMORelationships = {
 
 	return keyPaths;
 }
-
-@dynamic fileSHA256Checksum;
 
 @dynamic imageRepresentation;
 

@@ -61,6 +61,7 @@
 - (void)updateIconForPackage:(PackageMO *)currentPackage;
 - (NSString *)calculateSHA256HashForURL:(NSURL *)url;
 - (NSString *)calculateSHA256HashForData:(NSData *)data;
+- (void)deleteIconHashForPackage:(PackageMO *)package;
 - (void)updateIconHashForPackage:(PackageMO *)package;
 - (void)clearCustomIconForPackage:(PackageMO *)package;
 - (void)setIconNameFromURL:(NSURL *)iconURL forPackage:(PackageMO *)package;

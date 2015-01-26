@@ -20,7 +20,6 @@
 @property (nonatomic, strong) NSString *windowTitle;
 @property BOOL resizeOnSave;
 @property BOOL useInSiblingPackages;
-@property BOOL calculateHash;
 
 // Image browser window
 @property (strong) NSSet *imageBrowserItems;

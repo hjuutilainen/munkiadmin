@@ -28,7 +28,6 @@ DDLogLevel ddLogLevel;
     if (self) {
         _resizeOnSave = YES;
         _useInSiblingPackages = YES;
-        _calculateHash = YES;
         _windowTitle = @"Window";
         [_progressIndicator setUsesThreadedAnimation:YES];
         [_imageBrowserView setDelegate:self];
@@ -238,7 +237,6 @@ DDLogLevel ddLogLevel;
             IconImageMO *foundIconImage = foundIconImages[0];
             foundIconImage.imageRepresentation = nil;
             NSData *imageData = [NSData dataWithContentsOfURL:[sheet URL]];
-            foundIconImage.fileSHA256Checksum = [repoManager calculateSHA256HashForData:imageData];
             NSImage *image = [[NSImage alloc] initWithData:imageData];
             foundIconImage.imageRepresentation = image;
             

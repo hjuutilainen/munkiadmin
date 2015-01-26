@@ -486,6 +486,14 @@ DDLogLevel ddLogLevel;
     }];
 }
 
+- (IBAction)deleteIconHashAction:(id)sender
+{
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    [self.packagesArrayController.selectedObjects enumerateObjectsUsingBlock:^(PackageMO *obj, NSUInteger idx, BOOL *stop) {
+        [repoManager deleteIconHashForPackage:obj];
+    }];
+}
+
 - (IBAction)chooseIconForNameAction:(id)sender
 {
     self.iconChooser.packagesToEdit = self.packagesArrayController.selectedObjects;
@@ -716,15 +724,31 @@ DDLogLevel ddLogLevel;
     clearCustomMenuItem.target = self;
     [menu addItem:clearCustomMenuItem];
     
-    NSMenuItem *updateHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Update Icon Hash"
-                                                                 action:@selector(updateIconHashAction:)
-                                                          keyEquivalent:@""];
-    [updateHashMenuItem setEnabled:YES];
-    updateHashMenuItem.target = self;
-    [menu addItem:updateHashMenuItem];
-    
     [menu addItem:[NSMenuItem separatorItem]];
     
+    /*
+     Items for modifying the icon_hash.
+     Only visible if option key is down when opening the menu.
+     */
+    NSEvent *event = [NSApp currentEvent];
+    if (([event modifierFlags] & NSAlternateKeyMask) != 0) {
+        NSMenuItem *updateHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Update Icon Hash"
+                                                                    action:@selector(updateIconHashAction:)
+                                                             keyEquivalent:@""];
+        [updateHashMenuItem setEnabled:YES];
+        updateHashMenuItem.target = self;
+        [menu addItem:updateHashMenuItem];
+        
+        NSMenuItem *deleteHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Icon Hash"
+                                                                    action:@selector(deleteIconHashAction:)
+                                                             keyEquivalent:@""];
+        [deleteHashMenuItem setEnabled:YES];
+        deleteHashMenuItem.target = self;
+        [menu addItem:deleteHashMenuItem];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+    }
+
     if ([selectedPackageNames count] == 1) {
         PackageMO *selectedPackage = self.packagesArrayController.selectedObjects[0];
         

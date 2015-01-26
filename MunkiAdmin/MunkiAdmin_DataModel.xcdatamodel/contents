@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C99d" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C106a" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -65,7 +65,6 @@
         </fetchedProperty>
     </entity>
     <entity name="IconImage" representedClassName="IconImageMO" syncable="YES">
-        <attribute name="fileSHA256Checksum" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageRepresentation" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="iconImage" inverseEntity="Package" syncable="YES"/>
@@ -306,7 +305,7 @@
         <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
         <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
         <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
-        <element name="IconImage" positionX="9" positionY="153" width="128" height="103"/>
+        <element name="IconImage" positionX="9" positionY="153" width="128" height="90"/>
         <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="118"/>
         <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
         <element name="InstallerTypeSourceListItem" positionX="9" positionY="153" width="128" height="45"/>

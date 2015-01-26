@@ -1149,7 +1149,6 @@ static dispatch_queue_t serialQueue;
             DDLogDebug(@"Creating new icon object from %@", [url path]);
             newIconImage.originalURL = url;
             NSData *imageData = [NSData dataWithContentsOfURL:url];
-            newIconImage.fileSHA256Checksum = [self calculateSHA256HashForData:imageData];
             NSImage *image = [[NSImage alloc] initWithData:imageData];
             newIconImage.imageRepresentation = image;
         } else {
@@ -1157,7 +1156,6 @@ static dispatch_queue_t serialQueue;
             newIconImage.originalURL = nil;
             NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
             newIconImage.imageRepresentation = pkgicon;
-            newIconImage.fileSHA256Checksum = nil;
         }
         
         return newIconImage;
@@ -1217,7 +1215,6 @@ static dispatch_queue_t serialQueue;
             package.iconImage = defaultIcon;
         }
     }
-    [self updateIconHashForPackage:package];
 }
 
 - (NSString *)calculateSHA256HashForData:(NSData *)data
@@ -1234,8 +1231,23 @@ static dispatch_queue_t serialQueue;
 
 - (NSString *)calculateSHA256HashForURL:(NSURL *)url
 {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:[url path]]) {
+        return nil;
+    }
+    
     NSData *iconData = [NSData dataWithContentsOfURL:url];
     return [self calculateSHA256HashForData:iconData];
+}
+
+- (void)deleteIconHashForPackage:(PackageMO *)package
+{
+    DDLogDebug(@"%@: Removing icon_hash for package...", package.titleWithVersion);
+    
+    /*
+     Setting the value to nil causes the whole key to be deleted
+     */
+    package.munki_icon_hash = nil;
 }
 
 - (void)updateIconHashForPackage:(PackageMO *)package
@@ -1251,7 +1263,10 @@ static dispatch_queue_t serialQueue;
      Get the hash for the icon file on disk. This may be nil if
      the package doesn't have an icon.
      */
-    NSString *iconImageFileHash = package.iconImage.fileSHA256Checksum;
+    NSString *iconImageFileHash = nil;
+    if (package.iconImage.originalURL) {
+        iconImageFileHash = [self calculateSHA256HashForURL:package.iconImage.originalURL];
+    }
     
     /*
      If we have a hash, update it
@@ -2059,6 +2074,7 @@ static dispatch_queue_t serialQueue;
                 @"developer",
                 @"display_name",
                 @"force_install_after_date",
+                @"icon_hash",
                 @"icon_name",
                 @"installable_condition",
                 @"installcheck_script",
