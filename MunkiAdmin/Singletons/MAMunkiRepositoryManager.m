@@ -808,7 +808,7 @@ static dispatch_queue_t serialQueue;
             if ([packageIcon.packages count] == 1) {
                 if ([[packageIcon.packages anyObject] isEqualTo:aPackage] && packageIcon.originalURL != nil) {
                     DDLogInfo(@"Package icon doesn't have any other references, removing...");
-                    [wp recycleURLs:@[packageIcon.originalURL] completionHandler:nil];
+                    [objectsToDelete addObject:packageIcon.originalURL];
                     [moc deleteObject:packageIcon];
                 }
             } else if ([packageIcon.packages count] > 1) {
@@ -842,7 +842,7 @@ static dispatch_queue_t serialQueue;
         if ((aPackage.packageURL != nil) && removeInstallerItem) {
             [objectsToDelete addObjectsFromArray:@[aPackage.packageURL, aPackage.packageInfoURL]];
         } else {
-            [objectsToDelete addObjectsFromArray:@[aPackage.packageInfoURL]];
+            [objectsToDelete addObject:aPackage.packageInfoURL];
         }
         
         [moc deleteObject:aPackage];
