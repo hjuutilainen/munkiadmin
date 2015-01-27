@@ -19,7 +19,7 @@ DDLogLevel ddLogLevel;
 
 - (id)initWithSourceURL:(NSURL *)src targetURL:(NSURL *)target {
 	if ((self = [super init])) {
-		DDLogDebug(@"Initializing manifest operation");
+		DDLogVerbose(@"Initializing manifest operation");
 		self.sourceURL = src;
         self.targetURL = target;
 		self.fileName = [self.sourceURL lastPathComponent];
@@ -42,7 +42,7 @@ DDLogLevel ddLogLevel;
             DDLogDebug(@"Copying %@ to %@", self.fileName, [self.targetURL relativePath]);
             
             if ([fm copyItemAtURL:self.sourceURL toURL:self.targetURL error:&copyError]) {
-                DDLogDebug(@"Done copying");
+                DDLogVerbose(@"Done copying");
             } else {
                 DDLogError(@"Copy failed with error: %@",[copyError description]);
             }

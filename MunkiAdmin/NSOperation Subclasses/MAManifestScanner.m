@@ -22,7 +22,7 @@ DDLogLevel ddLogLevel;
 
 - (id)initWithURL:(NSURL *)src {
 	if ((self = [super init])) {
-		DDLogDebug(@"Initializing read operation for manifest %@", [src path]);
+		DDLogVerbose(@"Initializing read operation for manifest %@", [src path]);
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
 		self.currentJobDescription = @"Initializing manifest scan operation";
@@ -232,7 +232,7 @@ DDLogLevel ddLogLevel;
                 NSDate *startTime = [NSDate date];
                 NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
                 if ([managedInstalls count] > 0) {
-                    DDLogDebug(@"%@: Found %lu managed_installs items", self.fileName, (unsigned long)[managedInstalls count]);
+                    DDLogVerbose(@"%@: Found %lu managed_installs items", self.fileName, (unsigned long)[managedInstalls count]);
                 }
                 [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
@@ -255,7 +255,7 @@ DDLogLevel ddLogLevel;
                 startTime = [NSDate date];
                 NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
                 if ([managedUninstalls count] > 0) {
-                    DDLogDebug(@"%@: Found %lu managed_uninstalls items", self.fileName, (unsigned long)[managedUninstalls count]);
+                    DDLogVerbose(@"%@: Found %lu managed_uninstalls items", self.fileName, (unsigned long)[managedUninstalls count]);
                 }
                 [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
@@ -278,7 +278,7 @@ DDLogLevel ddLogLevel;
                 startTime = [NSDate date];
                 NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
                 if ([managedUpdates count] > 0) {
-                    DDLogDebug(@"%@: Found %lu managed_updates items", self.fileName, (unsigned long)[managedUpdates count]);
+                    DDLogVerbose(@"%@: Found %lu managed_updates items", self.fileName, (unsigned long)[managedUpdates count]);
                 }
                 [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
@@ -301,7 +301,7 @@ DDLogLevel ddLogLevel;
                 startTime = [NSDate date];
                 NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
                 if ([optionalInstalls count] > 0) {
-                    DDLogDebug(@"%@: Found %lu optional_installs items", self.fileName, (unsigned long)[optionalInstalls count]);
+                    DDLogVerbose(@"%@: Found %lu optional_installs items", self.fileName, (unsigned long)[optionalInstalls count]);
                 }
 				[optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
@@ -324,7 +324,7 @@ DDLogLevel ddLogLevel;
                 startTime = [NSDate date];
 				NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
                 if ([includedManifests count] > 0) {
-                    DDLogDebug(@"%@: Found %lu included_manifests items", self.fileName, (unsigned long)[includedManifests count]);
+                    DDLogVerbose(@"%@: Found %lu included_manifests items", self.fileName, (unsigned long)[includedManifests count]);
                 }
                 [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     DDLogVerbose(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);

@@ -38,7 +38,7 @@ DDLogLevel ddLogLevel;
 		_sourceDict = dict;
 		_fileName = [_sourceDict valueForKey:@"name"];
 		_currentJobDescription = @"Initializing pkginfo scan operation";
-        DDLogDebug(@"Initializing read operation with pkginfo dictionary: %@", [dict description]);
+        DDLogVerbose(@"Initializing read operation with pkginfo dictionary: %@", [dict description]);
 	}
 	return self;
 }
@@ -49,7 +49,7 @@ DDLogLevel ddLogLevel;
 		_sourceURL = src;
 		_fileName = [_sourceURL lastPathComponent];
 		_currentJobDescription = @"Initializing pkginfo scan operation";
-        DDLogDebug(@"Initializing read operation for pkginfo %@", [src path]);
+        DDLogVerbose(@"Initializing read operation for pkginfo %@", [src path]);
 	}
 	return self;
 }
@@ -104,15 +104,15 @@ DDLogLevel ddLogLevel;
                  take care of most of the standard pkginfo keys and values
                  */
 				self.currentJobDescription = [NSString stringWithFormat:@"Reading basic info for %@", self.fileName];
-				DDLogDebug(@"%@: Found %lu keys", self.fileName, [self.sourceDict count]);
+				DDLogVerbose(@"%@: Found %lu keys", self.fileName, [self.sourceDict count]);
 				[repoManager.pkginfoBasicKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 					id value = [self.sourceDict objectForKey:obj];
 					if (value != nil) {
                         DDLogVerbose(@"%@: %@: %@", self.fileName, obj, value);
 						[aNewPackage setValue:value forKey:key];
 					} else {
-						//if ([self.defaults boolForKey:@"debugLogAllProperties"]) DDLogDebug(@"%@ --> %@: nil (skipped)", self.fileName, key);
-                        //DDLogDebug(@"%@ --> %@: nil (skipped)", self.fileName, key);
+						//if ([self.defaults boolForKey:@"debugLogAllProperties"]) DDLogVerbose(@"%@ --> %@: nil (skipped)", self.fileName, key);
+                        //DDLogVerbose(@"%@ --> %@: nil (skipped)", self.fileName, key);
                     }
 				}];
                 
@@ -124,13 +124,13 @@ DDLogLevel ddLogLevel;
                 if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install != nil)) {
                     // pkginfo has both forced_install and unattended_install defined
                     if (aNewPackage.munki_forced_installValue != aNewPackage.munki_unattended_installValue) {
-                        DDLogDebug(@"%@ has both forced_install and unattended_install defined with differing values. Favoring unattended_install", self.fileName);
+                        DDLogVerbose(@"%@ has both forced_install and unattended_install defined with differing values. Favoring unattended_install", self.fileName);
                         aNewPackage.munki_forced_install = aNewPackage.munki_unattended_install;
                     }
                 }
                 else if ((aNewPackage.munki_forced_install != nil) && (aNewPackage.munki_unattended_install == nil)) {
                     // pkginfo has only forced_install defined
-                    DDLogDebug(@"%@ has only forced_install defined. Migrating to unattended_install", self.fileName);
+                    DDLogVerbose(@"%@ has only forced_install defined. Migrating to unattended_install", self.fileName);
                     aNewPackage.munki_unattended_install = aNewPackage.munki_forced_install;
                 }
                 
@@ -140,13 +140,13 @@ DDLogLevel ddLogLevel;
                 if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall != nil)) {
                     // pkginfo has both values defined
                     if (aNewPackage.munki_forced_uninstallValue != aNewPackage.munki_unattended_uninstallValue) {
-                        DDLogDebug(@"%@ has both forced_uninstall and unattended_uninstall defined with differing values. Favoring unattended_uninstall", self.fileName);
+                        DDLogVerbose(@"%@ has both forced_uninstall and unattended_uninstall defined with differing values. Favoring unattended_uninstall", self.fileName);
                         aNewPackage.munki_forced_uninstall = aNewPackage.munki_unattended_uninstall;
                     }
                 }
                 else if ((aNewPackage.munki_forced_uninstall != nil) && (aNewPackage.munki_unattended_uninstall == nil)) {
                     // pkginfo has only forced_uninstall defined
-                    DDLogDebug(@"%@ has only forced_uninstall defined. Migrating to unattended_uninstall", self.fileName);
+                    DDLogVerbose(@"%@ has only forced_uninstall defined. Migrating to unattended_uninstall", self.fileName);
                     aNewPackage.munki_unattended_uninstall = aNewPackage.munki_forced_uninstall;
                 }
                 
@@ -159,7 +159,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "_metadata" key
                  */
-                DDLogDebug(@"%@: Reading _metadata...", self.fileName);
+                DDLogVerbose(@"%@: Reading _metadata...", self.fileName);
                 NSDictionary *munki_metadata = [self.sourceDict objectForKey:@"_metadata"];
                 __block NSDate *pkginfoDateCreatedFromMetadata = nil;
                 [munki_metadata enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
@@ -173,7 +173,7 @@ DDLogLevel ddLogLevel;
                  This pkginfo is a file on disk
                  */
 				if (self.sourceURL != nil) {
-                    DDLogDebug(@"%@: Reading file modification and creation dates...", self.fileName);
+                    DDLogVerbose(@"%@: Reading file modification and creation dates...", self.fileName);
                     
 					aNewPackage.packageInfoURL = self.sourceURL;
                     
@@ -246,7 +246,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *itemReceipts = [self.sourceDict objectForKey:@"receipts"];
                 if ([itemReceipts count] > 0) {
-                    DDLogDebug(@"%@: Found %lu receipt items", self.fileName, (unsigned long)[itemReceipts count]);
+                    DDLogVerbose(@"%@: Found %lu receipt items", self.fileName, (unsigned long)[itemReceipts count]);
                 }
 				[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
 					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
@@ -258,10 +258,10 @@ DDLogLevel ddLogLevel;
 							DDLogVerbose(@"%@: receipt %lu --> %@: %@", self.fileName, (unsigned long)idx, receiptObject, value);
 							[aNewReceipt setValue:value forKey:receiptKey];
 						} else {
-							//DDLogDebug(@"%@: receipt %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, receiptKey);
+							//DDLogVerbose(@"%@: receipt %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, receiptKey);
 						}
 					}];
-                    //DDLogDebug(@"%@: receipt %lu --> %@", self.fileName, (unsigned long)idx, aReceipt);
+                    //DDLogVerbose(@"%@: receipt %lu --> %@", self.fileName, (unsigned long)idx, aReceipt);
 				}];
 				
 				/*
@@ -269,7 +269,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
                 if ([installItems count] > 0) {
-                    DDLogDebug(@"%@: Found %lu installs items", self.fileName, (unsigned long)[installItems count]);
+                    DDLogVerbose(@"%@: Found %lu installs items", self.fileName, (unsigned long)[installItems count]);
                 }
 				[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
                     InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
@@ -280,10 +280,10 @@ DDLogLevel ddLogLevel;
                         if (value != nil) {
                             DDLogVerbose(@"%@: installs item %lu --> %@: %@", self.fileName, (unsigned long)idx, key, obj);
                         } else {
-                            //DDLogDebug(@"%@: items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, itemsToCopyKey);
+                            //DDLogVerbose(@"%@: items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, itemsToCopyKey);
                         }
                     }];
-                    //DDLogDebug(@"%@: installs %lu --> %@", self.fileName, (unsigned long)idx, anInstall);
+                    //DDLogVerbose(@"%@: installs %lu --> %@", self.fileName, (unsigned long)idx, anInstall);
 				}];
 				
 				/*
@@ -291,7 +291,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *itemsToCopy = [self.sourceDict objectForKey:@"items_to_copy"];
                 if ([itemsToCopy count] > 0) {
-                    DDLogDebug(@"%@: Found %lu items_to_copy items", self.fileName, (unsigned long)[itemsToCopy count]);
+                    DDLogVerbose(@"%@: Found %lu items_to_copy items", self.fileName, (unsigned long)[itemsToCopy count]);
                 }
 				[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
 					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
@@ -303,7 +303,7 @@ DDLogLevel ddLogLevel;
 							DDLogVerbose(@"%@: items_to_copy item %lu --> %@: %@", self.fileName, (unsigned long)idx, itemsToCopyObject, value);
 							[aNewItemToCopy setValue:value forKey:itemsToCopyKey];
 						} else {
-							//DDLogDebug(@"%@: items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, itemsToCopyKey);
+							//DDLogVerbose(@"%@: items_to_copy item %lu --> %@: nil (skipped)", self.fileName, (unsigned long)idx, itemsToCopyKey);
 						}
 					}];
 					if ([self.defaults boolForKey:@"items_to_copyUseDefaults"] && self.canModify) {
@@ -318,7 +318,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
                 if ([installerChoices count] > 0) {
-                    DDLogDebug(@"%@: Found %lu installer_choices_xml items", self.fileName, (unsigned long)[installerChoices count]);
+                    DDLogVerbose(@"%@: Found %lu installer_choices_xml items", self.fileName, (unsigned long)[installerChoices count]);
                 }
 				[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
 					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
@@ -341,7 +341,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
                 if ([catalogs count] > 0) {
-                    DDLogDebug(@"%@: Found %lu catalog items", self.fileName, (unsigned long)[catalogs count]);
+                    DDLogVerbose(@"%@: Found %lu catalog items", self.fileName, (unsigned long)[catalogs count]);
                 }
 				[catalogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     DDLogVerbose(@"%@: catalogs item %lu --> %@", self.fileName, (unsigned long)idx, obj);
@@ -361,7 +361,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *requires = [self.sourceDict objectForKey:@"requires"];
                 if ([requires count] > 0) {
-                    DDLogDebug(@"%@: Found %lu requires items", self.fileName, (unsigned long)[requires count]);
+                    DDLogVerbose(@"%@: Found %lu requires items", self.fileName, (unsigned long)[requires count]);
                 }
 				[requires enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: requires item %lu --> %@", self.fileName, (unsigned long)idx, obj);
@@ -377,7 +377,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *update_for = [self.sourceDict objectForKey:@"update_for"];
                 if ([update_for count] > 0) {
-                    DDLogDebug(@"%@: Found %lu update_for items", self.fileName, (unsigned long)[update_for count]);
+                    DDLogVerbose(@"%@: Found %lu update_for items", self.fileName, (unsigned long)[update_for count]);
                 }
 				[update_for enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: update_for item %lu --> %@", self.fileName, (unsigned long)idx, obj);
@@ -393,7 +393,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
                 if ([blocking_applications count] > 0) {
-                    DDLogDebug(@"%@: Found %lu blocking_applications", self.fileName, (unsigned long)[blocking_applications count]);
+                    DDLogVerbose(@"%@: Found %lu blocking_applications", self.fileName, (unsigned long)[blocking_applications count]);
                 }
                 if (!blocking_applications) {
                     aNewPackage.hasEmptyBlockingApplicationsValue = NO;
@@ -416,7 +416,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSArray *supported_architectures = [self.sourceDict objectForKey:@"supported_architectures"];
                 if ([supported_architectures count] > 0) {
-                    DDLogDebug(@"%@: Found %lu supported_architectures items", self.fileName, (unsigned long)[supported_architectures count]);
+                    DDLogVerbose(@"%@: Found %lu supported_architectures items", self.fileName, (unsigned long)[supported_architectures count]);
                 }
 				[supported_architectures enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: supported_architectures item %lu --> %@", self.fileName, (unsigned long)idx, obj);
@@ -432,7 +432,7 @@ DDLogLevel ddLogLevel;
                  */
 				NSDictionary *installer_environment = [self.sourceDict objectForKey:@"installer_environment"];
                 if ([installer_environment count] > 0) {
-                    DDLogDebug(@"%@: Found %lu installer_environment items", self.fileName, (unsigned long)[installer_environment count]);
+                    DDLogVerbose(@"%@: Found %lu installer_environment items", self.fileName, (unsigned long)[installer_environment count]);
                 }
                 [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
                     DDLogVerbose(@"%@: installer_environment --> %@: %@", self.fileName, key, obj);

@@ -1146,13 +1146,13 @@ static dispatch_queue_t serialQueue;
     if (numFound == 0) {
         IconImageMO *newIconImage = [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc];
         if (url != nil) {
-            DDLogDebug(@"Creating new icon object from %@", [url path]);
+            DDLogVerbose(@"Creating new icon object from %@", [url path]);
             newIconImage.originalURL = url;
             NSData *imageData = [NSData dataWithContentsOfURL:url];
             NSImage *image = [[NSImage alloc] initWithData:imageData];
             newIconImage.imageRepresentation = image;
         } else {
-            DDLogDebug(@"Creating new icon object for pkg file type");
+            DDLogVerbose(@"Creating new icon object for pkg file type");
             newIconImage.originalURL = nil;
             NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
             newIconImage.imageRepresentation = pkgicon;
@@ -1164,9 +1164,9 @@ static dispatch_queue_t serialQueue;
     // One existing icon found, fetch and reuse it.
     else if (numFound == 1) {
         if (url) {
-            DDLogDebug(@"Reusing existing icon object for %@", [url path]);
+            DDLogVerbose(@"Reusing existing icon object for %@", [url path]);
         } else {
-            DDLogDebug(@"Reusing existing icon object for pkg file type");
+            DDLogVerbose(@"Reusing existing icon object for pkg file type");
         }
         
         IconImageMO *existingIconImage = [moc executeFetchRequest:fetchRequest error:nil][0];

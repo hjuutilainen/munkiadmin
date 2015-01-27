@@ -29,7 +29,7 @@ DDLogLevel ddLogLevel;
 - (id)initWithURL:(NSURL *)url
 {
     if ((self = [super init])) {
-        DDLogDebug(@"Initializing extract operation for %@", [url path]);
+        DDLogVerbose(@"Initializing extract operation for %@", [url path]);
 		_packageURL = url;
         NSString *fileName;
         [url getResourceValue:&fileName forKey:NSURLNameKey error:nil];

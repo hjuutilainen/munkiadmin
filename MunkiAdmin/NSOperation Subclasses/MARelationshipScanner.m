@@ -23,13 +23,13 @@ DDLogLevel ddLogLevel;
 
 + (id)pkginfoScanner
 {
-    DDLogDebug(@"Initializing pkginfo relationship operation");
+    DDLogVerbose(@"Initializing pkginfo relationship operation");
 	return [[self alloc] initWithMode:0];
 }
 
 + (id)manifestScanner
 {
-    DDLogDebug(@"Initializing manifest relationship operation");
+    DDLogVerbose(@"Initializing manifest relationship operation");
 	return [[self alloc] initWithMode:1];
 }
 
@@ -290,7 +290,7 @@ DDLogLevel ddLogLevel;
         currentPackage.packageInfoParentDirectoryURL = parentDirectoryURL;
         
         // Loop through the catalog objects we already know about
-        DDLogDebug(@"%@: Looping through catalog objects we already know about...", currentPackage.titleWithVersion);
+        DDLogVerbose(@"%@: Looping through catalog objects we already know about...", currentPackage.titleWithVersion);
         for (CatalogMO *aCatalog in self.allCatalogs) {
             if (![existingCatalogTitles containsObject:aCatalog.title]) {
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
@@ -306,12 +306,12 @@ DDLogLevel ddLogLevel;
                 newPackageInfo.package = currentPackage;
                 
                 if ([[originalPkginfo objectForKey:@"catalogs"] containsObject:aCatalog.title]) {
-                    DDLogDebug(@"%@: Should be enabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
+                    DDLogVerbose(@"%@: Should be enabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
                     newCatalogInfo.isEnabledForPackageValue = YES;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[[originalPkginfo objectForKey:@"catalogs"] indexOfObject:aCatalog.title]];
                     newPackageInfo.isEnabledForCatalogValue = YES;
                 } else {
-                    DDLogDebug(@"%@: Should be disabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
+                    DDLogVerbose(@"%@: Should be disabled for catalog %@", currentPackage.titleWithVersion, aCatalog.title);
                     newCatalogInfo.isEnabledForPackageValue = NO;
                     newCatalogInfo.originalIndexValue = 10000;
                     newPackageInfo.isEnabledForCatalogValue = NO;
@@ -322,7 +322,7 @@ DDLogLevel ddLogLevel;
         
         // Loop through the "catalogs" key in the original pkginfo
         // and create new catalog objects if necessary
-        DDLogDebug(@"%@: Looping through catalogs key in the original pkginfo...", currentPackage.titleWithVersion);
+        DDLogVerbose(@"%@: Looping through catalogs key in the original pkginfo...", currentPackage.titleWithVersion);
         [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id catalogObject, NSUInteger catalogIndex, BOOL *stopCatalogEnum) {
             
             NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
@@ -339,7 +339,7 @@ DDLogLevel ddLogLevel;
             // Create it and add dependencies for it
             
             if (numFoundCatalogs == 0) {
-                DDLogDebug(@"%@: Should be enabled for new catalog %@", currentPackage.titleWithVersion, catalogObject);
+                DDLogVerbose(@"%@: Should be enabled for new catalog %@", currentPackage.titleWithVersion, catalogObject);
                 CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
                 aNewCatalog.title = catalogObject;
                 [aNewCatalog addPackagesObject:currentPackage];
@@ -365,7 +365,7 @@ DDLogLevel ddLogLevel;
                 CatalogMO *foundCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
                 
                 if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:catalogObject]) {
-                    DDLogDebug(@"%@: Should be enabled for existing catalog %@", currentPackage.titleWithVersion, foundCatalog.title);
+                    DDLogVerbose(@"%@: Should be enabled for existing catalog %@", currentPackage.titleWithVersion, foundCatalog.title);
                     [foundCatalog addPackagesObject:currentPackage];
                     CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
                     newCatalogInfo.package = currentPackage;
