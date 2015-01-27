@@ -12,11 +12,21 @@
 #import "MACoreDataManager.h"
 #import "MADiskImageOperation.h"
 #import "MAPackageExtractOperation.h"
+#import "MAScriptRunner.h"
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
+
+#define kPkginfoPreSaveScriptName @"pkginfo-presave"
+#define kPkginfoPostSaveScriptName @"pkginfo-postsave"
+
+#define kManifestPreSaveScriptName @"manifest-presave"
+#define kManifestPostSaveScriptName @"manifest-postsave"
+
+#define kRepositoryPreSaveScriptName @"repository-presave"
+#define kRepositoryPostSaveScriptName @"repository-postsave"
 
 /*
  * Private interface
@@ -1767,6 +1777,52 @@ static dispatch_queue_t serialQueue;
     return [NSArray arrayWithArray:mutableImages];
 }
 
+# pragma mark -
+# pragma mark Script support
+
+- (NSURL *)repositorySupportDirectory
+{
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSURL *mainRepoURL = [appDelegate repoURL];
+    NSURL *munkiAdminRepoURL = [mainRepoURL URLByAppendingPathComponent:@"MunkiAdmin"];
+    return munkiAdminRepoURL;
+}
+
+- (NSURL *)scriptURLForName:(NSString *)name
+{
+    NSURL *url = nil;
+    url = [[self repositorySupportDirectory] URLByAppendingPathComponent:name];
+    return url;
+}
+
+- (NSString *)pkginfoPostSaveScriptPath
+{
+    return [[self scriptURLForName:kPkginfoPostSaveScriptName] path];
+}
+
+- (NSString *)pkginfoPreSaveScriptPath
+{
+    return [[self scriptURLForName:kPkginfoPreSaveScriptName] path];
+}
+
+- (MAScriptRunner *)postSaveScriptForPackage:(PackageMO *)aPackage
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self pkginfoPostSaveScriptPath]];
+    NSURL *repoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] repoURL];
+    scriptRunner.currentDirectoryPath = [repoURL path];
+    scriptRunner.arguments = @[[aPackage.packageInfoURL path]];
+    return scriptRunner;
+}
+
+- (MAScriptRunner *)preSaveScriptForPackage:(PackageMO *)aPackage
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self pkginfoPreSaveScriptPath]];
+    NSURL *repoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] repoURL];
+    scriptRunner.currentDirectoryPath = [repoURL path];
+    scriptRunner.arguments = @[[aPackage.packageInfoURL path]];
+    return scriptRunner;
+}
+
 
 # pragma mark -
 # pragma mark Writing to the repository
@@ -2037,9 +2093,27 @@ static dispatch_queue_t serialQueue;
         [self backupPackage:aPackage];
     }
     
+    MAScriptRunner *preSave = [self preSaveScriptForPackage:aPackage];
+    [preSave start];
+    if (preSave.standardOutput) {
+        DDLogDebug(@"%@", preSave.standardOutput);
+    }
+    if (preSave.terminationStatus != 0) {
+        DDLogError(@"%@", preSave.standardError);
+        return NO;
+    }
+    
     DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
         aPackage.originalPkginfo = plist;
+        
+        MAScriptRunner *postSave = [self postSaveScriptForPackage:aPackage];
+        [postSave start];
+        DDLogDebug(@"%@", postSave.standardOutput);
+        if (postSave.terminationStatus == 0) {
+            DDLogError(@"%@", postSave.standardError);
+        }
+        
         return YES;
     } else {
         DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aPackage.packageInfoURL path]);
@@ -2510,7 +2584,6 @@ static dispatch_queue_t serialQueue;
 		return NO;
 	}
 }
-
 
 - (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error
 {

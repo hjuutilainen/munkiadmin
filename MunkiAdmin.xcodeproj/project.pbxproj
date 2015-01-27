@@ -71,6 +71,7 @@
 		F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* MAGradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* MAGradientButtonBarView.m */; };
+		F5B0A0581A77A530006243E3 /* MAScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0A0571A77A530006243E3 /* MAScriptRunner.m */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
 		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
 		F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */; };
@@ -264,6 +265,8 @@
 		F59B724613698044008229E8 /* MAGradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* MAGradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientButtonBarView.m; sourceTree = "<group>"; };
 		F5A11C6C195706C6005A39AE /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
+		F5B0A0561A77A530006243E3 /* MAScriptRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAScriptRunner.h; sourceTree = "<group>"; };
+		F5B0A0571A77A530006243E3 /* MAScriptRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAScriptRunner.m; sourceTree = "<group>"; };
 		F5B2996015E78704008BE0EF /* packageIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon_32x32.png; path = MunkiAdmin/Graphics/packageIcon_32x32.png; sourceTree = "<group>"; };
 		F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/packageIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageGroupIcon_32x32.png; path = MunkiAdmin/Graphics/packageGroupIcon_32x32.png; sourceTree = "<group>"; };
@@ -799,6 +802,8 @@
 				F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */,
 				FEEBE373145FC5750004791A /* MARelationshipScanner.h */,
 				FEEBE374145FC5750004791A /* MARelationshipScanner.m */,
+				F5B0A0561A77A530006243E3 /* MAScriptRunner.h */,
+				F5B0A0571A77A530006243E3 /* MAScriptRunner.m */,
 			);
 			name = Operations;
 			path = "MunkiAdmin/NSOperation Subclasses";
@@ -1031,6 +1036,7 @@
 				FEAC7C1F14E3F65B00487016 /* MAPredicateEditor.m in Sources */,
 				FE0F4E6514FB564F0081AEFF /* MAPackagesView.m in Sources */,
 				F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */,
+				F5B0A0581A77A530006243E3 /* MAScriptRunner.m in Sources */,
 				FE0F4E7014FB61590081AEFF /* _DirectoryMO.m in Sources */,
 				FE0F4E7114FB61590081AEFF /* DirectoryMO.m in Sources */,
 				FE0F4E7A14FB804C0081AEFF /* _PackageSourceListItemMO.m in Sources */,
