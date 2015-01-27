@@ -522,11 +522,22 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)createIconForNameAction:(id)sender
 {
+    NSWindow *window = [self.iconEditor window];
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
     self.iconEditor.useInSiblingPackages = YES;
-    NSWindow *window = [self.iconEditor window];
-    NSInteger result = [NSApp runModalForWindow:window];
     
+    /*
+     If all selected packages are using the same icon, show the icon in the image view
+     */
+    NSArray *iconImages = [self.iconEditor.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.iconImage"];
+    if ([iconImages count] == 1) {
+        IconImageMO *iconImage = iconImages[0];
+        [self.iconEditor.imageView setImage:iconImage.imageRepresentation];
+    } else {
+        [self.iconEditor.imageView setImage:nil];
+    }
+    
+    NSInteger result = [NSApp runModalForWindow:window];
     if (result == NSModalResponseOK) {
         
     }
@@ -534,11 +545,22 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)createIconForPackageAction:(id)sender
 {
+    NSWindow *window = [self.iconEditor window];
     self.iconEditor.packagesToEdit = self.packagesArrayController.selectedObjects;
     self.iconEditor.useInSiblingPackages = NO;
-    NSWindow *window = [self.iconEditor window];
-    NSInteger result = [NSApp runModalForWindow:window];
     
+    /*
+     If all selected packages are using the same icon, show the icon in the image view
+     */
+    NSArray *iconImages = [self.iconEditor.packagesToEdit valueForKeyPath:@"@distinctUnionOfObjects.iconImage"];
+    if ([iconImages count] == 1) {
+        IconImageMO *iconImage = iconImages[0];
+        [self.iconEditor.imageView setImage:iconImage.imageRepresentation];
+    } else {
+        [self.iconEditor.imageView setImage:nil];
+    }
+    
+    NSInteger result = [NSApp runModalForWindow:window];
     if (result == NSModalResponseOK) {
         
     }
