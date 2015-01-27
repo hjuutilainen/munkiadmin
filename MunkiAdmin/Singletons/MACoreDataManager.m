@@ -598,11 +598,18 @@ DDLogLevel ddLogLevel;
     appleUpdatesSmartItem.originalIndexValue = 40;
     appleUpdatesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
     
+    InstallerTypeSourceListItemMO *configurationProfilesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
+    configurationProfilesSmartItem.title = @"Configuration Profile";
+    configurationProfilesSmartItem.itemType = @"smart";
+    configurationProfilesSmartItem.parent = mainTypesItem;
+    configurationProfilesSmartItem.originalIndexValue = 50;
+    configurationProfilesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"profile"];
+    
     InstallerTypeSourceListItemMO *adobeSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     adobeSmartItem.title = @"Adobe Installer";
     adobeSmartItem.itemType = @"smart";
     adobeSmartItem.parent = mainTypesItem;
-    adobeSmartItem.originalIndexValue = 50;
+    adobeSmartItem.originalIndexValue = 60;
     NSArray *adobePredicates = @[[NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeSetup"],
                                  [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeUberInstaller"],
                                  [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeAcrobatUpdater"],
