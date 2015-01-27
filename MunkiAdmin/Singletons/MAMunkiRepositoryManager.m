@@ -752,105 +752,149 @@ static dispatch_queue_t serialQueue;
     [moc processPendingChanges];
 }
 
-- (void)removePackage:(PackageMO *)aPackage withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
+- (void)removePackages:(NSArray *)packages withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
 {
     NSManagedObjectContext *moc = [self appDelegateMoc];
     NSWorkspace *wp = [NSWorkspace sharedWorkspace];
+    [[moc undoManager] beginUndoGrouping];
+    NSMutableArray *objectsToDelete = [[NSMutableArray alloc] init];
     
-    NSString *name = aPackage.munki_name;
-    NSString *nameWithVersion = aPackage.titleWithVersion;
-    
-    /*
-     Get the packages parent application which represents a group of packageinfos with the same name
-     and get the number of other pkginfos with the same name.
-     */
-    ApplicationMO *packageGroup = aPackage.parentApplication;
-    NSUInteger numPackagesWithThisName = [packageGroup.packages count];
-    
-    /*
-     This is the last pkginfo with this name and we are allowed to remove references
-     */
-    if ((numPackagesWithThisName == 1) && removeReferences) {
-        DDLogInfo(@"Removing the last pkginfo with this name. Removing references too...");
+    for (PackageMO *aPackage in packages) {
+        
+        NSString *name = aPackage.munki_name;
+        NSString *nameWithVersion = aPackage.titleWithVersion;
         
         /*
-         Check for and remove references to this package:
-         - managed_installs item in a manifest
-         - managed_uninstalls item in a manifest
-         - managed_updates item in a manifest
-         - optional_installs item in a manifest
-         - requires item in a package
-         - update_for item in a package
+         Get the packages parent application which represents a group of packageinfos with the same name
+         and get the number of other pkginfos with the same name.
          */
-        NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:name];
-        DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
-        for (StringObjectMO *aReference in referencingObjects) {
-            [moc deleteObject:aReference];
-        }
+        ApplicationMO *packageGroup = aPackage.parentApplication;
+        NSUInteger numPackagesWithThisName = [packageGroup.packages count];
         
         /*
-         Remove versioned references too
+         This is the last pkginfo with this name and we are allowed to remove references
          */
-        NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:nameWithVersion];
-        DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
-        for (StringObjectMO *aReference in referencingObjectsWithVersion) {
-            [moc deleteObject:aReference];
-        }
-        
-        /*
-         Remove the icon if it is not used anymore
-         */
-        IconImageMO *packageIcon = aPackage.iconImage;
-        if ([packageIcon.packages count] == 1) {
-            if ([[packageIcon.packages anyObject] isEqualTo:aPackage] && packageIcon.originalURL != nil) {
-                DDLogInfo(@"Package icon doesn't have any other references, removing...");
-                [wp recycleURLs:@[packageIcon.originalURL] completionHandler:nil];
-                [moc deleteObject:packageIcon];
+        if ((numPackagesWithThisName == 1) && removeReferences) {
+            DDLogInfo(@"Removing the last pkginfo with this name. Removing references too...");
+            
+            /*
+             Check for and remove references to this package:
+             - managed_installs item in a manifest
+             - managed_uninstalls item in a manifest
+             - managed_updates item in a manifest
+             - optional_installs item in a manifest
+             - requires item in a package
+             - update_for item in a package
+             */
+            NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:name];
+            DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
+            for (StringObjectMO *aReference in referencingObjects) {
+                [moc deleteObject:aReference];
             }
-        } else if ([packageIcon.packages count] > 1) {
-            DDLogInfo(@"Package icon still has other references, leaving...");
-            for (PackageMO *package in packageIcon.packages) {
-                if (![package isEqualTo:aPackage]) {
-                    DDLogInfo(@"Icon referenced from %@", package.titleWithVersion);
+            
+            /*
+             Remove versioned references too
+             */
+            NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:nameWithVersion];
+            DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
+            for (StringObjectMO *aReference in referencingObjectsWithVersion) {
+                [moc deleteObject:aReference];
+            }
+            
+            /*
+             Remove the icon if it is not used anymore
+             */
+            IconImageMO *packageIcon = aPackage.iconImage;
+            if ([packageIcon.packages count] == 1) {
+                if ([[packageIcon.packages anyObject] isEqualTo:aPackage] && packageIcon.originalURL != nil) {
+                    DDLogInfo(@"Package icon doesn't have any other references, removing...");
+                    [wp recycleURLs:@[packageIcon.originalURL] completionHandler:nil];
+                    [moc deleteObject:packageIcon];
+                }
+            } else if ([packageIcon.packages count] > 1) {
+                DDLogInfo(@"Package icon still has other references, leaving...");
+                for (PackageMO *package in packageIcon.packages) {
+                    if (![package isEqualTo:aPackage]) {
+                        DDLogInfo(@"Icon referenced from %@", package.titleWithVersion);
+                    }
                 }
             }
         }
+        
+        /*
+         This is the last pkginfo with this name but we were told to not touch referencing items
+         */
+        else if ((numPackagesWithThisName == 1) && !removeReferences) {
+            DDLogInfo(@"Removing the last pkginfo with this name but not removing any references...");
+        }
+        
+        /*
+         There are other remaining pkginfos with the same name, don't touch any references
+         */
+        else {
+            DDLogInfo(@"This name is used in %li other pkginfo items. Not removing references...", (unsigned long)numPackagesWithThisName - 1);
+        }
+        
+        /*
+         Determine the actual filesystem items to remove
+         */
+        
+        if ((aPackage.packageURL != nil) && removeInstallerItem) {
+            [objectsToDelete addObjectsFromArray:@[aPackage.packageURL, aPackage.packageInfoURL]];
+        } else {
+            [objectsToDelete addObjectsFromArray:@[aPackage.packageInfoURL]];
+        }
+        
+        [moc deleteObject:aPackage];
     }
-    
-    /*
-     This is the last pkginfo with this name but we were told to not touch referencing items
-     */
-    else if ((numPackagesWithThisName == 1) && !removeReferences) {
-        DDLogInfo(@"Removing the last pkginfo with this name but not removing any references...");
-    }
-    
-    /*
-     There are other remaining pkginfos with the same name, don't touch any references
-     */
-    else {
-        DDLogInfo(@"This name is used in %li other pkginfo items. Not removing references...", (unsigned long)numPackagesWithThisName - 1);
-    }
-    
-    /*
-     Determine the actual filesystem items to remove
-     */
-    NSArray *objectsToDelete = nil;
-    if ((aPackage.packageURL != nil) && removeInstallerItem) {
-        objectsToDelete = @[aPackage.packageURL, aPackage.packageInfoURL];
-    } else {
-        objectsToDelete = @[aPackage.packageInfoURL];
-    }
-    
+
     for (NSURL *url in objectsToDelete) {
-        DDLogInfo(@"Deleting file %@", [url relativePath]);
+        DDLogInfo(@"Trying to delete file %@", [url relativePath]);
     }
     
     /*
      Remove items
      */
-    [wp recycleURLs:objectsToDelete completionHandler:nil];
-    [moc deleteObject:aPackage];
-    [moc processPendingChanges];
+    [wp recycleURLs:objectsToDelete completionHandler:^(NSDictionary *newURLs, NSError *error) {
+        
+        [[moc undoManager] endUndoGrouping];
+        
+        if (error) {
+            /*
+             Undo everything we just did
+             */
+            [[moc undoManager] undo];
+            [moc processPendingChanges];
+            
+            /*
+             Check if we moved anything and if so, try to recover
+             */
+            DDLogVerbose(@"NSWorkspace recycleURLs returned: %@", newURLs);
+            [newURLs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                NSURL *originalURL = key;
+                NSURL *recycledURL = obj;
+                NSError *moveBackError = nil;
+                if (![[NSFileManager defaultManager] moveItemAtURL:recycledURL toURL:originalURL error:&moveBackError]) {
+                    DDLogError(@"Failed to restore %@ to %@", recycledURL, originalURL);
+                } else {
+                    DDLogDebug(@"Restored %@ to %@", recycledURL, originalURL);
+                }
+            }];
+            
+            /*
+             Display an error
+             */
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [NSAlert alertWithError:error];
+                [alert runModal];
+            });
+        } else {
+            for (NSURL *url in objectsToDelete) {
+                DDLogDebug(@"Successfully deleted %@", [url relativePath]);
+            }
+        }
+    }];
+    
 }
 
 

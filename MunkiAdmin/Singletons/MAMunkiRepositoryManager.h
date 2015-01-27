@@ -49,9 +49,9 @@
 - (void)removeManifest:(ManifestMO *)aManifest
         withReferences:(BOOL)removeReferences;
 
-- (void)removePackage:(PackageMO *)aPackage
-    withInstallerItem:(BOOL)removeInstallerItem
-       withReferences:(BOOL)removeReferences;
+- (void)removePackages:(NSArray *)packages
+     withInstallerItem:(BOOL)removeInstallerItem
+        withReferences:(BOOL)removeReferences;
 
 - (void)renamePackage:(PackageMO *)aPackage
               newName:(NSString *)newName

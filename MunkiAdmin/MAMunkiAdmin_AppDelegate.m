@@ -1209,9 +1209,7 @@ DDLogLevel ddLogLevel;
 	
 	NSInteger result = [alert runModal];
 	if (result == NSAlertFirstButtonReturn) {
-		for (PackageMO *aPackage in selectedPackages) {
-            [[MAMunkiRepositoryManager sharedManager] removePackage:aPackage withInstallerItem:YES withReferences:YES];
-		}
+        [[MAMunkiRepositoryManager sharedManager] removePackages:selectedPackages withInstallerItem:YES withReferences:YES];
 	}
 }
 
