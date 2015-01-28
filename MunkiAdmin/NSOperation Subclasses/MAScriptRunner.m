@@ -35,7 +35,7 @@ DDLogLevel ddLogLevel;
 
 - (void)runTask
 {
-    DDLogDebug(@"Running %@ with arguments: %@", self.launchPath, self.arguments);
+    DDLogVerbose(@"Running %@ with arguments: %@", self.launchPath, self.arguments);
     
     /*
      Construct the task

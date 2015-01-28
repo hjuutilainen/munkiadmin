@@ -28,6 +28,9 @@ DDLogLevel ddLogLevel;
 #define kRepositoryPreSaveScriptName @"repository-presave"
 #define kRepositoryPostSaveScriptName @"repository-postsave"
 
+#define kRepositoryPreOpenScriptName @"repository-preopen"
+#define kRepositoryPostOpenScriptName @"repository-postopen"
+
 /*
  * Private interface
  */
@@ -40,6 +43,17 @@ DDLogLevel ddLogLevel;
 @property (readwrite, strong) NSString *makecatalogsVersion;
 
 @property (readwrite, strong) NSDate *saveStartedDate;
+
+@property (readwrite, strong) NSURL *repositoryURL;
+
+@property (readwrite) BOOL repositoryHasPreSaveScript;
+@property (readwrite) BOOL repositoryHasPostSaveScript;
+@property (readwrite) BOOL repositoryHasPreOpenScript;
+@property (readwrite) BOOL repositoryHasPostOpenScript;
+@property (readwrite) BOOL repositoryHasPkginfoPreSaveScript;
+@property (readwrite) BOOL repositoryHasPkginfoPostSaveScript;
+@property (readwrite) BOOL repositoryHasManifestPreSaveScript;
+@property (readwrite) BOOL repositoryHasManifestPostSaveScript;
 
 - (void)willStartOperations;
 - (void)willEndOperations;
@@ -1783,7 +1797,13 @@ static dispatch_queue_t serialQueue;
 - (NSURL *)repositorySupportDirectory
 {
     MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
-    NSURL *mainRepoURL = [appDelegate repoURL];
+    NSURL *mainRepoURL;
+    if (self.repositoryURL) {
+        mainRepoURL = self.repositoryURL;
+    } else {
+        mainRepoURL = [appDelegate repoURL];
+        self.repositoryURL = [appDelegate repoURL];
+    }
     NSURL *munkiAdminRepoURL = [mainRepoURL URLByAppendingPathComponent:@"MunkiAdmin"];
     return munkiAdminRepoURL;
 }
@@ -1805,23 +1825,85 @@ static dispatch_queue_t serialQueue;
     return [[self scriptURLForName:kPkginfoPreSaveScriptName] path];
 }
 
+- (NSString *)manifestPreSaveScriptPath
+{
+    return [[self scriptURLForName:kManifestPreSaveScriptName] path];
+}
+
+- (NSString *)manifestPostSaveScriptPath
+{
+    return [[self scriptURLForName:kManifestPostSaveScriptName] path];
+}
+
+- (NSString *)repositoryPreSaveScriptPath
+{
+    return [[self scriptURLForName:kRepositoryPreSaveScriptName] path];
+}
+
+- (NSString *)repositoryPostSaveScriptPath
+{
+    return [[self scriptURLForName:kRepositoryPostSaveScriptName] path];
+}
+
+- (NSString *)repositoryPreOpenScriptPath
+{
+    return [[self scriptURLForName:kRepositoryPreOpenScriptName] path];
+}
+
+- (NSString *)repositoryPostOpenScriptPath
+{
+    return [[self scriptURLForName:kRepositoryPostOpenScriptName] path];
+}
+
+- (void)updateRepositoryScriptStatus
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    self.repositoryHasPkginfoPreSaveScript = ([fm fileExistsAtPath:[self pkginfoPreSaveScriptPath]]) ? YES : NO;
+    self.repositoryHasPkginfoPostSaveScript = ([fm fileExistsAtPath:[self pkginfoPostSaveScriptPath]]) ? YES : NO;
+    
+    self.repositoryHasManifestPreSaveScript = ([fm fileExistsAtPath:[self manifestPreSaveScriptPath]]) ? YES : NO;
+    self.repositoryHasManifestPostSaveScript = ([fm fileExistsAtPath:[self manifestPostSaveScriptPath]]) ? YES : NO;
+    
+    self.repositoryHasPreSaveScript = ([fm fileExistsAtPath:[self repositoryPreSaveScriptPath]]) ? YES : NO;
+    self.repositoryHasPostSaveScript = ([fm fileExistsAtPath:[self repositoryPostSaveScriptPath]]) ? YES : NO;
+    
+    self.repositoryHasPreOpenScript = ([fm fileExistsAtPath:[self repositoryPreOpenScriptPath]]) ? YES : NO;
+    self.repositoryHasPostOpenScript = ([fm fileExistsAtPath:[self repositoryPostOpenScriptPath]]) ? YES : NO;
+}
+
 - (MAScriptRunner *)postSaveScriptForPackage:(PackageMO *)aPackage
 {
     MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self pkginfoPostSaveScriptPath]];
-    NSURL *repoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] repoURL];
-    scriptRunner.currentDirectoryPath = [repoURL path];
-    scriptRunner.arguments = @[[aPackage.packageInfoURL path]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = @[[aPackage.packageInfoURL path], [aPackage.packageInfoURL lastPathComponent]];
     return scriptRunner;
 }
 
 - (MAScriptRunner *)preSaveScriptForPackage:(PackageMO *)aPackage
 {
     MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self pkginfoPreSaveScriptPath]];
-    NSURL *repoURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] repoURL];
-    scriptRunner.currentDirectoryPath = [repoURL path];
-    scriptRunner.arguments = @[[aPackage.packageInfoURL path]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = @[[aPackage.packageInfoURL path], [aPackage.packageInfoURL lastPathComponent]];
     return scriptRunner;
 }
+
+- (MAScriptRunner *)preSaveScriptForManifest:(ManifestMO *)aManifest
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self manifestPreSaveScriptPath]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = @[[aManifest.manifestURL path], [aManifest.manifestURL lastPathComponent]];
+    return scriptRunner;
+}
+
+- (MAScriptRunner *)postSaveScriptForManifest:(ManifestMO *)aManifest
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self manifestPostSaveScriptPath]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = @[[aManifest.manifestURL path], [aManifest.manifestURL lastPathComponent]];
+    return scriptRunner;
+}
+
 
 
 # pragma mark -
@@ -2093,25 +2175,33 @@ static dispatch_queue_t serialQueue;
         [self backupPackage:aPackage];
     }
     
-    MAScriptRunner *preSave = [self preSaveScriptForPackage:aPackage];
-    [preSave start];
-    if (preSave.standardOutput) {
-        DDLogDebug(@"%@", preSave.standardOutput);
-    }
-    if (preSave.terminationStatus != 0) {
-        DDLogError(@"%@", preSave.standardError);
-        return NO;
+    if (self.repositoryHasPkginfoPreSaveScript) {
+        DDLogDebug(@"%@: Running pre-save script...", filename);
+        MAScriptRunner *preSave = [self preSaveScriptForPackage:aPackage];
+        [preSave start];
+        if (preSave.standardOutput) {
+            DDLogVerbose(@"%@", preSave.standardOutput);
+        }
+        if (preSave.terminationStatus != 0) {
+            DDLogError(@"%@", preSave.standardError);
+            return NO;
+        }
     }
     
     DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
         aPackage.originalPkginfo = plist;
         
-        MAScriptRunner *postSave = [self postSaveScriptForPackage:aPackage];
-        [postSave start];
-        DDLogDebug(@"%@", postSave.standardOutput);
-        if (postSave.terminationStatus == 0) {
-            DDLogError(@"%@", postSave.standardError);
+        if (self.repositoryHasPkginfoPostSaveScript) {
+            DDLogDebug(@"%@: Running post-save script...", filename);
+            MAScriptRunner *postSave = [self postSaveScriptForPackage:aPackage];
+            [postSave start];
+            if (postSave.standardOutput) {
+                DDLogVerbose(@"%@", postSave.standardOutput);
+            }
+            if (postSave.terminationStatus != 0) {
+                DDLogError(@"%@", postSave.standardError);
+            }
         }
         
         return YES;
@@ -2131,9 +2221,35 @@ static dispatch_queue_t serialQueue;
         [self backupManifest:aManifest];
     }
     
+    if (self.repositoryHasManifestPreSaveScript) {
+        DDLogDebug(@"%@: Running pre-save script...", filename);
+        MAScriptRunner *preSave = [self preSaveScriptForManifest:aManifest];
+        [preSave start];
+        if (preSave.standardOutput) {
+            DDLogVerbose(@"%@", preSave.standardOutput);
+        }
+        if (preSave.terminationStatus != 0) {
+            DDLogError(@"%@", preSave.standardError);
+            return NO;
+        }
+    }
+    
     DDLogDebug(@"%@: Writing new manifest to disk...", filename);
     if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:YES]) {
         aManifest.originalManifest = plist;
+        
+        if (self.repositoryHasManifestPostSaveScript) {
+            DDLogDebug(@"%@: Running post-save script...", filename);
+            MAScriptRunner *postSave = [self postSaveScriptForManifest:aManifest];
+            [postSave start];
+            if (postSave.standardOutput) {
+                DDLogVerbose(@"%@", postSave.standardOutput);
+            }
+            if (postSave.terminationStatus != 0) {
+                DDLogError(@"%@", postSave.standardError);
+            }
+        }
+        
         return YES;
     } else {
         DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aManifest.manifestURL path]);
@@ -2144,6 +2260,8 @@ static dispatch_queue_t serialQueue;
 - (void)writePackagePropertyListsToDisk
 {
     DDLogDebug(@"Was asked to write package property lists to disk");
+    
+    [self updateRepositoryScriptStatus];
     
     self.saveStartedDate = [NSDate date];
     
@@ -2299,6 +2417,8 @@ static dispatch_queue_t serialQueue;
 - (void)writeManifestPropertyListsToDisk
 {
 	DDLogDebug(@"Was asked to write manifest property lists to disk");
+    
+    [self updateRepositoryScriptStatus];
     
     self.saveStartedDate = [NSDate date];
     

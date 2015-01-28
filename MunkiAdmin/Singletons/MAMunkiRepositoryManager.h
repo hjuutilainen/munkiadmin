@@ -20,6 +20,14 @@
 
 @property (readonly) BOOL makepkginfoInstalled;
 @property (readonly) BOOL makecatalogsInstalled;
+@property (readonly) BOOL repositoryHasPreSaveScript;
+@property (readonly) BOOL repositoryHasPostSaveScript;
+@property (readonly) BOOL repositoryHasPreOpenScript;
+@property (readonly) BOOL repositoryHasPostOpenScript;
+@property (readonly) BOOL repositoryHasPkginfoPreSaveScript;
+@property (readonly) BOOL repositoryHasPkginfoPostSaveScript;
+@property (readonly) BOOL repositoryHasManifestPreSaveScript;
+@property (readonly) BOOL repositoryHasManifestPostSaveScript;
 @property (readonly, strong) NSString *makepkginfoVersion;
 @property (readonly, strong) NSString *makecatalogsVersion;
 @property (strong) NSDictionary *pkginfoBasicKeyMappings;
