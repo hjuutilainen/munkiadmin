@@ -46,7 +46,7 @@ DDLogLevel ddLogLevel;
     NSFileHandle *filehandle = [standardOutputPipe fileHandleForReading];
     NSFileHandle *errorfilehandle = [standardErrorPipe fileHandleForReading];
     task.launchPath = self.launchPath;
-    task.arguments = self.arguments;
+    if (self.arguments) task.arguments = self.arguments;
     task.currentDirectoryPath = self.currentDirectoryPath;
     task.standardOutput = standardOutputPipe;
     task.standardError = standardErrorPipe;
