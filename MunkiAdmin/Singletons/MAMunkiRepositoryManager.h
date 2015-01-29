@@ -79,6 +79,7 @@
                 completionHandler:(void (^)(NSArray *images))completionHandler
                   progressHandler:(void (^)(double progress, NSString *description))progressHandler;
 
+- (BOOL)writeRepositoryChangesToDisk;
 - (void)writePackagePropertyListsToDisk;
 - (void)writeManifestPropertyListsToDisk;
 - (BOOL)backupPackage:(PackageMO *)aPackage;

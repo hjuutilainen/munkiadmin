@@ -2788,8 +2788,9 @@ DDLogLevel ddLogLevel;
  
 - (IBAction)saveAction:(id)sender {
     
-    NSSet *modifiedPackages = [[MAMunkiRepositoryManager sharedManager] modifiedPackagesSinceLastSave];
-    NSSet *modifiedManifests = [[MAMunkiRepositoryManager sharedManager] modifiedManifestsSinceLastSave];
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    NSSet *modifiedPackages = [repoManager modifiedPackagesSinceLastSave];
+    NSSet *modifiedManifests = [repoManager modifiedManifestsSinceLastSave];
     DDLogDebug(@"Modified manifests: %lu, pkginfos: %lu", (unsigned long)[modifiedManifests count], (unsigned long)[modifiedPackages count]);
     
     /*
@@ -2802,6 +2803,9 @@ DDLogLevel ddLogLevel;
     if (![[self managedObjectContext] save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
     } else {
+        /*
+         Write pkginfos and manifests only if managed object context saved
+         */
         
         for (PackageMO *aPackage in modifiedPackages) {
             aPackage.hasUnstagedChanges = @YES;
@@ -2810,23 +2814,20 @@ DDLogLevel ddLogLevel;
             aManifest.hasUnstagedChanges = @YES;
         }
         
-        /*
-         Write pkginfos and manifests only if managed object context saved
-         */
-        if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
-            [[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
+        if ([repoManager writeRepositoryChangesToDisk]) {
+            
+            if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
+                [self updateCatalogs];
+            }
+            
+            /*
+             Save the in-memory context once more because we've modified the unstaged boolean values.
+             */
+            [[self managedObjectContext] save:nil];
+            
+        } else {
+            
         }
-        if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
-            [[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
-        }
-        if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
-            [self updateCatalogs];
-        }
-        
-        /*
-         Save the in-memory context once more because we've modified the unstaged boolean values.
-         */
-        [[self managedObjectContext] save:nil];
     }
     
 	[self.applicationTableView reloadData];

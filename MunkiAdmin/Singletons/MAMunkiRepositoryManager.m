@@ -59,6 +59,8 @@ DDLogLevel ddLogLevel;
 - (void)willEndOperations;
 - (NSUserDefaults *)defaults;
 - (void)setupMappings;
+- (BOOL)runRepositoryPreSaveScript;
+- (BOOL)runRepositoryPostSaveScript;
 
 @end
 
@@ -1904,10 +1906,105 @@ static dispatch_queue_t serialQueue;
     return scriptRunner;
 }
 
+- (MAScriptRunner *)preSaveScriptForRepository
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self repositoryPreSaveScriptPath]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = nil;
+    return scriptRunner;
+}
 
+- (MAScriptRunner *)postSaveScriptForRepository
+{
+    MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:[self repositoryPostSaveScriptPath]];
+    scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+    scriptRunner.arguments = nil;
+    return scriptRunner;
+}
+
+- (BOOL)runRepositoryPreSaveScript
+{
+    if (self.repositoryHasPreSaveScript) {
+        DDLogDebug(@"Running repository pre-save script...");
+        MAScriptRunner *scriptRunner = [self preSaveScriptForRepository];
+        [scriptRunner start];
+        if (scriptRunner.standardOutput) {
+            DDLogVerbose(@"\n%@", scriptRunner.standardOutput);
+        }
+        if (scriptRunner.terminationStatus != 0) {
+            DDLogError(@"Pre-save script exited with code %i", scriptRunner.terminationStatus);
+            if (scriptRunner.standardError) {
+                DDLogError(@"\n%@", scriptRunner.standardError);
+            }
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL)runRepositoryPostSaveScript
+{
+    if (self.repositoryHasPostSaveScript) {
+        DDLogDebug(@"Running repository post-save script...");
+        MAScriptRunner *scriptRunner = [self postSaveScriptForRepository];
+        [scriptRunner start];
+        if (scriptRunner.standardOutput) {
+            DDLogVerbose(@"\n%@", scriptRunner.standardOutput);
+        }
+        if (scriptRunner.terminationStatus != 0) {
+            DDLogError(@"Post-save script exited with code %i", scriptRunner.terminationStatus);
+            if (scriptRunner.standardError && [scriptRunner.standardError isEqualToString:@""]) {
+                DDLogError(@"\n%@", scriptRunner.standardError);
+            }
+            return NO;
+        }
+    }
+    return YES;
+}
 
 # pragma mark -
 # pragma mark Writing to the repository
+
+- (void)prepareForSaving
+{
+    [self updateRepositoryScriptStatus];
+}
+
+- (BOOL)writeRepositoryChangesToDisk
+{
+    [self prepareForSaving];
+    
+    /*
+     Run the pre-save script (if any).
+     Only continue if the script exited with 0
+     */
+    if (![self runRepositoryPreSaveScript]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"Pre-save script failed";
+        alert.informativeText = @"Pre-save script exited with a non-zero code. Save was aborted.";
+        [alert runModal];
+        return NO;
+    }
+    
+    /*
+     Write the changes
+     */
+    if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
+        [self writePackagePropertyListsToDisk];
+    }
+    if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
+        [self writeManifestPropertyListsToDisk];
+    }
+    
+    /*
+     Run post-save script (if any)
+     */
+    if (![self runRepositoryPostSaveScript]) {
+        DDLogError(@"Repository post-save script failed...");
+    }
+    
+    return YES;
+}
 
 - (NSSet *)modifiedManifestsSinceLastSave
 {
