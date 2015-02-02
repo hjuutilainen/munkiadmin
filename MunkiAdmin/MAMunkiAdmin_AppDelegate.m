@@ -794,7 +794,9 @@ DDLogLevel ddLogLevel;
     /*
      Log to ASL
      */
-    //[DDLog addLogger:[DDASLLogger sharedInstance]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logToSyslog"]) {
+        [DDLog addLogger:[DDASLLogger sharedInstance]];
+    }
     
     /*
      Log to Xcode (if available)
@@ -804,13 +806,15 @@ DDLogLevel ddLogLevel;
     /*
      Log to ~/Library/Logs/MunkiAdmin/
      */
-    DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
-    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    fileLogger.maximumFileSize = 1024 * 1024 * 10; // rolling based solely on rollingFrequency above
-    NSNumber *maximumNumberOfLogFiles = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumNumberOfLogFiles"];
-    fileLogger.logFileManager.maximumNumberOfLogFiles = [maximumNumberOfLogFiles unsignedIntegerValue];
-    [fileLogger rollLogFileWithCompletionBlock:nil];
-    [DDLog addLogger:fileLogger];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logToFile"]) {
+        DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+        fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+        fileLogger.maximumFileSize = 1024 * 1024 * 10; // rolling based solely on rollingFrequency above
+        NSNumber *maximumNumberOfLogFiles = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumNumberOfLogFiles"];
+        fileLogger.logFileManager.maximumNumberOfLogFiles = [maximumNumberOfLogFiles unsignedIntegerValue];
+        [fileLogger rollLogFileWithCompletionBlock:nil];
+        [DDLog addLogger:fileLogger];
+    }
     
     NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:@"logLevel"];
     if (logLevel) {
