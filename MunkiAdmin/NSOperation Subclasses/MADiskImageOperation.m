@@ -370,6 +370,9 @@ DDLogLevel ddLogLevel;
             if (![self detach]) {
                 DDLogDebug(@"Detaching %@ failed...", self.mountpoints[0]);
             }
+            if (self.progressCallback) {
+                self.progressCallback(0.5, @"Disk image ejected...");
+            }
         } else {
             DDLogDebug(@"No mountpoints to detach...");
         }

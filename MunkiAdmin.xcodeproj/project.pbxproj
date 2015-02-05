@@ -48,6 +48,8 @@
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
 		F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */; };
 		F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */; };
+		F55F76491A822A44009356F4 /* MAIconBatchExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = F55F76471A822A44009356F4 /* MAIconBatchExtractor.m */; };
+		F55F764A1A822A44009356F4 /* MAIconBatchExtractor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F55F76481A822A44009356F4 /* MAIconBatchExtractor.xib */; };
 		F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */; };
 		F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EE21901A8F3008B6CB9 /* _IconImageMO.m */; };
 		F562D4F3191DF15A000F136C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F562D4F2191DF15A000F136C /* Quartz.framework */; };
@@ -227,6 +229,9 @@
 		F555BD41125C6AE8000D9DF6 /* MAManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestScanner.h; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestScanner.m; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MunkiAdmin.entitlements; path = MunkiAdmin/MunkiAdmin.entitlements; sourceTree = "<group>"; };
+		F55F76461A822A44009356F4 /* MAIconBatchExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAIconBatchExtractor.h; sourceTree = "<group>"; };
+		F55F76471A822A44009356F4 /* MAIconBatchExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAIconBatchExtractor.m; sourceTree = "<group>"; };
+		F55F76481A822A44009356F4 /* MAIconBatchExtractor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAIconBatchExtractor.xib; sourceTree = "<group>"; };
 		F5629EDE1901A8E5008B6CB9 /* IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconImageMO.h; sourceTree = "<group>"; };
 		F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconImageMO.m; sourceTree = "<group>"; };
 		F5629EE11901A8F3008B6CB9 /* _IconImageMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _IconImageMO.h; sourceTree = "<group>"; };
@@ -740,6 +745,9 @@
 				FEED6892149F3A44006ABA1E /* MAAdvancedPackageEditor.h */,
 				FEED6893149F3A44006ABA1E /* MAAdvancedPackageEditor.m */,
 				FEED6896149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib */,
+				F55F76461A822A44009356F4 /* MAIconBatchExtractor.h */,
+				F55F76471A822A44009356F4 /* MAIconBatchExtractor.m */,
+				F55F76481A822A44009356F4 /* MAIconBatchExtractor.xib */,
 				F562D4F4191DF18C000F136C /* MAIconChooser.h */,
 				F562D4F5191DF18C000F136C /* MAIconChooser.m */,
 				F562D4F6191DF18C000F136C /* MAIconChooser.xib */,
@@ -887,6 +895,7 @@
 				FE0F4E6614FB564F0081AEFF /* MAPackagesView.xib in Resources */,
 				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
 				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
+				F55F764A1A822A44009356F4 /* MAIconBatchExtractor.xib in Resources */,
 				F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */,
 				F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */,
 				F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */,
@@ -988,6 +997,7 @@
 				F5DFC884129546E300B68F4F /* ManagedInstallMO.m in Sources */,
 				F5DFC886129546E400B68F4F /* ManagedUninstallMO.m in Sources */,
 				F529207C19066FE300F02C00 /* _CategorySourceListItemMO.m in Sources */,
+				F55F76491A822A44009356F4 /* MAIconBatchExtractor.m in Sources */,
 				F5DFC888129546E400B68F4F /* ManagedUpdateMO.m in Sources */,
 				F5DFC88A129546E400B68F4F /* ManifestInfoMO.m in Sources */,
 				F5DFC88C129546E400B68F4F /* ManifestMO.m in Sources */,

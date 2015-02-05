@@ -11,6 +11,7 @@
 @class MARequestStringValueController;
 @class MAIconEditor;
 @class MAIconChooser;
+@class MAIconBatchExtractor;
 
 @interface MAPackagesView : NSViewController <NSMenuDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDelegate> {
     
@@ -42,5 +43,6 @@
 @property (strong) MARequestStringValueController *createNewDeveloperController;
 @property (strong) MAIconEditor *iconEditor;
 @property (strong) MAIconChooser *iconChooser;
+@property (strong) MAIconBatchExtractor *iconBatchExtractor;
 
 @end

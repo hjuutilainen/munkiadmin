@@ -16,6 +16,7 @@
 #import "MARequestStringValueController.h"
 #import "MAIconEditor.h"
 #import "MAIconChooser.h"
+#import "MAIconBatchExtractor.h"
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -76,6 +77,7 @@ DDLogLevel ddLogLevel;
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
     self.iconChooser = [[MAIconChooser alloc] initWithWindowNibName:@"MAIconChooser"];
+    self.iconBatchExtractor = [[MAIconBatchExtractor alloc] initWithWindowNibName:@"MAIconBatchExtractor"];
     
     [self.packagesTableView setTarget:(MAMunkiAdmin_AppDelegate *)[NSApp delegate]];
     [self.packagesTableView setDoubleAction:@selector(getInfoAction:)];
@@ -520,6 +522,16 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (IBAction)batchCreateIcons:(id)sender
+{
+    NSWindow *window = [self.iconBatchExtractor window];
+    [self.iconBatchExtractor resetExtractorStatus];    
+    NSInteger result = [NSApp runModalForWindow:window];
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
 - (IBAction)createIconForNameAction:(id)sender
 {
     NSWindow *window = [self.iconEditor window];
@@ -733,6 +745,17 @@ DDLogLevel ddLogLevel;
      */
     NSPredicate *iconNotNilPredicate = [NSPredicate predicateWithFormat:@"munki_icon_name != %@", [NSNull null]];
     NSArray *iconNotNilPackages = [self.packagesArrayController.selectedObjects filteredArrayUsingPredicate:iconNotNilPredicate];
+    
+    
+    
+    NSMenuItem *batchCreateCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Batch Create Icons"
+                                                                 action:@selector(batchCreateIcons:)
+                                                          keyEquivalent:@""];
+    
+    [batchCreateCustomMenuItem setEnabled:YES];
+    batchCreateCustomMenuItem.target = self;
+    [menu addItem:batchCreateCustomMenuItem];
+    
     
     NSMenuItem *clearCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clear Custom Icon"
                                                                  action:@selector(clearCustomIconAction:)

@@ -288,7 +288,7 @@ DDLogLevel ddLogLevel;
     
     DDLogDebug(@"MAPackageExtractOperation running didFinishCallback...");
     if (self.progressCallback) {
-        self.progressCallback(1.0, @"Done extracting...");
+        self.progressCallback(1.0, @"Package extracted...");
     }
     if (self.didFinishCallback) {
         self.didFinishCallback();
