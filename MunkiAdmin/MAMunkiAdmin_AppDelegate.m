@@ -845,6 +845,8 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
+    [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
+    
     // Observe user defaults for changes in makepkginfo and makecatalogs paths
     NSUserDefaultsController *dc = [NSUserDefaultsController sharedUserDefaultsController];
     [dc addObserver:self forKeyPath:@"values.makepkginfoPath" options:NSKeyValueObservingOptionNew context:NULL];
