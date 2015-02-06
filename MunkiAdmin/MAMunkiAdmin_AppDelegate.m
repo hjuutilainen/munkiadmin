@@ -39,6 +39,22 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Helper methods
 
+- (IBAction)openCurrentLogFileAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    if (self.currentFileLogger) {
+        DDLogVerbose(@"Current Log File Info: %@", self.currentFileLogger.currentLogFileInfo);
+        NSString *currentLogFilePath = self.currentFileLogger.currentLogFileInfo.filePath;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:currentLogFilePath]) {
+            [[NSWorkspace sharedWorkspace] openFile:currentLogFilePath];
+        } else {
+            DDLogError(@"Error: File not found %@", currentLogFilePath);
+        }
+    } else {
+        DDLogError(@"Error: No file logger enabled...");
+    }
+}
+
 - (IBAction)openPreferencesAction:sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -813,6 +829,7 @@ DDLogLevel ddLogLevel;
         NSNumber *maximumNumberOfLogFiles = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumNumberOfLogFiles"];
         fileLogger.logFileManager.maximumNumberOfLogFiles = [maximumNumberOfLogFiles unsignedIntegerValue];
         [fileLogger rollLogFileWithCompletionBlock:nil];
+        self.currentFileLogger = fileLogger;
         [DDLog addLogger:fileLogger];
     }
     

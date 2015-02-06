@@ -25,6 +25,7 @@
 @class MAPredicateEditor;
 @class MAPkginfoAssimilator;
 @class MAPreferences;
+@class DDFileLogger;
 
 
 @interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
@@ -57,6 +58,7 @@
 @property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) MAPreferences *preferencesController;
 @property (strong) NSTimer *operationTimer;
+@property (strong) DDFileLogger *currentFileLogger;
 
 # pragma mark -
 # pragma mark Variable declarations
@@ -167,6 +169,7 @@
 - (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
 - (IBAction)processAddNestedManifestAction:(id)sender;
+- (IBAction)openCurrentLogFileAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
