@@ -80,8 +80,8 @@
                   progressHandler:(void (^)(double progress, NSString *description))progressHandler;
 
 - (BOOL)writeRepositoryChangesToDisk;
-- (void)writePackagePropertyListsToDisk;
-- (void)writeManifestPropertyListsToDisk;
+- (BOOL)writePackagePropertyListsToDisk;
+- (BOOL)writeManifestPropertyListsToDisk;
 - (BOOL)backupPackage:(PackageMO *)aPackage;
 - (BOOL)backupManifest:(ManifestMO *)aManifest;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;

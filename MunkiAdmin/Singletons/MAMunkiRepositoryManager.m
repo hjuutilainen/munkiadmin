@@ -2030,10 +2030,14 @@ static dispatch_queue_t serialQueue;
      Write the changes
      */
     if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
-        [self writePackagePropertyListsToDisk];
+        if (![self writePackagePropertyListsToDisk]) {
+            return NO;
+        }
     }
     if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
-        [self writeManifestPropertyListsToDisk];
+        if (![self writeManifestPropertyListsToDisk]) {
+            return NO;
+        }
     }
     
     /*
@@ -2302,7 +2306,7 @@ static dispatch_queue_t serialQueue;
     return [[self applicationSupportDirectory] URLByAppendingPathComponent:@"manifests backups"];
 }
 
-- (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage
+- (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage error:(NSError **)error
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *filename = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
@@ -2321,6 +2325,16 @@ static dispatch_queue_t serialQueue;
         }
         if (preSave.terminationStatus != 0) {
             DDLogError(@"%@", preSave.standardError);
+            
+            NSString *description = @"Pre-save script failed";
+            NSString *recoverySuggestion = [NSString stringWithFormat:@"Pre-save script for pkginfo \"%@\" exited with code %i.", [(NSURL *)aPackage.packageInfoURL path], preSave.terminationStatus];
+            if (preSave.standardError) {
+                recoverySuggestion = [recoverySuggestion stringByAppendingFormat:@"\n\n%@", preSave.standardError];
+            }
+            
+            
+            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description, NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion};
+            *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
             return NO;
         }
     }
@@ -2348,7 +2362,7 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (BOOL)writeManifestPropertyList:(NSDictionary *)plist forManifest:(ManifestMO *)aManifest
+- (BOOL)writeManifestPropertyList:(NSDictionary *)plist forManifest:(ManifestMO *)aManifest error:(NSError **)error
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *filename = [(NSURL *)aManifest.manifestURL lastPathComponent];
@@ -2367,6 +2381,14 @@ static dispatch_queue_t serialQueue;
         }
         if (preSave.terminationStatus != 0) {
             DDLogError(@"%@", preSave.standardError);
+            
+            NSString *description = @"Pre-save script failed";
+            NSString *recoverySuggestion = [NSString stringWithFormat:@"Pre-save script for manifest \"%@\" exited with code %i.", [(NSURL *)aManifest.manifestURL path], preSave.terminationStatus];
+            if (preSave.standardError) {
+                recoverySuggestion = [recoverySuggestion stringByAppendingFormat:@"\n\n%@", preSave.standardError];
+            }
+            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description, NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion};
+            *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
             return NO;
         }
     }
@@ -2394,14 +2416,14 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (void)writePackagePropertyListsToDisk
+- (BOOL)writePackagePropertyListsToDisk
 {
     DDLogDebug(@"Was asked to write package property lists to disk");
     
     [self updateRepositoryScriptStatus];
     
     self.saveStartedDate = [NSDate date];
-    
+    BOOL successfullySaved = YES;
     /*
      * =============================================
 	 * Get all packages that have been modified
@@ -2524,8 +2546,14 @@ static dispatch_queue_t serialQueue;
          User has added new information
          */
         NSArray *sortedMergedKeys = [[mergedInfoDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        NSError *writeError = nil;
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
-			[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
+            if (![self writePackagePropertyList:mergedInfoDict forPackage:aPackage error:&writeError]) {
+                DDLogError(@"%@: Failed to write pkginfo...", filename);
+                [[NSApplication sharedApplication] presentError:writeError];
+                successfullySaved = NO;
+                break;
+            }
 		}
         
         /*
@@ -2535,7 +2563,12 @@ static dispatch_queue_t serialQueue;
 			DDLogDebug(@"%@: No changes in key array. Checking for value changes...", filename);
             if (![mergedInfoDict isEqualToDictionary:infoDictOnDisk]) {
 				DDLogDebug(@"%@: Values differ. Should write new pkginfo...", filename);
-				[self writePackagePropertyList:mergedInfoDict forPackage:aPackage];
+                if (![self writePackagePropertyList:mergedInfoDict forPackage:aPackage error:&writeError]) {
+                    DDLogError(@"%@: Failed to write pkginfo...", filename);
+                    [[NSApplication sharedApplication] presentError:writeError];
+                    successfullySaved = NO;
+                    break;
+                }
 			} else {
 				DDLogDebug(@"%@: No changes detected", filename);
 			}
@@ -2548,16 +2581,18 @@ static dispatch_queue_t serialQueue;
 	}
     
     self.saveStartedDate = nil;
+    return successfullySaved;
 }
 
 
-- (void)writeManifestPropertyListsToDisk
+- (BOOL)writeManifestPropertyListsToDisk
 {
 	DDLogDebug(@"Was asked to write manifest property lists to disk");
     
     [self updateRepositoryScriptStatus];
     
     self.saveStartedDate = [NSDate date];
+    BOOL successfullySaved = YES;
     
     /*
      * =============================================
@@ -2654,9 +2689,15 @@ static dispatch_queue_t serialQueue;
          User has added new information
          */
         NSArray *sortedMergedKeys = [[mergedManifestDict allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        NSError *writeError = nil;
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			DDLogDebug(@"%@: Keys differ. Should write new manifest...", filename);
-            [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
+            if (![self writeManifestPropertyList:mergedManifestDict forManifest:aManifest error:&writeError]) {
+                DDLogDebug(@"%@: Failed to write manifest to disk...", filename);
+                [[NSApplication sharedApplication] presentError:writeError];
+                successfullySaved = NO;
+                break;
+            }
 		}
         
         /*
@@ -2669,7 +2710,12 @@ static dispatch_queue_t serialQueue;
             DDLogDebug(@"%@: No changes in key array. Checking for value changes...", filename);
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
 				DDLogDebug(@"%@: Values differ. Should write new manifest...", filename);
-                [self writeManifestPropertyList:mergedManifestDict forManifest:aManifest];
+                if (![self writeManifestPropertyList:mergedManifestDict forManifest:aManifest error:&writeError]) {
+                    DDLogDebug(@"%@: Failed to write manifest to disk...", filename);
+                    [[NSApplication sharedApplication] presentError:writeError];
+                    successfullySaved = NO;
+                    break;
+                }
 			} else {
 				DDLogDebug(@"%@: No changes detected", filename);
 			}
@@ -2682,6 +2728,7 @@ static dispatch_queue_t serialQueue;
 	}
     
     self.saveStartedDate = nil;
+    return successfullySaved;
 }
 
 # pragma mark -
