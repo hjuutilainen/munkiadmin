@@ -1812,9 +1812,49 @@ static dispatch_queue_t serialQueue;
 
 - (NSURL *)scriptURLForName:(NSString *)name
 {
-    NSURL *url = nil;
-    url = [[self repositorySupportDirectory] URLByAppendingPathComponent:name];
-    return url;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    /*
+     Check if we have a script with no extension
+     */
+    NSURL *defaultURLForName = [[self repositorySupportDirectory] URLByAppendingPathComponent:name];
+    if ([fm fileExistsAtPath:[defaultURLForName path]]) {
+        DDLogVerbose(@"Found script in default location: %@", [defaultURLForName path]);
+        return defaultURLForName;
+    }
+    
+    /*
+     Look for item with any extension
+     */
+    NSArray *propertiesToGet = @[NSURLIsRegularFileKey, NSURLIsExecutableKey, NSURLNameKey, NSURLPathKey];
+    NSArray *dirContents = [fm contentsOfDirectoryAtURL:[self repositorySupportDirectory]
+                             includingPropertiesForKeys:propertiesToGet
+                                                options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                  error:nil];
+    for (NSURL *item in dirContents) {
+        NSNumber *isRegularFile = nil;
+        [item getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+        if (![isRegularFile boolValue]) {
+            continue;
+        }
+        
+        
+        NSNumber *isExecutable = nil;
+        [item getResourceValue:&isExecutable forKey:NSURLIsExecutableKey error:nil];
+        
+        NSString *fileName = nil;
+        [item getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+        if ([[fileName stringByDeletingPathExtension] isEqualToString:name]) {
+            if ([isExecutable boolValue]) {
+                DDLogVerbose(@"Found script with custom path extension: %@", [item path]);
+                return item;
+            } else {
+                DDLogVerbose(@"Found matching file with custom path extension but it is not executable: %@", [item path]);
+            }
+        }
+    }
+    DDLogVerbose(@"Did not find script for name: %@", name);
+    return nil;
 }
 
 - (NSString *)pkginfoPostSaveScriptPath
