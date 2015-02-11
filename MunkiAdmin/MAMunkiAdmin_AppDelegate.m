@@ -2892,7 +2892,9 @@ DDLogLevel ddLogLevel;
             reply = NSTerminateNow;
         }
     }
-    DDLogError(@"Terminating MunkiAdmin version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
+    if (reply == NSTerminateNow) {
+        DDLogError(@"Terminating MunkiAdmin version %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
+    }
     return reply;
 }
 
