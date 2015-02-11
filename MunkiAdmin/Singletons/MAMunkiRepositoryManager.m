@@ -2333,7 +2333,9 @@ static dispatch_queue_t serialQueue;
             }
             
             
-            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description, NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion};
+            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                              NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                              NSFilePathErrorKey: [(NSURL *)aPackage.packageInfoURL path]};
             *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
             return NO;
         }
@@ -2387,7 +2389,9 @@ static dispatch_queue_t serialQueue;
             if (preSave.standardError) {
                 recoverySuggestion = [recoverySuggestion stringByAppendingFormat:@"\n\n%@", preSave.standardError];
             }
-            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description, NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion};
+            NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                              NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                              NSFilePathErrorKey: [(NSURL *)aManifest.manifestURL path]};
             *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
             return NO;
         }
