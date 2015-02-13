@@ -2324,11 +2324,11 @@ static dispatch_queue_t serialQueue;
             DDLogVerbose(@"%@", preSave.standardOutput);
         }
         if (preSave.terminationStatus != 0) {
-            DDLogError(@"%@", preSave.standardError);
-            
+            DDLogError(@"%@: Pre-save script failed...", filename);
             NSString *description = @"Pre-save script failed";
             NSString *recoverySuggestion = [NSString stringWithFormat:@"Pre-save script for pkginfo \"%@\" exited with code %i.", [(NSURL *)aPackage.packageInfoURL path], preSave.terminationStatus];
             if (preSave.standardError) {
+                DDLogError(@"%@", preSave.standardError);
                 recoverySuggestion = [recoverySuggestion stringByAppendingFormat:@"\n\n%@", preSave.standardError];
             }
             
@@ -2353,7 +2353,10 @@ static dispatch_queue_t serialQueue;
                 DDLogVerbose(@"%@", postSave.standardOutput);
             }
             if (postSave.terminationStatus != 0) {
-                DDLogError(@"%@", postSave.standardError);
+                DDLogError(@"%@: Post-save script failed...", filename);
+                if (postSave.standardError) {
+                    DDLogError(@"%@", postSave.standardError);
+                }
             }
         }
         
