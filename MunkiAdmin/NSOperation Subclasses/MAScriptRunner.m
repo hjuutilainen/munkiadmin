@@ -65,7 +65,7 @@ DDLogLevel ddLogLevel;
         [task launch];
     }
     @catch (NSException *exception) {
-        NSLog(@"Error: %@ caught while trying to launch %@ (%@)", [exception name], self.launchPath, [exception reason]);
+        DDLogError(@"Error: %@ caught while trying to launch %@ (%@)", [exception name], self.launchPath, [exception reason]);
         self.terminationStatus = 1;
         return;
     }
