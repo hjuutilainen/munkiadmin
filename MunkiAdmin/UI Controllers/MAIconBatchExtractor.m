@@ -38,7 +38,7 @@ DDLogLevel ddLogLevel;
 - (void)windowDidLoad {
     [super windowDidLoad];
     
-    [self resetExtractorStatus];
+    //[self resetExtractorStatus];
 }
 
 - (NSImage *)scaleImage:(NSImage *)image toSize:(NSSize)targetSize
@@ -128,7 +128,8 @@ DDLogLevel ddLogLevel;
     MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
     NSManagedObjectContext *mainContext = [appDelegate managedObjectContext];
     NSMutableArray *newBatchItems = [NSMutableArray new];
-    for (ApplicationMO *app in [coreDataManager allObjectsForEntity:@"Application" inManagedObjectContext:mainContext]) {
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"munki_name" ascending:YES];
+    for (ApplicationMO *app in [coreDataManager allObjectsForEntity:@"Application" sortDescriptors:@[sort] inManagedObjectContext:mainContext]) {
         PackageMO *latestPackage = app.latestPackage;
         NSString *installerType = latestPackage.munki_installer_type;
         
@@ -136,7 +137,7 @@ DDLogLevel ddLogLevel;
          Check the installer type before doing anything
          */
         if ((![installerType isEqualToString:@"copy_from_dmg"]) && (installerType != nil)) {
-            DDLogError(@"%@: Not including in icon extraction list because installer type %@ not supported...", latestPackage.titleWithVersion, installerType);
+            DDLogDebug(@"%@: Not including in icon extraction list because installer type %@ not supported...", latestPackage.titleWithVersion, installerType);
         } else {
             
             MABatchItem *batchItem = [MABatchItem new];
@@ -144,12 +145,13 @@ DDLogLevel ddLogLevel;
             batchItem.title = latestPackage.munki_name;
             
             if (!batchItem.package.iconImage.originalURL) {
-                DDLogError(@"%@: Package is using a built-in default icon. Enabling for extraction...", latestPackage.titleWithVersion);
+                DDLogDebug(@"%@: Package is using a built-in default icon. Enabling for extraction...", latestPackage.titleWithVersion);
                 batchItem.shouldExtract = @YES;
             } else if (!batchItem.package.munki_icon_name) {
-                DDLogError(@"%@: Package does not have a custom icon_name. Enabling for extraction...", latestPackage.titleWithVersion);
+                DDLogDebug(@"%@: Package already has an icon. Disabling for extraction...", latestPackage.titleWithVersion);
                 batchItem.shouldExtract = @NO;
             } else {
+                DDLogDebug(@"%@: Package has a custom icon. Disabling for extraction...", latestPackage.titleWithVersion);
                 batchItem.shouldExtract = @NO;
             }
             batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusNone];
@@ -183,7 +185,7 @@ DDLogLevel ddLogLevel;
     NSData *imageData;
     NSSize newSize = NSMakeSize(512.0, 512.0);
     if (self.resizeOnSave && [image pixelSize].width > newSize.width) {
-        DDLogError(@"Resizing image to fit 512x512...");
+        DDLogDebug(@"Resizing image to fit 512x512...");
         imageData = [[self scaleImage:image toSize:newSize] TIFFRepresentation];
     } else {
         imageData = [image TIFFRepresentation];
@@ -195,7 +197,7 @@ DDLogLevel ddLogLevel;
         DDLogError(@"%@", writeError);
         return;
     }
-    DDLogError(@"%@: Wrote image to %@", package.titleWithVersion, [saveURL path]);
+    DDLogDebug(@"%@: Wrote image to %@", package.titleWithVersion, [saveURL path]);
     
     /*
      The write was successful.
@@ -212,7 +214,7 @@ DDLogLevel ddLogLevel;
          We replaced an existing icon during the save,
          need to reload the image from disk
          */
-        DDLogError(@"Saved URL points to an existing image object. Need to reload the image from disk...");
+        DDLogDebug(@"Saved URL points to an existing image object. Need to reload the image from disk...");
         IconImageMO *foundIconImage = foundIconImages[0];
         foundIconImage.imageRepresentation = nil;
         NSData *imageData = [NSData dataWithContentsOfURL:saveURL];
@@ -242,6 +244,10 @@ DDLogLevel ddLogLevel;
 
 - (void)startExtracting
 {
+    if ([self.remainingBatchItems count] == 0) {
+        return;
+    }
+    
     MABatchItem *firstItem = self.remainingBatchItems[0];
     [self.remainingBatchItems removeObject:firstItem];
     [self extractIconForBatchItem:firstItem];
@@ -267,7 +273,7 @@ DDLogLevel ddLogLevel;
              */
             if ([images count] == 1) {
                 NSDictionary *imageDict = images[0];
-                DDLogError(@"%@: Single image found...", blockPackage.titleWithVersion);
+                DDLogDebug(@"%@: Single image found...", blockPackage.titleWithVersion);
                 [self saveImage:imageDict[@"image"] asIconForPackage:blockPackage];
                 batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusAvailable];
                 batchItem.statusDescription = @"Succeeded";
@@ -277,7 +283,7 @@ DDLogLevel ddLogLevel;
              Multiple images extracted
              */
             else if ([images count] > 1) {
-                DDLogError(@"%@: Multiple images found...", blockPackage.titleWithVersion);
+                DDLogDebug(@"%@: Multiple images found...", blockPackage.titleWithVersion);
                 batchItem.statusDescription = @"Skipped: Multiple icons found";
                 batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
             }
@@ -286,7 +292,7 @@ DDLogLevel ddLogLevel;
              No images found
              */
             else {
-                DDLogError(@"%@: No images found...", blockPackage.titleWithVersion);
+                DDLogDebug(@"%@: No images found...", blockPackage.titleWithVersion);
                 batchItem.statusDescription = @"Failed: No icons found";
                 batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusUnavailable];
             }
@@ -324,6 +330,22 @@ DDLogLevel ddLogLevel;
             }
         });
     }];
+}
+
+- (IBAction)enableAllAction:(id)sender
+{
+    NSSortDescriptor *sortDescr = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    for (MABatchItem *batchItem in [self.batchItems sortedArrayUsingDescriptors:@[sortDescr]]) {
+        batchItem.shouldExtract = @YES;
+    }
+}
+
+- (IBAction)disableAllAction:(id)sender
+{
+    NSSortDescriptor *sortDescr = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    for (MABatchItem *batchItem in [self.batchItems sortedArrayUsingDescriptors:@[sortDescr]]) {
+        batchItem.shouldExtract = @NO;
+    }
 }
 
 - (IBAction)cancelAction:(id)sender
@@ -366,21 +388,27 @@ DDLogLevel ddLogLevel;
         self.numExtractOperationsRunning = 0;
         NSSortDescriptor *sortDescr = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
         for (MABatchItem *batchItem in [self.batchItems sortedArrayUsingDescriptors:@[sortDescr]]) {
-            DDLogError(@"%@: Extracting icon...", batchItem.package.titleWithVersion);
             if ([batchItem.shouldExtract boolValue]) {
-                
                 if (![fm fileExistsAtPath:[batchItem.package.packageURL path]]) {
                     DDLogError(@"%@: Installer item not found", batchItem.package.titleWithVersion);
                     batchItem.statusDescription = @"Skipped: Installer item not found";
                     batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusUnavailable];
                 } else {
-                    batchItem.statusDescription = @"Queued";
-                    batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusNone];
-                    self.extractOperationsRunning = YES;
-                    self.numExtractOperationsRunning++;
-                    [self.remainingBatchItems addObject:batchItem];
+                    if (batchItem.package.iconImage.originalURL && !self.overwriteExisting) {
+                        DDLogDebug(@"%@: Skipped because package is not using a built-in icon and we're not allowed to overwrite...", batchItem.package.titleWithVersion);
+                        batchItem.statusDescription = @"Skipped: Package already has an icon...";
+                        batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusNone];
+                    } else {
+                        DDLogDebug(@"%@: Queued for extraction...", batchItem.package.titleWithVersion);
+                        batchItem.statusDescription = @"Queued";
+                        batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusNone];
+                        self.extractOperationsRunning = YES;
+                        self.numExtractOperationsRunning++;
+                        [self.remainingBatchItems addObject:batchItem];
+                    }
                 }
             } else {
+                DDLogDebug(@"%@: Skipped...", batchItem.package.titleWithVersion);
                 batchItem.statusDescription = @"Skipped";
             }
         }

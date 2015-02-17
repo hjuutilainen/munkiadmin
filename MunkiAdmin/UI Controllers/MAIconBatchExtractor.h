@@ -26,5 +26,7 @@
 @property NSUInteger numExtractOperationsRunning;
 
 - (void)resetExtractorStatus;
+- (IBAction)enableAllAction:(id)sender;
+- (IBAction)disableAllAction:(id)sender;
 
 @end

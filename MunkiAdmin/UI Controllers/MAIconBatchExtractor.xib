@@ -18,41 +18,20 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Batch Extract Icons" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="565" height="398"/>
+            <rect key="contentRect" x="196" y="240" width="565" height="436"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="-2" width="565" height="398"/>
+                <rect key="frame" x="0.0" y="-2" width="565" height="436"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" id="5gR-0P-yOD">
-                        <rect key="frame" x="467" y="13" width="84" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <buttonCell key="cell" type="push" title="Extract" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zG8-FZ-Bjy">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-DQ
-</string>
-                        </buttonCell>
-                        <connections>
-                            <action selector="extractAction:" target="-2" id="oAC-qO-F9a"/>
-                            <binding destination="-2" name="enabled" keyPath="extractOperationsRunning" id="A8g-0x-bGe">
-                                <dictionary key="options">
-                                    <integer key="NSNullPlaceholder" value="1"/>
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                        </connections>
-                    </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Ob8-pg-pxC">
-                        <rect key="frame" x="20" y="129" width="525" height="249"/>
+                        <rect key="frame" x="20" y="153" width="525" height="263"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="HRe-om-Cd9">
                             <rect key="frame" x="1" y="0.0" width="238" height="134"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ZPX-PM-UM8" viewBased="YES" id="B22-li-pIm">
-                                    <rect key="frame" x="0.0" y="0.0" width="238" height="134"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -110,12 +89,12 @@ DQ
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="system"/>
                                                                 <connections>
-                                                                    <binding destination="-2" name="editable" keyPath="extractOperationsRunning" id="cah-a4-wKR">
+                                                                    <binding destination="-2" name="enabled" keyPath="extractOperationsRunning" previousBinding="cah-a4-wKR" id="CeB-x1-9pf">
                                                                         <dictionary key="options">
                                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                                         </dictionary>
                                                                     </binding>
-                                                                    <binding destination="-2" name="enabled" keyPath="extractOperationsRunning" previousBinding="cah-a4-wKR" id="CeB-x1-9pf">
+                                                                    <binding destination="-2" name="editable" keyPath="extractOperationsRunning" id="cah-a4-wKR">
                                                                         <dictionary key="options">
                                                                             <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                                         </dictionary>
@@ -260,7 +239,7 @@ DQ
                             <rect key="frame" x="1" y="119" width="223" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="CfY-6p-c8S">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CfY-6p-c8S">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -268,17 +247,62 @@ DQ
                             <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
+                        <connections>
+                            <outlet property="menu" destination="Le4-QT-c02" id="2Mp-b3-sWk"/>
+                        </connections>
                     </scrollView>
+                    <customView id="fgw-b0-QGq" customClass="MAGradientButtonBarView">
+                        <rect key="frame" x="20" y="129" width="525" height="25"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <popUpButton id="Sc8-0e-Hy3">
+                                <rect key="frame" x="0.0" y="0.0" width="38" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="smallSquare" title="Item 1" bezelStyle="smallSquare" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" pullsDown="YES" id="4fY-vl-6G7">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="brR-pP-BYn">
+                                        <items>
+                                            <menuItem title="Item 1" state="on" image="NSActionTemplate" hidden="YES" id="67c-RC-aaG"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <outlet property="menu" destination="Le4-QT-c02" id="zcM-RB-8VX"/>
+                                </connections>
+                            </popUpButton>
+                        </subviews>
+                    </customView>
+                    <button verticalHuggingPriority="750" id="5gR-0P-yOD">
+                        <rect key="frame" x="467" y="13" width="84" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Extract" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zG8-FZ-Bjy">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="extractAction:" target="-2" id="oAC-qO-F9a"/>
+                            <binding destination="-2" name="enabled" keyPath="extractOperationsRunning" id="A8g-0x-bGe">
+                                <dictionary key="options">
+                                    <integer key="NSNullPlaceholder" value="1"/>
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="gme-3x-ypV">
                         <rect key="frame" x="366" y="22" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <connections>
-                            <binding destination="-2" name="animate" keyPath="extractOperationsRunning" id="fu1-qk-0BZ"/>
                             <binding destination="-2" name="hidden" keyPath="extractOperationsRunning" id="K0b-se-Zc4">
                                 <dictionary key="options">
                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
+                            <binding destination="-2" name="animate" keyPath="extractOperationsRunning" id="fu1-qk-0BZ"/>
                         </connections>
                     </progressIndicator>
                     <button verticalHuggingPriority="750" id="1gL-oW-32r">
@@ -339,7 +363,7 @@ Gw
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="659.5" y="575"/>
+            <point key="canvasLocation" x="659.5" y="594"/>
         </window>
         <arrayController selectsInsertedObjects="NO" avoidsEmptySelection="NO" id="4JN-vE-9BA" userLabel="Batch Items">
             <connections>
@@ -350,5 +374,23 @@ Gw
                 </binding>
             </connections>
         </arrayController>
+        <menu id="Le4-QT-c02">
+            <items>
+                <menuItem title="Item 1" state="on" image="NSActionTemplate" hidden="YES" id="yNP-7h-54V"/>
+                <menuItem title="Enable All" id="R9W-r0-APt">
+                    <connections>
+                        <action selector="enableAllAction:" target="-2" id="9fO-cS-Iay"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Disable All" id="jvq-oV-i5Y">
+                    <connections>
+                        <action selector="disableAllAction:" target="-2" id="YX7-PJ-V9r"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
     </objects>
+    <resources>
+        <image name="NSActionTemplate" width="14" height="14"/>
+    </resources>
 </document>
