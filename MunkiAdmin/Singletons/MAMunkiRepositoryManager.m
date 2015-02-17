@@ -1810,6 +1810,23 @@ static dispatch_queue_t serialQueue;
     return munkiAdminRepoURL;
 }
 
+- (NSURL *)repositoryScriptsDirectory
+{
+    return [[self repositorySupportDirectory] URLByAppendingPathComponent:@"scripts"];
+}
+
+- (NSURL *)applicationFilesDirectory
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *appSupportURL = [[fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+    return [appSupportURL URLByAppendingPathComponent:@"MunkiAdmin"];
+}
+
+- (NSURL *)applicationScriptsDirectory
+{
+    return [[self applicationFilesDirectory] URLByAppendingPathComponent:@"scripts"];
+}
+
 - (NSURL *)scriptURLForName:(NSString *)name
 {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -1826,30 +1843,34 @@ static dispatch_queue_t serialQueue;
     /*
      Look for item with any extension
      */
-    NSArray *propertiesToGet = @[NSURLIsRegularFileKey, NSURLIsExecutableKey, NSURLNameKey, NSURLPathKey];
-    NSArray *dirContents = [fm contentsOfDirectoryAtURL:[self repositorySupportDirectory]
-                             includingPropertiesForKeys:propertiesToGet
-                                                options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                  error:nil];
-    for (NSURL *item in dirContents) {
-        NSNumber *isRegularFile = nil;
-        [item getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
-        if (![isRegularFile boolValue]) {
-            continue;
-        }
-        
-        
-        NSNumber *isExecutable = nil;
-        [item getResourceValue:&isExecutable forKey:NSURLIsExecutableKey error:nil];
-        
-        NSString *fileName = nil;
-        [item getResourceValue:&fileName forKey:NSURLNameKey error:nil];
-        if ([[fileName stringByDeletingPathExtension] isEqualToString:name]) {
-            if ([isExecutable boolValue]) {
-                DDLogVerbose(@"Found script with custom path extension: %@", [item path]);
-                return item;
-            } else {
-                DDLogVerbose(@"Found matching file with custom path extension but it is not executable: %@", [item path]);
+    NSArray *propertiesToGet = @[NSURLIsRegularFileKey, NSURLIsExecutableKey, NSURLNameKey];
+    
+    NSArray *supportDirectories = @[[self repositoryScriptsDirectory], [self applicationScriptsDirectory]];
+    for (NSURL *supportDir in supportDirectories) {
+        NSArray *dirContents = [fm contentsOfDirectoryAtURL:supportDir
+                                 includingPropertiesForKeys:propertiesToGet
+                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                      error:nil];
+        for (NSURL *item in dirContents) {
+            NSNumber *isRegularFile = nil;
+            [item getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+            if (![isRegularFile boolValue]) {
+                continue;
+            }
+            
+            
+            NSNumber *isExecutable = nil;
+            [item getResourceValue:&isExecutable forKey:NSURLIsExecutableKey error:nil];
+            
+            NSString *fileName = nil;
+            [item getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+            if ([[fileName stringByDeletingPathExtension] isEqualToString:name]) {
+                if ([isExecutable boolValue]) {
+                    DDLogVerbose(@"Found script with custom path extension: %@", [item path]);
+                    return item;
+                } else {
+                    DDLogVerbose(@"Found matching file with custom path extension but it is not executable: %@", [item path]);
+                }
             }
         }
     }
