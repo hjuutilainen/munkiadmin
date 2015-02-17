@@ -33,6 +33,7 @@
 - (BOOL)renameDeveloper:(DeveloperMO *)developer newTitle:(NSString *)newTitle inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (BOOL)deleteDeveloper:(DeveloperMO *)developer inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (NSArray *)allObjectsForEntity:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors inManagedObjectContext:(NSManagedObjectContext *)moc;
 - (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc;
 - (void)configureSourcelistItems:(NSManagedObjectContext *)moc;
 - (void)configureSourceListDirectoriesSection:(NSManagedObjectContext *)moc;

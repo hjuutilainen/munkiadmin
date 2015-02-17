@@ -668,12 +668,19 @@ DDLogLevel ddLogLevel;
     return [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
 }
 
+- (NSArray *)allObjectsForEntity:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescr];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    return fetchResults;
+}
+
 - (NSArray *)allObjectsForEntity:(NSString *)entityName inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	[fetchRequest setEntity:entityDescr];
-	NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    NSArray *fetchResults = [self allObjectsForEntity:entityName sortDescriptors:nil inManagedObjectContext:moc];
 	return fetchResults;
 }
 
