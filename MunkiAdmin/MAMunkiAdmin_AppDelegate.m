@@ -61,6 +61,12 @@ DDLogLevel ddLogLevel;
 	[self.preferencesController showWindow:self];
 }
 
+- (IBAction)openIconBatchExtractorAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    [self.packagesViewController batchExtractIcons];
+}
+
 - (IBAction)showPkginfoInFinderAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));

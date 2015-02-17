@@ -45,4 +45,6 @@
 @property (strong) MAIconChooser *iconChooser;
 @property (strong) MAIconBatchExtractor *iconBatchExtractor;
 
+- (void)batchExtractIcons;
+
 @end

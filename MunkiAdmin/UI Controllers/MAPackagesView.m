@@ -522,14 +522,19 @@ DDLogLevel ddLogLevel;
     }
 }
 
-- (IBAction)batchCreateIcons:(id)sender
+- (void)batchExtractIcons
 {
     NSWindow *window = [self.iconBatchExtractor window];
-    [self.iconBatchExtractor resetExtractorStatus];    
+    [self.iconBatchExtractor resetExtractorStatus];
     NSInteger result = [NSApp runModalForWindow:window];
     if (result == NSModalResponseOK) {
         
     }
+}
+
+- (IBAction)batchExtractIconsAction:(id)sender
+{
+    [self batchExtractIcons];
 }
 
 - (IBAction)createIconForNameAction:(id)sender
@@ -748,8 +753,8 @@ DDLogLevel ddLogLevel;
     
     
     
-    NSMenuItem *batchCreateCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Batch Create Icons"
-                                                                 action:@selector(batchCreateIcons:)
+    NSMenuItem *batchCreateCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Batch Extract Icons..."
+                                                                 action:@selector(batchExtractIconsAction:)
                                                           keyEquivalent:@""];
     
     [batchCreateCustomMenuItem setEnabled:YES];
