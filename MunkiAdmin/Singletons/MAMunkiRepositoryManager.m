@@ -2363,7 +2363,9 @@ static dispatch_queue_t serialQueue;
     }
     
     DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
-    if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:YES]) {
+    BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
+    DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
+    if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:atomicWrites]) {
         aPackage.originalPkginfo = plist;
         
         if (self.repositoryHasPkginfoPostSaveScript) {
@@ -2422,7 +2424,9 @@ static dispatch_queue_t serialQueue;
     }
     
     DDLogDebug(@"%@: Writing new manifest to disk...", filename);
-    if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:YES]) {
+    BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
+    DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
+    if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:atomicWrites]) {
         aManifest.originalManifest = plist;
         
         if (self.repositoryHasManifestPostSaveScript) {

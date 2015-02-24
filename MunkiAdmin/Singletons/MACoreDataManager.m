@@ -160,7 +160,8 @@ DDLogLevel ddLogLevel;
     newManifest.manifestURL = fileURL;
     newManifest.originalManifest = [NSDictionary dictionary];
     
-    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:YES]) {
+    BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
+    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:atomicWrites]) {
         return newManifest;
     } else {
         return nil;
@@ -178,7 +179,8 @@ DDLogLevel ddLogLevel;
     newManifest.manifestURL = (NSURL *)[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
     newManifest.originalManifest = [NSDictionary dictionary];
     
-    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:YES]) {
+    BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
+    if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:atomicWrites]) {
         return newManifest;
     } else {
         return nil;

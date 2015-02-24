@@ -600,7 +600,8 @@ DDLogLevel ddLogLevel;
      Write the pkginfo
      */
     NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:safeFilenameHint];
-    BOOL saved = [pkginfo writeToURL:saveURL atomically:YES];
+    BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
+    BOOL saved = [pkginfo writeToURL:saveURL atomically:atomicWrites];
     if (!saved) {
         DDLogError(@"Error: Failed to write %@...", [saveURL path]);
         return NO;
@@ -1415,7 +1416,8 @@ DDLogLevel ddLogLevel;
         NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
         
         // Write the pkginfo to disk and add it to our datastore
-        BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:YES];
+        BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
+        BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:atomicWrites];
         if (saved) {
             
             // Rescan the main pkginfo dir for any newly created directories
