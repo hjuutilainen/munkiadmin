@@ -9,5 +9,6 @@
 - (NSDictionary *)pkgInfoDictionary;
 - (NSString *)titleWithVersion;
 - (NSString *)formattedTitle;
+- (NSArray *)catalogStrings;
 
 @end

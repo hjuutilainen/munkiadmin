@@ -146,6 +146,8 @@ DDLogLevel ddLogLevel;
     self.developersSubMenu.delegate = self;
     self.iconSubMenu.delegate = self;
     self.iconSubMenu.autoenablesItems = NO;
+    self.catalogsSubMenu.delegate = self;
+    self.catalogsSubMenu.autoenablesItems = NO;
     
     /*
      Create a contextual menu for customizing table columns
@@ -334,6 +336,52 @@ DDLogLevel ddLogLevel;
     [self addSelectedPackagesToCategory:category];
 }
 
+
+- (void)addSelectedPackagesToCatalogAction:(id)sender
+{
+    CatalogMO *catalog = [sender representedObject];
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        for (PackageInfoMO *packageInfo in package.packageInfos) {
+            if (packageInfo.catalog == catalog) {
+                packageInfo.isEnabledForCatalogValue = YES;
+            }
+        }
+        package.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)removeSelectedPackagesFromCatalogAction:(id)sender
+{
+    CatalogMO *catalog = [sender representedObject];
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        for (PackageInfoMO *packageInfo in package.packageInfos) {
+            if (packageInfo.catalog == catalog) {
+                packageInfo.isEnabledForCatalogValue = NO;
+            }
+        }
+        package.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)enableAllCatalogsAction:(id)sender
+{
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        for (PackageInfoMO *packageInfo in package.packageInfos) {
+            packageInfo.isEnabledForCatalogValue = YES;
+        }
+        package.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)disableAllCatalogsAction:(id)sender
+{
+    for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+        for (PackageInfoMO *packageInfo in package.packageInfos) {
+            packageInfo.isEnabledForCatalogValue = NO;
+        }
+        package.hasUnstagedChangesValue = YES;
+    }
+}
 
 - (void)assignSelectedPackagesToDeveloper:(DeveloperMO *)developer
 {
@@ -736,6 +784,106 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (void)catalogsSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Enable All Catalogs"
+                                                                       action:@selector(enableAllCatalogsAction:)
+                                                                keyEquivalent:@""];
+    [enableAllCatalogsMenuItem setEnabled:YES];
+    enableAllCatalogsMenuItem.target = self;
+    [menu addItem:enableAllCatalogsMenuItem];
+    
+    
+    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Disable All Catalogs"
+                                                                 action:@selector(disableAllCatalogsAction:)
+                                                          keyEquivalent:@""];
+    
+    [disableAllCatalogsMenuItem setEnabled:YES];
+    disableAllCatalogsMenuItem.target = self;
+    [menu addItem:disableAllCatalogsMenuItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    
+    /*
+     Create a menu item for each catalog object
+     */
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescription];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    for (CatalogMO *catalog in fetchResults) {
+        
+        NSMenuItem *catalogItem = [[NSMenuItem alloc] initWithTitle:catalog.title
+                                                              action:nil
+                                                       keyEquivalent:@""];
+        catalogItem.representedObject = catalog;
+        catalogItem.target = self;
+        [menu addItem:catalogItem];
+        
+        
+        /*
+         Set the state of the menu item
+         */
+        int numEnabled = 0;
+        int numDisabled = 0;
+        NSMutableArray *enabledPackageNames = [NSMutableArray new];
+        NSMutableArray *disabledPackageNames = [NSMutableArray new];
+        for (PackageMO *package in self.packagesArrayController.selectedObjects) {
+            if ([[package catalogStrings] containsObject:catalog.title]) {
+                [enabledPackageNames addObject:package.titleWithVersion];
+                numEnabled++;
+            } else {
+                [disabledPackageNames addObject:package.titleWithVersion];
+                numDisabled++;
+            }
+        }
+        
+        if (numDisabled == 0) {
+            /*
+             All of the selected packages are in this catalog.
+             Selecting this menu item should remove packages from catalog.
+             */
+            catalogItem.action = @selector(removeSelectedPackagesFromCatalogAction:);
+            catalogItem.state = NSOnState;
+        
+        } else if (numEnabled == 0) {
+            /*
+             None of the selected packages are in this catalog.
+             Selecting this menu item should add packages to this catalog.
+             */
+            catalogItem.action = @selector(addSelectedPackagesToCatalogAction:);
+            catalogItem.state = NSOffState;
+        
+        } else {
+            /*
+             Some of the selected packages are in this catalog.
+             Selecting this menu item should add the missing packages to this catalog.
+             
+             Additionally create a tooltip to show which packages are enabled/disable.
+             */
+            NSString *toolTip;
+            if (numEnabled > numDisabled) {
+                toolTip = [NSString stringWithFormat:@"Packages not in catalog \"%@\":\n- %@",
+                           catalog.title,
+                           [disabledPackageNames componentsJoinedByString:@"\n- "]];
+            } else {
+                toolTip = [NSString stringWithFormat:@"Packages in catalog \"%@\":\n- %@",
+                           catalog.title,
+                           [enabledPackageNames componentsJoinedByString:@"\n- "]];
+            }
+            catalogItem.toolTip = toolTip;
+            
+            catalogItem.action = @selector(addSelectedPackagesToCatalogAction:);
+            catalogItem.state = NSMixedState;
+        }
+    }
+}
+
 - (void)iconSubMenuWillOpen:(NSMenu *)menu
 {
     [menu removeAllItems];
@@ -978,6 +1126,13 @@ DDLogLevel ddLogLevel;
      */
     else if (menu == self.iconSubMenu) {
         [self iconSubMenuWillOpen:menu];
+    }
+    
+    /*
+     Packages table view Catalogs submenu
+     */
+    else if (menu == self.catalogsSubMenu) {
+        [self catalogsSubMenuWillOpen:menu];
     }
 }
 

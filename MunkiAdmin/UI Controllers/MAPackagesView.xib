@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C99d" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAPackagesView">
             <connections>
+                <outlet property="catalogsSubMenu" destination="AKz-ix-mbT" id="Jkv-vd-U6w"/>
                 <outlet property="categoriesSubMenu" destination="Qzs-E6-IR3" id="SBQ-bR-DqD"/>
                 <outlet property="developersSubMenu" destination="flY-IG-Ti7" id="m0a-em-nDW"/>
                 <outlet property="directoriesOutlineView" destination="DKg-el-RkD" id="f2c-1p-BGt"/>
@@ -973,6 +974,17 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="eQx-OH-zdJ"/>
+                <menuItem title="Catalogs" id="9Z4-bd-dvB">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Catalogs" id="AKz-ix-mbT">
+                        <items>
+                            <menuItem title="Item" id="1kE-EV-dng">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Esa-dW-XjA"/>
                 <menuItem title="Icon" id="PzF-0P-0Mj">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Icon" id="rma-hJ-pCg">
