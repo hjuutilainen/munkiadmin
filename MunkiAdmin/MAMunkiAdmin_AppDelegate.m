@@ -1146,18 +1146,10 @@ DDLogLevel ddLogLevel;
     }
     
     ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
-    [self.managedObjectContext save:nil];
+    if (!newManifest) {
+        DDLogError(@"Failed to create manifest");
+    }
     
-    MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
-    manifestRelationships.delegate = self;
-    
-    MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)newManifest.manifestURL];
-    scanOp.delegate = self;
-    [manifestRelationships addDependency:scanOp];
-    [self.operationQueue addOperation:scanOp];
-    [self.operationQueue addOperation:manifestRelationships];
-    
-    [self showProgressPanel];
 }
 
 - (IBAction)createNewManifestAction:sender

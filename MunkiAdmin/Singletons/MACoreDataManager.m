@@ -160,6 +160,23 @@ DDLogLevel ddLogLevel;
     newManifest.manifestURL = fileURL;
     newManifest.originalManifest = [NSDictionary dictionary];
     
+    /*
+     Create catalog proxy objects
+     */
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    for (CatalogMO *catalog in [self allObjectsForEntity:@"Catalog" sortDescriptors:@[sortByTitle] inManagedObjectContext:moc]) {
+        NSString *catalogTitle = [catalog title];
+        CatalogInfoMO *newCatalogInfo;
+        newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+        newCatalogInfo.catalog.title = catalogTitle;
+        [catalog addManifestsObject:newManifest];
+        newCatalogInfo.manifest = newManifest;
+        [catalog addCatalogInfosObject:newCatalogInfo];
+        newCatalogInfo.isEnabledForManifestValue = NO;
+        newCatalogInfo.originalIndexValue = 0;
+        newCatalogInfo.indexInManifestValue = 0;
+    }
+    
     BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
     if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:atomicWrites]) {
         return newManifest;
