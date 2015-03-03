@@ -15,6 +15,8 @@
 + (id)manifestScanner;
 - (id)initWithMode:(NSInteger)mode;
 
+@property (nonatomic, copy) void (^progressCallback) (float);
+@property (nonatomic, copy) void (^finishCallback) ();
 @property NSInteger operationMode;
 @property (strong) NSString *currentJobDescription;
 @property (strong) NSString *fileName;

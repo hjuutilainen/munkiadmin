@@ -1040,6 +1040,11 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
+    if ([[self.manifestsArrayController selectedObjects] count] == 0) {
+        DDLogError(@"No manifest selected...");
+        return;
+    }
+    
     ManifestMO *selectedManifest = [self.manifestsArrayController selectedObjects][0];
     
     NSURL *currentURL = (NSURL *)selectedManifest.manifestURL;
@@ -1576,7 +1581,8 @@ DDLogLevel ddLogLevel;
 
 - (void)mergeChanges:(NSNotification*)notification
 {
-    //DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    DDLogError(@"### Error: mergeChanges notification received: %@", [notification description]);
     
 	NSAssert([NSThread mainThread], @"Not on the main thread");
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
@@ -2787,7 +2793,7 @@ DDLogLevel ddLogLevel;
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
-    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     [_managedObjectContext setPersistentStoreCoordinator: coordinator];
 
     return _managedObjectContext;

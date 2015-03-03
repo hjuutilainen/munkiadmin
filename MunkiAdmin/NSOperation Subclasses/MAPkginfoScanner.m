@@ -14,6 +14,10 @@
 
 DDLogLevel ddLogLevel;
 
+@interface MAPkginfoScanner ()
+@property (nonatomic, strong) NSManagedObjectContext *context;
+@end
+
 @implementation MAPkginfoScanner
 
 - (NSUserDefaults *)defaults
@@ -35,6 +39,9 @@ DDLogLevel ddLogLevel;
 - (id)initWithDictionary:(NSDictionary *)dict
 {
 	if ((self = [super init])) {
+        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _context.parentContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        _context.undoManager = nil;
 		_sourceDict = dict;
 		_fileName = [_sourceDict valueForKey:@"name"];
 		_currentJobDescription = @"Initializing pkginfo scan operation";
@@ -46,6 +53,9 @@ DDLogLevel ddLogLevel;
 - (id)initWithURL:(NSURL *)src
 {
 	if ((self = [super init])) {
+        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _context.parentContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        _context.undoManager = nil;
 		_sourceURL = src;
 		_fileName = [_sourceURL lastPathComponent];
 		_currentJobDescription = @"Initializing pkginfo scan operation";
@@ -55,15 +65,7 @@ DDLogLevel ddLogLevel;
 }
 
 
-- (void)contextDidSave:(NSNotification*)notification
-{
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
-									  withObject:notification
-								   waitUntilDone:YES];
-}
-
-
--(void)main
+- (void)scan
 {
 	@try {
 		@autoreleasepool {
@@ -72,17 +74,11 @@ DDLogLevel ddLogLevel;
             MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
             MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
             
-			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
-            [moc setUndoManager:nil];
-            [moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-			[moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(contextDidSave:)
-														 name:NSManagedObjectContextDidSaveNotification
-													   object:moc];
-			NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-			NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
-			NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
+            NSManagedObjectContext *privateContext = self.context;
+            
+			NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:privateContext];
+			NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:privateContext];
+			NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:privateContext];
 			
 			
 			if (self.sourceURL != nil) {
@@ -93,7 +89,7 @@ DDLogLevel ddLogLevel;
 			
 			if (self.sourceDict != nil) {
 				
-				PackageMO *aNewPackage = [[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:moc];
+				PackageMO *aNewPackage = [[PackageMO alloc] initWithEntity:packageEntityDescr insertIntoManagedObjectContext:privateContext];
                 
 				aNewPackage.originalPkginfo = self.sourceDict;
 				
@@ -249,7 +245,7 @@ DDLogLevel ddLogLevel;
                     DDLogVerbose(@"%@: Found %lu receipt items", self.fileName, (unsigned long)[itemReceipts count]);
                 }
 				[itemReceipts enumerateObjectsWithOptions:0 usingBlock:^(id aReceipt, NSUInteger idx, BOOL *stop) {
-					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc];
+					ReceiptMO *aNewReceipt = [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:privateContext];
 					aNewReceipt.package = aNewPackage;
                     aNewReceipt.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[repoManager.receiptKeyMappings enumerateKeysAndObjectsUsingBlock:^(id receiptKey, id receiptObject, BOOL *stopMappingsEnum) {
@@ -272,7 +268,7 @@ DDLogLevel ddLogLevel;
                     DDLogVerbose(@"%@: Found %lu installs items", self.fileName, (unsigned long)[installItems count]);
                 }
 				[installItems enumerateObjectsWithOptions:0 usingBlock:^(id anInstall, NSUInteger idx, BOOL *stop) {
-                    InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:moc];
+                    InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:privateContext];
                     [aNewInstallsItem addPackagesObject:aNewPackage];
                     aNewInstallsItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
                     [repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -294,7 +290,7 @@ DDLogLevel ddLogLevel;
                     DDLogVerbose(@"%@: Found %lu items_to_copy items", self.fileName, (unsigned long)[itemsToCopy count]);
                 }
 				[itemsToCopy enumerateObjectsWithOptions:0 usingBlock:^(id anItemToCopy, NSUInteger idx, BOOL *stop) {
-					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc];
+					ItemToCopyMO *aNewItemToCopy = [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:privateContext];
 					aNewItemToCopy.package = aNewPackage;
                     aNewItemToCopy.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[repoManager.itemsToCopyKeyMappings enumerateKeysAndObjectsUsingBlock:^(id itemsToCopyKey, id itemsToCopyObject, BOOL *stopItemsToCopyMappingsEnum) {
@@ -321,7 +317,7 @@ DDLogLevel ddLogLevel;
                     DDLogVerbose(@"%@: Found %lu installer_choices_xml items", self.fileName, (unsigned long)[installerChoices count]);
                 }
 				[installerChoices enumerateObjectsWithOptions:0 usingBlock:^(id aChoice, NSUInteger idx, BOOL *stop) {
-					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc];
+					InstallerChoicesItemMO *aNewInstallerChoice = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:privateContext];
 					aNewInstallerChoice.package = aNewPackage;
                     aNewInstallerChoice.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
 					[repoManager.installerChoicesKeyMappings enumerateKeysAndObjectsUsingBlock:^(id choiceKey, id choiceObject, BOOL *stopChoiceMappingEnum) {
@@ -349,9 +345,9 @@ DDLogLevel ddLogLevel;
 					[fetchForCatalogs setEntity:catalogEntityDescr];
 					NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", obj];
 					[fetchForCatalogs setPredicate:catalogTitlePredicate];
-					NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
+					NSUInteger numFoundCatalogs = [privateContext countForFetchRequest:fetchForCatalogs error:nil];
 					if (numFoundCatalogs == 0) {
-						CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
+						CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:privateContext];
 						aNewCatalog.title = obj;
 					}
 				}];
@@ -365,7 +361,7 @@ DDLogLevel ddLogLevel;
                 }
 				[requires enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: requires item %lu --> %@", self.fileName, (unsigned long)idx, obj);
-					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
 					newRequiredPkgInfo.title = obj;
 					newRequiredPkgInfo.typeString = @"requires";
 					newRequiredPkgInfo.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -381,7 +377,7 @@ DDLogLevel ddLogLevel;
                 }
 				[update_for enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: update_for item %lu --> %@", self.fileName, (unsigned long)idx, obj);
-					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+					StringObjectMO *newRequiredPkgInfo = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
 					newRequiredPkgInfo.title = obj;
 					newRequiredPkgInfo.typeString = @"updateFor";
 					newRequiredPkgInfo.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -404,7 +400,7 @@ DDLogLevel ddLogLevel;
                 }
 				[blocking_applications enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: blocking_applications item %lu --> %@", self.fileName, (unsigned long)idx, obj);
-					StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+					StringObjectMO *newBlockingApplication = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
 					newBlockingApplication.title = obj;
 					newBlockingApplication.typeString = @"blockingApplication";
 					newBlockingApplication.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -420,7 +416,7 @@ DDLogLevel ddLogLevel;
                 }
 				[supported_architectures enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 					DDLogVerbose(@"%@: supported_architectures item %lu --> %@", self.fileName, (unsigned long)idx, obj);
-					StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+					StringObjectMO *newSupportedArchitecture = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
 					newSupportedArchitecture.title = obj;
 					newSupportedArchitecture.typeString = @"supportedArchitecture";
 					newSupportedArchitecture.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -436,7 +432,7 @@ DDLogLevel ddLogLevel;
                 }
                 [installer_environment enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
                     DDLogVerbose(@"%@: installer_environment --> %@: %@", self.fileName, key, obj);
-                    InstallerEnvironmentVariableMO *newInstallerEnvironmentVariable = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc];
+                    InstallerEnvironmentVariableMO *newInstallerEnvironmentVariable = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:privateContext];
 					newInstallerEnvironmentVariable.munki_installer_environment_key = key;
                     newInstallerEnvironmentVariable.munki_installer_environment_value = obj;
 					[aNewPackage addInstallerEnvironmentVariablesObject:newInstallerEnvironmentVariable];
@@ -460,15 +456,15 @@ DDLogLevel ddLogLevel;
 				
 				[fetchForApplications setPredicate:applicationTitlePredicate];
 				
-				NSUInteger numFoundApplications = [moc countForFetchRequest:fetchForApplications error:nil];
+				NSUInteger numFoundApplications = [privateContext countForFetchRequest:fetchForApplications error:nil];
 				if (numFoundApplications == 0) {
-					ApplicationMO *aNewApplication = [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:moc];
+					ApplicationMO *aNewApplication = [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:privateContext];
 					aNewApplication.munki_display_name = aNewPackage.munki_display_name;
 					aNewApplication.munki_name = aNewPackage.munki_name;
 					aNewApplication.munki_description = aNewPackage.munki_description;
 					[aNewApplication addPackagesObject:aNewPackage];
 				} else if (numFoundApplications == 1) {
-					ApplicationMO *existingApplication = [[moc executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
+					ApplicationMO *existingApplication = [[privateContext executeFetchRequest:fetchForApplications error:nil] objectAtIndex:0];
 					[existingApplication addPackagesObject:aNewPackage];
 					
 				} else {
@@ -481,25 +477,23 @@ DDLogLevel ddLogLevel;
 				DDLogError(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
 			}
             
-			/*
-             Save the context, this causes main app delegate to merge new items
-             */
-			NSError *error = nil;
-			if (![moc save:&error]) {
-				[NSApp presentError:error];
-			}
-			
-			if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo)]) {
-				[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo)
-												withObject:nil
-											 waitUntilDone:YES];
-			}
-			
-			[[NSNotificationCenter defaultCenter] removeObserver:self
-															name:NSManagedObjectContextDidSaveNotification
-														  object:moc];
-			
-            moc = nil;
+            // Save the context
+            NSError *error = nil;
+            if ([privateContext save:&error]) {
+                /*
+                 We could save the parent context here but it would just slow us down
+                 if done after every file read. Parent context is saved after both pkginfos
+                 and manifests are fully read.
+                 */
+                /*
+                [privateContext.parentContext performBlock:^{
+                    NSError *parentError = nil;
+                    [privateContext.parentContext save:&parentError];
+                }];
+                 */
+            } else {
+                DDLogError(@"Private context failed to save: %@", error);
+            }
 		}
 	}
 	@catch(...) {
@@ -507,5 +501,11 @@ DDLogLevel ddLogLevel;
 	}
 }
 
+- (void)main
+{
+    [self.context performBlockAndWait:^{
+        [self scan];
+    }];
+}
 
 @end

@@ -14,6 +14,12 @@
 
 DDLogLevel ddLogLevel;
 
+static const int BatchSize = 50;
+
+@interface MARelationshipScanner ()
+@property (nonatomic, strong) NSManagedObjectContext *context;
+@end
+
 @implementation MARelationshipScanner
 
 - (NSUserDefaults *)defaults
@@ -40,14 +46,6 @@ DDLogLevel ddLogLevel;
 		
 	}
 	return self;
-}
-
-
-- (void)contextDidSave:(NSNotification*)notification
-{
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
-									  withObject:notification
-								   waitUntilDone:YES];
 }
 
 - (id)matchingAppOrPkgForString:(NSString *)aString
@@ -86,45 +84,47 @@ DDLogLevel ddLogLevel;
 
 - (void)scanManifests
 {
-    // Configure the context
+    NSManagedObjectContext *privateContext = self.context;
     
-    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
-    [moc setPersistentStoreCoordinator:[[self delegate] persistentStoreCoordinator]];
-    [moc setUndoManager:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contextDidSave:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:moc];
-    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-    NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
-    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-    NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
+    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:privateContext];
+    NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:privateContext];
+    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:privateContext];
+    NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:privateContext];
     
     
     // Get some objects for later use
     
     NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
     [getManifests setEntity:manifestEntityDescr];
-    self.allManifests = [moc executeFetchRequest:getManifests error:nil];
+    self.allManifests = [privateContext executeFetchRequest:getManifests error:nil];
     
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
-    self.allApplications = [moc executeFetchRequest:getApplications error:nil];
+    self.allApplications = [privateContext executeFetchRequest:getApplications error:nil];
     
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
-    self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
+    self.allCatalogs = [privateContext executeFetchRequest:getAllCatalogs error:nil];
     
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
-    self.allPackages = [moc executeFetchRequest:getPackages error:nil];
+    self.allPackages = [privateContext executeFetchRequest:getPackages error:nil];
     
     
     // Loop through all known manifest objects
     // and configure contents for each
     DDLogDebug(@"Processing %lu manifests...", [self.allManifests count]);
+    
+    
+    NSInteger count = [self.allManifests count];
+    NSInteger progressGranularity;
+    if (count < 100) {
+        progressGranularity = 1; // Update progress for every package
+    } else {
+        progressGranularity = count / 100; // Update progress after every ~1% of work
+    }
+    
     [self.allManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allManifests count]];
         ManifestMO *currentManifest = (ManifestMO *)obj;
         NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
         
@@ -139,14 +139,14 @@ DDLogLevel ddLogLevel;
             
             // Delete the old catalogs
             for (CatalogInfoMO *aCatInfo in currentManifest.catalogInfos) {
-                [moc deleteObject:aCatInfo];
+                [privateContext deleteObject:aCatInfo];
             }
             
             NSArray *catalogs = [originalManifestDict objectForKey:@"catalogs"];
             for (CatalogMO *aCatalog in self.allCatalogs) {
                 NSString *catalogTitle = [aCatalog title];
                 CatalogInfoMO *newCatalogInfo;
-                newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:privateContext];
                 newCatalogInfo.catalog.title = catalogTitle;
                 [aCatalog addManifestsObject:currentManifest];
                 newCatalogInfo.manifest = currentManifest;
@@ -212,13 +212,30 @@ DDLogLevel ddLogLevel;
                 anOptionalInstall.originalPackage = matchingObject;
             }
         }
+        
+        if (idx % progressGranularity == 0) {
+            float percentage = (idx / (float)[self.allManifests count]) * 100.0;
+            self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
+        }
+        if (idx % BatchSize == 0) {
+            [privateContext save:nil];
+        }
     }];
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
+    /*
+     Save both private and parent contexts. We need to use
+     performBlock since we're in NSPrivateQueueConcurrencyType
+     */
     NSError *error = nil;
-    if (![moc save:&error]) {
-        [NSApp presentError:error];
+    if ([privateContext save:&error]) {
+        [privateContext.parentContext performBlock:^{
+            NSError *parentError = nil;
+            [privateContext.parentContext save:&parentError];
+        }];
+    } else {
+        DDLogError(@"Private context failed to save: %@", error);
     }
     
     if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
@@ -226,34 +243,19 @@ DDLogLevel ddLogLevel;
                                         withObject:@"manifests"
                                      waitUntilDone:YES];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextDidSaveNotification
-                                                  object:moc];
-    moc = nil;
-    
-    
 }
 
 
 - (void)scanPkginfos
 {
-    // Configure the context
-    
-    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
     MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
-    [moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
-    [moc setUndoManager:nil];
-    [moc setMergePolicy:NSOverwriteMergePolicy];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contextDidSave:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:moc];
-    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-    NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc];
-    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:moc];
-    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
-    NSEntityDescription *developerEntityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:moc];
+    NSManagedObjectContext *privateContext = self.context;
+    
+    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:privateContext];
+    NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:privateContext];
+    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:privateContext];
+    NSEntityDescription *categoryEntityDescr = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:privateContext];
+    NSEntityDescription *developerEntityDescr = [NSEntityDescription entityForName:@"Developer" inManagedObjectContext:privateContext];
     
     
     /*
@@ -262,25 +264,33 @@ DDLogLevel ddLogLevel;
     NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
     [getPackages setEntity:packageEntityDescr];
     //[getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", nil]];
-    self.allPackages = [moc executeFetchRequest:getPackages error:nil];
+    self.allPackages = [privateContext executeFetchRequest:getPackages error:nil];
     
     NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
     [getAllCatalogs setEntity:catalogEntityDescr];
     //[getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
-    self.allCatalogs = [moc executeFetchRequest:getAllCatalogs error:nil];
+    self.allCatalogs = [privateContext executeFetchRequest:getAllCatalogs error:nil];
     
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
-    self.allApplications = [moc executeFetchRequest:getApplications error:nil];
+    self.allApplications = [privateContext executeFetchRequest:getApplications error:nil];
     
     /*
      Create a default icon for packages without a custom icon
      */
-    IconImageMO *defaultIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:nil managedObjectContext:moc];
+    IconImageMO *defaultIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:nil managedObjectContext:privateContext];
     
     DDLogDebug(@"Processing %lu packages...", [self.allPackages count]);
+    
+    NSInteger count = [self.allPackages count];
+    NSInteger progressGranularity;
+    if (count < 100) {
+        progressGranularity = 1; // Update progress for every package
+    } else {
+        progressGranularity = count / 100; // Update progress after every ~1% of work
+    }
+    
     [self.allPackages enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        self.currentJobDescription = [NSString stringWithFormat:@"Processing %lu/%lu", (unsigned long)idx+1, (unsigned long)[self.allPackages count]];
         PackageMO *currentPackage = (PackageMO *)obj;
         NSArray *existingCatalogTitles = [currentPackage.catalogInfos valueForKeyPath:@"catalog.title"];
         NSDictionary *originalPkginfo = (NSDictionary *)currentPackage.originalPkginfo;
@@ -293,14 +303,14 @@ DDLogLevel ddLogLevel;
         DDLogVerbose(@"%@: Looping through catalog objects we already know about...", currentPackage.titleWithVersion);
         for (CatalogMO *aCatalog in self.allCatalogs) {
             if (![existingCatalogTitles containsObject:aCatalog.title]) {
-                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:privateContext];
                 newCatalogInfo.package = currentPackage;
                 newCatalogInfo.catalog.title = aCatalog.title;
                 
                 [aCatalog addPackagesObject:currentPackage];
                 [aCatalog addCatalogInfosObject:newCatalogInfo];
                 
-                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:privateContext];
                 newPackageInfo.catalog = aCatalog;
                 newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
                 newPackageInfo.package = currentPackage;
@@ -331,7 +341,7 @@ DDLogLevel ddLogLevel;
             NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", catalogObject];
             [fetchForCatalogs setPredicate:catalogTitlePredicate];
             
-            NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
+            NSUInteger numFoundCatalogs = [privateContext countForFetchRequest:fetchForCatalogs error:nil];
             
             
             // There is an item in catalogs array which does not
@@ -340,17 +350,17 @@ DDLogLevel ddLogLevel;
             
             if (numFoundCatalogs == 0) {
                 DDLogVerbose(@"%@: Should be enabled for new catalog %@", currentPackage.titleWithVersion, catalogObject);
-                CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc];
+                CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:privateContext];
                 aNewCatalog.title = catalogObject;
                 [aNewCatalog addPackagesObject:currentPackage];
-                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:privateContext];
                 newCatalogInfo.package = currentPackage;
                 newCatalogInfo.catalog.title = aNewCatalog.title;
                 newCatalogInfo.isEnabledForPackageValue = YES;
                 newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogsFromPkginfo indexOfObject:catalogObject]];
                 [aNewCatalog addCatalogInfosObject:newCatalogInfo];
                 
-                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:privateContext];
                 newPackageInfo.catalog = aNewCatalog;
                 newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
                 newPackageInfo.package = currentPackage;
@@ -362,18 +372,18 @@ DDLogLevel ddLogLevel;
             // Use the first one and create dependencies if needed
             
             else {
-                CatalogMO *foundCatalog = [[moc executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
+                CatalogMO *foundCatalog = [[privateContext executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
                 
                 if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:catalogObject]) {
                     DDLogVerbose(@"%@: Should be enabled for existing catalog %@", currentPackage.titleWithVersion, foundCatalog.title);
                     [foundCatalog addPackagesObject:currentPackage];
-                    CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc];
+                    CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:privateContext];
                     newCatalogInfo.package = currentPackage;
                     newCatalogInfo.catalog.title = foundCatalog.title;
                     newCatalogInfo.isEnabledForPackageValue = YES;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogsFromPkginfo indexOfObject:catalogObject]];
                     [foundCatalog addCatalogInfosObject:newCatalogInfo];
-                    PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc];
+                    PackageInfoMO *newPackageInfo = [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:privateContext];
                     newPackageInfo.catalog = foundCatalog;
                     newPackageInfo.title = [currentPackage.munki_display_name stringByAppendingFormat:@" %@", currentPackage.munki_version];
                     newPackageInfo.package = currentPackage;
@@ -395,7 +405,7 @@ DDLogLevel ddLogLevel;
                 iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             }
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:moc];
+                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
                 currentPackage.iconImage = icon;
             } else {
                 currentPackage.iconImage = defaultIcon;
@@ -404,7 +414,7 @@ DDLogLevel ddLogLevel;
             NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
             iconURL = [iconURL URLByAppendingPathExtension:@"png"];
             if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:moc];
+                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
                 currentPackage.iconImage = icon;
             } else {
                 currentPackage.iconImage = defaultIcon;
@@ -421,13 +431,13 @@ DDLogLevel ddLogLevel;
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"category"]];
             [fetchForCategory setPredicate:predicate];
             
-            NSUInteger numFoundCategories = [moc countForFetchRequest:fetchForCategory error:nil];
+            NSUInteger numFoundCategories = [privateContext countForFetchRequest:fetchForCategory error:nil];
             CategoryMO *category = nil;
             if (numFoundCategories > 0) {
-                category = [[moc executeFetchRequest:fetchForCategory error:nil] objectAtIndex:0];
+                category = [[privateContext executeFetchRequest:fetchForCategory error:nil] objectAtIndex:0];
                 [category addPackagesObject:currentPackage];
             } else {
-                category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
+                category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:privateContext];
                 category.title = [originalPkginfo objectForKey:@"category"];
                 [category addPackagesObject:currentPackage];
             }
@@ -443,16 +453,24 @@ DDLogLevel ddLogLevel;
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"developer"]];
             [fetchForDeveloper setPredicate:predicate];
             
-            NSUInteger numFoundDevelopers = [moc countForFetchRequest:fetchForDeveloper error:nil];
+            NSUInteger numFoundDevelopers = [privateContext countForFetchRequest:fetchForDeveloper error:nil];
             DeveloperMO *developer = nil;
             if (numFoundDevelopers > 0) {
-                developer = [[moc executeFetchRequest:fetchForDeveloper error:nil] objectAtIndex:0];
+                developer = [[privateContext executeFetchRequest:fetchForDeveloper error:nil] objectAtIndex:0];
                 [developer addPackagesObject:currentPackage];
             } else {
-                developer = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:moc];
+                developer = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:privateContext];
                 developer.title = [originalPkginfo objectForKey:@"developer"];
                 [developer addPackagesObject:currentPackage];
             }
+        }
+        
+        if (idx % progressGranularity == 0) {
+            float percentage = (idx / (float)[self.allPackages count]) * 100.0;
+            self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
+        }
+        if (idx % BatchSize == 0) {
+            [privateContext save:nil];
         }
     }];
     
@@ -468,19 +486,28 @@ DDLogLevel ddLogLevel;
     /*
      Create the source list items for category objects
      */
-    [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:moc];
+    [[MACoreDataManager sharedManager] configureSourceListCategoriesSection:privateContext];
     
     /*
      Create the source list items for developer objects
      */
-    [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:moc];
+    [[MACoreDataManager sharedManager] configureSourceListDevelopersSection:privateContext];
     
     
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
+    /*
+     Save both private and parent contexts. We need to use
+     performBlock since we're in NSPrivateQueueConcurrencyType
+     */
     NSError *error = nil;
-    if (![moc save:&error]) {
-        [NSApp presentError:error];
+    if ([privateContext save:&error]) {
+        [privateContext.parentContext performBlock:^{
+            NSError *parentError = nil;
+            [privateContext.parentContext save:&parentError];
+        }];
+    } else {
+        DDLogError(@"Private context failed to save: %@", error);
     }
     
     if ([self.delegate respondsToSelector:@selector(relationshipScannerDidFinish:)]) {
@@ -488,33 +515,32 @@ DDLogLevel ddLogLevel;
                                         withObject:@"pkgs"
                                      waitUntilDone:YES];
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSManagedObjectContextDidSaveNotification
-                                                  object:moc];
-    moc = nil;
 }
 
 
--(void)main {
-	@try {
-		@autoreleasepool {
-            
-            switch (self.operationMode) {
-                case 0:
-                    [self scanPkginfos];
-                    break;
-                case 1:
-                    [self scanManifests];
-                default:
-                    break;
+- (void)main {
+    self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    self.context.parentContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    self.context.undoManager = nil;
+    [self.context performBlockAndWait:^{
+        @try {
+            @autoreleasepool {
+                switch (self.operationMode) {
+                    case 0:
+                        [self scanPkginfos];
+                        break;
+                    case 1:
+                        [self scanManifests];
+                        break;
+                    default:
+                        break;
+                }
             }
-            
-		}
-	}
-	@catch(...) {
-		// Do not rethrow exceptions.
-	}
+        }
+        @catch(...) {
+            // Do not rethrow exceptions.
+        }
+    }];
 }
 
 @end

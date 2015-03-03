@@ -12,6 +12,10 @@
 
 DDLogLevel ddLogLevel;
 
+@interface MAManifestScanner ()
+@property (nonatomic, strong) NSManagedObjectContext *context;
+@end
+
 @implementation MAManifestScanner
 
 - (NSUserDefaults *)defaults
@@ -23,6 +27,9 @@ DDLogLevel ddLogLevel;
 - (id)initWithURL:(NSURL *)src {
 	if ((self = [super init])) {
 		DDLogVerbose(@"Initializing read operation for manifest %@", [src path]);
+        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _context.parentContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+        _context.undoManager = nil;
 		self.sourceURL = src;
 		self.fileName = [self.sourceURL lastPathComponent];
 		self.currentJobDescription = @"Initializing manifest scan operation";
@@ -31,13 +38,6 @@ DDLogLevel ddLogLevel;
 	return self;
 }
 
-
-- (void)contextDidSave:(NSNotification*)notification
-{
-	[[self delegate] performSelectorOnMainThread:@selector(mergeChanges:)
-									  withObject:notification
-								   waitUntilDone:YES];
-}
 
 - (id)matchingObjectForString:(NSString *)aString
 {
@@ -155,19 +155,12 @@ DDLogLevel ddLogLevel;
     }
 }
 
--(void)main {
+- (void)scan {
 	@try {
 		@autoreleasepool {
             
-			NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] init];
             MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
-			[moc setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
-            [moc setUndoManager:nil];
-			[[NSNotificationCenter defaultCenter] addObserver:self
-													 selector:@selector(contextDidSave:)
-														 name:NSManagedObjectContextDidSaveNotification
-													   object:moc];
-			
+			NSManagedObjectContext *privateContext = self.context;
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 			
             /*
@@ -190,7 +183,7 @@ DDLogLevel ddLogLevel;
                  * Check if we already have a manifest with this name
                  */
                 NSFetchRequest *request = [[NSFetchRequest alloc] init];
-                NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
+                NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:privateContext];
 				[request setEntity:manifestEntityDescr];
                 [request setReturnsObjectsAsFaults:NO];
                 [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:
@@ -204,9 +197,9 @@ DDLogLevel ddLogLevel;
                 
 				[request setPredicate:titlePredicate];
                 ManifestMO *manifest;
-                NSArray *foundItems = [moc executeFetchRequest:request error:nil];
+                NSArray *foundItems = [privateContext executeFetchRequest:request error:nil];
 				if ([foundItems count] == 0) {
-					manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
+					manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:privateContext];
 					manifest.title = manifestRelativePath;
 					manifest.manifestURL = self.sourceURL;
 				} else {
@@ -237,7 +230,7 @@ DDLogLevel ddLogLevel;
                 [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
                         DDLogVerbose(@"%@: managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                        StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
                         newManagedInstall.title = (NSString *)obj;
                         newManagedInstall.typeString = @"managedInstall";
                         newManagedInstall.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -260,7 +253,7 @@ DDLogLevel ddLogLevel;
                 [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
                         DDLogVerbose(@"%@ managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                        StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
                         newManagedUninstall.title = (NSString *)obj;
                         newManagedUninstall.typeString = @"managedUninstall";
                         newManagedUninstall.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -283,7 +276,7 @@ DDLogLevel ddLogLevel;
                 [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
                         DDLogVerbose(@"%@ managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                        StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
                         newManagedUpdate.title = (NSString *)obj;
                         newManagedUpdate.typeString = @"managedUpdate";
                         newManagedUpdate.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -306,7 +299,7 @@ DDLogLevel ddLogLevel;
 				[optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     @autoreleasepool {
                         DDLogVerbose(@"%@ optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                        StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                        StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
                         newOptionalInstall.title = (NSString *)obj;
                         newOptionalInstall.typeString = @"optionalInstall";
                         newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -328,7 +321,7 @@ DDLogLevel ddLogLevel;
                 }
                 [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     DDLogVerbose(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                    StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                    StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
                     newIncludedManifest.title = (NSString *)obj;
                     newIncludedManifest.typeString = @"includedManifest";
                     newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
@@ -344,7 +337,7 @@ DDLogLevel ddLogLevel;
 				// =================================
                 startTime = [NSDate date];
 				NSArray *conditionalItems = [manifestInfoDict objectForKey:@"conditional_items"];
-                [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:moc];
+                [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:privateContext];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
 				
@@ -352,27 +345,35 @@ DDLogLevel ddLogLevel;
 				DDLogError(@"Can't read manifest file %@", [self.sourceURL relativePath]);
 			}
 			
-			// Save the context, this causes main app delegate to merge new items
-			NSError *error = nil;
-			if (![moc save:&error]) {
-				[NSApp presentError:error];
-			}
-			
-			if ([self.delegate respondsToSelector:@selector(scannerDidProcessPkginfo)]) {
-				[self.delegate performSelectorOnMainThread:@selector(scannerDidProcessPkginfo)
-												withObject:nil
-											 waitUntilDone:YES];
-			}
-			
-			[[NSNotificationCenter defaultCenter] removeObserver:self
-															name:NSManagedObjectContextDidSaveNotification
-														  object:moc];
-			moc = nil;
+			// Save the context
+            NSError *error = nil;
+            if ([privateContext save:&error]) {
+                /*
+                 We could save the parent context here but it would just slow us down
+                 if done after every file read. Parent context is saved after both pkginfos
+                 and manifests are fully read.
+                 */
+                /*
+                [privateContext.parentContext performBlock:^{
+                    NSError *parentError = nil;
+                    [privateContext.parentContext save:&parentError];
+                }];
+                 */
+            } else {
+                DDLogError(@"Private context failed to save: %@", error);
+            }
 		}
 	}
 	@catch(...) {
 		// Do not rethrow exceptions.
 	}
+}
+
+- (void)main
+{
+    [self.context performBlockAndWait:^{
+        [self scan];
+    }];
 }
 
 
