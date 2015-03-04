@@ -890,7 +890,6 @@ DDLogLevel ddLogLevel;
     //DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSUInteger numOp = [self.operationQueue operationCount];
-	
     if (numOp < 1) {
 		// There are no more operations in queue
 		[timer invalidate];
@@ -924,13 +923,13 @@ DDLogLevel ddLogLevel;
                 // Running item is PkginfoScanner
                 if ([firstOpItem isKindOfClass:[MAPkginfoScanner class]]) {
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-                    self.jobDescription = @"Scanning Packages";
+                    self.jobDescription = @"Scanning Packages...";
                 }
                 
                 // Running item is ManifestScanner
                 else if ([firstOpItem isKindOfClass:[MAManifestScanner class]]) {
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
-                    self.jobDescription = @"Scanning Manifests";
+                    self.jobDescription = @"Scanning Manifests...";
                 }
                 
                 // Running item is MunkiOperation
@@ -948,15 +947,15 @@ DDLogLevel ddLogLevel;
                     }
                 }
                 
-                // Running item is MunkiOperation
+                // Running item is MAFileCopyOperation
                 else if ([firstOpItem isKindOfClass:[MAFileCopyOperation class]]) {
-                    self.jobDescription = @"Copying";
+                    self.jobDescription = @"Copying...";
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [[firstOpItem sourceURL] lastPathComponent]];
                 }
                 
-                // Running item is MunkiOperation
+                // Running item is MARelationshipScanner
                 else if ([firstOpItem isKindOfClass:[MARelationshipScanner class]]) {
-                    self.jobDescription = @"Organizing package relationships";
+                    self.jobDescription = @"Analyzing...";
                     self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem currentJobDescription]];
                 }
             }
