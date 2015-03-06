@@ -34,6 +34,7 @@ extern const struct ManifestMOFetchedProperties {
 	__unsafe_unretained NSString *allManagedUninstalls;
 	__unsafe_unretained NSString *allManagedUpdates;
 	__unsafe_unretained NSString *allOptionalInstalls;
+	__unsafe_unretained NSString *referencingStringObjects;
 } ManifestMOFetchedProperties;
 
 @class ApplicationMO;
@@ -154,6 +155,8 @@ extern const struct ManifestMOFetchedProperties {
 @property (nonatomic, readonly) NSArray *allManagedUpdates;
 
 @property (nonatomic, readonly) NSArray *allOptionalInstalls;
+
+@property (nonatomic, readonly) NSArray *referencingStringObjects;
 
 @end
 

@@ -18,6 +18,7 @@
 #import "MAAdvancedPackageEditor.h"
 #import "MAPredicateEditor.h"
 #import "MAPackagesView.h"
+#import "MAManifestsView.h"
 #import "MAPkginfoAssimilator.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
@@ -467,6 +468,7 @@ DDLogLevel ddLogLevel;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(undoManagerDidUndo:) name:NSUndoManagerDidUndoChangeNotification object:nil];
 	
     self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"MAPackagesView" bundle:nil];
+    self.manifestsViewController = [[MAManifestsView alloc] initWithNibName:@"MAManifestsView" bundle:nil];
     self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"MAManifestDetailView" bundle:nil];
     addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
@@ -478,7 +480,7 @@ DDLogLevel ddLogLevel;
     
     
 	// Configure segmented control
-	[self.mainSegmentedControl setSegmentCount:3];
+	[self.mainSegmentedControl setSegmentCount:4];
 	
     NSImage *packagesIcon = [[NSImage imageNamed:@"packageIcon_32x32"] copy];
 	[packagesIcon setSize:NSMakeSize(18, 18)];
@@ -490,6 +492,7 @@ DDLogLevel ddLogLevel;
 	[self.mainSegmentedControl setImage:packagesIcon forSegment:0];
 	[self.mainSegmentedControl setImage:catalogsIcon forSegment:1];
 	[self.mainSegmentedControl setImage:manifestsIcon forSegment:2];
+    [self.mainSegmentedControl setImage:manifestsIcon forSegment:3];
 	
 	[self.mainTabView setDelegate:self];
 	[self.mainSplitView setDelegate:self];
@@ -2952,6 +2955,16 @@ DDLogLevel ddLogLevel;
 				[self changeItemView];
 			}
 			break;
+        case 4:
+            if (currentDetailView != [self.manifestsViewController view]) {
+                self.selectedViewDescr = @"Manifests V2";
+                currentDetailView = nil;
+                currentSourceView = nil;
+                currentWholeView = [self.manifestsViewController view];
+                [self.mainSegmentedControl setSelectedSegment:3];
+                [self changeItemView];
+            }
+            break;
 		default:
 			break;
 	}
@@ -2987,6 +3000,15 @@ DDLogLevel ddLogLevel;
 				[self changeItemView];
             }
 			break;
+        case 3:
+            if (currentDetailView != [self.manifestsViewController view]) {
+                self.selectedViewDescr = @"Manifests V2";
+                currentDetailView = nil;
+                currentSourceView = nil;
+                currentWholeView = [self.manifestsViewController view];
+                [self changeItemView];
+            }
+            break;
 		default:
 			break;
 	}
@@ -3039,6 +3061,18 @@ DDLogLevel ddLogLevel;
         //[[self.packagesViewController directoriesOutlineView] expandItem:nil expandChildren:YES];
         //[[self.packagesViewController directoriesOutlineView] reloadData];
         //[[self.packagesViewController packagesArrayController] rearrangeObjects];
+    
+    } else if (currentWholeView == [self.manifestsViewController view]) {
+        // remove the old subview
+        [self removeSubviews];
+        
+        [[self.window contentView] addSubview:[self.manifestsViewController view]];
+        [[self.manifestsViewController view] setFrame:[[self.window contentView] frame]];
+        [[self.manifestsViewController view] setFrameOrigin:NSMakePoint(0,0)];
+        [[self.manifestsViewController view] setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        
+        //[self.manifestsViewController.sourceList reloadData];
+        
     } else {
         // remove the old subview
         [self removeSubviews];

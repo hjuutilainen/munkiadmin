@@ -34,6 +34,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	.allManagedUninstalls = @"allManagedUninstalls",
 	.allManagedUpdates = @"allManagedUpdates",
 	.allOptionalInstalls = @"allOptionalInstalls",
+	.referencingStringObjects = @"referencingStringObjects",
 };
 
 @implementation ManifestMOID
@@ -271,6 +272,8 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 @dynamic allManagedUpdates;
 
 @dynamic allOptionalInstalls;
+
+@dynamic referencingStringObjects;
 
 @end
 

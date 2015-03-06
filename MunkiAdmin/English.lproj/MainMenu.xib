@@ -129,9 +129,9 @@ Gw
                     <toolbarItem implicitItemIdentifier="AEEE2978-EEBD-4820-BB0C-955830984CDE" label="View" paletteLabel="View Mode" id="912">
                         <nil key="toolTip"/>
                         <size key="minSize" width="112" height="25"/>
-                        <size key="maxSize" width="112" height="32"/>
+                        <size key="maxSize" width="154" height="32"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="0.0" y="14" width="112" height="25"/>
+                            <rect key="frame" x="-13" y="14" width="154" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
                                 <font key="font" metaFont="system"/>
@@ -143,6 +143,9 @@ Gw
                                         <nil key="label"/>
                                     </segment>
                                     <segment toolTip="Show Manifests" image="manifestIcon_32x32" tag="2">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment toolTip="Show Manifests v2" image="manifestIcon_32x32" tag="3">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -608,6 +611,11 @@ Gw
                             <menuItem title="Manifests" tag="3" keyEquivalent="3" id="1573">
                                 <connections>
                                     <action selector="selectViewAction:" target="205" id="1576"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Manifests v2" tag="4" keyEquivalent="4" id="Urd-w4-ZDT">
+                                <connections>
+                                    <action selector="selectViewAction:" target="205" id="RcW-TK-sKU"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="243">

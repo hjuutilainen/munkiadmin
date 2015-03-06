@@ -21,6 +21,7 @@
 @class MASelectManifestItemsWindow;
 @class MAPackageNameEditor;
 @class MAPackagesView;
+@class MAManifestsView;
 @class MAAdvancedPackageEditor;
 @class MAPredicateEditor;
 @class MAPkginfoAssimilator;
@@ -55,6 +56,7 @@
 
 @property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) MAPackagesView *packagesViewController;
+@property (strong) MAManifestsView *manifestsViewController;
 @property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) MAPreferences *preferencesController;
 @property (strong) NSTimer *operationTimer;

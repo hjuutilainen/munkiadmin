@@ -59,6 +59,34 @@
 	return tempArray;
 }
 
+- (NSArray *)catalogStrings
+{
+    NSMutableArray *catalogs = [NSMutableArray new];
+    for (CatalogInfoMO *catalogInfo in self.catalogInfos) {
+        if (([catalogInfo isEnabledForManifestValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
+            [catalogs addObject:[[catalogInfo catalog] title]];
+        }
+    }
+    
+    if ([catalogs count] == 0) {
+        return nil;
+    } else {
+        return [catalogs sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSString *)catalogsDescriptionString
+{
+    NSArray *catalogStrings = [self catalogStrings];
+    if (catalogStrings) {
+        return [[self catalogStrings] componentsJoinedByString:@", "];
+    } else {
+        return @"--";
+    }
+    
+}
+
+
 - (NSArray *)enabledCatalogs
 {
 	NSPredicate *enabledPredicate = [NSPredicate predicateWithFormat:@"isEnabledForManifest == TRUE"];

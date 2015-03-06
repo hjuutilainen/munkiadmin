@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C106a" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -158,6 +158,9 @@
         <fetchedProperty name="allOptionalInstalls" optional="YES" transient="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(optionalInstallReference == $FETCH_SOURCE) OR (optionalInstallConditionalReference.manifest == $FETCH_SOURCE)"/>
         </fetchedProperty>
+        <fetchedProperty name="referencingStringObjects" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(title == $FETCH_SOURCE.title) AND (typeString == &quot;includedManifest&quot;)"/>
+        </fetchedProperty>
     </entity>
     <entity name="ManifestInfo" representedClassName="ManifestInfoMO" syncable="YES">
         <attribute name="isAvailableForEditing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -315,7 +318,7 @@
         <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="419"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="431"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1080"/>

@@ -43,6 +43,9 @@
 		F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */; };
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
 		F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */; };
+		F535E99D1AA98F47009842B5 /* MAManifestsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F535E99B1AA98F47009842B5 /* MAManifestsView.m */; };
+		F535E99E1AA98F47009842B5 /* MAManifestsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F535E99C1AA98F47009842B5 /* MAManifestsView.xib */; };
+		F535E9A11AA99570009842B5 /* MAManifestsViewSourceListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F535E9A01AA99570009842B5 /* MAManifestsViewSourceListItem.m */; };
 		F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */; };
 		F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */; };
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
@@ -222,6 +225,11 @@
 		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
 		F53269A1125AF75C00AF967C /* MAPkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoScanner.h; sourceTree = "<group>"; };
 		F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoScanner.m; sourceTree = "<group>"; };
+		F535E99A1AA98F47009842B5 /* MAManifestsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestsView.h; sourceTree = "<group>"; };
+		F535E99B1AA98F47009842B5 /* MAManifestsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestsView.m; sourceTree = "<group>"; };
+		F535E99C1AA98F47009842B5 /* MAManifestsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestsView.xib; sourceTree = "<group>"; };
+		F535E99F1AA99570009842B5 /* MAManifestsViewSourceListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestsViewSourceListItem.h; sourceTree = "<group>"; };
+		F535E9A01AA99570009842B5 /* MAManifestsViewSourceListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestsViewSourceListItem.m; sourceTree = "<group>"; };
 		F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon_32x32.png; path = MunkiAdmin/Graphics/catalogIcon_32x32.png; sourceTree = "<group>"; };
 		F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "catalogIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/catalogIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon_32x32.png; path = MunkiAdmin/Graphics/manifestIcon_32x32.png; sourceTree = "<group>"; };
@@ -762,6 +770,11 @@
 				FEDAA470144D50B1005C8B6F /* MAManifestDetailView.h */,
 				FEDAA471144D50B1005C8B6F /* MAManifestDetailView.m */,
 				FEDAA472144D50B1005C8B6F /* MAManifestDetailView.xib */,
+				F535E99A1AA98F47009842B5 /* MAManifestsView.h */,
+				F535E99B1AA98F47009842B5 /* MAManifestsView.m */,
+				F535E99C1AA98F47009842B5 /* MAManifestsView.xib */,
+				F535E99F1AA99570009842B5 /* MAManifestsViewSourceListItem.h */,
+				F535E9A01AA99570009842B5 /* MAManifestsViewSourceListItem.m */,
 				FE1C6B76145A797D00BC815F /* MAPackageNameEditor.h */,
 				FE1C6B77145A797D00BC815F /* MAPackageNameEditor.m */,
 				FE1C6B7A145A7A0300BC815F /* MAPackageNameEditor.xib */,
@@ -904,6 +917,7 @@
 				F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */,
 				F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */,
 				F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */,
+				F535E99E1AA98F47009842B5 /* MAManifestsView.xib in Resources */,
 				F5CD0ACF15EC965600BBC11F /* openRepositoryTemplate.pdf in Resources */,
 				F5CD0AD215EC981500BBC11F /* saveTemplate.pdf in Resources */,
 				F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */,
@@ -982,6 +996,7 @@
 				F508522E11084C39001DAD73 /* MAGradientBackgroundView.m in Sources */,
 				F508526E11085A5A001DAD73 /* ManifestsArrayController.m in Sources */,
 				F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */,
+				F535E99D1AA98F47009842B5 /* MAManifestsView.m in Sources */,
 				F564873911B503830061B190 /* MAPreferences.m in Sources */,
 				F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */,
 				F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */,
@@ -1037,6 +1052,7 @@
 				FEABB248144EB39B0006BDE8 /* MASelectPkginfoItemsWindow.m in Sources */,
 				FEC30F2014516376006747F6 /* MASelectManifestItemsWindow.m in Sources */,
 				FE9F2CD21459586C00D0E687 /* MAFileCopyOperation.m in Sources */,
+				F535E9A11AA99570009842B5 /* MAManifestsViewSourceListItem.m in Sources */,
 				FE1C6B78145A797D00BC815F /* MAPackageNameEditor.m in Sources */,
 				FEEBE375145FC5750004791A /* MARelationshipScanner.m in Sources */,
 				F593259F191794050079398B /* InstallerTypeSourceListItemMO.m in Sources */,
