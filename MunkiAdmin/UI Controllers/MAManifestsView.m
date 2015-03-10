@@ -36,6 +36,31 @@ DDLogLevel ddLogLevel;
     [self updateSourceListData];
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    /*
+     Update the mainCompoundPredicate everytime the subcomponents are updated
+     */
+    if ([key isEqualToString:@"mainCompoundPredicate"])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"selectedSourceListFilterPredicate", @"searchFieldPredicate", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+    
+    return keyPaths;
+}
+
+
+- (NSPredicate *)mainCompoundPredicate
+{
+    /*
+     Combine the selected source list item predicate and the possible search predicate
+     */
+    return [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.selectedSourceListFilterPredicate, self.searchFieldPredicate, nil]];
+}
+
 - (void)awakeFromNib
 {
     //[self.sourceList registerForDraggedTypes:@[draggingType]];
@@ -49,7 +74,8 @@ DDLogLevel ddLogLevel;
     self.sourceListItems = [[NSMutableArray alloc] init];
     
     [self setUpDataModel];
-    self.manifestsArrayController.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
     [self.sourceList reloadData];
     //[self.sourceList layout];
@@ -321,8 +347,10 @@ DDLogLevel ddLogLevel;
 - (void)sourceListSelectionDidChange:(NSNotification *)notification
 {
     if ([self.sourceList selectedRow] >= 0) {
+        DDLogError(@"Starting to set predicate...");
         id selectedItem = [self.sourceList itemAtRow:[self.sourceList selectedRow]];
         NSPredicate *productFilter = [(MAManifestsViewSourceListItem *)[selectedItem representedObject] filterPredicate];
+        self.selectedSourceListFilterPredicate = productFilter;
         self.manifestsArrayController.filterPredicate = productFilter;
         
         [self setDetailView:self.manifestsListView];
@@ -332,8 +360,9 @@ DDLogLevel ddLogLevel;
         if (productSortDescriptors != nil) {
             [self.manifestsArrayController setSortDescriptors:productSortDescriptors];
         } else {
-            //[self.manifestsArrayController setSortDescriptors:self.defaultSortDescriptors];
+            [self.manifestsArrayController setSortDescriptors:self.defaultSortDescriptors];
         }
+        DDLogError(@"Finished setting predicate...");
     }
 }
 

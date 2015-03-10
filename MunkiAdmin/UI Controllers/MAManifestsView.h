@@ -16,6 +16,10 @@
 @property (assign) IBOutlet NSView *manifestsListView;
 @property (assign) IBOutlet NSView *detailViewPlaceHolder;
 @property (assign) IBOutlet NSArrayController *manifestsArrayController;
+@property (strong) NSPredicate *selectedSourceListFilterPredicate;
+@property (readonly, strong) NSPredicate *mainCompoundPredicate;
+@property (strong) NSPredicate *searchFieldPredicate;
+@property (strong) NSArray *defaultSortDescriptors;
 
 - (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item;
 - (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item;
