@@ -5,6 +5,10 @@
 
 extern const struct ManifestMOAttributes {
 	__unsafe_unretained NSString *hasUnstagedChanges;
+	__unsafe_unretained NSString *manifestDateCreated;
+	__unsafe_unretained NSString *manifestDateLastOpened;
+	__unsafe_unretained NSString *manifestDateModified;
+	__unsafe_unretained NSString *manifestParentDirectoryURL;
 	__unsafe_unretained NSString *manifestURL;
 	__unsafe_unretained NSString *originalManifest;
 	__unsafe_unretained NSString *title;
@@ -57,6 +61,8 @@ extern const struct ManifestMOFetchedProperties {
 
 @class NSObject;
 
+@class NSObject;
+
 @interface ManifestMOID : NSManagedObjectID {}
 @end
 
@@ -73,6 +79,22 @@ extern const struct ManifestMOFetchedProperties {
 - (void)setHasUnstagedChangesValue:(BOOL)value_;
 
 //- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSDate* manifestDateCreated;
+
+//- (BOOL)validateManifestDateCreated:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSDate* manifestDateLastOpened;
+
+//- (BOOL)validateManifestDateLastOpened:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSDate* manifestDateModified;
+
+//- (BOOL)validateManifestDateModified:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) id manifestParentDirectoryURL;
+
+//- (BOOL)validateManifestParentDirectoryURL:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) id manifestURL;
 
@@ -287,6 +309,18 @@ extern const struct ManifestMOFetchedProperties {
 
 - (BOOL)primitiveHasUnstagedChangesValue;
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
+
+- (NSDate*)primitiveManifestDateCreated;
+- (void)setPrimitiveManifestDateCreated:(NSDate*)value;
+
+- (NSDate*)primitiveManifestDateLastOpened;
+- (void)setPrimitiveManifestDateLastOpened:(NSDate*)value;
+
+- (NSDate*)primitiveManifestDateModified;
+- (void)setPrimitiveManifestDateModified:(NSDate*)value;
+
+- (id)primitiveManifestParentDirectoryURL;
+- (void)setPrimitiveManifestParentDirectoryURL:(id)value;
 
 - (id)primitiveManifestURL;
 - (void)setPrimitiveManifestURL:(id)value;

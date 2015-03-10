@@ -202,6 +202,7 @@ DDLogLevel ddLogLevel;
 					manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:privateContext];
 					manifest.title = manifestRelativePath;
 					manifest.manifestURL = self.sourceURL;
+                    manifest.manifestParentDirectoryURL = [self.sourceURL URLByDeletingLastPathComponent];
 				} else {
 					manifest = [foundItems objectAtIndex:0];
 					DDLogVerbose(@"%@: Reusing existing manifest object from memory", self.fileName);
@@ -209,6 +210,22 @@ DDLogLevel ddLogLevel;
 				
                 
 				manifest.originalManifest = manifestInfoDict;
+                
+                
+                /*
+                 * Get file properties
+                 */
+                NSDate *dateCreated;
+                [manifest.manifestURL getResourceValue:&dateCreated forKey:NSURLCreationDateKey error:nil];
+                manifest.manifestDateCreated = dateCreated;
+            
+                NSDate *dateLastOpened;
+                [manifest.manifestURL getResourceValue:&dateLastOpened forKey:NSURLContentAccessDateKey error:nil];
+                manifest.manifestDateLastOpened = dateLastOpened;
+                
+                NSDate *dateModified;
+                [manifest.manifestURL getResourceValue:&dateModified forKey:NSURLContentModificationDateKey error:nil];
+                manifest.manifestDateModified = dateModified;
 				
                 
                 // =================================

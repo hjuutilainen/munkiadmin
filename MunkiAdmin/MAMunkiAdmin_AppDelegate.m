@@ -2590,6 +2590,7 @@ DDLogLevel ddLogLevel;
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = manifestRelativePath;
 				manifest.manifestURL = aManifestFile;
+                manifest.manifestParentDirectoryURL = [aManifestFile URLByDeletingLastPathComponent];
 			}
 			
 		}
