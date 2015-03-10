@@ -76,6 +76,7 @@
 		F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* MAGradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* MAGradientButtonBarView.m */; };
+		F5A2CD551AAF358E00A8466E /* calendar_ok.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */; };
 		F5B0A0581A77A530006243E3 /* MAScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0A0571A77A530006243E3 /* MAScriptRunner.m */; };
 		F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996015E78704008BE0EF /* packageIcon_32x32.png */; };
 		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
@@ -126,7 +127,6 @@
 		F5EC18331AAEE51800C88669 /* document.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5EC18301AAEE51800C88669 /* document.pdf */; };
 		F5EC18341AAEE51800C88669 /* documents.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5EC18311AAEE51800C88669 /* documents.pdf */; };
 		F5EC18381AAEE6B700C88669 /* inbox.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5EC18371AAEE6B700C88669 /* inbox.pdf */; };
-		F5EC183A1AAEE6FB00C88669 /* calendar_ok.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5EC18391AAEE6FB00C88669 /* calendar_ok.pdf */; };
 		F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6337F111824CC007CC030 /* manifestIcon2.png */; };
 		F5F63383111824CC007CC030 /* packageIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F63380111824CC007CC030 /* packageIcon2.png */; };
 		F5F6339511182934007CC030 /* catalogIcon3.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F6339411182934007CC030 /* catalogIcon3.png */; };
@@ -285,6 +285,7 @@
 		F59B724613698044008229E8 /* MAGradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* MAGradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientButtonBarView.m; sourceTree = "<group>"; };
 		F5A11C6C195706C6005A39AE /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
+		F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = calendar_ok.pdf; path = MunkiAdmin/Graphics/calendar_ok.pdf; sourceTree = "<group>"; };
 		F5B0A0561A77A530006243E3 /* MAScriptRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAScriptRunner.h; sourceTree = "<group>"; };
 		F5B0A0571A77A530006243E3 /* MAScriptRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAScriptRunner.m; sourceTree = "<group>"; };
 		F5B2996015E78704008BE0EF /* packageIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon_32x32.png; path = MunkiAdmin/Graphics/packageIcon_32x32.png; sourceTree = "<group>"; };
@@ -365,13 +366,12 @@
 		F5EA6AB8190F7ED100362FEE /* MAIconEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAIconEditor.m; sourceTree = "<group>"; };
 		F5EA6AB9190F7ED100362FEE /* MAIconEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAIconEditor.xib; sourceTree = "<group>"; };
 		F5EA6ABC190F80E900362FEE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F5EC182B1AAEE30A00C88669 /* book.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = book.pdf; sourceTree = "<group>"; };
-		F5EC182D1AAEE38400C88669 /* folder.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = folder.pdf; sourceTree = "<group>"; };
-		F5EC182F1AAEE51800C88669 /* document_download.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = document_download.pdf; sourceTree = "<group>"; };
-		F5EC18301AAEE51800C88669 /* document.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = document.pdf; sourceTree = "<group>"; };
-		F5EC18311AAEE51800C88669 /* documents.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = documents.pdf; sourceTree = "<group>"; };
-		F5EC18371AAEE6B700C88669 /* inbox.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = inbox.pdf; sourceTree = "<group>"; };
-		F5EC18391AAEE6FB00C88669 /* calendar_ok.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = calendar_ok.pdf; sourceTree = "<group>"; };
+		F5EC182B1AAEE30A00C88669 /* book.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = book.pdf; path = MunkiAdmin/Graphics/book.pdf; sourceTree = "<group>"; };
+		F5EC182D1AAEE38400C88669 /* folder.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = folder.pdf; path = MunkiAdmin/Graphics/folder.pdf; sourceTree = "<group>"; };
+		F5EC182F1AAEE51800C88669 /* document_download.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = document_download.pdf; path = MunkiAdmin/Graphics/document_download.pdf; sourceTree = "<group>"; };
+		F5EC18301AAEE51800C88669 /* document.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = document.pdf; path = MunkiAdmin/Graphics/document.pdf; sourceTree = "<group>"; };
+		F5EC18311AAEE51800C88669 /* documents.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = documents.pdf; path = MunkiAdmin/Graphics/documents.pdf; sourceTree = "<group>"; };
+		F5EC18371AAEE6B700C88669 /* inbox.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = inbox.pdf; path = MunkiAdmin/Graphics/inbox.pdf; sourceTree = "<group>"; };
 		F5F6337F111824CC007CC030 /* manifestIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = manifestIcon2.png; path = MunkiAdmin/Graphics/manifestIcon2.png; sourceTree = "<group>"; };
 		F5F63380111824CC007CC030 /* packageIcon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageIcon2.png; path = MunkiAdmin/Graphics/packageIcon2.png; sourceTree = "<group>"; };
 		F5F6339411182934007CC030 /* catalogIcon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = catalogIcon3.png; path = MunkiAdmin/Graphics/catalogIcon3.png; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 			isa = PBXGroup;
 			children = (
 				F5EC182B1AAEE30A00C88669 /* book.pdf */,
-				F5EC18391AAEE6FB00C88669 /* calendar_ok.pdf */,
+				F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */,
 				F5F6339411182934007CC030 /* catalogIcon3.png */,
 				F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */,
 				F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */,
@@ -913,7 +913,6 @@
 				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
 				F5EC18331AAEE51800C88669 /* document.pdf in Resources */,
-				F5EC183A1AAEE6FB00C88669 /* calendar_ok.pdf in Resources */,
 				F5F63382111824CC007CC030 /* manifestIcon2.png in Resources */,
 				F5F63383111824CC007CC030 /* packageIcon2.png in Resources */,
 				F5F6339511182934007CC030 /* catalogIcon3.png in Resources */,
@@ -950,6 +949,7 @@
 				F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */,
 				F562D4F8191DF18C000F136C /* MAIconChooser.xib in Resources */,
 				F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */,
+				F5A2CD551AAF358E00A8466E /* calendar_ok.pdf in Resources */,
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
 				F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */,
