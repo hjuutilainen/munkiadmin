@@ -1506,6 +1506,9 @@ DDLogLevel ddLogLevel;
         NSUInteger defaultIndexes[] = {0,0};
         [[self.packagesViewController directoriesTreeController] setSelectionIndexPath:[NSIndexPath indexPathWithIndexes:defaultIndexes length:2]];
     }
+    
+    [self.manifestsViewController updateSourceListData];
+    
     [self.packageInfosArrayController setManagedObjectContext:[self managedObjectContext]];
     [self.packageInfosArrayController setEntityName:@"PackageInfo"];
     if ([self.packageInfosArrayController fetchWithRequest:nil merge:YES error:nil]) {

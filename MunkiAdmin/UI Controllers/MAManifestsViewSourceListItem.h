@@ -19,6 +19,8 @@ typedef NS_ENUM(NSUInteger, ManifestSourceItemType) {
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *identifier;
 @property (strong, nonatomic) NSPredicate *filterPredicate;
+@property (strong, nonatomic) NSArray *sortDescriptors;
+@property (strong, nonatomic) NSURL *representedFileURL;
 @property (assign, nonatomic) ManifestSourceItemType type;
 
 + (id)collectionWithTitle:(NSString *)title identifier:(NSString *)identifier type:(ManifestSourceItemType)type;

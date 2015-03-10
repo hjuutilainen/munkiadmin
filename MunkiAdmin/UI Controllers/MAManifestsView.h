@@ -21,5 +21,6 @@
 - (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item;
 - (BOOL)sourceList:(PXSourceList*)aSourceList isItemExpandable:(id)item;
 - (NSView *)sourceList:(PXSourceList *)aSourceList viewForItem:(id)item;
+- (void)updateSourceListData;
 
 @end
