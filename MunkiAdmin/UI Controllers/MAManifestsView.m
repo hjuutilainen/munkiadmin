@@ -22,6 +22,8 @@ DDLogLevel ddLogLevel;
 #define kMinSplitViewHeight     80.0f
 #define kMaxSplitViewHeight     400.0f
 
+#define DEFAULT_PREDICATE @"title contains[cd] ''"
+
 @interface MAManifestsView ()
 @property (strong, nonatomic) NSMutableArray *modelObjects;
 @property (strong, nonatomic) NSMutableArray *sourceListItems;
@@ -33,7 +35,47 @@ DDLogLevel ddLogLevel;
 {
     [super viewDidLoad];
     
+    self.predicateEditorHidden = YES;
+    self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
+    self.selectedSourceListFilterPredicate = [NSPredicate predicateWithValue:YES];
+    self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
+    
+    NSArray *operatorTypes = @[@(NSContainsPredicateOperatorType)];
+    NSPredicateEditorRowTemplate *template = [[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions:@[[NSExpression expressionForKeyPath:@"catalogStrings"]]
+                                                                              rightExpressionAttributeType:NSStringAttributeType
+                                                                                                  modifier:NSAnyPredicateModifier
+                                                                                                 operators:operatorTypes
+                                                                                                   options:(NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchUpdated:) name:NSControlTextDidChangeNotification object:self.manifestsListPredicateEditor];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rowsChanged:) name:NSRuleEditorRowsDidChangeNotification object:self.manifestsListPredicateEditor];
+    NSMutableArray *rowTemplates = [[self.manifestsListPredicateEditor rowTemplates] mutableCopy];
+    [rowTemplates addObject:template];
+    [self.manifestsListPredicateEditor setRowTemplates:rowTemplates];
+    
     [self updateSourceListData];
+}
+
+- (void)rowsChanged:(NSNotification *)aNotification
+{
+    [self uncollapseFindView];
+    [self updateSearchPredicateFromEditor];
+}
+
+- (void)searchUpdated:(NSNotification *)aNotification
+{
+    [self updateSearchPredicateFromEditor];
+}
+
+- (void)updateSearchPredicateFromEditor
+{
+    DDLogError(@"%@", [[self.manifestsListPredicateEditor predicate] description]);
+    if ([[self.manifestsListPredicateEditor predicate] isEqualTo:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]]]) {
+        DDLogError(@"EQUAL: %@", [[self.manifestsListPredicateEditor predicate] description]);
+        self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
+    } else {
+        self.searchFieldPredicate = [self.manifestsListPredicateEditor predicate];
+    }
 }
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
@@ -65,6 +107,7 @@ DDLogLevel ddLogLevel;
 {
     //[self.sourceList registerForDraggedTypes:@[draggingType]];
     
+    [self setDetailView:self.manifestsListView];
 }
 
 - (void)updateSourceListData
@@ -78,10 +121,8 @@ DDLogLevel ddLogLevel;
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
     [self.sourceList reloadData];
-    //[self.sourceList layout];
     [self.sourceList expandItem:nil expandChildren:YES];
     [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
-    
 }
 
 - (void)configureSourceList
@@ -347,13 +388,10 @@ DDLogLevel ddLogLevel;
 - (void)sourceListSelectionDidChange:(NSNotification *)notification
 {
     if ([self.sourceList selectedRow] >= 0) {
-        DDLogError(@"Starting to set predicate...");
+        DDLogVerbose(@"Starting to set predicate...");
         id selectedItem = [self.sourceList itemAtRow:[self.sourceList selectedRow]];
         NSPredicate *productFilter = [(MAManifestsViewSourceListItem *)[selectedItem representedObject] filterPredicate];
         self.selectedSourceListFilterPredicate = productFilter;
-        self.manifestsArrayController.filterPredicate = productFilter;
-        
-        [self setDetailView:self.manifestsListView];
         
         NSArray *productSortDescriptors = [(MAManifestsViewSourceListItem *)[selectedItem representedObject] sortDescriptors];
         
@@ -362,7 +400,7 @@ DDLogLevel ddLogLevel;
         } else {
             [self.manifestsArrayController setSortDescriptors:self.defaultSortDescriptors];
         }
-        DDLogError(@"Finished setting predicate...");
+        DDLogVerbose(@"Finished setting predicate...");
     }
 }
 
@@ -411,16 +449,97 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSSplitView delegates
 
+- (void)toggleManifestsFindView;
+{
+    BOOL findViewCollapsed = [self.manifestsListSplitView isSubviewCollapsed:[self.manifestsListSplitView subviews][0]];
+    if (findViewCollapsed) {
+        self.manifestsListPredicateEditor.objectValue = self.previousPredicateEditorPredicate;
+        self.searchFieldPredicate = self.previousPredicateEditorPredicate;
+        [self searchUpdated:nil];
+        [self uncollapseFindView];
+        
+        [self.view.window makeFirstResponder:self.manifestsListPredicateEditor];
+        [self.view.window selectKeyViewFollowingView:self.manifestsListPredicateEditor];
+        [self.view.window recalculateKeyViewLoop];
+        
+    } else {
+        self.previousPredicateEditorPredicate = self.manifestsListPredicateEditor.objectValue;
+        self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
+        [self collapseFindView];
+        [self.view.window makeFirstResponder:self.manifestsListTableView];
+        [self.manifestsListTableView setNextKeyView:self.sourceList];
+        [self.sourceList setNextKeyView:self.manifestsListTableView];
+         
+    }
+}
+
+- (void)collapseFindView
+{
+    NSView *predicateEditorSubView = [self.manifestsListSplitView subviews][0];
+    NSView *manifestsListSubView  = [self.manifestsListSplitView subviews][1];
+    NSRect overallFrame = [self.detailViewPlaceHolder frame];
+    [predicateEditorSubView setHidden:YES];
+    
+    [manifestsListSubView setFrameSize:NSMakeSize(overallFrame.size.width,overallFrame.size.height)];
+    
+    [self.manifestsListSplitView display];
+}
+
+- (void)uncollapseFindView
+{
+    NSView *predicateEditorSubView = [self.manifestsListSplitView subviews][0];
+    NSView *manifestsListSubView  = [self.manifestsListSplitView subviews][1];
+    NSRect overallFrame = [self.detailViewPlaceHolder frame];
+    
+    [predicateEditorSubView setHidden:NO];
+    
+    NSRect manifestsListFrame = [manifestsListSubView frame];
+    NSRect predicateEditorFrame = [predicateEditorSubView frame];
+    
+    CGFloat predEditorRowHeight = [self.manifestsListPredicateEditor rowHeight];
+    int numRowsInPredEditor = [self.manifestsListPredicateEditor numberOfRows];
+    int padding = 4;
+    CGFloat desiredHeight = numRowsInPredEditor * predEditorRowHeight + padding;
+    CGFloat dividerThickness = [self.manifestsListSplitView dividerThickness];
+    predicateEditorFrame.size.height = desiredHeight;
+    manifestsListFrame.size.height = (overallFrame.size.height - predicateEditorFrame.size.height - dividerThickness);
+    predicateEditorFrame.origin.y = manifestsListFrame.size.height + dividerThickness;
+    
+    [manifestsListSubView setFrameSize:manifestsListFrame.size];
+    [predicateEditorSubView setFrame:predicateEditorFrame];
+    
+    [self.manifestsListSplitView display];
+}
+
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
 {
-    if (splitView == self.mainSplitView) return NO;
-    else return NO;
+    if (splitView == self.mainSplitView) {
+        return NO;
+    } else if ((splitView == self.manifestsListSplitView) && (subview == [self.manifestsListSplitView subviews][0])) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)splitView:(NSSplitView *)splitView shouldHideDividerAtIndex:(NSInteger)dividerIndex;
+{
+    if (splitView == self.manifestsListSplitView) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (BOOL)splitView:(NSSplitView *)splitView shouldCollapseSubview:(NSView *)subview forDoubleClickOnDividerAtIndex:(NSInteger)dividerIndex
 {
-    if (splitView == self.mainSplitView) return NO;
-    else return NO;
+    if (splitView == self.mainSplitView) {
+        return NO;
+    } else if (splitView == self.manifestsListSplitView && subview == [self.manifestsListSplitView subviews][0]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)dividerIndex
@@ -463,12 +582,11 @@ DDLogLevel ddLogLevel;
 
 - (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize
 {
-    /*
-     Main split view
-     Resize only the right side of the splitview
-     */
     if (sender == self.mainSplitView) {
-        
+        /*
+         Main split view
+         Resize only the right side of the splitview
+         */
         NSView *left = [sender subviews][0];
         NSView *right = [sender subviews][1];
         CGFloat dividerThickness = [sender dividerThickness];
@@ -485,6 +603,11 @@ DDLogLevel ddLogLevel;
         
         [left setFrame:leftFrame];
         [right setFrame:rightFrame];
+    } else if (sender == self.manifestsListSplitView) {
+        /*
+         Manifests list split view should be resized automatically
+         */
+        [sender adjustSubviews];
     }
     
 }

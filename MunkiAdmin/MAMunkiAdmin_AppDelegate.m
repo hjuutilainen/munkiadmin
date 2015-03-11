@@ -40,6 +40,13 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Helper methods
 
+- (IBAction)findAction:(id)sender
+{
+    if (currentWholeView == [self.manifestsViewController view]) {
+        [self.manifestsViewController toggleManifestsFindView];
+    }
+}
+
 - (IBAction)openCurrentLogFileAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -3111,6 +3118,7 @@ DDLogLevel ddLogLevel;
         [currentSourceView setFrameOrigin:NSMakePoint(0,0)];
         [currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 	}
+    [self.window recalculateKeyViewLoop];
     self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
 }
 

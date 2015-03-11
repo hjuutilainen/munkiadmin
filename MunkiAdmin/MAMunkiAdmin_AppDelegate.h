@@ -172,6 +172,7 @@
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
 - (IBAction)processAddNestedManifestAction:(id)sender;
 - (IBAction)openCurrentLogFileAction:(id)sender;
+- (IBAction)findAction:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods
