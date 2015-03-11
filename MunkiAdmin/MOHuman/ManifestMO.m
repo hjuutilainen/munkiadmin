@@ -59,6 +59,169 @@
 	return tempArray;
 }
 
+- (NSArray *)allPackageStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    
+    for (StringObjectMO *item in self.managedInstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedInstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    for (StringObjectMO *item in self.managedUpdatesFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedUpdates) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    for (StringObjectMO *item in self.optionalInstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.optionalInstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    for (StringObjectMO *item in self.managedUninstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedUninstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)managedInstallsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.managedInstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedInstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)managedUpdatesStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.managedUpdatesFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedUpdates) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)optionalInstallsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.optionalInstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.optionalInstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)managedUninstallsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.managedUninstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.managedUninstalls) {
+            if (![items containsObject:[item title]]) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];

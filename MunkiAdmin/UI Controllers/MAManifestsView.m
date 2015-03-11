@@ -40,18 +40,46 @@ DDLogLevel ddLogLevel;
     self.selectedSourceListFilterPredicate = [NSPredicate predicateWithValue:YES];
     self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
     
-    NSArray *operatorTypes = @[@(NSContainsPredicateOperatorType)];
-    NSPredicateEditorRowTemplate *template = [[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions:@[[NSExpression expressionForKeyPath:@"catalogStrings"]]
-                                                                              rightExpressionAttributeType:NSStringAttributeType
-                                                                                                  modifier:NSAnyPredicateModifier
-                                                                                                 operators:operatorTypes
-                                                                                                   options:(NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption)];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchUpdated:) name:NSControlTextDidChangeNotification object:self.manifestsListPredicateEditor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rowsChanged:) name:NSRuleEditorRowsDidChangeNotification object:self.manifestsListPredicateEditor];
+    
     NSMutableArray *rowTemplates = [[self.manifestsListPredicateEditor rowTemplates] mutableCopy];
-    [rowTemplates addObject:template];
+    
+    /*
+     String types row template
+     */
+    NSArray *containsOperator = @[@(NSContainsPredicateOperatorType)];
+    NSArray *leftExpressions = @[
+                                 [NSExpression expressionForKeyPath:@"allPackageStrings"],
+                                 [NSExpression expressionForKeyPath:@"catalogStrings"],
+                                 [NSExpression expressionForKeyPath:@"managedInstallsStrings"],
+                                 [NSExpression expressionForKeyPath:@"managedUninstallsStrings"],
+                                 [NSExpression expressionForKeyPath:@"managedUpdatesStrings"],
+                                 [NSExpression expressionForKeyPath:@"optionalInstallsStrings"],
+                                 ];
+    NSPredicateEditorRowTemplate *catalogsTemplate = [[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions:leftExpressions
+                                                                                      rightExpressionAttributeType:NSStringAttributeType
+                                                                                                          modifier:NSAnyPredicateModifier
+                                                                                                         operators:containsOperator
+                                                                                                           options:(NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption)];
+    [rowTemplates addObject:catalogsTemplate];
+    
+    /*
+     Add the row templates to the predicate editor
+     */
     [self.manifestsListPredicateEditor setRowTemplates:rowTemplates];
+    
+    NSDictionary *formatting = @{
+                                 @"%[title]@ %[contains]@ %@" : @"%[Name]@ %[contains]@ %@",
+                                 @"%[allPackageStrings]@ %[contains]@ %@" : @"%[Any installs item]@ %[contains]@ %@",
+                                 @"%[fileName]@ %[contains]@ %@" : @"%[Filename]@ %[contains]@ %@",
+                                 @"%[catalogStrings]@ %[contains]@ %@" : @"%[Catalogs]@ %[contains]@ %@",
+                                 @"%[managedInstallsStrings]@ %[contains]@ %@" : @"%[Managed installs]@ %[contains]@ %@",
+                                 @"%[managedUninstallsStrings]@ %[contains]@ %@" : @"%[Managed uninstalls]@ %[contains]@ %@",
+                                 @"%[managedUpdatesStrings]@ %[contains]@ %@" : @"%[Managed updates]@ %[contains]@ %@",
+                                 @"%[optionalInstallsStrings]@ %[contains]@ %@" : @"%[Optional installs]@ %[contains]@ %@",
+                                 };
+    [self.manifestsListPredicateEditor setFormattingDictionary:formatting];
     
     [self updateSourceListData];
 }
