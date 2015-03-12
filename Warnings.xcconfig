@@ -7,6 +7,12 @@
 //      http://boredzo.org/blog/archives/2009-11-07/warnings
 //
 
+//:configuration = Debug
+#include "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.debug.xcconfig"
+//:configuration = Release
+#include "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.release.xcconfig"
+
+
 GCC_WARN_CHECK_SWITCH_STATEMENTS = YES
 GCC_WARN_SHADOW = YES
 GCC_WARN_64_TO_32_BIT_CONVERSION = YES

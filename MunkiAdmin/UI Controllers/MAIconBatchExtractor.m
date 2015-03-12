@@ -217,9 +217,9 @@ DDLogLevel ddLogLevel;
         DDLogDebug(@"Saved URL points to an existing image object. Need to reload the image from disk...");
         IconImageMO *foundIconImage = foundIconImages[0];
         foundIconImage.imageRepresentation = nil;
-        NSData *imageData = [NSData dataWithContentsOfURL:saveURL];
-        NSImage *image = [[NSImage alloc] initWithData:imageData];
-        foundIconImage.imageRepresentation = image;
+        NSData *newImageData = [NSData dataWithContentsOfURL:saveURL];
+        NSImage *newImage = [[NSImage alloc] initWithData:newImageData];
+        foundIconImage.imageRepresentation = newImage;
         
     } else if ([foundIconImages count] > 1) {
         DDLogError(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");
@@ -307,9 +307,9 @@ DDLogLevel ddLogLevel;
                 [self.remainingBatchItems removeObject:nextItem];
                 [self extractIconForBatchItem:nextItem];
             } else if (self.cancelAllPending) {
-                for (MABatchItem *batchItem in self.remainingBatchItems) {
-                    batchItem.statusDescription = @"Cancelled";
-                    batchItem.statusImage = [NSImage imageNamed:NSImageNameStatusUnavailable];
+                for (MABatchItem *remainingBatchItem in self.remainingBatchItems) {
+                    remainingBatchItem.statusDescription = @"Cancelled";
+                    remainingBatchItem.statusImage = [NSImage imageNamed:NSImageNameStatusUnavailable];
                 }
                 self.numExtractOperationsRunning = 0;
             }

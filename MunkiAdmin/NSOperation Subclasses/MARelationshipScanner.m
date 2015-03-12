@@ -116,8 +116,8 @@ static const int BatchSize = 50;
     DDLogDebug(@"Processing %lu manifests...", [self.allManifests count]);
     
     
-    NSInteger count = [self.allManifests count];
-    NSInteger progressGranularity;
+    NSUInteger count = [self.allManifests count];
+    NSUInteger progressGranularity;
     if (count < 100) {
         progressGranularity = 1; // Update progress for every package
     } else {
@@ -214,7 +214,7 @@ static const int BatchSize = 50;
         }
         
         if (idx % progressGranularity == 0) {
-            float percentage = (idx / (float)[self.allManifests count]) * 100.0;
+            double percentage = (idx / (float)[self.allManifests count]) * 100.0;
             self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
         }
         if (idx % BatchSize == 0) {
@@ -282,8 +282,8 @@ static const int BatchSize = 50;
     
     DDLogDebug(@"Processing %lu packages...", [self.allPackages count]);
     
-    NSInteger count = [self.allPackages count];
-    NSInteger progressGranularity;
+    NSUInteger count = [self.allPackages count];
+    NSUInteger progressGranularity;
     if (count < 100) {
         progressGranularity = 1; // Update progress for every package
     } else {
@@ -466,7 +466,7 @@ static const int BatchSize = 50;
         }
         
         if (idx % progressGranularity == 0) {
-            float percentage = (idx / (float)[self.allPackages count]) * 100.0;
+            double percentage = (idx / (float)[self.allPackages count]) * 100.0;
             self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
         }
         if (idx % BatchSize == 0) {

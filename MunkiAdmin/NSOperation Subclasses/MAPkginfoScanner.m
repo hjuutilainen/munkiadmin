@@ -271,7 +271,7 @@ DDLogLevel ddLogLevel;
                     InstallsItemMO *aNewInstallsItem = [coreDataManager createInstallsItemFromDictionary:anInstall inManagedObjectContext:privateContext];
                     [aNewInstallsItem addPackagesObject:aNewPackage];
                     aNewInstallsItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
-                    [repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                    [repoManager.installsKeyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stopMappingsEnum) {
                         id value = [anInstall objectForKey:obj];
                         if (value != nil) {
                             DDLogVerbose(@"%@: installs item %lu --> %@: %@", self.fileName, (unsigned long)idx, key, obj);

@@ -236,9 +236,9 @@ DDLogLevel ddLogLevel;
             DDLogDebug(@"Saved URL points to an existing image object. Need to reload the image from disk...");
             IconImageMO *foundIconImage = foundIconImages[0];
             foundIconImage.imageRepresentation = nil;
-            NSData *imageData = [NSData dataWithContentsOfURL:[sheet URL]];
-            NSImage *image = [[NSImage alloc] initWithData:imageData];
-            foundIconImage.imageRepresentation = image;
+            NSData *newImageData = [NSData dataWithContentsOfURL:[sheet URL]];
+            NSImage *newImage = [[NSImage alloc] initWithData:newImageData];
+            foundIconImage.imageRepresentation = newImage;
             
         } else if ([foundIconImages count] > 1) {
             DDLogError(@"Found multiple IconImage objects for a single URL. This shouldn't happen...");

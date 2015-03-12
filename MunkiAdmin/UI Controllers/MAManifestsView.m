@@ -323,13 +323,13 @@ DDLogLevel ddLogLevel;
     
     NSImage *folderImage = [NSImage imageNamed:@"folder"];
     
-    NSString *newTitle;
-    [mainManifestsURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
-    MAManifestsViewSourceListItem *item = [MAManifestsViewSourceListItem collectionWithTitle:newTitle identifier:newTitle type:ManifestSourceItemTypeFolder];
-    item.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", mainManifestsURL];
-    item.representedFileURL = mainManifestsURL;
-    [newChildren addObject:[PXSourceListItem itemWithRepresentedObject:item icon:folderImage]];
-    [newRepresentedObjects addObject:item];
+    NSString *mainManifestsTitle;
+    [mainManifestsURL getResourceValue:&mainManifestsTitle forKey:NSURLNameKey error:nil];
+    MAManifestsViewSourceListItem *mainManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:mainManifestsTitle identifier:mainManifestsTitle type:ManifestSourceItemTypeFolder];
+    mainManifestsItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", mainManifestsURL];
+    mainManifestsItem.representedFileURL = mainManifestsURL;
+    [newChildren addObject:[PXSourceListItem itemWithRepresentedObject:mainManifestsItem icon:folderImage]];
+    [newRepresentedObjects addObject:mainManifestsItem];
     
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -477,7 +477,7 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSSplitView delegates
 
-- (void)toggleManifestsFindView;
+- (void)toggleManifestsFindView
 {
     BOOL findViewCollapsed = [self.manifestsListSplitView isSubviewCollapsed:[self.manifestsListSplitView subviews][0]];
     if (findViewCollapsed) {
@@ -525,7 +525,7 @@ DDLogLevel ddLogLevel;
     NSRect predicateEditorFrame = [predicateEditorSubView frame];
     
     CGFloat predEditorRowHeight = [self.manifestsListPredicateEditor rowHeight];
-    int numRowsInPredEditor = [self.manifestsListPredicateEditor numberOfRows];
+    NSInteger numRowsInPredEditor = [self.manifestsListPredicateEditor numberOfRows];
     int padding = 4;
     CGFloat desiredHeight = numRowsInPredEditor * predEditorRowHeight + padding;
     CGFloat dividerThickness = [self.manifestsListSplitView dividerThickness];
@@ -550,7 +550,7 @@ DDLogLevel ddLogLevel;
     }
 }
 
-- (BOOL)splitView:(NSSplitView *)splitView shouldHideDividerAtIndex:(NSInteger)dividerIndex;
+- (BOOL)splitView:(NSSplitView *)splitView shouldHideDividerAtIndex:(NSInteger)dividerIndex
 {
     if (splitView == self.manifestsListSplitView) {
         return YES;
