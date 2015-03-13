@@ -154,12 +154,12 @@
                     <subviews>
                         <customView id="GiF-ZM-l4t">
                             <rect key="frame" x="0.0" y="0.0" width="781" height="179"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" id="Uym-pG-QZD">
-                                    <rect key="frame" x="0.0" y="5" width="781" height="174"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="781" height="179"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <clipView key="contentView" copiesOnScroll="NO" id="zLH-na-cuX">
+                                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="zLH-na-cuX">
                                         <rect key="frame" x="1" y="1" width="333" height="84"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
@@ -256,6 +256,44 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                 </scrollView>
+                                <button verticalHuggingPriority="750" id="j8X-S5-1ra">
+                                    <rect key="frame" x="691" y="7" width="70" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <buttonCell key="cell" type="roundRect" title="Done" bezelStyle="roundedRect" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b5M-sK-yFd">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="findAction:" target="-1" id="rIq-vI-2c4"/>
+                                    </connections>
+                                </button>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="5fl-ar-NmV">
+                                    <rect key="frame" x="18" y="9" width="589" height="14"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="xo8-ax-lVI">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="rcP-DN-4xO" name="displayPatternValue1" keyPath="arrangedObjects.@count" id="kCE-uT-s8e">
+                                            <dictionary key="options">
+                                                <string key="NSDisplayPattern">%{value1}@ manifests found</string>
+                                            </dictionary>
+                                        </binding>
+                                    </connections>
+                                </textField>
+                                <button verticalHuggingPriority="750" id="v9C-hr-GeR">
+                                    <rect key="frame" x="613" y="7" width="70" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <buttonCell key="cell" type="roundRect" title="Reset" bezelStyle="roundedRect" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oZg-ma-jnZ">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="resetSearchAction:" target="-2" id="v85-Qo-ztU"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <connections>
                                 <binding destination="-2" name="hidden" keyPath="predicateEditorHidden" id="4mC-AQ-Tpo"/>

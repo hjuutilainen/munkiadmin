@@ -106,6 +106,18 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (void)resetSearch
+{
+    self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
+    self.manifestsListPredicateEditor.objectValue = self.previousPredicateEditorPredicate;
+    
+    [self searchUpdated:nil];
+    
+    [self.view.window makeFirstResponder:self.manifestsListPredicateEditor];
+    [self.view.window selectKeyViewFollowingView:self.manifestsListPredicateEditor];
+    [self.view.window recalculateKeyViewLoop];
+}
+
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
@@ -165,6 +177,14 @@ DDLogLevel ddLogLevel;
 - (void)configureSplitView
 {
     [self.mainSplitView setDividerStyle:NSSplitViewDividerStyleThin];
+}
+
+# pragma mark -
+# pragma mark IBActions
+
+- (IBAction)resetSearchAction:(id)sender
+{
+    [self resetSearch];
 }
 
 # pragma mark - 
@@ -526,7 +546,7 @@ DDLogLevel ddLogLevel;
     
     CGFloat predEditorRowHeight = [self.manifestsListPredicateEditor rowHeight];
     NSInteger numRowsInPredEditor = [self.manifestsListPredicateEditor numberOfRows];
-    int padding = 4;
+    int padding = 32;
     CGFloat desiredHeight = numRowsInPredEditor * predEditorRowHeight + padding;
     CGFloat dividerThickness = [self.manifestsListSplitView dividerThickness];
     predicateEditorFrame.size.height = desiredHeight;
@@ -544,7 +564,7 @@ DDLogLevel ddLogLevel;
     if (splitView == self.mainSplitView) {
         return NO;
     } else if ((splitView == self.manifestsListSplitView) && (subview == [self.manifestsListSplitView subviews][0])) {
-        return YES;
+        return NO;
     } else {
         return NO;
     }
@@ -585,6 +605,10 @@ DDLogLevel ddLogLevel;
         else if (dividerIndex == 1) {
             return proposedMin;
         }
+    } else if (splitView == self.manifestsListSplitView) {
+        if (dividerIndex == 0) {
+            return [[self.manifestsListSplitView subviews][0] frame].size.height;
+        }
     }
     return proposedMin;
 }
@@ -603,6 +627,10 @@ DDLogLevel ddLogLevel;
          */
         else if (dividerIndex == 1) {
             return [self.mainSplitView frame].size.width - kMinSplitViewWidth;
+        }
+    } else if (splitView == self.manifestsListSplitView) {
+        if (dividerIndex == 0) {
+            return [[self.manifestsListSplitView subviews][0] frame].size.height;
         }
     }
     return proposedMax;
@@ -634,10 +662,31 @@ DDLogLevel ddLogLevel;
     } else if (sender == self.manifestsListSplitView) {
         /*
          Manifests list split view should be resized automatically
+         if the predicate view (top) is hidden. Otherwise only resize
+         the bottom view.
          */
-        [sender adjustSubviews];
+        NSView *topView = [sender subviews][0];
+        NSView *bottomView = [sender subviews][1];
+        
+        CGFloat dividerThickness = [sender dividerThickness];
+        NSRect newFrame = [sender frame];
+        NSRect topFrame = [topView frame];
+        NSRect bottomFrame = [bottomView frame];
+         
+        if ([sender isSubviewCollapsed:topView]) {
+            [sender adjustSubviews];
+        } else {
+            topFrame.size.width = newFrame.size.width;
+            topFrame.origin = NSMakePoint(0, 0);
+            
+            bottomFrame.size.height = newFrame.size.height - topFrame.size.height - dividerThickness;
+            bottomFrame.size.width = newFrame.size.width;
+            bottomFrame.origin.y = topFrame.size.height + dividerThickness;
+            
+            [topView setFrame:topFrame];
+            [bottomView setFrame:bottomFrame];
+        }
     }
-    
 }
 
 
