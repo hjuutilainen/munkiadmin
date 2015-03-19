@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7527" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -147,6 +147,7 @@
         <relationship name="manifestInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestInfo" inverseName="parentManifest" inverseEntity="ManifestInfo" indexed="YES" syncable="YES"/>
         <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OptionalInstall" inverseName="manifest" inverseEntity="OptionalInstall" indexed="YES" syncable="YES"/>
         <relationship name="optionalInstallsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="optionalInstallReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
+        <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="originalManifest" inverseEntity="StringObject" syncable="YES"/>
         <fetchedProperty name="allIncludedManifests" optional="YES" transient="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(manifestReference == $FETCH_SOURCE) OR (includedManifestConditionalReference.manifest == $FETCH_SOURCE)"/>
         </fetchedProperty>
@@ -161,9 +162,6 @@
         </fetchedProperty>
         <fetchedProperty name="allOptionalInstalls" optional="YES" transient="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(optionalInstallReference == $FETCH_SOURCE) OR (optionalInstallConditionalReference.manifest == $FETCH_SOURCE)"/>
-        </fetchedProperty>
-        <fetchedProperty name="referencingStringObjects" optional="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(title == $FETCH_SOURCE.title) AND (typeString == &quot;includedManifest&quot;)"/>
         </fetchedProperty>
     </entity>
     <entity name="ManifestInfo" representedClassName="ManifestInfoMO" syncable="YES">
@@ -290,6 +288,7 @@
         <relationship name="optionalInstallConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="optionalInstalls" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
         <relationship name="optionalInstallReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="optionalInstallsFaster" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="originalApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="referencingStringObjects" inverseEntity="Application" indexed="YES" syncable="YES"/>
+        <relationship name="originalManifest" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="referencingStringObjects" inverseEntity="Manifest" syncable="YES"/>
         <relationship name="originalPackage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="referencingStringObjects" inverseEntity="Package" indexed="YES" syncable="YES"/>
         <relationship name="requiresReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="requirements" inverseEntity="Package" indexed="YES" syncable="YES"/>
         <relationship name="supportedArchitectureReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="supportedArchitectures" inverseEntity="Package" indexed="YES" syncable="YES"/>
@@ -322,13 +321,13 @@
         <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="494"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="491"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1080"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="StringObject" positionX="0" positionY="0" width="128" height="389"/>
+        <element name="StringObject" positionX="0" positionY="0" width="128" height="404"/>
     </elements>
 </model>

@@ -14,6 +14,8 @@ DDLogLevel ddLogLevel;
 
 @interface MAManifestScanner ()
 @property (nonatomic, strong) NSManagedObjectContext *context;
+@property (strong) NSArray *allManifests;
+@property (strong) NSDictionary *allManifestsByTitle;
 @end
 
 @implementation MAManifestScanner
@@ -123,6 +125,12 @@ DDLogLevel ddLogLevel;
             newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
             newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
             [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
+            
+            if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
+                newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
+            } else {
+                DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
+            }
         }];
         
         // If there are nested conditional items, loop through them with this same function
@@ -163,6 +171,21 @@ DDLogLevel ddLogLevel;
 			NSManagedObjectContext *privateContext = self.context;
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 			
+            NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:privateContext];
+            
+            // Get manifests for later use
+            NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
+            [getManifests setEntity:manifestEntityDescr];
+            
+            self.allManifests = [privateContext executeFetchRequest:getManifests error:nil];
+            NSMutableDictionary *manifestsAndTitles = [[NSMutableDictionary alloc] initWithCapacity:[self.allManifests count]];
+            
+            for (ManifestMO *manifest in self.allManifests) {
+                manifestsAndTitles[manifest.title] = manifest;
+            }
+            
+            self.allManifestsByTitle = [NSDictionary dictionaryWithDictionary:manifestsAndTitles];
+            
             /*
              * Read the manifest dictionary from disk
              */
@@ -182,31 +205,16 @@ DDLogLevel ddLogLevel;
                 /*
                  * Check if we already have a manifest with this name
                  */
-                NSFetchRequest *request = [[NSFetchRequest alloc] init];
-                NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:privateContext];
-				[request setEntity:manifestEntityDescr];
-                [request setReturnsObjectsAsFaults:NO];
-                [request setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:
-                                                                @"managedInstallsFaster",
-                                                                @"managedUninstallsFaster",
-                                                                @"managedUpdatesFaster",
-                                                                @"optionalInstallsFaster",
-                                                                nil]];
-				
-				NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", manifestRelativePath];
-                
-				[request setPredicate:titlePredicate];
                 ManifestMO *manifest;
-                NSArray *foundItems = [privateContext executeFetchRequest:request error:nil];
-				if ([foundItems count] == 0) {
-					manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:privateContext];
-					manifest.title = manifestRelativePath;
-					manifest.manifestURL = self.sourceURL;
+                if ([self.allManifestsByTitle objectForKey:manifestRelativePath]) {
+                    manifest = [self.allManifestsByTitle objectForKey:manifestRelativePath];
+                    DDLogVerbose(@"%@: Reusing existing manifest object from memory", self.fileName);
+                } else {
+                    manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:privateContext];
+                    manifest.title = manifestRelativePath;
+                    manifest.manifestURL = self.sourceURL;
                     manifest.manifestParentDirectoryURL = [self.sourceURL URLByDeletingLastPathComponent];
-				} else {
-					manifest = [foundItems objectAtIndex:0];
-					DDLogVerbose(@"%@: Reusing existing manifest object from memory", self.fileName);
-				}
+                }
 				
                 
 				manifest.originalManifest = manifestInfoDict;
@@ -344,6 +352,13 @@ DDLogLevel ddLogLevel;
                     newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
                     newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:idx];
                     [manifest addIncludedManifestsFasterObject:newIncludedManifest];
+                    
+                    
+                    if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
+                        newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
+                    } else {
+                        DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)idx, (NSString *)obj);
+                    }
                 }];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning included_manifests took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);

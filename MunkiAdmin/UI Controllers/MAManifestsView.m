@@ -195,18 +195,22 @@ DDLogLevel ddLogLevel;
     /*
      Predicates
      */
-    NSPredicate *noReferencingManifests     = [NSPredicate predicateWithFormat:@"referencingStringObjects.@count == 0"];
+    NSPredicate *noReferencingManifests     = [NSPredicate predicateWithFormat:@"referencingStringObjects.@count = 0"];
     NSPredicate *hasReferencingManifests    = [NSPredicate predicateWithFormat:@"referencingStringObjects.@count > 0"];
-    NSPredicate *hasIncludedManifests       = [NSPredicate predicateWithFormat:@"allIncludedManifests.@count > 0"];
-    NSPredicate *noIncludedManifests        = [NSPredicate predicateWithFormat:@"allIncludedManifests.@count == 0"];
+    NSPredicate *hasIncludedManifests       = [NSPredicate predicateWithFormat:@"includedManifestsFaster.@count > 0 OR (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count != 0)"];
+    NSPredicate *noIncludedManifests        = [NSPredicate predicateWithFormat:@"(includedManifestsFaster.@count == 0) AND (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count == 0)"];
+    
     //NSPredicate *noManagedInstalls        = [NSPredicate predicateWithFormat:@"allManagedInstalls.@count == 0"];
-    NSPredicate *hasManagedInstalls         = [NSPredicate predicateWithFormat:@"allManagedInstalls.@count > 0"];
+    NSPredicate *hasManagedInstalls         = [NSPredicate predicateWithFormat:@"(managedInstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedInstalls.@count > 0).@count != 0)"];
+    
     //NSPredicate *noManagedUninstalls      = [NSPredicate predicateWithFormat:@"allManagedUninstalls.@count == 0"];
-    NSPredicate *hasManagedUninstalls       = [NSPredicate predicateWithFormat:@"allManagedUninstalls.@count > 0"];
+    NSPredicate *hasManagedUninstalls       = [NSPredicate predicateWithFormat:@"(managedUninstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedUninstalls.@count > 0).@count != 0)"];
+    
     //NSPredicate *noOptionalInstalls       = [NSPredicate predicateWithFormat:@"allOptionalInstalls.@count == 0"];
-    NSPredicate *hasOptionalInstalls        = [NSPredicate predicateWithFormat:@"allOptionalInstalls.@count > 0"];
+    NSPredicate *hasOptionalInstalls        = [NSPredicate predicateWithFormat:@"(optionalInstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.optionalInstalls.@count > 0).@count != 0)"];
+    
     //NSPredicate *noManagedUpdates         = [NSPredicate predicateWithFormat:@"allManagedUpdates.@count == 0"];
-    NSPredicate *hasManagedUpdates          = [NSPredicate predicateWithFormat:@"allManagedUpdates.@count > 0"];
+    NSPredicate *hasManagedUpdates          = [NSPredicate predicateWithFormat:@"(managedUpdatesFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedUpdates.@count > 0).@count != 0)"];
     
     /*
      All Manifests item

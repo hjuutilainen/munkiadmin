@@ -23,6 +23,7 @@ const struct StringObjectMORelationships StringObjectMORelationships = {
 	.optionalInstallConditionalReference = @"optionalInstallConditionalReference",
 	.optionalInstallReference = @"optionalInstallReference",
 	.originalApplication = @"originalApplication",
+	.originalManifest = @"originalManifest",
 	.originalPackage = @"originalPackage",
 	.requiresReference = @"requiresReference",
 	.supportedArchitectureReference = @"supportedArchitectureReference",
@@ -141,6 +142,8 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 @dynamic optionalInstallReference;
 
 @dynamic originalApplication;
+
+@dynamic originalManifest;
 
 @dynamic originalPackage;
 
