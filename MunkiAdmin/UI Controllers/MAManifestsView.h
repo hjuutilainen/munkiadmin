@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import "PXSourceList.h"
 
+@class MAManifestEditor;
+
 @interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate>
 
 @property (assign) IBOutlet PXSourceList *sourceList;
@@ -25,6 +27,7 @@
 @property (strong) NSPredicate *searchFieldPredicate;
 @property (strong) NSPredicate *previousPredicateEditorPredicate;
 @property (strong) NSArray *defaultSortDescriptors;
+@property (strong) MAManifestEditor *manifestEditor;
 
 - (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item;
 - (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item;

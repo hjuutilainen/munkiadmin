@@ -119,6 +119,8 @@
 		F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C1129546EB00B68F4F /* _PackageMO.m */; };
 		F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */; };
 		F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */; };
+		F5E420811ABC081900E9AEDA /* MAManifestEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */; };
+		F5E420821ABC081900E9AEDA /* MAManifestEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */; };
 		F5EA6ABA190F7ED100362FEE /* MAIconEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA6AB8190F7ED100362FEE /* MAIconEditor.m */; };
 		F5EA6ABB190F7ED100362FEE /* MAIconEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5EA6AB9190F7ED100362FEE /* MAIconEditor.xib */; };
 		F5EC182C1AAEE30A00C88669 /* book.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5EC182B1AAEE30A00C88669 /* book.pdf */; };
@@ -362,6 +364,9 @@
 		F5DFC8D4129546EE00B68F4F /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
 		F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _StringObjectMO.h; sourceTree = "<group>"; };
+		F5E4207E1ABC081900E9AEDA /* MAManifestEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestEditor.h; sourceTree = "<group>"; };
+		F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestEditor.m; sourceTree = "<group>"; };
+		F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestEditor.xib; sourceTree = "<group>"; };
 		F5EA6AB7190F7ED100362FEE /* MAIconEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAIconEditor.h; sourceTree = "<group>"; };
 		F5EA6AB8190F7ED100362FEE /* MAIconEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAIconEditor.m; sourceTree = "<group>"; };
 		F5EA6AB9190F7ED100362FEE /* MAIconEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAIconEditor.xib; sourceTree = "<group>"; };
@@ -791,6 +796,9 @@
 				FEDAA470144D50B1005C8B6F /* MAManifestDetailView.h */,
 				FEDAA471144D50B1005C8B6F /* MAManifestDetailView.m */,
 				FEDAA472144D50B1005C8B6F /* MAManifestDetailView.xib */,
+				F5E4207E1ABC081900E9AEDA /* MAManifestEditor.h */,
+				F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */,
+				F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */,
 				F535E99A1AA98F47009842B5 /* MAManifestsView.h */,
 				F535E99B1AA98F47009842B5 /* MAManifestsView.m */,
 				F535E99C1AA98F47009842B5 /* MAManifestsView.xib */,
@@ -918,6 +926,7 @@
 				F5F6339511182934007CC030 /* catalogIcon3.png in Resources */,
 				F564874911B504520061B190 /* MAPreferences.xib in Resources */,
 				F59279F01917BC8F0028276C /* tagMultipleTemplate.pdf in Resources */,
+				F5E420821ABC081900E9AEDA /* MAManifestEditor.xib in Resources */,
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib in Resources */,
@@ -1106,6 +1115,7 @@
 				26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */,
 				26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */,
 				F574C5581990DB3400646FF7 /* NSImage+PixelSize.m in Sources */,
+				F5E420811ABC081900E9AEDA /* MAManifestEditor.m in Sources */,
 				F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */,
 				F506342C172FA43C00EF7728 /* MAInstallsItemEditor.m in Sources */,
 				F5063432172FA97000EF7728 /* _InstallsItemCustomKeyMO.m in Sources */,

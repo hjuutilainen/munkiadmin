@@ -13,6 +13,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "CocoaLumberjack.h"
+#import "MAManifestEditor.h"
 
 DDLogLevel ddLogLevel;
 
@@ -34,6 +35,8 @@ DDLogLevel ddLogLevel;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.manifestEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
     
     self.predicateEditorHidden = YES;
     self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
@@ -82,6 +85,20 @@ DDLogLevel ddLogLevel;
     [self.manifestsListPredicateEditor setFormattingDictionary:formatting];
     
     [self updateSourceListData];
+    
+    [self.manifestsListTableView setTarget:self];
+    [self.manifestsListTableView setDoubleAction:@selector(didDoubleClickManifest:)];
+}
+
+- (void)didDoubleClickManifest:(id)sender
+{
+    for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
+        DDLogError(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
+    }
+    
+    [self.manifestEditor.window center];
+    [self.manifestEditor showWindow:nil];
+    
 }
 
 - (void)rowsChanged:(NSNotification *)aNotification
