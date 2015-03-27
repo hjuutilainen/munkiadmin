@@ -21,6 +21,23 @@
     return tempFileName;
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    NSArray *descriptionKeys = @[@"catalogsDescriptionString",
+                                 @"catalogStrings"];
+    
+    if ([descriptionKeys containsObject:key])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+    
+    return keyPaths;
+}
+
+
 - (NSArray *)rootConditionalItems
 {
     [self willAccessValueForKey:@"conditionalItems"];
@@ -222,6 +239,46 @@
     }
 }
 
+- (NSString *)managedInstallsCountDescription
+{
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedInstalls"];
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstallsFaster.@count"];
+    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSString stringWithFormat:@"%lu managed installs", (unsigned long)all];
+}
+
+- (NSString *)managedUninstallsCountDescription
+{
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUninstalls"];
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUninstallsFaster.@count"];
+    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSString stringWithFormat:@"%lu managed uninstalls", (unsigned long)all];
+}
+
+- (NSString *)managedUpdatesCountDescription
+{
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUpdates"];
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUpdatesFaster.@count"];
+    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSString stringWithFormat:@"%lu managed updates", (unsigned long)all];
+}
+
+- (NSString *)optionalInstallsCountDescription
+{
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.optionalInstalls"];
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"optionalInstallsFaster.@count"];
+    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSString stringWithFormat:@"%lu optional installs", (unsigned long)all];
+}
+
+- (NSString *)includedManifestsCountDescription
+{
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.includedManifests"];
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"includedManifestsFaster.@count"];
+    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSString stringWithFormat:@"%lu included manifests", (unsigned long)all];
+}
+
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];
@@ -247,6 +304,21 @@
         return @"--";
     }
     
+}
+
+- (NSString *)catalogsCountDescriptionString
+{
+    NSArray *catalogStrings = [self catalogStrings];
+    if (catalogStrings) {
+        NSUInteger catalogsCount = [catalogStrings count];
+        if (catalogsCount == 1) {
+            return [NSString stringWithFormat:@"%lu catalog", (unsigned long)[catalogStrings count]];
+        } else {
+            return [NSString stringWithFormat:@"%lu catalogs", (unsigned long)[catalogStrings count]];
+        }
+    } else {
+        return @"No catalogs";
+    }
 }
 
 

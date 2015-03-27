@@ -119,6 +119,7 @@
 		F5DFC8C2129546EB00B68F4F /* _PackageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C1129546EB00B68F4F /* _PackageMO.m */; };
 		F5DFC8C4129546EC00B68F4F /* _ReceiptMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C3129546EC00B68F4F /* _ReceiptMO.m */; };
 		F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC8C5129546EC00B68F4F /* _StringObjectMO.m */; };
+		F5E333AE1AC52CC90078CAA6 /* MASolidBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E333AD1AC52CC90078CAA6 /* MASolidBackgroundView.m */; };
 		F5E420811ABC081900E9AEDA /* MAManifestEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */; };
 		F5E420821ABC081900E9AEDA /* MAManifestEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */; };
 		F5EA6ABA190F7ED100362FEE /* MAIconEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EA6AB8190F7ED100362FEE /* MAIconEditor.m */; };
@@ -364,6 +365,8 @@
 		F5DFC8D4129546EE00B68F4F /* _PackageMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _PackageMO.h; sourceTree = "<group>"; };
 		F5DFC8D5129546EE00B68F4F /* _ReceiptMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _ReceiptMO.h; sourceTree = "<group>"; };
 		F5DFC8D6129546EE00B68F4F /* _StringObjectMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _StringObjectMO.h; sourceTree = "<group>"; };
+		F5E333AC1AC52CC90078CAA6 /* MASolidBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASolidBackgroundView.h; sourceTree = "<group>"; };
+		F5E333AD1AC52CC90078CAA6 /* MASolidBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASolidBackgroundView.m; sourceTree = "<group>"; };
 		F5E4207E1ABC081900E9AEDA /* MAManifestEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestEditor.h; sourceTree = "<group>"; };
 		F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestEditor.m; sourceTree = "<group>"; };
 		F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestEditor.xib; sourceTree = "<group>"; };
@@ -562,6 +565,8 @@
 				F59B724713698044008229E8 /* MAGradientButtonBarView.m */,
 				F50AC6E212BA04360069EB00 /* MAManifestItemTableView.h */,
 				F50AC6E312BA04360069EB00 /* MAManifestItemTableView.m */,
+				F5E333AC1AC52CC90078CAA6 /* MASolidBackgroundView.h */,
+				F5E333AD1AC52CC90078CAA6 /* MASolidBackgroundView.m */,
 				F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */,
 			);
 			name = "View Classes";
@@ -1082,6 +1087,7 @@
 				F5DFC8C6129546EC00B68F4F /* _StringObjectMO.m in Sources */,
 				F50AC6AF12B9FDC30069EB00 /* ManifestItemArrayController.m in Sources */,
 				F50AC6E412BA04360069EB00 /* MAManifestItemTableView.m in Sources */,
+				F5E333AE1AC52CC90078CAA6 /* MASolidBackgroundView.m in Sources */,
 				F59B724813698044008229E8 /* MAGradientButtonBarView.m in Sources */,
 				FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */,
 				FE781BA4144C0CCE0089E941 /* InstallerChoicesItemMO.m in Sources */,

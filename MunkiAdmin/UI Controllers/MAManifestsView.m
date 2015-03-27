@@ -96,6 +96,7 @@ DDLogLevel ddLogLevel;
         DDLogError(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
     }
     
+    self.manifestEditor.manifestToEdit = [self.manifestsArrayController selectedObjects][0];
     [self.manifestEditor.window center];
     [self.manifestEditor showWindow:nil];
     

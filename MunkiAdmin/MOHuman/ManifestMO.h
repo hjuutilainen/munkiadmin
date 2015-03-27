@@ -6,6 +6,7 @@
 @property (weak, readonly) NSImage *image;
 @property (weak, readonly) NSString *fileName;
 @property (weak, readonly) NSDictionary *manifestInfoDictionary;
+@property (readonly) NSString *catalogsDescriptionString;
 
 - (NSArray *)rootConditionalItems;
 
