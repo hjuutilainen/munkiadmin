@@ -148,10 +148,12 @@
             subtitle = @"No matching packages in selected catalogs";
         } else if ([packages count] == 1) {
             NSString *latestVersion = [[packages objectAtIndex:0] munki_version];
-            subtitle = [NSString stringWithFormat:@"%lu matching package (%@)", (unsigned long)[packages count], latestVersion];
+            //subtitle = [NSString stringWithFormat:@"%lu package (%@)", (unsigned long)[packages count], latestVersion];
+            subtitle = [NSString stringWithFormat:@"%@", latestVersion];
         } else if ([packages count] > 1) {
             NSString *latestVersion = [[packages objectAtIndex:0] munki_version];
-            subtitle = [NSString stringWithFormat:@"%lu matching packages (%@)", (unsigned long)[packages count], latestVersion];
+            //subtitle = [NSString stringWithFormat:@"%lu packages (%@)", (unsigned long)[packages count], latestVersion];
+            subtitle = [NSString stringWithFormat:@"%@", latestVersion];
         }
     }
     
@@ -167,9 +169,11 @@
             NSArray *foundPkgs = [self.packagesWithSameTitle sortedArrayUsingDescriptors:[NSArray arrayWithObject:byVersion]];
             NSString *latestVersion = [[foundPkgs objectAtIndex:0] munki_version];
             if (numPkgs == 1) {
-                subtitle = [NSString stringWithFormat:@"%lu matching package (%@)", (unsigned long)numPkgs, latestVersion];
+                //subtitle = [NSString stringWithFormat:@"%lu package (%@)", (unsigned long)numPkgs, latestVersion];
+                subtitle = [NSString stringWithFormat:@"%@", latestVersion];
             } else {
-                subtitle = [NSString stringWithFormat:@"%lu matching packages (%@)", (unsigned long)numPkgs, latestVersion];
+                //subtitle = [NSString stringWithFormat:@"%lu packages (%@)", (unsigned long)numPkgs, latestVersion];
+                subtitle = [NSString stringWithFormat:@"%@", latestVersion];
             }
         }
     }
