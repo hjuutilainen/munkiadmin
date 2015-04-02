@@ -26,9 +26,11 @@ DDLogLevel ddLogLevel;
 
 @interface ItemCellView : NSTableCellView
 @property (nonatomic, retain) IBOutlet NSTextField *detailTextField;
+@property (nonatomic, retain) IBOutlet NSPopUpButton *popupButton;
 @end
 @implementation ItemCellView
 @synthesize detailTextField = _detailTextField;
+@synthesize popupButton = _popupButton;
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
     NSColor *textColor = (backgroundStyle == NSBackgroundStyleDark) ? [NSColor windowBackgroundColor] : [NSColor controlShadowColor];
     self.detailTextField.textColor = textColor;
@@ -54,6 +56,12 @@ DDLogLevel ddLogLevel;
     NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.conditionalItemsArrayController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
     
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.managedInstallsArrayController.sortDescriptors = @[sortByTitle];
+    self.managedUpdatesArrayController.sortDescriptors = @[sortByTitle];
+    self.managedUninstallsArrayController.sortDescriptors = @[sortByTitle];
+    self.optionalInstallsArrayController.sortDescriptors = @[sortByTitle];
+    
     [self setupSourceList];
 }
 
@@ -66,6 +74,8 @@ DDLogLevel ddLogLevel;
     [self.window bind:@"title" toObject:self withKeyPath:@"manifestToEdit.title" options:nil];
     
     self.currentDetailView = self.generalView;
+    
+    
     
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
@@ -125,6 +135,17 @@ DDLogLevel ddLogLevel;
     [self.addItemsWindowController updateIndividualSearchPredicate];
 }
 
+- (IBAction)removeManagedInstallAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+        
+    for (StringObjectMO *aManagedInstall in [self.managedInstallsArrayController selectedObjects]) {
+        [self.manifestToEdit.managedObjectContext deleteObject:aManagedInstall];
+    }
+    [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
+}
+
+
 
 - (void)setupSourceList
 {
@@ -164,7 +185,7 @@ DDLogLevel ddLogLevel;
     NSURL *installerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.Installer"];
     managedInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[installerURL path]];
     [managedInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedInstallsCountDescription" options:bindOptions];
-    managedInstallsSection.view = self.managedInstallsView;
+    managedInstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedInstallsSection];
     
     
@@ -172,6 +193,7 @@ DDLogLevel ddLogLevel;
     managedUninstallsSection.title = @"Managed Uninstalls";
     managedUninstallsSection.icon = [NSImage imageNamed:NSImageNamePreferencesGeneral];
     [managedUninstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUninstallsCountDescription" options:bindOptions];
+    managedUninstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedUninstallsSection];
     
     MAManifestEditorSection *managedUpdatesSection = [MAManifestEditorSection new];
@@ -179,12 +201,14 @@ DDLogLevel ddLogLevel;
     NSURL *suURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.SoftwareUpdate"];
     managedUpdatesSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[suURL path]];
     [managedUpdatesSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUpdatesCountDescription" options:bindOptions];
+    managedUpdatesSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedUpdatesSection];
     
     MAManifestEditorSection *optionalInstallsSection = [MAManifestEditorSection new];
     optionalInstallsSection.title = @"Optional Installs";
     optionalInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFileType:@"app"];
     [optionalInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.optionalInstallsCountDescription" options:bindOptions];
+    optionalInstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:optionalInstallsSection];
     
     MAManifestEditorSection *includedManifestsSection = [MAManifestEditorSection new];
@@ -259,14 +283,63 @@ DDLogLevel ddLogLevel;
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-    if ([[self.editorSectionsArrayController selectedObjects] count] == 0) {
-        return;
+    NSTableView *tableView = [aNotification object];
+    if (tableView == self.sourceListTableView) {
+        if ([[self.editorSectionsArrayController selectedObjects] count] == 0) {
+            return;
+        }
+        
+        MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+        
+        if ([selected.title isEqualToString:@"Managed Installs"]) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.managedInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.managedInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if ([selected.title isEqualToString:@"Managed Uninstalls"]) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.managedUninstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.managedUninstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if ([selected.title isEqualToString:@"Managed Updates"]) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.managedUpdatesArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.managedUpdatesArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if ([selected.title isEqualToString:@"Optional Installs"]) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.optionalInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.optionalInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        }
+        [self setContentView:selected.view];
+        self.currentDetailView = selected.view;
     }
-    
-    MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
-    [self setContentView:selected.view];
-    self.currentDetailView = selected.view;
 }
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    id view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    
+    if (tableView == self.contentItemsTableView) {
+        
+        /*
+         Create the correct bindings for the condition column
+         */
+        if ([tableColumn.identifier isEqualToString:@"tableColumnCondition"]) {
+            NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES,
+                                          NSNullPlaceholderBindingOption: @"--"};
+            ItemCellView *itemCellView = (ItemCellView *)view;
+            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
+            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
+            MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+            if ([selected.title isEqualToString:@"Managed Installs"]) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.managedInstallConditionalReference" options:nil];
+            } else if ([selected.title isEqualToString:@"Managed Uninstalls"]) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.managedUninstallConditionalReference" options:nil];
+            } else if ([selected.title isEqualToString:@"Managed Updates"]) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.managedUpdateConditionalReference" options:nil];
+            } else if ([selected.title isEqualToString:@"Optional Installs"]) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.optionalInstallConditionalReference" options:nil];
+            }
+            
+        }
+    }
+    return view;
+}
+
 
 
 - (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize

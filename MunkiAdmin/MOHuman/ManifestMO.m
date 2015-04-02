@@ -25,12 +25,26 @@
 {
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
     
-    NSArray *descriptionKeys = @[@"catalogsDescriptionString",
-                                 @"catalogStrings"];
+    NSArray *catalogDescriptionKeys = @[@"catalogsDescriptionString", @"catalogStrings"];
+    NSArray *managedInstallsKeys = @[@"managedInstallsStrings", @"managedInstallsCountDescription"];
+    NSArray *managedUninstallsKeys = @[@"managedUninstallsStrings", @"managedUninstallsCountDescription"];
+    NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings", @"managedUpdatesCountDescription"];
+    NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings", @"optionalInstallsCountDescription"];
     
-    if ([descriptionKeys containsObject:key])
-    {
+    if ([catalogDescriptionKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([managedInstallsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstallsFaster", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([managedUninstallsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUninstallsFaster", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([managedUpdatesKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUpdatesFaster", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([optionalInstallsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"optionalInstallsFaster", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
     
