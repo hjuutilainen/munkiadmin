@@ -15,10 +15,20 @@
 DDLogLevel ddLogLevel;
 
 @interface MAManifestEditorSection : NSObject
+typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
+    MAEditorSectionTagGeneral,
+    MAEditorSectionTagManagedInstalls,
+    MAEditorSectionTagManagedUninstalls,
+    MAEditorSectionTagManagedUpdates,
+    MAEditorSectionTagOptionalInstalls,
+    MAEditorSectionTagIncludedManifests,
+    MAEditorSectionTagConditionalItems
+};
 @property (strong) NSString *title;
 @property (strong) NSString *subtitle;
 @property (strong) NSImage *icon;
 @property (strong) NSString *identifier;
+@property NSInteger tag;
 @property (assign) NSView *view;
 @end
 @implementation MAManifestEditorSection
@@ -104,11 +114,21 @@ DDLogLevel ddLogLevel;
     [self processAddItemsAction:sheet];
 }
 
-- (IBAction)addNewManagedInstallAction:(id)sender
+- (IBAction)addNewItemsAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    //self.addItemsType = @"managedInstall";
+    /*
+     Figure out what kind of items we're adding
+     */
+    if ([[self.editorSectionsArrayController selectedObjects] count] == 0) {
+        return;
+    }
+    
+    MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+    if (selected.tag == MAEditorSectionTagManagedInstalls) {
+        
+    }
     
     [NSApp beginSheet:[self.addItemsWindowController window]
        modalForWindow:self.window modalDelegate:self
@@ -135,7 +155,7 @@ DDLogLevel ddLogLevel;
     [self.addItemsWindowController updateIndividualSearchPredicate];
 }
 
-- (IBAction)removeManagedInstallAction:(id)sender
+- (IBAction)removeItemsAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
         
@@ -168,6 +188,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *generalSection = [MAManifestEditorSection new];
     generalSection.title = @"General";
+    generalSection.tag = MAEditorSectionTagGeneral;
     generalSection.icon = [NSImage imageNamed:NSImageNamePreferencesGeneral];
     [generalSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.catalogsCountDescriptionString" options:bindOptions];
     generalSection.view = self.generalView;
@@ -182,6 +203,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *managedInstallsSection = [MAManifestEditorSection new];
     managedInstallsSection.title = @"Managed Installs";
+    managedInstallsSection.tag = MAEditorSectionTagManagedInstalls;
     NSURL *installerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.Installer"];
     managedInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[installerURL path]];
     [managedInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedInstallsCountDescription" options:bindOptions];
@@ -191,6 +213,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *managedUninstallsSection = [MAManifestEditorSection new];
     managedUninstallsSection.title = @"Managed Uninstalls";
+    managedUninstallsSection.tag = MAEditorSectionTagManagedUninstalls;
     managedUninstallsSection.icon = [NSImage imageNamed:NSImageNamePreferencesGeneral];
     [managedUninstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUninstallsCountDescription" options:bindOptions];
     managedUninstallsSection.view = self.contentItemsListView;
@@ -198,6 +221,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *managedUpdatesSection = [MAManifestEditorSection new];
     managedUpdatesSection.title = @"Managed Updates";
+    managedUpdatesSection.tag = MAEditorSectionTagManagedUpdates;
     NSURL *suURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.SoftwareUpdate"];
     managedUpdatesSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[suURL path]];
     [managedUpdatesSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUpdatesCountDescription" options:bindOptions];
@@ -206,6 +230,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *optionalInstallsSection = [MAManifestEditorSection new];
     optionalInstallsSection.title = @"Optional Installs";
+    optionalInstallsSection.tag = MAEditorSectionTagOptionalInstalls;
     optionalInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFileType:@"app"];
     [optionalInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.optionalInstallsCountDescription" options:bindOptions];
     optionalInstallsSection.view = self.contentItemsListView;
@@ -213,6 +238,7 @@ DDLogLevel ddLogLevel;
     
     MAManifestEditorSection *includedManifestsSection = [MAManifestEditorSection new];
     includedManifestsSection.title = @"Included Manifests";
+    includedManifestsSection.tag = MAEditorSectionTagIncludedManifests;
     includedManifestsSection.icon = [NSImage imageNamed:NSImageNameFolderSmart];
     [includedManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.includedManifestsCountDescription" options:bindOptions];
     [newSourceListItems addObject:includedManifestsSection];
@@ -291,7 +317,7 @@ DDLogLevel ddLogLevel;
         
         MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
         
-        if ([selected.title isEqualToString:@"Managed Installs"]) {
+        if (selected.tag == MAEditorSectionTagManagedInstalls) {
             [self.contentItemsTableView bind:NSContentBinding toObject:self.managedInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.managedInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
         } else if ([selected.title isEqualToString:@"Managed Uninstalls"]) {
