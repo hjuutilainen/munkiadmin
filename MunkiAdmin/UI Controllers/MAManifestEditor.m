@@ -14,6 +14,9 @@
 
 DDLogLevel ddLogLevel;
 
+#pragma mark -
+#pragma mark MAManifestEditorSection
+
 @interface MAManifestEditorSection : NSObject
 typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAEditorSectionTagGeneral,
@@ -34,6 +37,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 @implementation MAManifestEditorSection
 @end
 
+#pragma mark -
+#pragma mark ItemCellView
+
 @interface ItemCellView : NSTableCellView
 @property (nonatomic, retain) IBOutlet NSTextField *detailTextField;
 @property (nonatomic, retain) IBOutlet NSPopUpButton *popupButton;
@@ -47,6 +53,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [super setBackgroundStyle:backgroundStyle];
 }
 @end
+
+#pragma mark -
+#pragma mark MAManifestEditor
 
 @interface MAManifestEditor ()
 @property (assign) NSView *currentDetailView;
@@ -95,10 +104,39 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    for (StringObjectMO *selectedItem in [self.addItemsWindowController selectionAsStringObjects]) {
-        [self.manifestToEdit addManagedInstallsFasterObject:selectedItem];
-        
+    NSArray *selectedItems = [self.addItemsWindowController selectionAsStringObjects];
+    
+    MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+    switch (selected.tag) {
+        case MAEditorSectionTagManagedInstalls:
+            for (StringObjectMO *selectedItem in selectedItems) {
+                [self.manifestToEdit addManagedInstallsFasterObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagManagedUninstalls:
+            for (StringObjectMO *selectedItem in selectedItems) {
+                [self.manifestToEdit addManagedUninstallsFasterObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagManagedUpdates:
+            for (StringObjectMO *selectedItem in selectedItems) {
+                [self.manifestToEdit addManagedUpdatesFasterObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagOptionalInstalls:
+            for (StringObjectMO *selectedItem in selectedItems) {
+                [self.manifestToEdit addOptionalInstallsFasterObject:selectedItem];
+            }
+            break;
+            
+        default:
+            DDLogError(@"processAddItemsAction: tag %ld not handled...", (long)selected.tag);
+            break;
     }
+    
     // Need to refresh fetched properties
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
     
@@ -106,7 +144,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [[self.addItemsWindowController window] close];
 }
 
-- (void)addNewManagedInstallSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)addNewItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
     DDLogError(@"%@", NSStringFromSelector(_cmd));
     
@@ -118,35 +156,55 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    /*
-     Figure out what kind of items we're adding
-     */
     if ([[self.editorSectionsArrayController selectedObjects] count] == 0) {
         return;
     }
     
+    /*
+     Figure out what kind of items we're adding
+     */
     MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
-    if (selected.tag == MAEditorSectionTagManagedInstalls) {
+    NSSet *existingObjects = nil;
+    NSSet *conditionalObjects = nil;
+    switch (selected.tag) {
+        case MAEditorSectionTagManagedInstalls:
+            existingObjects = self.manifestToEdit.managedInstallsFaster;
+            conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.managedInstalls"];
+            break;
+            
+        case MAEditorSectionTagManagedUninstalls:
+            existingObjects = self.manifestToEdit.managedUninstallsFaster;
+            conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.managedUninstalls"];
+            break;
         
+        case MAEditorSectionTagManagedUpdates:
+            existingObjects = self.manifestToEdit.managedUpdatesFaster;
+            conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.managedUpdates"];
+            break;
+            
+        case MAEditorSectionTagOptionalInstalls:
+            existingObjects = self.manifestToEdit.optionalInstallsFaster;
+            conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.optionalInstalls"];
+            break;
+            
+        default:
+            DDLogError(@"addNewItemsAction: tag %ld not handled...", (long)selected.tag);
+            break;
     }
     
     [NSApp beginSheet:[self.addItemsWindowController window]
        modalForWindow:self.window modalDelegate:self
-       didEndSelector:@selector(addNewManagedInstallSheetDidEnd:returnCode:object:) contextInfo:nil];
+       didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:object:) contextInfo:nil];
     
-    ManifestMO *selectedManifest = self.manifestToEdit;
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aManagedInstall in selectedManifest.managedInstallsFaster) {
-        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
+    for (StringObjectMO *object in existingObjects) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", object.title];
         [tempPredicates addObject:newPredicate];
     }
-    
-    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
-        for (StringObjectMO *aManagedInstall in conditional.managedInstalls) {
-            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", aManagedInstall.title];
-            [tempPredicates addObject:newPredicate];
-        }
+    for (StringObjectMO *object in conditionalObjects) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"munki_name != %@", object.title];
+        [tempPredicates addObject:newPredicate];
     }
     
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
@@ -158,10 +216,38 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 - (IBAction)removeItemsAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-        
-    for (StringObjectMO *aManagedInstall in [self.managedInstallsArrayController selectedObjects]) {
-        [self.manifestToEdit.managedObjectContext deleteObject:aManagedInstall];
+    
+    MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+    switch (selected.tag) {
+        case MAEditorSectionTagManagedInstalls:
+            for (StringObjectMO *selectedItem in [self.managedInstallsArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagManagedUninstalls:
+            for (StringObjectMO *selectedItem in [self.managedUninstallsArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagManagedUpdates:
+            for (StringObjectMO *selectedItem in [self.managedUpdatesArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagOptionalInstalls:
+            for (StringObjectMO *selectedItem in [self.optionalInstallsArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+            
+        default:
+            DDLogError(@"removeItemsAction: tag %ld not handled...", (long)selected.tag);
+            break;
     }
+    
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
 }
 
