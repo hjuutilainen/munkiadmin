@@ -19,6 +19,7 @@
 @property (weak) IBOutlet NSView *contentViewPlaceHolder;
 @property (weak) IBOutlet NSView *generalView;
 @property (weak) IBOutlet NSView *contentItemsListView;
+@property (weak) IBOutlet NSView *includedManifestsListView;
 @property (weak) IBOutlet NSTableView *sourceListTableView;
 @property (weak) IBOutlet NSTableView *contentItemsTableView;
 @property (weak) IBOutlet NSArrayController *editorSectionsArrayController;
@@ -28,6 +29,7 @@
 @property (weak) IBOutlet NSArrayController *managedUninstallsArrayController;
 @property (weak) IBOutlet NSArrayController *managedUpdatesArrayController;
 @property (weak) IBOutlet NSArrayController *optionalInstallsArrayController;
+@property (weak) IBOutlet NSArrayController *includedManifestsArrayController;
 @property (weak) IBOutlet NSTableCellView *conditionalsTableCellView;
 @property (weak) IBOutlet NSPopUpButton *conditionalsPopupButton;
 @property (strong) IBOutlet NSScrollView *sourceListView;

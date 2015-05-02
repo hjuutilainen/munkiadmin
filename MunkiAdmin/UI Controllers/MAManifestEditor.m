@@ -327,6 +327,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     includedManifestsSection.tag = MAEditorSectionTagIncludedManifests;
     includedManifestsSection.icon = [NSImage imageNamed:NSImageNameFolderSmart];
     [includedManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.includedManifestsCountDescription" options:bindOptions];
+    includedManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:includedManifestsSection];
     
     self.sourceListItems = [NSArray arrayWithArray:newSourceListItems];
@@ -415,6 +416,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         } else if ([selected.title isEqualToString:@"Optional Installs"]) {
             [self.contentItemsTableView bind:NSContentBinding toObject:self.optionalInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.optionalInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.includedManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.includedManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
         }
         [self setContentView:selected.view];
         self.currentDetailView = selected.view;
@@ -445,6 +449,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.managedUpdateConditionalReference" options:nil];
             } else if ([selected.title isEqualToString:@"Optional Installs"]) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.optionalInstallConditionalReference" options:nil];
+            } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
             }
             
         }
