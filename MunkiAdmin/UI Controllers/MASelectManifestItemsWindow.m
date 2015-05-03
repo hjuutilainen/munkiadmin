@@ -54,8 +54,8 @@
     /*
      Allow double-clicking items in tableviews
      */
-    self.manifestsTableView.target = nil; // first responder
-    self.manifestsTableView.doubleAction = @selector(processAddNestedManifestAction:);
+    self.manifestsTableView.target = self;
+    self.manifestsTableView.doubleAction = @selector(addSelectedAction:);
     
     [self updateSearchPredicate];
 }
@@ -83,5 +83,55 @@
 {
     [self updateSearchPredicate];
 }
+
+- (NSArray *)selectionAsStringObjects
+{
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    NSMutableArray *items = [[NSMutableArray alloc] init];
+    NSString *selectedTabViewLabel = [[[self tabView] selectedTabViewItem] label];
+    if ([selectedTabViewLabel isEqualToString:@"Existing"]) {
+        for (ManifestMO *aManifest in [self.manifestsArrayController selectedObjects]) {
+            StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
+            newItem.title = aManifest.title;
+            newItem.typeString = @"includedManifest";
+            [items addObject:newItem];
+        }
+    } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {
+        StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
+        NSString *newTitle = [self.customValueTextField stringValue];
+        newItem.title = newTitle;
+        newItem.typeString = @"includedManifest";
+        [items addObject:newItem];
+    }
+    return [NSArray arrayWithArray:items];
+}
+
+
+- (IBAction)cancelAction:(id)sender
+{
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        // 10.9 or later
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+        [self.window orderOut:sender];
+    } else {
+        // 10.8
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSCancelButton];
+    }
+}
+
+- (IBAction)addSelectedAction:(id)sender
+{
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        // 10.9 or later
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+        [self.window orderOut:sender];
+    } else {
+        // 10.8
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSOKButton];
+    }
+}
+
 
 @end

@@ -100,11 +100,50 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
 }
 
-- (void)processAddItemsAction:(id)sender
+- (IBAction)addNewIncludedManifestAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
+        [self.window beginSheet:[self.selectManifestsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseOK) {
+                [self processAddItemsAction];
+            }
+        }];
+    } else {
+        [NSApp beginSheet:[self.selectManifestsWindowController window]
+           modalForWindow:self.window modalDelegate:self
+           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    }
+    
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aNestedManifest in selectedManifest.includedManifestsFaster) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aNestedManifest in conditional.includedManifests) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
+    NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
+    [tempPredicates addObject:denySelfPred];
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [self.selectManifestsWindowController setOriginalPredicate:compPred];
+    [self.selectManifestsWindowController updateSearchPredicate];
+}
+
+- (void)processAddItemsAction
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSArray *selectedItems = [self.addItemsWindowController selectionAsStringObjects];
+    NSArray *selectedManifests = [self.selectManifestsWindowController selectionAsStringObjects];
     
     MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
     switch (selected.tag) {
@@ -131,6 +170,12 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
                 [self.manifestToEdit addOptionalInstallsFasterObject:selectedItem];
             }
             break;
+        
+        case MAEditorSectionTagIncludedManifests:
+            for (StringObjectMO *selectedItem in selectedManifests) {
+                [self.manifestToEdit addIncludedManifestsFasterObject:selectedItem];
+            }
+            break;
             
         default:
             DDLogError(@"processAddItemsAction: tag %ld not handled...", (long)selected.tag);
@@ -140,16 +185,26 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     // Need to refresh fetched properties
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
     
-    [NSApp endSheet:[self.addItemsWindowController window]];
-    [[self.addItemsWindowController window] close];
 }
 
-- (void)addNewItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (IBAction)removeIncludedManifestAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    
+    for (StringObjectMO *anIncludedManifest in [self.includedManifestsArrayController selectedObjects]) {
+        [self.manifestToEdit.managedObjectContext deleteObject:anIncludedManifest];
+    }
+    [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
+- (void)addNewItemSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     DDLogError(@"%@", NSStringFromSelector(_cmd));
     
-    if (returnCode == NSCancelButton) return;
-    [self processAddItemsAction:sheet];
+    if (returnCode == NSModalResponseCancel) return;
+    [self processAddItemsAction];
 }
 
 - (IBAction)addNewItemsAction:(id)sender
@@ -192,10 +247,6 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             break;
     }
     
-    [NSApp beginSheet:[self.addItemsWindowController window]
-       modalForWindow:self.window modalDelegate:self
-       didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:object:) contextInfo:nil];
-    
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
     for (StringObjectMO *object in existingObjects) {
@@ -211,6 +262,18 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [self.addItemsWindowController setHideAddedPredicate:compPred];
     [self.addItemsWindowController updateGroupedSearchPredicate];
     [self.addItemsWindowController updateIndividualSearchPredicate];
+    
+    if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
+        [self.window beginSheet:[self.addItemsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseOK) {
+                [self processAddItemsAction];
+            }
+        }];
+    } else {
+        [NSApp beginSheet:[self.addItemsWindowController window]
+           modalForWindow:self.window modalDelegate:self
+           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    }
 }
 
 - (IBAction)removeItemsAction:(id)sender
@@ -325,7 +388,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *includedManifestsSection = [MAManifestEditorSection new];
     includedManifestsSection.title = @"Included Manifests";
     includedManifestsSection.tag = MAEditorSectionTagIncludedManifests;
-    includedManifestsSection.icon = [NSImage imageNamed:NSImageNameFolderSmart];
+    includedManifestsSection.icon = [NSImage imageNamed:@"manifestIcon_32x32"];
     [includedManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.includedManifestsCountDescription" options:bindOptions];
     includedManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:includedManifestsSection];
@@ -450,6 +513,22 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             } else if ([selected.title isEqualToString:@"Optional Installs"]) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.optionalInstallConditionalReference" options:nil];
             } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
+            }
+            
+        }
+    } else if (tableView == self.includedManifestsTableView) {
+        /*
+         Create the correct bindings for the condition column
+         */
+        if ([tableColumn.identifier isEqualToString:@"tableColumnCondition"]) {
+            NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES,
+                                          NSNullPlaceholderBindingOption: @"--"};
+            ItemCellView *itemCellView = (ItemCellView *)view;
+            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
+            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
+            MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+            if (selected.tag == MAEditorSectionTagIncludedManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
             }
             

@@ -22,5 +22,6 @@
 @property (weak) IBOutlet NSTableView *manifestsTableView;
 
 - (void)updateSearchPredicate;
+- (NSArray *)selectionAsStringObjects;
 
 @end

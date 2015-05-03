@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MASelectManifestItemsWindow">
@@ -18,7 +18,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <arrayController mode="entity" entityName="Manifest" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="4" userLabel="Manifests">
             <connections>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="6"/>
@@ -45,7 +45,7 @@ DQ
 </string>
                         </buttonCell>
                         <connections>
-                            <action selector="processAddNestedManifestAction:" target="-1" id="54"/>
+                            <action selector="addSelectedAction:" target="-2" id="dSM-lA-yTT"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" id="8">
@@ -59,7 +59,7 @@ Gw
 </string>
                         </buttonCell>
                         <connections>
-                            <action selector="cancelAddNestedManifestsAction:" target="-1" id="55"/>
+                            <action selector="cancelAction:" target="-2" id="fXa-BF-d4X"/>
                         </connections>
                     </button>
                     <customView id="9" customClass="MAGradientBackgroundView">
@@ -69,7 +69,7 @@ Gw
                             <segmentedControl verticalHuggingPriority="750" id="39">
                                 <rect key="frame" x="136" y="6" width="203" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <segmentedCell key="cell" alignment="left" style="texturedSquare" trackingMode="selectOne" id="40">
+                                <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="40">
                                     <font key="font" metaFont="system"/>
                                     <segments>
                                         <segment label="Existing" width="100" selected="YES"/>
@@ -100,10 +100,10 @@ Gw
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="19">
-                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="443"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="0.0"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
                                                             <tableColumn editable="NO" width="467" minWidth="40" maxWidth="1000" id="20">
@@ -181,7 +181,7 @@ Gw
                                             <rect key="frame" x="-1" y="444" width="472" height="38"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <subviews>
-                                                <searchField verticalHuggingPriority="750" id="22">
+                                                <searchField wantsLayer="YES" verticalHuggingPriority="750" id="22">
                                                     <rect key="frame" x="312" y="8" width="140" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="23">
@@ -214,7 +214,7 @@ Gw
                             <tabViewItem label="Custom" identifier="2" id="11">
                                 <view key="view" id="34" customClass="MAGradientBackgroundView">
                                     <rect key="frame" x="0.0" y="0.0" width="470" height="482"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" id="36">
                                             <rect key="frame" x="113" y="230" width="290" height="22"/>

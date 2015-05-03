@@ -87,14 +87,24 @@
 
 - (IBAction)okAction:(id)sender
 {
-    [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSOKButton];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+        [self.window orderOut:sender];
+    } else {
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSOKButton];
+    }
 }
 
 - (IBAction)cancelAction:(id)sender
 {
-    [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSCancelButton];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+        [self.window orderOut:sender];
+    } else {
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSCancelButton];
+    }
 }
 
 

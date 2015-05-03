@@ -117,14 +117,28 @@
 
 - (IBAction)cancelAction:(id)sender
 {
-    [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSCancelButton];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        // 10.9 or later
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+        [self.window orderOut:sender];
+    } else {
+        // 10.8 or earlier
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSCancelButton];
+    }
 }
 
 - (IBAction)addSelectedAction:(id)sender
 {
-    [[self window] orderOut:sender];
-    [NSApp endSheet:[self window] returnCode:NSOKButton];
+    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+        // 10.9 or later
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+        [self.window orderOut:sender];
+    } else {
+        // 10.8 or earlier
+        [self.window orderOut:sender];
+        [NSApp endSheet:self.window returnCode:NSOKButton];
+    }
 }
 
 - (id)initWithWindow:(NSWindow *)window

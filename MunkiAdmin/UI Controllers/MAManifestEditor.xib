@@ -16,6 +16,7 @@
                 <outlet property="generalView" destination="K8X-9z-giN" id="oxs-3Y-Eho"/>
                 <outlet property="includedManifestsArrayController" destination="nsI-27-ayZ" id="P2V-QR-NR6"/>
                 <outlet property="includedManifestsListView" destination="LEv-H0-oB4" id="ccA-Dp-ke0"/>
+                <outlet property="includedManifestsTableView" destination="G33-Y9-UDV" id="f0N-Ca-Pek"/>
                 <outlet property="mainSplitView" destination="8aT-Iz-gG6" id="aFi-QX-R4O"/>
                 <outlet property="managedInstallsArrayController" destination="LvT-Gz-5XB" id="LCx-xh-uR6"/>
                 <outlet property="managedUninstallsArrayController" destination="3La-SU-3MO" id="VrA-Oq-KjT"/>
@@ -32,7 +33,7 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="777" height="466"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <value key="minSize" type="size" width="600" height="400"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="777" height="466"/>
@@ -642,8 +643,8 @@
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="nsI-27-ayZ" userLabel="All Included Manifests">
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.allIncludedManifests" id="4hn-Nh-aL0"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="EeS-by-6zf"/>
+                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.allIncludedManifests" id="4hn-Nh-aL0"/>
             </connections>
         </arrayController>
         <customView id="LEv-H0-oB4" userLabel="Included Manifests View">
@@ -688,7 +689,7 @@
                                                         </constraints>
                                                         <imageCell key="cell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="ICZ-BZ-WZi"/>
                                                         <connections>
-                                                            <binding destination="eCN-FV-467" name="value" keyPath="objectValue.image" id="jst-uX-gWA"/>
+                                                            <binding destination="eCN-FV-467" name="value" keyPath="objectValue.nestedManifestImage" id="h9K-9h-Enu"/>
                                                         </connections>
                                                     </imageView>
                                                 </subviews>
@@ -699,7 +700,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="298.78125" minWidth="40" maxWidth="1000" id="xLX-4r-oxT">
+                                    <tableColumn editable="NO" width="216.16015625" minWidth="40" maxWidth="1000" id="xLX-4r-oxT">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Manifest">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -714,13 +715,13 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="0gi-8Q-Mf8">
-                                                <rect key="frame" x="30" y="1" width="299" height="24"/>
+                                                <rect key="frame" x="30" y="1" width="216" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="BlQ-tf-pcj">
                                                         <rect key="frame" x="1" y="4" width="91" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="xfi-34-KEd">
-                                                            <font key="font" metaFont="titleBar" size="12"/>
+                                                            <font key="font" metaFont="cellTitle"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
@@ -740,29 +741,29 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="tableColumnCondition" width="148" minWidth="10" maxWidth="3.4028234663852886e+38" id="ESu-EU-Cxd">
+                                    <tableColumn identifier="tableColumnCondition" width="230" minWidth="10" maxWidth="3.4028234663852886e+38" id="ESu-EU-Cxd">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="VW9-8h-BNW">
+                                        <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="VW9-8h-BNW">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="smallSystem"/>
                                             <menu key="menu" title="OtherViews" id="ZEq-il-AlJ">
                                                 <items>
-                                                    <menuItem title="Pop Up" state="on" id="Sve-gk-AGM"/>
+                                                    <menuItem title="Pop Up" id="Sve-gk-AGM"/>
                                                 </items>
                                             </menu>
                                         </popUpButtonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="d6z-L2-7fM" customClass="ItemCellView">
-                                                <rect key="frame" x="331" y="1" width="148" height="24"/>
+                                                <rect key="frame" x="249" y="1" width="230" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="91A-Bs-46I">
-                                                        <rect key="frame" x="3" y="3" width="142" height="18"/>
+                                                        <rect key="frame" x="3" y="3" width="224" height="18"/>
                                                         <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="regularSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="S7l-g0-TjG" id="eEg-Cd-sGw">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="smallSystem"/>
@@ -789,15 +790,15 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <binding destination="LvT-Gz-5XB" name="content" keyPath="arrangedObjects" id="HTa-Gc-evM"/>
-                                    <binding destination="LvT-Gz-5XB" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="HTa-Gc-evM" id="Fvx-aO-ym0"/>
+                                    <binding destination="nsI-27-ayZ" name="content" keyPath="arrangedObjects" id="civ-Xd-imO"/>
+                                    <binding destination="nsI-27-ayZ" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="civ-Xd-imO" id="xfi-2S-zsT"/>
                                     <outlet property="delegate" destination="-2" id="OX6-3L-QFf"/>
                                 </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="Rmr-Dz-a40">
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Rmr-Dz-a40">
                         <rect key="frame" x="1" y="422" width="723" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -823,7 +824,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="removeItemsAction:" target="-2" id="tNv-aC-Wbh"/>
+                                <action selector="removeIncludedManifestAction:" target="-2" id="pHu-fs-v3Z"/>
                             </connections>
                         </button>
                         <button toolTip="Add new empty item" translatesAutoresizingMaskIntoConstraints="NO" id="SMC-8n-Q6f">
@@ -836,7 +837,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="addNewItemsAction:" target="-2" id="4tA-Jw-JIk"/>
+                                <action selector="addNewIncludedManifestAction:" target="-2" id="Pzl-rl-hjQ"/>
                             </connections>
                         </button>
                     </subviews>
