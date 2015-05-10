@@ -31,6 +31,7 @@
 @property (weak) IBOutlet NSArrayController *managedUpdatesArrayController;
 @property (weak) IBOutlet NSArrayController *optionalInstallsArrayController;
 @property (weak) IBOutlet NSArrayController *includedManifestsArrayController;
+@property (weak) IBOutlet NSArrayController *referencingManifestsArrayController;
 @property (weak) IBOutlet NSTableCellView *conditionalsTableCellView;
 @property (weak) IBOutlet NSPopUpButton *conditionalsPopupButton;
 @property (strong) IBOutlet NSScrollView *sourceListView;

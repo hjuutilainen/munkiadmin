@@ -30,7 +30,7 @@ extern const struct ManifestMORelationships {
 	__unsafe_unretained NSString *manifestInfos;
 	__unsafe_unretained NSString *optionalInstalls;
 	__unsafe_unretained NSString *optionalInstallsFaster;
-	__unsafe_unretained NSString *referencingStringObjects;
+	__unsafe_unretained NSString *referencingManifests;
 } ManifestMORelationships;
 
 extern const struct ManifestMOFetchedProperties {
@@ -39,6 +39,7 @@ extern const struct ManifestMOFetchedProperties {
 	__unsafe_unretained NSString *allManagedUninstalls;
 	__unsafe_unretained NSString *allManagedUpdates;
 	__unsafe_unretained NSString *allOptionalInstalls;
+	__unsafe_unretained NSString *allReferencingManifests;
 } ManifestMOFetchedProperties;
 
 @class ApplicationMO;
@@ -169,9 +170,9 @@ extern const struct ManifestMOFetchedProperties {
 
 - (NSMutableSet*)optionalInstallsFasterSet;
 
-@property (nonatomic, strong) NSSet *referencingStringObjects;
+@property (nonatomic, strong) NSSet *referencingManifests;
 
-- (NSMutableSet*)referencingStringObjectsSet;
+- (NSMutableSet*)referencingManifestsSet;
 
 @property (nonatomic, readonly) NSArray *allIncludedManifests;
 
@@ -182,6 +183,8 @@ extern const struct ManifestMOFetchedProperties {
 @property (nonatomic, readonly) NSArray *allManagedUpdates;
 
 @property (nonatomic, readonly) NSArray *allOptionalInstalls;
+
+@property (nonatomic, readonly) NSArray *allReferencingManifests;
 
 @end
 
@@ -305,11 +308,11 @@ extern const struct ManifestMOFetchedProperties {
 
 @end
 
-@interface _ManifestMO (ReferencingStringObjectsCoreDataGeneratedAccessors)
-- (void)addReferencingStringObjects:(NSSet*)value_;
-- (void)removeReferencingStringObjects:(NSSet*)value_;
-- (void)addReferencingStringObjectsObject:(StringObjectMO*)value_;
-- (void)removeReferencingStringObjectsObject:(StringObjectMO*)value_;
+@interface _ManifestMO (ReferencingManifestsCoreDataGeneratedAccessors)
+- (void)addReferencingManifests:(NSSet*)value_;
+- (void)removeReferencingManifests:(NSSet*)value_;
+- (void)addReferencingManifestsObject:(StringObjectMO*)value_;
+- (void)removeReferencingManifestsObject:(StringObjectMO*)value_;
 
 @end
 
@@ -387,7 +390,7 @@ extern const struct ManifestMOFetchedProperties {
 - (NSMutableSet*)primitiveOptionalInstallsFaster;
 - (void)setPrimitiveOptionalInstallsFaster:(NSMutableSet*)value;
 
-- (NSMutableSet*)primitiveReferencingStringObjects;
-- (void)setPrimitiveReferencingStringObjects:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveReferencingManifests;
+- (void)setPrimitiveReferencingManifests:(NSMutableSet*)value;
 
 @end

@@ -30,7 +30,7 @@ const struct ManifestMORelationships ManifestMORelationships = {
 	.manifestInfos = @"manifestInfos",
 	.optionalInstalls = @"optionalInstalls",
 	.optionalInstallsFaster = @"optionalInstallsFaster",
-	.referencingStringObjects = @"referencingStringObjects",
+	.referencingManifests = @"referencingManifests",
 };
 
 const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
@@ -39,6 +39,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	.allManagedUninstalls = @"allManagedUninstalls",
 	.allManagedUpdates = @"allManagedUpdates",
 	.allOptionalInstalls = @"allOptionalInstalls",
+	.allReferencingManifests = @"allReferencingManifests",
 };
 
 @implementation ManifestMOID
@@ -275,14 +276,14 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	return result;
 }
 
-@dynamic referencingStringObjects;
+@dynamic referencingManifests;
 
-- (NSMutableSet*)referencingStringObjectsSet {
-	[self willAccessValueForKey:@"referencingStringObjects"];
+- (NSMutableSet*)referencingManifestsSet {
+	[self willAccessValueForKey:@"referencingManifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingManifests"];
 
-	[self didAccessValueForKey:@"referencingStringObjects"];
+	[self didAccessValueForKey:@"referencingManifests"];
 	return result;
 }
 
@@ -295,6 +296,8 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 @dynamic allManagedUpdates;
 
 @dynamic allOptionalInstalls;
+
+@dynamic allReferencingManifests;
 
 @end
 

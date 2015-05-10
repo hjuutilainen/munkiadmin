@@ -495,8 +495,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             [self.contentItemsTableView bind:NSContentBinding toObject:self.optionalInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.optionalInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
         } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
-            [self.contentItemsTableView bind:NSContentBinding toObject:self.includedManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
-            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.includedManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
+            [self.includedManifestsTableView bind:NSContentBinding toObject:self.includedManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.includedManifestsTableView bind:NSSelectionIndexesBinding toObject:self.includedManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if (selected.tag == MAEditorSectionTagReferencingManifests) {
+            [self.includedManifestsTableView bind:NSContentBinding toObject:self.referencingManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.includedManifestsTableView bind:NSSelectionIndexesBinding toObject:self.referencingManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
         }
         [self setContentView:selected.view];
         self.currentDetailView = selected.view;
@@ -545,6 +548,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
             if (selected.tag == MAEditorSectionTagIncludedManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
+            } else if (selected.tag == MAEditorSectionTagReferencingManifests) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.originalManifestConditionalReference" options:nil];
             }
             
         }

@@ -98,6 +98,12 @@ static const int BatchSize = 50;
     [getManifests setEntity:manifestEntityDescr];
     self.allManifests = [privateContext executeFetchRequest:getManifests error:nil];
     
+    NSMutableDictionary *manifestsAndTitles = [[NSMutableDictionary alloc] initWithCapacity:[self.allManifests count]];
+    for (ManifestMO *manifest in self.allManifests) {
+        manifestsAndTitles[manifest.title] = manifest;
+    }
+    self.allManifestsByTitle = [NSDictionary dictionaryWithDictionary:manifestsAndTitles];
+    
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
     self.allApplications = [privateContext executeFetchRequest:getApplications error:nil];
@@ -210,6 +216,15 @@ static const int BatchSize = 50;
                 anOptionalInstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 anOptionalInstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *includedManifest in currentManifest.includedManifestsFaster) {
+            DDLogError(@"%@: linking included_manifest object %@", currentManifest.fileName, includedManifest.title);
+            if ([self.allManifestsByTitle objectForKey:includedManifest.title]) {
+                ManifestMO *originalManifest = [self.allManifestsByTitle objectForKey:includedManifest.title];
+                includedManifest.originalManifest = originalManifest;
+            } else {
+                DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
             }
         }
         

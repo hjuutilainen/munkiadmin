@@ -17,6 +17,7 @@ extern const struct ConditionalItemMORelationships {
 	__unsafe_unretained NSString *manifest;
 	__unsafe_unretained NSString *optionalInstalls;
 	__unsafe_unretained NSString *parent;
+	__unsafe_unretained NSString *referencingManifests;
 } ConditionalItemMORelationships;
 
 @class ConditionalItemMO;
@@ -27,6 +28,7 @@ extern const struct ConditionalItemMORelationships {
 @class ManifestMO;
 @class StringObjectMO;
 @class ConditionalItemMO;
+@class StringObjectMO;
 
 @interface ConditionalItemMOID : NSManagedObjectID {}
 @end
@@ -80,6 +82,10 @@ extern const struct ConditionalItemMORelationships {
 @property (nonatomic, strong) ConditionalItemMO *parent;
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) StringObjectMO *referencingManifests;
+
+//- (BOOL)validateReferencingManifests:(id*)value_ error:(NSError**)error_;
 
 @end
 
@@ -165,5 +171,8 @@ extern const struct ConditionalItemMORelationships {
 
 - (ConditionalItemMO*)primitiveParent;
 - (void)setPrimitiveParent:(ConditionalItemMO*)value;
+
+- (StringObjectMO*)primitiveReferencingManifests;
+- (void)setPrimitiveReferencingManifests:(StringObjectMO*)value;
 
 @end

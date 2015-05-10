@@ -24,6 +24,7 @@ extern const struct StringObjectMORelationships {
 	__unsafe_unretained NSString *optionalInstallReference;
 	__unsafe_unretained NSString *originalApplication;
 	__unsafe_unretained NSString *originalManifest;
+	__unsafe_unretained NSString *originalManifestConditionalReference;
 	__unsafe_unretained NSString *originalPackage;
 	__unsafe_unretained NSString *requiresReference;
 	__unsafe_unretained NSString *supportedArchitectureReference;
@@ -48,6 +49,7 @@ extern const struct StringObjectMOFetchedProperties {
 @class ManifestMO;
 @class ApplicationMO;
 @class ManifestMO;
+@class ConditionalItemMO;
 @class PackageMO;
 @class PackageMO;
 @class PackageMO;
@@ -138,6 +140,10 @@ extern const struct StringObjectMOFetchedProperties {
 
 //- (BOOL)validateOriginalManifest:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) ConditionalItemMO *originalManifestConditionalReference;
+
+//- (BOOL)validateOriginalManifestConditionalReference:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) PackageMO *originalPackage;
 
 //- (BOOL)validateOriginalPackage:(id*)value_ error:(NSError**)error_;
@@ -218,6 +224,9 @@ extern const struct StringObjectMOFetchedProperties {
 
 - (ManifestMO*)primitiveOriginalManifest;
 - (void)setPrimitiveOriginalManifest:(ManifestMO*)value;
+
+- (ConditionalItemMO*)primitiveOriginalManifestConditionalReference;
+- (void)setPrimitiveOriginalManifestConditionalReference:(ConditionalItemMO*)value;
 
 - (PackageMO*)primitiveOriginalPackage;
 - (void)setPrimitiveOriginalPackage:(PackageMO*)value;

@@ -295,7 +295,7 @@
 
 - (NSString *)referencingManifestsCountDescription
 {
-    NSSet *manifestStringObjects = [self.referencingStringObjects filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
+    NSSet *manifestStringObjects = [self.referencingManifests filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
     return [NSString stringWithFormat:@"%lu referencing manifests", (unsigned long)[manifestStringObjects count]];
 }
 

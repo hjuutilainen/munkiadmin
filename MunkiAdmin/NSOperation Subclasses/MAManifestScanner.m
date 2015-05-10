@@ -126,11 +126,13 @@ DDLogLevel ddLogLevel;
             newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
             [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
             
+            /*
             if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
                 newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
             } else {
                 DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
             }
+             */
         }];
         
         // If there are nested conditional items, loop through them with this same function
@@ -353,12 +355,13 @@ DDLogLevel ddLogLevel;
                     newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:idx];
                     [manifest addIncludedManifestsFasterObject:newIncludedManifest];
                     
-                    
+                    /*
                     if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
                         newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
                     } else {
                         DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)idx, (NSString *)obj);
                     }
+                     */
                 }];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning included_manifests took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);

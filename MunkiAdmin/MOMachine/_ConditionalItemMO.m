@@ -17,6 +17,7 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 	.manifest = @"manifest",
 	.optionalInstalls = @"optionalInstalls",
 	.parent = @"parent",
+	.referencingManifests = @"referencingManifests",
 };
 
 @implementation ConditionalItemMOID
@@ -145,6 +146,8 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 }
 
 @dynamic parent;
+
+@dynamic referencingManifests;
 
 @end
 

@@ -22,6 +22,7 @@
                 <outlet property="managedUninstallsArrayController" destination="3La-SU-3MO" id="VrA-Oq-KjT"/>
                 <outlet property="managedUpdatesArrayController" destination="8ah-wn-8sf" id="vtq-PB-vRb"/>
                 <outlet property="optionalInstallsArrayController" destination="HKL-gQ-lir" id="MIh-5l-MP9"/>
+                <outlet property="referencingManifestsArrayController" destination="ZVl-hH-R4M" id="Cbw-pj-NAb"/>
                 <outlet property="sourceListPlaceHolder" destination="HMM-wb-Pay" id="SBM-k5-5nw"/>
                 <outlet property="sourceListTableView" destination="BFZ-wA-LUA" id="2Lb-2o-QQ1"/>
                 <outlet property="sourceListView" destination="ExB-Ul-mlm" id="78n-qd-dca"/>
@@ -609,7 +610,7 @@
                 <constraint firstItem="LQj-WB-l1E" firstAttribute="trailing" secondItem="cWT-O3-Uen" secondAttribute="trailing" id="vTx-lm-nEH"/>
                 <constraint firstItem="cWT-O3-Uen" firstAttribute="leading" secondItem="y2e-a5-MQT" secondAttribute="leading" constant="20" id="zvv-ei-PwT"/>
             </constraints>
-            <point key="canvasLocation" x="856.5" y="671"/>
+            <point key="canvasLocation" x="1304.5" y="739"/>
         </customView>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="LvT-Gz-5XB" userLabel="All Managed Installs">
             <connections>
@@ -790,8 +791,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <binding destination="nsI-27-ayZ" name="content" keyPath="arrangedObjects" id="civ-Xd-imO"/>
-                                    <binding destination="nsI-27-ayZ" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="civ-Xd-imO" id="xfi-2S-zsT"/>
+                                    <binding destination="nsI-27-ayZ" name="selectionIndexes" keyPath="selectionIndexes" id="7MY-YE-79d"/>
                                     <outlet property="delegate" destination="-2" id="OX6-3L-QFf"/>
                                 </connections>
                             </tableView>
@@ -863,6 +863,12 @@
             </constraints>
             <point key="canvasLocation" x="856.5" y="671"/>
         </customView>
+        <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="ZVl-hH-R4M" userLabel="All Referencing Manifests">
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.allReferencingManifests" id="B7j-ua-JUC"/>
+                <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="OJA-Ow-ccg"/>
+            </connections>
+        </arrayController>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>

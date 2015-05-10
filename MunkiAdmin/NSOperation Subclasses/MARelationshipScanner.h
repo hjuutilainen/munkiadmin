@@ -25,5 +25,6 @@
 @property (strong) NSArray *allPackages;
 @property (strong) NSArray *allCatalogs;
 @property (strong) NSArray *allManifests;
+@property (strong) NSDictionary *allManifestsByTitle;
 
 @end
