@@ -87,6 +87,13 @@
 		F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */; };
 		F5CD0AD615ECA03200BBC11F /* reloadTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */; };
 		F5D052541744B36400487101 /* MACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D052531744B36400487101 /* MACoreDataManager.m */; };
+		F5D090931AFF50FD00146522 /* manifestGeneralTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D0908C1AFF50FD00146522 /* manifestGeneralTemplate.pdf */; };
+		F5D090941AFF50FD00146522 /* manifestIncludedManifestsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D0908D1AFF50FD00146522 /* manifestIncludedManifestsTemplate.pdf */; };
+		F5D090951AFF50FD00146522 /* manifestManagedInstallsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D0908E1AFF50FD00146522 /* manifestManagedInstallsTemplate.pdf */; };
+		F5D090961AFF50FD00146522 /* manifestManagedUninstallsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D0908F1AFF50FD00146522 /* manifestManagedUninstallsTemplate.pdf */; };
+		F5D090971AFF50FD00146522 /* manifestManagedUpdatesTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D090901AFF50FD00146522 /* manifestManagedUpdatesTemplate.pdf */; };
+		F5D090981AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D090911AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf */; };
+		F5D090991AFF50FD00146522 /* manifestReferencedManifestsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5D090921AFF50FD00146522 /* manifestReferencedManifestsTemplate.pdf */; };
 		F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC877129546E200B68F4F /* ApplicationMO.m */; };
 		F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */; };
 		F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */; };
@@ -301,6 +308,13 @@
 		F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = reloadTemplate.pdf; path = MunkiAdmin/Graphics/reloadTemplate.pdf; sourceTree = "<group>"; };
 		F5D052521744B36400487101 /* MACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACoreDataManager.h; sourceTree = "<group>"; };
 		F5D052531744B36400487101 /* MACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACoreDataManager.m; sourceTree = "<group>"; };
+		F5D0908C1AFF50FD00146522 /* manifestGeneralTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestGeneralTemplate.pdf; path = MunkiAdmin/Graphics/manifestGeneralTemplate.pdf; sourceTree = SOURCE_ROOT; };
+		F5D0908D1AFF50FD00146522 /* manifestIncludedManifestsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestIncludedManifestsTemplate.pdf; path = MunkiAdmin/Graphics/manifestIncludedManifestsTemplate.pdf; sourceTree = "<group>"; };
+		F5D0908E1AFF50FD00146522 /* manifestManagedInstallsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestManagedInstallsTemplate.pdf; path = MunkiAdmin/Graphics/manifestManagedInstallsTemplate.pdf; sourceTree = "<group>"; };
+		F5D0908F1AFF50FD00146522 /* manifestManagedUninstallsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestManagedUninstallsTemplate.pdf; path = MunkiAdmin/Graphics/manifestManagedUninstallsTemplate.pdf; sourceTree = "<group>"; };
+		F5D090901AFF50FD00146522 /* manifestManagedUpdatesTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestManagedUpdatesTemplate.pdf; path = MunkiAdmin/Graphics/manifestManagedUpdatesTemplate.pdf; sourceTree = "<group>"; };
+		F5D090911AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestOptionalInstallsTemplate.pdf; path = MunkiAdmin/Graphics/manifestOptionalInstallsTemplate.pdf; sourceTree = "<group>"; };
+		F5D090921AFF50FD00146522 /* manifestReferencedManifestsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestReferencedManifestsTemplate.pdf; path = MunkiAdmin/Graphics/manifestReferencedManifestsTemplate.pdf; sourceTree = "<group>"; };
 		F5DFC877129546E200B68F4F /* ApplicationMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationMO.m; sourceTree = "<group>"; };
 		F5DFC879129546E200B68F4F /* ApplicationProxyMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationProxyMO.m; sourceTree = "<group>"; };
 		F5DFC87B129546E300B68F4F /* CatalogInfoMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CatalogInfoMO.m; sourceTree = "<group>"; };
@@ -626,22 +640,23 @@
 			children = (
 				F5EC182B1AAEE30A00C88669 /* book.pdf */,
 				F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */,
-				F5F6339411182934007CC030 /* catalogIcon3.png */,
 				F5529A7E15EB41BD0077481C /* catalogIcon_32x32.png */,
 				F5529A7F15EB41BD0077481C /* catalogIcon_32x32@2x.png */,
+				F5F6339411182934007CC030 /* catalogIcon3.png */,
 				F569D476191630C4002FFF2B /* developerTemplate.pdf */,
 				F569D47A19163252002FFF2B /* developerUnknownTemplate.pdf */,
 				F5EC182F1AAEE51800C88669 /* document_download.pdf */,
 				F5EC18301AAEE51800C88669 /* document.pdf */,
 				F5EC18311AAEE51800C88669 /* documents.pdf */,
 				F5EC182D1AAEE38400C88669 /* folder.pdf */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				F5EC18371AAEE6B700C88669 /* inbox.pdf */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				2F7446970DB6B7EA00F9684A /* MainMenu.xib */,
 				F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */,
-				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
+				F5D0909A1AFF511400146522 /* Manifest Editor Icons */,
 				F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */,
 				F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */,
+				F5F6337F111824CC007CC030 /* manifestIcon2.png */,
 				8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */,
 				FEE1A82E147BB82A00FA6E1E /* MunkiAdmin.icns */,
 				F525FB98165E165000DFF1B2 /* MunkiAdminIcon_32x32.png */,
@@ -649,9 +664,9 @@
 				F5CD0ACE15EC965600BBC11F /* openRepositoryTemplate.pdf */,
 				F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */,
 				F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */,
-				F5F63380111824CC007CC030 /* packageIcon2.png */,
 				F5B2996015E78704008BE0EF /* packageIcon_32x32.png */,
 				F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */,
+				F5F63380111824CC007CC030 /* packageIcon2.png */,
 				F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */,
 				F5CD0AD515ECA03200BBC11F /* reloadTemplate.pdf */,
 				F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */,
@@ -767,6 +782,20 @@
 			);
 			name = Singletons;
 			path = MunkiAdmin/Singletons;
+			sourceTree = "<group>";
+		};
+		F5D0909A1AFF511400146522 /* Manifest Editor Icons */ = {
+			isa = PBXGroup;
+			children = (
+				F5D0908C1AFF50FD00146522 /* manifestGeneralTemplate.pdf */,
+				F5D0908D1AFF50FD00146522 /* manifestIncludedManifestsTemplate.pdf */,
+				F5D0908E1AFF50FD00146522 /* manifestManagedInstallsTemplate.pdf */,
+				F5D0908F1AFF50FD00146522 /* manifestManagedUninstallsTemplate.pdf */,
+				F5D090901AFF50FD00146522 /* manifestManagedUpdatesTemplate.pdf */,
+				F5D090911AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf */,
+				F5D090921AFF50FD00146522 /* manifestReferencedManifestsTemplate.pdf */,
+			);
+			name = "Manifest Editor Icons";
 			sourceTree = "<group>";
 		};
 		F7239CF460E55FF626F5D99E /* Pods */ = {
@@ -920,9 +949,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5D090941AFF50FD00146522 /* manifestIncludedManifestsTemplate.pdf in Resources */,
+				F5D090931AFF50FD00146522 /* manifestGeneralTemplate.pdf in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */,
 				F569D4731916284C002FFF2B /* tagTemplate.pdf in Resources */,
+				F5D090951AFF50FD00146522 /* manifestManagedInstallsTemplate.pdf in Resources */,
+				F5D090971AFF50FD00146522 /* manifestManagedUpdatesTemplate.pdf in Resources */,
 				F58548171906F643001E4527 /* MARequestStringValueController.xib in Resources */,
 				F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */,
 				F5EC18331AAEE51800C88669 /* document.pdf in Resources */,
@@ -939,6 +972,7 @@
 				F5EA6ABB190F7ED100362FEE /* MAIconEditor.xib in Resources */,
 				FEC30F2214516392006747F6 /* MASelectManifestItemsWindow.xib in Resources */,
 				FE1C6B7B145A7A0300BC815F /* MAPackageNameEditor.xib in Resources */,
+				F5D090991AFF50FD00146522 /* manifestReferencedManifestsTemplate.pdf in Resources */,
 				FEE1A82F147BB82A00FA6E1E /* MunkiAdmin.icns in Resources */,
 				FEED6897149F3A7E006ABA1E /* MAAdvancedPackageEditor.xib in Resources */,
 				FEAC7C2214E3F66E00487016 /* MAPredicateEditor.xib in Resources */,
@@ -946,6 +980,7 @@
 				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
 				F5EC18341AAEE51800C88669 /* documents.pdf in Resources */,
 				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
+				F5D090981AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf in Resources */,
 				F55F764A1A822A44009356F4 /* MAIconBatchExtractor.xib in Resources */,
 				F5B2996215E78704008BE0EF /* packageIcon_32x32.png in Resources */,
 				F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */,
@@ -967,6 +1002,7 @@
 				F525FB96165E14B300DFF1B2 /* MunkiAdminIcon_32x32@2x.png in Resources */,
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
 				F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */,
+				F5D090961AFF50FD00146522 /* manifestManagedUninstallsTemplate.pdf in Resources */,
 				F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */,
 				F5EC182E1AAEE38400C88669 /* folder.pdf in Resources */,
 			);

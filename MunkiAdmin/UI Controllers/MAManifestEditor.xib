@@ -103,15 +103,8 @@
                                         <rect key="frame" x="3" y="2" width="260" height="36"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mvI-V9-6q8">
-                                                <rect key="frame" x="3" y="2" width="32" height="32"/>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="3jM-iT-kfv"/>
-                                                <connections>
-                                                    <binding destination="wRs-j4-v3Y" name="value" keyPath="objectValue.icon" id="ldE-dr-jlK"/>
-                                                </connections>
-                                            </imageView>
                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l0l-83-jiO">
-                                                <rect key="frame" x="41" y="18" width="218" height="14"/>
+                                                <rect key="frame" x="35" y="18" width="224" height="14"/>
                                                 <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="25d-xy-1j9">
                                                     <font key="font" metaFont="smallSystemBold"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -122,7 +115,7 @@
                                                 </connections>
                                             </textField>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oC8-2N-RsK">
-                                                <rect key="frame" x="41" y="4" width="218" height="14"/>
+                                                <rect key="frame" x="35" y="4" width="224" height="14"/>
                                                 <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="fx1-w5-VoW">
                                                     <font key="font" metaFont="smallSystem"/>
                                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -132,6 +125,13 @@
                                                     <binding destination="wRs-j4-v3Y" name="value" keyPath="objectValue.subtitle" id="bCE-5o-RdT"/>
                                                 </connections>
                                             </textField>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mvI-V9-6q8">
+                                                <rect key="frame" x="3" y="5" width="26" height="26"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="3jM-iT-kfv"/>
+                                                <connections>
+                                                    <binding destination="wRs-j4-v3Y" name="value" keyPath="objectValue.icon" id="ldE-dr-jlK"/>
+                                                </connections>
+                                            </imageView>
                                         </subviews>
                                         <connections>
                                             <outlet property="detailTextField" destination="oC8-2N-RsK" id="8qt-5N-0my"/>

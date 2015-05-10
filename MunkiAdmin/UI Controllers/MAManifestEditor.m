@@ -336,10 +336,18 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSDictionary *bindOptions = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSContinuouslyUpdatesValueBindingOption, nil];
     NSMutableArray *newSourceListItems = [NSMutableArray new];
     
+    NSImage *generalIcon = [NSImage imageNamed:@"manifestGeneralTemplate.pdf"];
+    NSImage *managedInstallsIcon = [NSImage imageNamed:@"manifestManagedInstallsTemplate.pdf"];
+    NSImage *managedUninstallsIcon = [NSImage imageNamed:@"manifestManagedUninstallsTemplate.pdf"];
+    NSImage *managedUpdatesIcon = [NSImage imageNamed:@"manifestManagedUpdatesTemplate.pdf"];
+    NSImage *optionalInstallsIcon = [NSImage imageNamed:@"manifestOptionalInstallsTemplate.pdf"];
+    NSImage *includedManifestsIcon = [NSImage imageNamed:@"manifestIncludedManifestsTemplate.pdf"];
+    NSImage *referencingManifestsIcon = [NSImage imageNamed:@"manifestReferencedManifestsTemplate.pdf"];
+    
     MAManifestEditorSection *generalSection = [MAManifestEditorSection new];
     generalSection.title = @"General";
     generalSection.tag = MAEditorSectionTagGeneral;
-    generalSection.icon = [NSImage imageNamed:NSImageNamePreferencesGeneral];
+    generalSection.icon = generalIcon;
     [generalSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.catalogsCountDescriptionString" options:bindOptions];
     generalSection.view = self.generalView;
     [newSourceListItems addObject:generalSection];
@@ -354,8 +362,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *managedInstallsSection = [MAManifestEditorSection new];
     managedInstallsSection.title = @"Managed Installs";
     managedInstallsSection.tag = MAEditorSectionTagManagedInstalls;
-    NSURL *installerURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.Installer"];
-    managedInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[installerURL path]];
+    managedInstallsSection.icon = managedInstallsIcon;
     [managedInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedInstallsCountDescription" options:bindOptions];
     managedInstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedInstallsSection];
@@ -364,7 +371,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *managedUninstallsSection = [MAManifestEditorSection new];
     managedUninstallsSection.title = @"Managed Uninstalls";
     managedUninstallsSection.tag = MAEditorSectionTagManagedUninstalls;
-    managedUninstallsSection.icon = [NSImage imageNamed:NSImageNamePreferencesGeneral];
+    managedUninstallsSection.icon = managedUninstallsIcon;
     [managedUninstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUninstallsCountDescription" options:bindOptions];
     managedUninstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedUninstallsSection];
@@ -372,8 +379,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *managedUpdatesSection = [MAManifestEditorSection new];
     managedUpdatesSection.title = @"Managed Updates";
     managedUpdatesSection.tag = MAEditorSectionTagManagedUpdates;
-    NSURL *suURL = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"com.apple.SoftwareUpdate"];
-    managedUpdatesSection.icon = [[NSWorkspace sharedWorkspace] iconForFile:[suURL path]];
+    managedUpdatesSection.icon = managedUpdatesIcon;
     [managedUpdatesSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.managedUpdatesCountDescription" options:bindOptions];
     managedUpdatesSection.view = self.contentItemsListView;
     [newSourceListItems addObject:managedUpdatesSection];
@@ -381,7 +387,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *optionalInstallsSection = [MAManifestEditorSection new];
     optionalInstallsSection.title = @"Optional Installs";
     optionalInstallsSection.tag = MAEditorSectionTagOptionalInstalls;
-    optionalInstallsSection.icon = [[NSWorkspace sharedWorkspace] iconForFileType:@"app"];
+    optionalInstallsSection.icon = optionalInstallsIcon;
     [optionalInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.optionalInstallsCountDescription" options:bindOptions];
     optionalInstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:optionalInstallsSection];
@@ -389,7 +395,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *includedManifestsSection = [MAManifestEditorSection new];
     includedManifestsSection.title = @"Included Manifests";
     includedManifestsSection.tag = MAEditorSectionTagIncludedManifests;
-    includedManifestsSection.icon = [NSImage imageNamed:@"manifestIcon_32x32"];
+    includedManifestsSection.icon = includedManifestsIcon;
     [includedManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.includedManifestsCountDescription" options:bindOptions];
     includedManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:includedManifestsSection];
@@ -397,7 +403,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAManifestEditorSection *referencingManifestsSection = [MAManifestEditorSection new];
     referencingManifestsSection.title = @"Referencing Manifests";
     referencingManifestsSection.tag = MAEditorSectionTagReferencingManifests;
-    referencingManifestsSection.icon = [NSImage imageNamed:@"manifestIcon_32x32"];
+    referencingManifestsSection.icon = referencingManifestsIcon;
     [referencingManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.referencingManifestsCountDescription" options:bindOptions];
     referencingManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:referencingManifestsSection];
