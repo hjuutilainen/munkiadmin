@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAEditorSectionTagManagedUpdates,
     MAEditorSectionTagOptionalInstalls,
     MAEditorSectionTagIncludedManifests,
+    MAEditorSectionTagReferencingManifests,
     MAEditorSectionTagConditionalItems
 };
 @property (strong) NSString *title;
@@ -392,6 +393,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [includedManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.includedManifestsCountDescription" options:bindOptions];
     includedManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:includedManifestsSection];
+    
+    MAManifestEditorSection *referencingManifestsSection = [MAManifestEditorSection new];
+    referencingManifestsSection.title = @"Referencing Manifests";
+    referencingManifestsSection.tag = MAEditorSectionTagReferencingManifests;
+    referencingManifestsSection.icon = [NSImage imageNamed:@"manifestIcon_32x32"];
+    [referencingManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.referencingManifestsCountDescription" options:bindOptions];
+    referencingManifestsSection.view = self.includedManifestsListView;
+    [newSourceListItems addObject:referencingManifestsSection];
     
     self.sourceListItems = [NSArray arrayWithArray:newSourceListItems];
 }

@@ -293,6 +293,12 @@
     return [NSString stringWithFormat:@"%lu included manifests", (unsigned long)all];
 }
 
+- (NSString *)referencingManifestsCountDescription
+{
+    NSSet *manifestStringObjects = [self.referencingStringObjects filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
+    return [NSString stringWithFormat:@"%lu referencing manifests", (unsigned long)[manifestStringObjects count]];
+}
+
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];
