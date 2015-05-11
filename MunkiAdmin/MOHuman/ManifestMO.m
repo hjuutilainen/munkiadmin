@@ -299,6 +299,18 @@
     return [NSString stringWithFormat:@"%lu referencing manifests", (unsigned long)[manifestStringObjects count]];
 }
 
+- (NSString *)conditionsCountDescription
+{
+    NSUInteger count = [self.conditionalItems count];
+    if (count == 0) {
+        return [NSString stringWithFormat:@"No conditions"];
+    } else if (count == 1) {
+        return [NSString stringWithFormat:@"1 condition"];
+    } else {
+        return [NSString stringWithFormat:@"%lu conditions", (unsigned long)[self.conditionalItems count]];
+    }
+}
+
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];

@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAEditorSectionTagOptionalInstalls,
     MAEditorSectionTagIncludedManifests,
     MAEditorSectionTagReferencingManifests,
-    MAEditorSectionTagConditionalItems
+    MAEditorSectionTagConditions
 };
 @property (strong) NSString *title;
 @property (strong) NSString *subtitle;
@@ -343,6 +343,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSImage *optionalInstallsIcon = [NSImage imageNamed:@"manifestOptionalInstallsTemplate.pdf"];
     NSImage *includedManifestsIcon = [NSImage imageNamed:@"manifestIncludedManifestsTemplate.pdf"];
     NSImage *referencingManifestsIcon = [NSImage imageNamed:@"manifestReferencedManifestsTemplate.pdf"];
+    NSImage *conditionsIcon = [NSImage imageNamed:@"manifestConditionsTemplate.pdf"];
     
     MAManifestEditorSection *generalSection = [MAManifestEditorSection new];
     generalSection.title = @"General";
@@ -407,6 +408,15 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [referencingManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.referencingManifestsCountDescription" options:bindOptions];
     referencingManifestsSection.view = self.includedManifestsListView;
     [newSourceListItems addObject:referencingManifestsSection];
+    
+    MAManifestEditorSection *conditionsSection = [MAManifestEditorSection new];
+    conditionsSection.title = @"Conditions";
+    conditionsSection.tag = MAEditorSectionTagConditions;
+    conditionsSection.icon = conditionsIcon;
+    [conditionsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.conditionsCountDescription" options:bindOptions];
+    conditionsSection.view = self.includedManifestsListView;
+    [newSourceListItems addObject:conditionsSection];
+    
     
     self.sourceListItems = [NSArray arrayWithArray:newSourceListItems];
 }
