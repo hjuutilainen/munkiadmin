@@ -20,9 +20,11 @@
 @property (weak) IBOutlet NSView *generalView;
 @property (weak) IBOutlet NSView *contentItemsListView;
 @property (weak) IBOutlet NSView *includedManifestsListView;
+@property (weak) IBOutlet NSView *referencingManifestsListView;
 @property (weak) IBOutlet NSTableView *sourceListTableView;
 @property (weak) IBOutlet NSTableView *contentItemsTableView;
 @property (weak) IBOutlet NSTableView *includedManifestsTableView;
+@property (weak) IBOutlet NSTableView *referencingManifestsTableView;
 @property (weak) IBOutlet NSArrayController *editorSectionsArrayController;
 @property (weak) IBOutlet NSArrayController *catalogInfosArrayController;
 @property (weak) IBOutlet NSArrayController *conditionalItemsArrayController;

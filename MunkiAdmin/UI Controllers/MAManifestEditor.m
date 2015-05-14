@@ -406,7 +406,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     referencingManifestsSection.tag = MAEditorSectionTagReferencingManifests;
     referencingManifestsSection.icon = referencingManifestsIcon;
     [referencingManifestsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.referencingManifestsCountDescription" options:bindOptions];
-    referencingManifestsSection.view = self.includedManifestsListView;
+    referencingManifestsSection.view = self.referencingManifestsListView;
     [newSourceListItems addObject:referencingManifestsSection];
     
     MAManifestEditorSection *conditionsSection = [MAManifestEditorSection new];
@@ -508,8 +508,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             [self.includedManifestsTableView bind:NSContentBinding toObject:self.includedManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.includedManifestsTableView bind:NSSelectionIndexesBinding toObject:self.includedManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
         } else if (selected.tag == MAEditorSectionTagReferencingManifests) {
-            [self.includedManifestsTableView bind:NSContentBinding toObject:self.referencingManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
-            [self.includedManifestsTableView bind:NSSelectionIndexesBinding toObject:self.referencingManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
+            [self.referencingManifestsTableView bind:NSContentBinding toObject:self.referencingManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.referencingManifestsTableView bind:NSSelectionIndexesBinding toObject:self.referencingManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
         }
         [self setContentView:selected.view];
         self.currentDetailView = selected.view;
@@ -559,6 +559,22 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             if (selected.tag == MAEditorSectionTagIncludedManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
             } else if (selected.tag == MAEditorSectionTagReferencingManifests) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.originalManifestConditionalReference" options:nil];
+            }
+            
+        }
+    } else if (tableView == self.referencingManifestsTableView) {
+        /*
+         Create the correct bindings for the condition column
+         */
+        if ([tableColumn.identifier isEqualToString:@"tableColumnCondition"]) {
+            NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES,
+                                          NSNullPlaceholderBindingOption: @"--"};
+            ItemCellView *itemCellView = (ItemCellView *)view;
+            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
+            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
+            MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
+            if (selected.tag == MAEditorSectionTagReferencingManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.originalManifestConditionalReference" options:nil];
             }
             
