@@ -10,6 +10,7 @@
 #import "DataModelHeaders.h"
 #import "MASelectManifestItemsWindow.h"
 #import "MASelectPkginfoItemsWindow.h"
+#import "MAMunkiAdmin_AppDelegate.h"
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -81,8 +82,27 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.managedUpdatesArrayController.sortDescriptors = @[sortByTitle];
     self.managedUninstallsArrayController.sortDescriptors = @[sortByTitle];
     self.optionalInstallsArrayController.sortDescriptors = @[sortByTitle];
+    self.includedManifestsArrayController.sortDescriptors = @[sortByTitle];
+    
+    NSSortDescriptor *sortByReferenceTitle = [NSSortDescriptor sortDescriptorWithKey:@"manifestReference.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.referencingManifestsArrayController.sortDescriptors = @[sortByReferenceTitle];
+    //self.referencingManifestsTableView.target = self;
+    //self.referencingManifestsTableView.doubleAction = @selector(referencingManifestDoubleClick:);
+    
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"ConditionalItem" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescription];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    self.conditionalItemsAllArrayController.content = fetchResults;
+    [self.conditionalItemsAllArrayController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
     
     [self setupSourceList];
+}
+
+- (void)referencingManifestDoubleClick:(id)sender
+{
+    
 }
 
 - (void)awakeFromNib
@@ -99,6 +119,44 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
+}
+
+- (IBAction)addNewReferencingManifestAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
+        [self.window beginSheet:[self.selectManifestsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseOK) {
+                [self processAddItemsAction];
+            }
+        }];
+    } else {
+        [NSApp beginSheet:[self.selectManifestsWindowController window]
+           modalForWindow:self.window modalDelegate:self
+           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    }
+    
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
+    
+    for (StringObjectMO *aNestedManifest in selectedManifest.includedManifestsFaster) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+        [tempPredicates addObject:newPredicate];
+    }
+    
+    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
+        for (StringObjectMO *aNestedManifest in conditional.includedManifests) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+            [tempPredicates addObject:newPredicate];
+        }
+    }
+    
+    NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
+    [tempPredicates addObject:denySelfPred];
+    NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
+    [self.selectManifestsWindowController setOriginalPredicate:compPred];
+    [self.selectManifestsWindowController updateSearchPredicate];
 }
 
 - (IBAction)addNewIncludedManifestAction:(id)sender
@@ -568,21 +626,33 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
          Create the correct bindings for the condition column
          */
         if ([tableColumn.identifier isEqualToString:@"tableColumnCondition"]) {
-            NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES,
-                                          NSNullPlaceholderBindingOption: @"--"};
+            NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES, NSNullPlaceholderBindingOption: @"--"};
             ItemCellView *itemCellView = (ItemCellView *)view;
-            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
-            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
+            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsAllArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
+            
+            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsAllArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
+            
             MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
             if (selected.tag == MAEditorSectionTagReferencingManifests) {
-                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.originalManifestConditionalReference" options:nil];
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
             }
-            
+        } else if ([tableColumn.identifier isEqualToString:@"tableColumnManifestTitle"]) {
+            NSTableCellView *tableCellView = (NSTableCellView *)view;
+            StringObjectMO *current = [self.referencingManifestsArrayController.arrangedObjects objectAtIndex:(NSUInteger)row];
+            if (current.manifestReference) {
+                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.manifestReference.title" options:nil];
+            } else {
+                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.includedManifestConditionalReference.manifest.title" options:nil];
+            }
         }
     }
     return view;
 }
 
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    
+}
 
 
 - (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize

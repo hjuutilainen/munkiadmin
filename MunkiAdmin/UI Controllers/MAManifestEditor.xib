@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MAManifestEditor">
             <connections>
                 <outlet property="catalogInfosArrayController" destination="QPx-VZ-YQx" id="8tN-fa-TCO"/>
+                <outlet property="conditionalItemsAllArrayController" destination="4hp-Ig-Qph" id="8yL-19-hYy"/>
                 <outlet property="conditionalItemsArrayController" destination="vmy-ac-fMW" id="1h0-cq-3i5"/>
                 <outlet property="contentItemsListView" destination="y2e-a5-MQT" id="svB-xy-nCw"/>
                 <outlet property="contentItemsTableView" destination="V1f-vn-k7a" id="VWe-KL-djE"/>
@@ -23,6 +24,7 @@
                 <outlet property="managedUpdatesArrayController" destination="8ah-wn-8sf" id="vtq-PB-vRb"/>
                 <outlet property="optionalInstallsArrayController" destination="HKL-gQ-lir" id="MIh-5l-MP9"/>
                 <outlet property="referencingManifestsArrayController" destination="ZVl-hH-R4M" id="Cbw-pj-NAb"/>
+                <outlet property="referencingManifestsConditionMenu" destination="qZd-b6-EF0" id="MtR-3b-Tmn"/>
                 <outlet property="referencingManifestsListView" destination="0uI-82-Vv8" id="fea-AJ-it1"/>
                 <outlet property="referencingManifestsTableView" destination="pHl-bS-r8s" id="6w9-Sz-sZm"/>
                 <outlet property="sourceListPlaceHolder" destination="HMM-wb-Pay" id="SBM-k5-5nw"/>
@@ -36,7 +38,7 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="777" height="466"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <value key="minSize" type="size" width="600" height="400"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="777" height="466"/>
@@ -924,7 +926,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="216.16015625" minWidth="40" maxWidth="1000" id="QMf-b7-hzz">
+                                    <tableColumn identifier="tableColumnManifestTitle" editable="NO" width="216.16015625" minWidth="40" maxWidth="1000" id="QMf-b7-hzz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Manifest">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -945,13 +947,10 @@
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="3XN-tJ-Vep">
                                                         <rect key="frame" x="1" y="4" width="91" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="T51-BG-EEt">
-                                                            <font key="font" metaFont="titleBar" size="12"/>
+                                                            <font key="font" metaFont="cellTitle"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
-                                                        <connections>
-                                                            <binding destination="MWL-DT-bYH" name="value" keyPath="objectValue.manifestReference.title" id="ViO-5b-3y6"/>
-                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
@@ -971,12 +970,12 @@
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <popUpButtonCell key="dataCell" type="bevel" title="Pop Up" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="yUM-1L-b2d">
+                                        <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="yUM-1L-b2d">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="smallSystem"/>
                                             <menu key="menu" title="OtherViews" id="oQI-jv-nCv">
                                                 <items>
-                                                    <menuItem title="Pop Up" state="on" id="XUo-Wa-3gW"/>
+                                                    <menuItem title="Pop Up" id="XUo-Wa-3gW"/>
                                                 </items>
                                             </menu>
                                         </popUpButtonCell>
@@ -988,15 +987,18 @@
                                                 <subviews>
                                                     <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="TMp-2H-peP">
                                                         <rect key="frame" x="3" y="3" width="224" height="18"/>
-                                                        <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="regularSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="4UW-ng-C1I" id="pge-tk-ADC">
+                                                        <popUpButtonCell key="cell" type="bevel" bezelStyle="regularSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="pge-tk-ADC">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <menu key="menu" id="qZd-b6-EF0">
+                                                            <menu key="menu" title="Referencing Manifest Condition Menu" id="qZd-b6-EF0">
                                                                 <items>
-                                                                    <menuItem title="Item 1" state="on" id="4UW-ng-C1I"/>
+                                                                    <menuItem title="Item 1" id="4UW-ng-C1I"/>
                                                                     <menuItem title="Item 2" id="vtp-5G-fYS"/>
                                                                     <menuItem title="Item 3" id="aYm-Lp-d5J"/>
                                                                 </items>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="-2" id="ffV-Qv-HhM"/>
+                                                                </connections>
                                                             </menu>
                                                         </popUpButtonCell>
                                                     </popUpButton>
@@ -1087,6 +1089,7 @@
             </constraints>
             <point key="canvasLocation" x="856.5" y="671"/>
         </customView>
+        <arrayController avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="4hp-Ig-Qph" userLabel="All Conditional Items"/>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>

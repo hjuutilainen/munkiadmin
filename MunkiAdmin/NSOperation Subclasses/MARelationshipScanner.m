@@ -218,6 +218,7 @@ static const int BatchSize = 50;
                 anOptionalInstall.originalPackage = matchingObject;
             }
         }
+        /*
         for (StringObjectMO *includedManifest in currentManifest.includedManifestsFaster) {
             DDLogError(@"%@: linking included_manifest object %@", currentManifest.fileName, includedManifest.title);
             if ([self.allManifestsByTitle objectForKey:includedManifest.title]) {
@@ -227,6 +228,7 @@ static const int BatchSize = 50;
                 DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
             }
         }
+         */
         
         if (idx % progressGranularity == 0) {
             double percentage = (idx / (float)[self.allManifests count]) * 100.0;

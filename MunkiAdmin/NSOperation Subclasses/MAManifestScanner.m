@@ -126,8 +126,8 @@ DDLogLevel ddLogLevel;
             newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
             [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
             
-            if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
-                newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
+            if ([self.allManifestsByTitle objectForKey:(NSString *)includedManifestName]) {
+                newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)includedManifestName];
             } else {
                 DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
             }

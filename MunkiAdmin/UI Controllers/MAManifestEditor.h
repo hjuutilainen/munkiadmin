@@ -12,7 +12,7 @@
 @class MASelectPkginfoItemsWindow;
 @class MASelectManifestItemsWindow;
 
-@interface MAManifestEditor : NSWindowController <NSSplitViewDelegate, NSTableViewDelegate, NSTableViewDataSource>
+@interface MAManifestEditor : NSWindowController <NSSplitViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSMenuDelegate>
 
 @property (weak) IBOutlet NSSplitView *mainSplitView;
 @property (weak) IBOutlet NSView *sourceListPlaceHolder;
@@ -28,12 +28,14 @@
 @property (weak) IBOutlet NSArrayController *editorSectionsArrayController;
 @property (weak) IBOutlet NSArrayController *catalogInfosArrayController;
 @property (weak) IBOutlet NSArrayController *conditionalItemsArrayController;
+@property (weak) IBOutlet NSArrayController *conditionalItemsAllArrayController;
 @property (weak) IBOutlet NSArrayController *managedInstallsArrayController;
 @property (weak) IBOutlet NSArrayController *managedUninstallsArrayController;
 @property (weak) IBOutlet NSArrayController *managedUpdatesArrayController;
 @property (weak) IBOutlet NSArrayController *optionalInstallsArrayController;
 @property (weak) IBOutlet NSArrayController *includedManifestsArrayController;
 @property (weak) IBOutlet NSArrayController *referencingManifestsArrayController;
+@property (weak) IBOutlet NSMenu *referencingManifestsConditionMenu;
 @property (weak) IBOutlet NSTableCellView *conditionalsTableCellView;
 @property (weak) IBOutlet NSPopUpButton *conditionalsPopupButton;
 @property (strong) IBOutlet NSScrollView *sourceListView;
