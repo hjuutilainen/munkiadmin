@@ -24,7 +24,6 @@
                 <outlet property="managedUpdatesArrayController" destination="8ah-wn-8sf" id="vtq-PB-vRb"/>
                 <outlet property="optionalInstallsArrayController" destination="HKL-gQ-lir" id="MIh-5l-MP9"/>
                 <outlet property="referencingManifestsArrayController" destination="ZVl-hH-R4M" id="Cbw-pj-NAb"/>
-                <outlet property="referencingManifestsConditionMenu" destination="qZd-b6-EF0" id="MtR-3b-Tmn"/>
                 <outlet property="referencingManifestsListView" destination="0uI-82-Vv8" id="fea-AJ-it1"/>
                 <outlet property="referencingManifestsTableView" destination="pHl-bS-r8s" id="6w9-Sz-sZm"/>
                 <outlet property="sourceListPlaceHolder" destination="HMM-wb-Pay" id="SBM-k5-5nw"/>
@@ -38,7 +37,7 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="777" height="466"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="600" height="400"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="777" height="466"/>
@@ -374,7 +373,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="24" headerView="GdV-7o-fS0" viewBased="YES" id="V1f-vn-k7a">
-                                <rect key="frame" x="0.0" y="0.0" width="481" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="480.5" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -471,7 +470,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="s6G-43-Uqo">
-                                                <rect key="frame" x="218" y="1" width="110" height="24"/>
+                                                <rect key="frame" x="218" y="1" width="109" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Lc9-01-QqO">
@@ -964,52 +963,39 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="tableColumnCondition" width="230" minWidth="10" maxWidth="3.4028234663852886e+38" id="o0M-Q7-1g4">
+                                    <tableColumn identifier="tableColumnConditionTitle" editable="NO" width="230.01171875" minWidth="10" maxWidth="3.4028234663852886e+38" id="RNO-zM-rbB">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <popUpButtonCell key="dataCell" type="bevel" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="bezel" imageScaling="proportionallyDown" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="yUM-1L-b2d">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                        <textFieldCell key="dataCell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="XKc-SI-BQw">
                                             <font key="font" metaFont="smallSystem"/>
-                                            <menu key="menu" title="OtherViews" id="oQI-jv-nCv">
-                                                <items>
-                                                    <menuItem title="Pop Up" id="XUo-Wa-3gW"/>
-                                                </items>
-                                            </menu>
-                                        </popUpButtonCell>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView id="4MS-tp-P8i" customClass="ItemCellView">
+                                            <tableCellView id="gVk-ho-3bk" customClass="ItemCellView">
                                                 <rect key="frame" x="249" y="1" width="230" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="TMp-2H-peP">
-                                                        <rect key="frame" x="3" y="3" width="224" height="18"/>
-                                                        <popUpButtonCell key="cell" type="bevel" bezelStyle="regularSquare" alignment="left" controlSize="small" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="pge-tk-ADC">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="wbW-fj-GtQ">
+                                                        <rect key="frame" x="1" y="5" width="84" height="14"/>
+                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="jKc-Jd-RzZ">
                                                             <font key="font" metaFont="smallSystem"/>
-                                                            <menu key="menu" title="Referencing Manifest Condition Menu" id="qZd-b6-EF0">
-                                                                <items>
-                                                                    <menuItem title="Item 1" id="4UW-ng-C1I"/>
-                                                                    <menuItem title="Item 2" id="vtp-5G-fYS"/>
-                                                                    <menuItem title="Item 3" id="aYm-Lp-d5J"/>
-                                                                </items>
-                                                                <connections>
-                                                                    <outlet property="delegate" destination="-2" id="ffV-Qv-HhM"/>
-                                                                </connections>
-                                                            </menu>
-                                                        </popUpButtonCell>
-                                                    </popUpButton>
+                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="centerY" secondItem="TMp-2H-peP" secondAttribute="centerY" id="IFW-cT-qu1"/>
-                                                    <constraint firstAttribute="trailing" secondItem="TMp-2H-peP" secondAttribute="trailing" constant="3" id="Njm-Al-Soh"/>
-                                                    <constraint firstItem="TMp-2H-peP" firstAttribute="leading" secondItem="4MS-tp-P8i" secondAttribute="leading" constant="3" id="fku-dh-z3g"/>
+                                                    <constraint firstItem="wbW-fj-GtQ" firstAttribute="leading" secondItem="gVk-ho-3bk" secondAttribute="leading" constant="3" id="EE1-nu-wNA"/>
+                                                    <constraint firstItem="wbW-fj-GtQ" firstAttribute="centerY" secondItem="gVk-ho-3bk" secondAttribute="centerY" id="Slj-ek-Z4k"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wbW-fj-GtQ" secondAttribute="trailing" constant="3" id="zGh-fC-l6S"/>
                                                 </constraints>
                                                 <connections>
-                                                    <outlet property="popupButton" destination="TMp-2H-peP" id="XVC-cR-FjT"/>
+                                                    <outlet property="textField" destination="wbW-fj-GtQ" id="D0O-WV-LKZ"/>
                                                 </connections>
                                             </tableCellView>
                                         </prototypeCellViews>
@@ -1050,7 +1036,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="removeIncludedManifestAction:" target="-2" id="35V-86-USW"/>
+                                <action selector="removeItemsAction:" target="-2" id="ytE-xJ-v9q"/>
                             </connections>
                         </button>
                         <button toolTip="Add new empty item" translatesAutoresizingMaskIntoConstraints="NO" id="Ngu-hJ-foK">
@@ -1063,7 +1049,7 @@
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
-                                <action selector="addNewIncludedManifestAction:" target="-2" id="R8T-Oi-ZFt"/>
+                                <action selector="addNewReferencingManifestAction:" target="-2" id="TvS-AG-Hej"/>
                             </connections>
                         </button>
                     </subviews>

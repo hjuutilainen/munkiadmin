@@ -94,6 +94,7 @@
             StringObjectMO *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:mainContext];
             newItem.title = aManifest.title;
             newItem.typeString = @"includedManifest";
+            newItem.manifestReference = aManifest;
             [items addObject:newItem];
         }
     } else if ([selectedTabViewLabel isEqualToString:@"Custom"]) {

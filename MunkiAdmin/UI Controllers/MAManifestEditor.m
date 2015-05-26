@@ -140,14 +140,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     ManifestMO *selectedManifest = self.manifestToEdit;
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *aNestedManifest in selectedManifest.includedManifestsFaster) {
-        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+    for (StringObjectMO *referencingManifest in selectedManifest.referencingManifests) {
+        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.manifestReference.title];
         [tempPredicates addObject:newPredicate];
     }
     
     for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
-        for (StringObjectMO *aNestedManifest in conditional.includedManifests) {
-            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", aNestedManifest.title];
+        for (StringObjectMO *referencingManifest in conditional.referencingManifests) {
+            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.manifestReference.title];
             [tempPredicates addObject:newPredicate];
         }
     }
@@ -202,7 +202,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSArray *selectedItems = [self.addItemsWindowController selectionAsStringObjects];
-    NSArray *selectedManifests = [self.selectManifestsWindowController selectionAsStringObjects];
+    
     
     MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
     switch (selected.tag) {
@@ -231,8 +231,20 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             break;
         
         case MAEditorSectionTagIncludedManifests:
-            for (StringObjectMO *selectedItem in selectedManifests) {
+            for (StringObjectMO *selectedItem in [self.selectManifestsWindowController selectionAsStringObjects]) {
                 [self.manifestToEdit addIncludedManifestsFasterObject:selectedItem];
+            }
+            break;
+        
+        case MAEditorSectionTagReferencingManifests:
+            for (ManifestMO *aManifest in [self.selectManifestsWindowController.manifestsArrayController selectedObjects]) {
+                StringObjectMO *manifestToEditAsStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:aManifest.managedObjectContext];
+                manifestToEditAsStringObject.title = self.manifestToEdit.title;
+                manifestToEditAsStringObject.typeString = @"includedManifest";
+                manifestToEditAsStringObject.originalIndex = [NSNumber numberWithUnsignedInteger:999];
+                manifestToEditAsStringObject.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:999];
+                manifestToEditAsStringObject.originalManifest = self.manifestToEdit;
+                [aManifest addIncludedManifestsFasterObject:manifestToEditAsStringObject];
             }
             break;
             
@@ -361,6 +373,13 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             
         case MAEditorSectionTagOptionalInstalls:
             for (StringObjectMO *selectedItem in [self.optionalInstallsArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+            
+        case MAEditorSectionTagReferencingManifests:
+            for (StringObjectMO *selectedItem in [self.referencingManifestsArrayController selectedObjects]) {
+                
                 [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
             }
             break;
@@ -625,17 +644,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         /*
          Create the correct bindings for the condition column
          */
-        if ([tableColumn.identifier isEqualToString:@"tableColumnCondition"]) {
+        if ([tableColumn.identifier isEqualToString:@"tableColumnConditionTitle"]) {
+            
             NSDictionary *bindOptions = @{NSInsertsNullPlaceholderBindingOption: @YES, NSNullPlaceholderBindingOption: @"--"};
-            ItemCellView *itemCellView = (ItemCellView *)view;
-            [itemCellView.popupButton bind:NSContentBinding toObject:self.conditionalItemsAllArrayController withKeyPath:@"arrangedObjects" options:bindOptions];
-            
-            [itemCellView.popupButton bind:NSContentValuesBinding toObject:self.conditionalItemsAllArrayController withKeyPath:@"arrangedObjects.titleWithParentTitle" options:bindOptions];
-            
-            MAManifestEditorSection *selected = [self.editorSectionsArrayController selectedObjects][0];
-            if (selected.tag == MAEditorSectionTagReferencingManifests) {
-                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
-            }
+            NSTableCellView *tableCellView = (NSTableCellView *)view;
+            [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.includedManifestConditionalReference.munki_condition" options:bindOptions];
         } else if ([tableColumn.identifier isEqualToString:@"tableColumnManifestTitle"]) {
             NSTableCellView *tableCellView = (NSTableCellView *)view;
             StringObjectMO *current = [self.referencingManifestsArrayController.arrangedObjects objectAtIndex:(NSUInteger)row];
