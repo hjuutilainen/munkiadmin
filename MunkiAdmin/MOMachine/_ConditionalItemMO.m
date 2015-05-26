@@ -149,5 +149,14 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic referencingManifests;
 
+- (NSMutableSet*)referencingManifestsSet {
+	[self willAccessValueForKey:@"referencingManifests"];
+
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingManifests"];
+
+	[self didAccessValueForKey:@"referencingManifests"];
+	return result;
+}
+
 @end
 

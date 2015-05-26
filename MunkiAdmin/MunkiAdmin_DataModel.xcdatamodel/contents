@@ -49,7 +49,7 @@
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="conditionalItems" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="optionalInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="children" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
-        <relationship name="referencingManifests" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StringObject" inverseName="originalManifestConditionalReference" inverseEntity="StringObject" syncable="YES"/>
+        <relationship name="referencingManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="originalManifestConditionalReference" inverseEntity="StringObject" syncable="YES"/>
     </entity>
     <entity name="Developer" representedClassName="DeveloperMO" syncable="YES">
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>

@@ -83,9 +83,9 @@ extern const struct ConditionalItemMORelationships {
 
 //- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) StringObjectMO *referencingManifests;
+@property (nonatomic, strong) NSSet *referencingManifests;
 
-//- (BOOL)validateReferencingManifests:(id*)value_ error:(NSError**)error_;
+- (NSMutableSet*)referencingManifestsSet;
 
 @end
 
@@ -137,6 +137,14 @@ extern const struct ConditionalItemMORelationships {
 
 @end
 
+@interface _ConditionalItemMO (ReferencingManifestsCoreDataGeneratedAccessors)
+- (void)addReferencingManifests:(NSSet*)value_;
+- (void)removeReferencingManifests:(NSSet*)value_;
+- (void)addReferencingManifestsObject:(StringObjectMO*)value_;
+- (void)removeReferencingManifestsObject:(StringObjectMO*)value_;
+
+@end
+
 @interface _ConditionalItemMO (CoreDataGeneratedPrimitiveAccessors)
 
 - (NSString*)primitiveMunki_condition;
@@ -172,7 +180,7 @@ extern const struct ConditionalItemMORelationships {
 - (ConditionalItemMO*)primitiveParent;
 - (void)setPrimitiveParent:(ConditionalItemMO*)value;
 
-- (StringObjectMO*)primitiveReferencingManifests;
-- (void)setPrimitiveReferencingManifests:(StringObjectMO*)value;
+- (NSMutableSet*)primitiveReferencingManifests;
+- (void)setPrimitiveReferencingManifests:(NSMutableSet*)value;
 
 @end
