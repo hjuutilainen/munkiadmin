@@ -26,7 +26,7 @@
 - (void)updateSearchPredicate
 {
     if ([[self.existingSearchField stringValue] isEqualToString:@""]) {
-        [self.manifestsArrayController setFilterPredicate:nil];
+        [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
     } else {
         NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@", [self.existingSearchField stringValue]];
         NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.originalPredicate, nil]];
