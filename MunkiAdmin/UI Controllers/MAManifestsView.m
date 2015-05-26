@@ -213,8 +213,8 @@ DDLogLevel ddLogLevel;
     /*
      Predicates
      */
-    NSPredicate *noReferencingManifests     = [NSPredicate predicateWithFormat:@"referencingStringObjects.@count = 0"];
-    NSPredicate *hasReferencingManifests    = [NSPredicate predicateWithFormat:@"referencingStringObjects.@count > 0"];
+    NSPredicate *noReferencingManifests     = [NSPredicate predicateWithFormat:@"referencingManifests.@count = 0"];
+    NSPredicate *hasReferencingManifests    = [NSPredicate predicateWithFormat:@"referencingManifests.@count > 0"];
     NSPredicate *hasIncludedManifests       = [NSPredicate predicateWithFormat:@"includedManifestsFaster.@count > 0 OR (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count != 0)"];
     NSPredicate *noIncludedManifests        = [NSPredicate predicateWithFormat:@"(includedManifestsFaster.@count == 0) AND (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count == 0)"];
     
