@@ -137,22 +137,19 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
            didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
     }
     
-    ManifestMO *selectedManifest = self.manifestToEdit;
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
     
-    for (StringObjectMO *referencingManifest in selectedManifest.referencingManifests) {
-        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.manifestReference.title];
+    for (StringObjectMO *referencingManifest in self.manifestToEdit.referencingManifests) {
+        NSPredicate *newPredicate;
+        if (referencingManifest.manifestReference) {
+            newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.manifestReference.title];
+        } else {
+            newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.includedManifestConditionalReference.manifest.title];
+        }
         [tempPredicates addObject:newPredicate];
     }
     
-    for (ConditionalItemMO *conditional in selectedManifest.conditionalItems) {
-        for (StringObjectMO *referencingManifest in conditional.referencingManifests) {
-            NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"title != %@", referencingManifest.manifestReference.title];
-            [tempPredicates addObject:newPredicate];
-        }
-    }
-    
-    NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", selectedManifest.title];
+    NSPredicate *denySelfPred = [NSPredicate predicateWithFormat:@"title != %@", self.manifestToEdit.title];
     [tempPredicates addObject:denySelfPred];
     NSPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates:tempPredicates];
     [self.selectManifestsWindowController setOriginalPredicate:compPred];
