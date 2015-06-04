@@ -11,9 +11,11 @@
 @class ManifestMO;
 @class MASelectPkginfoItemsWindow;
 @class MASelectManifestItemsWindow;
+@class MAManifestsView;
 
 @interface MAManifestEditor : NSWindowController <NSSplitViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSMenuDelegate>
 
+@property (weak) MAManifestsView *delegate;
 @property (weak) IBOutlet NSSplitView *mainSplitView;
 @property (weak) IBOutlet NSView *sourceListPlaceHolder;
 @property (weak) IBOutlet NSView *contentViewPlaceHolder;
@@ -43,5 +45,6 @@
 @property (assign) ManifestMO *manifestToEdit;
 @property (strong) MASelectPkginfoItemsWindow *addItemsWindowController;
 @property (strong) MASelectManifestItemsWindow *selectManifestsWindowController;
+
 
 @end

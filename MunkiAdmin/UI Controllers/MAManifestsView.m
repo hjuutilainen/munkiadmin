@@ -37,6 +37,7 @@ DDLogLevel ddLogLevel;
     [super viewDidLoad];
     
     self.manifestEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
+    self.openedManifestEditors = [NSMutableDictionary new];
     
     self.predicateEditorHidden = YES;
     self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
@@ -90,16 +91,28 @@ DDLogLevel ddLogLevel;
     [self.manifestsListTableView setDoubleAction:@selector(didDoubleClickManifest:)];
 }
 
+- (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest
+{
+    MAManifestEditor *existingEditor = [self.openedManifestEditors objectForKey:manifest.objectID.description];
+    if (!existingEditor) {
+        MAManifestEditor *newEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
+        newEditor.manifestToEdit = manifest;
+        newEditor.delegate = self;
+        [self.openedManifestEditors setObject:newEditor forKey:manifest.objectID.description];
+        
+        return newEditor;
+    } else {
+        return existingEditor;
+    }
+}
+
 - (void)didDoubleClickManifest:(id)sender
 {
     for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
-        DDLogError(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
+        DDLogVerbose(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
+        MAManifestEditor *editor = [self editorForManifest:manifest];
+        [editor showWindow:nil];
     }
-    
-    self.manifestEditor.manifestToEdit = [self.manifestsArrayController selectedObjects][0];
-    [self.manifestEditor.window center];
-    [self.manifestEditor showWindow:nil];
-    
 }
 
 - (void)rowsChanged:(NSNotification *)aNotification

@@ -11,6 +11,7 @@
 #import "MASelectManifestItemsWindow.h"
 #import "MASelectPkginfoItemsWindow.h"
 #import "MAMunkiAdmin_AppDelegate.h"
+#import "MAManifestsView.h"
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -86,8 +87,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     NSSortDescriptor *sortByReferenceTitle = [NSSortDescriptor sortDescriptorWithKey:@"manifestReference.title" ascending:YES selector:@selector(localizedStandardCompare:)];
     self.referencingManifestsArrayController.sortDescriptors = @[sortByReferenceTitle];
-    //self.referencingManifestsTableView.target = self;
-    //self.referencingManifestsTableView.doubleAction = @selector(referencingManifestDoubleClick:);
+    self.referencingManifestsTableView.target = self;
+    self.referencingManifestsTableView.doubleAction = @selector(referencingManifestDoubleClick:);
+    
+    self.includedManifestsTableView.target = self;
+    self.includedManifestsTableView.doubleAction = @selector(includedManifestDoubleClick:);
     
     NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"ConditionalItem" inManagedObjectContext:moc];
@@ -100,9 +104,39 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [self setupSourceList];
 }
 
+- (void)includedManifestDoubleClick:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    for (StringObjectMO *clickedObject in self.includedManifestsArrayController.selectedObjects) {
+        ManifestMO *manifest;
+        if (clickedObject.originalManifest) {
+            //DDLogError(@"Double clicked: %@", [clickedObject.originalManifest description]);
+            manifest = clickedObject.originalManifest;
+            MAManifestEditor *editor = [self.delegate editorForManifest:manifest];
+            [editor showWindow:nil];
+        } else {
+            DDLogError(@"Double clicked object has no originalManifest reference");
+            DDLogError(@"%@", [clickedObject description]);
+        }
+    }
+}
+
 - (void)referencingManifestDoubleClick:(id)sender
 {
-    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    for (StringObjectMO *clickedObject in self.referencingManifestsArrayController.selectedObjects) {
+        ManifestMO *manifest;
+        if (clickedObject.manifestReference) {
+            //DDLogError(@"Double clicked: %@", [clickedObject.manifestReference description]);
+            manifest = clickedObject.manifestReference;
+        } else {
+            //DDLogError(@"Double clicked: %@", [clickedObject.includedManifestConditionalReference.manifest description]);
+            manifest = clickedObject.includedManifestConditionalReference.manifest;
+        }
+        MAManifestEditor *editor = [self.delegate editorForManifest:manifest];
+        [editor showWindow:nil];
+    }
 }
 
 - (void)awakeFromNib

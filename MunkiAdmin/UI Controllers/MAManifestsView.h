@@ -10,6 +10,7 @@
 #import "PXSourceList.h"
 
 @class MAManifestEditor;
+@class ManifestMO;
 
 @interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate>
 
@@ -28,6 +29,7 @@
 @property (strong) NSPredicate *previousPredicateEditorPredicate;
 @property (strong) NSArray *defaultSortDescriptors;
 @property (strong) MAManifestEditor *manifestEditor;
+@property (strong) NSMutableDictionary *openedManifestEditors;
 
 - (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item;
 - (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item;
@@ -35,5 +37,6 @@
 - (NSView *)sourceList:(PXSourceList *)aSourceList viewForItem:(id)item;
 - (void)updateSourceListData;
 - (void)toggleManifestsFindView;
+- (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest;
 
 @end
