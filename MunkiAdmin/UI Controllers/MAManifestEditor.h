@@ -23,6 +23,7 @@
 @property (weak) IBOutlet NSView *contentItemsListView;
 @property (weak) IBOutlet NSView *includedManifestsListView;
 @property (weak) IBOutlet NSView *referencingManifestsListView;
+@property (weak) IBOutlet NSView *conditionalsListView;
 @property (weak) IBOutlet NSTableView *sourceListTableView;
 @property (weak) IBOutlet NSTableView *contentItemsTableView;
 @property (weak) IBOutlet NSTableView *includedManifestsTableView;
@@ -40,6 +41,8 @@
 @property (weak) IBOutlet NSMenu *referencingManifestsConditionMenu;
 @property (weak) IBOutlet NSTableCellView *conditionalsTableCellView;
 @property (weak) IBOutlet NSPopUpButton *conditionalsPopupButton;
+@property (weak) IBOutlet NSOutlineView *conditionsOutlineView;
+@property (weak) IBOutlet NSTreeController *conditionsTreeController;
 @property (strong) IBOutlet NSScrollView *sourceListView;
 @property (strong) NSArray *sourceListItems;
 @property (assign) ManifestMO *manifestToEdit;

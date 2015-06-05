@@ -258,7 +258,15 @@
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedInstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSString stringWithFormat:@"%lu managed installs", (unsigned long)all];
+    if (all == 0) {
+        return @"No managed installs";
+    } else if (all == 1) {
+        return @"1 managed install";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu managed installs", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)managedUninstallsCountDescription
@@ -266,7 +274,15 @@
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUninstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUninstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSString stringWithFormat:@"%lu managed uninstalls", (unsigned long)all];
+    if (all == 0) {
+        return @"No managed uninstalls";
+    } else if (all == 1) {
+        return @"1 managed uninstall";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu managed uninstalls", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)managedUpdatesCountDescription
@@ -274,7 +290,15 @@
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUpdates"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUpdatesFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSString stringWithFormat:@"%lu managed updates", (unsigned long)all];
+    if (all == 0) {
+        return @"No managed updates";
+    } else if (all == 1) {
+        return @"1 managed update";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu managed updates", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)optionalInstallsCountDescription
@@ -282,7 +306,15 @@
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.optionalInstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"optionalInstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSString stringWithFormat:@"%lu optional installs", (unsigned long)all];
+    if (all == 0) {
+        return @"No optional installs";
+    } else if (all == 1) {
+        return @"1 optional install";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu optional installs", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)includedManifestsCountDescription
@@ -290,24 +322,43 @@
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.includedManifests"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"includedManifestsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSString stringWithFormat:@"%lu included manifests", (unsigned long)all];
+    if (all == 0) {
+        return @"No included manifests";
+    } else if (all == 1) {
+        return @"1 included manifest";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu included manifests", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)referencingManifestsCountDescription
 {
     NSSet *manifestStringObjects = [self.referencingManifests filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
-    return [NSString stringWithFormat:@"%lu referencing manifests", (unsigned long)[manifestStringObjects count]];
+    NSUInteger all = [manifestStringObjects count];
+    if (all == 0) {
+        return @"No referencing manifests";
+    } else if (all == 1) {
+        return @"1 referencing manifest";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu referencing manifests", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
 }
 
 - (NSString *)conditionsCountDescription
 {
     NSUInteger count = [self.conditionalItems count];
     if (count == 0) {
-        return [NSString stringWithFormat:@"No conditions"];
+        return @"No conditions";
     } else if (count == 1) {
-        return [NSString stringWithFormat:@"1 condition"];
-    } else {
+        return @"1 condition";
+    } else if (count > 1) {
         return [NSString stringWithFormat:@"%lu conditions", (unsigned long)[self.conditionalItems count]];
+    } else {
+        return @"";
     }
 }
 
@@ -344,9 +395,11 @@
     if (catalogStrings) {
         NSUInteger catalogsCount = [catalogStrings count];
         if (catalogsCount == 1) {
-            return [NSString stringWithFormat:@"%lu catalog", (unsigned long)[catalogStrings count]];
-        } else {
+            return @"1 catalog";
+        } else if (catalogsCount > 1) {
             return [NSString stringWithFormat:@"%lu catalogs", (unsigned long)[catalogStrings count]];
+        } else {
+            return @"";
         }
     } else {
         return @"No catalogs";

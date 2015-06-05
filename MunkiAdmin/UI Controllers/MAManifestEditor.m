@@ -100,6 +100,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     self.conditionalItemsAllArrayController.content = fetchResults;
     [self.conditionalItemsAllArrayController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
+    [self.conditionsTreeController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
+    [self.conditionsOutlineView expandItem:nil expandChildren:YES];
     
     [self setupSourceList];
 }
@@ -522,7 +524,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     conditionsSection.tag = MAEditorSectionTagConditions;
     conditionsSection.icon = conditionsIcon;
     [conditionsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.conditionsCountDescription" options:bindOptions];
-    conditionsSection.view = self.includedManifestsListView;
+    conditionsSection.view = self.conditionalsListView;
     [newSourceListItems addObject:conditionsSection];
     
     

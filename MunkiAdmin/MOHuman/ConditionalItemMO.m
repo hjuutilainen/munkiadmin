@@ -12,7 +12,16 @@ unichar kSeparatorCharacter = 0x02192;
     if ([key isEqualToString:@"parent"]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"titleWithParentTitle", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
-    } 
+    }
+    
+    /*
+     Description for the contained items should be updated when conditional items are changed in the GUI
+     */
+    NSArray *catalogDescriptionKeys = @[@"containedItemsCountDescriptionShort", @"containedItemsCountDescriptionLong"];
+    if ([catalogDescriptionKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstalls", @"managedUninstalls", @"optionalInstalls", @"managedUpdates", @"includedManifests", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
 	
     return keyPaths;
 }
@@ -25,6 +34,77 @@ unichar kSeparatorCharacter = 0x02192;
     } else {
         return self.munki_condition;
     }
+}
+
+- (NSString *)containedItemsCountDescriptionLong
+{
+    /*
+     Used in conditional item tooltip
+     */
+    NSString *longDescription = @"";
+    
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstalls.@count"];
+    NSNumber *numManagedUninstalls = [self valueForKeyPath:@"managedUninstalls.@count"];
+    NSNumber *numOptionalInstalls = [self valueForKeyPath:@"optionalInstalls.@count"];
+    NSNumber *numManagedUpdates = [self valueForKeyPath:@"managedUpdates.@count"];
+    NSNumber *numIncludedManifests = [self valueForKeyPath:@"includedManifests.@count"];
+    
+    NSInteger sum = (numManagedInstalls.integerValue +
+                     numManagedUninstalls.integerValue +
+                     numManagedUpdates.integerValue +
+                     numOptionalInstalls.integerValue +
+                     numIncludedManifests.integerValue);
+    if (sum == 0) {
+        return @"Condition contains no managed installs, uninstalls, updates, optional installs or included manifests.";
+    }
+    
+    if (numManagedInstalls.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li managed installs\n", numManagedInstalls.integerValue];
+    }
+    if (numManagedUninstalls.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li managed uninstalls\n", numManagedUninstalls.integerValue];
+    }
+    if (numOptionalInstalls.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li optional installs\n", numOptionalInstalls.integerValue];
+    }
+    if (numManagedUpdates.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li managed updates\n", numManagedUpdates.integerValue];
+    }
+    if (numIncludedManifests.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li included manifests\n", numIncludedManifests.integerValue];
+    }
+    longDescription = [longDescription stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    return longDescription;
+}
+
+- (NSString *)containedItemsCountDescriptionShort
+{
+    NSString *shortDescription = nil;
+    
+    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstalls.@count"];
+    NSNumber *numManagedUninstalls = [self valueForKeyPath:@"managedUninstalls.@count"];
+    NSNumber *numOptionalInstalls = [self valueForKeyPath:@"optionalInstalls.@count"];
+    NSNumber *numManagedUpdates = [self valueForKeyPath:@"managedUpdates.@count"];
+    NSNumber *numIncludedManifests = [self valueForKeyPath:@"includedManifests.@count"];
+    
+    NSInteger sum = (numManagedInstalls.integerValue +
+                     numManagedUninstalls.integerValue +
+                     numManagedUpdates.integerValue +
+                     numOptionalInstalls.integerValue +
+                     numIncludedManifests.integerValue);
+    
+    if (sum == 0) {
+        shortDescription = @"No items";
+    } else if (sum == 1) {
+        shortDescription = [NSString stringWithFormat:@"%li item", sum];
+    } else if (sum > 1) {
+        shortDescription = [NSString stringWithFormat:@"%li items", sum];
+    } else {
+        shortDescription = @"";
+    }
+    
+    return shortDescription;
 }
 
 - (NSDictionary *)dictValue
