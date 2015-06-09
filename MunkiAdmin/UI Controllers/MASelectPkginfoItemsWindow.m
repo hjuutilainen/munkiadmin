@@ -174,7 +174,9 @@
     /*
      Allow double-clicking items in tableviews
      */
+    self.groupedTableView.target = self;
     self.groupedTableView.doubleAction = @selector(addSelectedAction:);
+    self.individualTableView.target = self;
     self.individualTableView.doubleAction = @selector(addSelectedAction:);
     
     /*
