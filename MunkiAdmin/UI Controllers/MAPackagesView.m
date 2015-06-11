@@ -108,7 +108,6 @@ DDLogLevel ddLogLevel;
     NSSortDescriptor *sortByMunkiDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"munki_display_name" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByMunkiVersion = [NSSortDescriptor sortDescriptorWithKey:@"munki_version" ascending:YES selector:@selector(localizedStandardCompare:)];
     [self.directoriesTreeController setSortDescriptors:@[sortByIndex, sortByTitle]];
-    [self.packagesArrayController setSortDescriptors:@[sortByMunkiName, sortByMunkiVersion]];
     self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion, sortByMunkiDisplayName];
     
     self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
