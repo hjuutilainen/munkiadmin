@@ -12,17 +12,21 @@
 @class MAManifestEditor;
 @class ManifestMO;
 
-@interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate>
+@interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate, NSMenuDelegate>
 
-@property (assign) IBOutlet PXSourceList *sourceList;
-@property (assign) IBOutlet NSSplitView *mainSplitView;
-@property (assign) IBOutlet NSSplitView *manifestsListSplitView;
-@property (assign) IBOutlet NSView *manifestsListView;
-@property (assign) IBOutlet NSPredicateEditor *manifestsListPredicateEditor;
-@property (assign) IBOutlet NSTableView *manifestsListTableView;
+@property (weak) IBOutlet PXSourceList *sourceList;
+@property (weak) IBOutlet NSSplitView *mainSplitView;
+@property (weak) IBOutlet NSSplitView *manifestsListSplitView;
+@property (weak) IBOutlet NSView *manifestsListView;
+@property (weak) IBOutlet NSMenu *manifestsListMenu;
+@property (weak) IBOutlet NSMenu *catalogsSubMenu;
+@property (weak) IBOutlet NSMenu *includedManifestsSubMenu;
+@property (weak) IBOutlet NSMenu *referencingManifestsSubMenu;
+@property (weak) IBOutlet NSPredicateEditor *manifestsListPredicateEditor;
+@property (weak) IBOutlet NSTableView *manifestsListTableView;
 @property BOOL predicateEditorHidden;
-@property (assign) IBOutlet NSView *detailViewPlaceHolder;
-@property (assign) IBOutlet NSArrayController *manifestsArrayController;
+@property (weak) IBOutlet NSView *detailViewPlaceHolder;
+@property (weak) IBOutlet NSArrayController *manifestsArrayController;
 @property (strong) NSPredicate *selectedSourceListFilterPredicate;
 @property (readonly, strong) NSPredicate *mainCompoundPredicate;
 @property (strong) NSPredicate *searchFieldPredicate;

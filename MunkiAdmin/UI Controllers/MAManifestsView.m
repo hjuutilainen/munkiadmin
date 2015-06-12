@@ -89,6 +89,7 @@ DDLogLevel ddLogLevel;
     
     [self.manifestsListTableView setTarget:self];
     [self.manifestsListTableView setDoubleAction:@selector(didDoubleClickManifest:)];
+    [self.manifestsListTableView setMenu:self.manifestsListMenu];
 }
 
 - (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest
@@ -106,12 +107,17 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (void)openEditorForManifest:(ManifestMO *)manifest
+{
+    MAManifestEditor *editor = [self editorForManifest:manifest];
+    [editor showWindow:nil];
+}
+
 - (void)didDoubleClickManifest:(id)sender
 {
     for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
         DDLogVerbose(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
-        MAManifestEditor *editor = [self editorForManifest:manifest];
-        [editor showWindow:nil];
+        [self openEditorForManifest:manifest];
     }
 }
 
@@ -427,6 +433,52 @@ DDLogLevel ddLogLevel;
     }
 }
 
+#pragma mark -
+#pragma mark Manifest list right-click menu actions
+
+- (IBAction)propertiesAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    if ([[self.manifestsArrayController selectedObjects] count] > 0) {
+        if ([[self.manifestsArrayController selectionIndexes] containsIndex:clickedRow]) {
+            for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
+                MAManifestEditor *editor = [self editorForManifest:manifest];
+                [editor showWindow:nil];
+            }
+        } else {
+            MAManifestEditor *editor = [self editorForManifest:clickedManifest];
+            [editor showWindow:nil];
+        }
+    } else {
+        MAManifestEditor *editor = [self editorForManifest:clickedManifest];
+        [editor showWindow:nil];
+    }
+}
+
+- (IBAction)showManifestInFinderAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    NSURL *selectedURL;
+    if ([[self.manifestsArrayController selectedObjects] count] > 0) {
+        if ([[self.manifestsArrayController selectionIndexes] containsIndex:clickedRow]) {
+            selectedURL = (NSURL *)[[self.manifestsArrayController selectedObjects][0] manifestURL];
+        } else {
+            selectedURL = [clickedManifest manifestURL];
+        }
+    } else {
+        selectedURL = [clickedManifest manifestURL];
+    }
+    
+    if (selectedURL != nil) {
+        [[NSWorkspace sharedWorkspace] selectFile:[selectedURL relativePath] inFileViewerRootedAtPath:[appDelegate.repoURL relativePath]];
+    }
+}
+
 - (void)setDetailView:(NSView *)newDetailView
 {
     [self.detailViewPlaceHolder addSubview:newDetailView];
@@ -438,6 +490,259 @@ DDLogLevel ddLogLevel;
     [newDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 }
 
+- (IBAction)openEditorForManifestMenuItemAction:(id)sender
+{
+    ManifestMO *manifest = [sender representedObject];
+    [self openEditorForManifest:manifest];
+}
+
+- (void)addSelectedManifestsToCatalogAction:(id)sender
+{
+    CatalogMO *catalog = [sender representedObject];
+    for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+        for (CatalogInfoMO *catalogInfo in manifest.catalogInfos) {
+            if (catalogInfo.catalog == catalog) {
+                catalogInfo.isEnabledForManifestValue = YES;
+            }
+        }
+        manifest.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)removeSelectedManifestsFromCatalogAction:(id)sender
+{
+    CatalogMO *catalog = [sender representedObject];
+    for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+        for (CatalogInfoMO *catalogInfo in manifest.catalogInfos) {
+            if (catalogInfo.catalog == catalog) {
+                catalogInfo.isEnabledForManifestValue = NO;
+            }
+        }
+        manifest.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)enableAllCatalogsAction:(id)sender
+{
+    for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+        for (CatalogInfoMO *catalogInfo in manifest.catalogInfos) {
+            catalogInfo.isEnabledForManifestValue = YES;
+        }
+        manifest.hasUnstagedChangesValue = YES;
+    }
+}
+
+- (void)disableAllCatalogsAction:(id)sender
+{
+    for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+        for (CatalogInfoMO *catalogInfo in manifest.catalogInfos) {
+            catalogInfo.isEnabledForManifestValue = NO;
+        }
+        manifest.hasUnstagedChangesValue = YES;
+    }
+}
+
+#pragma mark -
+#pragma mark NSMenu delegates
+
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    if (menu == self.catalogsSubMenu) {
+        [self catalogsSubMenuWillOpen:menu];
+    } else if (menu == self.referencingManifestsSubMenu) {
+        [self referencingManifestsSubMenuWillOpen:menu];
+    } else if (menu == self.includedManifestsSubMenu) {
+        [self includedManifestsSubMenuWillOpen:menu];
+    }
+}
+
+- (void)referencingManifestsSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    NSMutableArray *newItems = [NSMutableArray new];
+    
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    for (StringObjectMO *object in clickedManifest.allReferencingManifests) {
+        NSString *title;
+        id representedObject;
+        if (object.manifestReference) {
+            title = object.manifestReference.title;
+            representedObject = object.manifestReference;
+        } else {
+            title = object.includedManifestConditionalReference.manifest.title;
+            representedObject = object.includedManifestConditionalReference.manifest;
+        }
+        [newItems addObject:@{@"title": title, @"representedObject": representedObject}];
+    }
+    
+    NSImage *manifestImage = [NSImage imageNamed:@"manifestIcon_32x32"];
+    [manifestImage setSize:NSMakeSize(16.0, 16.0)];
+    
+    [newItems sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+    for (NSDictionary *object in newItems) {
+        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:object[@"title"]
+                                                             action:nil
+                                                      keyEquivalent:@""];
+        ManifestMO *representedManifest = (ManifestMO *)object[@"representedObject"];
+        newMenuItem.representedObject = representedManifest;
+        newMenuItem.target = self;
+        newMenuItem.action = @selector(openEditorForManifestMenuItemAction:);
+        newMenuItem.image = manifestImage;
+        [menu addItem:newMenuItem];
+    }
+}
+
+- (void)includedManifestsSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    NSMutableArray *newItems = [NSMutableArray new];
+    
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    
+    for (StringObjectMO *object in clickedManifest.allIncludedManifests) {
+        NSString *title;
+        id representedObject;
+        if (object.originalManifest) {
+            title = object.originalManifest.title;
+            representedObject = object.originalManifest;
+            [newItems addObject:@{@"title": title, @"representedObject": representedObject}];
+        } else {
+            DDLogError(@"Error. Included manifest object %@ doesn't have reference to its original manifest.", object.description);
+        }
+    }
+    
+    NSImage *manifestImage = [NSImage imageNamed:@"manifestIcon_32x32"];
+    [manifestImage setSize:NSMakeSize(16.0, 16.0)];
+    
+    [newItems sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+    for (NSDictionary *object in newItems) {
+        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:object[@"title"]
+                                                             action:nil
+                                                      keyEquivalent:@""];
+        ManifestMO *representedManifest = (ManifestMO *)object[@"representedObject"];
+        newMenuItem.representedObject = representedManifest;
+        newMenuItem.target = self;
+        newMenuItem.action = @selector(openEditorForManifestMenuItemAction:);
+        newMenuItem.image = manifestImage;
+        [menu addItem:newMenuItem];
+    }
+}
+
+- (void)catalogsSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Enable All Catalogs"
+                                                                       action:@selector(enableAllCatalogsAction:)
+                                                                keyEquivalent:@""];
+    [enableAllCatalogsMenuItem setEnabled:YES];
+    enableAllCatalogsMenuItem.target = self;
+    [menu addItem:enableAllCatalogsMenuItem];
+    
+    
+    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Disable All Catalogs"
+                                                                        action:@selector(disableAllCatalogsAction:)
+                                                                 keyEquivalent:@""];
+    
+    [disableAllCatalogsMenuItem setEnabled:YES];
+    disableAllCatalogsMenuItem.target = self;
+    [menu addItem:disableAllCatalogsMenuItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    
+    /*
+     Create a menu item for each catalog object
+     */
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entityDescription];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
+    for (CatalogMO *catalog in fetchResults) {
+        
+        NSMenuItem *catalogItem = [[NSMenuItem alloc] initWithTitle:catalog.title
+                                                             action:nil
+                                                      keyEquivalent:@""];
+        catalogItem.representedObject = catalog;
+        catalogItem.target = self;
+        [menu addItem:catalogItem];
+        
+        
+        /*
+         Set the state of the menu item
+         */
+        int numEnabled = 0;
+        int numDisabled = 0;
+        NSMutableArray *enabledPackageNames = [NSMutableArray new];
+        NSMutableArray *disabledPackageNames = [NSMutableArray new];
+        
+        for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+            if ([[manifest catalogStrings] containsObject:catalog.title]) {
+                [enabledPackageNames addObject:manifest.title];
+                numEnabled++;
+            } else {
+                [disabledPackageNames addObject:manifest.title];
+                numDisabled++;
+            }
+        }
+        
+        NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+        ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+        if ([[clickedManifest catalogStrings] containsObject:catalog.title]) {
+            [enabledPackageNames addObject:clickedManifest.title];
+            numEnabled++;
+        } else {
+            [disabledPackageNames addObject:clickedManifest.title];
+            numDisabled++;
+        }
+        
+        if (numDisabled == 0) {
+            /*
+             All of the selected manifests are in this catalog.
+             Selecting this menu item should remove manifests from catalog.
+             */
+            catalogItem.action = @selector(removeSelectedManifestsFromCatalogAction:);
+            catalogItem.state = NSOnState;
+            
+        } else if (numEnabled == 0) {
+            /*
+             None of the selected manifests are in this catalog.
+             Selecting this menu item should add manifests to this catalog.
+             */
+            catalogItem.action = @selector(addSelectedManifestsToCatalogAction:);
+            catalogItem.state = NSOffState;
+            
+        } else {
+            /*
+             Some of the selected manifests are in this catalog.
+             Selecting this menu item should add the missing manifests to this catalog.
+             
+             Additionally create a tooltip to show which manifests are enabled/disable.
+             */
+            NSString *toolTip;
+            if (numEnabled > numDisabled) {
+                toolTip = [NSString stringWithFormat:@"Manifests not using catalog \"%@\":\n- %@",
+                           catalog.title,
+                           [disabledPackageNames componentsJoinedByString:@"\n- "]];
+            } else {
+                toolTip = [NSString stringWithFormat:@"Manifests using catalog \"%@\":\n- %@",
+                           catalog.title,
+                           [enabledPackageNames componentsJoinedByString:@"\n- "]];
+            }
+            catalogItem.toolTip = toolTip;
+            
+            catalogItem.action = @selector(addSelectedManifestsToCatalogAction:);
+            catalogItem.state = NSMixedState;
+        }
+        
+    }
+}
 
 
 # pragma mark -

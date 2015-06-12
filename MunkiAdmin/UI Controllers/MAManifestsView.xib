@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAManifestsView">
             <connections>
+                <outlet property="catalogsSubMenu" destination="L9w-Dg-B42" id="XlG-oj-k0O"/>
                 <outlet property="detailViewPlaceHolder" destination="MrB-18-fyu" id="5BR-PC-kRM"/>
+                <outlet property="includedManifestsSubMenu" destination="Piw-Mz-3Gt" id="2Im-qC-L9r"/>
                 <outlet property="mainSplitView" destination="RQs-YR-1lZ" id="kyW-pf-1es"/>
                 <outlet property="manifestsArrayController" destination="rcP-DN-4xO" id="mlw-8t-ScT"/>
+                <outlet property="manifestsListMenu" destination="NDC-iy-hCu" id="c2W-2e-ZE5"/>
                 <outlet property="manifestsListPredicateEditor" destination="drd-pf-9Xe" id="NwC-yg-urw"/>
                 <outlet property="manifestsListSplitView" destination="62D-e4-aIK" id="vOu-G9-m3n"/>
                 <outlet property="manifestsListTableView" destination="5Uj-Pj-9lj" id="1EX-Zh-V39"/>
                 <outlet property="manifestsListView" destination="PSg-Au-Rmb" id="Ksi-6Y-hLj"/>
+                <outlet property="referencingManifestsSubMenu" destination="3fq-4g-Qtm" id="gdx-r0-L0f"/>
                 <outlet property="sourceList" destination="1X1-7I-tFQ" id="8Vd-FN-SAr"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -40,6 +44,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <outlineView appearanceType="vibrantLight" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="14" outlineTableColumn="jpi-ns-TNe" id="1X1-7I-tFQ" customClass="PXSourceList">
+                                                <rect key="frame" x="0.0" y="0.0" width="215" height="0.0"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -169,7 +174,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <predicateEditor verticalHuggingPriority="750" nestingMode="compound" rowHeight="25" id="drd-pf-9Xe">
-                                                <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="944" height="157"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <rowTemplates>
                                                     <predicateEditorRowTemplate rowType="compound" id="TEH-sP-YV5">
@@ -316,6 +321,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="tL6-KA-H9o" viewBased="YES" id="5Uj-Pj-9lj">
+                                                <rect key="frame" x="0.0" y="0.0" width="944" height="0.0"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -502,6 +508,63 @@
             </subviews>
             <point key="canvasLocation" x="966" y="615"/>
         </customView>
+        <menu id="NDC-iy-hCu" userLabel="Manifest list menu">
+            <items>
+                <menuItem title="Properties..." id="jvD-lA-Okf">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="propertiesAction:" target="-2" id="mtX-hX-Mki"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Show Manifest in Finder" id="FHO-uv-qiL">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showManifestInFinderAction:" target="-2" id="jLK-HQ-7Ry"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="5jq-ti-g0Q"/>
+                <menuItem title="Catalogs" id="c4M-N0-iAp">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Catalogs" id="L9w-Dg-B42">
+                        <items>
+                            <menuItem title="Item" id="Mwd-XN-AX2">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="hSW-Fr-gHq"/>
+                        </connections>
+                    </menu>
+                </menuItem>
+                <menuItem title="Included Manifests" id="u9L-rz-QEw">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Included Manifests" id="Piw-Mz-3Gt">
+                        <items>
+                            <menuItem title="Item" id="8jw-ah-qbf">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="FRD-U5-Dhp"/>
+                        </connections>
+                    </menu>
+                </menuItem>
+                <menuItem title="Referencing Manifests" id="3Hf-Js-n8y">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Referencing Manifests" id="3fq-4g-Qtm">
+                        <items>
+                            <menuItem title="Item" id="CwA-aL-Bk7">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="S3G-sU-uuM"/>
+                        </connections>
+                    </menu>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="771" y="111.5"/>
+        </menu>
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>

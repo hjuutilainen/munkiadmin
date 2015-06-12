@@ -7,6 +7,7 @@
 @property (weak, readonly) NSString *fileName;
 @property (weak, readonly) NSDictionary *manifestInfoDictionary;
 @property (readonly) NSString *catalogsDescriptionString;
+@property (readonly) NSArray *catalogStrings;
 
 - (NSArray *)rootConditionalItems;
 
