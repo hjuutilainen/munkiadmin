@@ -253,6 +253,61 @@
     }
 }
 
+- (NSArray *)includedManifestsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.allIncludedManifests) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)referencingManifestsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *referencingManifest in self.allReferencingManifests) {
+        if (referencingManifest.manifestReference) {
+            if (![items containsObject:referencingManifest.manifestReference.title]) {
+                [items addObject:referencingManifest.manifestReference.title];
+            }
+        } else {
+            if (![items containsObject:referencingManifest.includedManifestConditionalReference.manifest.title]) {
+                [items addObject:referencingManifest.includedManifestConditionalReference.manifest.title];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)conditionalItemsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        if (![items containsObject:[condition munki_condition]]) {
+            [items addObject:[condition munki_condition]];
+        }
+    }
+    
+    if ([items count] == 0) {
+        return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
 - (NSString *)managedInstallsCountDescription
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedInstalls"];

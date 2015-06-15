@@ -60,6 +60,9 @@ DDLogLevel ddLogLevel;
                                  [NSExpression expressionForKeyPath:@"managedUninstallsStrings"],
                                  [NSExpression expressionForKeyPath:@"managedUpdatesStrings"],
                                  [NSExpression expressionForKeyPath:@"optionalInstallsStrings"],
+                                 [NSExpression expressionForKeyPath:@"includedManifestsStrings"],
+                                 [NSExpression expressionForKeyPath:@"referencingManifestsStrings"],
+                                 [NSExpression expressionForKeyPath:@"conditionalItemsStrings"],
                                  ];
     NSPredicateEditorRowTemplate *catalogsTemplate = [[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions:leftExpressions
                                                                                       rightExpressionAttributeType:NSStringAttributeType
@@ -82,6 +85,9 @@ DDLogLevel ddLogLevel;
                                  @"%[managedUninstallsStrings]@ %[contains]@ %@" : @"%[Managed uninstalls]@ %[contains]@ %@",
                                  @"%[managedUpdatesStrings]@ %[contains]@ %@" : @"%[Managed updates]@ %[contains]@ %@",
                                  @"%[optionalInstallsStrings]@ %[contains]@ %@" : @"%[Optional installs]@ %[contains]@ %@",
+                                 @"%[includedManifestsStrings]@ %[contains]@ %@" : @"%[Included manifests]@ %[contains]@ %@",
+                                 @"%[referencingManifestsStrings]@ %[contains]@ %@" : @"%[Referencing manifests]@ %[contains]@ %@",
+                                 @"%[conditionalItemsStrings]@ %[contains]@ %@" : @"%[Condition predicates]@ %[contains]@ %@",
                                  };
     [self.manifestsListPredicateEditor setFormattingDictionary:formatting];
     
