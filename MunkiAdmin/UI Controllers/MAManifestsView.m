@@ -547,12 +547,39 @@ DDLogLevel ddLogLevel;
 
 - (void)menuWillOpen:(NSMenu *)menu
 {
-    if (menu == self.catalogsSubMenu) {
+    if (menu == self.manifestsListMenu) {
+        [self manifestsListMenuWillOpen:menu];
+    } else if (menu == self.catalogsSubMenu) {
         [self catalogsSubMenuWillOpen:menu];
     } else if (menu == self.referencingManifestsSubMenu) {
         [self referencingManifestsSubMenuWillOpen:menu];
     } else if (menu == self.includedManifestsSubMenu) {
         [self includedManifestsSubMenuWillOpen:menu];
+    }
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    DDLogVerbose(@"Validating menu item %@", [menuItem title]);
+    return YES;
+}
+
+
+- (void)manifestsListMenuWillOpen:(NSMenu *)menu
+{
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    
+    if ([clickedManifest.allReferencingManifests count] == 0) {
+        self.referencingManifestsSubMenuItem.hidden = YES;
+    } else {
+        self.referencingManifestsSubMenuItem.hidden = NO;
+    }
+    
+    if ([clickedManifest.allIncludedManifests count] == 0) {
+        self.includedManifestsSubMenuItem.hidden = YES;
+    } else {
+        self.includedManifestsSubMenuItem.hidden = NO;
     }
 }
 

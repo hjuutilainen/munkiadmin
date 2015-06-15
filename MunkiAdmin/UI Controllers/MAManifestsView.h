@@ -20,7 +20,9 @@
 @property (weak) IBOutlet NSView *manifestsListView;
 @property (weak) IBOutlet NSMenu *manifestsListMenu;
 @property (weak) IBOutlet NSMenu *catalogsSubMenu;
+@property (weak) IBOutlet NSMenuItem *includedManifestsSubMenuItem;
 @property (weak) IBOutlet NSMenu *includedManifestsSubMenu;
+@property (weak) IBOutlet NSMenuItem *referencingManifestsSubMenuItem;
 @property (weak) IBOutlet NSMenu *referencingManifestsSubMenu;
 @property (weak) IBOutlet NSPredicateEditor *manifestsListPredicateEditor;
 @property (weak) IBOutlet NSTableView *manifestsListTableView;

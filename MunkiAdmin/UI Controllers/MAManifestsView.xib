@@ -10,6 +10,7 @@
                 <outlet property="catalogsSubMenu" destination="L9w-Dg-B42" id="XlG-oj-k0O"/>
                 <outlet property="detailViewPlaceHolder" destination="MrB-18-fyu" id="5BR-PC-kRM"/>
                 <outlet property="includedManifestsSubMenu" destination="Piw-Mz-3Gt" id="2Im-qC-L9r"/>
+                <outlet property="includedManifestsSubMenuItem" destination="u9L-rz-QEw" id="TzJ-rD-NI8"/>
                 <outlet property="mainSplitView" destination="RQs-YR-1lZ" id="kyW-pf-1es"/>
                 <outlet property="manifestsArrayController" destination="rcP-DN-4xO" id="mlw-8t-ScT"/>
                 <outlet property="manifestsListMenu" destination="NDC-iy-hCu" id="c2W-2e-ZE5"/>
@@ -18,6 +19,7 @@
                 <outlet property="manifestsListTableView" destination="5Uj-Pj-9lj" id="1EX-Zh-V39"/>
                 <outlet property="manifestsListView" destination="PSg-Au-Rmb" id="Ksi-6Y-hLj"/>
                 <outlet property="referencingManifestsSubMenu" destination="3fq-4g-Qtm" id="gdx-r0-L0f"/>
+                <outlet property="referencingManifestsSubMenuItem" destination="3Hf-Js-n8y" id="6vD-Vj-ApE"/>
                 <outlet property="sourceList" destination="1X1-7I-tFQ" id="8Vd-FN-SAr"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -563,6 +565,9 @@
                     </menu>
                 </menuItem>
             </items>
+            <connections>
+                <outlet property="delegate" destination="-2" id="b2O-nc-Xp1"/>
+            </connections>
             <point key="canvasLocation" x="771" y="111.5"/>
         </menu>
     </objects>
