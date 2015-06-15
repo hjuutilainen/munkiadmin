@@ -10,6 +10,7 @@
 #import "DataModelHeaders.h"
 #import "MASelectManifestItemsWindow.h"
 #import "MASelectPkginfoItemsWindow.h"
+#import "MAPredicateEditor.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAManifestsView.h"
 #import "CocoaLumberjack.h"
@@ -155,6 +156,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
+    self.predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
 }
 
 - (IBAction)addNewReferencingManifestAction:(id)sender
@@ -425,6 +427,105 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
 }
 
+
+- (void)newPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    if (returnCode == NSCancelButton) return;
+    
+    NSString *thePredicateString = nil;
+    if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
+        thePredicateString = [self.predicateEditor.predicate description];
+    } else {
+        thePredicateString = [self.predicateEditor.customTextField stringValue];
+    }
+    
+    //NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
+    //NSArray *selectedConditionalItems = [self.conditionsTreeController selectedObjects];
+    
+    
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
+    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+    newConditionalItem.munki_condition = thePredicateString;
+    [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+    
+    [moc refreshObject:selectedManifest mergeChanges:YES];
+}
+
+- (void)editPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    if (returnCode == NSCancelButton) return;
+    
+    NSString *thePredicateString = nil;
+    if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
+        thePredicateString = [self.predicateEditor.predicate description];
+    } else {
+        thePredicateString = [self.predicateEditor.customTextField stringValue];
+    }
+    
+    NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
+    self.predicateEditor.conditionToEdit.munki_condition = thePredicateString;
+    [moc refreshObject:self.manifestToEdit mergeChanges:YES];
+}
+
+- (IBAction)addNewConditionalItemAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    self.predicateEditor.conditionToEdit = nil;
+    [self.predicateEditor resetPredicateToDefault];
+    
+    [NSApp beginSheet:[self.predicateEditor window]
+       modalForWindow:self.window
+        modalDelegate:self
+       didEndSelector:@selector(newPredicateSheetDidEnd:returnCode:object:)
+          contextInfo:nil];
+}
+
+- (IBAction)editConditionalItemAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    ConditionalItemMO *selectedCondition = [[self.conditionsTreeController selectedObjects] lastObject];
+    
+    @try {
+        NSPredicate *predicateToEdit = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
+        if (predicateToEdit != nil) {
+            self.predicateEditor.conditionToEdit = selectedCondition;
+            self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
+            self.predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
+            
+            [NSApp beginSheet:[self.predicateEditor window]
+               modalForWindow:self.window
+                modalDelegate:self
+               didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
+                  contextInfo:nil];
+        }
+    }
+    @catch (NSException *exception) {
+        DDLogError(@"%@", exception);
+    }
+    @finally {
+        
+    }
+    
+}
+
+- (IBAction)removeConditionalItemAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    
+    for (ConditionalItemMO *aConditionalItem in [self.conditionsTreeController selectedObjects]) {
+        [self.manifestToEdit.managedObjectContext deleteObject:aConditionalItem];
+    }
+    [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
 
 
 - (void)setupSourceList

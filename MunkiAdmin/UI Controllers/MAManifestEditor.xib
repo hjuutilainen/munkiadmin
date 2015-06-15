@@ -1042,7 +1042,7 @@
             <point key="canvasLocation" x="973.5" y="594"/>
         </customView>
         <arrayController avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="4hp-Ig-Qph" userLabel="All Conditional Items"/>
-        <treeController mode="entity" entityName="ConditionalItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" id="NIc-5W-hAV" userLabel="Conditional Items Tree">
+        <treeController mode="entity" entityName="ConditionalItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" id="NIc-5W-hAV" userLabel="Conditional Items Tree">
             <connections>
                 <binding destination="-2" name="contentArray" keyPath="manifestToEdit.rootConditionalItems" id="zbL-AW-cAw"/>
             </connections>
@@ -1053,8 +1053,40 @@
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="zYJ-uU-yd0" customClass="MASolidBackgroundView">
                     <rect key="frame" x="20" y="20" width="483" height="25"/>
+                    <subviews>
+                        <button toolTip="Remove selection" translatesAutoresizingMaskIntoConstraints="NO" id="4lq-RJ-E7i">
+                            <rect key="frame" x="22" y="1" width="23" height="23"/>
+                            <buttonCell key="cell" type="smallSquare" title="Gradient Button" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="974-EG-aC7">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="removeConditionalItemAction:" target="-2" id="AYA-Wf-NXl"/>
+                            </connections>
+                        </button>
+                        <button toolTip="Add new empty item" translatesAutoresizingMaskIntoConstraints="NO" id="Eh9-MI-yX7">
+                            <rect key="frame" x="0.0" y="1" width="23" height="23"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="23" id="CTs-yt-MaP"/>
+                                <constraint firstAttribute="height" constant="23" id="e29-2y-WMs"/>
+                            </constraints>
+                            <buttonCell key="cell" type="smallSquare" title="..." bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="xfY-D8-VbN">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="addNewConditionalItemAction:" target="-2" id="pCf-dN-dvM"/>
+                            </connections>
+                        </button>
+                    </subviews>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="7CL-gz-qFg"/>
+                        <constraint firstItem="4lq-RJ-E7i" firstAttribute="width" secondItem="Eh9-MI-yX7" secondAttribute="width" id="CaG-fB-ESO"/>
+                        <constraint firstItem="Eh9-MI-yX7" firstAttribute="top" secondItem="zYJ-uU-yd0" secondAttribute="top" constant="1" id="Epp-Ru-l7g"/>
+                        <constraint firstItem="4lq-RJ-E7i" firstAttribute="top" secondItem="Eh9-MI-yX7" secondAttribute="bottom" constant="-23" id="H42-vQ-jBB"/>
+                        <constraint firstItem="4lq-RJ-E7i" firstAttribute="leading" secondItem="Eh9-MI-yX7" secondAttribute="trailing" constant="-1" id="Mbz-yp-ebg"/>
+                        <constraint firstItem="Eh9-MI-yX7" firstAttribute="leading" secondItem="zYJ-uU-yd0" secondAttribute="leading" id="ffN-cP-M0E"/>
+                        <constraint firstItem="4lq-RJ-E7i" firstAttribute="height" secondItem="Eh9-MI-yX7" secondAttribute="height" id="g6K-3T-rGa"/>
                     </constraints>
                 </customView>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmU-Yb-3bS">

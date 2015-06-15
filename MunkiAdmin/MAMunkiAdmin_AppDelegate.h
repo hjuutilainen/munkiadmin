@@ -34,7 +34,7 @@
     MASelectPkginfoItemsWindow *addItemsWindowController;
     MASelectManifestItemsWindow *selectManifestsWindowController;
     MAAdvancedPackageEditor *advancedPackageEditor;
-    MAPredicateEditor *predicateEditor;
+    //MAPredicateEditor *predicateEditor;
     MAPkginfoAssimilator *pkginfoAssimilator;
 	
 	// The current master and detail view
@@ -150,9 +150,9 @@
 - (void)processAddItemsAction:(id)sender;
 - (IBAction)addNewIncludedManifestAction:(id)sender;
 - (IBAction)removeIncludedManifestAction:(id)sender;
-- (IBAction)addNewConditionalItemAction:(id)sender;
-- (IBAction)removeConditionalItemAction:(id)sender;
-- (IBAction)editConditionalItemAction:(id)sender;
+//- (IBAction)addNewConditionalItemAction:(id)sender;
+//- (IBAction)removeConditionalItemAction:(id)sender;
+//- (IBAction)editConditionalItemAction:(id)sender;
 - (IBAction)addNewManagedInstallAction:(id)sender;
 - (IBAction)removeManagedInstallAction:(id)sender;
 - (IBAction)addNewManagedUninstallAction:(id)sender;

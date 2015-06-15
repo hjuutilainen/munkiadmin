@@ -481,7 +481,7 @@ DDLogLevel ddLogLevel;
     selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
     self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"MAPackageNameEditor"];
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"MAAdvancedPackageEditor"];
-    predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
+    //predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
     pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"MAPkginfoAssimilator"];
     self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
     
@@ -1747,6 +1747,7 @@ DDLogLevel ddLogLevel;
 
 # pragma mark - Manifest detail view IBActions
 
+/*
 - (void)newPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -1841,6 +1842,7 @@ DDLogLevel ddLogLevel;
     
 }
 
+
 - (IBAction)removeConditionalItemAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -1852,6 +1854,7 @@ DDLogLevel ddLogLevel;
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
+ */
 
 - (IBAction)addNewIncludedManifestAction:(id)sender
 {

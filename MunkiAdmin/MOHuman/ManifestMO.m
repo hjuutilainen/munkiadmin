@@ -30,6 +30,7 @@
     NSArray *managedUninstallsKeys = @[@"managedUninstallsStrings", @"managedUninstallsCountDescription"];
     NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings", @"managedUpdatesCountDescription"];
     NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings", @"optionalInstallsCountDescription"];
+    NSArray *conditionalsKeys = @[@"conditionalItemsStrings", @"conditionsCountDescription"];
     
     if ([catalogDescriptionKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
@@ -45,6 +46,9 @@
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([optionalInstallsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"optionalInstallsFaster", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([conditionalsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
     
