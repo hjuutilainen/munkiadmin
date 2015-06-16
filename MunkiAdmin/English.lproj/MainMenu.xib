@@ -128,21 +128,21 @@ Gw
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="589"/>
                     <toolbarItem implicitItemIdentifier="AEEE2978-EEBD-4820-BB0C-955830984CDE" label="View" paletteLabel="View Mode" id="912">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="114" height="25"/>
-                        <size key="maxSize" width="114" height="25"/>
+                        <size key="minSize" width="104" height="25"/>
+                        <size key="maxSize" width="104" height="25"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="20" y="14" width="114" height="25"/>
+                            <rect key="frame" x="1" y="14" width="104" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
+                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedRounded" trackingMode="selectOne" id="911">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment toolTip="Show Packages" image="packageIcon_32x32" selected="YES">
+                                    <segment toolTip="Show Packages" image="packageIcon_32x32" width="32" selected="YES">
                                         <nil key="label"/>
                                     </segment>
                                     <segment toolTip="Show Catalogs" image="catalogIcon_32x32" width="32" tag="1">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Show Manifests" image="manifestIcon_32x32" tag="2">
+                                    <segment toolTip="Show Manifests" image="manifestIcon_32x32" width="32" tag="2">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
