@@ -11,12 +11,10 @@
 #import "MAMunkiOperation.h"
 #import "MARelationshipScanner.h"
 #import "MAFileCopyOperation.h"
-#import "MAManifestDetailView.h"
 #import "MASelectPkginfoItemsWindow.h"
 #import "MASelectManifestItemsWindow.h"
 #import "MAPackageNameEditor.h"
 #import "MAAdvancedPackageEditor.h"
-#import "MAPredicateEditor.h"
 #import "MAPackagesView.h"
 #import "MAManifestsView.h"
 #import "MAPkginfoAssimilator.h"
@@ -476,18 +474,16 @@ DDLogLevel ddLogLevel;
 	
     self.packagesViewController = [[MAPackagesView alloc] initWithNibName:@"MAPackagesView" bundle:nil];
     self.manifestsViewController = [[MAManifestsView alloc] initWithNibName:@"MAManifestsView" bundle:nil];
-    self.manifestDetailViewController = [[MAManifestDetailView alloc] initWithNibName:@"MAManifestDetailView" bundle:nil];
     addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
     self.packageNameEditor = [[MAPackageNameEditor alloc] initWithWindowNibName:@"MAPackageNameEditor"];
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"MAAdvancedPackageEditor"];
-    //predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
     pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"MAPkginfoAssimilator"];
     self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
     
     
 	// Configure segmented control
-	[self.mainSegmentedControl setSegmentCount:4];
+	[self.mainSegmentedControl setSegmentCount:3];
 	
     NSImage *packagesIcon = [[NSImage imageNamed:@"packageIcon_32x32"] copy];
 	[packagesIcon setSize:NSMakeSize(18, 18)];
@@ -499,7 +495,6 @@ DDLogLevel ddLogLevel;
 	[self.mainSegmentedControl setImage:packagesIcon forSegment:0];
 	[self.mainSegmentedControl setImage:catalogsIcon forSegment:1];
 	[self.mainSegmentedControl setImage:manifestsIcon forSegment:2];
-    [self.mainSegmentedControl setImage:manifestsIcon forSegment:3];
 	
 	[self.mainTabView setDelegate:self];
 	[self.mainSplitView setDelegate:self];
@@ -520,10 +515,10 @@ DDLogLevel ddLogLevel;
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
 		self.selectedViewTag = 2;
-		self.selectedViewDescr = @"Manifests";
-		currentDetailView = [self.manifestDetailViewController view];
-		currentSourceView = self.manifestsListView;
-        currentWholeView = self.mainSplitView;
+        self.selectedViewDescr = @"Manifests";
+        currentDetailView = nil;
+        currentSourceView = nil;
+        currentWholeView = [self.manifestsViewController view];
 		[self.mainSegmentedControl setSelectedSegment:2];
 	}
 	else {
@@ -1856,6 +1851,7 @@ DDLogLevel ddLogLevel;
 }
  */
 
+/*
 - (IBAction)addNewIncludedManifestAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -1897,7 +1893,9 @@ DDLogLevel ddLogLevel;
     }
     [self.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
+ */
 
+/*
 - (void)addNewManagedInstallSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -2145,6 +2143,7 @@ DDLogLevel ddLogLevel;
 	[NSApp endSheet:[selectManifestsWindowController window]];
 	[[selectManifestsWindowController window] close];
 }
+ */
 
 # pragma mark - NSUndoManager notifications
 
@@ -2959,23 +2958,13 @@ DDLogLevel ddLogLevel;
 				[self changeItemView];
 			}
 			break;
-		case 3:
-			if (currentDetailView != [self.manifestDetailViewController view]) {
-				self.selectedViewDescr = @"Manifests";
-                currentWholeView = self.mainSplitView;
-				currentDetailView = [self.manifestDetailViewController view];
-				currentSourceView = self.manifestsListView;
-				[self.mainSegmentedControl setSelectedSegment:2];
-				[self changeItemView];
-			}
-			break;
-        case 4:
+        case 3:
             if (currentDetailView != [self.manifestsViewController view]) {
-                self.selectedViewDescr = @"Manifests V2";
+                self.selectedViewDescr = @"Manifests";
                 currentDetailView = nil;
                 currentSourceView = nil;
                 currentWholeView = [self.manifestsViewController view];
-                [self.mainSegmentedControl setSelectedSegment:3];
+                [self.mainSegmentedControl setSelectedSegment:2];
                 [self changeItemView];
             }
             break;
@@ -3005,18 +2994,9 @@ DDLogLevel ddLogLevel;
 				[self changeItemView];
             }
 			break;
-		case 2:
-            if (currentDetailView != [self.manifestDetailViewController view]) {
-				self.selectedViewDescr = @"Manifests";
-                currentWholeView = self.mainSplitView;
-				currentDetailView = [self.manifestDetailViewController view];
-				currentSourceView = self.manifestsListView;
-				[self changeItemView];
-            }
-			break;
-        case 3:
+        case 2:
             if (currentDetailView != [self.manifestsViewController view]) {
-                self.selectedViewDescr = @"Manifests V2";
+                self.selectedViewDescr = @"Manifests";
                 currentDetailView = nil;
                 currentSourceView = nil;
                 currentWholeView = [self.manifestsViewController view];

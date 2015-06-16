@@ -23,7 +23,6 @@
 @class MAPackagesView;
 @class MAManifestsView;
 @class MAAdvancedPackageEditor;
-@class MAPredicateEditor;
 @class MAPkginfoAssimilator;
 @class MAPreferences;
 @class DDFileLogger;
@@ -57,7 +56,6 @@
 @property (strong) MAPackageNameEditor *packageNameEditor;
 @property (strong) MAPackagesView *packagesViewController;
 @property (strong) MAManifestsView *manifestsViewController;
-@property (strong) MAManifestDetailView *manifestDetailViewController;
 @property (strong) MAPreferences *preferencesController;
 @property (strong) NSTimer *operationTimer;
 @property (strong) DDFileLogger *currentFileLogger;
@@ -147,20 +145,6 @@
 - (IBAction)enableAllPackagesForManifestAction:sender;
 - (IBAction)disableAllPackagesForManifestAction:sender;
 
-- (void)processAddItemsAction:(id)sender;
-- (IBAction)addNewIncludedManifestAction:(id)sender;
-- (IBAction)removeIncludedManifestAction:(id)sender;
-//- (IBAction)addNewConditionalItemAction:(id)sender;
-//- (IBAction)removeConditionalItemAction:(id)sender;
-//- (IBAction)editConditionalItemAction:(id)sender;
-- (IBAction)addNewManagedInstallAction:(id)sender;
-- (IBAction)removeManagedInstallAction:(id)sender;
-- (IBAction)addNewManagedUninstallAction:(id)sender;
-- (IBAction)removeManagedUninstallAction:(id)sender;
-- (IBAction)addNewManagedUpdateAction:(id)sender;
-- (IBAction)removeManagedUpdateAction:(id)sender;
-- (IBAction)addNewOptionalInstallAction:(id)sender;
-- (IBAction)removeOptionalInstallAction:(id)sender;
 - (IBAction)getInfoAction:(id)sender;
 - (IBAction)selectPreviousPackageForEditing:(id)sender;
 - (IBAction)selectNextPackageForEditing:(id)sender;
@@ -170,7 +154,6 @@
 - (IBAction)showManifestInFinderAction:(id)sender;
 - (void)pkginfoAssimilatorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
-- (IBAction)processAddNestedManifestAction:(id)sender;
 - (IBAction)openCurrentLogFileAction:(id)sender;
 - (IBAction)findAction:(id)sender;
 

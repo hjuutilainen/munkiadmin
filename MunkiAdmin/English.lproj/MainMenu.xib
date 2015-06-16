@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -128,10 +128,10 @@ Gw
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="589"/>
                     <toolbarItem implicitItemIdentifier="AEEE2978-EEBD-4820-BB0C-955830984CDE" label="View" paletteLabel="View Mode" id="912">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="112" height="25"/>
-                        <size key="maxSize" width="154" height="32"/>
+                        <size key="minSize" width="114" height="25"/>
+                        <size key="maxSize" width="114" height="25"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="-13" y="14" width="154" height="25"/>
+                            <rect key="frame" x="20" y="14" width="114" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
                                 <font key="font" metaFont="system"/>
@@ -143,9 +143,6 @@ Gw
                                         <nil key="label"/>
                                     </segment>
                                     <segment toolTip="Show Manifests" image="manifestIcon_32x32" tag="2">
-                                        <nil key="label"/>
-                                    </segment>
-                                    <segment toolTip="Show Manifests v2" image="manifestIcon_32x32" tag="3">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -907,9 +904,10 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="932">
+                                <rect key="frame" x="0.0" y="0.0" width="259" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn editable="NO" width="256" minWidth="40" maxWidth="1000" id="935">
@@ -1028,7 +1026,7 @@ Gw
                                 <rect key="frame" x="0.0" y="0.0" width="764" height="22"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn width="40" minWidth="40" maxWidth="40" id="847">
@@ -1171,9 +1169,10 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="969">
+                                <rect key="frame" x="0.0" y="0.0" width="259" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn editable="NO" width="256" minWidth="40" maxWidth="1000" id="972">

@@ -385,6 +385,11 @@ DDLogLevel ddLogLevel;
 {
     NSURL *mainManifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
     PXSourceListItem *directoriesItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Directories"] identifier:nil];
+    
+    if (!mainManifestsURL) {
+        return directoriesItem;
+    }
+    
     NSMutableArray *newChildren = [NSMutableArray new];
     NSMutableArray *newRepresentedObjects = [NSMutableArray new];
     
@@ -401,7 +406,7 @@ DDLogLevel ddLogLevel;
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+    NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:mainManifestsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
     for (NSURL *anURL in pkgsInfoDirEnum)
     {
         NSNumber *isDir;
