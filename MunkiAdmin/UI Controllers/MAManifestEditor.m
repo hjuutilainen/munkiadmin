@@ -103,6 +103,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [self.conditionalItemsAllArrayController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
     [self.conditionsTreeController setSortDescriptors:@[sortByTitleWithParentTitle, sortByCondition]];
     [self.conditionsOutlineView expandItem:nil expandChildren:YES];
+    self.conditionsOutlineView.target = self;
+    self.conditionsOutlineView.doubleAction = @selector(editConditionalItemAction:);
     
     [self setupSourceList];
 }
@@ -441,15 +443,23 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         thePredicateString = [self.predicateEditor.customTextField stringValue];
     }
     
-    //NSArray *selectedManifests = [self.manifestsArrayController selectedObjects];
-    //NSArray *selectedConditionalItems = [self.conditionsTreeController selectedObjects];
-    
-    
+    NSArray *selectedConditionalItems = [self.conditionsTreeController selectedObjects];
     ManifestMO *selectedManifest = self.manifestToEdit;
     NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
-    ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
-    newConditionalItem.munki_condition = thePredicateString;
-    [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+    
+    
+    if ([selectedConditionalItems count] == 0) {
+        ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+        newConditionalItem.munki_condition = thePredicateString;
+        [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+    } else {
+        for (id selectedConditionalItem in selectedConditionalItems) {
+            ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+            newConditionalItem.munki_condition = thePredicateString;
+            [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+            newConditionalItem.parent = selectedConditionalItem;
+        }
+    }
     
     [moc refreshObject:selectedManifest mergeChanges:YES];
 }
@@ -507,7 +517,17 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         }
     }
     @catch (NSException *exception) {
-        DDLogError(@"%@", exception);
+        DDLogError(@"Caught exception while trying to open predicate editor. This usually means that the predicate is valid but the editor can not edit it. Showing the text field editor instead...");
+        [self.predicateEditor resetPredicateToDefault];
+        self.predicateEditor.conditionToEdit = selectedCondition;
+        self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
+        [self.predicateEditor.tabView selectTabViewItemAtIndex:1];
+        
+        [NSApp beginSheet:[self.predicateEditor window]
+           modalForWindow:self.window
+            modalDelegate:self
+           didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
+              contextInfo:nil];
     }
     @finally {
         

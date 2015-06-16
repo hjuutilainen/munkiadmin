@@ -1044,7 +1044,7 @@
         <arrayController avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="4hp-Ig-Qph" userLabel="All Conditional Items"/>
         <treeController mode="entity" entityName="ConditionalItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" id="NIc-5W-hAV" userLabel="Conditional Items Tree">
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.rootConditionalItems" id="zbL-AW-cAw"/>
+                <binding destination="-2" name="contentSet" keyPath="manifestToEdit.conditionalItems" id="BIk-jK-aqB"/>
             </connections>
         </treeController>
         <customView id="nYh-hL-i9J" userLabel="Conditionals View">
