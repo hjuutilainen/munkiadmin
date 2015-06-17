@@ -131,18 +131,18 @@ Gw
                         <size key="minSize" width="104" height="25"/>
                         <size key="maxSize" width="104" height="25"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="1" y="14" width="104" height="25"/>
+                            <rect key="frame" x="2" y="14" width="100" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedRounded" trackingMode="selectOne" id="911">
+                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment toolTip="Show Packages" image="packageIcon_32x32" width="32" selected="YES">
+                                    <segment toolTip="Show Packages" width="32" selected="YES">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Show Catalogs" image="catalogIcon_32x32" width="32" tag="1">
+                                    <segment toolTip="Show Catalogs" width="32" tag="1">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Show Manifests" image="manifestIcon_32x32" width="32" tag="2">
+                                    <segment toolTip="Show Manifests" width="32" tag="2">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -155,12 +155,12 @@ Gw
                     <toolbarItem implicitItemIdentifier="NSToolbarSeparatorItem" id="586"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarCustomizeToolbarItem" id="590"/>
                     <toolbarItem implicitItemIdentifier="D714B0EA-7734-42FA-A28E-48FBFBBBCE57" label="Open" paletteLabel="Open Repository" toolTip="Open a repository" image="openRepositoryTemplate" id="2150">
-                        <size key="minSize" width="30" height="24"/>
+                        <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2148">
                             <rect key="frame" x="28" y="14" width="40" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Button" bezelStyle="texturedRounded" image="openRepositoryTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="2149">
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="openRepositoryTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="2149">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -170,7 +170,7 @@ Gw
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="791AC07C-A361-4A5B-994F-4F67AFC4555A" label="Save" paletteLabel="Save Changes to Disk" toolTip="Write modified pkginfo files and catalogs to disk. Optionally run makecatalogs." image="saveTemplate" id="2152">
-                        <size key="minSize" width="30" height="24"/>
+                        <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2153">
                             <rect key="frame" x="41" y="14" width="40" height="25"/>
@@ -185,7 +185,7 @@ Gw
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="FE33AF20-D6C2-4C5A-AE95-AB53684A5D2A" label="Reload" paletteLabel="Reload Repository" toolTip="Reload the current repository from disk and discard any changes since last save" image="reloadTemplate" id="2157">
-                        <size key="minSize" width="30" height="24"/>
+                        <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2158">
                             <rect key="frame" x="32" y="14" width="40" height="25"/>
@@ -200,12 +200,12 @@ Gw
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="CEEDAFCD-4DC6-4B18-A403-D0A2D8323683" label="Make" paletteLabel="Make Catalogs" toolTip="Run makecatalogs against the current repository" image="makecatalogsTemplate" id="2162">
-                        <size key="minSize" width="30" height="24"/>
+                        <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2163">
                             <rect key="frame" x="23" y="14" width="40" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Button" bezelStyle="texturedRounded" image="makecatalogsTemplate" imagePosition="only" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2164">
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="makecatalogsTemplate" imagePosition="overlaps" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2164">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -221,7 +221,6 @@ Gw
                     <toolbarItem reference="2150"/>
                     <toolbarItem reference="2152"/>
                     <toolbarItem reference="2157"/>
-                    <toolbarItem reference="2162"/>
                     <toolbarItem reference="589"/>
                 </defaultToolbarItems>
             </toolbar>
@@ -1467,11 +1466,8 @@ Gw
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="catalogIcon_32x32" width="32" height="32"/>
         <image name="makecatalogsTemplate" width="19" height="19"/>
-        <image name="manifestIcon_32x32" width="32" height="32"/>
         <image name="openRepositoryTemplate" width="18" height="18"/>
-        <image name="packageIcon_32x32" width="32" height="32"/>
         <image name="reloadTemplate" width="19" height="19"/>
         <image name="saveTemplate" width="19" height="19"/>
     </resources>

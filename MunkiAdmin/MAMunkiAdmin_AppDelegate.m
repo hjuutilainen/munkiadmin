@@ -485,12 +485,14 @@ DDLogLevel ddLogLevel;
 	// Configure segmented control
 	[self.mainSegmentedControl setSegmentCount:3];
 	
-    NSImage *packagesIcon = [[NSImage imageNamed:@"packageIcon_32x32"] copy];
-	[packagesIcon setSize:NSMakeSize(18, 18)];
-	NSImage *catalogsIcon = [[NSImage imageNamed:@"catalogIcon_32x32"] copy];
-	[catalogsIcon setSize:NSMakeSize(18, 18)];
-	NSImage *manifestsIcon = [[NSImage imageNamed:@"manifestIcon_32x32"] copy];
-	[manifestsIcon setSize:NSMakeSize(18, 18)];
+    NSSize toolbarIconSize = NSMakeSize(18, 18);
+    NSImage *packagesIcon = [NSImage imageNamed:@"appstoreTemplate"];
+	[packagesIcon setSize:toolbarIconSize];
+	NSImage *catalogsIcon = [NSImage imageNamed:@"layersTemplate"];
+    [catalogsIcon setSize:toolbarIconSize];
+	NSImage *manifestsIcon = [NSImage imageNamed:@"document"];
+    [manifestsIcon setTemplate:YES];
+	[manifestsIcon setSize:toolbarIconSize];
 	
 	[self.mainSegmentedControl setImage:packagesIcon forSegment:0];
 	[self.mainSegmentedControl setImage:catalogsIcon forSegment:1];
