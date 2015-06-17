@@ -128,21 +128,21 @@ Gw
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="589"/>
                     <toolbarItem implicitItemIdentifier="AEEE2978-EEBD-4820-BB0C-955830984CDE" label="View" paletteLabel="View Mode" id="912">
                         <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="25"/>
-                        <size key="maxSize" width="104" height="25"/>
+                        <size key="minSize" width="112" height="25"/>
+                        <size key="maxSize" width="112" height="25"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="2" y="14" width="100" height="25"/>
+                            <rect key="frame" x="0.0" y="14" width="112" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment toolTip="Show Packages" width="32" selected="YES">
+                                    <segment toolTip="Show Packages" width="36" selected="YES">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Show Catalogs" width="32" tag="1">
+                                    <segment toolTip="Show Catalogs" width="36" tag="1">
                                         <nil key="label"/>
                                     </segment>
-                                    <segment toolTip="Show Manifests" width="32" tag="2">
+                                    <segment toolTip="Show Manifests" width="36" tag="2">
                                         <nil key="label"/>
                                     </segment>
                                 </segments>
@@ -169,7 +169,7 @@ Gw
                             <action selector="openRepository:" target="205" id="2151"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="791AC07C-A361-4A5B-994F-4F67AFC4555A" label="Save" paletteLabel="Save Changes to Disk" toolTip="Write modified pkginfo files and catalogs to disk. Optionally run makecatalogs." image="saveTemplate" id="2152">
+                    <toolbarItem implicitItemIdentifier="791AC07C-A361-4A5B-994F-4F67AFC4555A" label="Save" paletteLabel="Save Changes to Disk" toolTip="Write modified pkginfo files and manifests to disk. Optionally run makecatalogs." image="saveTemplate" id="2152">
                         <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2153">
@@ -184,7 +184,7 @@ Gw
                             <action selector="saveAction:" target="205" id="2156"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="FE33AF20-D6C2-4C5A-AE95-AB53684A5D2A" label="Reload" paletteLabel="Reload Repository" toolTip="Reload the current repository from disk and discard any changes since last save" image="reloadTemplate" id="2157">
+                    <toolbarItem implicitItemIdentifier="FE33AF20-D6C2-4C5A-AE95-AB53684A5D2A" label="Reload" paletteLabel="Reload Repository" toolTip="Reload the current repository from disk and discard any unsaved changes" image="reloadTemplate" id="2157">
                         <size key="minSize" width="30" height="25"/>
                         <size key="maxSize" width="45" height="32"/>
                         <button key="view" verticalHuggingPriority="750" id="2158">
