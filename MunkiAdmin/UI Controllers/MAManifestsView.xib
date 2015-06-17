@@ -164,7 +164,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="944" height="466"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <customView id="b8h-Ky-LgG">
+                        <customView hidden="YES" id="b8h-Ky-LgG">
                             <rect key="frame" x="0.0" y="0.0" width="944" height="157"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
@@ -312,18 +312,18 @@
                             </connections>
                         </customView>
                         <customView id="uLD-6C-h5y">
-                            <rect key="frame" x="0.0" y="158" width="944" height="308"/>
+                            <rect key="frame" x="0.0" y="1" width="944" height="465"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="lvd-5N-Hy1">
-                                    <rect key="frame" x="0.0" y="0.0" width="944" height="308"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="944" height="466"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" id="dsE-Fn-fIj">
-                                        <rect key="frame" x="1" y="0.0" width="238" height="134"/>
+                                        <rect key="frame" x="0.0" y="17" width="944" height="449"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="tL6-KA-H9o" viewBased="YES" id="5Uj-Pj-9lj">
-                                                <rect key="frame" x="0.0" y="0.0" width="944" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="944" height="449"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -477,6 +477,7 @@
                                                     <binding destination="rcP-DN-4xO" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="epU-j5-hBy" id="2lS-aY-t4w"/>
                                                     <binding destination="rcP-DN-4xO" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="2lS-aY-t4w" id="Jcc-rl-OIl"/>
                                                     <outlet property="delegate" destination="-2" id="OOy-38-p6V"/>
+                                                    <outlet property="menu" destination="NDC-iy-hCu" id="y34-1o-pBo"/>
                                                     <outlet property="nextKeyView" destination="1X1-7I-tFQ" id="C3p-9z-elg"/>
                                                 </connections>
                                             </tableView>

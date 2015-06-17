@@ -36,6 +36,104 @@ DDLogLevel ddLogLevel;
 {
     [super viewDidLoad];
     
+    
+}
+
+- (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest
+{
+    MAManifestEditor *existingEditor = [self.openedManifestEditors objectForKey:manifest.objectID.description];
+    if (!existingEditor) {
+        MAManifestEditor *newEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
+        newEditor.manifestToEdit = manifest;
+        newEditor.delegate = self;
+        [self.openedManifestEditors setObject:newEditor forKey:manifest.objectID.description];
+        
+        return newEditor;
+    } else {
+        return existingEditor;
+    }
+}
+
+- (void)openEditorForManifest:(ManifestMO *)manifest
+{
+    MAManifestEditor *editor = [self editorForManifest:manifest];
+    [editor showWindow:nil];
+}
+
+- (void)didDoubleClickManifest:(id)sender
+{
+    for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
+        DDLogVerbose(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
+        [self openEditorForManifest:manifest];
+    }
+}
+
+- (void)rowsChanged:(NSNotification *)aNotification
+{
+    [self uncollapseFindView];
+    [self updateSearchPredicateFromEditor];
+}
+
+- (void)searchUpdated:(NSNotification *)aNotification
+{
+    [self updateSearchPredicateFromEditor];
+}
+
+- (void)updateSearchPredicateFromEditor
+{
+    DDLogVerbose(@"%@", [[self.manifestsListPredicateEditor predicate] description]);
+    if ([[self.manifestsListPredicateEditor predicate] isEqualTo:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]]]) {
+        //DDLogVerbose(@"EQUAL: %@", [[self.manifestsListPredicateEditor predicate] description]);
+        self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
+    } else {
+        self.searchFieldPredicate = [self.manifestsListPredicateEditor predicate];
+    }
+}
+
+- (void)resetSearch
+{
+    self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
+    self.manifestsListPredicateEditor.objectValue = self.previousPredicateEditorPredicate;
+    
+    [self searchUpdated:nil];
+    
+    [self.view.window makeFirstResponder:self.manifestsListPredicateEditor];
+    [self.view.window selectKeyViewFollowingView:self.manifestsListPredicateEditor];
+    [self.view.window recalculateKeyViewLoop];
+}
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    /*
+     Update the mainCompoundPredicate everytime the subcomponents are updated
+     */
+    if ([key isEqualToString:@"mainCompoundPredicate"])
+    {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"selectedSourceListFilterPredicate", @"searchFieldPredicate", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+    
+    return keyPaths;
+}
+
+
+- (NSPredicate *)mainCompoundPredicate
+{
+    /*
+     Combine the selected source list item predicate and the possible search predicate
+     */
+    return [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.selectedSourceListFilterPredicate, self.searchFieldPredicate, nil]];
+}
+
+- (void)awakeFromNib
+{
+    //[self.sourceList registerForDraggedTypes:@[draggingType]];
+    
+    [self setDetailView:self.manifestsListView];
+    
+    
     self.manifestEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
     self.openedManifestEditors = [NSMutableDictionary new];
     
@@ -98,101 +196,6 @@ DDLogLevel ddLogLevel;
     [self.manifestsListTableView setMenu:self.manifestsListMenu];
 }
 
-- (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest
-{
-    MAManifestEditor *existingEditor = [self.openedManifestEditors objectForKey:manifest.objectID.description];
-    if (!existingEditor) {
-        MAManifestEditor *newEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
-        newEditor.manifestToEdit = manifest;
-        newEditor.delegate = self;
-        [self.openedManifestEditors setObject:newEditor forKey:manifest.objectID.description];
-        
-        return newEditor;
-    } else {
-        return existingEditor;
-    }
-}
-
-- (void)openEditorForManifest:(ManifestMO *)manifest
-{
-    MAManifestEditor *editor = [self editorForManifest:manifest];
-    [editor showWindow:nil];
-}
-
-- (void)didDoubleClickManifest:(id)sender
-{
-    for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
-        DDLogVerbose(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
-        [self openEditorForManifest:manifest];
-    }
-}
-
-- (void)rowsChanged:(NSNotification *)aNotification
-{
-    [self uncollapseFindView];
-    [self updateSearchPredicateFromEditor];
-}
-
-- (void)searchUpdated:(NSNotification *)aNotification
-{
-    [self updateSearchPredicateFromEditor];
-}
-
-- (void)updateSearchPredicateFromEditor
-{
-    DDLogError(@"%@", [[self.manifestsListPredicateEditor predicate] description]);
-    if ([[self.manifestsListPredicateEditor predicate] isEqualTo:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]]]) {
-        DDLogError(@"EQUAL: %@", [[self.manifestsListPredicateEditor predicate] description]);
-        self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
-    } else {
-        self.searchFieldPredicate = [self.manifestsListPredicateEditor predicate];
-    }
-}
-
-- (void)resetSearch
-{
-    self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
-    self.manifestsListPredicateEditor.objectValue = self.previousPredicateEditorPredicate;
-    
-    [self searchUpdated:nil];
-    
-    [self.view.window makeFirstResponder:self.manifestsListPredicateEditor];
-    [self.view.window selectKeyViewFollowingView:self.manifestsListPredicateEditor];
-    [self.view.window recalculateKeyViewLoop];
-}
-
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
-{
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-    
-    /*
-     Update the mainCompoundPredicate everytime the subcomponents are updated
-     */
-    if ([key isEqualToString:@"mainCompoundPredicate"])
-    {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"selectedSourceListFilterPredicate", @"searchFieldPredicate", nil];
-        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
-    }
-    
-    return keyPaths;
-}
-
-
-- (NSPredicate *)mainCompoundPredicate
-{
-    /*
-     Combine the selected source list item predicate and the possible search predicate
-     */
-    return [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.selectedSourceListFilterPredicate, self.searchFieldPredicate, nil]];
-}
-
-- (void)awakeFromNib
-{
-    //[self.sourceList registerForDraggedTypes:@[draggingType]];
-    
-    [self setDetailView:self.manifestsListView];
-}
-
 - (void)updateSourceListData
 {
     [self configureSourceList];
@@ -206,6 +209,7 @@ DDLogLevel ddLogLevel;
     [self.sourceList reloadData];
     [self.sourceList expandItem:nil expandChildren:YES];
     [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+    [self.sourceList setNeedsDisplay:YES];
 }
 
 - (void)configureSourceList
