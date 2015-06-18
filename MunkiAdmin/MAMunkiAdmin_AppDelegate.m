@@ -1021,6 +1021,11 @@ DDLogLevel ddLogLevel;
     }
     
     /*
+     Let URLByResolvingSymlinksInPath work on directory since file is not created yet
+     */
+    newURL = [[[newURL URLByDeletingLastPathComponent] URLByResolvingSymlinksInPath] URLByAppendingPathComponent: [newURL lastPathComponent]];
+
+    /*
      The actual renaming is handled by MunkiRepositoryManager
      */
     [[MAMunkiRepositoryManager sharedManager] moveManifest:selectedManifest toURL:newURL cascade:YES];
@@ -1059,6 +1064,11 @@ DDLogLevel ddLogLevel;
         return;
     }
     
+    /*
+     Let URLByResolvingSymlinksInPath work on directory since file is not created yet
+     */
+    newURL = [[[newURL URLByDeletingLastPathComponent] URLByResolvingSymlinksInPath] URLByAppendingPathComponent: [newURL lastPathComponent]];
+
     if ([[NSFileManager defaultManager] copyItemAtURL:currentURL toURL:newURL error:nil]) {
         
         MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
@@ -1149,7 +1159,12 @@ DDLogLevel ddLogLevel;
         return;
     }
     
-    ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:newURL inManagedObjectContext:self.managedObjectContext];
+    /*
+     Let URLByResolvingSymlinksInPath work on directory since file is not created yet
+     */
+    newURL = [[[newURL URLByDeletingLastPathComponent] URLByResolvingSymlinksInPath] URLByAppendingPathComponent: [newURL lastPathComponent]];
+
+    ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:[newURL URLByResolvingSymlinksInPath] inManagedObjectContext:self.managedObjectContext];
     if (!newManifest) {
         DDLogError(@"Failed to create manifest");
     }
@@ -2571,7 +2586,7 @@ DDLogLevel ddLogLevel;
             /*
              Manifest name should be the relative path from manifests subdirectory
              */
-            NSArray *manifestComponents = [aManifestFile pathComponents];
+            NSArray *manifestComponents = [[aManifestFile URLByResolvingSymlinksInPath] pathComponents];
             NSArray *manifestDirComponents = [self.manifestsURL pathComponents];
             NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
             [relativePathComponents removeObjectsInArray:manifestDirComponents];
@@ -2586,7 +2601,7 @@ DDLogLevel ddLogLevel;
 			if (foundItems == 0) {
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = manifestRelativePath;
-				manifest.manifestURL = aManifestFile;
+				manifest.manifestURL = [aManifestFile URLByResolvingSymlinksInPath];
 			}
 			
 		}
