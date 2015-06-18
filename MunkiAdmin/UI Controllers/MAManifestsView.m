@@ -12,6 +12,7 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
+#import "MARequestStringValueController.h"
 #import "CocoaLumberjack.h"
 #import "MAManifestEditor.h"
 
@@ -209,6 +210,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     
     //[self.sourceList registerForDraggedTypes:@[draggingType]];
+    
+    self.requestStringValue = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     
     [self setupFindView];
     
@@ -488,6 +491,51 @@ DDLogLevel ddLogLevel;
 
 #pragma mark -
 #pragma mark Manifest list right-click menu actions
+
+- (void)renameSelectedManifest
+{
+    /*
+     Get the manifest item that was right-clicked
+     */
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    
+    /*
+     Ask for a new title
+     */
+    [self.requestStringValue setDefaultValues];
+    self.requestStringValue.windowTitleText = @"";
+    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", clickedManifest.title];
+    self.requestStringValue.okButtonTitle = @"Rename";
+    self.requestStringValue.labelText = @"New Name:";
+    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", clickedManifest.title];
+    self.requestStringValue.stringValue = clickedManifest.title;
+    NSWindow *window = [self.requestStringValue window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    /*
+     Perform the actual rename
+     */
+    if (result == NSModalResponseOK) {
+        MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+        NSString *newTitle = self.requestStringValue.stringValue;
+        
+        if (![clickedManifest.title isEqualToString:newTitle]) {
+            NSURL *newURL = [clickedManifest.manifestParentDirectoryURL URLByAppendingPathComponent:newTitle];
+            [repoManager moveManifest:clickedManifest toURL:newURL cascade:YES];
+        } else {
+            DDLogError(@"Old name and new name are the same. Skipping rename...");
+        }
+    }
+    
+    [self.requestStringValue setDefaultValues];
+}
+
+- (IBAction)renameManifestAction:(id)sender
+{
+    [self renameSelectedManifest];
+}
 
 - (IBAction)propertiesAction:(id)sender
 {

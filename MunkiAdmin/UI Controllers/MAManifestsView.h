@@ -11,6 +11,7 @@
 
 @class MAManifestEditor;
 @class ManifestMO;
+@class MARequestStringValueController;
 
 @interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate, NSMenuDelegate>
 
@@ -36,6 +37,7 @@
 @property (strong) NSArray *defaultSortDescriptors;
 @property (strong) MAManifestEditor *manifestEditor;
 @property (strong) NSMutableDictionary *openedManifestEditors;
+@property (strong) MARequestStringValueController *requestStringValue;
 
 - (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item;
 - (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item;

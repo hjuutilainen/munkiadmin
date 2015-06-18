@@ -13,6 +13,7 @@
 @class MASelectManifestItemsWindow;
 @class MAPredicateEditor;
 @class MAManifestsView;
+@class MARequestStringValueController;
 
 @interface MAManifestEditor : NSWindowController <NSSplitViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSMenuDelegate>
 
@@ -50,6 +51,7 @@
 @property (strong) MASelectPkginfoItemsWindow *addItemsWindowController;
 @property (strong) MASelectManifestItemsWindow *selectManifestsWindowController;
 @property (strong) MAPredicateEditor *predicateEditor;
+@property (strong) MARequestStringValueController *requestStringValue;
 
 
 @end

@@ -13,6 +13,8 @@
 #import "MAPredicateEditor.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAManifestsView.h"
+#import "MARequestStringValueController.h"
+#import "MAMunkiRepositoryManager.h"
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -159,6 +161,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
     self.predicateEditor = [[MAPredicateEditor alloc] initWithWindowNibName:@"MAPredicateEditor"];
+    self.requestStringValue = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
 }
 
 - (IBAction)addNewReferencingManifestAction:(id)sender
@@ -545,6 +548,47 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         [self.manifestToEdit.managedObjectContext deleteObject:aConditionalItem];
     }
     [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+}
+
+
+- (IBAction)renameManifestAction:(id)sender
+{
+    /*
+     Get the manifest item that was right-clicked
+     */
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    
+    /*
+     Ask for a new title
+     */
+    [self.requestStringValue setDefaultValues];
+    self.requestStringValue.windowTitleText = @"";
+    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", selectedManifest.title];
+    self.requestStringValue.okButtonTitle = @"Rename";
+    self.requestStringValue.labelText = @"New Name:";
+    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", selectedManifest.title];
+    self.requestStringValue.stringValue = selectedManifest.title;
+    NSWindow *window = [self.requestStringValue window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    
+    /*
+     Perform the actual rename
+     */
+    if (result == NSModalResponseOK) {
+        MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+        NSString *newTitle = self.requestStringValue.stringValue;
+        
+        if (![selectedManifest.title isEqualToString:newTitle]) {
+            NSURL *newURL = [selectedManifest.manifestParentDirectoryURL URLByAppendingPathComponent:newTitle];
+            [repoManager moveManifest:selectedManifest toURL:newURL cascade:YES];
+        } else {
+            DDLogError(@"Old name and new name are the same. Skipping rename...");
+        }
+    }
+    
+    [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
+    [self.requestStringValue setDefaultValues];
 }
 
 
