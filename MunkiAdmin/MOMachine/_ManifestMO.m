@@ -10,6 +10,7 @@ const struct ManifestMOAttributes ManifestMOAttributes = {
 	.manifestDateModified = @"manifestDateModified",
 	.manifestParentDirectoryURL = @"manifestParentDirectoryURL",
 	.manifestURL = @"manifestURL",
+	.manifestUserName = @"manifestUserName",
 	.originalManifest = @"originalManifest",
 	.title = @"title",
 };
@@ -106,6 +107,8 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 @dynamic manifestParentDirectoryURL;
 
 @dynamic manifestURL;
+
+@dynamic manifestUserName;
 
 @dynamic originalManifest;
 

@@ -10,6 +10,7 @@ extern const struct ManifestMOAttributes {
 	__unsafe_unretained NSString *manifestDateModified;
 	__unsafe_unretained NSString *manifestParentDirectoryURL;
 	__unsafe_unretained NSString *manifestURL;
+	__unsafe_unretained NSString *manifestUserName;
 	__unsafe_unretained NSString *originalManifest;
 	__unsafe_unretained NSString *title;
 } ManifestMOAttributes;
@@ -101,6 +102,10 @@ extern const struct ManifestMOFetchedProperties {
 @property (nonatomic, strong) id manifestURL;
 
 //- (BOOL)validateManifestURL:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* manifestUserName;
+
+//- (BOOL)validateManifestUserName:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) id originalManifest;
 
@@ -338,6 +343,9 @@ extern const struct ManifestMOFetchedProperties {
 
 - (id)primitiveManifestURL;
 - (void)setPrimitiveManifestURL:(id)value;
+
+- (NSString*)primitiveManifestUserName;
+- (void)setPrimitiveManifestUserName:(NSString*)value;
 
 - (id)primitiveOriginalManifest;
 - (void)setPrimitiveOriginalManifest:(id)value;

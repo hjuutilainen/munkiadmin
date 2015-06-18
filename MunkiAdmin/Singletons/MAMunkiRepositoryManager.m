@@ -2642,12 +2642,13 @@ static dispatch_queue_t serialQueue;
         NSSet *originalKeysSet = [NSSet setWithArray:sortedOriginalKeys];
         NSSet *newKeysSet = [NSSet setWithArray:sortedManifestKeys];
         NSArray *keysToDelete = @[@"catalogs",
-                @"conditional_items",
-                @"included_manifests",
-                @"managed_installs",
-                @"managed_uninstalls",
-                @"managed_updates",
-                @"optional_installs"];
+                                  @"conditional_items",
+                                  @"included_manifests",
+                                  @"managed_installs",
+                                  @"managed_uninstalls",
+                                  @"managed_updates",
+                                  @"optional_installs",
+                                  [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
         
         /*
          Determine which keys were removed

@@ -131,6 +131,7 @@
         <attribute name="manifestDateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="manifestParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="manifestURL" attributeType="Transformable" syncable="YES"/>
+        <attribute name="manifestUserName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalManifest" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="applications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Application" inverseName="manifests" inverseEntity="Application" indexed="YES" syncable="YES"/>
@@ -327,7 +328,7 @@
         <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="509"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="524"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1080"/>

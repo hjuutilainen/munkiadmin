@@ -546,6 +546,10 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
+    
+    if (self.manifestUserName && ![self.manifestUserName isEqualToString:@""]) {
+        [tmpDict setObject:self.manifestUserName forKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
+    }
 	
     // =====================
     // catalogs

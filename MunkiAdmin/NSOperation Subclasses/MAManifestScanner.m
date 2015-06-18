@@ -234,6 +234,14 @@ DDLogLevel ddLogLevel;
                 NSDate *dateModified;
                 [manifest.manifestURL getResourceValue:&dateModified forKey:NSURLContentModificationDateKey error:nil];
                 manifest.manifestDateModified = dateModified;
+                
+                /*
+                 * Get the user if it exists
+                 */
+                NSString *user = [manifestInfoDict objectForKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
+                if (user) {
+                    manifest.manifestUserName = user;
+                }
 				
                 
                 // =================================
