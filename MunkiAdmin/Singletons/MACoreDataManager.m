@@ -377,6 +377,16 @@ DDLogLevel ddLogLevel;
     return YES;
 }
 
+- (NSString *)uppercaseOrCapitalizedHeaderString:(NSString *)headerTitle
+{
+    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9) {
+        /* On a 10.9 - 10.9.x system */
+        return [headerTitle uppercaseString];
+    } else {
+        /* 10.10 or later system */
+        return [headerTitle capitalizedString];
+    }
+}
 
 - (id)sourceListItemWithTitle:(NSString *)title entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)moc
 {
@@ -396,8 +406,9 @@ DDLogLevel ddLogLevel;
 
 - (void)configureSourceListDevelopersSection:(NSManagedObjectContext *)moc
 {
+    NSString *developersItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Developers"];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"sidebarDevelopersVisible"]) {
-        PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+        PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:developersItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
         for (id child in mainDevelopersItem.children) {
             [moc deleteObject:child];
         }
@@ -405,13 +416,17 @@ DDLogLevel ddLogLevel;
         return;
     }
     
-    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:@"DEVELOPERS" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+    PackageSourceListItemMO *mainDevelopersItem = [self sourceListItemWithTitle:developersItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
     mainDevelopersItem.originalIndexValue = 3;
     mainDevelopersItem.parent = nil;
     mainDevelopersItem.isGroupItemValue = YES;
     
+    NSImage *developerIcon = [NSImage imageNamed:@"developerTemplate"];
+    NSImage *developerUnknownIcon = [NSImage imageNamed:@"developerUnknownTemplate"];
+    
     DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
     noDeveloperSmartItem.itemType = @"smart";
+    noDeveloperSmartItem.icon = developerUnknownIcon;
     noDeveloperSmartItem.parent = mainDevelopersItem;
     noDeveloperSmartItem.originalIndexValue = 10;
     noDeveloperSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"developer == nil"];
@@ -433,6 +448,7 @@ DDLogLevel ddLogLevel;
             NSUInteger requiredCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:@"sidebarDeveloperMinimumNumberOfPackageNames"];
             if ([devPackageNames count] >= requiredCount) {
                 DeveloperSourceListItemMO *sourceListItem = [self sourceListItemWithTitle:developer.title entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
+                sourceListItem.icon = developerIcon;
                 sourceListItem.itemType = @"regular";
                 sourceListItem.parent = mainDevelopersItem;
                 sourceListItem.originalIndexValue = 20;
@@ -449,8 +465,9 @@ DDLogLevel ddLogLevel;
 
 - (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc
 {
+    NSString *categoriesItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Categories"];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"sidebarCategoriesVisible"]) {
-        PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+        PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:categoriesItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
         for (id child in mainCategoriesItem.children) {
             [moc deleteObject:child];
         }
@@ -458,13 +475,17 @@ DDLogLevel ddLogLevel;
         return;
     }
     
-    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:@"CATEGORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+    PackageSourceListItemMO *mainCategoriesItem = [self sourceListItemWithTitle:categoriesItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
     mainCategoriesItem.originalIndexValue = 2;
     mainCategoriesItem.parent = nil;
     mainCategoriesItem.isGroupItemValue = YES;
     
+    NSImage *categoryMultipleIcon = [NSImage imageNamed:@"tagMultipleTemplate"];
+    NSImage *categoryIcon = [NSImage imageNamed:@"tagTemplate"];
+    
     CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:moc];
     noCategoriesSmartItem.itemType = @"smart";
+    noCategoriesSmartItem.icon = categoryMultipleIcon;
     noCategoriesSmartItem.parent = mainCategoriesItem;
     noCategoriesSmartItem.originalIndexValue = 10;
     noCategoriesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"category == nil"];
@@ -484,6 +505,7 @@ DDLogLevel ddLogLevel;
         [allCatalogs enumerateObjectsUsingBlock:^(CategoryMO *category, NSUInteger idx, BOOL *stop) {
             CategorySourceListItemMO *categorySourceListItem = [self sourceListItemWithTitle:category.title entityName:@"CategorySourceListItem" managedObjectContext:moc];
             categorySourceListItem.itemType = @"regular";
+            categorySourceListItem.icon = categoryIcon;
             categorySourceListItem.parent = mainCategoriesItem;
             categorySourceListItem.originalIndexValue = 20;
             NSPredicate *catalogPredicate = [NSPredicate predicateWithFormat:@"category.title == %@", category.title];
@@ -496,8 +518,9 @@ DDLogLevel ddLogLevel;
 
 - (void)configureSourceListDirectoriesSection:(NSManagedObjectContext *)moc
 {
+    NSString *directoriesItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Directories"];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"sidebarDirectoriesVisible"]) {
-        PackageSourceListItemMO *directoriesGroupItem = [self sourceListItemWithTitle:@"DIRECTORIES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+        PackageSourceListItemMO *directoriesGroupItem = [self sourceListItemWithTitle:directoriesItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
         for (id aDirectory in [self allObjectsForEntity:@"Directory" inManagedObjectContext:moc]) {
             [moc deleteObject:aDirectory];
         }
@@ -510,21 +533,25 @@ DDLogLevel ddLogLevel;
     PackageSourceListItemMO *directoriesGroupItem = nil;
     NSFetchRequest *groupItemRequest = [[NSFetchRequest alloc] init];
     [groupItemRequest setEntity:[NSEntityDescription entityForName:@"PackageSourceListItem" inManagedObjectContext:moc]];
-    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", @"DIRECTORIES"];
+    NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"title == %@", directoriesItemTitle];
     [groupItemRequest setPredicate:parentPredicate];
     NSUInteger foundItems = [moc countForFetchRequest:groupItemRequest error:nil];
     if (foundItems > 0) {
         directoriesGroupItem = [[moc executeFetchRequest:groupItemRequest error:nil] objectAtIndex:0];
     } else {
         directoriesGroupItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
-        directoriesGroupItem.title = @"DIRECTORIES";
+        directoriesGroupItem.title = directoriesItemTitle;
         directoriesGroupItem.originalIndexValue = 4;
         directoriesGroupItem.parent = nil;
         directoriesGroupItem.isGroupItemValue = YES;
     }
     
+    NSImage *directoryIcon = [NSImage imageNamed:@"folder"];
+    [directoryIcon setTemplate:YES];
+    
     DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] managedObjectContext:moc];
     basePkgsInfoDirectory.title = @"pkgsinfo";
+    basePkgsInfoDirectory.icon = directoryIcon;
     basePkgsInfoDirectory.itemType = @"regular";
     basePkgsInfoDirectory.parent = directoriesGroupItem;
     basePkgsInfoDirectory.originalIndexValue = 10;
@@ -554,6 +581,7 @@ DDLogLevel ddLogLevel;
                 NSString *newTitle;
                 [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
                 newDirectory.title = newTitle;
+                newDirectory.icon = directoryIcon;
                 
                 NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
                 if ([parentDirectory isEqual:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL]]) {
@@ -575,8 +603,9 @@ DDLogLevel ddLogLevel;
 
 - (void)configureSourceListInstallerTypesSection:(NSManagedObjectContext *)moc
 {
+    NSString *installerTypesItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Installer Types"];
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"sidebarInstallerTypesVisible"]) {
-        PackageSourceListItemMO *mainTypesItem = [self sourceListItemWithTitle:@"INSTALLER TYPES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+        PackageSourceListItemMO *mainTypesItem = [self sourceListItemWithTitle:installerTypesItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
         for (id child in mainTypesItem.children) {
             [moc deleteObject:child];
         }
@@ -584,13 +613,16 @@ DDLogLevel ddLogLevel;
         return;
     }
     
-    PackageSourceListItemMO *mainTypesItem = [self sourceListItemWithTitle:@"INSTALLER TYPES" entityName:@"PackageSourceListItem" managedObjectContext:moc];
+    PackageSourceListItemMO *mainTypesItem = [self sourceListItemWithTitle:installerTypesItemTitle entityName:@"PackageSourceListItem" managedObjectContext:moc];
     mainTypesItem.originalIndexValue = 1;
     mainTypesItem.parent = nil;
     mainTypesItem.isGroupItemValue = YES;
     
+    NSImage *smartIcon = [NSImage imageNamed:NSImageNameSmartBadgeTemplate];
+    
     InstallerTypeSourceListItemMO *copyFromDmgSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     copyFromDmgSmartItem.title = @"Copy from Disk Image";
+    copyFromDmgSmartItem.icon = smartIcon;
     copyFromDmgSmartItem.itemType = @"smart";
     copyFromDmgSmartItem.parent = mainTypesItem;
     copyFromDmgSmartItem.originalIndexValue = 10;
@@ -598,6 +630,7 @@ DDLogLevel ddLogLevel;
     
     InstallerTypeSourceListItemMO *packagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     packagesSmartItem.title = @"Installer Package";
+    packagesSmartItem.icon = smartIcon;
     packagesSmartItem.itemType = @"smart";
     packagesSmartItem.parent = mainTypesItem;
     packagesSmartItem.originalIndexValue = 20;
@@ -605,6 +638,7 @@ DDLogLevel ddLogLevel;
     
     InstallerTypeSourceListItemMO *nopkgSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     nopkgSmartItem.title = @"No Package";
+    nopkgSmartItem.icon = smartIcon;
     nopkgSmartItem.itemType = @"smart";
     nopkgSmartItem.parent = mainTypesItem;
     nopkgSmartItem.originalIndexValue = 30;
@@ -612,6 +646,7 @@ DDLogLevel ddLogLevel;
     
     InstallerTypeSourceListItemMO *appleUpdatesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     appleUpdatesSmartItem.title = @"Apple Update Metadata";
+    appleUpdatesSmartItem.icon = smartIcon;
     appleUpdatesSmartItem.itemType = @"smart";
     appleUpdatesSmartItem.parent = mainTypesItem;
     appleUpdatesSmartItem.originalIndexValue = 40;
@@ -619,6 +654,7 @@ DDLogLevel ddLogLevel;
     
     InstallerTypeSourceListItemMO *configurationProfilesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     configurationProfilesSmartItem.title = @"Configuration Profile";
+    configurationProfilesSmartItem.icon = smartIcon;
     configurationProfilesSmartItem.itemType = @"smart";
     configurationProfilesSmartItem.parent = mainTypesItem;
     configurationProfilesSmartItem.originalIndexValue = 50;
@@ -626,6 +662,7 @@ DDLogLevel ddLogLevel;
     
     InstallerTypeSourceListItemMO *adobeSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     adobeSmartItem.title = @"Adobe Installer";
+    adobeSmartItem.icon = smartIcon;
     adobeSmartItem.itemType = @"smart";
     adobeSmartItem.parent = mainTypesItem;
     adobeSmartItem.originalIndexValue = 60;
@@ -641,20 +678,27 @@ DDLogLevel ddLogLevel;
 - (void)configureSourceListRepositorySection:(NSManagedObjectContext *)moc
 {
     PackageSourceListItemMO *newSourceListItem2 = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
-    newSourceListItem2.title = @"REPOSITORY";
+    newSourceListItem2.title = [self uppercaseOrCapitalizedHeaderString:@"Repository"];
     newSourceListItem2.originalIndexValue = 0;
     newSourceListItem2.parent = nil;
     newSourceListItem2.isGroupItemValue = YES;
     
+    NSImage *allPackagesIcon = [NSImage imageNamed:@"inbox"];
+    [allPackagesIcon setTemplate:YES];
+    NSImage *newPackagesIcon = [NSImage imageNamed:@"calendar_ok"];
+    [newPackagesIcon setTemplate:YES];
+    
     PackageSourceListItemMO *allPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
     allPackagesSmartItem.title = @"All Packages";
+    allPackagesSmartItem.icon = allPackagesIcon;
     allPackagesSmartItem.itemType = @"smart";
     allPackagesSmartItem.parent = newSourceListItem2;
     allPackagesSmartItem.originalIndexValue = 10;
     allPackagesSmartItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
     
     PackageSourceListItemMO *newPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
-    newPackagesSmartItem.title = @"Last 30 Days";
+    newPackagesSmartItem.title = @"Recently Modified";
+    newPackagesSmartItem.icon = newPackagesIcon;
     newPackagesSmartItem.itemType = @"smart";
     newPackagesSmartItem.parent = newSourceListItem2;
     newPackagesSmartItem.originalIndexValue = 20;

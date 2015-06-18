@@ -5,6 +5,7 @@
 
 const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes = {
 	.filterPredicate = @"filterPredicate",
+	.icon = @"icon",
 	.isGroupItem = @"isGroupItem",
 	.itemType = @"itemType",
 	.originalIndex = @"originalIndex",
@@ -58,6 +59,8 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 @dynamic filterPredicate;
+
+@dynamic icon;
 
 @dynamic isGroupItem;
 

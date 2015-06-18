@@ -257,6 +257,7 @@
     </entity>
     <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
         <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -331,7 +332,7 @@
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1080"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="419"/>
     </elements>

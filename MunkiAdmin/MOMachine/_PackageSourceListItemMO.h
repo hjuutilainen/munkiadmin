@@ -5,6 +5,7 @@
 
 extern const struct PackageSourceListItemMOAttributes {
 	__unsafe_unretained NSString *filterPredicate;
+	__unsafe_unretained NSString *icon;
 	__unsafe_unretained NSString *isGroupItem;
 	__unsafe_unretained NSString *itemType;
 	__unsafe_unretained NSString *originalIndex;
@@ -24,6 +25,8 @@ extern const struct PackageSourceListItemMORelationships {
 
 @class NSObject;
 
+@class NSObject;
+
 @interface PackageSourceListItemMOID : NSManagedObjectID {}
 @end
 
@@ -36,6 +39,10 @@ extern const struct PackageSourceListItemMORelationships {
 @property (nonatomic, strong) id filterPredicate;
 
 //- (BOOL)validateFilterPredicate:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) id icon;
+
+//- (BOOL)validateIcon:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* isGroupItem;
 
@@ -87,6 +94,9 @@ extern const struct PackageSourceListItemMORelationships {
 
 - (id)primitiveFilterPredicate;
 - (void)setPrimitiveFilterPredicate:(id)value;
+
+- (id)primitiveIcon;
+- (void)setPrimitiveIcon:(id)value;
 
 - (NSNumber*)primitiveIsGroupItem;
 - (void)setPrimitiveIsGroupItem:(NSNumber*)value;
