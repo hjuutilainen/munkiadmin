@@ -749,7 +749,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    id view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    id view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:nil];
     
     if (tableView == self.contentItemsTableView) {
         

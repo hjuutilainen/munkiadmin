@@ -73,6 +73,7 @@ DDLogLevel ddLogLevel;
 
 - (void)awakeFromNib
 {
+    DDLogError(@"###### MAPackagesView awakeFromNib");
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
@@ -1172,9 +1173,9 @@ DDLogLevel ddLogLevel;
     NSTableCellView *view = nil;
     
     if ([[item representedObject] isGroupItemValue]) {
-        view = [ov makeViewWithIdentifier:@"HeaderCell" owner:self];
+        view = [ov makeViewWithIdentifier:@"HeaderCell" owner:nil];
     } else {
-        view = [ov makeViewWithIdentifier:@"DataCell" owner:self];
+        view = [ov makeViewWithIdentifier:@"DataCell" owner:nil];
     }
     
     return view;

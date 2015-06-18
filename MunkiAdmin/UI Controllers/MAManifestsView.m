@@ -32,11 +32,16 @@ DDLogLevel ddLogLevel;
 
 @implementation MAManifestsView
 
-- (void)viewDidLoad
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    [super viewDidLoad];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+        _predicateEditorHidden = YES;
+        _openedManifestEditors = [NSMutableDictionary new];
+    }
     
-    
+    return self;
 }
 
 - (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest
@@ -83,7 +88,6 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", [[self.manifestsListPredicateEditor predicate] description]);
     if ([[self.manifestsListPredicateEditor predicate] isEqualTo:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]]]) {
-        //DDLogVerbose(@"EQUAL: %@", [[self.manifestsListPredicateEditor predicate] description]);
         self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
     } else {
         self.searchFieldPredicate = [self.manifestsListPredicateEditor predicate];
@@ -127,17 +131,9 @@ DDLogLevel ddLogLevel;
     return [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:self.selectedSourceListFilterPredicate, self.searchFieldPredicate, nil]];
 }
 
-- (void)awakeFromNib
+- (void)setupFindView
 {
-    //[self.sourceList registerForDraggedTypes:@[draggingType]];
     
-    [self setDetailView:self.manifestsListView];
-    
-    
-    self.manifestEditor = [[MAManifestEditor alloc] initWithWindowNibName:@"MAManifestEditor"];
-    self.openedManifestEditors = [NSMutableDictionary new];
-    
-    self.predicateEditorHidden = YES;
     self.searchFieldPredicate = [NSPredicate predicateWithValue:YES];
     self.selectedSourceListFilterPredicate = [NSPredicate predicateWithValue:YES];
     self.previousPredicateEditorPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:DEFAULT_PREDICATE]]];
@@ -188,32 +184,70 @@ DDLogLevel ddLogLevel;
                                  @"%[conditionalItemsStrings]@ %[contains]@ %@" : @"%[Condition predicates]@ %[contains]@ %@",
                                  };
     [self.manifestsListPredicateEditor setFormattingDictionary:formatting];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)viewWillAppear
+{
+    [super viewWillAppear];
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)awakeFromNib
+{
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
+    //[self.sourceList registerForDraggedTypes:@[draggingType]];
+    
+    [self setupFindView];
     
     [self updateSourceListData];
+    
+    [self configureSplitView];
+    [self configureSourceList];
     
     [self.manifestsListTableView setTarget:self];
     [self.manifestsListTableView setDoubleAction:@selector(didDoubleClickManifest:)];
     [self.manifestsListTableView setMenu:self.manifestsListMenu];
+    
+    self.predicateEditorHidden = YES;
+
+    [self.sourceList reloadData];
+    [self.sourceList expandItem:nil expandChildren:YES];
+    [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+    //[self.sourceList setNeedsDisplay:YES];
+    
+    [self setDetailView:self.manifestsListView];
 }
 
 - (void)updateSourceListData
 {
-    [self configureSourceList];
-    [self configureSplitView];
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
     self.sourceListItems = [[NSMutableArray alloc] init];
     
     [self setUpDataModel];
     self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]];
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
-    [self.sourceList reloadData];
-    [self.sourceList expandItem:nil expandChildren:YES];
-    [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
-    [self.sourceList setNeedsDisplay:YES];
+    
 }
 
 - (void)configureSourceList
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
     [self.sourceList sizeLastColumnToFit];
     [self.sourceList setFloatsGroupRows:NO];
     [self.sourceList setRowSizeStyle:NSTableViewRowSizeStyleDefault];
@@ -223,6 +257,8 @@ DDLogLevel ddLogLevel;
 
 - (void)configureSplitView
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
     [self.mainSplitView setDividerStyle:NSSplitViewDividerStyleThin];
 }
 
@@ -239,6 +275,8 @@ DDLogLevel ddLogLevel;
 
 - (void)setUpDataModel
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
     /*
      Predicates
      */
@@ -453,7 +491,7 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)propertiesAction:(id)sender
 {
-    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
     ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
     if ([[self.manifestsArrayController selectedObjects] count] > 0) {
@@ -474,7 +512,7 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)showManifestInFinderAction:(id)sender
 {
-    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
     NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
     ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
@@ -786,6 +824,15 @@ DDLogLevel ddLogLevel;
     }
 }
 
+# pragma mark -
+# pragma mark NSTableView delegate
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSString *identifier = [tableColumn identifier];
+    NSView *cellView = [tableView makeViewWithIdentifier:identifier owner:nil];
+    return cellView;
+}
 
 # pragma mark -
 # pragma mark PXSourceList Data Source methods
@@ -812,7 +859,7 @@ DDLogLevel ddLogLevel;
 }
 
 # pragma mark -
-# pragma mark PXSourceList Delegate
+# pragma mark PXSourceList delegate
 
 
 - (void)sourceListSelectionDidChange:(NSNotification *)notification
@@ -841,26 +888,30 @@ DDLogLevel ddLogLevel;
 
 - (NSView *)sourceList:(PXSourceList *)aSourceList viewForItem:(id)item
 {
-    PXSourceListTableCellView *cellView = nil;
-    if ([aSourceList levelForItem:item] == 0)
-        cellView = [aSourceList makeViewWithIdentifier:@"HeaderCell" owner:nil];
-    else
-        cellView = [aSourceList makeViewWithIdentifier:@"MainCell" owner:nil];
-    
-    PXSourceListItem *sourceListItem = item;
-    MAManifestsViewSourceListItem *collection = sourceListItem.representedObject;
-    
-    // Only allow us to edit the user created items.
-    BOOL isTitleEditable = [collection isKindOfClass:[MAManifestsViewSourceListItem class]] && collection.type == ManifestSourceItemTypeUserCreated;
-    cellView.textField.editable = isTitleEditable;
-    cellView.textField.selectable = isTitleEditable;
-    
-    cellView.textField.stringValue = sourceListItem.title ? sourceListItem.title : [sourceListItem.representedObject title];
-    cellView.imageView.image = [item icon];
-    cellView.badgeView.hidden = YES;
-    //cellView.badgeView.badgeValue = ...;
-    
-    return cellView;
+    if (aSourceList == self.sourceList) {
+        PXSourceListTableCellView *cellView = nil;
+        if ([aSourceList levelForItem:item] == 0)
+            cellView = [aSourceList makeViewWithIdentifier:@"HeaderCell" owner:nil];
+        else
+            cellView = [aSourceList makeViewWithIdentifier:@"MainCell" owner:nil];
+        
+        PXSourceListItem *sourceListItem = item;
+        MAManifestsViewSourceListItem *collection = sourceListItem.representedObject;
+        
+        // Only allow us to edit the user created items.
+        BOOL isTitleEditable = [collection isKindOfClass:[MAManifestsViewSourceListItem class]] && collection.type == ManifestSourceItemTypeUserCreated;
+        cellView.textField.editable = isTitleEditable;
+        cellView.textField.selectable = isTitleEditable;
+        
+        cellView.textField.stringValue = sourceListItem.title ? sourceListItem.title : [sourceListItem.representedObject title];
+        cellView.imageView.image = [item icon];
+        cellView.badgeView.hidden = YES;
+        //cellView.badgeView.badgeValue = ...;
+        
+        return cellView;
+    } else {
+        return nil;
+    }
 }
 
 -(BOOL)sourceList:(PXSourceList *)aSourceList shouldShowOutlineCellForItem:(id)item

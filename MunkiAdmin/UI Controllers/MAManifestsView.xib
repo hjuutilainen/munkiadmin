@@ -30,29 +30,29 @@
             <rect key="frame" x="0.0" y="0.0" width="1186" height="698"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <splitView dividerStyle="paneSplitter" vertical="YES" id="RQs-YR-1lZ">
+                <splitView dividerStyle="thin" vertical="YES" id="RQs-YR-1lZ">
                     <rect key="frame" x="0.0" y="0.0" width="1186" height="698"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <customView id="qon-nQ-fBe">
-                            <rect key="frame" x="0.0" y="0.0" width="215" height="698"/>
+                            <rect key="frame" x="0.0" y="0.0" width="217" height="698"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Pe2-AG-RWk">
-                                    <rect key="frame" x="0.0" y="0.0" width="215" height="698"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="217" height="698"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" drawsBackground="NO" id="LKS-pj-mhA">
-                                        <rect key="frame" x="1" y="1" width="148" height="398"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="217" height="698"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <outlineView appearanceType="vibrantLight" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="systemDefault" viewBased="YES" indentationPerLevel="14" outlineTableColumn="jpi-ns-TNe" id="1X1-7I-tFQ" customClass="PXSourceList">
-                                                <rect key="frame" x="0.0" y="0.0" width="215" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="217" height="0.0"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="212" minWidth="16" maxWidth="1000" id="jpi-ns-TNe">
+                                                    <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="214" minWidth="16" maxWidth="1000" id="jpi-ns-TNe">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -66,7 +66,7 @@
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         <prototypeCellViews>
                                                             <tableCellView identifier="HeaderCell" id="8OH-EH-xGX" customClass="PXSourceListTableCellView">
-                                                                <rect key="frame" x="1" y="0.0" width="212" height="17"/>
+                                                                <rect key="frame" x="1" y="0.0" width="214" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textField verticalHuggingPriority="750" id="6PX-um-a7J">
@@ -84,7 +84,7 @@
                                                                 </connections>
                                                             </tableCellView>
                                                             <tableCellView identifier="MainCell" id="gPj-vc-edp" customClass="PXSourceListTableCellView">
-                                                                <rect key="frame" x="1" y="17" width="212" height="17"/>
+                                                                <rect key="frame" x="1" y="17" width="214" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <imageView id="BTT-hZ-qYW">
@@ -93,7 +93,7 @@
                                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="QdR-af-OTD"/>
                                                                     </imageView>
                                                                     <textField verticalHuggingPriority="750" id="hmz-RW-7J8">
-                                                                        <rect key="frame" x="25" y="0.0" width="156" height="17"/>
+                                                                        <rect key="frame" x="25" y="0.0" width="158" height="17"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="4ry-SX-3Ji">
                                                                             <font key="font" metaFont="system"/>
@@ -102,7 +102,7 @@
                                                                         </textFieldCell>
                                                                     </textField>
                                                                     <customView id="CpJ-on-BVV" customClass="PXSourceListBadgeView">
-                                                                        <rect key="frame" x="187" y="2" width="22" height="14"/>
+                                                                        <rect key="frame" x="189" y="2" width="22" height="14"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                     </customView>
                                                                 </subviews>
@@ -116,8 +116,8 @@
                                                     </tableColumn>
                                                 </tableColumns>
                                                 <connections>
-                                                    <outlet property="dataSource" destination="-2" id="n3N-3H-sWb"/>
-                                                    <outlet property="delegate" destination="-2" id="MBv-D3-zNP"/>
+                                                    <outlet property="dataSource" destination="-2" id="zhc-hC-sdJ"/>
+                                                    <outlet property="delegate" destination="-2" id="wc2-aU-exZ"/>
                                                 </connections>
                                             </outlineView>
                                         </subviews>
@@ -135,7 +135,7 @@
                             </subviews>
                         </customView>
                         <customView id="MrB-18-fyu">
-                            <rect key="frame" x="225" y="0.0" width="961" height="698"/>
+                            <rect key="frame" x="218" y="0.0" width="968" height="698"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         </customView>
                     </subviews>
@@ -323,7 +323,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="tL6-KA-H9o" viewBased="YES" id="5Uj-Pj-9lj">
-                                                <rect key="frame" x="0.0" y="0.0" width="944" height="449"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="944" height="0.0"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
