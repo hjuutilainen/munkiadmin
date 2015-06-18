@@ -73,7 +73,7 @@ DDLogLevel ddLogLevel;
 
 - (void)awakeFromNib
 {
-    DDLogError(@"###### MAPackagesView awakeFromNib");
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     self.createNewCategoryController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.createNewDeveloperController = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     self.iconEditor = [[MAIconEditor alloc] initWithWindowNibName:@"MAIconEditor"];
