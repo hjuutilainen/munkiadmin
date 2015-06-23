@@ -8,7 +8,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MAGradientBackgroundView.h"
 
-@interface MASelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate> {
+@interface MASelectManifestItemsWindow : NSWindowController <NSTextFieldDelegate, NSSearchFieldDelegate> {
     NSPredicate *originalPredicate;
 }
 

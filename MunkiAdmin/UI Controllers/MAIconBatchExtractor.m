@@ -191,7 +191,7 @@ DDLogLevel ddLogLevel;
         imageData = [image TIFFRepresentation];
     }
     NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:imageData];
-    NSData *pngData = [rep representationUsingType:NSPNGFileType properties:nil];
+    NSData *pngData = [rep representationUsingType:NSPNGFileType properties:@{}];
     NSError *writeError;
     if (![pngData writeToURL:saveURL options:NSDataWritingAtomic error:&writeError]) {
         DDLogError(@"%@", writeError);
