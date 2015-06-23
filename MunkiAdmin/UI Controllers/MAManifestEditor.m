@@ -559,16 +559,18 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     ManifestMO *selectedManifest = self.manifestToEdit;
     
+    NSString *originalFilename = [selectedManifest.manifestURL lastPathComponent];
+    
     /*
      Ask for a new title
      */
     [self.requestStringValue setDefaultValues];
     self.requestStringValue.windowTitleText = @"";
-    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", selectedManifest.title];
+    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", originalFilename];
     self.requestStringValue.okButtonTitle = @"Rename";
     self.requestStringValue.labelText = @"New Name:";
-    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", selectedManifest.title];
-    self.requestStringValue.stringValue = selectedManifest.title;
+    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", originalFilename];
+    self.requestStringValue.stringValue = originalFilename;
     NSWindow *window = [self.requestStringValue window];
     NSInteger result = [NSApp runModalForWindow:window];
     
@@ -579,7 +581,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
         NSString *newTitle = self.requestStringValue.stringValue;
         
-        if (![selectedManifest.title isEqualToString:newTitle]) {
+        if (![originalFilename isEqualToString:newTitle]) {
             NSURL *newURL = [selectedManifest.manifestParentDirectoryURL URLByAppendingPathComponent:newTitle];
             [repoManager moveManifest:selectedManifest toURL:newURL cascade:YES];
         } else {

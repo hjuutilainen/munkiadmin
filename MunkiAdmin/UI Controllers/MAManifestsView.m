@@ -501,16 +501,18 @@ DDLogLevel ddLogLevel;
     NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
     ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
     
+    NSString *originalFilename = [clickedManifest.manifestURL lastPathComponent];
+    
     /*
      Ask for a new title
      */
     [self.requestStringValue setDefaultValues];
     self.requestStringValue.windowTitleText = @"";
-    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", clickedManifest.title];
+    self.requestStringValue.titleText = [NSString stringWithFormat:@"Rename \"%@\"?", originalFilename];
     self.requestStringValue.okButtonTitle = @"Rename";
     self.requestStringValue.labelText = @"New Name:";
-    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", clickedManifest.title];
-    self.requestStringValue.stringValue = clickedManifest.title;
+    self.requestStringValue.descriptionText = [NSString stringWithFormat:@"Enter a new name for the manifest \"%@\".", originalFilename];
+    self.requestStringValue.stringValue = originalFilename;
     NSWindow *window = [self.requestStringValue window];
     NSInteger result = [NSApp runModalForWindow:window];
     
@@ -521,7 +523,7 @@ DDLogLevel ddLogLevel;
         MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
         NSString *newTitle = self.requestStringValue.stringValue;
         
-        if (![clickedManifest.title isEqualToString:newTitle]) {
+        if (![originalFilename isEqualToString:newTitle]) {
             NSURL *newURL = [clickedManifest.manifestParentDirectoryURL URLByAppendingPathComponent:newTitle];
             [repoManager moveManifest:clickedManifest toURL:newURL cascade:YES];
         } else {
