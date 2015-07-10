@@ -2198,11 +2198,7 @@ DDLogLevel ddLogLevel;
             /*
              Manifest name should be the relative path from manifests subdirectory
              */
-            NSArray *manifestComponents = [[aManifestFile URLByResolvingSymlinksInPath] pathComponents];
-            NSArray *manifestDirComponents = [self.manifestsURL pathComponents];
-            NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-            [relativePathComponents removeObjectsInArray:manifestDirComponents];
-            NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+            NSString *manifestRelativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:aManifestFile parentURL:self.manifestsURL];
             
 			NSFetchRequest *request = [[NSFetchRequest alloc] init];
 			[request setEntity:entityDescription];

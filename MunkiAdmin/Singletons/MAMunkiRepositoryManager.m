@@ -438,11 +438,7 @@ static dispatch_queue_t serialQueue;
     }
     
     // Manifest name should be the relative path from manifests subdirectory
-    NSArray *manifestComponents = [newURL pathComponents];
-    NSArray *manifestDirComponents = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] pathComponents];
-    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-    [relativePathComponents removeObjectsInArray:manifestDirComponents];
-    NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+    NSString *manifestRelativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:newURL parentURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL]];
     
     manifest.title = manifestRelativePath;
     manifest.manifestURL = newURL;

@@ -7,6 +7,7 @@
 
 #import "MAManifestScanner.h"
 #import "MAMunkiAdmin_AppDelegate.h"
+#import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "CocoaLumberjack.h"
 
@@ -196,11 +197,7 @@ DDLogLevel ddLogLevel;
                 /*
                  * Manifest name should be the relative path from manifests subdirectory
                  */
-                NSArray *manifestComponents = [self.sourceURL pathComponents];
-                NSArray *manifestDirComponents = [[appDelegate manifestsURL] pathComponents];
-                NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-                [relativePathComponents removeObjectsInArray:manifestDirComponents];
-                NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+                NSString *manifestRelativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:self.sourceURL parentURL:[appDelegate manifestsURL]];
                 
                 /*
                  * Check if we already have a manifest with this name

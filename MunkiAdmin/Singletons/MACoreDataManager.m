@@ -150,11 +150,7 @@ DDLogLevel ddLogLevel;
     ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
     
     // Manifest name should be the relative path from manifests subdirectory
-    NSArray *manifestComponents = [fileURL pathComponents];
-    NSArray *manifestDirComponents = [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] pathComponents];
-    NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:manifestComponents];
-    [relativePathComponents removeObjectsInArray:manifestDirComponents];
-    NSString *manifestRelativePath = [relativePathComponents componentsJoinedByString:@"/"];
+    NSString *manifestRelativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:fileURL parentURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL]];
     
     newManifest.title = manifestRelativePath;
     newManifest.manifestURL = fileURL;
