@@ -38,11 +38,20 @@
 	
 	// The current master and detail view
 	// that we are displaying
+    /*
     NSView *currentWholeView;
 	NSView *currentDetailView;
 	NSView *currentSourceView;
+     */
     
 }
+
+@property (assign) NSView *currentWholeView;
+@property (assign) NSView *currentDetailView;
+@property (assign) NSView *currentSourceView;
+
+@property (weak) IBOutlet NSButton *searchToolbarButton;
+@property (weak) IBOutlet NSButton *reloadToolbarButton;
 
 @property (weak) IBOutlet NSArrayController *installsItemsArrayController;
 @property (weak) IBOutlet NSArrayController *itemsToCopyArrayController;

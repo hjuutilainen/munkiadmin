@@ -40,7 +40,7 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)findAction:(id)sender
 {
-    if (currentWholeView == [self.manifestsViewController view]) {
+    if (self.currentWholeView == [self.manifestsViewController view]) {
         [self.manifestsViewController toggleManifestsFindView];
     }
 }
@@ -482,6 +482,9 @@ DDLogLevel ddLogLevel;
     self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
     
     
+    [[self.searchToolbarButton image] setSize:NSMakeSize(18, 18)];
+    [[self.reloadToolbarButton image] setSize:NSMakeSize(18, 18)];
+    
 	// Configure segmented control
 	[self.mainSegmentedControl setSegmentCount:3];
 	
@@ -504,29 +507,29 @@ DDLogLevel ddLogLevel;
 	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-        currentWholeView = [self.packagesViewController view];
+        self.currentWholeView = [self.packagesViewController view];
 		[self.mainSegmentedControl setSelectedSegment:0];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
 		self.selectedViewTag = 1;
 		self.selectedViewDescr = @"Catalogs";
-		currentDetailView = self.catalogsDetailView;
-		currentSourceView = self.catalogsListView;
-        currentWholeView = self.mainSplitView;
+		self.currentDetailView = self.catalogsDetailView;
+		self.currentSourceView = self.catalogsListView;
+        self.currentWholeView = self.mainSplitView;
 		[self.mainSegmentedControl setSelectedSegment:1];
 	}
 	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
 		self.selectedViewTag = 2;
         self.selectedViewDescr = @"Manifests";
-        currentDetailView = nil;
-        currentSourceView = nil;
-        currentWholeView = [self.manifestsViewController view];
+        self.currentDetailView = nil;
+        self.currentSourceView = nil;
+        self.currentWholeView = [self.manifestsViewController view];
 		[self.mainSegmentedControl setSelectedSegment:2];
 	}
 	else {
 		self.selectedViewTag = 0;
 		self.selectedViewDescr = @"Packages";
-        currentWholeView = [self.packagesViewController view];
+        self.currentWholeView = [self.packagesViewController view];
 		[self.mainSegmentedControl setSelectedSegment:0];
 	}
     	
@@ -929,13 +932,13 @@ DDLogLevel ddLogLevel;
             if ([firstOpItem isExecuting]) {
                 // Running item is PkginfoScanner
                 if ([firstOpItem isKindOfClass:[MAPkginfoScanner class]]) {
-                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [(MAPkginfoScanner *)firstOpItem fileName]];
                     self.jobDescription = @"Scanning Packages...";
                 }
                 
                 // Running item is ManifestScanner
                 else if ([firstOpItem isKindOfClass:[MAManifestScanner class]]) {
-                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [firstOpItem fileName]];
+                    self.currentStatusDescription = [NSString stringWithFormat:@"%@", [(MAManifestScanner *)firstOpItem fileName]];
                     self.jobDescription = @"Scanning Manifests...";
                 }
                 
@@ -1632,7 +1635,7 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    if (currentWholeView == [self.packagesViewController view]) {
+    if (self.currentWholeView == [self.packagesViewController view]) {
         
         PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] lastObject];
         if (!object) return;
@@ -1704,7 +1707,7 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    if (currentWholeView == [self.packagesViewController view]) {
+    if (self.currentWholeView == [self.packagesViewController view]) {
         
         PackageMO *object = [[[self.packagesViewController packagesArrayController] selectedObjects] lastObject];
         if (!object) return;
@@ -1931,6 +1934,20 @@ DDLogLevel ddLogLevel;
 	[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
 	[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
 	[self selectRepoAtURL:self.repoURL];
+}
+
+# pragma mark -
+# pragma mark Main window toolbar IBActions
+
+- (IBAction)searchRepositoryAction:(id)sender
+{
+    if (self.currentWholeView == [self.packagesViewController view]) {
+        DDLogError(@"Should focus on packages search");
+    } else if (self.currentDetailView == self.catalogsDetailView) {
+        DDLogError(@"Should focus on catalogs search");
+    } else if (self.currentWholeView == [self.manifestsViewController view]) {
+        DDLogError(@"Should focus on manifest search");
+    }
 }
 
 # pragma mark -
@@ -2547,31 +2564,31 @@ DDLogLevel ddLogLevel;
 {
 	switch ([(NSTabView *)sender tag]) {
 		case 1:
-			if (currentWholeView != [self.packagesViewController view]) {
+			if (self.currentWholeView != [self.packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-                currentWholeView = [self.packagesViewController view];
-                currentDetailView = nil;
-                currentSourceView = nil;
+                self.currentWholeView = [self.packagesViewController view];
+                self.currentDetailView = nil;
+                self.currentSourceView = nil;
                 [self.mainSegmentedControl setSelectedSegment:0];
 				[self changeItemView];
             }
 			break;
 		case 2:
-			if (currentDetailView != self.catalogsDetailView) {
+			if (self.currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
-                currentWholeView = self.mainSplitView;
-				currentDetailView = self.catalogsDetailView;
-				currentSourceView = self.catalogsListView;
+                self.currentWholeView = self.mainSplitView;
+				self.currentDetailView = self.catalogsDetailView;
+				self.currentSourceView = self.catalogsListView;
 				[self.mainSegmentedControl setSelectedSegment:1];
 				[self changeItemView];
 			}
 			break;
         case 3:
-            if (currentDetailView != [self.manifestsViewController view]) {
+            if (self.currentDetailView != [self.manifestsViewController view]) {
                 self.selectedViewDescr = @"Manifests";
-                currentDetailView = nil;
-                currentSourceView = nil;
-                currentWholeView = [self.manifestsViewController view];
+                self.currentDetailView = nil;
+                self.currentSourceView = nil;
+                self.currentWholeView = [self.manifestsViewController view];
                 [self.mainSegmentedControl setSelectedSegment:2];
                 [self changeItemView];
             }
@@ -2585,29 +2602,29 @@ DDLogLevel ddLogLevel;
 {
 	switch ([sender selectedSegment]) {
 		case 0:
-            if (currentWholeView != [self.packagesViewController view]) {
+            if (self.currentWholeView != [self.packagesViewController view]) {
 				self.selectedViewDescr = @"Packages";
-                currentDetailView = nil;
-                currentSourceView = nil;
-                currentWholeView = [self.packagesViewController view];
+                self.currentDetailView = nil;
+                self.currentSourceView = nil;
+                self.currentWholeView = [self.packagesViewController view];
 				[self changeItemView];
             }
 			break;
 		case 1:
-            if (currentDetailView != self.catalogsDetailView) {
+            if (self.currentDetailView != self.catalogsDetailView) {
 				self.selectedViewDescr = @"Catalogs";
-                currentWholeView = self.mainSplitView;
-				currentDetailView = self.catalogsDetailView;
-				currentSourceView = self.catalogsListView;
+                self.currentWholeView = self.mainSplitView;
+				self.currentDetailView = self.catalogsDetailView;
+				self.currentSourceView = self.catalogsListView;
 				[self changeItemView];
             }
 			break;
         case 2:
-            if (currentDetailView != [self.manifestsViewController view]) {
+            if (self.currentDetailView != [self.manifestsViewController view]) {
                 self.selectedViewDescr = @"Manifests";
-                currentDetailView = nil;
-                currentSourceView = nil;
-                currentWholeView = [self.manifestsViewController view];
+                self.currentDetailView = nil;
+                self.currentSourceView = nil;
+                self.currentWholeView = [self.manifestsViewController view];
                 [self changeItemView];
             }
             break;
@@ -2652,7 +2669,7 @@ DDLogLevel ddLogLevel;
 
 - (void)changeItemView
 {
-    if (currentWholeView == [self.packagesViewController view]) {
+    if (self.currentWholeView == [self.packagesViewController view]) {
         // remove the old subview
         [self removeSubviews];
         
@@ -2664,7 +2681,7 @@ DDLogLevel ddLogLevel;
         //[[self.packagesViewController directoriesOutlineView] reloadData];
         //[[self.packagesViewController packagesArrayController] rearrangeObjects];
     
-    } else if (currentWholeView == [self.manifestsViewController view]) {
+    } else if (self.currentWholeView == [self.manifestsViewController view]) {
         // remove the old subview
         [self removeSubviews];
         
@@ -2694,20 +2711,20 @@ DDLogLevel ddLogLevel;
         [self.detailViewPlaceHolder addSubview:busyGear];
         //[detailViewPlaceHolder display];
         
-        [self.detailViewPlaceHolder addSubview:currentDetailView];
-        [self.sourceViewPlaceHolder addSubview:currentSourceView];
+        [self.detailViewPlaceHolder addSubview:self.currentDetailView];
+        [self.sourceViewPlaceHolder addSubview:self.currentSourceView];
         
         [busyGear removeFromSuperview];
         
-        [currentDetailView setFrame:[[currentDetailView superview] frame]];
-        [currentSourceView setFrame:[[currentSourceView superview] frame]];
+        [self.currentDetailView setFrame:[[self.currentDetailView superview] frame]];
+        [self.currentSourceView setFrame:[[self.currentSourceView superview] frame]];
         
         // make sure our added subview is placed and resizes correctly
-        [currentDetailView setFrameOrigin:NSMakePoint(0,0)];
-        [currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [self.currentDetailView setFrameOrigin:NSMakePoint(0,0)];
+        [self.currentDetailView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         
-        [currentSourceView setFrameOrigin:NSMakePoint(0,0)];
-        [currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [self.currentSourceView setFrameOrigin:NSMakePoint(0,0)];
+        [self.currentSourceView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 	}
     [self.window recalculateKeyViewLoop];
     self.window.title = [NSString stringWithFormat:@"MunkiAdmin - %@", self.selectedViewDescr];
@@ -2717,9 +2734,9 @@ DDLogLevel ddLogLevel;
 {
     DDLogDebug(@"- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem");
 	if ([[tabViewItem label] isEqualToString:@"Applications"]) {
-		currentDetailView = self.applicationsDetailView;
+		self.currentDetailView = self.applicationsDetailView;
 	} else if ([[tabViewItem label] isEqualToString:@"Catalogs"]) {
-		currentDetailView = self.catalogsDetailView;
+		self.currentDetailView = self.catalogsDetailView;
 	}
 	[self changeItemView];
 }
