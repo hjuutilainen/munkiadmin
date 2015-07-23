@@ -544,6 +544,112 @@ DDLogLevel ddLogLevel;
     [self renameSelectedManifest];
 }
 
+- (void)deleteSelectedManifests
+{
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
+    NSInteger clickedRow = [self.manifestsListTableView clickedRow];
+    if (clickedRow == -1) {
+        return;
+    }
+    
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:(NSUInteger)clickedRow];
+    
+    NSMutableArray *selectedManifests = [NSMutableArray new];
+    [selectedManifests addObjectsFromArray:[self.manifestsArrayController selectedObjects]];
+    
+    if (![selectedManifests containsObject:clickedManifest]) {
+        /*
+         User right-clicked outside the selection, add it to the items to remove
+         */
+        [selectedManifests addObject:clickedManifest];
+    }
+    
+    // Configure the dialog
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert addButtonWithTitle:@"Cancel"];
+    
+    NSString *messageText;
+    NSString *informativeText;
+    if ([selectedManifests count] > 1) {
+        messageText = @"Delete manifests";
+        informativeText = [NSString stringWithFormat:
+                           @"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.",
+                           (unsigned long)[selectedManifests count]];
+    } else if ([selectedManifests count] == 1) {
+        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [selectedManifests[0] title]];
+        informativeText = [NSString stringWithFormat:
+                           @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
+                           [selectedManifests[0] title]];
+    } else {
+        DDLogError(@"No manifests selected, can't delete anything...");
+        return;
+    }
+    [alert setMessageText:messageText];
+    [alert setInformativeText:informativeText];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setShowsSuppressionButton:NO];
+    
+    NSInteger result = [alert runModal];
+    if (result == NSAlertFirstButtonReturn) {
+        for (ManifestMO *aManifest in selectedManifests) {
+            [[MAMunkiRepositoryManager sharedManager] removeManifest:aManifest withReferences:YES];
+        }
+    }
+}
+
+- (IBAction)deleteSelectedManifestsAction:sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    [self deleteSelectedManifests];
+}
+
+- (void)createNewManifest
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    NSString *newFilename = NSLocalizedString(@"new-manifest", nil);
+    NSString *message = NSLocalizedString(@"Choose a location and name for the new manifest. Location should be within your manifests directory.", nil);
+    
+    NSURL *newURL;
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    savePanel.nameFieldStringValue = newFilename;
+    savePanel.directoryURL = appDelegate.manifestsURL;
+    savePanel.message = message;
+    savePanel.title = @"Create manifest";
+    if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    {
+        newURL = [savePanel URL];
+    } else {
+        return;
+    }
+    
+    if (!newURL) {
+        DDLogError(@"User cancelled new manifest creation");
+        return;
+    }
+    
+    /*
+     Let URLByResolvingSymlinksInPath work on directory since file is not created yet
+     */
+    newURL = [[[newURL URLByDeletingLastPathComponent] URLByResolvingSymlinksInPath] URLByAppendingPathComponent:[newURL lastPathComponent]];
+    
+    ManifestMO *newManifest = [[MACoreDataManager sharedManager] createManifestWithURL:[newURL URLByResolvingSymlinksInPath] inManagedObjectContext:appDelegate.managedObjectContext];
+    if (!newManifest) {
+        DDLogError(@"Failed to create manifest");
+    }
+    
+}
+
+- (IBAction)newManifestAction:(id)sender
+{
+    [self createNewManifest];
+}
+
+
 - (IBAction)propertiesAction:(id)sender
 {
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
@@ -675,8 +781,14 @@ DDLogLevel ddLogLevel;
 
 - (void)manifestsListMenuWillOpen:(NSMenu *)menu
 {
-    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
-    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    NSInteger clickedRow = [self.manifestsListTableView clickedRow];
+    if (clickedRow == -1) {
+        self.referencingManifestsSubMenuItem.hidden = YES;
+        self.includedManifestsSubMenuItem.hidden = YES;
+        return;
+    }
+    
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:(NSUInteger)clickedRow];
     
     if ([clickedManifest.allReferencingManifests count] == 0) {
         self.referencingManifestsSubMenuItem.hidden = YES;
@@ -827,8 +939,11 @@ DDLogLevel ddLogLevel;
             }
         }
         
-        NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
-        ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+        NSInteger clickedRow = [self.manifestsListTableView clickedRow];
+        if (clickedRow == -1) {
+            continue;
+        }
+        ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:(NSUInteger)clickedRow];
         if ([[clickedManifest catalogStrings] containsObject:catalog.title]) {
             [enabledPackageNames addObject:clickedManifest.title];
             numEnabled++;

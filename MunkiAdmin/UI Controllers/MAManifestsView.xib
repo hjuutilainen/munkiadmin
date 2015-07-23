@@ -522,12 +522,6 @@ Gw
                         <action selector="propertiesAction:" target="-2" id="mtX-hX-Mki"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Rename..." id="f3L-Uv-CYe">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="renameManifestAction:" target="-2" id="DG0-ic-ylE"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Show Manifest in Finder" id="FHO-uv-qiL">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -535,6 +529,25 @@ Gw
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="5jq-ti-g0Q"/>
+                <menuItem title="New Manifest..." id="2Wz-GT-9j7">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="newManifestAction:" target="-2" id="cjB-B7-Xgh"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Delete Manifest..." id="8Ge-Ze-uJv">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="deleteSelectedManifestsAction:" target="-2" id="smB-N3-85O"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Rename Manifest..." id="f3L-Uv-CYe">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="renameManifestAction:" target="-2" id="Ott-Ti-TIp"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="MO9-JM-rvh"/>
                 <menuItem title="Catalogs" id="c4M-N0-iAp">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Catalogs" id="L9w-Dg-B42">
