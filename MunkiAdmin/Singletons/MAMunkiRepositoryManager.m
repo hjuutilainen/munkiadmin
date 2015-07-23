@@ -442,6 +442,7 @@ static dispatch_queue_t serialQueue;
     
     manifest.title = manifestRelativePath;
     manifest.manifestURL = newURL;
+    manifest.manifestParentDirectoryURL = [newURL URLByDeletingLastPathComponent];
     DDLogInfo(@"Renamed manifest \"%@\" to \"%@\"", oldTitle, manifest.title);
     
     if (shouldCascade) {

@@ -216,6 +216,16 @@ DDLogLevel ddLogLevel;
     
     //[self.sourceList registerForDraggedTypes:@[draggingType]];
     
+    [self.manifestsListTableView setDelegate:self];
+    [self.manifestsListTableView setDataSource:self];
+    [self.manifestsListTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.manifestsListTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    
+    [self.sourceList setDelegate:self];
+    [self.sourceList setDataSource:self];
+    [self.sourceList registerForDraggedTypes:@[NSURLPboardType]];
+    [self.sourceList setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    
     self.requestStringValue = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
     
     [self setupFindView];
@@ -308,13 +318,13 @@ DDLogLevel ddLogLevel;
     /*
      All Manifests item
      */
-    MAManifestsViewSourceListItem *allManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"All Manifests" identifier:@"allManifests" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *allManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"All Manifests" identifier:@"allManifests" type:ManifestSourceItemTypeBuiltin];
     allManifestsItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
     
     /*
      Recently modified item
      */
-    MAManifestsViewSourceListItem *recentlyModifiedItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Recently Modified" identifier:@"recentlyModified" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *recentlyModifiedItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Recently Modified" identifier:@"recentlyModified" type:ManifestSourceItemTypeBuiltin];
     NSDate *now = [NSDate date];
     NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
     dayComponent.day = -7;
@@ -325,19 +335,19 @@ DDLogLevel ddLogLevel;
     /*
      Machine manifests item
      */
-    MAManifestsViewSourceListItem *machineManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Machine Manifests" identifier:@"machineManifests" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *machineManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Machine Manifests" identifier:@"machineManifests" type:ManifestSourceItemTypeBuiltin];
     machineManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, hasIncludedManifests]];
     
     /*
      Group manifests item
      */
-    MAManifestsViewSourceListItem *groupManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Group Manifests" identifier:@"groupManifests" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *groupManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Group Manifests" identifier:@"groupManifests" type:ManifestSourceItemTypeBuiltin];
     groupManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, hasIncludedManifests]];
     
     /*
      Profile manifests item
      */
-    MAManifestsViewSourceListItem *profileManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Profile Manifests" identifier:@"profileManifests" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *profileManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Profile Manifests" identifier:@"profileManifests" type:ManifestSourceItemTypeBuiltin];
     profileManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
                                                 [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, noIncludedManifests]],
                                                 [NSCompoundPredicate orPredicateWithSubpredicates:@[hasManagedInstalls, hasManagedUninstalls, hasManagedUpdates, hasOptionalInstalls]]
@@ -347,7 +357,7 @@ DDLogLevel ddLogLevel;
      Self-contained manifests item
      */
     /*
-    MAManifestsViewSourceListItem *selfContainedManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Self-contained Manifests" identifier:@"selfContainedManifests" type:ManifestSourceItemTypeFolder];
+    MAManifestsViewSourceListItem *selfContainedManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Self-contained Manifests" identifier:@"selfContainedManifests" type:ManifestSourceItemTypeBuiltin];
     selfContainedManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, noIncludedManifests]];
      */
     
@@ -386,7 +396,7 @@ DDLogLevel ddLogLevel;
     NSMutableArray *catalogItems = [NSMutableArray new];
     NSMutableArray *catalogSourceListItems = [NSMutableArray new];
     for (CatalogMO *catalog in fetchResults) {
-        MAManifestsViewSourceListItem *item = [MAManifestsViewSourceListItem collectionWithTitle:catalog.title identifier:catalog.title type:ManifestSourceItemTypeFolder];
+        MAManifestsViewSourceListItem *item = [MAManifestsViewSourceListItem collectionWithTitle:catalog.title identifier:catalog.title type:ManifestSourceItemTypeBuiltin];
         item.filterPredicate = [NSPredicate predicateWithFormat:@"ANY catalogStrings == %@", catalog.title];
         [catalogSourceListItems addObject:item];
         [catalogItems addObject:[PXSourceListItem itemWithRepresentedObject:item icon:notepad]];
@@ -1018,6 +1028,23 @@ DDLogLevel ddLogLevel;
     return cellView;
 }
 
+- (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
+{
+    if (theTableView == self.manifestsListTableView) {
+        [thePasteboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
+        NSMutableArray *urls = [NSMutableArray array];
+        [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            ManifestMO *manifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:idx];
+            [urls addObject:[[manifest objectID] URIRepresentation]];
+        }];
+        return [thePasteboard writeObjects:urls];
+    }
+    
+    else {
+        return FALSE;
+    }
+}
+
 # pragma mark -
 # pragma mark PXSourceList Data Source methods
 
@@ -1106,6 +1133,101 @@ DDLogLevel ddLogLevel;
     if ([aSourceList levelForItem:item] == 0) {
         return YES;
     } else {
+        return NO;
+    }
+}
+
+- (NSDragOperation)sourceList:(PXSourceList *)sourceList validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+    // Deny drag and drop reordering
+    if (index != -1) {
+        return NSDragOperationNone;
+    }
+    
+    if (sourceList == self.sourceList) {
+        
+        /*
+         Only allow dropping on regular folders
+         */
+        if ([[item representedObject] isKindOfClass:[MAManifestsViewSourceListItem class]]) {
+            MAManifestsViewSourceListItem *targetDir = [item representedObject];
+            if (targetDir.type != ManifestSourceItemTypeFolder) {
+                return NSDragOperationNone;
+            }
+        } else {
+            return NSDragOperationNone;
+        }
+        
+        /*
+         Check if we even have a supported type in pasteboard
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if (![dragTypes containsObject:NSURLPboardType]) {
+            return NSDragOperationNone;
+        }
+        
+        /*
+         Only accept "x-coredata" URLs which resolve to an actual object
+         */
+        NSPasteboard *pasteboard = [info draggingPasteboard];
+        NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+        NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
+        NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+        for (NSURL *uri in urls) {
+            if ([[uri scheme] isEqualToString:@"x-coredata"]) {
+                NSManagedObjectContext *moc = [self.manifestsArrayController managedObjectContext];
+                NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                if (!objectID) {
+                    return NSDragOperationNone;
+                }
+            } else {
+                return NSDragOperationNone;
+            }
+        }
+        return NSDragOperationMove;
+        
+    } else {
+        return NSDragOperationNone;
+    }
+}
+
+- (BOOL)sourceList:(PXSourceList *)aSourceList acceptDrop:(id<NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
+{
+    if (aSourceList == self.sourceList) {
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSURLPboardType]) {
+            
+            if ([[proposedParentItem representedObject] isKindOfClass:[MAManifestsViewSourceListItem class]]) {
+                
+                MAManifestsViewSourceListItem *targetDir = [proposedParentItem representedObject];
+                
+                NSPasteboard *pasteboard = [info draggingPasteboard];
+                NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+                NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
+                NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+                for (NSURL *uri in urls) {
+                    NSManagedObjectContext *moc = [self.manifestsArrayController managedObjectContext];
+                    NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                    ManifestMO *droppedManifest = (ManifestMO *)[moc objectRegisteredForID:objectID];
+                    NSString *currentFileName = [[droppedManifest manifestURL] lastPathComponent];
+                    NSURL *targetURL = [targetDir.representedFileURL URLByAppendingPathComponent:currentFileName];
+                    if ([[droppedManifest manifestURL] isEqualTo:targetURL]) {
+                        DDLogError(@"Error. Dropped to same folder %@", [targetURL path]);
+                    }
+                    
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:[targetURL path]]) {
+                        DDLogError(@"Error. File already exists %@", [targetURL path]);
+                    }
+                    
+                    [[MAMunkiRepositoryManager sharedManager] moveManifest:droppedManifest toURL:targetURL cascade:YES];
+                    
+                    droppedManifest.hasUnstagedChanges = @YES;
+                }
+            }
+        }
+        return YES;
+    }
+    else {
         return NO;
     }
 }

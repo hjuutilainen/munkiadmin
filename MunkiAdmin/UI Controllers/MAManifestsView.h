@@ -13,7 +13,7 @@
 @class ManifestMO;
 @class MARequestStringValueController;
 
-@interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSSplitViewDelegate, NSMenuDelegate>
+@interface MAManifestsView : NSViewController <PXSourceListDelegate, PXSourceListDataSource, NSTableViewDataSource, NSTableViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
 
 @property (weak) IBOutlet PXSourceList *sourceList;
 @property (weak) IBOutlet NSSplitView *mainSplitView;
