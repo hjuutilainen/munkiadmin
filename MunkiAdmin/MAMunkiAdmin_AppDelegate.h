@@ -35,15 +35,6 @@
     MAAdvancedPackageEditor *advancedPackageEditor;
     //MAPredicateEditor *predicateEditor;
     MAPkginfoAssimilator *pkginfoAssimilator;
-	
-	// The current master and detail view
-	// that we are displaying
-    /*
-    NSView *currentWholeView;
-	NSView *currentDetailView;
-	NSView *currentSourceView;
-     */
-    
 }
 
 @property (assign) NSView *currentWholeView;
@@ -121,6 +112,8 @@
 @property (nonatomic, strong) IBOutlet NSTableView *applicationTableView;
 @property (nonatomic, strong) IBOutlet NSSplitView *mainSplitView;
 @property (nonatomic, strong) IBOutlet NSSegmentedControl *mainSegmentedControl;
+@property (weak) IBOutlet NSSearchField *catalogContentSearchField;
+@property (weak) IBOutlet NSSearchField *catalogsSearchField;
 
 # pragma mark -
 # pragma mark Core data specific declarations

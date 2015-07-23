@@ -46,5 +46,6 @@
 - (void)updateSourceListData;
 - (void)toggleManifestsFindView;
 - (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest;
+- (void)openEditorForAllSelectedManifests;
 
 @end

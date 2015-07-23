@@ -35,6 +35,7 @@
 @property (weak) IBOutlet NSMenu *catalogsSubMenu;
 @property (weak) IBOutlet NSPathControl *packageInfoPathControl;
 @property (weak) IBOutlet NSPathControl *installerItemPathControl;
+@property (weak) IBOutlet NSSearchField *packagesSearchField;
 
 @property (strong) NSPredicate *packagesMainFilterPredicate;
 @property (readonly, strong) NSPredicate *mainCompoundPredicate;

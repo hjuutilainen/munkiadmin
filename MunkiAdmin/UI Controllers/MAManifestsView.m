@@ -68,6 +68,11 @@ DDLogLevel ddLogLevel;
 
 - (void)didDoubleClickManifest:(id)sender
 {
+    [self openEditorForAllSelectedManifests];
+}
+
+- (void)openEditorForAllSelectedManifests
+{
     for (ManifestMO *manifest in [self.manifestsArrayController selectedObjects]) {
         DDLogVerbose(@"%@: %@", NSStringFromSelector(_cmd), manifest.title);
         [self openEditorForManifest:manifest];

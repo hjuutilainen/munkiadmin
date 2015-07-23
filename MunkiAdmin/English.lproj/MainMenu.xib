@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8152.3" systemVersion="15A216g" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8152.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -261,7 +261,7 @@ Gw
                             </buttonCell>
                         </button>
                         <connections>
-                            <action selector="searchRepositoryAction:" target="205" id="7DS-qO-0aO"/>
+                            <action selector="getInfoAction:" target="205" id="rD3-w7-mF6"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
@@ -463,7 +463,7 @@ Gw
                                     <items>
                                         <menuItem title="Find…" tag="1" keyEquivalent="f" id="484">
                                             <connections>
-                                                <action selector="findAction:" target="205" id="qog-54-OHC"/>
+                                                <action selector="searchRepositoryAction:" target="205" id="gMh-im-W83"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Find Next" tag="2" keyEquivalent="g" id="485">
@@ -705,8 +705,10 @@ Gw
                 <outlet property="allCatalogsArrayController" destination="863" id="2134"/>
                 <outlet property="allPackagesArrayController" destination="534" id="1237"/>
                 <outlet property="applicationsArrayController" destination="645" id="707"/>
+                <outlet property="catalogContentSearchField" destination="1263" id="NKy-kg-Bld"/>
                 <outlet property="catalogsDetailView" destination="840" id="943"/>
                 <outlet property="catalogsListView" destination="928" id="939"/>
+                <outlet property="catalogsSearchField" destination="982" id="CLv-1c-HGU"/>
                 <outlet property="createNewManifestCustomView" destination="1405" id="2098"/>
                 <outlet property="detailViewPlaceHolder" destination="524" id="940"/>
                 <outlet property="installsItemsArrayController" destination="1203" id="2033"/>
@@ -1052,11 +1054,11 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <searchField wantsLayer="YES" verticalHuggingPriority="750" id="982">
-                            <rect key="frame" x="20" y="8" width="219" height="22"/>
+                            <rect key="frame" x="20" y="10" width="219" height="19"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <animations/>
-                            <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="983">
-                                <font key="font" metaFont="system"/>
+                            <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="983">
+                                <font key="font" metaFont="smallSystem"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </searchFieldCell>
@@ -1197,11 +1199,11 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <searchField wantsLayer="YES" verticalHuggingPriority="750" id="1263">
-                            <rect key="frame" x="544" y="8" width="200" height="22"/>
+                            <rect key="frame" x="544" y="10" width="200" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <animations/>
-                            <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Package Name" usesSingleLineMode="YES" bezelStyle="round" id="1264">
-                                <font key="font" metaFont="system"/>
+                            <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Package Name" usesSingleLineMode="YES" bezelStyle="round" id="1264">
+                                <font key="font" metaFont="smallSystem"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </searchFieldCell>

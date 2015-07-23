@@ -1756,6 +1756,8 @@ DDLogLevel ddLogLevel;
         } else {
             [[advancedPackageEditor mainTabView] selectTabViewItemAtIndex:0];
         }
+    } else if (self.currentWholeView == [self.manifestsViewController view]) {
+        [self.manifestsViewController openEditorForAllSelectedManifests];
     }
 }
 
@@ -1941,12 +1943,25 @@ DDLogLevel ddLogLevel;
 
 - (IBAction)searchRepositoryAction:(id)sender
 {
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    /*
+     Check which view we're currently in and activate the correct search field
+     */
     if (self.currentWholeView == [self.packagesViewController view]) {
-        DDLogError(@"Should focus on packages search");
+        // Packages view
+        DDLogVerbose(@"Should focus on packages search");
+        [self.packagesViewController.packagesSearchField becomeFirstResponder];
+    
     } else if (self.currentDetailView == self.catalogsDetailView) {
-        DDLogError(@"Should focus on catalogs search");
+        // Catalogs view
+        DDLogVerbose(@"Should focus on catalogs search");
+        [self.catalogContentSearchField becomeFirstResponder];
+    
     } else if (self.currentWholeView == [self.manifestsViewController view]) {
-        DDLogError(@"Should focus on manifest search");
+        // Manifests view
+        DDLogVerbose(@"Should focus on manifest search");
+        [self.manifestsViewController toggleManifestsFindView];
     }
 }
 
