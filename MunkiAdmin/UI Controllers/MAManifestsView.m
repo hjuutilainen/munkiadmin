@@ -530,6 +530,20 @@ DDLogLevel ddLogLevel;
         
         if (![originalFilename isEqualToString:newTitle]) {
             NSURL *newURL = [clickedManifest.manifestParentDirectoryURL URLByAppendingPathComponent:newTitle];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[newURL path]]) {
+                DDLogDebug(@"Can't rename. File already exists at path %@", [newURL path]);
+                NSAlert *fileExistsAlert = [[NSAlert alloc] init];
+                fileExistsAlert.messageText = @"File already exists";
+                fileExistsAlert.informativeText = [NSString stringWithFormat:@"MunkiAdmin failed to rename \"%@\" to \"%@\" because a file with that name already exists.", originalFilename, newTitle];
+                [fileExistsAlert addButtonWithTitle:@"OK"];
+                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
+                    [fileExistsAlert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {}];
+                } else {
+                    [fileExistsAlert beginSheetModalForWindow:self.view.window modalDelegate:self didEndSelector:nil contextInfo:nil];
+                }
+            }
+            
             [repoManager moveManifest:clickedManifest toURL:newURL cascade:YES];
         } else {
             DDLogError(@"Old name and new name are the same. Skipping rename...");
