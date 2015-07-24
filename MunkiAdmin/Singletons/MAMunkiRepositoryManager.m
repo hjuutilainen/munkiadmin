@@ -789,6 +789,7 @@ static dispatch_queue_t serialQueue;
          and get the number of other pkginfos with the same name.
          */
         ApplicationMO *packageGroup = aPackage.parentApplication;
+        [moc refreshObject:packageGroup mergeChanges:YES];
         NSUInteger numPackagesWithThisName = [packageGroup.packages count];
         
         /*
@@ -860,16 +861,33 @@ static dispatch_queue_t serialQueue;
          */
         
         if ((aPackage.packageURL != nil) && removeInstallerItem) {
-            [objectsToDelete addObjectsFromArray:@[aPackage.packageURL, aPackage.packageInfoURL]];
+            /*
+             Check if there are other pkginfos that reference the installer item
+             */
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            [fetchRequest setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"packageURL == %@", aPackage.packageURL];
+            [fetchRequest setPredicate:predicate];
+            if ([moc countForFetchRequest:fetchRequest error:nil] > 1) {
+                DDLogInfo(@"The installer item is referenced by other packages. Should only remove the pkginfo file...");
+                for (PackageMO *foundPackage in [moc executeFetchRequest:fetchRequest error:nil]) {
+                    if (![foundPackage isEqualTo:aPackage]) {
+                        DDLogInfo(@"Installer item referenced from %@", foundPackage.titleWithVersion);
+                    }
+                }
+                [objectsToDelete addObject:aPackage.packageInfoURL];
+            } else {
+                [objectsToDelete addObjectsFromArray:@[aPackage.packageURL, aPackage.packageInfoURL]];
+            }
         } else {
             [objectsToDelete addObject:aPackage.packageInfoURL];
         }
-        
+        [packageGroup removePackagesObject:aPackage];
         [moc deleteObject:aPackage];
     }
 
     for (NSURL *url in objectsToDelete) {
-        DDLogInfo(@"Trying to delete file %@", [url relativePath]);
+        DDLogInfo(@"Will delete file %@", [url relativePath]);
     }
     
     /*
