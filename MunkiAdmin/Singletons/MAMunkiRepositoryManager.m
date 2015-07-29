@@ -1065,17 +1065,17 @@ static dispatch_queue_t serialQueue;
                 
             } else if (aReference.managedUninstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.managedUninstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.managedUpdateConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.managedUpdateConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.optionalInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.optionalInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
             }
@@ -1125,17 +1125,17 @@ static dispatch_queue_t serialQueue;
                 logMessage = [NSString stringWithFormat:@"Renamed managed_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.managedUninstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUninstallConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.managedUninstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed managed_uninstalls reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.managedUpdateConditionalReference) {
                 ConditionalItemMO *cond = aReference.managedUpdateConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.managedUpdateConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed managed_updates reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.optionalInstallConditionalReference) {
                 ConditionalItemMO *cond = aReference.optionalInstallConditionalReference;
-                ManifestMO *manifest = aReference.managedInstallConditionalReference.manifest;
+                ManifestMO *manifest = aReference.optionalInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
             }
