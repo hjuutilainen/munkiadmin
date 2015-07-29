@@ -1236,6 +1236,18 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSSplitView delegates
 
+- (void)showFindViewWithPredicate:(NSPredicate *)predicate
+{
+    self.manifestsListPredicateEditor.objectValue = predicate;
+    self.searchFieldPredicate = predicate;
+    [self searchUpdated:nil];
+    [self uncollapseFindView];
+    
+    [self.view.window makeFirstResponder:self.manifestsListPredicateEditor];
+    [self.view.window selectKeyViewFollowingView:self.manifestsListPredicateEditor];
+    [self.view.window recalculateKeyViewLoop];
+}
+
 - (void)toggleManifestsFindView
 {
     BOOL findViewCollapsed = [self.manifestsListSplitView isSubviewCollapsed:[self.manifestsListSplitView subviews][0]];

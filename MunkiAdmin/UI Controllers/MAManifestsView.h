@@ -45,6 +45,7 @@
 - (NSView *)sourceList:(PXSourceList *)aSourceList viewForItem:(id)item;
 - (void)updateSourceListData;
 - (void)toggleManifestsFindView;
+- (void)showFindViewWithPredicate:(NSPredicate *)predicate;
 - (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest;
 - (void)openEditorForAllSelectedManifests;
 

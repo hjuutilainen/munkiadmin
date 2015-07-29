@@ -1938,6 +1938,7 @@ DDLogLevel ddLogLevel;
 	[self selectRepoAtURL:self.repoURL];
 }
 
+
 # pragma mark -
 # pragma mark Main window toolbar IBActions
 
@@ -1964,6 +1965,35 @@ DDLogLevel ddLogLevel;
         [self.manifestsViewController toggleManifestsFindView];
     }
 }
+
+
+- (IBAction)searchManifestsAction:(id)sender
+{
+    if (self.currentDetailView != [self.manifestsViewController view]) {
+        
+        /*
+         Change the view
+         */
+        self.selectedViewDescr = @"Manifests";
+        self.currentDetailView = nil;
+        self.currentSourceView = nil;
+        self.currentWholeView = [self.manifestsViewController view];
+        [self.mainSegmentedControl setSelectedSegment:2];
+        [self changeItemView];
+        
+        PackageMO *selectedPackage = [self.packagesViewController.packagesArrayController selectedObjects][0];
+        
+        /*
+         Create a predicate for the selected package name. We need to wrap it in a compound predicate
+         to properly display it in the search view (the 'Any|All|None' selection would be missing).
+         */
+        NSPredicate *containsMunkiName = [NSPredicate predicateWithFormat:@"allPackageStrings CONTAINS[cd] %@", selectedPackage.munki_name];
+        NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[containsMunkiName]];
+        
+        [self.manifestsViewController showFindViewWithPredicate:compoundPredicate];
+    }
+}
+
 
 # pragma mark -
 # pragma mark Reading from the repository
