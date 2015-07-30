@@ -1,6 +1,5 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/NSHash" "${PODS_ROOT}/Headers/Public/PXSourceList"
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/CocoaLumberjack" -isystem "${PODS_ROOT}/Headers/Public/NSHash" -isystem "${PODS_ROOT}/Headers/Public/PXSourceList"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Pods-MunkiAdmin-CocoaLumberjack" -l"Pods-MunkiAdmin-NSHash" -l"Pods-MunkiAdmin-PXSourceList"
-OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+OTHER_LDFLAGS = $(inherited) -ObjC -l"CocoaLumberjack" -l"NSHash" -l"PXSourceList"
 PODS_ROOT = ${SRCROOT}/Pods
