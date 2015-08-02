@@ -26,6 +26,7 @@
 @property (weak) IBOutlet NSView *includedManifestsListView;
 @property (weak) IBOutlet NSView *referencingManifestsListView;
 @property (weak) IBOutlet NSView *conditionalsListView;
+@property (weak) IBOutlet NSTableView *catalogInfosTableView;
 @property (weak) IBOutlet NSTableView *sourceListTableView;
 @property (weak) IBOutlet NSTableView *contentItemsTableView;
 @property (weak) IBOutlet NSTableView *includedManifestsTableView;

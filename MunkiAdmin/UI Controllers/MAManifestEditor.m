@@ -74,8 +74,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     [super windowDidLoad];
     
-    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    self.catalogInfosArrayController.sortDescriptors = @[sorter];
+    NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByIndexInManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
+    self.catalogInfosArrayController.sortDescriptors = @[sortByIndexInManifest, sortByCatalogTitle];
     
     NSSortDescriptor *sortByCondition = [NSSortDescriptor sortDescriptorWithKey:@"munki_condition" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByTitleWithParentTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleWithParentTitle" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -156,7 +157,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     self.currentDetailView = self.generalView;
     
-    
+    [self.catalogInfosTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.catalogInfosTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
@@ -740,6 +742,102 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     
 }
+
+
+#pragma mark -
+#pragma mark NSTableView Delegate
+
+- (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
+{
+    if (theTableView == self.catalogInfosTableView) {
+        [thePasteboard declareTypes:@[NSURLPboardType] owner:self];
+        NSMutableArray *urls = [NSMutableArray array];
+        [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            CatalogInfoMO *aCatalogInfo = [[self.catalogInfosArrayController arrangedObjects] objectAtIndex:idx];
+            [urls addObject:[[aCatalogInfo objectID] URIRepresentation]];
+        }];
+        return [thePasteboard writeObjects:urls];
+    }
+    
+    else {
+        return FALSE;
+    }
+}
+
+- (NSDragOperation)tableView:(NSTableView*)theTableView validateDrop:(id <NSDraggingInfo>)theDraggingInfo proposedRow:(NSInteger)theRow proposedDropOperation:(NSTableViewDropOperation)theDropOperation
+{
+    NSDragOperation result = NSDragOperationNone;
+    if (theTableView == self.catalogInfosTableView) {
+        if (theDropOperation == NSTableViewDropAbove) {
+            result = NSDragOperationMove;
+        }
+    }
+    
+    return result;
+}
+
+- (void)makeRoomForCatalogsAtIndex:(NSInteger)index
+{
+    NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"CatalogInfo" inManagedObjectContext:moc];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInManifest >= %@", [NSNumber numberWithInteger:index]];
+    [request setPredicate:indexPredicate];
+    
+    NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
+    if (foundItems == 0) {
+        
+    } else {
+        NSArray *results = [moc executeFetchRequest:request error:nil];
+        for (CatalogInfoMO *aCatalogInfo in results) {
+            NSInteger currentIndex = [aCatalogInfo.indexInManifest integerValue];
+            aCatalogInfo.indexInManifest = [NSNumber numberWithInteger:currentIndex + 1];
+        }
+    }
+}
+
+- (void)renumberCatalogItems
+{
+    NSInteger index = 0;
+    for (CatalogInfoMO *aCatalogInfo in [self.catalogInfosArrayController arrangedObjects]) {
+        aCatalogInfo.indexInManifest = [NSNumber numberWithInteger:index];
+        index++;
+    }
+}
+
+- (BOOL)tableView:(NSTableView *)theTableView acceptDrop:(id <NSDraggingInfo>)draggingInfo row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
+{
+    NSPasteboard *draggingPasteboard = [draggingInfo draggingPasteboard];
+    if (theTableView == self.catalogInfosTableView) {
+        NSArray *dragTypes = [draggingPasteboard types];
+        if ([dragTypes containsObject:NSURLPboardType]) {
+            
+            NSPasteboard *pasteboard = draggingPasteboard;
+            NSArray *classes = @[[NSURL class]];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            for (NSURL *uri in urls) {
+                NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
+                NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
+                CatalogInfoMO *mo = (CatalogInfoMO *)[moc objectRegisteredForID:objectID];
+                [self makeRoomForCatalogsAtIndex:row];
+                mo.indexInManifest = @(row);
+                
+            }
+        }
+        
+        [self renumberCatalogItems];
+        
+        return YES;
+    }
+    
+    else {
+        return NO;
+    }
+}
+
 
 - (void)setContentView:(NSView *)newContentView
 {
