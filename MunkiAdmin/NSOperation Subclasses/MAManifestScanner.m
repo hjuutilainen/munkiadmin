@@ -178,15 +178,6 @@ DDLogLevel ddLogLevel;
             NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
             [getManifests setEntity:manifestEntityDescr];
             
-            self.allManifests = [privateContext executeFetchRequest:getManifests error:nil];
-            NSMutableDictionary *manifestsAndTitles = [[NSMutableDictionary alloc] initWithCapacity:[self.allManifests count]];
-            
-            for (ManifestMO *manifest in self.allManifests) {
-                manifestsAndTitles[manifest.title] = manifest;
-            }
-            
-            self.allManifestsByTitle = [NSDictionary dictionaryWithDictionary:manifestsAndTitles];
-            
             /*
              * Read the manifest dictionary from disk
              */
@@ -203,8 +194,8 @@ DDLogLevel ddLogLevel;
                  * Check if we already have a manifest with this name
                  */
                 ManifestMO *manifest;
-                if ([self.allManifestsByTitle objectForKey:manifestRelativePath]) {
-                    manifest = [self.allManifestsByTitle objectForKey:manifestRelativePath];
+                if (self.manifestID) {
+                    manifest = (ManifestMO *)[privateContext objectWithID:self.manifestID];
                     DDLogVerbose(@"%@: Reusing existing manifest object from memory", self.fileName);
                 } else {
                     manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:privateContext];
@@ -358,12 +349,9 @@ DDLogLevel ddLogLevel;
                     newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:idx];
                     [manifest addIncludedManifestsFasterObject:newIncludedManifest];
                     
-                    
-                    if ([self.allManifestsByTitle objectForKey:(NSString *)obj]) {
-                        newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)obj];
-                    } else {
-                        DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)idx, (NSString *)obj);
-                    }
+                    /*
+                     Determining the referencing manifests is done in RelationshipScanner
+                     */
                      
                 }];
                 now = [NSDate date];

@@ -2277,17 +2277,13 @@ DDLogLevel ddLogLevel;
 			
 		}
 	}
-	NSError *error = nil;
-	if (![moc save:&error]) {
-		[NSApp presentError:error];
-	}
-    [[moc undoManager] enableUndoRegistration];
     
     MARelationshipScanner *manifestRelationships = [MARelationshipScanner manifestScanner];
     manifestRelationships.delegate = self;
 	for (ManifestMO *aManifest in [self allObjectsForEntity:@"Manifest"]) {
 		MAManifestScanner *scanOp = [[MAManifestScanner alloc] initWithURL:(NSURL *)aManifest.manifestURL];
 		scanOp.delegate = self;
+        scanOp.manifestID = aManifest.objectID;
         [manifestRelationships addDependency:scanOp];
 		[self.operationQueue addOperation:scanOp];
 	}
@@ -2299,10 +2295,21 @@ DDLogLevel ddLogLevel;
     [enableBindingsOp addDependency:manifestRelationships];
     [self.operationQueue addOperation:enableBindingsOp];
     
+    
+    NSBlockOperation *saveMainContext = [NSBlockOperation blockOperationWithBlock:^{
+        [self.managedObjectContext performBlockAndWait:^{
+            [self.managedObjectContext save:nil];
+            [[self.managedObjectContext undoManager] enableUndoRegistration];
+        }];
+    }];
+    [saveMainContext addDependency:enableBindingsOp];
+    [self.operationQueue addOperation:saveMainContext];
+    
+    
     NSBlockOperation *startObservingChangesOp = [NSBlockOperation blockOperationWithBlock:^{
         [self performSelectorOnMainThread:@selector(startObservingObjectsForChanges) withObject:nil waitUntilDone:YES];
     }];
-    [startObservingChangesOp addDependency:enableBindingsOp];
+    [startObservingChangesOp addDependency:saveMainContext];
     [self.operationQueue addOperation:startObservingChangesOp];
 }
 

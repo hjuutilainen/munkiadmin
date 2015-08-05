@@ -25,6 +25,7 @@
 @property (strong) NSDictionary *pkginfoKeyMappings;
 @property (strong) NSDictionary *receiptKeyMappings;
 @property (strong) NSDictionary *installsKeyMappings;
+@property (strong) ManifestMOID *manifestID;
 
 
 @end

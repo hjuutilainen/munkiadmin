@@ -100,7 +100,7 @@ static const int BatchSize = 50;
     
     NSMutableDictionary *manifestsAndTitles = [[NSMutableDictionary alloc] initWithCapacity:[self.allManifests count]];
     for (ManifestMO *manifest in self.allManifests) {
-        manifestsAndTitles[manifest.title] = manifest;
+        manifestsAndTitles[manifest.title] = manifest.objectID;
     }
     self.allManifestsByTitle = [NSDictionary dictionaryWithDictionary:manifestsAndTitles];
     
@@ -218,17 +218,17 @@ static const int BatchSize = 50;
                 anOptionalInstall.originalPackage = matchingObject;
             }
         }
-        /*
+        
         for (StringObjectMO *includedManifest in currentManifest.includedManifestsFaster) {
-            DDLogError(@"%@: linking included_manifest object %@", currentManifest.fileName, includedManifest.title);
-            if ([self.allManifestsByTitle objectForKey:includedManifest.title]) {
-                ManifestMO *originalManifest = [self.allManifestsByTitle objectForKey:includedManifest.title];
+            DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, includedManifest.title);
+            ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:includedManifest.title]];
+            if (originalManifest) {
                 includedManifest.originalManifest = originalManifest;
             } else {
                 DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
             }
         }
-         */
+         
         
         if (idx % progressGranularity == 0) {
             double percentage = (idx / (float)[self.allManifests count]) * 100.0;
@@ -247,10 +247,12 @@ static const int BatchSize = 50;
      */
     NSError *error = nil;
     if ([privateContext save:&error]) {
+        /*
         [privateContext.parentContext performBlock:^{
             NSError *parentError = nil;
             [privateContext.parentContext save:&parentError];
         }];
+         */
     } else {
         DDLogError(@"Private context failed to save: %@", error);
     }
@@ -519,10 +521,12 @@ static const int BatchSize = 50;
      */
     NSError *error = nil;
     if ([privateContext save:&error]) {
+        /*
         [privateContext.parentContext performBlock:^{
             NSError *parentError = nil;
             [privateContext.parentContext save:&parentError];
         }];
+         */
     } else {
         DDLogError(@"Private context failed to save: %@", error);
     }
