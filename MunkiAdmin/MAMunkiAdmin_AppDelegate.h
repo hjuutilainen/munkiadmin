@@ -182,7 +182,6 @@
 - (void)relationshipScannerDidFinish:(NSString *)mode;
 - (void)scannerDidProcessPkginfo;
 - (void)scanCurrentRepoForManifests;
-- (void)scanCurrentRepoForIncludedManifests;
 - (void)scanCurrentRepoForPackages;
 - (void)scanCurrentRepoForCatalogFiles;
 - (void)deleteAllManagedObjects;
