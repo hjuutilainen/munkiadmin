@@ -2053,6 +2053,7 @@ DDLogLevel ddLogLevel;
 	DDLogDebug(@"Opening repository at %@", [newURL path]);
     
     [self stopObservingObjectsForChanges];
+    [[self.managedObjectContext undoManager] disableUndoRegistration];
     [self disableAllBindings];
     
     /*
@@ -2199,7 +2200,6 @@ DDLogLevel ddLogLevel;
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
-    [[moc undoManager] disableUndoRegistration];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 	
 	NSDirectoryEnumerator *catalogsDirEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
@@ -2227,11 +2227,6 @@ DDLogLevel ddLogLevel;
 			}
 		}
 	}
-	NSError *error = nil;
-	if (![moc save:&error]) {
-		[NSApp presentError:error];
-	}
-    [[moc undoManager] enableUndoRegistration];
 }
 
 
@@ -2246,7 +2241,6 @@ DDLogLevel ddLogLevel;
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	NSManagedObjectContext *moc = [self managedObjectContext];
-    [[moc undoManager] disableUndoRegistration];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
 	
