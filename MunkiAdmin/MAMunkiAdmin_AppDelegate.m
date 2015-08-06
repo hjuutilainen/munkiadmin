@@ -741,6 +741,8 @@ DDLogLevel ddLogLevel;
         return;
     }
     
+    [self disableAllBindings];
+    
     // We need to do a relationship scan after creating a pkginfo file
     MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
