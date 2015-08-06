@@ -778,23 +778,10 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 
 - (void)makeRoomForCatalogsAtIndex:(NSInteger)index
 {
-    NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"CatalogInfo" inManagedObjectContext:moc];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    
-    NSPredicate *indexPredicate = [NSPredicate predicateWithFormat:@"indexInManifest >= %@", [NSNumber numberWithInteger:index]];
-    [request setPredicate:indexPredicate];
-    
-    NSUInteger foundItems = [moc countForFetchRequest:request error:nil];
-    if (foundItems == 0) {
-        
-    } else {
-        NSArray *results = [moc executeFetchRequest:request error:nil];
-        for (CatalogInfoMO *aCatalogInfo in results) {
-            NSInteger currentIndex = [aCatalogInfo.indexInManifest integerValue];
-            aCatalogInfo.indexInManifest = [NSNumber numberWithInteger:currentIndex + 1];
-        }
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"indexInManifest >= %@", [NSNumber numberWithInteger:index]];
+    for (CatalogInfoMO *catalogInfo in [self.manifestToEdit.catalogInfos filteredSetUsingPredicate:predicate]) {
+        NSInteger currentIndex = [catalogInfo.indexInManifest integerValue];
+        catalogInfo.indexInManifest = [NSNumber numberWithInteger:currentIndex + 1];
     }
 }
 
