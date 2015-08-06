@@ -1068,7 +1068,7 @@
                     <rect key="frame" x="20" y="20" width="483" height="25"/>
                     <subviews>
                         <button toolTip="Remove selection" translatesAutoresizingMaskIntoConstraints="NO" id="4lq-RJ-E7i">
-                            <rect key="frame" x="22" y="1" width="23" height="23"/>
+                            <rect key="frame" x="24" y="1" width="23" height="23"/>
                             <buttonCell key="cell" type="smallSquare" title="Gradient Button" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="974-EG-aC7">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -1078,7 +1078,7 @@
                             </connections>
                         </button>
                         <button toolTip="Add new empty item" translatesAutoresizingMaskIntoConstraints="NO" id="Eh9-MI-yX7">
-                            <rect key="frame" x="0.0" y="1" width="23" height="23"/>
+                            <rect key="frame" x="2" y="1" width="23" height="23"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="23" id="CTs-yt-MaP"/>
                                 <constraint firstAttribute="height" constant="23" id="e29-2y-WMs"/>
@@ -1098,7 +1098,7 @@
                         <constraint firstItem="Eh9-MI-yX7" firstAttribute="top" secondItem="zYJ-uU-yd0" secondAttribute="top" constant="1" id="Epp-Ru-l7g"/>
                         <constraint firstItem="4lq-RJ-E7i" firstAttribute="top" secondItem="Eh9-MI-yX7" secondAttribute="bottom" constant="-23" id="H42-vQ-jBB"/>
                         <constraint firstItem="4lq-RJ-E7i" firstAttribute="leading" secondItem="Eh9-MI-yX7" secondAttribute="trailing" constant="-1" id="Mbz-yp-ebg"/>
-                        <constraint firstItem="Eh9-MI-yX7" firstAttribute="leading" secondItem="zYJ-uU-yd0" secondAttribute="leading" id="ffN-cP-M0E"/>
+                        <constraint firstItem="Eh9-MI-yX7" firstAttribute="leading" secondItem="zYJ-uU-yd0" secondAttribute="leading" constant="2" id="ffN-cP-M0E"/>
                         <constraint firstItem="4lq-RJ-E7i" firstAttribute="height" secondItem="Eh9-MI-yX7" secondAttribute="height" id="g6K-3T-rGa"/>
                     </constraints>
                 </customView>
@@ -1231,7 +1231,7 @@
                 <constraint firstItem="kmU-Yb-3bS" firstAttribute="top" secondItem="nYh-hL-i9J" secondAttribute="top" constant="20" symbolic="YES" id="dv4-sN-aoO"/>
                 <constraint firstItem="kmU-Yb-3bS" firstAttribute="trailing" secondItem="zYJ-uU-yd0" secondAttribute="trailing" id="sxn-qE-4fi"/>
             </constraints>
-            <point key="canvasLocation" x="520.5" y="722"/>
+            <point key="canvasLocation" x="427.5" y="835"/>
         </customView>
     </objects>
     <resources>
