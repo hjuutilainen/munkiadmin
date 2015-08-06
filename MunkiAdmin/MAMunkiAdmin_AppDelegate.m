@@ -2292,6 +2292,7 @@ DDLogLevel ddLogLevel;
     
     NSBlockOperation *saveMainContext = [NSBlockOperation blockOperationWithBlock:^{
         [self.managedObjectContext performBlockAndWait:^{
+            [self.managedObjectContext commitEditing];
             [self.managedObjectContext save:nil];
             [[self.managedObjectContext undoManager] enableUndoRegistration];
         }];
