@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAManifestEditor">
             <connections>
                 <outlet property="catalogInfosArrayController" destination="QPx-VZ-YQx" id="8tN-fa-TCO"/>
-                <outlet property="catalogInfosTableView" destination="FnU-rn-3Dv" id="qsO-re-xRz"/>
+                <outlet property="catalogInfosTableView" destination="FnU-rn-3Dv" id="u9N-Qb-Zgc"/>
                 <outlet property="conditionalItemsAllArrayController" destination="4hp-Ig-Qph" id="8yL-19-hYy"/>
                 <outlet property="conditionalItemsArrayController" destination="vmy-ac-fMW" id="1h0-cq-3i5"/>
                 <outlet property="conditionalsListView" destination="nYh-hL-i9J" id="6Fu-bz-BvP"/>
@@ -292,8 +292,8 @@
                                             </tableColumns>
                                             <connections>
                                                 <binding destination="QPx-VZ-YQx" name="content" keyPath="arrangedObjects" id="VCJ-37-YSq"/>
-                                                <outlet property="dataSource" destination="-2" id="QjX-Ht-DQG"/>
-                                                <outlet property="delegate" destination="-2" id="tXd-GU-R3d"/>
+                                                <outlet property="dataSource" destination="-2" id="T5z-pS-362"/>
+                                                <outlet property="delegate" destination="-2" id="RyP-NO-9zk"/>
                                             </connections>
                                         </tableView>
                                     </subviews>

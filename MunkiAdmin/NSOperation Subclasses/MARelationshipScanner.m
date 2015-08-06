@@ -102,7 +102,7 @@ static const int BatchSize = 50;
     for (ManifestMO *manifest in self.allManifests) {
         manifestsAndTitles[manifest.title] = manifest.objectID;
     }
-    self.allManifestsByTitle = [NSDictionary dictionaryWithDictionary:manifestsAndTitles];
+    self.allManifestsByTitle = manifestsAndTitles;
     
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
@@ -178,9 +178,11 @@ static const int BatchSize = 50;
         }
         
         
-        // StringObjects are created during the initial manifest scan.
-        // Now loop through them and link them to an existing
-        // PackageMO or ApplicationMO object
+        /*
+         StringObjects are created during the initial manifest scan.
+         Now loop through them and link them to an existing
+         PackageMO or ApplicationMO object
+         */
         
         for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
             DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, aManagedInstall.title);
@@ -219,13 +221,69 @@ static const int BatchSize = 50;
             }
         }
         
-        for (StringObjectMO *includedManifest in currentManifest.includedManifestsFaster) {
-            DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, includedManifest.title);
-            ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:includedManifest.title]];
+        /*
+         Link included manifest items
+         */
+        for (StringObjectMO *stringObject in currentManifest.includedManifestsFaster) {
+            DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, stringObject.title);
+            ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:stringObject.title]];
+            DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.fileName, stringObject.title, originalManifest.title);
             if (originalManifest) {
-                includedManifest.originalManifest = originalManifest;
+                stringObject.originalManifest = originalManifest;
             } else {
-                DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
+                DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, stringObject.title);
+            }
+        }
+        
+        /*
+         Link items under conditional items
+         */
+        for (ConditionalItemMO *conditionalItem in currentManifest.conditionalItems) {
+            for (StringObjectMO *managedInstall in conditionalItem.managedInstalls) {
+                DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, managedInstall.title);
+                id matchingObject = [self matchingAppOrPkgForString:managedInstall.title];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    managedInstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    managedInstall.originalPackage = matchingObject;
+                }
+            }
+            for (StringObjectMO *managedUninstall in conditionalItem.managedUninstalls) {
+                DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, managedUninstall.title);
+                id matchingObject = [self matchingAppOrPkgForString:managedUninstall.title];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    managedUninstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    managedUninstall.originalPackage = matchingObject;
+                }
+            }
+            for (StringObjectMO *managedUpdate in conditionalItem.managedUpdates) {
+                DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, managedUpdate.title);
+                id matchingObject = [self matchingAppOrPkgForString:managedUpdate.title];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    managedUpdate.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    managedUpdate.originalPackage = matchingObject;
+                }
+            }
+            for (StringObjectMO *optionalInstall in conditionalItem.optionalInstalls) {
+                DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, optionalInstall.title);
+                id matchingObject = [self matchingAppOrPkgForString:optionalInstall.title];
+                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    optionalInstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    optionalInstall.originalPackage = matchingObject;
+                }
+            }
+            
+            for (StringObjectMO *includedManifest in conditionalItem.includedManifests) {
+                DDLogVerbose(@"%@: linking conditional included_manifest object %@", currentManifest.fileName, includedManifest.title);
+                ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:includedManifest.title]];
+                if (originalManifest) {
+                    includedManifest.originalManifest = originalManifest;
+                } else {
+                    DDLogError(@"%@ could not link conditional item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
+                }
             }
         }
          

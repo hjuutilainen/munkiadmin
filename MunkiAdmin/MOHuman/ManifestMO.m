@@ -31,6 +31,7 @@
     NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings", @"managedUpdatesCountDescription"];
     NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings", @"optionalInstallsCountDescription"];
     NSArray *conditionalsKeys = @[@"conditionalItemsStrings", @"conditionsCountDescription"];
+    NSArray *referencingManifestsKeys = @[@"referencingManifestsStrings", @"referencingManifestsCountDescription"];
     
     if ([catalogDescriptionKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
@@ -49,6 +50,9 @@
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([conditionalsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"conditionalItems", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([referencingManifestsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"referencingManifests", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
     

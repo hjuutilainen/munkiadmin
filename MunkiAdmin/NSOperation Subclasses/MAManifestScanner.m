@@ -67,77 +67,79 @@ DDLogLevel ddLogLevel;
 - (void)conditionalItemsFrom:(NSArray *)items parent:(ConditionalItemMO *)parent manifest:(ManifestMO *)manifest context:(NSManagedObjectContext *)moc
 {
     [items enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *condition = [(NSDictionary *)obj objectForKey:@"condition"];
-        ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
-        newConditionalItem.munki_condition = condition;
-        newConditionalItem.manifest = manifest;
-        newConditionalItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
-        if (parent) {
-            newConditionalItem.parent = parent;
-            //newConditionalItem.joinedCondition = [NSString stringWithFormat:@"%@ - %@", parent.joinedCondition, newConditionalItem.munki_condition];
-            DDLogVerbose(@"%@ Nested conditional_item %lu --> Condition: %@", manifest.title, (unsigned long)idx, condition);
-        } else {
-            //newConditionalItem.joinedCondition = [NSString stringWithFormat:@"%@", newConditionalItem.munki_condition];
-            DDLogVerbose(@"%@ conditional_item %lu --> Condition: %@", manifest.title, (unsigned long)idx, condition);
-        }
-        
-        NSArray *managedInstalls = [(NSDictionary *)obj objectForKey:@"managed_installs"];
-        [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedInstallName, NSUInteger managedInstallIndex, BOOL *stopManagedInstallsEnum) {
-            DDLogVerbose(@"%@ conditional_item --> managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)managedInstallIndex, managedInstallName);
-            StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-            newManagedInstall.title = (NSString *)managedInstallName;
-            newManagedInstall.typeString = @"managedInstall";
-            newManagedInstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedInstallIndex];
-            [newConditionalItem addManagedInstallsObject:newManagedInstall];
-        }];
-        NSArray *managedUninstalls = [(NSDictionary *)obj objectForKey:@"managed_uninstalls"];
-        [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedUninstallName, NSUInteger managedUninstallIndex, BOOL *stopManagedUninstallsEnum) {
-            DDLogVerbose(@"%@ conditional_item --> managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)managedUninstallIndex, managedUninstallName);
-            StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-            newManagedUninstall.title = (NSString *)managedUninstallName;
-            newManagedUninstall.typeString = @"managedUninstall";
-            newManagedUninstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedUninstallIndex];
-            [newConditionalItem addManagedUninstallsObject:newManagedUninstall];
-        }];
-        NSArray *managedUpdates = [(NSDictionary *)obj objectForKey:@"managed_updates"];
-        [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id managedUpdateName, NSUInteger managedUpdateIndex, BOOL *stopManagedUpdatesEnum) {
-            DDLogVerbose(@"%@ conditional_item --> managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)managedUpdateIndex, managedUpdateName);
-            StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-            newManagedUpdate.title = (NSString *)managedUpdateName;
-            newManagedUpdate.typeString = @"managedUpdate";
-            newManagedUpdate.originalIndex = [NSNumber numberWithUnsignedInteger:managedUpdateIndex];
-            [newConditionalItem addManagedUpdatesObject:newManagedUpdate];
-        }];
-        NSArray *optionalInstalls = [(NSDictionary *)obj objectForKey:@"optional_installs"];
-        [optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id optionalInstallName, NSUInteger optionalInstallIndex, BOOL *stopOptionalInstallsEnum) {
-            DDLogVerbose(@"%@ conditional_item --> optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)optionalInstallIndex, optionalInstallName);
-            StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-            newOptionalInstall.title = (NSString *)optionalInstallName;
-            newOptionalInstall.typeString = @"optionalInstall";
-            newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:optionalInstallIndex];
-            [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
-        }];
-        NSArray *includedManifests = [(NSDictionary *)obj objectForKey:@"included_manifests"];
-        [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id includedManifestName, NSUInteger includedManifestIndex, BOOL *stopIncludedManifestsEnum) {
-            DDLogVerbose(@"%@ conditional_item --> included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
-            StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
-            newIncludedManifest.title = (NSString *)includedManifestName;
-            newIncludedManifest.typeString = @"includedManifest";
-            newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
-            newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
-            [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
-            
-            if ([self.allManifestsByTitle objectForKey:(NSString *)includedManifestName]) {
-                newIncludedManifest.originalManifest = [self.allManifestsByTitle objectForKey:(NSString *)includedManifestName];
+        @autoreleasepool {
+            NSString *condition = [(NSDictionary *)obj objectForKey:@"condition"];
+            ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+            newConditionalItem.munki_condition = condition;
+            newConditionalItem.manifest = manifest;
+            newConditionalItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+            if (parent) {
+                newConditionalItem.parent = parent;
+                //newConditionalItem.joinedCondition = [NSString stringWithFormat:@"%@ - %@", parent.joinedCondition, newConditionalItem.munki_condition];
+                DDLogVerbose(@"%@ Nested conditional_item %lu --> Condition: %@", manifest.title, (unsigned long)idx, condition);
             } else {
-                DDLogError(@"%@ could not link item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
+                //newConditionalItem.joinedCondition = [NSString stringWithFormat:@"%@", newConditionalItem.munki_condition];
+                DDLogVerbose(@"%@ conditional_item %lu --> Condition: %@", manifest.title, (unsigned long)idx, condition);
             }
-        }];
-        
-        // If there are nested conditional items, loop through them with this same function
-        NSArray *conditionalItems = [(NSDictionary *)obj objectForKey:@"conditional_items"];
-        if (conditionalItems) {
-            [self conditionalItemsFrom:conditionalItems parent:newConditionalItem manifest:manifest context:moc];
+            
+            NSArray *managedInstalls = [(NSDictionary *)obj objectForKey:@"managed_installs"];
+            [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedInstallName, NSUInteger managedInstallIndex, BOOL *stopManagedInstallsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)managedInstallIndex, managedInstallName);
+                StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedInstall.title = (NSString *)managedInstallName;
+                newManagedInstall.typeString = @"managedInstall";
+                newManagedInstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedInstallIndex];
+                [newConditionalItem addManagedInstallsObject:newManagedInstall];
+            }];
+            NSArray *managedUninstalls = [(NSDictionary *)obj objectForKey:@"managed_uninstalls"];
+            [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedUninstallName, NSUInteger managedUninstallIndex, BOOL *stopManagedUninstallsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)managedUninstallIndex, managedUninstallName);
+                StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedUninstall.title = (NSString *)managedUninstallName;
+                newManagedUninstall.typeString = @"managedUninstall";
+                newManagedUninstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedUninstallIndex];
+                [newConditionalItem addManagedUninstallsObject:newManagedUninstall];
+            }];
+            NSArray *managedUpdates = [(NSDictionary *)obj objectForKey:@"managed_updates"];
+            [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id managedUpdateName, NSUInteger managedUpdateIndex, BOOL *stopManagedUpdatesEnum) {
+                DDLogVerbose(@"%@ conditional_item --> managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)managedUpdateIndex, managedUpdateName);
+                StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newManagedUpdate.title = (NSString *)managedUpdateName;
+                newManagedUpdate.typeString = @"managedUpdate";
+                newManagedUpdate.originalIndex = [NSNumber numberWithUnsignedInteger:managedUpdateIndex];
+                [newConditionalItem addManagedUpdatesObject:newManagedUpdate];
+            }];
+            NSArray *optionalInstalls = [(NSDictionary *)obj objectForKey:@"optional_installs"];
+            [optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id optionalInstallName, NSUInteger optionalInstallIndex, BOOL *stopOptionalInstallsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)optionalInstallIndex, optionalInstallName);
+                StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newOptionalInstall.title = (NSString *)optionalInstallName;
+                newOptionalInstall.typeString = @"optionalInstall";
+                newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:optionalInstallIndex];
+                [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
+            }];
+            NSArray *includedManifests = [(NSDictionary *)obj objectForKey:@"included_manifests"];
+            [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id includedManifestName, NSUInteger includedManifestIndex, BOOL *stopIncludedManifestsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
+                StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newIncludedManifest.title = (NSString *)includedManifestName;
+                newIncludedManifest.typeString = @"includedManifest";
+                newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
+                newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:includedManifestIndex];
+                [newConditionalItem addIncludedManifestsObject:newIncludedManifest];
+                
+                /*
+                 Determining the referencing manifests is done in RelationshipScanner
+                 */
+            }];
+            
+            // If there are nested conditional items, loop through them with this same function
+            NSArray *conditionalItems = [(NSDictionary *)obj objectForKey:@"conditional_items"];
+            if (conditionalItems) {
+                @autoreleasepool {
+                    [self conditionalItemsFrom:conditionalItems parent:newConditionalItem manifest:manifest context:moc];
+                }
+            }
         }
     }];
 }
@@ -341,18 +343,20 @@ DDLogLevel ddLogLevel;
                     DDLogVerbose(@"%@: Found %lu included_manifests items", self.fileName, (unsigned long)[includedManifests count]);
                 }
                 [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    DDLogVerbose(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
-                    StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
-                    newIncludedManifest.title = (NSString *)obj;
-                    newIncludedManifest.typeString = @"includedManifest";
-                    newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
-                    newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:idx];
-                    [manifest addIncludedManifestsFasterObject:newIncludedManifest];
+                    @autoreleasepool {
+                        DDLogVerbose(@"%@ included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
+                        newIncludedManifest.title = (NSString *)obj;
+                        newIncludedManifest.typeString = @"includedManifest";
+                        newIncludedManifest.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+                        newIncludedManifest.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:idx];
+                        [manifest addIncludedManifestsFasterObject:newIncludedManifest];
+                        
+                        /*
+                         Determining the referencing manifests is done in RelationshipScanner
+                         */
+                    }
                     
-                    /*
-                     Determining the referencing manifests is done in RelationshipScanner
-                     */
-                     
                 }];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning included_manifests took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);

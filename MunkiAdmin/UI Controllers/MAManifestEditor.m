@@ -273,9 +273,17 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             break;
         
         case MAEditorSectionTagIncludedManifests:
-            for (StringObjectMO *selectedItem in [self.selectManifestsWindowController selectionAsStringObjects]) {
-                [self.manifestToEdit addIncludedManifestsFasterObject:selectedItem];
+            for (ManifestMO *manifestToAdd in [self.selectManifestsWindowController.manifestsArrayController selectedObjects]) {
+                StringObjectMO *manifestToAddAsStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:manifestToAdd.managedObjectContext];
+                manifestToAddAsStringObject.title = manifestToAdd.title;
+                manifestToAddAsStringObject.typeString = @"includedManifest";
+                manifestToAddAsStringObject.originalIndex = [NSNumber numberWithUnsignedInteger:999];
+                manifestToAddAsStringObject.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:999];
+                manifestToAddAsStringObject.originalManifest = manifestToAdd;
+                [self.manifestToEdit addIncludedManifestsFasterObject:manifestToAddAsStringObject];
+                [self.manifestToEdit.managedObjectContext refreshObject:manifestToAdd mergeChanges:YES];
             }
+            
             break;
         
         case MAEditorSectionTagReferencingManifests:
@@ -287,6 +295,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
                 manifestToEditAsStringObject.indexInNestedManifest = [NSNumber numberWithUnsignedInteger:999];
                 manifestToEditAsStringObject.originalManifest = self.manifestToEdit;
                 [aManifest addIncludedManifestsFasterObject:manifestToEditAsStringObject];
+                [self.manifestToEdit.managedObjectContext refreshObject:aManifest mergeChanges:YES];
             }
             break;
             
@@ -307,7 +316,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     ManifestMO *selectedManifest = self.manifestToEdit;
     
     for (StringObjectMO *anIncludedManifest in [self.includedManifestsArrayController selectedObjects]) {
+        ManifestMO *originalManifest = anIncludedManifest.originalManifest;
         [self.manifestToEdit.managedObjectContext deleteObject:anIncludedManifest];
+        [self.manifestToEdit.managedObjectContext refreshObject:originalManifest mergeChanges:YES];
     }
     [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
@@ -421,8 +432,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             
         case MAEditorSectionTagReferencingManifests:
             for (StringObjectMO *selectedItem in [self.referencingManifestsArrayController selectedObjects]) {
-                
+                ManifestMO *originalManifest;
+                if (selectedItem.manifestReference) {
+                    originalManifest = selectedItem.manifestReference;
+                } else {
+                    originalManifest = selectedItem.includedManifestConditionalReference.manifest;
+                }
                 [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+                [self.manifestToEdit.managedObjectContext refreshObject:originalManifest mergeChanges:YES];
             }
             break;
             
