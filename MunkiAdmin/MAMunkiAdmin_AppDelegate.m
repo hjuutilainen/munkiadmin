@@ -573,6 +573,12 @@ DDLogLevel ddLogLevel;
     [dnc addObserver:self selector:@selector(didReceiveSharedPkginfo:) name:@"SUSInspectorPostedSharedPkginfo" object:nil suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
 }
 
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    [self.window setIsVisible:YES];
+    return YES;
+}
+
 - (NSString *)safeFilenameFromString:(NSString *)aFileName
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
