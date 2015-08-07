@@ -887,10 +887,19 @@ DDLogLevel ddLogLevel;
     
     // Open previous repository
     else if ([self.defaults integerForKey:@"startupWhatToDo"] == 2) {
-        NSURL *tempURL = [self.defaults URLForKey:@"selectedRepositoryPath"];
-        if (tempURL != nil) {
-            [self selectRepoAtURL:tempURL];
-        }
+        
+        /*
+         Dirty hack to resolve "Cannot perform operation without a managed object context" exceptions.
+         Delay the repo selection by 0.5 seconds. I'm not proud of this...
+         
+         TODO: Shouldn't need to delay repo selection on startup
+         */
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSURL *tempURL = [self.defaults URLForKey:@"selectedRepositoryPath"];
+            if (tempURL != nil) {
+                [self selectRepoAtURL:tempURL];
+            }
+        });
     }
     // Do nothing
     else if ([self.defaults integerForKey:@"startupWhatToDo"] == 0) {
