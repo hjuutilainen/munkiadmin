@@ -82,6 +82,30 @@ static const int BatchSize = 50;
     }
 }
 
+- (ManifestMO *)matchingManifestForString:(NSString *)title
+{
+    ManifestMO *manifest = nil;
+    /*
+     Try to get a managed object ID for this title, this is a broken reference if it doesn't exist!
+     */
+    ManifestMOID *manifestID = [self.allManifestsByTitle objectForKey:title];
+    if (manifestID) {
+        
+        /*
+         Resolve the managed object ID to an actual manifest object
+         */
+        manifest = (ManifestMO *)[self.context existingObjectWithID:manifestID error:nil];
+        if (manifest) {
+            DDLogVerbose(@"Found existing manifest with title '%@'", title);
+        } else {
+            DDLogError(@"Error: Could not find manifest with title '%@'", title);
+        }
+    } else {
+        DDLogError(@"Error: Could not find manifest with title '%@'", title);
+    }
+    return manifest;
+}
+
 - (void)scanManifests
 {
     NSManagedObjectContext *privateContext = self.context;
@@ -187,7 +211,9 @@ static const int BatchSize = 50;
         for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
             DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, aManagedInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedInstall.title];
-            if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link managed_install object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, aManagedInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedInstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 aManagedInstall.originalPackage = matchingObject;
@@ -196,7 +222,9 @@ static const int BatchSize = 50;
         for (StringObjectMO *aManagedUninstall in currentManifest.managedUninstallsFaster) {
             DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, aManagedUninstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUninstall.title];
-            if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link managed_uninstall object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, aManagedUninstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedUninstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 aManagedUninstall.originalPackage = matchingObject;
@@ -205,7 +233,9 @@ static const int BatchSize = 50;
         for (StringObjectMO *aManagedUpdate in currentManifest.managedUpdatesFaster) {
             DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, aManagedUpdate.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUpdate.title];
-            if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link managed_update object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, aManagedUpdate.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 aManagedUpdate.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 aManagedUpdate.originalPackage = matchingObject;
@@ -214,7 +244,9 @@ static const int BatchSize = 50;
         for (StringObjectMO *anOptionalInstall in currentManifest.optionalInstallsFaster) {
             DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, anOptionalInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:anOptionalInstall.title];
-            if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link optional_install object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, anOptionalInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                 anOptionalInstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 anOptionalInstall.originalPackage = matchingObject;
@@ -226,12 +258,13 @@ static const int BatchSize = 50;
          */
         for (StringObjectMO *stringObject in currentManifest.includedManifestsFaster) {
             DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, stringObject.title);
-            ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:stringObject.title]];
-            DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.fileName, stringObject.title, originalManifest.title);
+            
+            ManifestMO *originalManifest = [self matchingManifestForString:stringObject.title];
             if (originalManifest) {
+                DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.fileName, stringObject.title, originalManifest.title);
                 stringObject.originalManifest = originalManifest;
             } else {
-                DDLogError(@"%@ could not link item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, stringObject.title);
+                DDLogError(@"%@: Error: Could not link included_manifest object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, stringObject.title);
             }
         }
         
@@ -240,36 +273,44 @@ static const int BatchSize = 50;
          */
         for (ConditionalItemMO *conditionalItem in currentManifest.conditionalItems) {
             for (StringObjectMO *managedInstall in conditionalItem.managedInstalls) {
-                DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, managedInstall.title);
+                DDLogVerbose(@"%@: linking conditional managed_install object %@", currentManifest.fileName, managedInstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedInstall.title];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional managed_install object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, managedInstall.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                     managedInstall.originalApplication = matchingObject;
                 } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                     managedInstall.originalPackage = matchingObject;
                 }
             }
             for (StringObjectMO *managedUninstall in conditionalItem.managedUninstalls) {
-                DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, managedUninstall.title);
+                DDLogVerbose(@"%@: linking conditional managed_uninstall object %@", currentManifest.fileName, managedUninstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedUninstall.title];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional managed_uninstall object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, managedUninstall.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                     managedUninstall.originalApplication = matchingObject;
                 } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                     managedUninstall.originalPackage = matchingObject;
                 }
             }
             for (StringObjectMO *managedUpdate in conditionalItem.managedUpdates) {
-                DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, managedUpdate.title);
+                DDLogVerbose(@"%@: linking conditional managed_update object %@", currentManifest.fileName, managedUpdate.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedUpdate.title];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional managed_update object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, managedUpdate.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                     managedUpdate.originalApplication = matchingObject;
                 } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                     managedUpdate.originalPackage = matchingObject;
                 }
             }
             for (StringObjectMO *optionalInstall in conditionalItem.optionalInstalls) {
-                DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, optionalInstall.title);
+                DDLogVerbose(@"%@: linking conditional optional_install object %@", currentManifest.fileName, optionalInstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:optionalInstall.title];
-                if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional optional_install object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, optionalInstall.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
                     optionalInstall.originalApplication = matchingObject;
                 } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                     optionalInstall.originalPackage = matchingObject;
@@ -278,11 +319,13 @@ static const int BatchSize = 50;
             
             for (StringObjectMO *includedManifest in conditionalItem.includedManifests) {
                 DDLogVerbose(@"%@: linking conditional included_manifest object %@", currentManifest.fileName, includedManifest.title);
-                ManifestMO *originalManifest = (ManifestMO *)[privateContext objectWithID:[self.allManifestsByTitle objectForKey:includedManifest.title]];
+                
+                ManifestMO *originalManifest = [self matchingManifestForString:includedManifest.title];
                 if (originalManifest) {
+                    DDLogVerbose(@"%@: linking conditional included_manifest object %@ to original manifest %@", currentManifest.fileName, includedManifest.title, originalManifest.title);
                     includedManifest.originalManifest = originalManifest;
                 } else {
-                    DDLogError(@"%@ could not link conditional item %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
+                    DDLogError(@"%@: could not link conditional included_manifest object %lu --> Name: %@", currentManifest.title, (unsigned long)idx, includedManifest.title);
                 }
             }
         }
