@@ -441,6 +441,33 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (PXSourceListItem *)itemForURL:(NSURL *)url modelObjects:(NSMutableArray *)modelObjects
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
+    NSImage *folderImage = [NSImage imageNamed:@"folder"];
+    
+    NSString *filename;
+    [url getResourceValue:&filename forKey:NSURLNameKey error:nil];
+    MAManifestsViewSourceListItem *mainManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:filename identifier:filename type:ManifestSourceItemTypeFolder];
+    mainManifestsItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", url];
+    mainManifestsItem.representedFileURL = url;
+    [modelObjects addObject:mainManifestsItem];
+    PXSourceListItem *item = [PXSourceListItem itemWithRepresentedObject:mainManifestsItem icon:folderImage];
+    
+    NSArray *contents = [fm contentsOfDirectoryAtURL:url includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) error:nil];
+    for (NSURL *contentURL in contents) {
+        NSNumber *isDir;
+        [contentURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+        if ([isDir boolValue]) {
+            PXSourceListItem *contentItem = [self itemForURL:contentURL modelObjects:modelObjects];
+            [item addChildItem:contentItem];
+        }
+    }
+    return item;
+}
+
+
 - (PXSourceListItem *)directoriesItem
 {
     NSURL *mainManifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
@@ -452,44 +479,8 @@ DDLogLevel ddLogLevel;
     
     NSMutableArray *newChildren = [NSMutableArray new];
     NSMutableArray *newRepresentedObjects = [NSMutableArray new];
+    [newChildren addObject:[self itemForURL:mainManifestsURL modelObjects:newRepresentedObjects]];
     
-    NSImage *folderImage = [NSImage imageNamed:@"folder"];
-    
-    NSString *mainManifestsTitle;
-    [mainManifestsURL getResourceValue:&mainManifestsTitle forKey:NSURLNameKey error:nil];
-    MAManifestsViewSourceListItem *mainManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:mainManifestsTitle identifier:mainManifestsTitle type:ManifestSourceItemTypeFolder];
-    mainManifestsItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", mainManifestsURL];
-    mainManifestsItem.representedFileURL = mainManifestsURL;
-    [newChildren addObject:[PXSourceListItem itemWithRepresentedObject:mainManifestsItem icon:folderImage]];
-    [newRepresentedObjects addObject:mainManifestsItem];
-    
-    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:mainManifestsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-    for (NSURL *anURL in pkgsInfoDirEnum)
-    {
-        NSNumber *isDir;
-        [anURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-        if ([isDir boolValue]) {
-            
-            
-            NSString *newTitle;
-            [anURL getResourceValue:&newTitle forKey:NSURLNameKey error:nil];
-            MAManifestsViewSourceListItem *item = [MAManifestsViewSourceListItem collectionWithTitle:newTitle identifier:newTitle type:ManifestSourceItemTypeFolder];
-            item.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", anURL];
-            item.representedFileURL = anURL;
-            
-            NSURL *parentDirectory = [anURL URLByDeletingLastPathComponent];
-            
-            NSArray *parentURLs = [newChildren filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"representedObject.representedFileURL == %@", parentDirectory]];
-            if ([parentURLs count] > 0) {
-                PXSourceListItem *parent = parentURLs[0];
-                [parent addChildItem:[PXSourceListItem itemWithRepresentedObject:item icon:folderImage]];
-            }
-            [newRepresentedObjects addObject:item];
-        }
-    }
     directoriesItem.children = [NSArray arrayWithArray:newChildren];
     [self.modelObjects addObjectsFromArray:newRepresentedObjects];
     return directoriesItem;
