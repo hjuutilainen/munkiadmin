@@ -21,6 +21,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
+#import <DevMateKit/DevMateKit.h>
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -869,6 +870,37 @@ DDLogLevel ddLogLevel;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    /*
+     Ask permission to send usage data to DevMate
+     */
+    if (![self.defaults boolForKey:@"analyticsPermissionAsked"]) {
+        DDLogVerbose(@"User has not been asked about analytics. Presenting dialog...");
+        NSAlert *askAnalyticsPermission = [[NSAlert alloc] init];
+        askAnalyticsPermission.messageText = @"Send anonymous usage data?";
+        askAnalyticsPermission.informativeText = @"This information includes things like OS version, OS locale, MunkiAdmin version, computer model, etc.";
+        [askAnalyticsPermission addButtonWithTitle:@"OK"];
+        [askAnalyticsPermission addButtonWithTitle:@"Don't Send"];
+        NSInteger result = [askAnalyticsPermission runModal];
+        if (result == NSAlertFirstButtonReturn) {
+            DDLogVerbose(@"User granted permission to use analytics.");
+            [self.defaults setBool:YES forKey:@"analyticsEnabled"];
+        } else {
+            DDLogVerbose(@"User granted permission to use analytics.");
+            [self.defaults setBool:NO forKey:@"analyticsEnabled"];
+        }
+        
+        [self.defaults setBool:YES forKey:@"analyticsPermissionAsked"];
+    }
+    
+    /*
+     Send tracking report if allowed
+     */
+    if ([self.defaults boolForKey:@"analyticsEnabled"]) {
+        DDLogVerbose(@"User has granted permission to use analytics. Sending report...");
+        [DevMateKit sendTrackingReport:nil delegate:nil];
+    }
+    
     
     [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
     
