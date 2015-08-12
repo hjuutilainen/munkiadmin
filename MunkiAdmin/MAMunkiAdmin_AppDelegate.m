@@ -1850,7 +1850,7 @@ DDLogLevel ddLogLevel;
     NSMutableArray *operationsToAdd = [[NSMutableArray alloc] init];
     for (NSURL *fileToAdd in filesToAdd) {
         if (fileToAdd != nil) {
-            MAMunkiOperation *theOp;
+            MAMunkiOperation *makepkginfoOperation;
             
             if (![[fileToAdd relativePath] hasPrefix:[self.pkgsURL relativePath]]) {
                 if (([self.defaults boolForKey:@"CopyPkgsToRepo"]) && ([[NSFileManager defaultManager] fileExistsAtPath:[self.pkgsURL relativePath]])) {
@@ -1860,26 +1860,33 @@ DDLogLevel ddLogLevel;
                     NSURL *newTarget = [self showSavePanelForCopyOperation:[[fileToAdd relativePath] lastPathComponent]];
                     if (newTarget) {
                         self.previousPkgSaveURL = [newTarget URLByDeletingLastPathComponent];
-                        MAFileCopyOperation *copyOp = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
-                        theOp = [MAMunkiOperation makepkginfoOperationWithSource:newTarget];
-                        [self setupCopyOperation:copyOp withDependingOperation:theOp];
-                        [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
-                        [operationsToAdd addObject:copyOp];
-                        [operationsToAdd addObject:theOp];
+                        
+                        makepkginfoOperation = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                        makepkginfoOperation.delegate = self;
+                        
+                        MAFileCopyOperation *copyOperation = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
+                        copyOperation.delegate = self;
+                        
+                        [copyOperation addDependency:makepkginfoOperation];
+                        [packageRelationships addDependency:copyOperation];
+                        
+                        [operationsToAdd addObject:makepkginfoOperation];
+                        [operationsToAdd addObject:copyOperation];
+                        
                     } else {
                         DDLogDebug(@"User chose to cancel the copy operation for %@. Bailing out...", [fileToAdd relativePath]);
                     }
                     
                 } else {
-                    theOp = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
-                    [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
-                    [operationsToAdd addObject:theOp];
+                    makepkginfoOperation = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                    [self setupMakepkginfoOperation:makepkginfoOperation withDependingOperation:packageRelationships];
+                    [operationsToAdd addObject:makepkginfoOperation];
                 }
                 
             } else {
-                theOp = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
-                [self setupMakepkginfoOperation:theOp withDependingOperation:packageRelationships];
-                [operationsToAdd addObject:theOp];
+                makepkginfoOperation = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
+                [self setupMakepkginfoOperation:makepkginfoOperation withDependingOperation:packageRelationships];
+                [operationsToAdd addObject:makepkginfoOperation];
             }
         }
     }
