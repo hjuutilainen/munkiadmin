@@ -378,6 +378,12 @@ DDLogLevel ddLogLevel;
             NSError *dirCreateError;
             if (![fm createDirectoryAtURL:iconsDirectory withIntermediateDirectories:NO attributes:nil error:&dirCreateError]) {
                 DDLogError(@"%@", dirCreateError);
+                NSAlert *alert = [NSAlert alertWithError:dirCreateError];
+                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
+                    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+                } else {
+                    [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
+                }
                 return;
             }
         }
