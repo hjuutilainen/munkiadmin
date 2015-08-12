@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAAdvancedPackageEditor">
@@ -39,7 +39,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Edit pkginfo" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
@@ -56,19 +56,19 @@
                         <tabViewItems>
                             <tabViewItem label="Basic Info" identifier="1" id="5">
                                 <view key="view" id="8">
-                                    <rect key="frame" x="10" y="29" width="788" height="491"/>
+                                    <rect key="frame" x="10" y="25" width="788" height="495"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <splitView dividerStyle="thin" vertical="YES" id="695">
-                                            <rect key="frame" x="-3" y="-1" width="794" height="509"/>
+                                            <rect key="frame" x="-3" y="-1" width="794" height="513"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <customView id="697">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="509"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="513"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" id="713">
-                                                            <rect key="frame" x="20" y="451" width="273" height="22"/>
+                                                            <rect key="frame" x="20" y="455" width="273" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="714">
                                                                 <font key="font" metaFont="system"/>
@@ -80,7 +80,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="712">
-                                                            <rect key="frame" x="17" y="475" width="45" height="14"/>
+                                                            <rect key="frame" x="17" y="479" width="45" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Name:" id="715">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -89,7 +89,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="711">
-                                                            <rect key="frame" x="20" y="405" width="348" height="22"/>
+                                                            <rect key="frame" x="20" y="409" width="348" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="716">
                                                                 <font key="font" metaFont="system"/>
@@ -105,7 +105,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="710">
-                                                            <rect key="frame" x="17" y="429" width="95" height="14"/>
+                                                            <rect key="frame" x="17" y="433" width="95" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Display Name:" id="717">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -114,7 +114,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="709">
-                                                            <rect key="frame" x="20" y="359" width="348" height="22"/>
+                                                            <rect key="frame" x="20" y="363" width="348" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="718">
                                                                 <font key="font" metaFont="system"/>
@@ -130,7 +130,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="708">
-                                                            <rect key="frame" x="17" y="383" width="95" height="14"/>
+                                                            <rect key="frame" x="17" y="387" width="95" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Version:" id="719">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -139,7 +139,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="tYt-lH-JyO">
-                                                            <rect key="frame" x="18" y="337" width="95" height="14"/>
+                                                            <rect key="frame" x="18" y="341" width="95" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Icon Name:" id="u6r-R2-T3b">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -148,7 +148,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="703">
-                                                            <rect key="frame" x="17" y="184" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="188" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Description:" id="724">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -157,7 +157,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="eSw-mR-mxB">
-                                                            <rect key="frame" x="17" y="283" width="62" height="14"/>
+                                                            <rect key="frame" x="17" y="287" width="62" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Category:" id="3ft-71-Qah">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -166,20 +166,20 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="702">
-                                                            <rect key="frame" x="20" y="96" width="348" height="86"/>
+                                                            <rect key="frame" x="20" y="96" width="348" height="90"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <clipView key="contentView" id="w9r-YZ-VmH">
-                                                                <rect key="frame" x="1" y="1" width="346" height="84"/>
+                                                                <rect key="frame" x="1" y="1" width="331" height="88"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="725">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="346" height="84"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="331" height="88"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="346" height="84"/>
+                                                                        <size key="minSize" width="331" height="88"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="346" height="84"/>
+                                                                        <size key="minSize" width="331" height="88"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="367" name="value" keyPath="selection.munki_description" id="1481">
@@ -218,13 +218,13 @@
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1510">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="346" height="50"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="331" height="50"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="346" height="50"/>
+                                                                        <size key="minSize" width="331" height="50"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="346" height="50"/>
+                                                                        <size key="minSize" width="331" height="50"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="367" name="value" keyPath="selection.munki_notes" id="1513">
@@ -247,7 +247,7 @@
                                                             </scroller>
                                                         </scrollView>
                                                         <button id="701">
-                                                            <rect key="frame" x="18" y="224" width="137" height="18"/>
+                                                            <rect key="frame" x="18" y="228" width="137" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="check" title="Autoremove" bezelStyle="regularSquare" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" state="on" inset="2" id="728">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -258,7 +258,7 @@
                                                             </connections>
                                                         </button>
                                                         <button id="700">
-                                                            <rect key="frame" x="197" y="224" width="173" height="18"/>
+                                                            <rect key="frame" x="197" y="228" width="173" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="check" title="Uninstallable" bezelStyle="regularSquare" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" state="on" inset="2" id="729">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -269,7 +269,7 @@
                                                             </connections>
                                                         </button>
                                                         <button id="699">
-                                                            <rect key="frame" x="18" y="204" width="137" height="18"/>
+                                                            <rect key="frame" x="18" y="208" width="137" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="check" title="Unattended install" bezelStyle="regularSquare" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" state="on" inset="2" id="730">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -280,7 +280,7 @@
                                                             </connections>
                                                         </button>
                                                         <button id="698">
-                                                            <rect key="frame" x="197" y="204" width="173" height="18"/>
+                                                            <rect key="frame" x="197" y="208" width="173" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="check" title="Unattended uninstall" bezelStyle="regularSquare" imagePosition="left" alignment="left" lineBreakMode="truncatingTail" state="on" inset="2" id="731">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -291,7 +291,7 @@
                                                             </connections>
                                                         </button>
                                                         <button verticalHuggingPriority="750" id="1412">
-                                                            <rect key="frame" x="296" y="447" width="77" height="28"/>
+                                                            <rect key="frame" x="296" y="451" width="77" height="28"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="push" title="Edit..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1413">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -302,7 +302,7 @@
                                                             </connections>
                                                         </button>
                                                         <popUpButton verticalHuggingPriority="750" id="vwl-Wg-QkM">
-                                                            <rect key="frame" x="83" y="277" width="213" height="26"/>
+                                                            <rect key="frame" x="83" y="281" width="213" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="d41-FH-hM4" id="GuT-Z9-3Op">
                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -331,7 +331,7 @@
                                                             </connections>
                                                         </popUpButton>
                                                         <textField verticalHuggingPriority="750" id="Imc-tp-HMO">
-                                                            <rect key="frame" x="17" y="257" width="62" height="14"/>
+                                                            <rect key="frame" x="17" y="261" width="62" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Developer:" id="B9r-iQ-euJ">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -340,7 +340,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <popUpButton verticalHuggingPriority="750" id="OK4-0E-lHw">
-                                                            <rect key="frame" x="83" y="251" width="213" height="26"/>
+                                                            <rect key="frame" x="83" y="255" width="213" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="B5U-QR-1He" id="HQE-mj-KPl">
                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -369,7 +369,7 @@
                                                             </connections>
                                                         </popUpButton>
                                                         <button verticalHuggingPriority="750" id="RFw-vv-p0D">
-                                                            <rect key="frame" x="296" y="275" width="80" height="28"/>
+                                                            <rect key="frame" x="296" y="279" width="80" height="28"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="push" title="New..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fSK-Da-9jx">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -380,7 +380,7 @@
                                                             </connections>
                                                         </button>
                                                         <button verticalHuggingPriority="750" id="EwS-Z5-jbB">
-                                                            <rect key="frame" x="296" y="249" width="80" height="28"/>
+                                                            <rect key="frame" x="296" y="253" width="80" height="28"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="push" title="New..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KnL-8B-c04">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -391,7 +391,7 @@
                                                             </connections>
                                                         </button>
                                                         <comboBox verticalHuggingPriority="750" id="kZr-VX-uc0">
-                                                            <rect key="frame" x="20" y="311" width="351" height="26"/>
+                                                            <rect key="frame" x="20" y="315" width="351" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="Co0-jB-MwP">
                                                                 <font key="font" metaFont="system"/>
@@ -410,11 +410,11 @@
                                                     </subviews>
                                                 </customView>
                                                 <customView id="696">
-                                                    <rect key="frame" x="401" y="0.0" width="393" height="509"/>
+                                                    <rect key="frame" x="401" y="0.0" width="393" height="513"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" id="750">
-                                                            <rect key="frame" x="20" y="359" width="353" height="22"/>
+                                                            <rect key="frame" x="20" y="363" width="353" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="755">
                                                                 <font key="font" metaFont="system"/>
@@ -430,7 +430,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="749">
-                                                            <rect key="frame" x="17" y="383" width="127" height="14"/>
+                                                            <rect key="frame" x="17" y="387" width="127" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Installer Item Location:" id="756">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -439,7 +439,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="748">
-                                                            <rect key="frame" x="20" y="267" width="170" height="22"/>
+                                                            <rect key="frame" x="20" y="271" width="170" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="757">
                                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="758"/>
@@ -456,7 +456,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="747">
-                                                            <rect key="frame" x="17" y="291" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="295" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Installed size:" id="759">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -465,7 +465,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="746">
-                                                            <rect key="frame" x="198" y="267" width="175" height="22"/>
+                                                            <rect key="frame" x="198" y="271" width="175" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="760">
                                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="761"/>
@@ -482,7 +482,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="745">
-                                                            <rect key="frame" x="195" y="291" width="116" height="14"/>
+                                                            <rect key="frame" x="195" y="295" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Installer item size:" id="762">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -491,7 +491,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="743">
-                                                            <rect key="frame" x="17" y="245" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="249" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Installer type:" id="764">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -500,7 +500,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="742">
-                                                            <rect key="frame" x="20" y="175" width="353" height="22"/>
+                                                            <rect key="frame" x="20" y="179" width="353" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="765">
                                                                 <font key="font" metaFont="system"/>
@@ -516,7 +516,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="741">
-                                                            <rect key="frame" x="17" y="199" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="203" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Package path:" id="766">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -525,7 +525,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1475">
-                                                            <rect key="frame" x="17" y="148" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="152" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Catalogs:" id="1476">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -534,7 +534,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="740">
-                                                            <rect key="frame" x="20" y="313" width="353" height="22"/>
+                                                            <rect key="frame" x="20" y="317" width="353" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="767">
                                                                 <font key="font" metaFont="system"/>
@@ -550,7 +550,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="739">
-                                                            <rect key="frame" x="17" y="337" width="116" height="14"/>
+                                                            <rect key="frame" x="17" y="341" width="116" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Installer Item Hash:" id="768">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -559,7 +559,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="738">
-                                                            <rect key="frame" x="17" y="475" width="83" height="14"/>
+                                                            <rect key="frame" x="17" y="479" width="83" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Restart Action:" id="769">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -568,7 +568,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="737">
-                                                            <rect key="frame" x="17" y="429" width="130" height="14"/>
+                                                            <rect key="frame" x="17" y="433" width="130" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Force Install After Date:" id="770">
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -577,7 +577,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <comboBox verticalHuggingPriority="750" id="736">
-                                                            <rect key="frame" x="20" y="449" width="356" height="26"/>
+                                                            <rect key="frame" x="20" y="453" width="356" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="771">
                                                                 <font key="font" metaFont="system"/>
@@ -600,33 +600,13 @@
                                                             </connections>
                                                         </comboBox>
                                                         <datePicker verticalHuggingPriority="750" id="735">
-                                                            <rect key="frame" x="46" y="405" width="330" height="27"/>
+                                                            <rect key="frame" x="46" y="409" width="330" height="27"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="772">
                                                                 <font key="font" metaFont="system"/>
                                                                 <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                                                    <!--1982-02-12 08:00:00 -0800-->
-                                                                    <timeZone key="timeZone" name="US/Pacific">
-                                                                        <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                                                    </timeZone>
+                                                                    <!--1982-02-12 16:00:00 +0000-->
+                                                                    <timeZone key="timeZone" name="US/Pacific"/>
                                                                 </calendarDate>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -638,7 +618,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                             </connections>
                                                         </datePicker>
                                                         <button id="732">
-                                                            <rect key="frame" x="18" y="407" width="22" height="18"/>
+                                                            <rect key="frame" x="18" y="411" width="22" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="775">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -649,17 +629,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                             </connections>
                                                         </button>
                                                         <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="1460">
-                                                            <rect key="frame" x="20" y="20" width="353" height="125"/>
+                                                            <rect key="frame" x="20" y="20" width="353" height="129"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <clipView key="contentView" id="Z0g-aD-Mc1">
-                                                                <rect key="frame" x="1" y="1" width="351" height="123"/>
+                                                                <rect key="frame" x="1" y="1" width="351" height="127"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="1461">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="123"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="127"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                         <tableColumns>
                                                                             <tableColumn width="40" minWidth="40" maxWidth="1000" id="1465">
@@ -709,7 +689,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                             </scroller>
                                                         </scrollView>
                                                         <comboBox verticalHuggingPriority="750" id="1639">
-                                                            <rect key="frame" x="20" y="217" width="356" height="26"/>
+                                                            <rect key="frame" x="20" y="221" width="356" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="7" id="1640">
                                                                 <font key="font" metaFont="system"/>
@@ -801,10 +781,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveName="installsItemsTableView" headerView="1742" id="1115">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="752" height="153"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="752" height="19"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                         <tableColumns>
                                                                             <tableColumn identifier="installsTableColumnIcon" width="27" minWidth="26" maxWidth="30" id="1727">
@@ -1043,7 +1023,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveName="receiptsTableView" headerView="1737" id="1155">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="752" height="151"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="752" height="19"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1265,10 +1245,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" headerView="1556" viewBased="YES" id="1553">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="164"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="0.0"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                         <tableColumns>
                                                                                             <tableColumn editable="NO" width="356" minWidth="40" maxWidth="1000" id="1557">
@@ -1395,10 +1375,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" headerView="1539" viewBased="YES" id="1536">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="184"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="0.0"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                         <tableColumns>
                                                                                             <tableColumn editable="NO" width="356" minWidth="40" maxWidth="1000" id="1540">
@@ -1588,7 +1568,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1650">
                                                             <rect key="frame" x="20" y="322" width="352" height="63"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Example: os_vers BEGINSWITH &quot;10.8&quot; AND os_vers_patch >= 2" drawsBackground="YES" id="1651">
+                                                            <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Example: os_vers BEGINSWITH &quot;10.8&quot; AND os_vers_patch &gt;= 2" drawsBackground="YES" id="1651">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1632,10 +1612,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" rowHeight="40" headerView="1292" viewBased="YES" id="1293">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="293"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="0.0"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                         <tableColumns>
                                                                             <tableColumn editable="NO" width="365" minWidth="40" maxWidth="1000" id="1296">
@@ -1730,7 +1710,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_path" id="1501"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_path" id="rD7-SX-zAR">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1289">
@@ -1751,7 +1735,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_source_item" id="1502"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_source_item" id="dMQ-aY-7z4">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1287">
@@ -1772,7 +1760,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_item" id="1600"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_item" id="Fgi-wB-oQS">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1596">
@@ -1793,7 +1785,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_user" id="1503"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_user" id="TS9-J1-qNY">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1285">
@@ -1814,7 +1810,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_group" id="1504"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_group" id="BK3-OX-cEg">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1280">
@@ -1835,7 +1835,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_mode" id="1505"/>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_mode" id="a3s-eb-48v">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                    </dictionary>
+                                                                </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1283">
@@ -1907,10 +1911,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="1327" id="1326">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="153" height="143"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="153" height="19"/>
                                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <tableColumns>
                                                                                                             <tableColumn width="150" minWidth="40" maxWidth="1000" id="1328">
@@ -2037,10 +2041,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="1332" id="1333">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="145" height="165"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="145" height="19"/>
                                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                                         <tableColumns>
                                                                                                             <tableColumn width="142" minWidth="40" maxWidth="1000" id="1336">
@@ -2130,10 +2134,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" headerView="1369" id="1370">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="341" height="171"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="341" height="19"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                         <size key="intercellSpacing" width="3" height="2"/>
-                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                         <tableColumns>
                                                                                             <tableColumn width="130.2578125" minWidth="40" maxWidth="1000" id="1373">
@@ -2283,13 +2287,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="824">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="455"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="455"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="350" height="455"/>
+                                                                        <size key="minSize" width="335" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="350" height="455"/>
+                                                                        <size key="minSize" width="335" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="-2" name="value" keyPath="temp_preinstall_script" id="838">
@@ -2337,13 +2341,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="832">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="455"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="344" height="455"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="455"/>
+                                                                        <size key="minSize" width="344" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="455"/>
+                                                                        <size key="minSize" width="344" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="-2" name="value" keyPath="temp_postinstall_script" id="836">
@@ -2412,13 +2416,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="878">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="363"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="344" height="363"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="363"/>
+                                                                        <size key="minSize" width="344" height="363"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="363"/>
+                                                                        <size key="minSize" width="344" height="363"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="-2" name="value" keyPath="temp_uninstall_script" id="899">
@@ -2524,13 +2528,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="889">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="183"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="183"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="350" height="183"/>
+                                                                                        <size key="minSize" width="335" height="183"/>
                                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="350" height="183"/>
+                                                                                        <size key="minSize" width="335" height="183"/>
                                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="-2" name="value" keyPath="temp_preuninstall_script" id="904">
@@ -2578,13 +2582,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="893">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="213"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="213"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="350" height="213"/>
+                                                                                        <size key="minSize" width="335" height="213"/>
                                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="350" height="213"/>
+                                                                                        <size key="minSize" width="335" height="213"/>
                                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="-2" name="value" keyPath="temp_postuninstall_script" id="897">
@@ -2661,13 +2665,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1624">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="350" height="455"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="455"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="350" height="455"/>
+                                                                        <size key="minSize" width="335" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="350" height="455"/>
+                                                                        <size key="minSize" width="335" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="-2" name="value" keyPath="temp_installcheck_script" id="1635">
@@ -2715,13 +2719,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1616">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="455"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="344" height="455"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="455"/>
+                                                                        <size key="minSize" width="344" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="359" height="455"/>
+                                                                        <size key="minSize" width="344" height="455"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="-2" name="value" keyPath="temp_uninstallcheck_script" id="1636">
@@ -2914,7 +2918,7 @@ Gw
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="8" height="8"/>
-        <image name="NSRemoveTemplate" width="8" height="8"/>
+        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="11" height="11"/>
     </resources>
 </document>
