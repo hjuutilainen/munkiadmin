@@ -2071,8 +2071,33 @@ DDLogLevel ddLogLevel;
 - (IBAction)reloadRepositoryAction:sender
 {
 	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-	
-	[self selectRepoAtURL:self.repoURL];
+    
+    BOOL hasUnstagedChanges = [[MAMunkiRepositoryManager sharedManager] repositoryHasUnstagedChanges];
+    if (hasUnstagedChanges) {
+        DDLogVerbose(@"Repository has unstaged changes. Should ask for confirmation.");
+        NSString *question = NSLocalizedString(@"Changes have not been saved yet. Reload anyway?", @"Reload without saves error question message");
+        NSString *info = NSLocalizedString(@"Reloading now will lose any changes you have made since the last successful save", @"Reload without saves error question info");
+        NSString *reloadButton = NSLocalizedString(@"Reload anyway", @"Reload anyway button title");
+        NSString *cancelButton = NSLocalizedString(@"Cancel", @"Cancel button title");
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:question];
+        [alert setInformativeText:info];
+        [alert addButtonWithTitle:reloadButton];
+        [alert addButtonWithTitle:cancelButton];
+        
+        NSInteger answer = [alert runModal];
+        
+        if (answer == NSAlertFirstButtonReturn) {
+            DDLogVerbose(@"User chose to reload without saving.");
+            [self selectRepoAtURL:self.repoURL];
+        } else {
+            DDLogVerbose(@"User cancelled reloading.");
+        }
+    } else {
+        DDLogVerbose(@"Repository has no unstaged changes. Reloading...");
+        [self selectRepoAtURL:self.repoURL];
+    }
 }
 
 - (BOOL)resetPersistentStore
