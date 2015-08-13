@@ -1864,6 +1864,9 @@ DDLogLevel ddLogLevel;
                         makepkginfoOperation = [MAMunkiOperation makepkginfoOperationWithSource:fileToAdd];
                         makepkginfoOperation.delegate = self;
                         
+                        NSString *newRelativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:newTarget parentURL:self.pkgsURL];
+                        makepkginfoOperation.pkginfoAdditions = @{@"installer_item_location": newRelativePath};
+                        
                         MAFileCopyOperation *copyOperation = [MAFileCopyOperation fileCopySourceURL:fileToAdd toTargetURL:newTarget];
                         copyOperation.delegate = self;
                         

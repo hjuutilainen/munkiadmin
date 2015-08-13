@@ -22,6 +22,7 @@
 @property (strong) NSString *command;
 @property (strong) NSURL *targetURL;
 @property (strong) NSArray *arguments;
+@property (strong) NSDictionary *pkginfoAdditions;
 @property (weak) id delegate;
 
 @end

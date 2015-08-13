@@ -176,10 +176,15 @@ DDLogLevel ddLogLevel;
 			else if ([self.command isEqualToString:@"makepkginfo"]) {
                 DDLogDebug(@"MunkiOperation:makepkginfo");
 				NSDictionary *pkginfo = [self makepkginfo];
+                NSMutableDictionary *newPkginfo = [NSMutableDictionary new];
+                newPkginfo = [NSMutableDictionary dictionaryWithDictionary:pkginfo];
+                if (self.pkginfoAdditions) {
+                    [newPkginfo addEntriesFromDictionary:self.pkginfoAdditions];
+                }
 				DDLogVerbose(@"MunkiOperation:makepkginfo:results: %@", pkginfo);
 				if ([self.delegate respondsToSelector:@selector(makepkginfoDidFinish:)]) {
 					[self.delegate performSelectorOnMainThread:@selector(makepkginfoDidFinish:)
-													withObject:pkginfo
+													withObject:[NSDictionary dictionaryWithDictionary:newPkginfo]
 												 waitUntilDone:YES];
 				}
 			}
