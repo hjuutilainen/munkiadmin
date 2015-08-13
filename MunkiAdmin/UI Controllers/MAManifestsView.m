@@ -279,6 +279,36 @@ DDLogLevel ddLogLevel;
     //[self.sourceList setNeedsDisplay:YES];
     
     [self setDetailView:self.manifestsListView];
+    
+    /*
+     Create a contextual menu for customizing table columns
+     */
+    NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+    NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSArray *tableColumnsSorted = [self.manifestsListTableView.tableColumns sortedArrayUsingDescriptors:@[sortByHeaderString]];
+    for (NSTableColumn *col in tableColumnsSorted) {
+        NSMenuItem *mi = nil;
+        if ([[col identifier] isEqualToString:@"manifestsTableColumnIcon"]) {
+            mi = [[NSMenuItem alloc] initWithTitle:@"Icon"
+                                            action:@selector(toggleColumn:)
+                                     keyEquivalent:@""];
+        } else {
+            mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+                                            action:@selector(toggleColumn:)
+                                     keyEquivalent:@""];
+        }
+        mi.target = self;
+        mi.representedObject = col;
+        [menu addItem:mi];
+    }
+    menu.delegate = self;
+    self.manifestsListTableView.headerView.menu = menu;
+}
+
+- (void)toggleColumn:(id)sender
+{
+    NSTableColumn *col = [sender representedObject];
+    [col setHidden:![col isHidden]];
 }
 
 - (void)updateSourceListData
@@ -808,7 +838,15 @@ DDLogLevel ddLogLevel;
 
 - (void)menuWillOpen:(NSMenu *)menu
 {
-    if (menu == self.manifestsListMenu) {
+    /*
+     The column header menu
+     */
+    if (menu == self.manifestsListTableView.headerView.menu) {
+        for (NSMenuItem *mi in menu.itemArray) {
+            NSTableColumn *col = [mi representedObject];
+            [mi setState:col.isHidden ? NSOffState : NSOnState];
+        }
+    } else if (menu == self.manifestsListMenu) {
         [self manifestsListMenuWillOpen:menu];
     } else if (menu == self.catalogsSubMenu) {
         [self catalogsSubMenuWillOpen:menu];

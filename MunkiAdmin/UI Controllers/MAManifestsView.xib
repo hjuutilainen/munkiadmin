@@ -178,80 +178,7 @@
                                             <predicateEditor verticalHuggingPriority="750" nestingMode="compound" rowHeight="25" id="drd-pf-9Xe">
                                                 <rect key="frame" x="0.0" y="0.0" width="944" height="157"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                <rowTemplates>
-                                                    <predicateEditorRowTemplate rowType="compound" id="TEH-sP-YV5">
-                                                        <popUpMenus>
-                                                            <menu id="pdA-C3-kn0">
-                                                                <items>
-                                                                    <menuItem title="Any" state="on" id="3x3-k0-y4p">
-                                                                        <integer key="representedObject" value="2"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="All" id="flo-ad-Eps">
-                                                                        <integer key="representedObject" value="1"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="None" id="XfP-kA-9Bm">
-                                                                        <integer key="representedObject" value="0"/>
-                                                                    </menuItem>
-                                                                </items>
-                                                            </menu>
-                                                            <menu id="mLC-k8-pEC">
-                                                                <items>
-                                                                    <menuItem title="of the following are true" state="on" id="nn5-u9-oPL"/>
-                                                                </items>
-                                                            </menu>
-                                                        </popUpMenus>
-                                                    </predicateEditorRowTemplate>
-                                                    <predicateEditorRowTemplate rowType="simple" id="LOh-wO-UVH">
-                                                        <array key="leftExpressionObject">
-                                                            <expression type="keyPath">
-                                                                <string key="keyPath">title</string>
-                                                            </expression>
-                                                            <expression type="keyPath">
-                                                                <string key="keyPath">fileName</string>
-                                                            </expression>
-                                                        </array>
-                                                        <integer key="rightExpressionObject" value="700"/>
-                                                        <comparisonPredicateOptions key="options" caseInsensitive="YES" diacriticInsensitive="YES"/>
-                                                        <popUpMenus>
-                                                            <menu id="rSI-hx-xDH">
-                                                                <items>
-                                                                    <menuItem title="title" state="on" id="BBx-Wx-lsV">
-                                                                        <expression key="representedObject" type="keyPath">
-                                                                            <string key="keyPath">title</string>
-                                                                        </expression>
-                                                                    </menuItem>
-                                                                    <menuItem title="fileName" id="ot5-LF-qOY">
-                                                                        <expression key="representedObject" type="keyPath">
-                                                                            <string key="keyPath">fileName</string>
-                                                                        </expression>
-                                                                    </menuItem>
-                                                                </items>
-                                                            </menu>
-                                                            <menu id="r06-vS-HvQ">
-                                                                <items>
-                                                                    <menuItem title="contains" state="on" id="lM7-yL-auN">
-                                                                        <integer key="representedObject" value="99"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="begins with" id="clc-pw-Ln4">
-                                                                        <integer key="representedObject" value="8"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="ends with" id="5Ng-tq-C9s">
-                                                                        <integer key="representedObject" value="9"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="is" id="co8-2g-Etd">
-                                                                        <integer key="representedObject" value="4"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="is not" id="6Zq-m7-a9j">
-                                                                        <integer key="representedObject" value="5"/>
-                                                                    </menuItem>
-                                                                    <menuItem title="matches" id="5ND-gl-iAD">
-                                                                        <integer key="representedObject" value="6"/>
-                                                                    </menuItem>
-                                                                </items>
-                                                            </menu>
-                                                        </popUpMenus>
-                                                    </predicateEditorRowTemplate>
-                                                </rowTemplates>
+                                                <rowTemplates/>
                                                 <connections>
                                                     <outlet property="delegate" destination="-2" id="Cv3-mN-HcJ"/>
                                                 </connections>
@@ -325,14 +252,14 @@ Gw
                                         <rect key="frame" x="0.0" y="17" width="944" height="449"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="tL6-KA-H9o" viewBased="YES" id="5Uj-Pj-9lj">
-                                                <rect key="frame" x="0.0" y="0.0" width="944" height="0.0"/>
+                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveName="manifestsTableView" rowSizeStyle="automatic" headerView="tL6-KA-H9o" viewBased="YES" id="5Uj-Pj-9lj">
+                                                <rect key="frame" x="0.0" y="0.0" width="944" height="449"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn width="20" minWidth="20" maxWidth="20" id="nye-Lp-ZTr">
+                                                    <tableColumn identifier="manifestsTableColumnIcon" width="20" minWidth="20" maxWidth="20" id="nye-Lp-ZTr">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -363,7 +290,7 @@ Gw
                                                             </tableCellView>
                                                         </prototypeCellViews>
                                                     </tableColumn>
-                                                    <tableColumn width="338" minWidth="40" maxWidth="1000" id="o2X-Qp-qRi">
+                                                    <tableColumn identifier="manifestsTableColumnName" width="360" minWidth="40" maxWidth="1000" id="o2X-Qp-qRi">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -378,11 +305,11 @@ Gw
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         <prototypeCellViews>
                                                             <tableCellView id="hsC-pW-G0E">
-                                                                <rect key="frame" x="24" y="1" width="338" height="17"/>
+                                                                <rect key="frame" x="24" y="1" width="360" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="EhW-Rn-gfr">
-                                                                        <rect key="frame" x="1" y="1" width="336" height="16"/>
+                                                                        <rect key="frame" x="1" y="1" width="358" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="P8J-BS-ahH">
                                                                             <font key="font" metaFont="cellTitle"/>
@@ -400,7 +327,44 @@ Gw
                                                             </tableCellView>
                                                         </prototypeCellViews>
                                                     </tableColumn>
-                                                    <tableColumn editable="NO" width="313" minWidth="40" maxWidth="1000" id="QVl-Z6-t3g">
+                                                    <tableColumn identifier="manifestsTableColumnUserName" editable="NO" width="184" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="g9p-5P-5N2">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Username">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                        </tableHeaderCell>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="26O-mU-a9p">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="manifestUserName"/>
+                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="iGY-7q-aD9">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="oWr-da-ung">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="kYY-mi-2ZM">
+                                                                            <font key="font" metaFont="cellTitle"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="iGY-7q-aD9" name="value" keyPath="objectValue.manifestUserName" id="38P-Q4-ElC"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="oWr-da-ung" id="d4y-xy-Xp9"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
+                                                    </tableColumn>
+                                                    <tableColumn identifier="manifestsTableColumnCatalogs" editable="NO" width="289" minWidth="40" maxWidth="1000" id="QVl-Z6-t3g">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Catalogs">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -415,11 +379,11 @@ Gw
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         <prototypeCellViews>
                                                             <tableCellView id="ywP-Ol-uHa">
-                                                                <rect key="frame" x="365" y="1" width="313" height="17"/>
+                                                                <rect key="frame" x="387" y="1" width="289" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="NzY-hP-QNi">
-                                                                        <rect key="frame" x="1" y="1" width="311" height="16"/>
+                                                                        <rect key="frame" x="1" y="1" width="287" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="u7Z-Uv-QHE">
                                                                             <font key="font" metaFont="cellTitle"/>
@@ -437,7 +401,7 @@ Gw
                                                             </tableCellView>
                                                         </prototypeCellViews>
                                                     </tableColumn>
-                                                    <tableColumn width="261" minWidth="10" maxWidth="3.4028234663852886e+38" id="UFM-bT-edt">
+                                                    <tableColumn identifier="manifestsTableColumnFileName" width="263" minWidth="10" maxWidth="3.4028234663852886e+38" id="UFM-bT-edt">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Filename">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -452,11 +416,11 @@ Gw
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         <prototypeCellViews>
                                                             <tableCellView id="oud-vP-L6P">
-                                                                <rect key="frame" x="681" y="1" width="261" height="17"/>
+                                                                <rect key="frame" x="679" y="1" width="263" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="5gN-48-uE3">
-                                                                        <rect key="frame" x="1" y="1" width="259" height="16"/>
+                                                                        <rect key="frame" x="1" y="1" width="261" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="E8h-Mj-2F8">
                                                                             <font key="font" metaFont="cellTitle"/>
