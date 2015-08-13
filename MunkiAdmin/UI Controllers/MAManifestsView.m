@@ -150,9 +150,40 @@ DDLogLevel ddLogLevel;
     NSMutableArray *rowTemplates = [[self.manifestsListPredicateEditor rowTemplates] mutableCopy];
     
     /*
-     String types row template
+     Add the Any, All and None options
      */
-    NSArray *containsOperator = @[@(NSContainsPredicateOperatorType)];
+    [rowTemplates addObject:[[NSPredicateEditorRowTemplate alloc] initWithCompoundTypes:@[@(NSAndPredicateType), @(NSOrPredicateType), @(NSNotPredicateType)]]];
+    
+    /*
+     Simple strings that do not need a modifier
+     */
+    NSArray *simpleLeftExpressions = @[
+                                       [NSExpression expressionForKeyPath:@"title"],
+                                       [NSExpression expressionForKeyPath:@"fileName"],
+                                       [NSExpression expressionForKeyPath:@"manifestUserName"]
+                                       ];
+    NSArray *simpleOperators = @[
+                                 @(NSContainsPredicateOperatorType),
+                                 @(NSBeginsWithPredicateOperatorType),
+                                 @(NSEndsWithPredicateOperatorType),
+                                 @(NSEqualToPredicateOperatorType),
+                                 @(NSNotEqualToPredicateOperatorType)
+                                 ];
+    NSPredicateEditorRowTemplate *simpleStringsRowTemplate = [[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions:simpleLeftExpressions
+                                                                                              rightExpressionAttributeType:NSStringAttributeType
+                                                                                                                  modifier:NSDirectPredicateModifier
+                                                                                                                 operators:simpleOperators
+                                                                                                                   options:(NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption)];
+    [rowTemplates addObject:simpleStringsRowTemplate];
+    
+    /*
+     Strings that need the ANY modifier
+     */
+    NSArray *containsOperator = @[
+                                  @(NSContainsPredicateOperatorType),
+                                  @(NSBeginsWithPredicateOperatorType),
+                                  @(NSEndsWithPredicateOperatorType)
+                                  ];
     NSArray *leftExpressions = @[
                                  [NSExpression expressionForKeyPath:@"allPackageStrings"],
                                  [NSExpression expressionForKeyPath:@"catalogStrings"],
@@ -177,17 +208,18 @@ DDLogLevel ddLogLevel;
     [self.manifestsListPredicateEditor setRowTemplates:rowTemplates];
     
     NSDictionary *formatting = @{
-                                 @"%[title]@ %[contains]@ %@" : @"%[Name]@ %[contains]@ %@",
-                                 @"%[allPackageStrings]@ %[contains]@ %@" : @"%[Any installs item]@ %[contains]@ %@",
-                                 @"%[fileName]@ %[contains]@ %@" : @"%[Filename]@ %[contains]@ %@",
-                                 @"%[catalogStrings]@ %[contains]@ %@" : @"%[Catalogs]@ %[contains]@ %@",
-                                 @"%[managedInstallsStrings]@ %[contains]@ %@" : @"%[Managed installs]@ %[contains]@ %@",
-                                 @"%[managedUninstallsStrings]@ %[contains]@ %@" : @"%[Managed uninstalls]@ %[contains]@ %@",
-                                 @"%[managedUpdatesStrings]@ %[contains]@ %@" : @"%[Managed updates]@ %[contains]@ %@",
-                                 @"%[optionalInstallsStrings]@ %[contains]@ %@" : @"%[Optional installs]@ %[contains]@ %@",
-                                 @"%[includedManifestsStrings]@ %[contains]@ %@" : @"%[Included manifests]@ %[contains]@ %@",
-                                 @"%[referencingManifestsStrings]@ %[contains]@ %@" : @"%[Referencing manifests]@ %[contains]@ %@",
-                                 @"%[conditionalItemsStrings]@ %[contains]@ %@" : @"%[Condition predicates]@ %[contains]@ %@",
+                                 @"%[title]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Name]@ %[is, is not, contains, begins with, ends with]@ %@",
+                                 @"%[fileName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Filename]@ %[is, is not, contains, begins with, ends with]@ %@",
+                                 @"%[manifestUserName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Username]@ %[is, is not, contains, begins with, ends with]@ %@",
+                                 @"%[allPackageStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any installs item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[catalogStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any catalog]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[managedInstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed installs item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[managedUninstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed uninstalls item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[managedUpdatesStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed updates item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[optionalInstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any optional installs item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[includedManifestsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any included manifest]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[referencingManifestsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any referencing manifest]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[conditionalItemsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any condition predicate string]@ %[contains, begins with, ends with]@ %@",
                                  };
     [self.manifestsListPredicateEditor setFormattingDictionary:formatting];
 }
