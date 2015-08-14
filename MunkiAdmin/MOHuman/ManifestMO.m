@@ -30,7 +30,7 @@
     NSArray *managedUninstallsKeys = @[@"managedUninstallsStrings", @"managedUninstallsCountDescription"];
     NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings", @"managedUpdatesCountDescription"];
     NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings", @"optionalInstallsCountDescription"];
-    NSArray *conditionalsKeys = @[@"conditionalItemsStrings", @"conditionsCountDescription"];
+    NSArray *conditionalsKeys = @[@"conditionalItemsStrings", @"conditionsCountDescription", @"rootConditionalItems"];
     NSArray *referencingManifestsKeys = @[@"referencingManifestsStrings", @"referencingManifestsCountDescription"];
     
     if ([catalogDescriptionKeys containsObject:key]) {

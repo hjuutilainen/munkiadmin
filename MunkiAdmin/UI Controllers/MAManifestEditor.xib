@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -1057,7 +1057,7 @@
         <arrayController avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="4hp-Ig-Qph" userLabel="All Conditional Items"/>
         <treeController mode="entity" entityName="ConditionalItem" fetchPredicateFormat="parent == nil" automaticallyPreparesContent="YES" childrenKeyPath="children" avoidsEmptySelection="NO" id="NIc-5W-hAV" userLabel="Conditional Items Tree">
             <connections>
-                <binding destination="-2" name="contentSet" keyPath="manifestToEdit.conditionalItems" id="BIk-jK-aqB"/>
+                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.rootConditionalItems" id="GUi-H8-wVJ"/>
             </connections>
         </treeController>
         <customView id="nYh-hL-i9J" userLabel="Conditionals View">
@@ -1203,6 +1203,8 @@
                                 <connections>
                                     <binding destination="NIc-5W-hAV" name="content" keyPath="arrangedObjects" id="kPA-1O-lrC"/>
                                     <binding destination="NIc-5W-hAV" name="selectionIndexPaths" keyPath="selectionIndexPaths" previousBinding="kPA-1O-lrC" id="gcY-Mj-lt3"/>
+                                    <outlet property="dataSource" destination="-2" id="Kwd-Zt-Z9C"/>
+                                    <outlet property="delegate" destination="-2" id="hrj-Z1-gUi"/>
                                 </connections>
                             </outlineView>
                         </subviews>
