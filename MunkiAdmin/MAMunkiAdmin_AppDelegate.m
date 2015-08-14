@@ -39,6 +39,11 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Helper methods
 
+- (IBAction)showFeedbackDialog:(id)sender
+{
+    [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackIndependentMode];
+}
+
 - (IBAction)findAction:(id)sender
 {
     if (self.currentWholeView == [self.manifestsViewController view]) {

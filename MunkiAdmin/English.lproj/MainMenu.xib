@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -699,6 +699,12 @@ Gw
                             <menuItem title="MunkiAdmin Help" keyEquivalent="?" id="520">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="521"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Send Feedback..." id="Nn5-97-Lh1">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showFeedbackDialog:" target="205" id="DB0-TP-fFp"/>
                                 </connections>
                             </menuItem>
                         </items>
