@@ -19,6 +19,8 @@
 
 DDLogLevel ddLogLevel;
 
+NSString *MAConditionalItemType = @"ConditionalItemType";
+
 #pragma mark -
 #pragma mark MAManifestEditorSection
 
@@ -159,6 +161,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     [self.catalogInfosTableView registerForDraggedTypes:@[NSURLPboardType]];
     [self.catalogInfosTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+    
+    [self.conditionsOutlineView registerForDraggedTypes:@[MAConditionalItemType]];
+    [self.conditionsOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:YES];
     
     self.addItemsWindowController = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     self.selectManifestsWindowController = [[MASelectManifestItemsWindow alloc] initWithWindowNibName:@"MASelectManifestItemsWindow"];
@@ -969,6 +974,82 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
 }
 
+# pragma mark - NSOutlineView delegates
+
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard
+{
+    [pboard declareTypes:[NSArray arrayWithObject:MAConditionalItemType] owner:self];
+    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"]] forType:MAConditionalItemType];
+    return YES;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
+{
+    
+    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:MAConditionalItemType]];
+    
+    NSMutableArray *draggedNodes = [NSMutableArray array];
+    for (NSIndexPath *indexPath in droppedIndexPaths) {
+        id treeRoot = [self.conditionsTreeController arrangedObjects];
+        NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];
+        [draggedNodes addObject:node];
+    }
+    
+    for (NSTreeNode *aNode in draggedNodes) {
+        ConditionalItemMO *droppedConditional = [aNode representedObject];
+        NSTreeNode *parent = proposedParentItem;
+        ConditionalItemMO *parentConditional = [parent representedObject];
+        
+        if (!proposedParentItem) {
+            droppedConditional.parent = nil;
+        }
+        else {
+            droppedConditional.parent = parentConditional;
+        }
+        
+        [[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext] refreshObject:droppedConditional.manifest mergeChanges:YES];
+    }
+    
+    [self.conditionsTreeController rearrangeObjects];
+    [self.conditionalItemsArrayController rearrangeObjects];
+    
+    return YES;
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id <NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+    
+    // Deny drag and drop reordering
+    if (index != -1) {
+        return NSDragOperationNone;
+    }
+    
+    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:MAConditionalItemType]];
+    for (NSIndexPath *indexPath in draggedIndexPaths) {
+        id treeRoot = [self.conditionsTreeController arrangedObjects];
+        NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];
+        ConditionalItemMO *droppedConditional = [node representedObject];
+        NSTreeNode *parent = item;
+        ConditionalItemMO *parentConditional = [parent representedObject];
+        
+        // Dragging a 1st level item so deny dropping to root
+        if ((droppedConditional.parent == nil) && (parentConditional == nil)) {
+            return NSDragOperationNone;
+        }
+        
+        // Can't drop on child items
+        while (parent != nil) {
+            if (parent == node) {
+                return NSDragOperationNone;
+            }
+            parent = [parent parentNode];
+        }
+    }
+    return NSDragOperationGeneric;
+}
+
+# pragma mark - NSSplitView delegates
 
 - (void)splitView:(NSSplitView *)sender resizeSubviewsWithOldSize:(NSSize)oldSize
 {
