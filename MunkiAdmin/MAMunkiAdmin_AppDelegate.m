@@ -901,6 +901,11 @@ DDLogLevel ddLogLevel;
         [DevMateKit sendTrackingReport:nil delegate:nil];
     }
     
+    /*
+     Setup DevMate crash reports
+     */
+    [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
+    
     
     [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
     
