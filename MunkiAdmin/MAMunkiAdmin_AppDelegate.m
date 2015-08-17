@@ -883,8 +883,8 @@ DDLogLevel ddLogLevel;
         DDLogVerbose(@"User has not been asked about analytics. Presenting dialog...");
         NSAlert *askAnalyticsPermission = [[NSAlert alloc] init];
         askAnalyticsPermission.messageText = @"Send anonymous usage data?";
-        askAnalyticsPermission.informativeText = @"This information includes things like OS version, OS locale, MunkiAdmin version, computer model, etc.";
-        [askAnalyticsPermission addButtonWithTitle:@"OK"];
+        askAnalyticsPermission.informativeText = @"MunkiAdmin uses DevMate and includes the option to send reports with anonymous usage information. This information is used solely to help understand how MunkiAdmin is used. The information sent to DevMate is not personally identifiable.";
+        [askAnalyticsPermission addButtonWithTitle:@"Send"];
         [askAnalyticsPermission addButtonWithTitle:@"Don't Send"];
         NSInteger result = [askAnalyticsPermission runModal];
         if (result == NSAlertFirstButtonReturn) {
