@@ -30,7 +30,7 @@
             </view>
         </window>
         <customView id="4" userLabel="General">
-            <rect key="frame" x="0.0" y="5" width="540" height="337"/>
+            <rect key="frame" x="0.0" y="6" width="540" height="337"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="29">
@@ -182,9 +182,9 @@
                     </connections>
                 </button>
                 <button id="WYb-5W-Tt5">
-                    <rect key="frame" x="163" y="68" width="218" height="18"/>
+                    <rect key="frame" x="163" y="68" width="219" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Send anonymous usage reports" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Uft-ik-HIF">
+                    <buttonCell key="cell" type="check" title="Send anonymous system profile" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Uft-ik-HIF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -195,12 +195,23 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="V2e-aF-N0f">
                     <rect key="frame" x="163" y="20" width="308" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="When enabled, MunkiAdmin sends anonymous usage information reports to DevMate analytics every time the application is launched." id="lHU-zm-DN7">
+                    <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="When enabled, MunkiAdmin sends anonymous system profile to DevMate analytics every time the application is launched. " id="lHU-zm-DN7">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="Trx-pG-rHG">
+                    <rect key="frame" x="390" y="64" width="25" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qaK-KC-ymQ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="openPrivacyPolicy:" target="-1" id="zrZ-Re-1tW"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="829" y="655.5"/>
         </customView>

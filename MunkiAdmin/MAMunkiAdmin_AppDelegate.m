@@ -39,6 +39,12 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Helper methods
 
+- (IBAction)openPrivacyPolicy:(id)sender
+{
+    NSURL *privacyPolicyURL = [NSURL URLWithString:@"https://github.com/hjuutilainen/munkiadmin/wiki/Privacy-Policy"];
+    [[NSWorkspace sharedWorkspace] openURL:privacyPolicyURL];
+}
+
 - (IBAction)showFeedbackDialog:(id)sender
 {
     [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackIndependentMode];
