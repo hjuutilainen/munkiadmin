@@ -877,9 +877,17 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     /*
+     DevMate preference key names
+     */
+    NSString *analyticsPermissionKeyName = @"DevMateAnalyticsPermissionAsked";
+    NSString *analyticsEnabledKeyName = @"DevMateAnalyticsEnabled";
+    NSString *issuesEnabledKeyName = @"DevMateIssuesEnabled";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    /*
      Ask permission to send usage data to DevMate
      */
-    if (![self.defaults boolForKey:@"analyticsPermissionAsked"]) {
+    if (![userDefaults boolForKey:analyticsPermissionKeyName]) {
         DDLogVerbose(@"User has not been asked about analytics. Presenting dialog...");
         NSAlert *askAnalyticsPermission = [[NSAlert alloc] init];
         askAnalyticsPermission.messageText = @"Send anonymous system profile?";
@@ -889,19 +897,19 @@ DDLogLevel ddLogLevel;
         NSInteger result = [askAnalyticsPermission runModal];
         if (result == NSAlertFirstButtonReturn) {
             DDLogVerbose(@"User granted permission to use analytics.");
-            [self.defaults setBool:YES forKey:@"analyticsEnabled"];
+            [userDefaults setBool:YES forKey:analyticsEnabledKeyName];
         } else {
             DDLogVerbose(@"User granted permission to use analytics.");
-            [self.defaults setBool:NO forKey:@"analyticsEnabled"];
+            [userDefaults setBool:NO forKey:analyticsEnabledKeyName];
         }
         
-        [self.defaults setBool:YES forKey:@"analyticsPermissionAsked"];
+        [userDefaults setBool:YES forKey:analyticsPermissionKeyName];
     }
     
     /*
      Send tracking report if allowed
      */
-    if ([self.defaults boolForKey:@"analyticsEnabled"]) {
+    if ([userDefaults boolForKey:analyticsEnabledKeyName]) {
         DDLogVerbose(@"User has granted permission to use analytics. Sending report...");
         [DevMateKit sendTrackingReport:nil delegate:nil];
     }
@@ -909,7 +917,9 @@ DDLogLevel ddLogLevel;
     /*
      Setup DevMate crash reports
      */
-    [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
+    if ([userDefaults boolForKey:issuesEnabledKeyName]) {
+        [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
+    }
     
     
     [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
@@ -920,7 +930,7 @@ DDLogLevel ddLogLevel;
     [dc addObserver:self forKeyPath:@"values.makecatalogsPath" options:NSKeyValueObservingOptionNew context:NULL];
     
     // Select a repository
-    if ([self.defaults integerForKey:@"startupWhatToDo"] == 1) {
+    if ([userDefaults integerForKey:@"startupWhatToDo"] == 1) {
         NSURL *tempURL = [self chooseRepositoryFolder];
         if (tempURL != nil) {
             [self selectRepoAtURL:tempURL];
@@ -928,7 +938,7 @@ DDLogLevel ddLogLevel;
     }
     
     // Open previous repository
-    else if ([self.defaults integerForKey:@"startupWhatToDo"] == 2) {
+    else if ([userDefaults integerForKey:@"startupWhatToDo"] == 2) {
         
         /*
          Dirty hack to resolve "Cannot perform operation without a managed object context" exceptions.
@@ -937,14 +947,14 @@ DDLogLevel ddLogLevel;
          TODO: Shouldn't need to delay repo selection on startup
          */
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSURL *tempURL = [self.defaults URLForKey:@"selectedRepositoryPath"];
+            NSURL *tempURL = [[NSUserDefaults standardUserDefaults] URLForKey:@"selectedRepositoryPath"];
             if (tempURL != nil) {
                 [self selectRepoAtURL:tempURL];
             }
         });
     }
     // Do nothing
-    else if ([self.defaults integerForKey:@"startupWhatToDo"] == 0) {
+    else if ([userDefaults integerForKey:@"startupWhatToDo"] == 0) {
         
     }
 	
