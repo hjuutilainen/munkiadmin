@@ -6,6 +6,7 @@
 extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *hasEmptyBlockingApplications;
 	__unsafe_unretained NSString *hasUnstagedChanges;
+	__unsafe_unretained NSString *munki_OnDemand;
 	__unsafe_unretained NSString *munki_PayloadIdentifier;
 	__unsafe_unretained NSString *munki_RestartAction;
 	__unsafe_unretained NSString *munki_autoremove;
@@ -129,6 +130,14 @@ extern const struct PackageMORelationships {
 - (void)setHasUnstagedChangesValue:(BOOL)value_;
 
 //- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* munki_OnDemand;
+
+@property (atomic) BOOL munki_OnDemandValue;
+- (BOOL)munki_OnDemandValue;
+- (void)setMunki_OnDemandValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_OnDemand:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* munki_PayloadIdentifier;
 
@@ -553,6 +562,12 @@ extern const struct PackageMORelationships {
 
 - (BOOL)primitiveHasUnstagedChangesValue;
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
+
+- (NSNumber*)primitiveMunki_OnDemand;
+- (void)setPrimitiveMunki_OnDemand:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_OnDemandValue;
+- (void)setPrimitiveMunki_OnDemandValue:(BOOL)value_;
 
 - (NSString*)primitiveMunki_PayloadIdentifier;
 - (void)setPrimitiveMunki_PayloadIdentifier:(NSString*)value;

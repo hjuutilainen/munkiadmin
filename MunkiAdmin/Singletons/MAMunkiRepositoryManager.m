@@ -2508,6 +2508,7 @@ static dispatch_queue_t serialQueue;
                 @"minimum_munki_version",
                 @"minimum_os_version",
                 @"notes",
+                @"OnDemand",
                 @"package_path",
                 @"preinstall_script",
                 @"preuninstall_script",

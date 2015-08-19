@@ -232,6 +232,13 @@
                     [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
+            else if ([key isEqualToString:@"munki_OnDemand"]) {
+                if (self.munki_OnDemandValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
             
             // =====================================================
             // For everything else just write the values as they are

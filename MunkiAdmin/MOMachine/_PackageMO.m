@@ -6,6 +6,7 @@
 const struct PackageMOAttributes PackageMOAttributes = {
 	.hasEmptyBlockingApplications = @"hasEmptyBlockingApplications",
 	.hasUnstagedChanges = @"hasUnstagedChanges",
+	.munki_OnDemand = @"munki_OnDemand",
 	.munki_PayloadIdentifier = @"munki_PayloadIdentifier",
 	.munki_RestartAction = @"munki_RestartAction",
 	.munki_autoremove = @"munki_autoremove",
@@ -114,6 +115,11 @@ const struct PackageMORelationships PackageMORelationships = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"munki_OnDemandValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_OnDemand"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"munki_autoremoveValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_autoremove"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -201,6 +207,26 @@ const struct PackageMORelationships PackageMORelationships = {
 
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
 	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+}
+
+@dynamic munki_OnDemand;
+
+- (BOOL)munki_OnDemandValue {
+	NSNumber *result = [self munki_OnDemand];
+	return [result boolValue];
+}
+
+- (void)setMunki_OnDemandValue:(BOOL)value_ {
+	[self setMunki_OnDemand:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_OnDemandValue {
+	NSNumber *result = [self primitiveMunki_OnDemand];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_OnDemandValue:(BOOL)value_ {
+	[self setPrimitiveMunki_OnDemand:[NSNumber numberWithBool:value_]];
 }
 
 @dynamic munki_PayloadIdentifier;
