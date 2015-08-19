@@ -897,7 +897,7 @@ DDLogLevel ddLogLevel;
         DDLogVerbose(@"User has not been asked about analytics. Presenting dialog...");
         NSAlert *askAnalyticsPermission = [[NSAlert alloc] init];
         askAnalyticsPermission.messageText = @"Send anonymous system profile?";
-        askAnalyticsPermission.informativeText = @"MunkiAdmin uses DevMate and includes the option to send anonymous system profile every time the app is launched. The information sent to DevMate is not personally identifiable and does not include any information about your munki repository.\n\nDetails included in the profile:\n• MunkiAdmin version\n• OS X version and locale\n• CPU and GPU models\n• Machine model\n• The amount of RAM and free disk space\n\n";
+        askAnalyticsPermission.informativeText = @"MunkiAdmin uses DevMate and includes the option to send anonymous system profile every time the app is launched. The information sent to DevMate is not personally identifiable and does not include any information about your munki repository.\n\nDetails included in the profile:\n• MunkiAdmin version\n• OS X version and language\n• CPU and GPU models\n• Machine model\n• The amount of RAM and free disk space\n\n";
         [askAnalyticsPermission addButtonWithTitle:@"Send"];
         [askAnalyticsPermission addButtonWithTitle:@"Don't Send"];
         NSInteger result = [askAnalyticsPermission runModal];
