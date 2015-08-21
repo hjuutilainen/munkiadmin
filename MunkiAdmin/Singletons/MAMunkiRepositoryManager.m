@@ -2357,6 +2357,30 @@ static dispatch_queue_t serialQueue;
     if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:atomicWrites]) {
         aPackage.originalPkginfo = plist;
         
+        /*
+         Check if we have custom permissions
+         */
+        NSString *customPermissions = [defaults stringForKey:@"pkginfoFilePermissions"];
+        if (customPermissions) {
+            DDLogDebug(@"%@: Setting custom permissions...", filename);
+            /*
+             Based on <http://stackoverflow.com/a/1181715>
+             
+             For example, turn a @"0644" string to 420
+            */
+            unsigned long permsUnsignedLong = strtoul([customPermissions UTF8String], NULL, 0);
+            
+            NSDictionary *attributes = @{NSFilePosixPermissions: @(permsUnsignedLong)};
+            NSString *filepath = [aPackage.packageInfoURL path];
+            NSError *permissionError = nil;
+            if (![[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:filepath error:&permissionError]) {
+                DDLogError(@"%@", permissionError);
+            }
+        }
+        
+        /*
+         Run post-save script
+         */
         if (self.repositoryHasPkginfoPostSaveScript) {
             DDLogDebug(@"%@: Running post-save script...", filename);
             MAScriptRunner *postSave = [self postSaveScriptForPackage:aPackage];
