@@ -2319,11 +2319,17 @@ static dispatch_queue_t serialQueue;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *filename = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
     
+    /*
+     Create a backup
+     */
     if ([defaults boolForKey:@"backupPkginfosBeforeWriting"]) {
         DDLogDebug(@"%@: Backing up...", filename);
         [self backupPackage:aPackage];
     }
     
+    /*
+     Run pre-save script
+     */
     if (self.repositoryHasPkginfoPreSaveScript) {
         DDLogDebug(@"%@: Running pre-save script...", filename);
         MAScriptRunner *preSave = [self preSaveScriptForPackage:aPackage];
@@ -2351,6 +2357,9 @@ static dispatch_queue_t serialQueue;
         }
     }
     
+    /*
+     Write the file
+     */
     DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
     BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
     DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
@@ -2363,18 +2372,8 @@ static dispatch_queue_t serialQueue;
         NSString *customPermissions = [defaults stringForKey:@"pkginfoFilePermissions"];
         if (customPermissions) {
             DDLogDebug(@"%@: Setting custom permissions...", filename);
-            /*
-             Based on <http://stackoverflow.com/a/1181715>
-             
-             For example, turn a @"0644" string to 420
-            */
-            unsigned long permsUnsignedLong = strtoul([customPermissions UTF8String], NULL, 0);
-            
-            NSDictionary *attributes = @{NSFilePosixPermissions: @(permsUnsignedLong)};
-            NSString *filepath = [aPackage.packageInfoURL path];
-            NSError *permissionError = nil;
-            if (![[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:filepath error:&permissionError]) {
-                DDLogError(@"%@", permissionError);
+            if (![self setPermissions:customPermissions forURL:aPackage.packageInfoURL]) {
+                DDLogError(@"%@: Failed to set permissions", filename);
             }
         }
         
@@ -2408,11 +2407,17 @@ static dispatch_queue_t serialQueue;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *filename = [(NSURL *)aManifest.manifestURL lastPathComponent];
     
+    /*
+     Create a backup
+     */
     if ([defaults boolForKey:@"backupManifestsBeforeWriting"]) {
         DDLogDebug(@"%@: Backing up...", filename);
         [self backupManifest:aManifest];
     }
     
+    /*
+     Run pre-save script
+     */
     if (self.repositoryHasManifestPreSaveScript) {
         DDLogDebug(@"%@: Running pre-save script...", filename);
         MAScriptRunner *preSave = [self preSaveScriptForManifest:aManifest];
@@ -2438,12 +2443,29 @@ static dispatch_queue_t serialQueue;
         }
     }
     
+    /*
+     Write the file
+     */
     DDLogDebug(@"%@: Writing new manifest to disk...", filename);
     BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
     DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
     if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:atomicWrites]) {
         aManifest.originalManifest = plist;
         
+        /*
+         Check if we have custom permissions
+         */
+        NSString *customPermissions = [defaults stringForKey:@"manifestFilePermissions"];
+        if (customPermissions) {
+            DDLogDebug(@"%@: Setting custom permissions...", filename);
+            if (![self setPermissions:customPermissions forURL:(NSURL *)aManifest.manifestURL]) {
+                DDLogError(@"%@: Failed to set permissions", filename);
+            }
+        }
+        
+        /*
+         Run post-save script
+         */
         if (self.repositoryHasManifestPostSaveScript) {
             DDLogDebug(@"%@: Running post-save script...", filename);
             MAScriptRunner *postSave = [self postSaveScriptForManifest:aManifest];
@@ -2795,6 +2817,30 @@ static dispatch_queue_t serialQueue;
 	[fetchRequest setEntity:entityDescr];
 	NSArray *fetchResults = [[self appDelegateMoc] executeFetchRequest:fetchRequest error:nil];
 	return fetchResults;
+}
+
+
+- (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url
+{
+    if (octalAsString) {
+        /*
+         Based on <http://stackoverflow.com/a/1181715>
+         
+         For example, turn a @"0644" string to 420
+         */
+        unsigned long permsUnsignedLong = strtoul([octalAsString UTF8String], NULL, 0);
+        
+        NSDictionary *attributes = @{NSFilePosixPermissions: @(permsUnsignedLong)};
+        NSString *filepath = [url path];
+        NSError *permissionError = nil;
+        if (![[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:filepath error:&permissionError]) {
+            DDLogError(@"%@", permissionError);
+            return NO;
+        } else {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 

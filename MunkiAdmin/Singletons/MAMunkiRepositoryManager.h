@@ -97,5 +97,6 @@
 - (void)updateMunkiVersions;
 - (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error;
 - (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL;
+- (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url;
 
 @end
