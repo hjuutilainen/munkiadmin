@@ -656,6 +656,14 @@ DDLogLevel ddLogLevel;
     configurationProfilesSmartItem.originalIndexValue = 50;
     configurationProfilesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"profile"];
     
+    InstallerTypeSourceListItemMO *onDemandSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
+    onDemandSmartItem.title = @"On Demand";
+    onDemandSmartItem.icon = smartIcon;
+    onDemandSmartItem.itemType = @"smart";
+    onDemandSmartItem.parent = mainTypesItem;
+    onDemandSmartItem.originalIndexValue = 51;
+    onDemandSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_OnDemand == %@", @(YES)];
+    
     InstallerTypeSourceListItemMO *adobeSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     adobeSmartItem.title = @"Adobe Installer";
     adobeSmartItem.icon = smartIcon;
