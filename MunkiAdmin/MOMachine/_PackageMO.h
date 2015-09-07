@@ -33,7 +33,17 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *munki_package_path;
 	__unsafe_unretained NSString *munki_postinstall_script;
 	__unsafe_unretained NSString *munki_postuninstall_script;
+	__unsafe_unretained NSString *munki_preinstall_alert_alert_detail;
+	__unsafe_unretained NSString *munki_preinstall_alert_alert_title;
+	__unsafe_unretained NSString *munki_preinstall_alert_cancel_label;
+	__unsafe_unretained NSString *munki_preinstall_alert_enabled;
+	__unsafe_unretained NSString *munki_preinstall_alert_ok_label;
 	__unsafe_unretained NSString *munki_preinstall_script;
+	__unsafe_unretained NSString *munki_preuninstall_alert_alert_detail;
+	__unsafe_unretained NSString *munki_preuninstall_alert_alert_title;
+	__unsafe_unretained NSString *munki_preuninstall_alert_cancel_label;
+	__unsafe_unretained NSString *munki_preuninstall_alert_enabled;
+	__unsafe_unretained NSString *munki_preuninstall_alert_ok_label;
 	__unsafe_unretained NSString *munki_preuninstall_script;
 	__unsafe_unretained NSString *munki_receipts;
 	__unsafe_unretained NSString *munki_suppress_bundle_relocation;
@@ -263,9 +273,57 @@ extern const struct PackageMORelationships {
 
 //- (BOOL)validateMunki_postuninstall_script:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* munki_preinstall_alert_alert_detail;
+
+//- (BOOL)validateMunki_preinstall_alert_alert_detail:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preinstall_alert_alert_title;
+
+//- (BOOL)validateMunki_preinstall_alert_alert_title:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preinstall_alert_cancel_label;
+
+//- (BOOL)validateMunki_preinstall_alert_cancel_label:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* munki_preinstall_alert_enabled;
+
+@property (atomic) BOOL munki_preinstall_alert_enabledValue;
+- (BOOL)munki_preinstall_alert_enabledValue;
+- (void)setMunki_preinstall_alert_enabledValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_preinstall_alert_enabled:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preinstall_alert_ok_label;
+
+//- (BOOL)validateMunki_preinstall_alert_ok_label:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* munki_preinstall_script;
 
 //- (BOOL)validateMunki_preinstall_script:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preuninstall_alert_alert_detail;
+
+//- (BOOL)validateMunki_preuninstall_alert_alert_detail:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preuninstall_alert_alert_title;
+
+//- (BOOL)validateMunki_preuninstall_alert_alert_title:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preuninstall_alert_cancel_label;
+
+//- (BOOL)validateMunki_preuninstall_alert_cancel_label:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* munki_preuninstall_alert_enabled;
+
+@property (atomic) BOOL munki_preuninstall_alert_enabledValue;
+- (BOOL)munki_preuninstall_alert_enabledValue;
+- (void)setMunki_preuninstall_alert_enabledValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_preuninstall_alert_enabled:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* munki_preuninstall_alert_ok_label;
+
+//- (BOOL)validateMunki_preuninstall_alert_ok_label:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* munki_preuninstall_script;
 
@@ -662,8 +720,44 @@ extern const struct PackageMORelationships {
 - (NSString*)primitiveMunki_postuninstall_script;
 - (void)setPrimitiveMunki_postuninstall_script:(NSString*)value;
 
+- (NSString*)primitiveMunki_preinstall_alert_alert_detail;
+- (void)setPrimitiveMunki_preinstall_alert_alert_detail:(NSString*)value;
+
+- (NSString*)primitiveMunki_preinstall_alert_alert_title;
+- (void)setPrimitiveMunki_preinstall_alert_alert_title:(NSString*)value;
+
+- (NSString*)primitiveMunki_preinstall_alert_cancel_label;
+- (void)setPrimitiveMunki_preinstall_alert_cancel_label:(NSString*)value;
+
+- (NSNumber*)primitiveMunki_preinstall_alert_enabled;
+- (void)setPrimitiveMunki_preinstall_alert_enabled:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_preinstall_alert_enabledValue;
+- (void)setPrimitiveMunki_preinstall_alert_enabledValue:(BOOL)value_;
+
+- (NSString*)primitiveMunki_preinstall_alert_ok_label;
+- (void)setPrimitiveMunki_preinstall_alert_ok_label:(NSString*)value;
+
 - (NSString*)primitiveMunki_preinstall_script;
 - (void)setPrimitiveMunki_preinstall_script:(NSString*)value;
+
+- (NSString*)primitiveMunki_preuninstall_alert_alert_detail;
+- (void)setPrimitiveMunki_preuninstall_alert_alert_detail:(NSString*)value;
+
+- (NSString*)primitiveMunki_preuninstall_alert_alert_title;
+- (void)setPrimitiveMunki_preuninstall_alert_alert_title:(NSString*)value;
+
+- (NSString*)primitiveMunki_preuninstall_alert_cancel_label;
+- (void)setPrimitiveMunki_preuninstall_alert_cancel_label:(NSString*)value;
+
+- (NSNumber*)primitiveMunki_preuninstall_alert_enabled;
+- (void)setPrimitiveMunki_preuninstall_alert_enabled:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_preuninstall_alert_enabledValue;
+- (void)setPrimitiveMunki_preuninstall_alert_enabledValue:(BOOL)value_;
+
+- (NSString*)primitiveMunki_preuninstall_alert_ok_label;
+- (void)setPrimitiveMunki_preuninstall_alert_ok_label:(NSString*)value;
 
 - (NSString*)primitiveMunki_preuninstall_script;
 - (void)setPrimitiveMunki_preuninstall_script:(NSString*)value;

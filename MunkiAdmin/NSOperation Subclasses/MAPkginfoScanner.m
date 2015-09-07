@@ -438,6 +438,66 @@ DDLogLevel ddLogLevel;
 					[aNewPackage addInstallerEnvironmentVariablesObject:newInstallerEnvironmentVariable];
                 }];
                 
+                /*
+                 Get the "preinstall_alert" item
+                 */
+                NSDictionary *preinstallAlert = [self.sourceDict objectForKey:@"preinstall_alert"];
+                if (preinstallAlert) {
+                    DDLogVerbose(@"%@: Found preinstall_alert", self.fileName);
+                    aNewPackage.munki_preinstall_alert_enabledValue = YES;
+                    
+                    NSString *alertTitle = [preinstallAlert objectForKey:@"alert_title"];
+                    if (alertTitle) {
+                        DDLogVerbose(@"%@: preinstall_alert alert_title: %@", self.fileName, alertTitle);
+                        aNewPackage.munki_preinstall_alert_alert_title = alertTitle;
+                    }
+                    NSString *alertDetail = [preinstallAlert objectForKey:@"alert_detail"];
+                    if (alertDetail) {
+                        DDLogVerbose(@"%@: preinstall_alert alert_detail: %@", self.fileName, alertDetail);
+                        aNewPackage.munki_preinstall_alert_alert_detail = alertDetail;
+                    }
+                    NSString *okLabel = [preinstallAlert objectForKey:@"ok_label"];
+                    if (okLabel) {
+                        DDLogVerbose(@"%@: preinstall_alert ok_label: %@", self.fileName, okLabel);
+                        aNewPackage.munki_preinstall_alert_ok_label = okLabel;
+                    }
+                    NSString *cancelLabel = [preinstallAlert objectForKey:@"cancel_label"];
+                    if (cancelLabel) {
+                        DDLogVerbose(@"%@: preinstall_alert cancel_label: %@", self.fileName, cancelLabel);
+                        aNewPackage.munki_preinstall_alert_cancel_label = cancelLabel;
+                    }
+                }
+                
+                /*
+                 Get the "preuninstall_alert" item
+                 */
+                NSDictionary *preuninstallAlert = [self.sourceDict objectForKey:@"preuninstall_alert"];
+                if (preuninstallAlert) {
+                    DDLogVerbose(@"%@: Found preuninstall_alert", self.fileName);
+                    aNewPackage.munki_preuninstall_alert_enabledValue = YES;
+                    
+                    NSString *alertTitle = [preuninstallAlert objectForKey:@"alert_title"];
+                    if (alertTitle) {
+                        DDLogVerbose(@"%@: preuninstall_alert alert_title: %@", self.fileName, alertTitle);
+                        aNewPackage.munki_preuninstall_alert_alert_title = alertTitle;
+                    }
+                    NSString *alertDetail = [preuninstallAlert objectForKey:@"alert_detail"];
+                    if (alertDetail) {
+                        DDLogVerbose(@"%@: preuninstall_alert alert_detail: %@", self.fileName, alertDetail);
+                        aNewPackage.munki_preuninstall_alert_alert_detail = alertDetail;
+                    }
+                    NSString *okLabel = [preuninstallAlert objectForKey:@"ok_label"];
+                    if (okLabel) {
+                        DDLogVerbose(@"%@: preuninstall_alert ok_label: %@", self.fileName, okLabel);
+                        aNewPackage.munki_preuninstall_alert_ok_label = okLabel;
+                    }
+                    NSString *cancelLabel = [preuninstallAlert objectForKey:@"cancel_label"];
+                    if (cancelLabel) {
+                        DDLogVerbose(@"%@: preuninstall_alert cancel_label: %@", self.fileName, cancelLabel);
+                        aNewPackage.munki_preuninstall_alert_cancel_label = cancelLabel;
+                    }
+                }
+                
 				// =====================================
 				// Assimilate with existing
 				// This is done only when adding new items to repo

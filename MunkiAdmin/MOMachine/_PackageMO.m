@@ -33,7 +33,17 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_package_path = @"munki_package_path",
 	.munki_postinstall_script = @"munki_postinstall_script",
 	.munki_postuninstall_script = @"munki_postuninstall_script",
+	.munki_preinstall_alert_alert_detail = @"munki_preinstall_alert_alert_detail",
+	.munki_preinstall_alert_alert_title = @"munki_preinstall_alert_alert_title",
+	.munki_preinstall_alert_cancel_label = @"munki_preinstall_alert_cancel_label",
+	.munki_preinstall_alert_enabled = @"munki_preinstall_alert_enabled",
+	.munki_preinstall_alert_ok_label = @"munki_preinstall_alert_ok_label",
 	.munki_preinstall_script = @"munki_preinstall_script",
+	.munki_preuninstall_alert_alert_detail = @"munki_preuninstall_alert_alert_detail",
+	.munki_preuninstall_alert_alert_title = @"munki_preuninstall_alert_alert_title",
+	.munki_preuninstall_alert_cancel_label = @"munki_preuninstall_alert_cancel_label",
+	.munki_preuninstall_alert_enabled = @"munki_preuninstall_alert_enabled",
+	.munki_preuninstall_alert_ok_label = @"munki_preuninstall_alert_ok_label",
 	.munki_preuninstall_script = @"munki_preuninstall_script",
 	.munki_receipts = @"munki_receipts",
 	.munki_suppress_bundle_relocation = @"munki_suppress_bundle_relocation",
@@ -142,6 +152,16 @@ const struct PackageMORelationships PackageMORelationships = {
 	}
 	if ([key isEqualToString:@"munki_installer_item_sizeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_installer_item_size"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"munki_preinstall_alert_enabledValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_preinstall_alert_enabled"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"munki_preuninstall_alert_enabledValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_preuninstall_alert_enabled"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -371,7 +391,63 @@ const struct PackageMORelationships PackageMORelationships = {
 
 @dynamic munki_postuninstall_script;
 
+@dynamic munki_preinstall_alert_alert_detail;
+
+@dynamic munki_preinstall_alert_alert_title;
+
+@dynamic munki_preinstall_alert_cancel_label;
+
+@dynamic munki_preinstall_alert_enabled;
+
+- (BOOL)munki_preinstall_alert_enabledValue {
+	NSNumber *result = [self munki_preinstall_alert_enabled];
+	return [result boolValue];
+}
+
+- (void)setMunki_preinstall_alert_enabledValue:(BOOL)value_ {
+	[self setMunki_preinstall_alert_enabled:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_preinstall_alert_enabledValue {
+	NSNumber *result = [self primitiveMunki_preinstall_alert_enabled];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_preinstall_alert_enabledValue:(BOOL)value_ {
+	[self setPrimitiveMunki_preinstall_alert_enabled:[NSNumber numberWithBool:value_]];
+}
+
+@dynamic munki_preinstall_alert_ok_label;
+
 @dynamic munki_preinstall_script;
+
+@dynamic munki_preuninstall_alert_alert_detail;
+
+@dynamic munki_preuninstall_alert_alert_title;
+
+@dynamic munki_preuninstall_alert_cancel_label;
+
+@dynamic munki_preuninstall_alert_enabled;
+
+- (BOOL)munki_preuninstall_alert_enabledValue {
+	NSNumber *result = [self munki_preuninstall_alert_enabled];
+	return [result boolValue];
+}
+
+- (void)setMunki_preuninstall_alert_enabledValue:(BOOL)value_ {
+	[self setMunki_preuninstall_alert_enabled:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_preuninstall_alert_enabledValue {
+	NSNumber *result = [self primitiveMunki_preuninstall_alert_enabled];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_preuninstall_alert_enabledValue:(BOOL)value_ {
+	[self setPrimitiveMunki_preuninstall_alert_enabled:[NSNumber numberWithBool:value_]];
+}
+
+@dynamic munki_preuninstall_alert_ok_label;
 
 @dynamic munki_preuninstall_script;
 

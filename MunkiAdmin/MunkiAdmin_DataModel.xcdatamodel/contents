@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8175.2" systemVersion="15A244d" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -207,7 +207,17 @@
         <attribute name="munki_PayloadIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postinstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postuninstall_script" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_alert_detail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_alert_title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_cancel_label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_ok_label" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_script" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_alert_detail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_alert_title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_cancel_label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_ok_label" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preuninstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_receipts" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_RestartAction" optional="YES" attributeType="String" syncable="YES"/>
@@ -332,7 +342,7 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="524"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1095"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1245"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>

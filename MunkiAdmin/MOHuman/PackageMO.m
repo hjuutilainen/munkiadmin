@@ -265,6 +265,46 @@
     if (self.developer != nil) {
         [tmpDict setValue:self.developer.title forKey:@"developer"];
     }
+    
+    /*
+     Preinstall alert
+     */
+    if (self.munki_preinstall_alert_enabledValue) {
+        NSMutableDictionary *preinstallAlert = [NSMutableDictionary new];
+        if (self.munki_preinstall_alert_alert_title && ![self.munki_preinstall_alert_alert_title isEqualToString:@""]) {
+            preinstallAlert[@"alert_title"] = self.munki_preinstall_alert_alert_title;
+        }
+        if (self.munki_preinstall_alert_alert_detail && ![self.munki_preinstall_alert_alert_detail isEqualToString:@""]) {
+            preinstallAlert[@"alert_detail"] = self.munki_preinstall_alert_alert_detail;
+        }
+        if (self.munki_preinstall_alert_ok_label && ![self.munki_preinstall_alert_ok_label isEqualToString:@""]) {
+            preinstallAlert[@"ok_label"] = self.munki_preinstall_alert_ok_label;
+        }
+        if (self.munki_preinstall_alert_cancel_label && ![self.munki_preinstall_alert_cancel_label isEqualToString:@""]) {
+            preinstallAlert[@"cancel_label"] = self.munki_preinstall_alert_cancel_label;
+        }
+        [tmpDict setValue:preinstallAlert forKey:@"preinstall_alert"];
+    }
+    
+    /*
+     Preuninstall alert
+     */
+    if (self.munki_preuninstall_alert_enabledValue) {
+        NSMutableDictionary *preuninstallAlert = [NSMutableDictionary new];
+        if (self.munki_preuninstall_alert_alert_title && ![self.munki_preuninstall_alert_alert_title isEqualToString:@""]) {
+            preuninstallAlert[@"alert_title"] = self.munki_preuninstall_alert_alert_title;
+        }
+        if (self.munki_preuninstall_alert_alert_detail && ![self.munki_preuninstall_alert_alert_detail isEqualToString:@""]) {
+            preuninstallAlert[@"alert_detail"] = self.munki_preuninstall_alert_alert_detail;
+        }
+        if (self.munki_preuninstall_alert_ok_label && ![self.munki_preuninstall_alert_ok_label isEqualToString:@""]) {
+            preuninstallAlert[@"ok_label"] = self.munki_preuninstall_alert_ok_label;
+        }
+        if (self.munki_preuninstall_alert_cancel_label && ![self.munki_preuninstall_alert_cancel_label isEqualToString:@""]) {
+            preuninstallAlert[@"cancel_label"] = self.munki_preuninstall_alert_cancel_label;
+        }
+        [tmpDict setValue:preuninstallAlert forKey:@"preuninstall_alert"];
+    }
 	
 	
 	// ==========
