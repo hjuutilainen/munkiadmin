@@ -18,6 +18,93 @@
     return [wp iconForFile:self.munki_path];
 }
 
+- (BOOL)validateForUpdate:(NSError **)error
+{
+    BOOL propertiesValid = [super validateForUpdate:error];
+    // could stop here if invalid
+    BOOL consistencyValid = [self validateConsistency:error];
+    return (propertiesValid && consistencyValid);
+}
+
+- (BOOL)validateConsistency:(NSError **)error
+{
+    BOOL valid = YES;
+    
+    NSString *currentType = self.munki_type;
+    
+    if (!currentType || [currentType isEqualToString:@""]) {
+        valid = NO;
+    } else {
+        NSArray *supportedTypes = @[@"application", @"bundle", @"file", @"plist"];
+        if ([supportedTypes containsObject:currentType]) {
+            /*
+             Every known installs item type must also have a path
+             */
+            if (self.munki_path == nil) {
+                valid = NO;
+                if (error != NULL) {
+                    
+                    NSString *errorReason = [NSString stringWithFormat:@"Installs item type \"%@\" requires a path.", currentType];
+                    
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                    [userInfo setObject:errorReason forKey:NSLocalizedFailureReasonErrorKey];
+                    [userInfo setObject:self forKey:NSValidationObjectErrorKey];
+                    
+                    NSError *missingPathError = [NSError errorWithDomain:@"MunkiAdminInstallsItemDomain"
+                                                                   code:NSManagedObjectValidationError
+                                                               userInfo:userInfo];
+                    if (*error == nil) {
+                        *error = missingPathError;
+                    } else {
+                        *error = [self errorFromOriginalError:*error error:missingPathError];
+                    }
+                }
+            }
+        }
+    }
+    return valid;
+}
+
+- (NSError *)errorFromOriginalError:(NSError *)originalError error:(NSError *)secondError
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    NSMutableArray *errors = [NSMutableArray arrayWithObject:secondError];
+    
+    if ([originalError code] == NSValidationMultipleErrorsError) {
+        
+        [userInfo addEntriesFromDictionary:[originalError userInfo]];
+        [errors addObjectsFromArray:[userInfo objectForKey:NSDetailedErrorsKey]];
+    }
+    else {
+        [errors addObject:originalError];
+    }
+    
+    [userInfo setObject:errors forKey:NSDetailedErrorsKey];
+    
+    return [NSError errorWithDomain:NSCocoaErrorDomain
+                               code:NSValidationMultipleErrorsError
+                           userInfo:userInfo];
+}
+
+- (BOOL)validateMunki_type:(id *)typeString error:(NSError **)outError
+{
+    if (*typeString == nil) {
+        if (outError != NULL) {
+            NSString *errorReason = @"Installs item type is a required value.";
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+            [userInfo setObject:errorReason forKey:NSLocalizedFailureReasonErrorKey];
+            [userInfo setObject:self forKey:NSValidationObjectErrorKey];
+            
+            NSError *error = [NSError errorWithDomain:@"MunkiAdminInstallsItemDomain"
+                                                 code:NSManagedObjectValidationError
+                                             userInfo:userInfo];
+            *outError = error;
+        }
+        return NO;
+    }
+    return YES;
+}
+
 - (NSDictionary *)currentDictValue
 {
     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionaryWithCapacity:9];

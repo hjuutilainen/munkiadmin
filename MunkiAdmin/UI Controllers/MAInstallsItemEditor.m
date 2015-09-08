@@ -87,12 +87,17 @@
 
 - (IBAction)okAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-        [self.window orderOut:sender];
+    NSError *validateError = nil;
+    if (![self.itemToEdit validateForUpdate:&validateError]) {
+        [NSApp presentError:validateError];
     } else {
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSOKButton];
+        if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
+            [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+            [self.window orderOut:sender];
+        } else {
+            [self.window orderOut:sender];
+            [NSApp endSheet:self.window returnCode:NSOKButton];
+        }
     }
 }
 

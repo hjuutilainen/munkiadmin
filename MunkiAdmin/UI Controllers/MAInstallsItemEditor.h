@@ -28,7 +28,7 @@
 @property (weak) IBOutlet NSTableView *customItemsTableView;
 @property (weak) IBOutlet NSArrayController *customItemsArrayController;
 @property (weak) IBOutlet NSTextField *textFieldPath;
-@property (weak) IBOutlet NSTextField *textFieldType;
+@property (weak) IBOutlet NSComboBox *typeComboBox;
 @property (weak) IBOutlet NSTextField *textFieldCFBundleIdentifier;
 @property (weak) IBOutlet NSTextField *textFieldCFBundleName;
 @property (weak) IBOutlet NSTextField *textFieldCFBundleShortVersionString;
