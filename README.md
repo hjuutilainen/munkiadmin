@@ -52,6 +52,7 @@ Please let me know if you are testing, using or just planning to use MunkiAdmin 
     * [Jonatan Castro Fernández](http://www.midtonedesign.com)
     * Jonas Rask Design
     * Matt Ball Design
+    * Mika Viikki
 
 # License
 
