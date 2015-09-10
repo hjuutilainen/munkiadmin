@@ -5,8 +5,8 @@
 //  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
 //
 
-#ifndef __DevMateActivations__DMTrial__
-#define __DevMateActivations__DMTrial__
+#ifndef DevMateActivations__DMTrial_h
+#define DevMateActivations__DMTrial_h
 
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -44,9 +44,9 @@ typedef CF_ENUM(CFIndex, DMTrialArea)
 typedef CFIndex (^DMTrialGetEndValueBlock)(void *context);
 
 /*! @brief Callback block for changing current trial value.
-    @param currentTialValue Trial value that is currently saved for application.
-    @param changeValue      Value from \p DMTrialChangeValue function call.
-    @param context          Parameter from \p DMTrialCallbacks structure.
+    @param currentTrialValue    Trial value that is currently saved for application.
+    @param changeValue          Value from \p DMTrialChangeValue function call.
+    @param context              Parameter from \p DMTrialCallbacks structure.
     @return New changed trial value that should be saved for application.
  */
 typedef CFIndex (^DMTrialChangeValueBlock)(CFIndex currentTrialValue, CFIndex changeValue, void *context);
@@ -193,4 +193,4 @@ CF_EXPORT Boolean DMTimeTrialInitializeTrial(CFStringRef timeTrialId, DMTrialAre
 
 CF_EXTERN_C_END
 
-#endif // __DevMateActivations__DMTrial__
+#endif // DevMateActivations__DMTrial_h

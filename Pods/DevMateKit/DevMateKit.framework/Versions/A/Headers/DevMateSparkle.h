@@ -19,19 +19,21 @@
 #define SUUpdaterQueue                          DM_SUUpdaterQueue
 #define SUAppcast                               DM_SUAppcast
 #define SUAppcastItem                           DM_SUAppcastItem
-#define SUAppcastDelegate                       DM_SUAppcastDelegate
+#define SUUpdaterDelegate                       DM_SUUpdaterDelegate
 #define SUUpdaterDelegate_DevMateInteraction    DM_SUUpdaterDelegate_DevMateInteraction
-#define SUUpdaterDelegateInformalProtocol       DM_SUUpdaterDelegateInformalProtocol
 #define SUVersionComparison                     DM_SUVersionComparison
+#define SUStandardVersionComparator             DM_SUStandardVersionComparator
 #define SUVersionDisplay                        DM_SUVersionDisplay
 
+#import <DevMateKit/SUExport.h>
 #import <DevMateKit/SUUpdater.h>
 #import <DevMateKit/SUUpdaterQueue.h>
-
 #import <DevMateKit/SUAppcast.h>
 #import <DevMateKit/SUAppcastItem.h>
 #import <DevMateKit/SUVersionComparisonProtocol.h>
+#import <DevMateKit/SUStandardVersionComparator.h>
 #import <DevMateKit/SUVersionDisplayProtocol.h>
+#import <DevMateKit/SUErrors.h>
 
 #endif // USED_CUSTOM_SPARKLE_FRAMEWORK
 

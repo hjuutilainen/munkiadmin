@@ -18,7 +18,7 @@
 - (IBAction)continueActivation:(id)sender;
 - (IBAction)cancelActivation:(id)sender;
 
-//! By default action will open http://hello.devmate.com/gostore/... webpage
+//! By default action will open https://devmate.io/gostore/... webpage
 - (IBAction)openWebStore:(id)sender;
 
 //! Will open embedded FastSpring store if delegate implements necessary methods or just call -openWebStore: method

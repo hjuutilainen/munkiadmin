@@ -6,14 +6,19 @@
 //
 //
 
+#import <Foundation/Foundation.h>
+#import "SUExport.h"
+
 @class SUUpdater;
 
-@interface SUUpdaterQueue : NSObject
+SU_EXPORT @interface SUUpdaterQueue : NSObject
 
 - (void)addUpdater:(SUUpdater *)updater;
 - (void)removeUpdater:(SUUpdater *)updater;
 
 - (void)checkForUpdates;
 - (void)checkForUpdatesInBackground;
+
+@property (readonly) BOOL updateInProgress;
 
 @end

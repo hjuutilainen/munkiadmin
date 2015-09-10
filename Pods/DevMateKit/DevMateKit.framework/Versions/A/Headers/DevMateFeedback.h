@@ -8,3 +8,4 @@
 #import <Cocoa/Cocoa.h>
 #import <DevMateKit/DMDefines.h>
 #import <DevMateKit/DMFeedbackController.h>
+#import <DevMateKit/DMFeedbackConnector.h>

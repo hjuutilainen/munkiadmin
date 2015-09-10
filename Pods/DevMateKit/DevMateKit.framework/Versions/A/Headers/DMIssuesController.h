@@ -59,6 +59,9 @@
 
 @end
 
+//! Correctly handles all exceptions that can be thrown in try_block.
+FOUNDATION_EXPORT void dm_dispatch_try_block(dispatch_block_t try_block);
+
 //! Keys for defaulUserInfo dictionary
 FOUNDATION_EXPORT NSString *const DMIssuesDefaultUserNameKey; // NSString
 FOUNDATION_EXPORT NSString *const DMIssuesDefaultUserEmailKey; // NSString

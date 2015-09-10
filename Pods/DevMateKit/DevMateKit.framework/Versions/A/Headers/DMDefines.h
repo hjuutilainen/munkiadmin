@@ -5,8 +5,8 @@
 //  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
 //
 
-#ifndef __DevMateKit_DMDefines_h__
-#define __DevMateKit_DMDefines_h__
+#ifndef DevMateKit_DMDefines_h
+#define DevMateKit_DMDefines_h
 
 #include <AvailabilityMacros.h>
 
@@ -24,6 +24,10 @@
 
 #ifndef MAC_OS_X_VERSION_10_10
 #   define MAC_OS_X_VERSION_10_10 101000
+#endif
+
+#ifndef MAC_OS_X_VERSION_10_11
+#   define MAC_OS_X_VERSION_10_11 101100
 #endif
 
 #if !__has_feature(objc_instancetype) && !defined(instancetype)
@@ -46,4 +50,4 @@
 
 #define DM_DEPRECATED(_msg) DEPRECATED_MSG_ATTRIBUTE(_msg)
 
-#endif // __DevMateKit_DMDefines_h__
+#endif // DevMateKit_DMDefines_h

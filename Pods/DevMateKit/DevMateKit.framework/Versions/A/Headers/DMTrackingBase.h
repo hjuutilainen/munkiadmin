@@ -5,8 +5,8 @@
 //  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
 //
 
-#ifndef __DevMateTracking__DMTrackingBase__
-#define __DevMateTracking__DMTrackingBase__
+#ifndef DevMateTracking__DMTrackingBase_h
+#define DevMateTracking__DMTrackingBase_h
 
 #import <DevMateKit/DMDefines.h>
 #import <Foundation/NSObjCRuntime.h>
@@ -42,4 +42,4 @@ NS_INLINE DMAppTrialValue DMAppTrialValueMake(NSInteger start, NSInteger end, NS
 
 #define DMAppTrialValueMakeSimple(_end_, _current_) DMAppTrialValueMake(0, (_end_), (_current_))
 
-#endif // __DevMateTracking__DMTrackingBase__
+#endif // DevMateTracking__DMTrackingBase_h

@@ -9,31 +9,18 @@
 #ifndef SUAPPCAST_H
 #define SUAPPCAST_H
 
+#import <Foundation/Foundation.h>
+#import "SUExport.h"
+
 @class SUAppcastItem;
-@interface SUAppcast : NSObject
-{
-@private
-	NSArray *items;
-    NSMutableDictionary *appcastValues;
-	id delegate;
-	NSString *downloadFilename;
-	NSURLDownload *download;
-}
+SU_EXPORT @interface SUAppcast : NSObject<NSURLDownloadDelegate>
 
-- (void)fetchAppcastFromURL:(NSURL *)url;
-- (void)setDelegate:(id)delegate;
-- (void)setUserAgentString:(NSString *)userAgentString;
-- (void)setAppcastValue:(NSString *)value forKey:(NSString *)key;
-- (void)setAllAppcastValues:(NSDictionary *)inAppcastValues;
+@property (copy) NSString *userAgentString;
+@property (copy) NSDictionary *httpHeaders;
 
-- (NSArray *)items;
+- (void)fetchAppcastFromURL:(NSURL *)url completionBlock:(void (^)(NSError *))err;
 
-@end
-
-@interface NSObject (SUAppcastDelegate)
-- (void)appcast:(SUAppcast *)appcast willFetchURLRequest:(NSMutableURLRequest *)request;
-- (void)appcastDidFinishLoading:(SUAppcast *)appcast;
-- (void)appcast:(SUAppcast *)appcast failedToLoadWithError:(NSError *)error;
+@property (readonly, copy) NSArray *items;
 @end
 
 #endif

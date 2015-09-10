@@ -19,7 +19,10 @@
 
 #if !__has_feature(objc_arc)
 #   define DM_AUTORELEASE(v) ([v autorelease])
+#   pragma clang diagnostic push
+#   pragma clang diagnostic ignored "-Wreserved-id-macro"
 #   define __bridge
+#   pragma clang diagnostic pop
 #else // -fobjc-arc
 #   define DM_AUTORELEASE(v) (v)
 #endif
@@ -64,6 +67,7 @@ DM_INLINE void DMKitSetupSandboxLogSystem(void)
 @protocol DevMateKitDelegate <  DMTrackingReporterDelegate,
                                 DMFeedbackControllerDelegate,
                                 DMActivationControllerDelegate,
+                                SUUpdaterDelegate,
                                 DMIssuesControllerDelegate >
 @end
 
