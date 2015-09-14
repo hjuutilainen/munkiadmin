@@ -965,7 +965,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "MunkiAdmin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1257,6 +1257,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MunkiAdmin/MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hjuutilainen.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MunkiAdmin;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -1278,6 +1279,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MunkiAdmin/MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hjuutilainen.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MunkiAdmin;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -1288,6 +1290,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
