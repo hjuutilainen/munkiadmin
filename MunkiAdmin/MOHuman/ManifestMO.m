@@ -428,7 +428,9 @@
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];
-    for (CatalogInfoMO *catalogInfo in self.catalogInfos) {
+    NSSortDescriptor *byIndex = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
+    NSSortDescriptor *byTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:@[byIndex, byTitle]]) {
         if (([catalogInfo isEnabledForManifestValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
             [catalogs addObject:[[catalogInfo catalog] title]];
         }
@@ -437,7 +439,7 @@
     if ([catalogs count] == 0) {
         return nil;
     } else {
-        return [catalogs sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        return catalogs;
     }
 }
 
