@@ -49,8 +49,6 @@
     self.customValueBgView.drawBottomLine = YES;
     self.customValueBgView.lineColor = [NSColor grayColor];
     
-    [self.existingSearchField setDelegate:self];
-    
     /*
      Allow double-clicking items in tableviews
      */
