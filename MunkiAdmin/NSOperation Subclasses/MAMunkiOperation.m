@@ -55,11 +55,14 @@ DDLogLevel ddLogLevel;
 {
 	NSTask *makecatalogsTask = [[NSTask alloc] init];
 	NSPipe *makecatalogsPipe = [NSPipe pipe];
+    NSPipe *makecatalogsErrorPipe = [NSPipe pipe];
 	NSFileHandle *filehandle = [makecatalogsPipe fileHandleForReading];
+    NSFileHandle *errorfilehandle = [makecatalogsErrorPipe fileHandleForReading];
 	
 	NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
     makecatalogsTask.launchPath = launchPath;
     makecatalogsTask.standardOutput = makecatalogsPipe;
+    makecatalogsTask.standardError = makecatalogsErrorPipe;
     
     /*
      Check the "Disable sanity checks" preference
@@ -78,6 +81,16 @@ DDLogLevel ddLogLevel;
 	NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
 	NSString *makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData
                                                           encoding:NSUTF8StringEncoding];
+    
+    /*
+     Check if we got any warnings or errors
+     */
+    NSData *makecatalogsTaskErrorData = [errorfilehandle readDataToEndOfFile];
+    NSString *errorString = [[NSString alloc] initWithData:makecatalogsTaskErrorData
+                                                  encoding:NSUTF8StringEncoding];
+    if (![errorString isEqualToString:@""]) {
+        DDLogError(@"makecatalogs reported error:\n%@", errorString);
+    }
     
     /*
      Check the exit code even though makecatalogs (currently) always exits with 0
