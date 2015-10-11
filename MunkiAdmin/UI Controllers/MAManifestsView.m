@@ -262,7 +262,7 @@ DDLogLevel ddLogLevel;
     
     [self setupFindView];
     
-    [self updateSourceListData];
+    //[self updateSourceListData];
     
     [self configureSplitView];
     [self configureSourceList];
@@ -314,14 +314,16 @@ DDLogLevel ddLogLevel;
 - (void)updateSourceListData
 {
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
-    
-    self.sourceListItems = [[NSMutableArray alloc] init];
+    self.sourceListItems = [NSMutableArray new];
+    self.modelObjects = [NSMutableArray new];
     
     [self setUpDataModel];
     self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]];
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
-    
+    [self.sourceList reloadData];
+    [self.sourceList expandItem:nil expandChildren:YES];
+    [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 }
 
 - (void)configureSourceList
