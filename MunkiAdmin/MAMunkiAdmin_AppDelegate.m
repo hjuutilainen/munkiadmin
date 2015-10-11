@@ -2416,6 +2416,13 @@ DDLogLevel ddLogLevel;
     }];
     [startObservingChangesOp addDependency:saveMainContext];
     [self.operationQueue addOperation:startObservingChangesOp];
+    
+    NSBlockOperation *updateManifestsSourceList = [NSBlockOperation blockOperationWithBlock:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.manifestsViewController updateSourceListData];
+        });
+    }];
+    [self.operationQueue addOperation:updateManifestsSourceList];
 }
 
 
