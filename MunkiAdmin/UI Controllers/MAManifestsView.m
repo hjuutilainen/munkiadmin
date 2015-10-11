@@ -1186,7 +1186,7 @@ DDLogLevel ddLogLevel;
     }
 }
 
--(BOOL)sourceList:(PXSourceList *)aSourceList shouldShowOutlineCellForItem:(id)item
+- (BOOL)sourceList:(PXSourceList *)aSourceList shouldShowOutlineCellForItem:(id)item
 {
     /*
      Don't show disclosure triangle for subitems
