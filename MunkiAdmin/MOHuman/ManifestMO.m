@@ -561,9 +561,9 @@
         [tmpDict setObject:self.manifestUserName forKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
     }
 	
-    // =====================
-    // catalogs
-    // =====================
+    /*
+     catalogs
+     */
 	if ([[self enabledCatalogs] count] > 0) {
         NSSortDescriptor *sortCatalogsByIndexInManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
 		NSSortDescriptor *sortCatalogsByTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -585,9 +585,9 @@
     NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
     
     
-    // =====================
-    // managed_installs
-    // =====================
+    /*
+     managed_installs
+     */
     NSArray *managedInstallsSorters;
     if ([defaults boolForKey:@"sortManagedInstallsByTitle"]) {
         managedInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
@@ -608,9 +608,9 @@
 	}
     
 	
-    // =====================
-    // managed_uninstalls
-    // =====================
+    /*
+     managed_uninstalls
+     */
     NSArray *managedUninstallsSorters;
     if ([defaults boolForKey:@"sortManagedUninstallsByTitle"]) {
         managedUninstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
@@ -630,9 +630,9 @@
 	}
     
 	
-    // =====================
-    // managed_updates
-    // =====================
+    /*
+     managed_updates
+     */
     NSArray *managedUpdatesSorters;
     if ([defaults boolForKey:@"sortManagedUpdatesByTitle"]) {
         managedUpdatesSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
@@ -652,9 +652,9 @@
 	}
 	
     
-    // =====================
-    // optional_installs
-    // =====================
+    /*
+     optional_installs
+     */
     NSArray *optionalInstallsSorters;
     if ([defaults boolForKey:@"sortOptionalInstallsByTitle"]) {
         optionalInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
@@ -674,9 +674,9 @@
 	}
 	
     
-    // =====================
-    // included_manifests
-    // =====================
+    /*
+     included_manifests
+     */
     NSSortDescriptor *sortByIndexInNestedManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInNestedManifest" ascending:YES selector:@selector(compare:)];
     if ([self.includedManifestsFaster count] > 0) {
         NSMutableArray *includedManifests = [NSMutableArray arrayWithCapacity:[self.includedManifestsFaster count]];
@@ -691,9 +691,9 @@
 	}
     
     
-	// =====================
-    // conditional_items
-    // =====================
+	/*
+     conditional_items
+     */
     if ([self.conditionalItems count] > 0) {
         NSMutableArray *conditionalItems = [NSMutableArray arrayWithCapacity:[self.conditionalItems count]];
 		for (ConditionalItemMO *conditionalItem in [self.conditionalItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByIndex]]) {
