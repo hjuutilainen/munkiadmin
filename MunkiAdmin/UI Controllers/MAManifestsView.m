@@ -414,8 +414,8 @@ DDLogLevel ddLogLevel;
     /*
      Profile manifests item
      */
-    MAManifestsViewSourceListItem *profileManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Profile Manifests" identifier:@"profileManifests" type:ManifestSourceItemTypeBuiltin];
-    profileManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+    MAManifestsViewSourceListItem *installManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Install Manifests" identifier:@"installManifests" type:ManifestSourceItemTypeBuiltin];
+    installManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
                                                 [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, noIncludedManifests]],
                                                 [NSCompoundPredicate orPredicateWithSubpredicates:@[hasManagedInstalls, hasManagedUninstalls, hasManagedUpdates, hasOptionalInstalls]]
                                                 ]];
@@ -470,7 +470,7 @@ DDLogLevel ddLogLevel;
     }
     
     // Store all of the model objects in an array because each source list item only holds a weak reference to them.
-    self.modelObjects = [@[allManifestsItem, recentlyModifiedItem, machineManifestsItem, groupManifestsItem, profileManifestsItem] mutableCopy];
+    self.modelObjects = [@[allManifestsItem, recentlyModifiedItem, machineManifestsItem, groupManifestsItem, installManifestsItem] mutableCopy];
     [self.modelObjects addObjectsFromArray:catalogSourceListItems];
     
     
@@ -483,7 +483,7 @@ DDLogLevel ddLogLevel;
     PXSourceListItem *manifestTypesItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Manifest Types"] identifier:nil];
     manifestTypesItem.children = @[[PXSourceListItem itemWithRepresentedObject:machineManifestsItem icon:document],
                                    [PXSourceListItem itemWithRepresentedObject:groupManifestsItem icon:documents],
-                                   [PXSourceListItem itemWithRepresentedObject:profileManifestsItem icon:documentDownload],
+                                   [PXSourceListItem itemWithRepresentedObject:installManifestsItem icon:documentDownload],
                                    ];
     
     PXSourceListItem *catalogsItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Catalogs"] identifier:nil];
