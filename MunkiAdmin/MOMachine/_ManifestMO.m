@@ -5,9 +5,11 @@
 
 const struct ManifestMOAttributes ManifestMOAttributes = {
 	.hasUnstagedChanges = @"hasUnstagedChanges",
+	.manifestAdminNotes = @"manifestAdminNotes",
 	.manifestDateCreated = @"manifestDateCreated",
 	.manifestDateLastOpened = @"manifestDateLastOpened",
 	.manifestDateModified = @"manifestDateModified",
+	.manifestDisplayName = @"manifestDisplayName",
 	.manifestParentDirectoryURL = @"manifestParentDirectoryURL",
 	.manifestURL = @"manifestURL",
 	.manifestUserName = @"manifestUserName",
@@ -98,11 +100,15 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
 }
 
+@dynamic manifestAdminNotes;
+
 @dynamic manifestDateCreated;
 
 @dynamic manifestDateLastOpened;
 
 @dynamic manifestDateModified;
+
+@dynamic manifestDisplayName;
 
 @dynamic manifestParentDirectoryURL;
 

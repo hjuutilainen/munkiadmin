@@ -5,9 +5,11 @@
 
 extern const struct ManifestMOAttributes {
 	__unsafe_unretained NSString *hasUnstagedChanges;
+	__unsafe_unretained NSString *manifestAdminNotes;
 	__unsafe_unretained NSString *manifestDateCreated;
 	__unsafe_unretained NSString *manifestDateLastOpened;
 	__unsafe_unretained NSString *manifestDateModified;
+	__unsafe_unretained NSString *manifestDisplayName;
 	__unsafe_unretained NSString *manifestParentDirectoryURL;
 	__unsafe_unretained NSString *manifestURL;
 	__unsafe_unretained NSString *manifestUserName;
@@ -83,6 +85,10 @@ extern const struct ManifestMOFetchedProperties {
 
 //- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* manifestAdminNotes;
+
+//- (BOOL)validateManifestAdminNotes:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSDate* manifestDateCreated;
 
 //- (BOOL)validateManifestDateCreated:(id*)value_ error:(NSError**)error_;
@@ -94,6 +100,10 @@ extern const struct ManifestMOFetchedProperties {
 @property (nonatomic, strong) NSDate* manifestDateModified;
 
 //- (BOOL)validateManifestDateModified:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* manifestDisplayName;
+
+//- (BOOL)validateManifestDisplayName:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) id manifestParentDirectoryURL;
 
@@ -329,6 +339,9 @@ extern const struct ManifestMOFetchedProperties {
 - (BOOL)primitiveHasUnstagedChangesValue;
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
 
+- (NSString*)primitiveManifestAdminNotes;
+- (void)setPrimitiveManifestAdminNotes:(NSString*)value;
+
 - (NSDate*)primitiveManifestDateCreated;
 - (void)setPrimitiveManifestDateCreated:(NSDate*)value;
 
@@ -337,6 +350,9 @@ extern const struct ManifestMOFetchedProperties {
 
 - (NSDate*)primitiveManifestDateModified;
 - (void)setPrimitiveManifestDateModified:(NSDate*)value;
+
+- (NSString*)primitiveManifestDisplayName;
+- (void)setPrimitiveManifestDisplayName:(NSString*)value;
 
 - (id)primitiveManifestParentDirectoryURL;
 - (void)setPrimitiveManifestParentDirectoryURL:(id)value;

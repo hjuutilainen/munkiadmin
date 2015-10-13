@@ -232,6 +232,22 @@ DDLogLevel ddLogLevel;
                 if (user) {
                     manifest.manifestUserName = user;
                 }
+                
+                /*
+                 * Get the display name if it exists
+                 */
+                NSString *manifestDisplayName = [manifestInfoDict objectForKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestDisplayNameKey"]];
+                if (manifestDisplayName) {
+                    manifest.manifestDisplayName = manifestDisplayName;
+                }
+                
+                /*
+                 * Get the admin notes if it exists
+                 */
+                NSString *manifestAdminNotes = [manifestInfoDict objectForKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestAdminNotesKey"]];
+                if (manifestAdminNotes) {
+                    manifest.manifestAdminNotes = manifestAdminNotes;
+                }
 				
                 
                 // =================================

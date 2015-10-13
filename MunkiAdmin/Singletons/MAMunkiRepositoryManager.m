@@ -2712,7 +2712,9 @@ static dispatch_queue_t serialQueue;
                                   @"managed_uninstalls",
                                   @"managed_updates",
                                   @"optional_installs",
-                                  [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
+                                  [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"],
+                                  [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestDisplayNameKey"],
+                                  [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestAdminNotesKey"]];
         
         /*
          Determine which keys were removed

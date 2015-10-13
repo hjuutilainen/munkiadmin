@@ -453,7 +453,7 @@
     if (catalogStrings) {
         return [[self catalogStrings] componentsJoinedByString:@", "];
     } else {
-        return @"--";
+        return nil;
     }
     
 }
@@ -557,8 +557,17 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
     
+    /*
+     Manifest custom metadata keys
+     */
     if (self.manifestUserName && ![self.manifestUserName isEqualToString:@""]) {
         [tmpDict setObject:self.manifestUserName forKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"]];
+    }
+    if (self.manifestDisplayName && ![self.manifestDisplayName isEqualToString:@""]) {
+        [tmpDict setObject:self.manifestDisplayName forKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestDisplayNameKey"]];
+    }
+    if (self.manifestAdminNotes && ![self.manifestAdminNotes isEqualToString:@""]) {
+        [tmpDict setObject:self.manifestAdminNotes forKey:[[NSUserDefaults standardUserDefaults] stringForKey:@"manifestAdminNotesKey"]];
     }
 	
     /*

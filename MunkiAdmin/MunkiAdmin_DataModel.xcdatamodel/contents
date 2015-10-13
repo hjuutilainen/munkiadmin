@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="15A284" minimumToolsVersion="Automatic">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -126,9 +126,11 @@
     </entity>
     <entity name="Manifest" representedClassName="ManifestMO" syncable="YES">
         <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="manifestAdminNotes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="manifestDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="manifestDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="manifestDateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="manifestDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="manifestParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="manifestURL" attributeType="Transformable" syncable="YES"/>
         <attribute name="manifestUserName" optional="YES" attributeType="String" syncable="YES"/>
@@ -339,7 +341,7 @@
         <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="524"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="554"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Package" positionX="0" positionY="0" width="128" height="1245"/>
