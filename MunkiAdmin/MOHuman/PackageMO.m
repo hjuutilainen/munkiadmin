@@ -98,6 +98,41 @@
 			nil];
 }
 
+- (NSString *)catalogsDescriptionString
+{
+    NSArray *catalogStrings = [self catalogShortStrings];
+    if (catalogStrings) {
+        return [catalogStrings componentsJoinedByString:@", "];
+    } else {
+        return nil;
+    }
+    
+}
+
+- (NSArray *)catalogShortStrings
+{
+    NSMutableArray *catalogs = [NSMutableArray new];
+    for (CatalogInfoMO *catalogInfo in self.catalogInfos) {
+        if (([catalogInfo isEnabledForPackageValue]) && (![catalogs containsObject:[[catalogInfo catalog] shortTitle]])) {
+            [catalogs addObject:[[catalogInfo catalog] shortTitle]];
+        }
+    }
+    
+    for (PackageInfoMO *packageInfo in self.packageInfos) {
+        if (([packageInfo isEnabledForCatalogValue]) && (![catalogs containsObject:[packageInfo.catalog shortTitle]])) {
+            [catalogs addObject:[packageInfo.catalog shortTitle]];
+        } else if ((![packageInfo isEnabledForCatalogValue]) && ([catalogs containsObject:[packageInfo.catalog shortTitle]])) {
+            [catalogs removeObject:[packageInfo.catalog shortTitle]];
+        }
+    }
+    
+    if ([catalogs count] == 0) {
+        return nil;
+    } else {
+        return [catalogs sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
 - (NSArray *)catalogStrings
 {
     NSMutableArray *catalogs = [NSMutableArray new];

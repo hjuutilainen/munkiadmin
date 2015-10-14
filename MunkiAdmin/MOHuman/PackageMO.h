@@ -10,5 +10,6 @@
 - (NSString *)titleWithVersion;
 - (NSString *)formattedTitle;
 - (NSArray *)catalogStrings;
+- (NSString *)catalogsDescriptionString;
 
 @end

@@ -42,4 +42,9 @@
     return [NSImage imageNamed:@"catalogIcon_32x32"];
 }
 
+- (NSString *)shortTitle
+{
+    return [self.title substringToIndex:([self.title length] > 1) ? 1 : [self.title length]];
+}
+
 @end
