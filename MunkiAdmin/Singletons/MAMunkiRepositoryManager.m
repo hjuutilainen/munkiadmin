@@ -54,6 +54,7 @@ DDLogLevel ddLogLevel;
 @property (readwrite) BOOL repositoryHasPkginfoPostSaveScript;
 @property (readwrite) BOOL repositoryHasManifestPreSaveScript;
 @property (readwrite) BOOL repositoryHasManifestPostSaveScript;
+@property (readwrite) NSUInteger lengthForUniqueCatalogTitles;
 
 - (void)willStartOperations;
 - (void)willEndOperations;
@@ -111,6 +112,7 @@ static dispatch_queue_t serialQueue;
             [self updateMunkiVersions];
             self.diskImageQueue = [NSOperationQueue new];
             self.diskImageQueue.maxConcurrentOperationCount = 1;
+            self.lengthForUniqueCatalogTitles = 1;
         }
     });
     
@@ -2823,6 +2825,32 @@ static dispatch_queue_t serialQueue;
 	return fetchResults;
 }
 
+- (void)updateUniqueCatalogStringLength
+{
+    NSArray *allCatalogs = [self allObjectsForEntity:@"Catalog"];
+    
+    NSUInteger length = 1;
+    
+    while (length < 10) {
+        NSMutableArray *currentTitles = [NSMutableArray new];
+        for (CatalogMO *catalog in allCatalogs) {
+            NSString *shortenedTitle = [catalog.title substringToIndex:([catalog.title length] > length) ? length : [catalog.title length]];
+            [currentTitles addObject:shortenedTitle];
+        }
+        
+        if ([[currentTitles valueForKeyPath:@"@distinctUnionOfObjects.self"] count] == [currentTitles count]) {
+            DDLogError(@"All short titles are unique");
+            self.lengthForUniqueCatalogTitles = length;
+            return;
+        } else {
+            DDLogError(@"Not all short titles are unique");
+            DDLogError(@"%@", [currentTitles description]);
+        }
+        
+        length++;
+    }
+    
+}
 
 - (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url
 {

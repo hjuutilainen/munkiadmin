@@ -28,6 +28,7 @@
 @property (readonly) BOOL repositoryHasPkginfoPostSaveScript;
 @property (readonly) BOOL repositoryHasManifestPreSaveScript;
 @property (readonly) BOOL repositoryHasManifestPostSaveScript;
+@property (readonly) NSUInteger lengthForUniqueCatalogTitles;
 @property (readonly, strong) NSString *makepkginfoVersion;
 @property (readonly, strong) NSString *makecatalogsVersion;
 @property (strong) NSDictionary *pkginfoBasicKeyMappings;
@@ -98,5 +99,6 @@
 - (BOOL)canImportURL:(NSURL *)fileURL error:(NSError **)error;
 - (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL;
 - (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url;
+- (void)updateUniqueCatalogStringLength;
 
 @end

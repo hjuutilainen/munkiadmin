@@ -1,5 +1,6 @@
 #import "CatalogMO.h"
 #import "PackageInfoMO.h"
+#import "MAMunkiRepositoryManager.h"
 
 @implementation CatalogMO
 
@@ -44,7 +45,12 @@
 
 - (NSString *)shortTitle
 {
-    return [[self.title substringToIndex:([self.title length] > 1) ? 1 : [self.title length]] uppercaseString];
+    NSUInteger currentLength = [[MAMunkiRepositoryManager sharedManager] lengthForUniqueCatalogTitles];
+    if (currentLength == 1) {
+        return [[self.title substringToIndex:([self.title length] > currentLength) ? currentLength : [self.title length]] uppercaseString];
+    } else {
+        return [self.title substringToIndex:([self.title length] > currentLength) ? currentLength : [self.title length]];
+    }
 }
 
 @end
