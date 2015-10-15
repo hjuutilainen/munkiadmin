@@ -36,6 +36,14 @@
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }*/
     
+    
+    NSArray *catalogDescriptionKeys = @[@"catalogsDescriptionString", @"catalogStrings", @"catalogShortStrings"];
+    
+    if ([catalogDescriptionKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+    
     return keyPaths;
 }
 

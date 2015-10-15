@@ -44,7 +44,7 @@
 
 - (NSString *)shortTitle
 {
-    return [self.title substringToIndex:([self.title length] > 1) ? 1 : [self.title length]];
+    return [[self.title substringToIndex:([self.title length] > 1) ? 1 : [self.title length]] uppercaseString];
 }
 
 @end

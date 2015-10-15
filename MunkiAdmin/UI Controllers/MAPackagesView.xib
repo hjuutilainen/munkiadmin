@@ -165,8 +165,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="625" height="650"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveName="packagesTableViewWithIcons" headerView="24" id="22" customClass="MATableView">
-                                                <rect key="frame" x="0.0" y="0.0" width="625" height="633"/>
+                                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveName="packagesTableViewWithIcons" rowSizeStyle="automatic" headerView="24" viewBased="YES" id="22" customClass="MATableView">
+                                                <rect key="frame" x="0.0" y="0.0" width="625" height="19"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <animations/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -180,9 +180,24 @@
                                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                         </tableHeaderCell>
                                                         <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="5bz-2o-69O"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.iconImage.imageRepresentation" id="pVd-Ku-5kQ"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="dpN-YQ-O5L">
+                                                                <rect key="frame" x="1" y="1" width="32" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="npT-IP-DyM">
+                                                                        <rect key="frame" x="8" y="0.0" width="16" height="16"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <animations/>
+                                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="2nL-46-Ta3"/>
+                                                                        <connections>
+                                                                            <binding destination="dpN-YQ-O5L" name="value" keyPath="objectValue.iconImage.imageRepresentation" id="jpC-M3-F8B"/>
+                                                                        </connections>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <animations/>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnName" editable="NO" width="120.0703125" minWidth="40" maxWidth="1000" id="26">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
@@ -196,9 +211,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_name" id="76"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="rtb-ub-76y">
+                                                                <rect key="frame" x="36" y="1" width="120" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="2yG-uh-gFl">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Box-JQ-oru">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="rtb-ub-76y" name="value" keyPath="objectValue.munki_name" id="2Tx-CZ-NjP"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="2yG-uh-gFl" id="t1D-AD-dj7"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnCatalogs" editable="NO" width="121.0703125" minWidth="40" maxWidth="1000" id="O2F-sZ-AFT">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Catalogs">
@@ -212,13 +249,28 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.catalogsDescriptionString" id="SRN-Qs-aKn">
-                                                                <dictionary key="options">
-                                                                    <bool key="NSConditionallySetsEditable" value="YES"/>
-                                                                </dictionary>
-                                                            </binding>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="aRE-Kw-Rko">
+                                                                <rect key="frame" x="159" y="1" width="121" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <tokenField verticalHuggingPriority="750" id="zyd-l5-hFO">
+                                                                        <rect key="frame" x="0.0" y="-2" width="118" height="19"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <tokenFieldCell key="cell" controlSize="small" allowsUndo="NO" alignment="left" allowsEditingTextAttributes="YES" id="EUf-TA-UmF">
+                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        </tokenFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="aRE-Kw-Rko" name="value" keyPath="objectValue.catalogShortStrings" id="yyV-Hf-FuT"/>
+                                                                        </connections>
+                                                                    </tokenField>
+                                                                </subviews>
+                                                                <animations/>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnDisplayName" width="124.56640625" minWidth="40" maxWidth="1000" id="27">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
@@ -232,9 +284,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_display_name" id="77"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="KVJ-KW-BDY">
+                                                                <rect key="frame" x="283" y="1" width="125" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="xQH-8o-o6f">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="125" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="gzJ-0Z-rmT">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="KVJ-KW-BDY" name="value" keyPath="objectValue.munki_display_name" id="Hd5-eV-aUJ"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="xQH-8o-o6f" id="wNe-ah-eF6"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnDescription" width="224.37109375" minWidth="40" maxWidth="1000" hidden="YES" id="343">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
@@ -248,9 +322,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_description" id="346"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="9b2-FB-a2R">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="pkF-bP-kXF">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Xmh-x7-WcN">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="9b2-FB-a2R" name="value" keyPath="objectValue.munki_description" id="PMy-yv-nBL"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="pkF-bP-kXF" id="1r0-Xb-CjS"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnNotes" width="234.0546875" minWidth="40" maxWidth="1000" hidden="YES" id="585">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Admin Notes">
@@ -264,9 +360,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_notes" id="588"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="PP2-GQ-fgK">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="wjV-Tx-Nyg">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="GO7-73-60Z">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="PP2-GQ-fgK" name="value" keyPath="objectValue.munki_notes" id="goo-a7-6tl"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="wjV-Tx-Nyg" id="KKA-UV-Twy"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnVersion" width="112.65234375" minWidth="10" maxWidth="3.4028234663852886e+38" id="37">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Version">
@@ -280,9 +398,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_version" id="78"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="B17-Wd-NfF">
+                                                                <rect key="frame" x="411" y="1" width="113" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="WCA-Mh-a0U">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="113" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="xro-n7-SQ1">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="B17-Wd-NfF" name="value" keyPath="objectValue.munki_version" id="DOB-HI-Vno"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="WCA-Mh-a0U" id="9g7-ww-tD9"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnMinOS" width="621.55078125" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="335">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Min OS">
@@ -296,9 +436,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_minimum_os_version" id="338"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="jYy-PY-to4">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="mpG-Y8-KEt">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="hWG-GW-5JB">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="jYy-PY-to4" name="value" keyPath="objectValue.munki_minimum_os_version" id="i4T-6f-CvR"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="mpG-Y8-KEt" id="lfB-ST-GFK"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnMaxOS" width="315.55078125" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="339">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Max OS">
@@ -312,9 +474,31 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_maximum_os_version" id="342"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="3PQ-EV-ahY">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="nL0-JH-arM">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="WVt-Sg-ukq">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="3PQ-EV-ahY" name="value" keyPath="objectValue.munki_maximum_os_version" id="Mps-ZL-9gr"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="nL0-JH-arM" id="BHt-P6-maM"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnInstallerSize" width="172" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="116">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Size">
@@ -329,9 +513,32 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.munki_installer_item_size" id="122"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="R54-08-3Yb">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="jIq-u6-2SM">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" id="h5g-8V-AYr">
+                                                                            <customFormatter key="formatter" id="oeF-ad-WU3" customClass="MAFileSizeFormatter"/>
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="R54-08-3Yb" name="value" keyPath="objectValue.munki_installer_item_size" id="2vC-aY-LbH"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="jIq-u6-2SM" id="cip-yc-2aT"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnDateModified" editable="NO" width="96" minWidth="10" maxWidth="3.4028234663852886e+38" id="287">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Modified">
@@ -346,9 +553,32 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.packageInfoDateModified" id="293"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="Loo-8r-HhR">
+                                                                <rect key="frame" x="527" y="1" width="96" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="c15-q5-bzh">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="96" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="o4M-2y-RJH">
+                                                                            <dateFormatter key="formatter" dateStyle="short" timeStyle="short" id="ucB-KJ-9Wp"/>
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="Loo-8r-HhR" name="value" keyPath="objectValue.packageInfoDateModified" id="4W9-v6-xCT"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="c15-q5-bzh" id="SVM-Mi-bwS"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                     <tableColumn identifier="packagesTableColumnDateCreated" editable="NO" width="286" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="289">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Created">
@@ -364,12 +594,37 @@
                                                         </textFieldCell>
                                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="packageInfoDateCreated" ascending="NO"/>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <connections>
-                                                            <binding destination="68" name="value" keyPath="arrangedObjects.packageInfoDateCreated" id="294"/>
-                                                        </connections>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="xqp-fd-CP9">
+                                                                <rect key="frame" x="1" y="1" width="-3" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="H77-aP-lUr">
+                                                                        <rect key="frame" x="-1.5" y="0.0" width="4" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <animations/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="SRZ-o8-BnR">
+                                                                            <dateFormatter key="formatter" dateStyle="short" timeStyle="short" id="eCe-AC-d6x"/>
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="xqp-fd-CP9" name="value" keyPath="objectValue.packageInfoDateCreated" id="1e4-zw-uCs"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <animations/>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="H77-aP-lUr" id="lGc-Tc-McH"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                 </tableColumns>
                                                 <connections>
+                                                    <binding destination="68" name="content" keyPath="arrangedObjects" id="j4G-2c-JIN"/>
+                                                    <binding destination="68" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="j4G-2c-JIN" id="Bae-EJ-m4f"/>
                                                     <outlet property="menu" destination="302" id="308"/>
                                                 </connections>
                                             </tableView>
