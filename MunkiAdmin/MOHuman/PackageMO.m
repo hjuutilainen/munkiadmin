@@ -353,17 +353,23 @@
 	// ==========
 	// catalogs
 	// ==========
-	NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-	NSSortDescriptor *sortCatalogsByOrigIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+    NSArray *sortDescriptors;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortPkginfoCatalogsByTitle"]) {
+        sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    } else {
+        sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)],
+                            [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    }
 	
 	NSMutableArray *catalogs = [NSMutableArray arrayWithCapacity:[self.catalogInfos count]];
-	for (CatalogInfoMO *catalogInfo in [self.catalogInfos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sortCatalogsByOrigIndex, sortByCatalogTitle, nil]]) {
+    NSArray *sortedCatalogInfos = [self.catalogInfos sortedArrayUsingDescriptors:sortDescriptors];
+	for (CatalogInfoMO *catalogInfo in sortedCatalogInfos) {
 		if (([catalogInfo isEnabledForPackageValue]) && (![catalogs containsObject:[[catalogInfo catalog] title]])) {
 			[catalogs addObject:[[catalogInfo catalog] title]];
 		}
 	}
 	
-	for (PackageInfoMO *packageInfo in [self.packageInfos sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortByCatalogTitle]]) {
+	for (PackageInfoMO *packageInfo in [self.packageInfos sortedArrayUsingDescriptors:sortDescriptors]) {
 		if (([packageInfo isEnabledForCatalogValue]) && (![catalogs containsObject:[packageInfo.catalog title]])) {
 			[catalogs addObject:[packageInfo.catalog title]];
 		} else if ((![packageInfo isEnabledForCatalogValue]) && ([catalogs containsObject:[packageInfo.catalog title]])) {
