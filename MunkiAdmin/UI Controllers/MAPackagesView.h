@@ -22,6 +22,17 @@
 @property (weak) IBOutlet NSView *middlePlaceHolder;
 @property (weak) IBOutlet MAGradientBackgroundView *rightPlaceHolder;
 @property (weak) IBOutlet NSTableView *packagesTableView;
+@property (weak) IBOutlet NSTableColumn *nameColumn;
+@property (weak) IBOutlet NSTableColumn *displayNameColumn;
+@property (weak) IBOutlet NSTableColumn *versionColumn;
+@property (weak) IBOutlet NSTableColumn *catalogsColumn;
+@property (weak) IBOutlet NSTableColumn *descriptionColumn;
+@property (weak) IBOutlet NSTableColumn *adminNotesColumn;
+@property (weak) IBOutlet NSTableColumn *minOSColumn;
+@property (weak) IBOutlet NSTableColumn *maxOSColumn;
+@property (weak) IBOutlet NSTableColumn *sizeColumn;
+@property (weak) IBOutlet NSTableColumn *modifiedDateColumn;
+@property (weak) IBOutlet NSTableColumn *createdDateColumn;
 @property (weak) IBOutlet NSArrayController *packagesArrayController;
 @property (weak) IBOutlet NSTreeController *directoriesTreeController;
 @property (weak) IBOutlet NSOutlineView *directoriesOutlineView;

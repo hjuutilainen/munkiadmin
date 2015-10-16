@@ -111,6 +111,19 @@ DDLogLevel ddLogLevel;
     [self.directoriesTreeController setSortDescriptors:@[sortByIndex, sortByTitle]];
     self.defaultSortDescriptors = @[sortByMunkiName, sortByMunkiVersion, sortByMunkiDisplayName];
     
+    self.nameColumn.sortDescriptorPrototype = sortByMunkiName;
+    self.versionColumn.sortDescriptorPrototype = sortByMunkiVersion;
+    self.displayNameColumn.sortDescriptorPrototype = sortByMunkiDisplayName;
+    self.descriptionColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_description" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.adminNotesColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_notes" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.minOSColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_minimum_os_version" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.maxOSColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_maximum_os_version" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.catalogsColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"catalogsDescriptionString" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.sizeColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_installer_item_size" ascending:YES selector:@selector(compare:)];
+    self.modifiedDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateModified" ascending:YES];
+    self.createdDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:YES];
+    
+    
     self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
     
