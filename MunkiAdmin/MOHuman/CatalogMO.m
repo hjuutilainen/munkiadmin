@@ -47,7 +47,7 @@
 {
     NSUInteger currentLength = [[MAMunkiRepositoryManager sharedManager] lengthForUniqueCatalogTitles];
     if (currentLength == 1) {
-        return [[self.title substringToIndex:([self.title length] > currentLength) ? currentLength : [self.title length]] uppercaseString];
+        return [self.title substringToIndex:([self.title length] > 2) ? 2 : [self.title length]];
     } else {
         return [self.title substringToIndex:([self.title length] > currentLength) ? currentLength : [self.title length]];
     }
