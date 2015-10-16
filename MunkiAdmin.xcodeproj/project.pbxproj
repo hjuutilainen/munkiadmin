@@ -16,7 +16,6 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		C8B8E5A963D6FBC3A0ED5ABA /* libPods-MunkiAdmin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */; };
-		E3745FED65398C251914DD27 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */ = {isa = PBXBuildFile; fileRef = 7EF1A0329C9B6C93785BC7CB /* com.devmate.UpdateInstaller.xpc */; };
 		F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E6E19090E00009F6D28 /* _DeveloperMO.m */; };
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
 		F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7419090E0E009F6D28 /* DeveloperMO.m */; };
@@ -159,6 +158,7 @@
 		FE0F4E7B14FB804C0081AEFF /* PackageSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0F4E7914FB804C0081AEFF /* PackageSourceListItemMO.m */; };
 		FE1C6B78145A797D00BC815F /* MAPackageNameEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1C6B77145A797D00BC815F /* MAPackageNameEditor.m */; };
 		FE1C6B7B145A7A0300BC815F /* MAPackageNameEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE1C6B7A145A7A0300BC815F /* MAPackageNameEditor.xib */; };
+		FE2FF649A8F7B82564BB53E0 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */ = {isa = PBXBuildFile; fileRef = 95D6764E7E6FE1B38160B77E /* com.devmate.UpdateInstaller.xpc */; };
 		FE679A4D14E1110F0047A9EE /* _ConditionalItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE679A4A14E1110F0047A9EE /* _ConditionalItemMO.m */; };
 		FE679A4E14E1110F0047A9EE /* ConditionalItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE679A4C14E1110F0047A9EE /* ConditionalItemMO.m */; };
 		FE781BA3144C0CCE0089E941 /* _InstallerChoicesItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = FE781BA0144C0CCE0089E941 /* _InstallerChoicesItemMO.m */; };
@@ -186,7 +186,7 @@
 			dstPath = Contents/XPCServices;
 			dstSubfolderSpec = 1;
 			files = (
-				E3745FED65398C251914DD27 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */,
+				FE2FF649A8F7B82564BB53E0 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */,
 			);
 			name = "Copy DevMate XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,9 +211,9 @@
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* MAMunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAMunkiAdmin_AppDelegate.h; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
 		77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAMunkiAdmin_AppDelegate.m; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
-		7EF1A0329C9B6C93785BC7CB /* com.devmate.UpdateInstaller.xpc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.xpc-service"; name = com.devmate.UpdateInstaller.xpc; path = Pods/DevMateKit/com.devmate.UpdateInstaller.xpc; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; name = "MunkiAdmin-Info.plist"; path = "MunkiAdmin/MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		95D6764E7E6FE1B38160B77E /* com.devmate.UpdateInstaller.xpc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.xpc-service"; name = com.devmate.UpdateInstaller.xpc; path = Pods/DevMateKit/com.devmate.UpdateInstaller.xpc; sourceTree = "<group>"; };
 		F1AE864A21B91D7578E28FA6 /* Pods-MunkiAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MunkiAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		F5018E6D19090E00009F6D28 /* _DeveloperMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperMO.h; sourceTree = "<group>"; };
 		F5018E6E19090E00009F6D28 /* _DeveloperMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DeveloperMO.m; sourceTree = "<group>"; };
@@ -653,7 +653,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				F7239CF460E55FF626F5D99E /* Pods */,
-				7EF1A0329C9B6C93785BC7CB /* com.devmate.UpdateInstaller.xpc */,
+				95D6764E7E6FE1B38160B77E /* com.devmate.UpdateInstaller.xpc */,
 			);
 			name = MunkiAdmin;
 			sourceTree = "<group>";
@@ -948,6 +948,7 @@
 				FE145D971488D42200AEA151 /* ShellScript */,
 				F3BAC322BE18AACBBA5781B7 /* Copy Pods Resources */,
 				B2EFBDB91BF01407BF72CB11 /* Copy DevMate XPC Services */,
+				705F78FDEC822AE290965D47 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1061,6 +1062,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		705F78FDEC822AE290965D47 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7AF4AA75BBAC90730244EBAE /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

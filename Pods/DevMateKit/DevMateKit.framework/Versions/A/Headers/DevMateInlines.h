@@ -67,7 +67,9 @@ DM_INLINE void DMKitSetupSandboxLogSystem(void)
 @protocol DevMateKitDelegate <  DMTrackingReporterDelegate,
                                 DMFeedbackControllerDelegate,
                                 DMActivationControllerDelegate,
+#ifndef USED_CUSTOM_SPARKLE_FRAMEWORK
                                 SUUpdaterDelegate,
+#endif // USED_CUSTOM_SPARKLE_FRAMEWORK
                                 DMIssuesControllerDelegate >
 @end
 
