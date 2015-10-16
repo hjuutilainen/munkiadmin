@@ -2818,6 +2818,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSArray *)allObjectsForEntity:(NSString *)entityName
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
 	NSEntityDescription *entityDescr = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self appDelegateMoc]];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entityDescr];
@@ -2827,6 +2828,8 @@ static dispatch_queue_t serialQueue;
 
 - (void)updateUniqueCatalogStringLength
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
+    
     NSArray *allCatalogs = [self allObjectsForEntity:@"Catalog"];
     
     NSUInteger length = 1;
@@ -2839,12 +2842,12 @@ static dispatch_queue_t serialQueue;
         }
         
         if ([[currentTitles valueForKeyPath:@"@distinctUnionOfObjects.self"] count] == [currentTitles count]) {
-            DDLogError(@"All short titles are unique");
+            DDLogDebug(@"All short titles are unique");
             self.lengthForUniqueCatalogTitles = length;
             return;
         } else {
-            DDLogError(@"Not all short titles are unique");
-            DDLogError(@"%@", [currentTitles description]);
+            DDLogVerbose(@"Not all short titles are unique");
+            DDLogVerbose(@"%@", [currentTitles description]);
         }
         
         length++;
@@ -2854,6 +2857,7 @@ static dispatch_queue_t serialQueue;
 
 - (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     if (octalAsString) {
         /*
          Based on <http://stackoverflow.com/a/1181715>
@@ -2878,6 +2882,7 @@ static dispatch_queue_t serialQueue;
 
 - (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL
 {
+    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
     NSMutableArray *relativePathComponents = [NSMutableArray arrayWithArray:[childURL pathComponents]];
     
     NSArray *parentPathComponents = [NSArray arrayWithArray:[parentURL pathComponents]];
