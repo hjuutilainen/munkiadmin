@@ -350,11 +350,32 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
 }
 
+- (void)endEditingInWindow
+{
+    /*
+     From https://red-sweater.com/blog/229/stay-responsive
+     
+     Gracefully end all editing in our window (from Erik Buck).
+     This will cause the user's changes to be committed.
+     */
+    if ([self.window makeFirstResponder:self.window]) {
+        // All editing is now ended and delegate messages sent etc.
+    } else {
+        // For some reason the text object being edited will
+        // not resign first responder status so force an
+        /// end to editing anyway
+        [self.window endEditingFor:nil];
+    }
+}
+
 - (void)saveAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    [self endEditingInWindow];
+    
     [self commitChangesToCurrentPackage];
-        
+    
     [[self window] orderOut:sender];
     [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
@@ -365,7 +386,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 }
 
 - (void)cancelAction:(id)sender
-{    
+{
+    [self endEditingInWindow];
+    
     [[self window] orderOut:sender];
     [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];

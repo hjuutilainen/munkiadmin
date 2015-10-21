@@ -2,6 +2,25 @@
 
 @implementation ItemToCopyMO
 
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    if ([key isEqualToString:@"image"]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"munki_destination_item", @"munki_source_item", @"munki_destination_path", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([key isEqualToString:@"titleDescription"]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"munki_source_item", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([key isEqualToString:@"contentsDescription"]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"munki_destination_item", @"munki_source_item", @"munki_destination_path", @"munki_user", @"munki_group", @"munki_mode", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    }
+    
+    return keyPaths;
+}
+
 - (NSImage *)image
 {
     BOOL hasDestinationItem = (self.munki_destination_item != nil) ? TRUE : FALSE;

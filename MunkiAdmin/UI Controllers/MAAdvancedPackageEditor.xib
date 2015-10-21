@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAAdvancedPackageEditor">
@@ -187,10 +187,10 @@
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <animations/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="345" height="88"/>
+                                                                        <size key="minSize" width="345" height="84"/>
                                                                         <size key="maxSize" width="455" height="10000000"/>
                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <size key="minSize" width="345" height="88"/>
+                                                                        <size key="minSize" width="345" height="84"/>
                                                                         <size key="maxSize" width="455" height="10000000"/>
                                                                         <connections>
                                                                             <binding destination="367" name="value" keyPath="selection.munki_description" id="1481">
@@ -654,7 +654,7 @@
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="772">
                                                                 <font key="font" metaFont="system"/>
                                                                 <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
-                                                                    <!--1982-02-12 16:00:00 +0000-->
+                                                                    <!--1982-02-12 08:00:00 -0800-->
                                                                     <timeZone key="timeZone" name="US/Pacific"/>
                                                                 </calendarDate>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -686,7 +686,7 @@
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="1461">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="364" height="129"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="364" height="19"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <animations/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -1344,7 +1344,7 @@
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" headerView="1556" viewBased="YES" id="1553">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="0.0"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="164"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                         <animations/>
                                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -1488,7 +1488,7 @@
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" headerView="1539" viewBased="YES" id="1536">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="0.0"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="184"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                         <animations/>
                                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -1749,7 +1749,7 @@
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" rowHeight="40" headerView="1292" viewBased="YES" id="1293">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="0.0"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="368" height="293"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <animations/>
                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -1817,9 +1817,6 @@
                                                                                         </connections>
                                                                                     </tableCellView>
                                                                                 </prototypeCellViews>
-                                                                                <connections>
-                                                                                    <binding destination="516" name="value" keyPath="arrangedObjects.dictValue" id="1346"/>
-                                                                                </connections>
                                                                             </tableColumn>
                                                                         </tableColumns>
                                                                         <connections>
@@ -1858,11 +1855,8 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_path" id="rD7-SX-zAR">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_path" id="lBM-lQ-G3d"/>
+                                                                <outlet property="nextKeyView" destination="1288" id="JzR-1b-A9o"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1289">
@@ -1885,11 +1879,8 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_source_item" id="dMQ-aY-7z4">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_source_item" id="T6A-zz-G6o"/>
+                                                                <outlet property="nextKeyView" destination="1595" id="Lha-K0-Sj0"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1287">
@@ -1912,11 +1903,8 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_item" id="Fgi-wB-oQS">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_destination_item" id="S8u-FW-f25"/>
+                                                                <outlet property="nextKeyView" destination="1286" id="TRQ-8h-Vbn"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1596">
@@ -1939,11 +1927,8 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_user" id="TS9-J1-qNY">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_user" id="zkW-P5-U2S"/>
+                                                                <outlet property="nextKeyView" destination="1281" id="rrp-mc-9H4"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1285">
@@ -1966,11 +1951,8 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_group" id="BK3-OX-cEg">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_group" id="7zP-mH-6cD"/>
+                                                                <outlet property="nextKeyView" destination="1284" id="EEA-cT-Plm"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1280">
@@ -1993,11 +1975,7 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="516" name="value" keyPath="selection.munki_mode" id="a3s-eb-48v">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                    </dictionary>
-                                                                </binding>
+                                                                <binding destination="516" name="value" keyPath="selection.munki_mode" id="QxW-4V-Qhb"/>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="1283">
@@ -2074,7 +2052,7 @@
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="1327" id="1326">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="153" height="19"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="153" height="143"/>
                                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                                         <animations/>
                                                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -2215,7 +2193,7 @@
                                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                                 <subviews>
                                                                                                     <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="1332" id="1333">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="145" height="19"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="145" height="165"/>
                                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                                         <animations/>
                                                                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -3051,6 +3029,7 @@
                                                         <button id="PjL-sT-1jN">
                                                             <rect key="frame" x="17" y="477" width="141" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <buttonCell key="cell" type="check" title="Enable pre-install alert" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="0xV-7N-Zri">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -3062,13 +3041,13 @@
                                                         <textField toolTip="The main alert message text" verticalHuggingPriority="750" id="dgJ-eF-oHR">
                                                             <rect key="frame" x="20" y="428" width="359" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Attention" drawsBackground="YES" id="jm9-pT-aIS">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preinstall_alert_enabled" id="ytx-qD-lZM"/>
                                                                 <binding destination="367" name="value" keyPath="selection.munki_preinstall_alert_alert_title" id="vL3-1n-dC0">
                                                                     <dictionary key="options">
                                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -3077,11 +3056,13 @@
                                                                         <string key="NSNullPlaceholder">Attention</string>
                                                                     </dictionary>
                                                                 </binding>
+                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preinstall_alert_enabled" id="ytx-qD-lZM"/>
                                                             </connections>
                                                         </textField>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MyB-3m-me1">
                                                             <rect key="frame" x="18" y="452" width="30" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Title:" id="UaF-vf-r4S">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3091,6 +3072,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="42z-hG-wdT">
                                                             <rect key="frame" x="18" y="406" width="38" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Detail:" id="dFr-dC-eQk">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3107,6 +3089,7 @@
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="bar" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="jHw-Ax-HAL">
                                                                         <rect key="frame" x="0.0" y="0.0" width="342" height="148"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <animations/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <size key="minSize" width="342" height="148"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
@@ -3114,7 +3097,6 @@
                                                                         <size key="minSize" width="342" height="148"/>
                                                                         <size key="maxSize" width="463" height="10000000"/>
                                                                         <connections>
-                                                                            <binding destination="367" name="editable" keyPath="selection.munki_preinstall_alert_enabled" id="0K2-3m-jNg"/>
                                                                             <binding destination="367" name="value" keyPath="selection.munki_preinstall_alert_alert_detail" id="jaW-F1-HJc">
                                                                                 <dictionary key="options">
                                                                                     <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -3122,23 +3104,29 @@
                                                                                     <bool key="NSValidatesImmediately" value="YES"/>
                                                                                 </dictionary>
                                                                             </binding>
+                                                                            <binding destination="367" name="editable" keyPath="selection.munki_preinstall_alert_enabled" id="0K2-3m-jNg"/>
                                                                         </connections>
                                                                     </textView>
                                                                 </subviews>
+                                                                <animations/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </clipView>
+                                                            <animations/>
                                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="S53-je-ulu">
                                                                 <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
+                                                                <animations/>
                                                             </scroller>
                                                             <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Ssj-jA-wdW">
-                                                                <rect key="frame" x="224" y="1" width="15" height="133"/>
+                                                                <rect key="frame" x="343" y="1" width="15" height="148"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
+                                                                <animations/>
                                                             </scroller>
                                                         </scrollView>
                                                         <textField toolTip="Label text of the confirmation button" verticalHuggingPriority="750" id="MF1-4V-YiL">
                                                             <rect key="frame" x="187" y="208" width="150" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="OK" drawsBackground="YES" id="kaX-hj-Szb">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -3159,6 +3147,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="QKS-oL-PTp">
                                                             <rect key="frame" x="185" y="232" width="89" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="OK Button Title:" id="NoC-Vi-LxD">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3168,13 +3157,13 @@
                                                         <textField toolTip="Label text of the cancel button" verticalHuggingPriority="750" id="9I2-VX-KKd">
                                                             <rect key="frame" x="20" y="208" width="150" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Cancel" drawsBackground="YES" id="8Vg-cw-4Fd">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preinstall_alert_enabled" id="ECC-nb-yTW"/>
                                                                 <binding destination="367" name="value" keyPath="selection.munki_preinstall_alert_cancel_label" id="42v-Gb-qLD">
                                                                     <dictionary key="options">
                                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -3183,11 +3172,13 @@
                                                                         <string key="NSNullPlaceholder">Cancel</string>
                                                                     </dictionary>
                                                                 </binding>
+                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preinstall_alert_enabled" id="ECC-nb-yTW"/>
                                                             </connections>
                                                         </textField>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="HHx-bl-fGo">
                                                             <rect key="frame" x="18" y="232" width="109" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Cancel Button Title:" id="Ls6-66-c5x">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3195,6 +3186,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                     </subviews>
+                                                    <animations/>
                                                 </customView>
                                                 <customView id="Epw-kc-a46">
                                                     <rect key="frame" x="400" y="0.0" width="394" height="512"/>
@@ -3203,6 +3195,7 @@
                                                         <button id="s4v-p9-knk">
                                                             <rect key="frame" x="17" y="477" width="154" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <buttonCell key="cell" type="check" title="Enable pre-uninstall alert" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="kjG-og-XEm">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="smallSystem"/>
@@ -3214,13 +3207,13 @@
                                                         <textField toolTip="The main alert message text" verticalHuggingPriority="750" id="8cK-i6-IM2">
                                                             <rect key="frame" x="20" y="428" width="354" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Attention" drawsBackground="YES" id="7Kq-sR-vnf">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preuninstall_alert_enabled" id="q4z-tX-4Vc"/>
                                                                 <binding destination="367" name="value" keyPath="selection.munki_preuninstall_alert_alert_title" id="mDf-MM-EMC">
                                                                     <dictionary key="options">
                                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -3229,11 +3222,13 @@
                                                                         <string key="NSNullPlaceholder">Attention</string>
                                                                     </dictionary>
                                                                 </binding>
+                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preuninstall_alert_enabled" id="q4z-tX-4Vc"/>
                                                             </connections>
                                                         </textField>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ff8-oa-j1G">
                                                             <rect key="frame" x="18" y="452" width="30" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Title:" id="wp3-Ml-iXL">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3246,6 +3241,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="7Mg-cr-52U">
                                                             <rect key="frame" x="18" y="406" width="38" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Detail:" id="KHx-2K-0At">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3262,6 +3258,7 @@
                                                                     <textView importsGraphics="NO" richText="NO" findStyle="bar" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="dgH-wy-0gU">
                                                                         <rect key="frame" x="0.0" y="0.0" width="337" height="148"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <animations/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <size key="minSize" width="337" height="148"/>
                                                                         <size key="maxSize" width="737" height="10000000"/>
@@ -3269,30 +3266,35 @@
                                                                         <size key="minSize" width="337" height="148"/>
                                                                         <size key="maxSize" width="737" height="10000000"/>
                                                                         <connections>
-                                                                            <binding destination="367" name="editable" keyPath="selection.munki_preuninstall_alert_enabled" id="DLe-Ov-Pdr"/>
                                                                             <binding destination="367" name="value" keyPath="selection.munki_preuninstall_alert_alert_detail" id="pyo-2C-sZr">
                                                                                 <dictionary key="options">
                                                                                     <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                                                     <string key="NSNullPlaceholder">Some conditions apply to this software. Please contact your administrator for more details</string>
                                                                                 </dictionary>
                                                                             </binding>
+                                                                            <binding destination="367" name="editable" keyPath="selection.munki_preuninstall_alert_enabled" id="DLe-Ov-Pdr"/>
                                                                         </connections>
                                                                     </textView>
                                                                 </subviews>
+                                                                <animations/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </clipView>
+                                                            <animations/>
                                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="Aak-Ko-chz">
                                                                 <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
+                                                                <animations/>
                                                             </scroller>
                                                             <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="7ki-XR-KJS">
-                                                                <rect key="frame" x="224" y="1" width="15" height="133"/>
+                                                                <rect key="frame" x="338" y="1" width="15" height="148"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
+                                                                <animations/>
                                                             </scroller>
                                                         </scrollView>
                                                         <textField toolTip="Label text of the confirmation button" verticalHuggingPriority="750" id="11S-vF-2Qw">
                                                             <rect key="frame" x="178" y="208" width="150" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="OK" drawsBackground="YES" id="eWI-Oq-udp">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -3313,6 +3315,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="qwu-5E-ruJ">
                                                             <rect key="frame" x="176" y="232" width="89" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="OK Button Title:" id="TQo-gO-fKp">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3322,13 +3325,13 @@
                                                         <textField toolTip="Label text of the cancel button" verticalHuggingPriority="750" id="Gcd-g3-y4s">
                                                             <rect key="frame" x="20" y="208" width="150" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Cancel" drawsBackground="YES" id="2SQ-aS-bR0">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preuninstall_alert_enabled" id="rGJ-me-zmK"/>
                                                                 <binding destination="367" name="value" keyPath="selection.munki_preuninstall_alert_cancel_label" id="GrK-Yw-ceJ">
                                                                     <dictionary key="options">
                                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -3337,11 +3340,13 @@
                                                                         <string key="NSNullPlaceholder">Cancel</string>
                                                                     </dictionary>
                                                                 </binding>
+                                                                <binding destination="367" name="enabled" keyPath="selection.munki_preuninstall_alert_enabled" id="rGJ-me-zmK"/>
                                                             </connections>
                                                         </textField>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="bi6-Mr-3L9">
                                                             <rect key="frame" x="18" y="232" width="109" height="14"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <animations/>
                                                             <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Cancel Button Title:" id="AEB-V6-7h8">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3349,14 +3354,17 @@
                                                             </textFieldCell>
                                                         </textField>
                                                     </subviews>
+                                                    <animations/>
                                                 </customView>
                                             </subviews>
+                                            <animations/>
                                             <holdingPriorities>
                                                 <real value="250"/>
                                                 <real value="250"/>
                                             </holdingPriorities>
                                         </splitView>
                                     </subviews>
+                                    <animations/>
                                 </view>
                             </tabViewItem>
                         </tabViewItems>
