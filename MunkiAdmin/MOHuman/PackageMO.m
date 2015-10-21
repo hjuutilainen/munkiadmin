@@ -382,6 +382,9 @@
 			[tmpDict setObject:[NSArray array] forKey:@"catalogs"];
 		}
 	} else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sortPkginfoCatalogsByTitle"]) {
+            [catalogs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(localizedStandardCompare:)]]];
+        }
 		[tmpDict setObject:catalogs forKey:@"catalogs"];
 	}
 	
