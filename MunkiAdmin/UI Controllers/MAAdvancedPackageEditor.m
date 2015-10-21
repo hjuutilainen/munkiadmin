@@ -712,7 +712,6 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"originalURL != %@", [NSNull null]]];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"originalURL.path" ascending:YES selector:@selector(localizedStandardCompare:)]]];
     NSURL *mainIconsURL = [appDelegate iconsURL];
     NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
     NSMutableArray *newIconNameSuggestions = [NSMutableArray new];
@@ -721,9 +720,12 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
     for (IconImageMO *image in fetchResults) {
         NSString *relativePath = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:image.originalURL parentURL:mainIconsURL];
-        [newIconNameSuggestions addObject:relativePath];
+        if (![newIconNameSuggestions containsObject:relativePath]) {
+            [newIconNameSuggestions addObject:relativePath];
+        }
     }
-    self.iconNameSuggestions = [[NSArray arrayWithArray:newIconNameSuggestions] valueForKeyPath:@"@distinctUnionOfObjects.self"];
+    [newIconNameSuggestions sortUsingSelector:@selector(localizedStandardCompare:)];
+    self.iconNameSuggestions = newIconNameSuggestions;
 }
 
 
