@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAManifestEditor">
@@ -42,7 +42,7 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="777" height="466"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="600" height="400"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="777" height="466"/>
@@ -235,7 +235,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="FnU-rn-3Dv">
-                                            <rect key="frame" x="0.0" y="0.0" width="338" height="190"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="338" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -431,11 +431,11 @@
                         <animations/>
                     </view>
                     <constraints>
-                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="top" secondItem="SSj-cf-Ib2" secondAttribute="top" constant="249" id="1ab-4a-Nmw"/>
-                        <constraint firstAttribute="trailing" secondItem="rCw-Ts-Ixf" secondAttribute="trailing" constant="16" id="B7c-jT-zG4"/>
-                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="leading" secondItem="SSj-cf-Ib2" secondAttribute="leading" constant="16" id="GIv-fo-51W"/>
-                        <constraint firstAttribute="bottom" secondItem="rCw-Ts-Ixf" secondAttribute="bottom" constant="26" id="XuZ-WU-CJg"/>
+                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="top" secondItem="SSj-cf-Ib2" secondAttribute="top" constant="249" id="BD3-Ll-ub7"/>
                         <constraint firstAttribute="width" constant="372" id="iI8-jH-ZWP"/>
+                        <constraint firstAttribute="bottom" secondItem="rCw-Ts-Ixf" secondAttribute="bottom" constant="26" id="j9U-L7-uLb"/>
+                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="leading" secondItem="SSj-cf-Ib2" secondAttribute="leading" constant="16" id="lJW-JQ-Mwh"/>
+                        <constraint firstAttribute="trailing" secondItem="rCw-Ts-Ixf" secondAttribute="trailing" constant="16" id="n3X-qz-Jkj"/>
                     </constraints>
                     <animations/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
@@ -635,7 +635,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="GdV-7o-fS0">
+                    <tableHeaderView key="headerView" id="GdV-7o-fS0" customClass="MATableHeaderView">
                         <rect key="frame" x="0.0" y="0.0" width="481" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -902,7 +902,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="Usy-y0-z5N">
+                    <tableHeaderView key="headerView" id="Usy-y0-z5N" customClass="MATableHeaderView">
                         <rect key="frame" x="0.0" y="0.0" width="481" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -1127,7 +1127,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="61a-5g-rch">
+                    <tableHeaderView key="headerView" id="61a-5g-rch" customClass="MATableHeaderView">
                         <rect key="frame" x="0.0" y="0.0" width="481" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -1254,7 +1254,7 @@
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="322.41796875" minWidth="40" maxWidth="1000" id="83t-Jr-VWB">
+                                    <tableColumn width="321.91796875" minWidth="40" maxWidth="1000" id="83t-Jr-VWB">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Condition">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1365,7 +1365,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="mZf-sd-xAQ">
+                    <tableHeaderView key="headerView" id="mZf-sd-xAQ" customClass="MATableHeaderView">
                         <rect key="frame" x="0.0" y="0.0" width="481" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>

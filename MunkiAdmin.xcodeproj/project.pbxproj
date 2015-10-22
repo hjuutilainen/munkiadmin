@@ -78,6 +78,7 @@
 		F59325A2191794150079398B /* _InstallerTypeSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F59325A1191794150079398B /* _InstallerTypeSourceListItemMO.m */; };
 		F594407E10FF58E700E350E7 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F594407D10FF58E700E350E7 /* UserDefaults.plist */; };
 		F59B724813698044008229E8 /* MAGradientButtonBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59B724713698044008229E8 /* MAGradientButtonBarView.m */; };
+		F59D94221BD958AF004A9870 /* MATableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F59D94211BD958AF004A9870 /* MATableHeaderView.m */; };
 		F5A2CD551AAF358E00A8466E /* calendar_ok.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */; };
 		F5AB9B2E1B00939400875BA4 /* manifestConditionsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5AB9B2D1B00939400875BA4 /* manifestConditionsTemplate.pdf */; };
 		F5B0A0581A77A530006243E3 /* MAScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0A0571A77A530006243E3 /* MAScriptRunner.m */; };
@@ -320,6 +321,8 @@
 		F594407D10FF58E700E350E7 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = UserDefaults.plist; path = MunkiAdmin/UserDefaults.plist; sourceTree = "<group>"; };
 		F59B724613698044008229E8 /* MAGradientButtonBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAGradientButtonBarView.h; sourceTree = "<group>"; };
 		F59B724713698044008229E8 /* MAGradientButtonBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAGradientButtonBarView.m; sourceTree = "<group>"; };
+		F59D94201BD958AF004A9870 /* MATableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATableHeaderView.h; sourceTree = "<group>"; };
+		F59D94211BD958AF004A9870 /* MATableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATableHeaderView.m; sourceTree = "<group>"; };
 		F5A11C6C195706C6005A39AE /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = calendar_ok.pdf; path = MunkiAdmin/Graphics/calendar_ok.pdf; sourceTree = "<group>"; };
 		F5AB9B2D1B00939400875BA4 /* manifestConditionsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = manifestConditionsTemplate.pdf; path = MunkiAdmin/Graphics/manifestConditionsTemplate.pdf; sourceTree = "<group>"; };
@@ -614,6 +617,8 @@
 				F5E333AC1AC52CC90078CAA6 /* MASolidBackgroundView.h */,
 				F5E333AD1AC52CC90078CAA6 /* MASolidBackgroundView.m */,
 				F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */,
+				F59D94201BD958AF004A9870 /* MATableHeaderView.h */,
+				F59D94211BD958AF004A9870 /* MATableHeaderView.m */,
 			);
 			name = "View Classes";
 			path = "MunkiAdmin/View Classes";
@@ -1147,6 +1152,7 @@
 				F5FF3740125D9D7900AD5BC1 /* MAMunkiOperation.m in Sources */,
 				F565BC9D193719E1006884CA /* MADiskImageOperation.m in Sources */,
 				F514A714193DA44000C9027C /* MAImageBrowserItem.m in Sources */,
+				F59D94221BD958AF004A9870 /* MATableHeaderView.m in Sources */,
 				F5DFC878129546E200B68F4F /* ApplicationMO.m in Sources */,
 				F5DFC87A129546E200B68F4F /* ApplicationProxyMO.m in Sources */,
 				F5DFC87C129546E300B68F4F /* CatalogInfoMO.m in Sources */,
