@@ -54,7 +54,6 @@ DDLogLevel ddLogLevel;
 @property (readwrite) BOOL repositoryHasPkginfoPostSaveScript;
 @property (readwrite) BOOL repositoryHasManifestPreSaveScript;
 @property (readwrite) BOOL repositoryHasManifestPostSaveScript;
-@property (readwrite) NSUInteger lengthForUniqueCatalogTitles;
 
 - (void)willStartOperations;
 - (void)willEndOperations;
@@ -2842,7 +2841,7 @@ static dispatch_queue_t serialQueue;
         }
         
         if ([[currentTitles valueForKeyPath:@"@distinctUnionOfObjects.self"] count] == [currentTitles count]) {
-            DDLogDebug(@"All short titles are unique");
+            DDLogDebug(@"Short catalog titles are unique when the length is %lu character...", (unsigned long)length);
             self.lengthForUniqueCatalogTitles = length;
             return;
         } else {

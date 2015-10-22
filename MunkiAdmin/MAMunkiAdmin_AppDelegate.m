@@ -2413,7 +2413,6 @@ DDLogLevel ddLogLevel;
     
     NSBlockOperation *startObservingChangesOp = [NSBlockOperation blockOperationWithBlock:^{
         [self performSelectorOnMainThread:@selector(startObservingObjectsForChanges) withObject:nil waitUntilDone:YES];
-        [[MAMunkiRepositoryManager sharedManager] updateUniqueCatalogStringLength];
     }];
     [startObservingChangesOp addDependency:saveMainContext];
     [self.operationQueue addOperation:startObservingChangesOp];

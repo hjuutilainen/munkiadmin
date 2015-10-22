@@ -28,7 +28,7 @@
 @property (readonly) BOOL repositoryHasPkginfoPostSaveScript;
 @property (readonly) BOOL repositoryHasManifestPreSaveScript;
 @property (readonly) BOOL repositoryHasManifestPostSaveScript;
-@property (readonly) NSUInteger lengthForUniqueCatalogTitles;
+@property NSUInteger lengthForUniqueCatalogTitles;
 @property (readonly, strong) NSString *makepkginfoVersion;
 @property (readonly, strong) NSString *makecatalogsVersion;
 @property (strong) NSDictionary *pkginfoBasicKeyMappings;

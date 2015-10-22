@@ -340,6 +340,30 @@ static const int BatchSize = 50;
         }
     }];
     
+    /*
+     Update the number of characters we need to display unique catalog titles
+     */
+    NSUInteger length = 1;
+    while (length < 10) {
+        NSMutableArray *currentTitles = [NSMutableArray new];
+        for (CatalogMO *catalog in self.allCatalogs) {
+            NSString *shortenedTitle = [catalog.title substringToIndex:([catalog.title length] > length) ? length : [catalog.title length]];
+            [currentTitles addObject:shortenedTitle];
+        }
+        
+        if ([[currentTitles valueForKeyPath:@"@distinctUnionOfObjects.self"] count] == [currentTitles count]) {
+            DDLogDebug(@"Short catalog titles are unique when the length is %lu character...", (unsigned long)length);
+            [[MAMunkiRepositoryManager sharedManager] setLengthForUniqueCatalogTitles:length];
+            break;
+        } else {
+            DDLogVerbose(@"Not all short titles are unique");
+            DDLogVerbose(@"%@", [currentTitles description]);
+        }
+        
+        length++;
+    }
+    
+    
     self.currentJobDescription = [NSString stringWithFormat:@"Merging changes..."];
     
     /*
