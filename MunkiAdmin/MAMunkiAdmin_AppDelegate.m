@@ -905,7 +905,7 @@ DDLogLevel ddLogLevel;
             DDLogVerbose(@"User granted permission to use analytics.");
             [userDefaults setBool:YES forKey:analyticsEnabledKeyName];
         } else {
-            DDLogVerbose(@"User granted permission to use analytics.");
+            DDLogVerbose(@"User did not give permission to use analytics.");
             [userDefaults setBool:NO forKey:analyticsEnabledKeyName];
         }
         
