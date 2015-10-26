@@ -882,13 +882,18 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+#if DEBUG
+    DDLogError(@"Running in DEBUG mode...");
+#else
+    
     /*
      DevMate preference key names
      */
     NSString *analyticsPermissionKeyName = @"DevMateAnalyticsPermissionAsked";
     NSString *analyticsEnabledKeyName = @"DevMateAnalyticsEnabled";
     NSString *issuesEnabledKeyName = @"DevMateIssuesEnabled";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
     /*
      Ask permission to send usage data to DevMate
@@ -927,6 +932,7 @@ DDLogLevel ddLogLevel;
         [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
     }
     
+#endif
     
     [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
     
