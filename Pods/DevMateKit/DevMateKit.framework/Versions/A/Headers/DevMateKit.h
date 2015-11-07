@@ -32,6 +32,12 @@
 */
 + (void)setupDefaultUserName:(NSString *)userName userEmail:(NSString *)userEmail;
 
+/*! @brief Setup custom log files for sending them with user feedback or issue reporter.
+    @discussion This value will be set up only for Feedback and Issue shared controllers.
+    @param logFileURLs array with NSURL objects.
+ */
++ (void)setupCustomLogFileURLs:(NSArray *)logFileURLs;
+
 /*! @brief Easy way to send tracking report.
     @param infoProvider Info provider for tracking reporter.
     @param delegate delegate for tracking reporter

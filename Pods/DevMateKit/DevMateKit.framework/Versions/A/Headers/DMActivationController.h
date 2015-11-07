@@ -190,6 +190,14 @@ typedef void (^DMCompletionHandler)(DMActivationProcessResult result);
                    withNibName:(NSString *)controllerNibName
              forActivationStep:(DMActivationStep)step;
 
+/*! @brief Use this method to register own steps with own controllers.
+ @discussion                 Can be also used to re-register standard steps with own controller
+ @param controller           Controller for registered step. Use \p nil to remove step controller.
+ @param step                 activation step (custom or \p DMActivationStandardStep) to register new controller.
+ */
+- (void)registerStepController:(DMStepController *)controller
+             forActivationStep:(DMActivationStep)step;
+
 //! Outlet for view container for step views to be placed into.
 @property (nonatomic, assign) IBOutlet NSView *containerView;
 
