@@ -670,11 +670,12 @@ DDLogLevel ddLogLevel;
     adobeSmartItem.itemType = @"smart";
     adobeSmartItem.parent = mainTypesItem;
     adobeSmartItem.originalIndexValue = 60;
-    NSArray *adobePredicates = @[[NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeSetup"],
-                                 [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeUberInstaller"],
-                                 [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"AdobeAcrobatUpdater"],
-                                 [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"!AdobeCS5AAMEEPackage"],
-                                 [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"!AdobeCS5PatchInstaller"]];
+    NSArray *adobePredicates = @[[NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeAcrobatUpdater"],
+                                 [NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeCCPInstaller"],
+                                 [NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeCS5AAMEEPackage"],
+                                 [NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeCS5PatchInstaller"],
+                                 [NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeSetup"],
+                                 [NSPredicate predicateWithFormat:@"munki_installer_type CONTAINS %@", @"AdobeUberInstaller"]];
     NSPredicate *adobePredicatesCombined = [NSCompoundPredicate orPredicateWithSubpredicates:adobePredicates];
     adobeSmartItem.filterPredicate = adobePredicatesCombined;
 }
