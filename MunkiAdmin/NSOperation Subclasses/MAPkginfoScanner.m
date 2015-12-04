@@ -83,7 +83,7 @@ DDLogLevel ddLogLevel;
 			
 			if (self.sourceURL != nil) {
                 self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
-                DDLogDebug(@"%@: Reading file from disk", self.fileName);
+                DDLogVerbose(@"%@: Reading file from disk", self.fileName);
                 self.sourceDict = [[NSDictionary alloc] initWithContentsOfURL:self.sourceURL];
 			}
 			
@@ -557,7 +557,7 @@ DDLogLevel ddLogLevel;
 		}
 	}
 	@catch(...) {
-		// Do not rethrow exceptions.
+		DDLogError(@"Error: Caught exception while reading pkginfo %@", self.fileName);
 	}
 }
 

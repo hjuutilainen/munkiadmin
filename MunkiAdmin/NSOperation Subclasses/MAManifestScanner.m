@@ -411,7 +411,7 @@ DDLogLevel ddLogLevel;
 		}
 	}
 	@catch(...) {
-		// Do not rethrow exceptions.
+		DDLogError(@"Error: Caught exception while reading manifest %@", self.fileName);
 	}
 }
 
