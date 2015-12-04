@@ -12,6 +12,7 @@
 #import "MACoreDataManager.h"
 #import "MADiskImageOperation.h"
 #import "MAPackageExtractOperation.h"
+#import "MAManifestScanner.h"
 #import "MAScriptRunner.h"
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
@@ -710,6 +711,46 @@ static dispatch_queue_t serialQueue;
     } else {
         return nil;
     }
+}
+
+- (BOOL)copyPropertiesFromManifest:(ManifestMO *)sourceManifest toManifest:(ManifestMO *)targetManifest inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    BOOL succeeded = NO;
+    
+    return succeeded;
+}
+
+- (BOOL)duplicateManifest:(ManifestMO *)manifest
+{
+    BOOL succeeded = NO;
+    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    savePanel.title = @"Save Manifest";
+    savePanel.directoryURL = [[manifest manifestURL] URLByDeletingLastPathComponent];
+    
+    if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    {
+        NSURL *newURL = [savePanel URL];
+        
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSError *copyError = nil;
+        if ([fm copyItemAtURL:manifest.manifestURL toURL:newURL error:&copyError]) {
+            MAManifestScanner *manifestScanner = [[MAManifestScanner alloc] initWithURL:newURL];
+            manifestScanner.performFullScan = YES;
+            [manifestScanner start];
+            succeeded = YES;
+        } else {
+            DDLogError(@"Copying failed with error: %@", [copyError description]);
+            [NSApp presentError:copyError];
+        }
+    } else {
+        return NO;
+    }
+    
+    
+    return succeeded;
 }
 
 - (void)removeManifest:(ManifestMO *)aManifest withReferences:(BOOL)removeReferences

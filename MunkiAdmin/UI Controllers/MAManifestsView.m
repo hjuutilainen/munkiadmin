@@ -726,6 +726,13 @@ DDLogLevel ddLogLevel;
     
 }
 
+- (IBAction)duplicateManifestAction:(id)sender
+{
+    NSUInteger clickedRow = (NSUInteger)[self.manifestsListTableView clickedRow];
+    ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:clickedRow];
+    [[MAMunkiRepositoryManager sharedManager] duplicateManifest:clickedManifest];
+}
+
 - (IBAction)newManifestAction:(id)sender
 {
     [self createNewManifest];

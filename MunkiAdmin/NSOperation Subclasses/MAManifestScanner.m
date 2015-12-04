@@ -17,6 +17,9 @@ DDLogLevel ddLogLevel;
 @property (nonatomic, strong) NSManagedObjectContext *context;
 @property (strong) NSArray *allManifests;
 @property (strong) NSDictionary *allManifestsByTitle;
+@property (strong) NSArray *allApplications;
+@property (strong) NSArray *allPackages;
+@property (strong) NSArray *allCatalogs;
 @end
 
 @implementation MAManifestScanner
@@ -163,6 +166,259 @@ DDLogLevel ddLogLevel;
         return [manifests objectAtIndex:foundIndex];
     } else {
         return nil;
+    }
+}
+
+- (id)matchingAppOrPkgForString:(NSString *)aString
+{
+    NSPredicate *appPred = [NSPredicate predicateWithFormat:@"munki_name == %@", aString];
+    NSUInteger foundIndex = [self.allApplications indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        return [appPred evaluateWithObject:obj];
+    }];
+    if (foundIndex != NSNotFound) {
+        return [self.allApplications objectAtIndex:foundIndex];
+    } else {
+        NSPredicate *pkgPred = [NSPredicate predicateWithFormat:@"titleWithVersion == %@", aString];
+        NSUInteger foundPkgIndex = [self.allPackages indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [pkgPred evaluateWithObject:obj];
+        }];
+        if (foundPkgIndex != NSNotFound) {
+            return [self.allPackages objectAtIndex:foundPkgIndex];
+        } else {
+            return nil;
+        }
+    }
+}
+
+- (ManifestMO *)matchingManifestForString:(NSString *)title
+{
+    ManifestMO *manifest = nil;
+    /*
+     Try to get a managed object ID for this title, this is a broken reference if it doesn't exist!
+     */
+    ManifestMOID *manifestID = [self.allManifestsByTitle objectForKey:title];
+    if (manifestID) {
+        
+        /*
+         Resolve the managed object ID to an actual manifest object
+         */
+        manifest = (ManifestMO *)[self.context existingObjectWithID:manifestID error:nil];
+        if (manifest) {
+            DDLogVerbose(@"Found existing manifest with title '%@'", title);
+        } else {
+            DDLogError(@"Error: Could not find manifest with title '%@'", title);
+        }
+    } else {
+        DDLogError(@"Error: Could not find manifest with title '%@'", title);
+    }
+    return manifest;
+}
+
+- (void)resolveAllReferencesForManifest:(ManifestMO *)manifest
+{
+    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:self.context];
+    NSEntityDescription *manifestEntityDescr = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:self.context];
+    NSEntityDescription *applicationEntityDescr = [NSEntityDescription entityForName:@"Application" inManagedObjectContext:self.context];
+    NSEntityDescription *packageEntityDescr = [NSEntityDescription entityForName:@"Package" inManagedObjectContext:self.context];
+    
+    
+    // Get some objects for later use
+    
+    NSFetchRequest *getManifests = [[NSFetchRequest alloc] init];
+    [getManifests setEntity:manifestEntityDescr];
+    self.allManifests = [self.context executeFetchRequest:getManifests error:nil];
+    
+    NSMutableDictionary *manifestsAndTitles = [[NSMutableDictionary alloc] initWithCapacity:[self.allManifests count]];
+    for (ManifestMO *existingManifest in self.allManifests) {
+        manifestsAndTitles[existingManifest.title] = existingManifest.objectID;
+    }
+    self.allManifestsByTitle = manifestsAndTitles;
+    
+    NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
+    [getApplications setEntity:applicationEntityDescr];
+    self.allApplications = [self.context executeFetchRequest:getApplications error:nil];
+    
+    NSFetchRequest *getAllCatalogs = [[NSFetchRequest alloc] init];
+    [getAllCatalogs setEntity:catalogEntityDescr];
+    self.allCatalogs = [self.context executeFetchRequest:getAllCatalogs error:nil];
+    
+    NSFetchRequest *getPackages = [[NSFetchRequest alloc] init];
+    [getPackages setEntity:packageEntityDescr];
+    self.allPackages = [self.context executeFetchRequest:getPackages error:nil];
+    
+    ManifestMO *currentManifest = manifest;
+    NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
+    
+    
+    NSArray *existingCatalogTitles = [[currentManifest.catalogInfos valueForKeyPath:@"catalog.title"] allObjects];
+    NSArray *newCatalogTitles = [self.allCatalogs valueForKeyPath:@"title"];
+    
+    // Loop through all known catalog objects and configure
+    // them for this manifest
+    
+    if (![existingCatalogTitles isEqualToArray:newCatalogTitles]) {
+        
+        // Delete the old catalogs
+        for (CatalogInfoMO *aCatInfo in currentManifest.catalogInfos) {
+            [self.context deleteObject:aCatInfo];
+        }
+        
+        NSArray *catalogs = [originalManifestDict objectForKey:@"catalogs"];
+        for (CatalogMO *aCatalog in self.allCatalogs) {
+            NSString *catalogTitle = [aCatalog title];
+            CatalogInfoMO *newCatalogInfo;
+            newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:self.context];
+            newCatalogInfo.catalog.title = catalogTitle;
+            [aCatalog addManifestsObject:currentManifest];
+            newCatalogInfo.manifest = currentManifest;
+            [aCatalog addCatalogInfosObject:newCatalogInfo];
+            
+            if (catalogs == nil) {
+                DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
+                newCatalogInfo.isEnabledForManifestValue = NO;
+                newCatalogInfo.originalIndexValue = 0;
+                newCatalogInfo.indexInManifestValue = 0;
+            } else if ([catalogs containsObject:catalogTitle]) {
+                DDLogVerbose(@"%@: catalog %@ --> enabled", currentManifest.fileName, aCatalog.title);
+                newCatalogInfo.isEnabledForManifestValue = YES;
+                newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
+                newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
+            } else {
+                DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
+                newCatalogInfo.isEnabledForManifestValue = NO;
+                newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
+                newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
+            }
+        }
+    }
+    
+    
+    /*
+     StringObjects are created during the initial manifest scan.
+     Now loop through them and link them to an existing
+     PackageMO or ApplicationMO object
+     */
+    
+    for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
+        DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, aManagedInstall.title);
+        id matchingObject = [self matchingAppOrPkgForString:aManagedInstall.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link managed_install object %@", currentManifest.title, aManagedInstall.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            aManagedInstall.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            aManagedInstall.originalPackage = matchingObject;
+        }
+    }
+    for (StringObjectMO *aManagedUninstall in currentManifest.managedUninstallsFaster) {
+        DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, aManagedUninstall.title);
+        id matchingObject = [self matchingAppOrPkgForString:aManagedUninstall.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link managed_uninstall object: %@", currentManifest.title, aManagedUninstall.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            aManagedUninstall.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            aManagedUninstall.originalPackage = matchingObject;
+        }
+    }
+    for (StringObjectMO *aManagedUpdate in currentManifest.managedUpdatesFaster) {
+        DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, aManagedUpdate.title);
+        id matchingObject = [self matchingAppOrPkgForString:aManagedUpdate.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link managed_update object: %@", currentManifest.title, aManagedUpdate.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            aManagedUpdate.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            aManagedUpdate.originalPackage = matchingObject;
+        }
+    }
+    for (StringObjectMO *anOptionalInstall in currentManifest.optionalInstallsFaster) {
+        DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, anOptionalInstall.title);
+        id matchingObject = [self matchingAppOrPkgForString:anOptionalInstall.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link optional_install object: %@", currentManifest.title, anOptionalInstall.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            anOptionalInstall.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            anOptionalInstall.originalPackage = matchingObject;
+        }
+    }
+    
+    /*
+     Link included manifest items
+     */
+    for (StringObjectMO *stringObject in currentManifest.includedManifestsFaster) {
+        DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, stringObject.title);
+        
+        ManifestMO *originalManifest = [self matchingManifestForString:stringObject.title];
+        if (originalManifest) {
+            DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.fileName, stringObject.title, originalManifest.title);
+            stringObject.originalManifest = originalManifest;
+        } else {
+            DDLogError(@"%@: Error: Could not link included_manifest object: %@", currentManifest.title, stringObject.title);
+        }
+    }
+    
+    /*
+     Link items under conditional items
+     */
+    for (ConditionalItemMO *conditionalItem in currentManifest.conditionalItems) {
+        for (StringObjectMO *managedInstall in conditionalItem.managedInstalls) {
+            DDLogVerbose(@"%@: linking conditional managed_install object %@", currentManifest.fileName, managedInstall.title);
+            id matchingObject = [self matchingAppOrPkgForString:managedInstall.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional managed_install object: %@", currentManifest.title, managedInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                managedInstall.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                managedInstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *managedUninstall in conditionalItem.managedUninstalls) {
+            DDLogVerbose(@"%@: linking conditional managed_uninstall object %@", currentManifest.fileName, managedUninstall.title);
+            id matchingObject = [self matchingAppOrPkgForString:managedUninstall.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional managed_uninstall object: %@", currentManifest.title, managedUninstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                managedUninstall.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                managedUninstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *managedUpdate in conditionalItem.managedUpdates) {
+            DDLogVerbose(@"%@: linking conditional managed_update object %@", currentManifest.fileName, managedUpdate.title);
+            id matchingObject = [self matchingAppOrPkgForString:managedUpdate.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional managed_update object: %@", currentManifest.title, managedUpdate.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                managedUpdate.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                managedUpdate.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *optionalInstall in conditionalItem.optionalInstalls) {
+            DDLogVerbose(@"%@: linking conditional optional_install object %@", currentManifest.fileName, optionalInstall.title);
+            id matchingObject = [self matchingAppOrPkgForString:optionalInstall.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional optional_install object: %@", currentManifest.title, optionalInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                optionalInstall.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                optionalInstall.originalPackage = matchingObject;
+            }
+        }
+        
+        for (StringObjectMO *includedManifest in conditionalItem.includedManifests) {
+            DDLogVerbose(@"%@: linking conditional included_manifest object %@", currentManifest.fileName, includedManifest.title);
+            
+            ManifestMO *originalManifest = [self matchingManifestForString:includedManifest.title];
+            if (originalManifest) {
+                DDLogVerbose(@"%@: linking conditional included_manifest object %@ to original manifest %@", currentManifest.fileName, includedManifest.title, originalManifest.title);
+                includedManifest.originalManifest = originalManifest;
+            } else {
+                DDLogError(@"%@: could not link conditional included_manifest object: %@", currentManifest.title, includedManifest.title);
+            }
+        }
     }
 }
 
@@ -386,6 +642,13 @@ DDLogLevel ddLogLevel;
                 [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:privateContext];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+                
+                if (self.performFullScan) {
+                    /*
+                     This is a manifest scan which is not followed by a full relationship scanner
+                     */
+                    [self resolveAllReferencesForManifest:manifest];
+                }
 				
 			} else {
 				DDLogError(@"Can't read manifest file %@", [self.sourceURL relativePath]);

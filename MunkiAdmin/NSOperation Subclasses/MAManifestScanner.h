@@ -26,6 +26,7 @@
 @property (strong) NSDictionary *receiptKeyMappings;
 @property (strong) NSDictionary *installsKeyMappings;
 @property (strong) ManifestMOID *manifestID;
+@property BOOL performFullScan;
 
 
 @end
