@@ -439,7 +439,7 @@ DDLogLevel ddLogLevel;
             /*
              * Read the manifest dictionary from disk
              */
-            DDLogDebug(@"%@: Reading file from disk", self.fileName);
+            DDLogVerbose(@"%@: Reading file from disk", self.fileName);
 			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
 			if (manifestInfoDict != nil) {
                 
