@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15E27e" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAPreferences">
@@ -27,17 +27,15 @@
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="540" height="167"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                <animations/>
             </view>
         </window>
         <customView id="4" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="540" height="337"/>
+            <rect key="frame" x="0.0" y="0.0" width="540" height="359"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="29">
-                    <rect key="frame" x="73" y="271" width="86" height="17"/>
+                    <rect key="frame" x="73" y="293" width="86" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default view:" id="36">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -45,9 +43,8 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="37">
-                    <rect key="frame" x="71" y="229" width="88" height="17"/>
+                    <rect key="frame" x="71" y="251" width="88" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="When saving:" id="38">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -57,7 +54,6 @@
                 <textField verticalHuggingPriority="750" id="349">
                     <rect key="frame" x="75" y="129" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Drag'n drop:" id="350">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -67,7 +63,6 @@
                 <textField verticalHuggingPriority="750" id="u5u-kS-jGq">
                     <rect key="frame" x="95" y="69" width="64" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Analytics:" id="DxP-IF-pCC">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -75,9 +70,8 @@
                     </textFieldCell>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" id="30">
-                    <rect key="frame" x="163" y="265" width="235" height="26"/>
+                    <rect key="frame" x="163" y="287" width="235" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" title="Packages" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="35" id="31">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -94,9 +88,8 @@
                     </connections>
                 </popUpButton>
                 <textField verticalHuggingPriority="750" id="118">
-                    <rect key="frame" x="83" y="299" width="76" height="17"/>
+                    <rect key="frame" x="83" y="321" width="76" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On Startup:" id="125">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -104,9 +97,8 @@
                     </textFieldCell>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" id="119">
-                    <rect key="frame" x="163" y="293" width="235" height="26"/>
+                    <rect key="frame" x="163" y="315" width="235" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" title="Prompt to select a repository" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="123" id="120">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -123,9 +115,8 @@
                     </connections>
                 </popUpButton>
                 <button id="39">
-                    <rect key="frame" x="163" y="188" width="147" height="18"/>
+                    <rect key="frame" x="163" y="210" width="147" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Update catalog files" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="40">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -135,9 +126,8 @@
                     </connections>
                 </button>
                 <button id="Ty4-GS-RZX">
-                    <rect key="frame" x="183" y="168" width="155" height="18"/>
+                    <rect key="frame" x="183" y="190" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Disable sanity checks" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="LCh-sQ-L7G">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -148,9 +138,8 @@
                     </connections>
                 </button>
                 <button id="43">
-                    <rect key="frame" x="163" y="208" width="286" height="18"/>
+                    <rect key="frame" x="163" y="230" width="286" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Write changed manifest files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="44">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -160,9 +149,8 @@
                     </connections>
                 </button>
                 <button id="41">
-                    <rect key="frame" x="163" y="228" width="280" height="18"/>
+                    <rect key="frame" x="163" y="250" width="280" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Write changed pkginfo files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="42">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -174,7 +162,6 @@
                 <button id="351">
                     <rect key="frame" x="163" y="128" width="320" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Move installer items when moving pkginfo files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="352">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -186,7 +173,6 @@
                 <button id="353">
                     <rect key="frame" x="163" y="108" width="214" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Suppress confirmation dialogs" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="354">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -198,7 +184,6 @@
                 <button id="WYb-5W-Tt5">
                     <rect key="frame" x="163" y="68" width="219" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Send anonymous system profile" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Uft-ik-HIF">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -210,7 +195,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="V2e-aF-N0f">
                     <rect key="frame" x="163" y="20" width="308" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="When enabled, MunkiAdmin sends anonymous system profile to DevMate analytics every time the application is launched. " id="lHU-zm-DN7">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -220,7 +204,6 @@
                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="Trx-pG-rHG">
                     <rect key="frame" x="390" y="64" width="25" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qaK-KC-ymQ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -229,9 +212,20 @@
                         <action selector="openPrivacyPolicy:" target="-1" id="zrZ-Re-1tW"/>
                     </connections>
                 </button>
+                <button id="KkC-ji-veb">
+                    <rect key="frame" x="183" y="170" width="227" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Only if pkginfo files were changed" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="0ck-PK-Adk">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="12" name="enabled" keyPath="values.UpdateCatalogsOnSave" id="CCf-ab-uqt"/>
+                        <binding destination="12" name="value" keyPath="values.makecatalogsOnlyIfNeeded" id="Sec-ud-SAz"/>
+                    </connections>
+                </button>
             </subviews>
-            <animations/>
-            <point key="canvasLocation" x="829" y="655.5"/>
+            <point key="canvasLocation" x="829" y="666.5"/>
         </customView>
         <customView id="6" userLabel="Munki">
             <rect key="frame" x="0.0" y="0.0" width="540" height="387"/>
@@ -240,7 +234,6 @@
                 <textField verticalHuggingPriority="750" id="8">
                     <rect key="frame" x="45" y="347" width="140" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Path to makepkginfo:" id="9">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -250,7 +243,6 @@
                 <textField verticalHuggingPriority="750" id="10">
                     <rect key="frame" x="190" y="345" width="312" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="11">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -263,7 +255,6 @@
                 <textField verticalHuggingPriority="750" id="15">
                     <rect key="frame" x="35" y="291" width="150" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Path to makecatalogs:" id="18">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -273,7 +264,6 @@
                 <textField verticalHuggingPriority="750" id="16">
                     <rect key="frame" x="190" y="289" width="312" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="17">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -286,7 +276,6 @@
                 <button id="128">
                     <rect key="frame" x="188" y="225" width="267" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Keep managed installs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="129">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -298,7 +287,6 @@
                 <button id="130">
                     <rect key="frame" x="188" y="205" width="283" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Keep managed uninstalls sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="131">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -310,7 +298,6 @@
                 <button id="132">
                     <rect key="frame" x="188" y="185" width="272" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Keep managed updates sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="133">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -322,7 +309,6 @@
                 <button id="134">
                     <rect key="frame" x="188" y="165" width="260" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Keep optional installs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="135">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -334,7 +320,6 @@
                 <button id="gPX-TC-oDM">
                     <rect key="frame" x="187" y="59" width="206" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Keep catalogs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="qLV-Vu-vLD">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -346,7 +331,6 @@
                 <textField verticalHuggingPriority="750" id="dLF-Hy-2Bl">
                     <rect key="frame" x="103" y="60" width="82" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Pkginfo files:" id="C58-hD-tyg">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -356,7 +340,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="138">
                     <rect key="frame" x="187" y="103" width="285" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="139">
                         <font key="font" metaFont="smallSystem"/>
                         <string key="title">If not enabled, items are kept in the original order (which is determined while scanning manifests). Catalogs and nested manifests are always written in the order they appear on GUI.</string>
@@ -367,7 +350,6 @@
                 <textField verticalHuggingPriority="750" id="329">
                     <rect key="frame" x="237" y="323" width="268" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="--" id="330">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -385,7 +367,6 @@
                 <textField verticalHuggingPriority="750" id="335">
                     <rect key="frame" x="187" y="323" width="48" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version:" id="336">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -395,7 +376,6 @@
                 <textField verticalHuggingPriority="750" id="337">
                     <rect key="frame" x="237" y="267" width="268" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="--" id="340">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -413,7 +393,6 @@
                 <textField verticalHuggingPriority="750" id="338">
                     <rect key="frame" x="187" y="267" width="48" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version:" id="339">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -423,7 +402,6 @@
                 <textField verticalHuggingPriority="750" id="136">
                     <rect key="frame" x="118" y="226" width="67" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Manifests:" id="137">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -431,7 +409,6 @@
                     </textFieldCell>
                 </textField>
             </subviews>
-            <animations/>
             <point key="canvasLocation" x="809" y="21.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="12"/>
@@ -442,7 +419,6 @@
                 <popUpButton verticalHuggingPriority="750" id="mKO-er-SFz">
                     <rect key="frame" x="186" y="222" width="166" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" title="Verbose" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="o9W-oJ-bSb" id="dVS-np-IoA">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -464,7 +440,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="9wo-UK-vfh">
                     <rect key="frame" x="118" y="228" width="64" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log level:" id="R4W-WF-mGu">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -474,7 +449,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="97T-E1-5M4">
                     <rect key="frame" x="71" y="190" width="111" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log destinations:" id="PuM-zC-TTF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -484,7 +458,6 @@
                 <button id="8ew-Qy-exc">
                     <rect key="frame" x="186" y="189" width="84" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Log to file" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fkR-zn-AZ1">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -496,7 +469,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="p61-fO-lOl">
                     <rect key="frame" x="186" y="169" width="328" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Send log statements to a file in ~/Library/Logs/MunkiAdmin/" id="2sU-a7-Bdm">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -506,7 +478,6 @@
                 <button id="4Fi-8M-piQ">
                     <rect key="frame" x="186" y="145" width="179" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Log to Apple System Log" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="970-3J-BYL">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -518,7 +489,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="1sE-7b-xn3">
                     <rect key="frame" x="186" y="111" width="300" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Send log statements to Apple System Log, so they show up on Console.app." id="JCo-Dn-Y72">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -528,7 +498,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="82a-2G-ffy">
                     <rect key="frame" x="122" y="68" width="60" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Updates:" id="YW7-zt-Pdx">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -538,7 +507,6 @@
                 <button id="sKe-mp-ben">
                     <rect key="frame" x="186" y="67" width="221" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" inset="2" id="p3Z-sN-ORW">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -550,7 +518,6 @@
                 <popUpButton verticalHuggingPriority="750" id="cj6-7w-Cfe">
                     <rect key="frame" x="256" y="37" width="100" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="BE3-a2-d4e" id="z52-D6-ckq">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -573,7 +540,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="jvs-v5-4RH">
                     <rect key="frame" x="186" y="42" width="66" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Schedule:" id="xOx-Gg-QWS">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -583,7 +549,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="LdH-sJ-0V3">
                     <rect key="frame" x="255" y="20" width="240" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="vVL-GU-HWp">
                         <dateFormatter key="formatter" dateStyle="long" timeStyle="medium" id="CVF-5v-AIS"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -597,7 +562,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="f59-gS-SKz">
                     <rect key="frame" x="186" y="20" width="65" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Last check:" id="6zF-cw-k8M">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
@@ -607,7 +571,6 @@
                 <button verticalHuggingPriority="750" id="Mny-hR-8DF">
                     <rect key="frame" x="355" y="33" width="112" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="push" title="Check Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Chs-R1-54B">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -617,7 +580,6 @@
                     </connections>
                 </button>
             </subviews>
-            <animations/>
             <point key="canvasLocation" x="829" y="365"/>
         </customView>
         <customView id="149" userLabel="Import options">
@@ -627,7 +589,6 @@
                 <textField verticalHuggingPriority="750" id="159">
                     <rect key="frame" x="90" y="441" width="49" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Owner:" id="180">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -637,7 +598,6 @@
                 <button id="160">
                     <rect key="frame" x="91" y="297" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="display_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="179">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -650,7 +610,6 @@
                 <button id="PAx-R0-WA7">
                     <rect key="frame" x="265" y="297" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="icon_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="wf3-lh-tRI">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -663,7 +622,6 @@
                 <button id="193">
                     <rect key="frame" x="73" y="369" width="275" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Assimilate pkginfo properties on import" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="194">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -675,7 +633,6 @@
                 <button id="161">
                     <rect key="frame" x="91" y="261" width="93" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="description" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="178">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -688,7 +645,6 @@
                 <button id="162">
                     <rect key="frame" x="73" y="543" width="233" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Copy package to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="177">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -700,7 +656,6 @@
                 <button id="163">
                     <rect key="frame" x="73" y="469" width="262" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Override items_to_copy default values" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="176">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -712,7 +667,6 @@
                 <textField verticalHuggingPriority="750" id="164">
                     <rect key="frame" x="144" y="439" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="175">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -726,7 +680,6 @@
                 <textField verticalHuggingPriority="750" id="165">
                     <rect key="frame" x="293" y="443" width="48" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Group:" id="174">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -736,7 +689,6 @@
                 <textField verticalHuggingPriority="750" id="166">
                     <rect key="frame" x="346" y="441" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="173">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -750,7 +702,6 @@
                 <textField verticalHuggingPriority="750" id="167">
                     <rect key="frame" x="96" y="411" width="43" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Mode:" id="172">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -760,7 +711,6 @@
                 <textField verticalHuggingPriority="750" id="168">
                     <rect key="frame" x="144" y="409" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="171">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -774,7 +724,6 @@
                 <button id="169">
                     <rect key="frame" x="91" y="225" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="maximum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="170">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -787,7 +736,6 @@
                 <button id="201">
                     <rect key="frame" x="265" y="207" width="156" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="minimum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="202">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -800,7 +748,6 @@
                 <button id="205">
                     <rect key="frame" x="91" y="207" width="181" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="minimum_munki_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="206">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -813,7 +760,6 @@
                 <button id="208">
                     <rect key="frame" x="91" y="243" width="97" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="autoremove" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="209">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -826,7 +772,6 @@
                 <button id="211">
                     <rect key="frame" x="265" y="157" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="blocking_applications" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="212">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -839,7 +784,6 @@
                 <button id="214">
                     <rect key="frame" x="265" y="189" width="153" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="installable_condition" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="215">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -852,7 +796,6 @@
                 <button id="217">
                     <rect key="frame" x="91" y="71" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="installcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="218">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -865,7 +808,6 @@
                 <button id="226">
                     <rect key="frame" x="91" y="53" width="123" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="preinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="241">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -878,7 +820,6 @@
                 <button id="227">
                     <rect key="frame" x="265" y="53" width="130" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="postinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="240">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -891,7 +832,6 @@
                 <button id="228">
                     <rect key="frame" x="91" y="35" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="preuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="239">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -904,7 +844,6 @@
                 <button id="229">
                     <rect key="frame" x="265" y="35" width="146" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="postuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="238">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -917,7 +856,6 @@
                 <button id="230">
                     <rect key="frame" x="91" y="139" width="74" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="requires" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="237">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -930,7 +868,6 @@
                 <button id="312">
                     <rect key="frame" x="265" y="139" width="80" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="update_for" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="313">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -943,7 +880,6 @@
                 <button id="316">
                     <rect key="frame" x="91" y="121" width="136" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="installer_choices_xml" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="319">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -956,7 +892,6 @@
                 <button id="344">
                     <rect key="frame" x="91" y="103" width="99" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="items_to_copy" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="345">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -969,7 +904,6 @@
                 <button id="317">
                     <rect key="frame" x="265" y="121" width="60" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="installs" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="318">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -982,7 +916,6 @@
                 <button id="231">
                     <rect key="frame" x="91" y="157" width="175" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="supported_architectures" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="236">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -995,7 +928,6 @@
                 <button id="253">
                     <rect key="frame" x="91" y="17" width="131" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="uninstall_method" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="254">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1008,7 +940,6 @@
                 <button id="269">
                     <rect key="frame" x="91" y="189" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="uninstaller_item_location" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="270">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1021,7 +952,6 @@
                 <button id="256">
                     <rect key="frame" x="265" y="17" width="118" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="uninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="257">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1034,7 +964,6 @@
                 <button id="259">
                     <rect key="frame" x="265" y="225" width="103" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="uninstallable" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="260">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1047,7 +976,6 @@
                 <button id="262">
                     <rect key="frame" x="265" y="71" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="uninstallcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="263">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1060,7 +988,6 @@
                 <button id="232">
                     <rect key="frame" x="265" y="261" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="unattended_install" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="235">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1073,7 +1000,6 @@
                 <button id="233">
                     <rect key="frame" x="265" y="243" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="unattended_uninstall" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="234">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1086,7 +1012,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="198">
                     <rect key="frame" x="90" y="321" width="380" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="199">
                         <font key="font" metaFont="smallSystem"/>
                         <string key="title">When importing a package, MunkiAdmin finds the latest existing version of the package and uses the selected properties for the new pkginfo.</string>
@@ -1100,7 +1025,6 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="273">
                     <rect key="frame" x="90" y="509" width="380" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Copy the imported package to repository if it's not located inside the pkgs subdirectory. MunkiAdmin will ask for a location." id="274">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1113,7 +1037,6 @@
                 <button id="poS-y2-KYw">
                     <rect key="frame" x="91" y="279" width="93" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="category" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="aCg-0w-rwN">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1126,7 +1049,6 @@
                 <button id="cZd-rF-8c8">
                     <rect key="frame" x="265" y="279" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="developer" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="kuz-JP-nsZ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -1137,7 +1059,6 @@
                     </connections>
                 </button>
             </subviews>
-            <animations/>
             <point key="canvasLocation" x="276" y="-178.5"/>
         </customView>
         <customView id="pIw-Xe-2tD" userLabel="Appearance">
@@ -1147,7 +1068,6 @@
                 <textField verticalHuggingPriority="750" id="A9S-H1-xJN">
                     <rect key="frame" x="119" y="109" width="111" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Sidebar Sections:" id="YDI-fO-mqF">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1157,7 +1077,6 @@
                 <button id="hV4-LD-IWd">
                     <rect key="frame" x="234" y="88" width="112" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Installer Types" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VUb-Vv-1hE">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1169,7 +1088,6 @@
                 <button id="WvL-jn-tZc">
                     <rect key="frame" x="234" y="68" width="89" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Categories" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6ln-sD-E0e">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1181,7 +1099,6 @@
                 <button id="3zH-jS-1nX">
                     <rect key="frame" x="234" y="48" width="176" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Developers with at least:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Eev-7G-9mf">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1193,7 +1110,6 @@
                 <button id="UIn-de-2Cy">
                     <rect key="frame" x="234" y="108" width="90" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Directories" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="NR9-FR-2xx">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -1205,7 +1121,6 @@
                 <textField verticalHuggingPriority="750" id="oy3-JS-7IC">
                     <rect key="frame" x="256" y="20" width="38" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="ne1-Sf-u0N">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" allowsFloats="NO" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="3" id="DLJ-IS-adY">
                             <real key="minimum" value="0.0"/>
@@ -1223,7 +1138,6 @@
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="OQu-EJ-VDv">
                     <rect key="frame" x="299" y="17" width="19" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="14N-wm-Lgs"/>
                     <connections>
                         <binding destination="12" name="value" keyPath="values.sidebarDeveloperMinimumNumberOfPackageNames" id="1QQ-lt-224"/>
@@ -1233,7 +1147,6 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Jrf-vz-m46">
                     <rect key="frame" x="321" y="23" width="101" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="package names" id="KCe-7R-QaO">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1244,7 +1157,6 @@
                     </connections>
                 </textField>
             </subviews>
-            <animations/>
             <point key="canvasLocation" x="511" y="582"/>
         </customView>
         <customObject id="OwK-rF-09V" customClass="SUUpdater"/>

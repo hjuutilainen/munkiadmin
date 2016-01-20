@@ -2581,10 +2581,16 @@ DDLogLevel ddLogLevel;
         [repoManager writeRepositoryChangesToDisk:&saveSucceeded didWritePkginfos:&didWritePkginfos didWriteManifests:&didWriteManifests];
         if (saveSucceeded) {
             
-            if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"] && didWritePkginfos) {
-                [self updateCatalogs];
-            } else if (!didWritePkginfos) {
-                DDLogError(@"Skipped makecatalogs since no pkginfos were changed...");
+            if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
+                if ([self.defaults boolForKey:@"makecatalogsOnlyIfNeeded"]) {
+                    if (didWritePkginfos) {
+                        [self updateCatalogs];
+                    } else {
+                        DDLogError(@"Skipped makecatalogs since no pkginfos were changed...");
+                    }
+                } else {
+                    [self updateCatalogs];
+                }
             }
             
             /*
