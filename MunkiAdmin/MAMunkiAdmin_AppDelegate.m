@@ -2024,8 +2024,9 @@ DDLogLevel ddLogLevel;
 {
 	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-	[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk];
-	[[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk];
+    BOOL didWritePkginfos, didwriteManifests;
+	[[MAMunkiRepositoryManager sharedManager] writePackagePropertyListsToDisk:&didWritePkginfos];
+    [[MAMunkiRepositoryManager sharedManager] writeManifestPropertyListsToDisk:&didwriteManifests];
 	[self selectRepoAtURL:self.repoURL];
 }
 
@@ -2574,10 +2575,16 @@ DDLogLevel ddLogLevel;
             aManifest.hasUnstagedChanges = @YES;
         }
         
-        if ([repoManager writeRepositoryChangesToDisk]) {
+        BOOL saveSucceeded;
+        BOOL didWritePkginfos;
+        BOOL didWriteManifests;
+        [repoManager writeRepositoryChangesToDisk:&saveSucceeded didWritePkginfos:&didWritePkginfos didWriteManifests:&didWriteManifests];
+        if (saveSucceeded) {
             
-            if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
+            if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"] && didWritePkginfos) {
                 [self updateCatalogs];
+            } else if (!didWritePkginfos) {
+                DDLogError(@"Skipped makecatalogs since no pkginfos were changed...");
             }
             
             /*

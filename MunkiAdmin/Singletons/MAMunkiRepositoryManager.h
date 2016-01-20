@@ -81,9 +81,9 @@
                 completionHandler:(void (^)(NSArray *images))completionHandler
                   progressHandler:(void (^)(double progress, NSString *description))progressHandler;
 
-- (BOOL)writeRepositoryChangesToDisk;
-- (BOOL)writePackagePropertyListsToDisk;
-- (BOOL)writeManifestPropertyListsToDisk;
+- (void)writeRepositoryChangesToDisk:(BOOL *)success didWritePkginfos:(BOOL *)pkginfos didWriteManifests:(BOOL *)manifests;
+- (BOOL)writePackagePropertyListsToDisk:(BOOL *)wroteToDisk;
+- (BOOL)writeManifestPropertyListsToDisk:(BOOL *)wroteToDisk;
 - (BOOL)backupPackage:(PackageMO *)aPackage;
 - (BOOL)backupManifest:(ManifestMO *)aManifest;
 - (NSArray *)allObjectsForEntity:(NSString *)entityName;

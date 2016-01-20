@@ -2060,9 +2060,13 @@ static dispatch_queue_t serialQueue;
     [self updateRepositoryScriptStatus];
 }
 
-- (BOOL)writeRepositoryChangesToDisk
+- (void)writeRepositoryChangesToDisk:(BOOL *)success didWritePkginfos:(BOOL *)pkginfos didWriteManifests:(BOOL *)manifests
 {
     [self prepareForSaving];
+    
+    *success = YES;
+    *pkginfos = NO;
+    *manifests = NO;
     
     /*
      Run the pre-save script (if any).
@@ -2073,20 +2077,31 @@ static dispatch_queue_t serialQueue;
         alert.messageText = @"Pre-save script failed";
         alert.informativeText = @"Pre-save script exited with a non-zero code. Save was aborted.";
         [alert runModal];
-        return NO;
+        *success = NO;
+        *pkginfos = NO;
+        *manifests = NO;
+        return;
     }
     
     /*
      Write the changes
      */
+    BOOL didWritePkginfoFiles = NO;
     if ([self.defaults boolForKey:@"UpdatePkginfosOnSave"]) {
-        if (![self writePackagePropertyListsToDisk]) {
-            return NO;
+        BOOL pkginfoSaveSucceeded = [self writePackagePropertyListsToDisk:&didWritePkginfoFiles];
+        *pkginfos = didWritePkginfoFiles;
+        if (!pkginfoSaveSucceeded) {
+            *success = NO;
+            return;
         }
     }
+    BOOL didWriteManifestFiles = NO;
     if ([self.defaults boolForKey:@"UpdateManifestsOnSave"]) {
-        if (![self writeManifestPropertyListsToDisk]) {
-            return NO;
+        BOOL manifestSaveSucceeded = [self writeManifestPropertyListsToDisk:&didWriteManifestFiles];
+        *manifests = didWriteManifestFiles;
+        if (!manifestSaveSucceeded) {
+            *success = NO;
+            return;
         }
     }
     
@@ -2097,7 +2112,7 @@ static dispatch_queue_t serialQueue;
         DDLogError(@"Repository post-save script failed...");
     }
     
-    return YES;
+    return;
 }
 
 - (NSSet *)modifiedManifestsSinceLastSave
@@ -2527,9 +2542,11 @@ static dispatch_queue_t serialQueue;
     }
 }
 
-- (BOOL)writePackagePropertyListsToDisk
+- (BOOL)writePackagePropertyListsToDisk:(BOOL *)wroteToDisk
 {
     DDLogDebug(@"Was asked to write package property lists to disk");
+    
+    *wroteToDisk = NO;
     
     [self updateRepositoryScriptStatus];
     
@@ -2667,6 +2684,8 @@ static dispatch_queue_t serialQueue;
                 [[NSApplication sharedApplication] presentError:writeError];
                 successfullySaved = NO;
                 break;
+            } else {
+                *wroteToDisk = YES;
             }
 		}
         
@@ -2682,6 +2701,8 @@ static dispatch_queue_t serialQueue;
                     [[NSApplication sharedApplication] presentError:writeError];
                     successfullySaved = NO;
                     break;
+                } else {
+                    *wroteToDisk = YES;
                 }
 			} else {
 				DDLogDebug(@"%@: No changes detected", filename);
@@ -2699,9 +2720,11 @@ static dispatch_queue_t serialQueue;
 }
 
 
-- (BOOL)writeManifestPropertyListsToDisk
+- (BOOL)writeManifestPropertyListsToDisk:(BOOL *)wroteToDisk
 {
 	DDLogDebug(@"Was asked to write manifest property lists to disk");
+    
+    *wroteToDisk = NO;
     
     [self updateRepositoryScriptStatus];
     
@@ -2814,6 +2837,8 @@ static dispatch_queue_t serialQueue;
                 [[NSApplication sharedApplication] presentError:writeError];
                 successfullySaved = NO;
                 break;
+            } else {
+                *wroteToDisk = YES;
             }
 		}
         
@@ -2832,6 +2857,8 @@ static dispatch_queue_t serialQueue;
                     [[NSApplication sharedApplication] presentError:writeError];
                     successfullySaved = NO;
                     break;
+                } else {
+                    *wroteToDisk = YES;
                 }
 			} else {
 				DDLogDebug(@"%@: No changes detected", filename);
