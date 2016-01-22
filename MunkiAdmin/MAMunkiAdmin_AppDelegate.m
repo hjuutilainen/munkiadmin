@@ -1751,6 +1751,7 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     // Commit any changes
+    [advancedPackageEditor endEditingInWindow];
     [advancedPackageEditor commitChangesToCurrentPackage];
     
     // Change selection
@@ -1770,6 +1771,7 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     // Commit any changes
+    [advancedPackageEditor endEditingInWindow];
     [advancedPackageEditor commitChangesToCurrentPackage];
     
     // Change selection

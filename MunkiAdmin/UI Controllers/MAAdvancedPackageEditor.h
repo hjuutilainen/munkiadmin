@@ -28,6 +28,7 @@
 - (IBAction)createNewDeveloperAction:(id)sender;
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
+- (void)endEditingInWindow;
 - (void)commitChangesToCurrentPackage;
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage;
 - (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate;

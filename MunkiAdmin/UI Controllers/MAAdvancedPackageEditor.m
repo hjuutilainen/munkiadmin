@@ -358,6 +358,18 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
      Gracefully end all editing in our window (from Erik Buck).
      This will cause the user's changes to be committed.
      */
+    
+    id oldFirstResponder = [self.window firstResponder];
+    if ((oldFirstResponder != nil) && [oldFirstResponder isKindOfClass:[NSTextView class]] && [(NSTextView *)oldFirstResponder isFieldEditor]) {
+        // A field editor's delegate is the view we're editing
+        oldFirstResponder = [oldFirstResponder delegate];
+        if ([oldFirstResponder isKindOfClass:[NSResponder class]] == NO) {
+            // Eh ... we'd better back off if
+            // this thing isn't a responder at all
+            oldFirstResponder = nil;
+        }
+    }
+    
     if ([self.window makeFirstResponder:self.window]) {
         // All editing is now ended and delegate messages sent etc.
     } else {
@@ -365,6 +377,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         // not resign first responder status so force an
         /// end to editing anyway
         [self.window endEditingFor:nil];
+    }
+    
+    // If we had a first responder before, restore it
+    if (oldFirstResponder != nil) {
+        [self.window makeFirstResponder:oldFirstResponder];
     }
 }
 
