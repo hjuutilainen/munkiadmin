@@ -893,6 +893,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage
 {
+    // Mark the package as edited
+    aPackage.hasUnstagedChangesValue = YES;
+    
     if (aPackage.munki_postinstall_script == nil) {
         self.temp_postinstall_script_enabled = NO;
         self.temp_postinstall_script = @"";
