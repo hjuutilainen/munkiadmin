@@ -8,6 +8,7 @@
 @property (weak, readonly) NSDictionary *manifestInfoDictionary;
 @property (readonly) NSString *catalogsDescriptionString;
 @property (readonly) NSArray *catalogStrings;
+@property (readonly) NSString *titleOrDisplayName;
 
 - (NSArray *)rootConditionalItems;
 

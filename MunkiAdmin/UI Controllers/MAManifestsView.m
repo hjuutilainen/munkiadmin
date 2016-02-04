@@ -24,7 +24,7 @@ DDLogLevel ddLogLevel;
 #define kMinSplitViewHeight     80.0f
 #define kMaxSplitViewHeight     400.0f
 
-#define DEFAULT_PREDICATE @"title contains[cd] ''"
+#define DEFAULT_PREDICATE @"titleOrDisplayName contains[cd] ''"
 
 @interface MAManifestsView ()
 @property (strong, nonatomic) NSMutableArray *modelObjects;
@@ -158,7 +158,7 @@ DDLogLevel ddLogLevel;
      Simple strings that do not need a modifier
      */
     NSArray *simpleLeftExpressions = @[
-                                       [NSExpression expressionForKeyPath:@"title"],
+                                       [NSExpression expressionForKeyPath:@"titleOrDisplayName"],
                                        [NSExpression expressionForKeyPath:@"fileName"],
                                        [NSExpression expressionForKeyPath:@"manifestUserName"],
                                        [NSExpression expressionForKeyPath:@"manifestDisplayName"],
@@ -209,7 +209,7 @@ DDLogLevel ddLogLevel;
     [self.manifestsListPredicateEditor setRowTemplates:rowTemplates];
     
     NSDictionary *formatting = @{
-                                 @"%[title]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Name]@ %[is, is not, contains, begins with, ends with]@ %@",
+                                 @"%[titleOrDisplayName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Name]@ %[is, is not, contains, begins with, ends with]@ %@",
                                  @"%[fileName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Filename]@ %[is, is not, contains, begins with, ends with]@ %@",
                                  @"%[manifestUserName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Username]@ %[is, is not, contains, begins with, ends with]@ %@",
                                  @"%[manifestDisplayName]@ %[is, is not, contains, begins with, ends with]@ %@" : @"%[Display name]@ %[is, is not, contains, begins with, ends with]@ %@",
@@ -321,7 +321,7 @@ DDLogLevel ddLogLevel;
     self.modelObjects = [NSMutableArray new];
     
     [self setUpDataModel];
-    self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
     [self.sourceList reloadData];
@@ -912,10 +912,10 @@ DDLogLevel ddLogLevel;
         NSString *title;
         id representedObject;
         if (object.manifestReference) {
-            title = object.manifestReference.title;
+            title = object.manifestReference.titleOrDisplayName;
             representedObject = object.manifestReference;
         } else {
-            title = object.includedManifestConditionalReference.manifest.title;
+            title = object.includedManifestConditionalReference.manifest.titleOrDisplayName;
             representedObject = object.includedManifestConditionalReference.manifest;
         }
         [newItems addObject:@{@"title": title, @"representedObject": representedObject}];
@@ -951,7 +951,7 @@ DDLogLevel ddLogLevel;
         NSString *title;
         id representedObject;
         if (object.originalManifest) {
-            title = object.originalManifest.title;
+            title = object.originalManifest.titleOrDisplayName;
             representedObject = object.originalManifest;
             [newItems addObject:@{@"title": title, @"representedObject": representedObject}];
         } else {

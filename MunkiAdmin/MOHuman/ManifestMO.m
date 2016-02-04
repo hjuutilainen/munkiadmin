@@ -475,6 +475,15 @@
     }
 }
 
+- (NSString *)titleOrDisplayName
+{
+    if (self.manifestDisplayName) {
+        return self.manifestDisplayName;
+    } else {
+        return self.title;
+    }
+}
+
 
 - (NSArray *)enabledCatalogs
 {

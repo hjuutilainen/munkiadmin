@@ -28,8 +28,8 @@
     if ([[self.existingSearchField stringValue] isEqualToString:@""]) {
         [self.manifestsArrayController setFilterPredicate:self.originalPredicate];
     } else {
-        NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@", [self.existingSearchField stringValue]];
-        NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:new, self.originalPredicate, nil]];
+        NSPredicate *new = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR titleOrDisplayName contains[cd] %@", [self.existingSearchField stringValue], [self.existingSearchField stringValue]];
+        NSPredicate *merged = [NSCompoundPredicate andPredicateWithSubpredicates:@[new, self.originalPredicate]];
         [self.manifestsArrayController setFilterPredicate:merged];
     }
 }
@@ -38,7 +38,7 @@
 {
     [super windowDidLoad];
     
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self.manifestsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
     
     self.existingSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
