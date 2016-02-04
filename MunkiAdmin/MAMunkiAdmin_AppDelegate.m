@@ -1548,19 +1548,14 @@ DDLogLevel ddLogLevel;
                 // Select the newly created package
                 [[self.packagesViewController packagesArrayController] setSelectedObjects:@[createdPkg]];
                 
+                MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+                
                 // Run the assimilator
                 if ([self.defaults boolForKey:@"assimilate_enabled"]) {
-                    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
                     [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
                 }
                 
-                /*
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[self managedObjectContext] undoManager] beginUndoGrouping];
-                    [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Assimilating \"%@\"", [createdPkg titleWithVersion]]];
-                    [pkginfoAssimilator beginEditSessionWithObject:createdPkg source:nil delegate:self];
-                });
-                 */
+                repoManager.makecatalogsRunNeeded = NO;
             }
             else {
                 // Found multiple matches for a single URL
@@ -2581,13 +2576,15 @@ DDLogLevel ddLogLevel;
             
             if ([self.defaults boolForKey:@"UpdateCatalogsOnSave"]) {
                 if ([self.defaults boolForKey:@"makecatalogsOnlyIfNeeded"]) {
-                    if (didWritePkginfos) {
+                    if (didWritePkginfos || [repoManager makecatalogsRunNeeded]) {
                         [self updateCatalogs];
+                        repoManager.makecatalogsRunNeeded = NO;
                     } else {
                         DDLogError(@"Skipped makecatalogs since no pkginfos were changed...");
                     }
                 } else {
                     [self updateCatalogs];
+                    repoManager.makecatalogsRunNeeded = NO;
                 }
             }
             

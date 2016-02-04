@@ -113,6 +113,7 @@ static dispatch_queue_t serialQueue;
             self.diskImageQueue = [NSOperationQueue new];
             self.diskImageQueue.maxConcurrentOperationCount = 1;
             self.lengthForUniqueCatalogTitles = 1;
+            self.makecatalogsRunNeeded = NO;
         }
     });
     
@@ -208,6 +209,7 @@ static dispatch_queue_t serialQueue;
                     NSString *newInstallerItemPath = [self relativePathToChildURL:installerTargetURL parentURL:installerItemsDirectory];
                     aPackage.munki_installer_item_location = newInstallerItemPath;
                     aPackage.packageURL = installerTargetURL;
+                    self.makecatalogsRunNeeded = YES;
                     returnValue = YES;
                 }
             } else {
@@ -975,6 +977,7 @@ static dispatch_queue_t serialQueue;
         }
     }];
     
+    self.makecatalogsRunNeeded = YES;
 }
 
 
@@ -1222,6 +1225,8 @@ static dispatch_queue_t serialQueue;
         
         DDLogDebug(@"Changed package name from \"%@\" to \"%@\" in pkginfo file %@", oldName, newName, aPackage.relativePath);
     }
+    
+    self.makecatalogsRunNeeded = YES;
 }
 
 

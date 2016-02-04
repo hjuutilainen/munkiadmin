@@ -40,6 +40,7 @@
 @property (strong) NSDictionary *installerChoicesKeyMappings;
 @property (strong) NSDictionary *itemsToCopyKeyMappings;
 @property (strong) NSOperationQueue *diskImageQueue;
+@property BOOL makecatalogsRunNeeded;
 
 + (MAMunkiRepositoryManager *)sharedManager;
 
