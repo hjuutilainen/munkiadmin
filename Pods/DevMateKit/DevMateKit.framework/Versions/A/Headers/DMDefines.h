@@ -2,7 +2,7 @@
 //  DMDefines.h
 //  DevMateKit
 //
-//  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
+//  Copyright (c) 2013-2016 DevMate Inc. All rights reserved.
 //
 
 #ifndef DevMateKit_DMDefines_h

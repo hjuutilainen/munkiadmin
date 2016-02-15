@@ -24,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ## DevMateKit
 
-© 2012-2015 DevMate Inc. All rights reserved.
+© 2012-2016 DevMate Inc. All rights reserved.
 
 
 ## NSHash

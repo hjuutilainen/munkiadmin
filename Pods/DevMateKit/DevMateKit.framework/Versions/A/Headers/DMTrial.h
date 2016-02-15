@@ -2,7 +2,7 @@
 //  DMTrial.h
 //  DevMateActivations
 //
-//  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
+//  Copyright (c) 2013-2016 DevMate Inc. All rights reserved.
 //
 
 #ifndef DevMateActivations__DMTrial_h
@@ -105,6 +105,7 @@ CF_EXPORT DMTrialRef gDMUnidentifiedTrial;
 #define DMTrialGetState() DMTrialGetTrialState(gDMUnidentifiedTrial)
 #define DMTrialHasHistory() DMTrialHasTrialHistory(gDMUnidentifiedTrial)
 #define DMTrialGetCurrentValue() DMTrialGetTrialCurrentValue(gDMUnidentifiedTrial)
+#define DMTrialGetValueLeft() DMTrialGetTrialValueLeft(gDMUnidentifiedTrial)
 #define DMTrialChangeValue(_changeValue_) DMTrialChangeTrialValue(gDMUnidentifiedTrial, _changeValue_)
 #define DMTrialInvalidate() DMTrialInvalidateTrial(gDMUnidentifiedTrial)
 
@@ -152,6 +153,11 @@ CF_EXPORT Boolean DMTrialHasTrialHistory(DMTrialRef trial);
     @discussion Will return LONG_MAX for invalid trial.
  */
 CF_EXPORT CFIndex DMTrialGetTrialCurrentValue(DMTrialRef trial);
+
+/*! @brief Returns trial value that left until it becomes invalid.
+    @discussion Will return 0 for invalid or non-initalized trial.
+ */
+CF_EXPORT CFIndex DMTrialGetTrialValueLeft(DMTrialRef trial);
 
 /*! @brief Function to change current trial value manually.
     @discussion Input value will be one of the arguments of callback block \p changeValue.

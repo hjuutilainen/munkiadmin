@@ -2,7 +2,7 @@
 //  DMActivationChecker.h
 //  DevMateActivations
 //
-//  Copyright (c) 2012-2015 DevMate Inc. All rights reserved.
+//  Copyright (c) 2012-2016 DevMate Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

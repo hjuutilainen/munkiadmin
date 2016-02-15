@@ -2,7 +2,7 @@
 //  DMTrackingBase.h
 //  DevMateTracking
 //
-//  Copyright (c) 2013-2015 DevMate Inc. All rights reserved.
+//  Copyright (c) 2013-2016 DevMate Inc. All rights reserved.
 //
 
 #ifndef DevMateTracking__DMTrackingBase_h

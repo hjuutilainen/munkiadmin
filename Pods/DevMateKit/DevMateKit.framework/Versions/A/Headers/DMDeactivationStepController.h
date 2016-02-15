@@ -2,7 +2,7 @@
 //  DMDeactivationStepController.h
 //  DevMateActivations
 //
-//  Copyright (c) 2015 DevMate Inc. All rights reserved.
+//  Copyright (c) 2015-2016 DevMate Inc. All rights reserved.
 //
 
 #import <DevMateKit/DMStepController.h>

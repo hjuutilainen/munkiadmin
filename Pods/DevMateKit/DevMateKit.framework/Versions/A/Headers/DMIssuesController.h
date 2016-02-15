@@ -2,7 +2,7 @@
 //  DMIssuesController.h
 //  DevMateIssues
 //
-//  Copyright 2013-2015 DevMate Inc. All rights reserved.
+//  Copyright 2013-2016 DevMate Inc. All rights reserved.
 //
 
 //! TESTING
@@ -13,13 +13,15 @@
 //  - if you pass -test_exception argument, DMIssuesController instance will throw an exception after delay_seconds (or immediately)
 //  only after controller initialization
 
+#import <DevMateKit/DMIssue.h>
+
 @protocol DMIssuesControllerDelegate;
 
 @interface DMIssuesController : NSObject
 
 + (instancetype)sharedController;
 
-@property (assign) id<DMIssuesControllerDelegate> delegate;
+@property (nonatomic, assign) id<DMIssuesControllerDelegate> delegate;
 
 //! User name/email to use inside the problem reporter
 @property (nonatomic, retain) NSDictionary *defaultUserInfo; // look for keys below
@@ -27,10 +29,11 @@
 //! Array of NSURL instances. Set it in case you have custom log files. By default log is obtained from ASL (default NSLog behaviour) for non-sandboxed apps.
 @property (nonatomic, retain) NSArray *logURLs;
 
-/*! @brief Will show problem reporter for unhandled issues if such exists or make reporter window active if it's already visible.
-    @return \p YES if reporter window is visible or will be shown for unhandled issues. \p NO otherwise.
+/*! @brief Starts sending all unhandled issues to server side.
+    @param shouldShowReporterDialog Pass \p YES to show report dialog to user, \p NO otherwise. This flag will be ignored if report dialog is already shown.
+    @return \p YES if there are unhandled issues to send. \p NO otherwise.
  */
-- (BOOL)reportUnhandledProblemsIfExists;
+- (BOOL)reportUnhandledIssuesIfExists:(BOOL)shouldShowReporterDialog;
 
 /*! @brief Method to customize UI controller behavior.
     @discussion For correct work even for crash reporter this class and all other resources/classes should be implemented in separate framework.
@@ -41,6 +44,7 @@
 @end
 
 @interface DMIssuesController (com_devmate_Deprecated)
+- (BOOL)reportUnhandledProblemsIfExists DM_DEPRECATED("Use -reportUnhandledIssuesIfExists: instead.");
 - (void)enableCrashReporting DM_DEPRECATED("Will be automatically enabled right after initialization.");
 - (void)enableUncaughtExceptionReporting DM_DEPRECATED("Will be automatically enabled right after initialization.");
 @end
@@ -50,8 +54,21 @@
 
 - (void)reporterWillRestartApplication:(DMIssuesController *)controller;
 
-//! In case of NO, new problem will be marked as unhandled.
+/*! @brief Asks delegate for permition to show reporter dialog to user right after the issue was caught.
+    @discussion To send report silently return NO and call -reportUnhandledProblemsIfExists: passing NO as input param.
+    @param controller Issue controller.
+    @param report Issue report that was caught.
+    @return YES to start reporter dialog. In case of NO, report will be marked as unhandled and no UI will be shown.
+ */
+- (BOOL)controller:(DMIssuesController *)controller shouldReportIssue:(id<DMIssue>)issue;
+
+//! Return YES to add current issue to full report that will be sent to server side.
+- (BOOL)controller:(DMIssuesController *)controller shouldAddIssueToReport:(id<DMIssue>)issue;
+
+//! DEPRECATED. Use -controller:shouldReportIssue: method instead.
 - (BOOL)shouldReportExceptionProblem:(DMIssuesController *)controller;
+
+//! DEPRECATED. Use -controller:shouldReportIssue: method instead.
 - (BOOL)shouldReportCrashProblem:(DMIssuesController *)controller;
 
 //! Additional info that will be attached to standard issue report.

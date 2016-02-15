@@ -2,7 +2,7 @@
 //  DMIssuesWindowController.h
 //  DevMateIssues
 //
-//  Copyright 2009-2015 DevMate Inc. All rights reserved.
+//  Copyright 2009-2016 DevMate Inc. All rights reserved.
 //
 
 #import <DevMateKit/DMIssueReportWindowController.h>
