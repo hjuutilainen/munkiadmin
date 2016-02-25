@@ -20,6 +20,14 @@ typedef NS_ENUM(NSInteger, DMFeedbackMode)
     DMFeedbackDefaultMode = DMFeedbackIndependentMode
 };
 
+//! Items tags for feedbackTypeButton control
+typedef NS_ENUM(NSInteger, DMFeedbackTypeTag)
+{
+    DMFeedbackTypeFeedback = 0,
+    DMFeedbackTypeSupportRequest,
+    DMFeedbackTypeBugReport
+};
+
 @protocol DMFeedbackControllerDelegate;
 
 @interface DMFeedbackController : DMFeedbackReportWindowController
@@ -34,6 +42,9 @@ typedef NS_ENUM(NSInteger, DMFeedbackMode)
 
 //! Array of NSURL instances. Set it in case you have custom log files. By default log is obtained from ASL (default NSLog behaviour) for non-sandboxed apps.
 @property (nonatomic, retain) NSArray *logURLs;
+
+//! Property to get/change feedback type
+@property (nonatomic, assign) DMFeedbackTypeTag currentFeedbackType;
 
 // IBOutlets & IBActions
 @property (nonatomic, assign) IBOutlet NSImageView *appIcon;
