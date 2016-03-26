@@ -63,6 +63,7 @@ DDLogLevel ddLogLevel;
     makecatalogsTask.launchPath = launchPath;
     makecatalogsTask.standardOutput = makecatalogsPipe;
     makecatalogsTask.standardError = makecatalogsErrorPipe;
+    makecatalogsTask.standardInput = [NSPipe pipe];
     
     /*
      Check the "Disable sanity checks" preference
@@ -75,15 +76,12 @@ DDLogLevel ddLogLevel;
     DDLogDebug(@"Running %@ with arguments: %@", makecatalogsTask.launchPath, makecatalogsTask.arguments);
     
 	/*
-     Launch and read the output
+     Launch the task
      */
 	[makecatalogsTask launch];
-	NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
-	NSString *makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData
-                                                          encoding:NSUTF8StringEncoding];
     
     /*
-     Check if we got any warnings or errors
+     Check standard error and standard output
      */
     NSData *makecatalogsTaskErrorData = [errorfilehandle readDataToEndOfFile];
     NSString *errorString = [[NSString alloc] initWithData:makecatalogsTaskErrorData
@@ -91,6 +89,10 @@ DDLogLevel ddLogLevel;
     if (![errorString isEqualToString:@""]) {
         DDLogError(@"makecatalogs reported error:\n%@", errorString);
     }
+    
+    NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
+    NSString *makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData
+                                                          encoding:NSUTF8StringEncoding];
     
     /*
      Check the exit code even though makecatalogs (currently) always exits with 0
@@ -183,7 +185,7 @@ DDLogLevel ddLogLevel;
 			if ([self.command isEqualToString:@"makecatalogs"]) {
                 DDLogDebug(@"MunkiOperation:makecatalogs");
 				NSString *results = [self makeCatalogs];
-				DDLogVerbose(@"MunkiOperation:makecatalogs:results: %@", results);
+				DDLogVerbose(@"MunkiOperation:makecatalogs:results:\n%@", results);
 			}
 			
 			else if ([self.command isEqualToString:@"makepkginfo"]) {
@@ -220,7 +222,7 @@ DDLogLevel ddLogLevel;
 		}
 	}
 	@catch(...) {
-		// Do not rethrow exceptions.
+		DDLogDebug(@"Caught exception while running %@", self.command);
 	}
 }
 
