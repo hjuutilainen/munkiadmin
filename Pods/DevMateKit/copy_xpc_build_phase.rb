@@ -21,24 +21,18 @@ main_target.copy_files_build_phases.each { |copy_phase|
     phase_added = true
   end
 }
- 
-if (!phase_added)
-  puts "Adding copy-XPC-files build phase in Xcode project #{path_to_project}"
-  xpc_phase = main_target.new_copy_files_build_phase(xcode_copy_phase_name)
-  xpc_phase.dst_subfolder_spec = '1' #:wrapper
-  xpc_phase.dst_path = 'Contents/XPCServices'
-else
-  puts "Copy-XCP-files build phase already exists."
+
+# !!! NOTE
+# Now DevMate XPC service is part of DevMateKit.framework.
+# Because of that we need to remmove build phase that copies XPC service.
+if (phase_added)
+    xpc_phase.files_references.each { |file_ref|
+        puts "Removing unneeded xpc-service: #{file_ref.path}"
+        xpc_phase.remove_file_reference(file_ref)
+        file_ref.remove_from_project
+    }
+    
+    puts "Removing obsolete copy-XPC-files build phase"
+    xpc_phase.remove_from_project()
 end
-
-xpc_phase.files_references.each { |file_ref|
-    puts "Removing previous xpc-service: #{file_ref.path}"
-    xpc_phase.remove_file_reference(file_ref)
-    file_ref.remove_from_project
-}
-
-Dir.glob(Pathname.new(Dir.pwd) + 'Pods/DevMateKit/*.xpc').each { |xpc_service|
-    puts "Will add xpc-service: #{xpc_service}"
-    xpc_phase.add_file_reference(project.new_file('Pods/DevMateKit/' + File.basename(xpc_service)), true)
-}
 project.save()

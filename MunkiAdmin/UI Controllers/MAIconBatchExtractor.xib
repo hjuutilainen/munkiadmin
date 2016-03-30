@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15E49a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAIconBatchExtractor">
@@ -21,20 +22,21 @@
             <rect key="contentRect" x="196" y="240" width="565" height="436"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="-2" width="565" height="436"/>
+                <rect key="frame" x="0.0" y="0.0" width="565" height="436"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Ob8-pg-pxC">
                         <rect key="frame" x="20" y="153" width="525" height="263"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="HRe-om-Cd9">
-                            <rect key="frame" x="1" y="0.0" width="238" height="134"/>
+                            <rect key="frame" x="1.5" y="0.0" width="523" height="247"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ZPX-PM-UM8" viewBased="YES" id="B22-li-pIm">
+                                    <rect key="frame" x="0.0" y="0.0" width="525" height="245"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
                                         <tableColumn width="22.875" minWidth="10" maxWidth="3.4028234663852886e+38" id="r9o-yx-TRY">
@@ -79,7 +81,7 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="hqK-eB-4CR">
-                                                    <rect key="frame" x="1" y="1" width="28" height="17"/>
+                                                    <rect key="frame" x="27" y="1" width="28" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <button id="012-AZ-l9f">
@@ -235,16 +237,16 @@
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hnO-LU-9tF">
-                            <rect key="frame" x="1" y="119" width="223" height="15"/>
+                        <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.25" horizontal="YES" id="hnO-LU-9tF">
+                            <rect key="frame" x="1" y="247" width="523" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CfY-6p-c8S">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="CfY-6p-c8S">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <tableHeaderView key="headerView" id="ZPX-PM-UM8">
-                            <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="525" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                         <connections>
@@ -327,7 +329,7 @@ Gw
                     <box autoresizesSubviews="NO" title="Options" borderType="line" id="1iY-9v-qVC">
                         <rect key="frame" x="17" y="45" width="531" height="76"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <view key="contentView">
+                        <view key="contentView" id="5fu-jl-5CO">
                             <rect key="frame" x="1" y="1" width="529" height="60"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>

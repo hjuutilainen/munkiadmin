@@ -15,7 +15,6 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		B3966A465849C0ABC6640ED1 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */ = {isa = PBXBuildFile; fileRef = 303E53042BA75D911D0F224B /* com.devmate.UpdateInstaller.xpc */; };
 		C8B8E5A963D6FBC3A0ED5ABA /* libPods-MunkiAdmin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */; };
 		F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E6E19090E00009F6D28 /* _DeveloperMO.m */; };
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
@@ -180,20 +179,6 @@
 		FEF434E014FCAF9E005AFF2F /* MAFileSizeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF434DF14FCAF9E005AFF2F /* MAFileSizeFormatter.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		B2EFBDB91BF01407BF72CB11 /* Copy DevMate XPC Services */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Contents/XPCServices;
-			dstSubfolderSpec = 1;
-			files = (
-				B3966A465849C0ABC6640ED1 /* com.devmate.UpdateInstaller.xpc in Copy DevMate XPC Services */,
-			);
-			name = "Copy DevMate XPC Services";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -206,7 +191,6 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2F7446980DB6B7EA00F9684A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		303E53042BA75D911D0F224B /* com.devmate.UpdateInstaller.xpc */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.xpc-service"; name = com.devmate.UpdateInstaller.xpc; path = Pods/DevMateKit/com.devmate.UpdateInstaller.xpc; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiAdmin_Prefix.pch; path = MunkiAdmin/MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
 		73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MunkiAdmin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -658,7 +642,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				F7239CF460E55FF626F5D99E /* Pods */,
-				303E53042BA75D911D0F224B /* com.devmate.UpdateInstaller.xpc */,
 			);
 			name = MunkiAdmin;
 			sourceTree = "<group>";
@@ -952,7 +935,6 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				FE145D971488D42200AEA151 /* ShellScript */,
 				F3BAC322BE18AACBBA5781B7 /* Copy Pods Resources */,
-				B2EFBDB91BF01407BF72CB11 /* Copy DevMate XPC Services */,
 				705F78FDEC822AE290965D47 /* Embed Pods Frameworks */,
 			);
 			buildRules = (

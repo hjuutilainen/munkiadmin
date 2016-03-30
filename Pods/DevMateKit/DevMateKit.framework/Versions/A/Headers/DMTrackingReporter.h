@@ -27,6 +27,7 @@
 @optional
 
 - (NSUInteger)applicationLaunchCount:(DMTrackingReporter *)reporter;
+- (BOOL)isApplicationFirstInstall:(DMTrackingReporter *)reporter;
 - (DMAppActivationStatus)applicationActivationStatus:(DMTrackingReporter *)reporter;
 - (DMAppTrialValue)applicationTrialValue:(DMTrackingReporter *)reporter;
 
