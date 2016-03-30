@@ -13,7 +13,7 @@
 
 @property (nonatomic, assign) IBOutlet WebView *storeWebView;
 @property (nonatomic, assign) IBOutlet NSProgressIndicator *loadingProgressIndicator;
-@property (nonatomic, assign) IBOutlet NSButton *secureSessionButton;
+@property (nonatomic, retain) IBOutlet NSButton *secureSessionButton;
 
 @property (nonatomic, assign) IBOutlet NSView *errorViewContainer;
 @property (nonatomic, assign) IBOutlet NSTextField *errorTitleField;

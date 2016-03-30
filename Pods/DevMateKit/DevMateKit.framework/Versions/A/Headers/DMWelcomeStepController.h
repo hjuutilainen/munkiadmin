@@ -13,7 +13,7 @@
 @property (nonatomic, assign) IBOutlet NSButton *continueButton;
 @property (nonatomic, assign) IBOutlet NSButton *cancelButton;
 @property (nonatomic, assign) IBOutlet NSButton *getLicenseButton;
-@property (nonatomic, assign) IBOutlet NSButton *webStoreButton;
+@property (nonatomic, assign) IBOutlet NSButton *webStoreButton DM_DEPRECATED("Does not present in UI anymore.");
 
 - (IBAction)continueActivation:(id)sender;
 - (IBAction)cancelActivation:(id)sender;

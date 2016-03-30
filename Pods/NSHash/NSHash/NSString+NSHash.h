@@ -1,5 +1,5 @@
 //
-//  Copyright 2012 Christoph Jerolimov
+//  Copyright 2012-2015 Christoph Jerolimov
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,10 +18,19 @@
 
 @interface NSString (NSHash_AdditionalHashingAlgorithms)
 
+/**
+ Creates a MD5 string of the NSData object as string representation.
+ */
 - (NSString*) MD5;
 
+/**
+ Creates a SHA1 string of the NSData object as string representation.
+ */
 - (NSString*) SHA1;
 
+/**
+ Creates a SHA256 string of the NSData object as string representation.
+ */
 - (NSString*) SHA256;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  Copyright 2012 Christoph Jerolimov
+//  Copyright 2012-2015 Christoph Jerolimov
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,10 +18,19 @@
 
 @interface NSData (NSHash_AdditionalHashingAlgorithms)
 
+/**
+ Creates a MD5 hash of the NSData object as NSData.
+ */
 - (NSData*) MD5;
 
+/**
+ Creates a SHA1 hash of the NSData object as NSData.
+ */
 - (NSData*) SHA1;
 
+/**
+ Creates a SHA256 hash of the NSData object as NSData.
+ */
 - (NSData*) SHA256;
 
 @end
