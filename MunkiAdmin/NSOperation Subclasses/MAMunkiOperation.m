@@ -55,14 +55,12 @@ DDLogLevel ddLogLevel;
 {
 	NSTask *makecatalogsTask = [[NSTask alloc] init];
 	NSPipe *makecatalogsPipe = [NSPipe pipe];
-    NSPipe *makecatalogsErrorPipe = [NSPipe pipe];
 	NSFileHandle *filehandle = [makecatalogsPipe fileHandleForReading];
-    NSFileHandle *errorfilehandle = [makecatalogsErrorPipe fileHandleForReading];
 	
 	NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
     makecatalogsTask.launchPath = launchPath;
     makecatalogsTask.standardOutput = makecatalogsPipe;
-    makecatalogsTask.standardError = makecatalogsErrorPipe;
+    makecatalogsTask.standardError = makecatalogsPipe;
     makecatalogsTask.standardInput = [NSPipe pipe];
     
     /*
@@ -81,27 +79,31 @@ DDLogLevel ddLogLevel;
 	[makecatalogsTask launch];
     
     /*
-     Check standard error and standard output
+     Read makecatalogs output
      */
-    NSData *makecatalogsTaskErrorData = [errorfilehandle readDataToEndOfFile];
-    NSString *errorString = [[NSString alloc] initWithData:makecatalogsTaskErrorData
-                                                  encoding:NSUTF8StringEncoding];
-    if (![errorString isEqualToString:@""]) {
-        DDLogError(@"makecatalogs reported error:\n%@", errorString);
-    }
-    
     NSData *makecatalogsTaskData = [filehandle readDataToEndOfFile];
     NSString *makecatalogsResults = [[NSString alloc] initWithData:makecatalogsTaskData
                                                           encoding:NSUTF8StringEncoding];
+    if (![makecatalogsResults isEqualToString:@""]) {
+        // Check for warnings in makecatalogs output
+        NSRange range = NSMakeRange(0, makecatalogsResults.length);
+        [makecatalogsResults enumerateSubstringsInRange:range
+                                                options:NSStringEnumerationByParagraphs
+                                             usingBlock:^(NSString * _Nullable paragraph, NSRange paragraphRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
+                                                 if ([paragraph hasPrefix:@"WARNING: "]) {
+                                                     DDLogError(@"%@", paragraph);
+                                                 }
+                                             }];
+    }
     
     /*
-     Check the exit code even though makecatalogs (currently) always exits with 0
+     Check the exit code
      */
     int exitCode = makecatalogsTask.terminationStatus;
     if (exitCode == 0) {
         DDLogDebug(@"makecatalogs succeeded.");
     } else {
-        DDLogError(@"makecatalogs failed with code %i", exitCode);
+        DDLogError(@"makecatalogs exited with code %i", exitCode);
     }
     
 	return makecatalogsResults;
