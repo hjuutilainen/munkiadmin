@@ -9,6 +9,7 @@ const struct PackageMOAttributes PackageMOAttributes = {
 	.munki_OnDemand = @"munki_OnDemand",
 	.munki_PayloadIdentifier = @"munki_PayloadIdentifier",
 	.munki_RestartAction = @"munki_RestartAction",
+	.munki_apple_item = @"munki_apple_item",
 	.munki_autoremove = @"munki_autoremove",
 	.munki_description = @"munki_description",
 	.munki_developer = @"munki_developer",
@@ -127,6 +128,11 @@ const struct PackageMORelationships PackageMORelationships = {
 	}
 	if ([key isEqualToString:@"munki_OnDemandValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_OnDemand"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"munki_apple_itemValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_apple_item"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -252,6 +258,26 @@ const struct PackageMORelationships PackageMORelationships = {
 @dynamic munki_PayloadIdentifier;
 
 @dynamic munki_RestartAction;
+
+@dynamic munki_apple_item;
+
+- (BOOL)munki_apple_itemValue {
+	NSNumber *result = [self munki_apple_item];
+	return [result boolValue];
+}
+
+- (void)setMunki_apple_itemValue:(BOOL)value_ {
+	[self setMunki_apple_item:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMunki_apple_itemValue {
+	NSNumber *result = [self primitiveMunki_apple_item];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_apple_itemValue:(BOOL)value_ {
+	[self setPrimitiveMunki_apple_item:[NSNumber numberWithBool:value_]];
+}
 
 @dynamic munki_autoremove;
 

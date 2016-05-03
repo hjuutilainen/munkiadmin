@@ -9,6 +9,7 @@ extern const struct PackageMOAttributes {
 	__unsafe_unretained NSString *munki_OnDemand;
 	__unsafe_unretained NSString *munki_PayloadIdentifier;
 	__unsafe_unretained NSString *munki_RestartAction;
+	__unsafe_unretained NSString *munki_apple_item;
 	__unsafe_unretained NSString *munki_autoremove;
 	__unsafe_unretained NSString *munki_description;
 	__unsafe_unretained NSString *munki_developer;
@@ -156,6 +157,14 @@ extern const struct PackageMORelationships {
 @property (nonatomic, strong) NSString* munki_RestartAction;
 
 //- (BOOL)validateMunki_RestartAction:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* munki_apple_item;
+
+@property (atomic) BOOL munki_apple_itemValue;
+- (BOOL)munki_apple_itemValue;
+- (void)setMunki_apple_itemValue:(BOOL)value_;
+
+//- (BOOL)validateMunki_apple_item:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* munki_autoremove;
 
@@ -632,6 +641,12 @@ extern const struct PackageMORelationships {
 
 - (NSString*)primitiveMunki_RestartAction;
 - (void)setPrimitiveMunki_RestartAction:(NSString*)value;
+
+- (NSNumber*)primitiveMunki_apple_item;
+- (void)setPrimitiveMunki_apple_item:(NSNumber*)value;
+
+- (BOOL)primitiveMunki_apple_itemValue;
+- (void)setPrimitiveMunki_apple_itemValue:(BOOL)value_;
 
 - (NSNumber*)primitiveMunki_autoremove;
 - (void)setPrimitiveMunki_autoremove:(NSNumber*)value;
