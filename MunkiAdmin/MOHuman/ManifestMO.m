@@ -320,11 +320,17 @@
     }
 }
 
-- (NSString *)managedInstallsCountDescription
+- (NSNumber *)managedInstallsCount
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedInstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)managedInstallsCountDescription
+{
+    NSUInteger all = [self.managedInstallsCount unsignedIntegerValue];
     if (all == 0) {
         return @"No managed installs";
     } else if (all == 1) {
@@ -336,11 +342,17 @@
     }
 }
 
-- (NSString *)managedUninstallsCountDescription
+- (NSNumber *)managedUninstallsCount
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUninstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUninstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)managedUninstallsCountDescription
+{
+    NSUInteger all = [self.managedUninstallsCount unsignedIntegerValue];
     if (all == 0) {
         return @"No managed uninstalls";
     } else if (all == 1) {
@@ -352,11 +364,17 @@
     }
 }
 
-- (NSString *)managedUpdatesCountDescription
+- (NSNumber *)managedUpdatesCount
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUpdates"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUpdatesFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)managedUpdatesCountDescription
+{
+    NSUInteger all = [self.managedUpdatesCount unsignedIntegerValue];
     if (all == 0) {
         return @"No managed updates";
     } else if (all == 1) {
@@ -368,11 +386,17 @@
     }
 }
 
-- (NSString *)optionalInstallsCountDescription
+- (NSNumber *)optionalInstallsCount
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.optionalInstalls"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"optionalInstallsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)optionalInstallsCountDescription
+{
+    NSUInteger all = [self.optionalInstallsCount unsignedIntegerValue];
     if (all == 0) {
         return @"No optional installs";
     } else if (all == 1) {
@@ -384,11 +408,17 @@
     }
 }
 
-- (NSString *)includedManifestsCountDescription
+- (NSNumber *)includedManifestsCount
 {
     NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.includedManifests"];
     NSNumber *numManagedInstalls = [self valueForKeyPath:@"includedManifestsFaster.@count"];
     NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)includedManifestsCountDescription
+{
+    NSUInteger all = [self.includedManifestsCount unsignedIntegerValue];
     if (all == 0) {
         return @"No included manifests";
     } else if (all == 1) {
@@ -400,10 +430,16 @@
     }
 }
 
-- (NSString *)referencingManifestsCountDescription
+- (NSNumber *)referencingManifestsCount
 {
     NSSet *manifestStringObjects = [self.referencingManifests filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
     NSUInteger all = [manifestStringObjects count];
+    return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)referencingManifestsCountDescription
+{
+    NSUInteger all = [self.referencingManifestsCount unsignedIntegerValue];
     if (all == 0) {
         return @"No referencing manifests";
     } else if (all == 1) {
