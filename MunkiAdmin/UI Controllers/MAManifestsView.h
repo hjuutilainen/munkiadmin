@@ -34,7 +34,7 @@
 @property (readonly, strong) NSPredicate *mainCompoundPredicate;
 @property (strong) NSPredicate *searchFieldPredicate;
 @property (strong) NSPredicate *previousPredicateEditorPredicate;
-@property (strong) NSArray *defaultSortDescriptors;
+@property (readonly) NSArray *defaultSortDescriptors;
 @property (strong) MAManifestEditor *manifestEditor;
 @property (strong) NSMutableDictionary *openedManifestEditors;
 @property (strong) MARequestStringValueController *requestStringValue;

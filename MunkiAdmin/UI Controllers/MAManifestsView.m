@@ -33,6 +33,16 @@ DDLogLevel ddLogLevel;
 
 @implementation MAManifestsView
 
+- (NSArray *)defaultSortDescriptors
+{
+    NSData *sortersFromDefaults = [[NSUserDefaults standardUserDefaults] dataForKey:@"manifestsSortDescriptors"];
+    if (sortersFromDefaults) {
+        return [NSUnarchiver unarchiveObjectWithData:sortersFromDefaults];
+    } else {
+        return @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    }
+}
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -321,7 +331,7 @@ DDLogLevel ddLogLevel;
     self.modelObjects = [NSMutableArray new];
     
     [self setUpDataModel];
-    self.defaultSortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
+    
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
     [self.sourceList reloadData];
