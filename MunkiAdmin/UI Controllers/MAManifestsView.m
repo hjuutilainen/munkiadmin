@@ -337,22 +337,44 @@ DDLogLevel ddLogLevel;
      Create a contextual menu for customizing table columns
      */
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-    NSSortDescriptor *sortByHeaderString = [NSSortDescriptor sortDescriptorWithKey:@"headerCell.stringValue" ascending:YES selector:@selector(localizedStandardCompare:)];
-    NSArray *tableColumnsSorted = [self.manifestsListTableView.tableColumns sortedArrayUsingDescriptors:@[sortByHeaderString]];
-    for (NSTableColumn *col in tableColumnsSorted) {
-        NSMenuItem *mi = nil;
-        if ([[col identifier] isEqualToString:@"manifestsTableColumnIcon"]) {
-            mi = [[NSMenuItem alloc] initWithTitle:@"Icon"
+    for (NSTableColumn *column in self.manifestsListTableView.tableColumns) {
+        NSMenuItem *menuItem = nil;
+        if ([[column identifier] isEqualToString:@"manifestsTableColumnIcon"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Icon"
                                             action:@selector(toggleColumn:)
                                      keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedInstallsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Installs"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedUpdatesCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Updates"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedUninstallsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Uninstalls"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnOptionalInstallsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Optional Installs"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnIncludedManifestsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Included Manifests"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnReferencingManifestsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Referencing Manifests"
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
         } else {
-            mi = [[NSMenuItem alloc] initWithTitle:[col.headerCell stringValue]
+            menuItem = [[NSMenuItem alloc] initWithTitle:[column.headerCell stringValue]
                                             action:@selector(toggleColumn:)
                                      keyEquivalent:@""];
         }
-        mi.target = self;
-        mi.representedObject = col;
-        [menu addItem:mi];
+        menuItem.target = self;
+        menuItem.representedObject = column;
+        [menu addItem:menuItem];
     }
     menu.delegate = self;
     self.manifestsListTableView.headerView.menu = menu;
