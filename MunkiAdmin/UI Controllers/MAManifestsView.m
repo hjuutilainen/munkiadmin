@@ -196,7 +196,8 @@ DDLogLevel ddLogLevel;
                                         [NSExpression expressionForKeyPath:@"managedUpdatesCount"],
                                         [NSExpression expressionForKeyPath:@"optionalInstallsCount"],
                                         [NSExpression expressionForKeyPath:@"includedManifestsCount"],
-                                        [NSExpression expressionForKeyPath:@"referencingManifestsCount"]];
+                                        [NSExpression expressionForKeyPath:@"referencingManifestsCount"],
+                                        [NSExpression expressionForKeyPath:@"conditionsCount"]];
     NSArray *numericOperators = @[
                                  @(NSGreaterThanPredicateOperatorType),
                                  @(NSGreaterThanOrEqualToPredicateOperatorType),
@@ -261,6 +262,8 @@ DDLogLevel ddLogLevel;
                                      @"%[Number of included manifests]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[referencingManifestsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
                                      @"%[Number of referencing manifests]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
+                                 @"%[conditionsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
+                                     @"%[Number of conditions]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[allPackageStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any installs item]@ %[contains, begins with, ends with]@ %@",
                                  @"%[catalogStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any catalog]@ %[contains, begins with, ends with]@ %@",
                                  @"%[managedInstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed installs item]@ %[contains, begins with, ends with]@ %@",
