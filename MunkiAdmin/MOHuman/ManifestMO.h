@@ -15,6 +15,7 @@
 @property (readonly) NSNumber *optionalInstallsCount;
 @property (readonly) NSNumber *includedManifestsCount;
 @property (readonly) NSNumber *referencingManifestsCount;
+@property (readonly) NSNumber *conditionsCount;
 
 - (NSArray *)rootConditionalItems;
 
