@@ -465,7 +465,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     NSString *thePredicateString = nil;
     if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
-        thePredicateString = [self.predicateEditor.predicate description];
+        thePredicateString = [self.predicateEditor.predicateEditor.objectValue description];
     } else {
         thePredicateString = [self.predicateEditor.customTextField stringValue];
     }
@@ -499,7 +499,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     NSString *thePredicateString = nil;
     if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
-        thePredicateString = [self.predicateEditor.predicate description];
+        thePredicateString = [self.predicateEditor.predicateEditor.objectValue description];
     } else {
         thePredicateString = [self.predicateEditor.customTextField stringValue];
     }
@@ -513,14 +513,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    self.predicateEditor.conditionToEdit = nil;
-    [self.predicateEditor resetPredicateToDefault];
-    
     [NSApp beginSheet:[self.predicateEditor window]
        modalForWindow:self.window
         modalDelegate:self
        didEndSelector:@selector(newPredicateSheetDidEnd:returnCode:object:)
           contextInfo:nil];
+    
+    self.predicateEditor.conditionToEdit = nil;
+    [self.predicateEditor resetPredicateToDefault];
 }
 
 - (IBAction)editConditionalItemAction:(id)sender
@@ -532,29 +532,31 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     @try {
         NSPredicate *predicateToEdit = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
         if (predicateToEdit != nil) {
-            self.predicateEditor.conditionToEdit = selectedCondition;
-            self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
-            self.predicateEditor.predicate = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
             
             [NSApp beginSheet:[self.predicateEditor window]
                modalForWindow:self.window
                 modalDelegate:self
                didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
                   contextInfo:nil];
+            
+            self.predicateEditor.conditionToEdit = selectedCondition;
+            self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
+            self.predicateEditor.predicateEditor.objectValue = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
         }
     }
     @catch (NSException *exception) {
         DDLogError(@"Caught exception while trying to open predicate editor. This usually means that the predicate is valid but the editor can not edit it. Showing the text field editor instead...");
-        [self.predicateEditor resetPredicateToDefault];
-        self.predicateEditor.conditionToEdit = selectedCondition;
-        self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
-        [self.predicateEditor.tabView selectTabViewItemAtIndex:1];
         
         [NSApp beginSheet:[self.predicateEditor window]
            modalForWindow:self.window
             modalDelegate:self
            didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
               contextInfo:nil];
+        
+        [self.predicateEditor resetPredicateToDefault];
+        self.predicateEditor.conditionToEdit = selectedCondition;
+        self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
+        [self.predicateEditor.tabView selectTabViewItemAtIndex:1];
     }
     @finally {
         
