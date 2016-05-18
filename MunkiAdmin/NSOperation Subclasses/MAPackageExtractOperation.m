@@ -126,6 +126,11 @@ DDLogLevel ddLogLevel;
 
 - (NSArray *)findAllFilesOfType:(NSString *)type atURL:(NSURL *)url
 {
+    if (!url) {
+        DDLogError(@"MAPackageExtractOperation: findAllFilesOfType:atURL: The URL can not be nil");
+        return nil;
+    }
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
@@ -157,6 +162,10 @@ DDLogLevel ddLogLevel;
 
 - (void)extractArchiveFromBundlePackageURL:(NSURL *)packageURL
 {
+    if (!packageURL) {
+        DDLogError(@"MAPackageExtractOperation: extractArchiveFromBundlePackageURL: The URL can not be nil");
+        return;
+    }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *archiveURL = [packageURL URLByAppendingPathComponent:@"Contents/Archive.pax.gz"];
     NSURL *archiveExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[packageURL lastPathComponent] stringByDeletingPathExtension]];
@@ -172,6 +181,10 @@ DDLogLevel ddLogLevel;
 
 - (void)extractPayloadFromExpandedPackageURL:(NSURL *)packageURL
 {
+    if (!packageURL) {
+        DDLogError(@"MAPackageExtractOperation: extractPayloadFromExpandedPackageURL: The URL can not be nil");
+        return;
+    }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *payloadURL = [packageURL URLByAppendingPathComponent:@"Payload"];
     NSURL *payloadExtractedURL = [self.extractedPayloadsURL URLByAppendingPathComponent:[[packageURL lastPathComponent] stringByDeletingPathExtension]];
@@ -233,15 +246,17 @@ DDLogLevel ddLogLevel;
             self.progressCallback(1.0, @"Expanding package...");
         }
         NSURL *expandedURL = [self expandFlatPackage];
-        [self extractPayloadFromExpandedPackageURL:expandedURL];
-        
-        for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:expandedURL]) {
-            DDLogDebug(@"MAPackageExtractOperation found subpackage: %@", [url path]);
-            if (self.progressCallback) {
-                self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
-            }
+        if (expandedURL) {
+            [self extractPayloadFromExpandedPackageURL:expandedURL];
             
-            [self extractPayloadFromExpandedPackageURL:url];
+            for (NSURL *url in [self findAllFilesOfType:@"com.apple.installer-package" atURL:expandedURL]) {
+                DDLogDebug(@"MAPackageExtractOperation found subpackage: %@", [url path]);
+                if (self.progressCallback) {
+                    self.progressCallback(1.0, [NSString stringWithFormat:@"Extracting payload from %@...", [url lastPathComponent]]);
+                }
+                
+                [self extractPayloadFromExpandedPackageURL:url];
+            }
         }
     }
 }
