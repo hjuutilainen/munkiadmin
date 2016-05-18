@@ -1688,37 +1688,48 @@ static dispatch_queue_t serialQueue;
                      */
                     NSURL *packageURL = nil;
                     if (munkiPackagePath) {
+                        // The pkginfo file had custom package path, extract that
                         packageURL = [[NSURL fileURLWithPath:mountpoint] URLByAppendingPathComponent:munkiPackagePath];
                     } else {
+                        // Look for installer packages in the mount point directory
                         NSFileManager *fileManager = [NSFileManager defaultManager];
                         NSDirectoryEnumerator *dirEnumerator = [fileManager enumeratorAtURL:[NSURL fileURLWithPath:mountpoint]
                                                                  includingPropertiesForKeys:@[NSURLTypeIdentifierKey]
-                                                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                    options:(NSDirectoryEnumerationSkipsHiddenFiles | NSDirectoryEnumerationSkipsPackageDescendants)
                                                                                errorHandler:nil];
                         
                         // An array to store the all the enumerated file names in
                         NSMutableArray *packages = [NSMutableArray array];
                         
-                        // Enumerate the dirEnumerator results, each value is stored in allURLs
+                        // Enumerate the dirEnumerator results
                         NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
                         for (NSURL *theURL in dirEnumerator) {
-                            NSString *typeIdentifier;
-                            [theURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
-                            //DDLogInfo(@"%@ %@", typeIdentifier, theURL);
-                            if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package-archive"]) {
-                                // Flat package
-                                [packages addObject:theURL];
-                            } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package"]) {
-                                // Bundle package (.pkg)
-                                [packages addObject:theURL];
-                            } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-meta-package"]) {
-                                // Bundle package (.mpkg)
-                                [packages addObject:theURL];
+                            // Skip any subdirectories
+                            NSNumber *isDirectory = nil;
+                            [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+                            if ([isDirectory boolValue]) {
+                                [dirEnumerator skipDescendants];
+                            }
+                            // Regular file, check the type identifier
+                            else {
+                                NSString *typeIdentifier;
+                                [theURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
+                                //DDLogInfo(@"%@ %@", typeIdentifier, theURL);
+                                if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package-archive"]) {
+                                    // Flat package
+                                    [packages addObject:theURL];
+                                } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package"]) {
+                                    // Bundle package (.pkg)
+                                    [packages addObject:theURL];
+                                } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-meta-package"]) {
+                                    // Bundle package (.mpkg)
+                                    [packages addObject:theURL];
+                                }
                             }
                         }
                         if (packages) {
-                            //DDLogInfo(@"%@", packages);
-                            packageURL = packages[0];
+                            DDLogInfo(@"%@", packages);
+                            packageURL = [packages sortedArrayUsingSelector:@selector(compare:)][0];
                         }
                     }
                     
