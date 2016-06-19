@@ -10,12 +10,12 @@
 		26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */; };
 		26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */; };
 		2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F7446970DB6B7EA00F9684A /* MainMenu.xib */; };
+		411A24A7E834B7CEC95AC01F /* libPods-MunkiAdmin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDB177FE71AD8B3731D7675 /* libPods-MunkiAdmin.a */; };
 		770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */; };
 		77C8280E06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		C8B8E5A963D6FBC3A0ED5ABA /* libPods-MunkiAdmin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */; };
 		F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E6E19090E00009F6D28 /* _DeveloperMO.m */; };
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
 		F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7419090E0E009F6D28 /* DeveloperMO.m */; };
@@ -182,8 +182,8 @@
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0FDB177FE71AD8B3731D7675 /* libPods-MunkiAdmin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MunkiAdmin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		22B7F4E18DC30765BD6122F8 /* Pods-MunkiAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MunkiAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 		265049FC172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerEnvironmentVariableMO.h; sourceTree = "<group>"; };
 		265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _InstallerEnvironmentVariableMO.m; sourceTree = "<group>"; };
 		265049FE172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallerEnvironmentVariableMO.h; sourceTree = "<group>"; };
@@ -193,14 +193,12 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2F7446980DB6B7EA00F9684A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiAdmin_Prefix.pch; path = MunkiAdmin/MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
-		73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MunkiAdmin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* MAMunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAMunkiAdmin_AppDelegate.h; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
 		77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAMunkiAdmin_AppDelegate.m; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; name = "MunkiAdmin-Info.plist"; path = "MunkiAdmin/MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1AE864A21B91D7578E28FA6 /* Pods-MunkiAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MunkiAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.release.xcconfig"; sourceTree = "<group>"; };
 		F5018E6D19090E00009F6D28 /* _DeveloperMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperMO.h; sourceTree = "<group>"; };
 		F5018E6E19090E00009F6D28 /* _DeveloperMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DeveloperMO.m; sourceTree = "<group>"; };
 		F5018E6F19090E00009F6D28 /* _DeveloperSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperSourceListItemMO.h; sourceTree = "<group>"; };
@@ -476,7 +474,7 @@
 			files = (
 				F562D4F3191DF15A000F136C /* Quartz.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				C8B8E5A963D6FBC3A0ED5ABA /* libPods-MunkiAdmin.a in Frameworks */,
+				411A24A7E834B7CEC95AC01F /* libPods-MunkiAdmin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,7 +644,7 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				F7239CF460E55FF626F5D99E /* Pods */,
+				B986459F033535F99279787C /* Pods */,
 			);
 			name = MunkiAdmin;
 			sourceTree = "<group>";
@@ -716,7 +714,7 @@
 				F5EA6ABC190F80E900362FEE /* QuartzCore.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
-				73A158B0532230EBD2603ABC /* libPods-MunkiAdmin.a */,
+				0FDB177FE71AD8B3731D7675 /* libPods-MunkiAdmin.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -730,6 +728,13 @@
 				770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		B986459F033535F99279787C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		F5063423172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell */ = {
@@ -832,15 +837,6 @@
 			name = "Manifest Editor Icons";
 			sourceTree = "<group>";
 		};
-		F7239CF460E55FF626F5D99E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				22B7F4E18DC30765BD6122F8 /* Pods-MunkiAdmin.debug.xcconfig */,
-				F1AE864A21B91D7578E28FA6 /* Pods-MunkiAdmin.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		FEABB23F144EB0D40006BDE8 /* UI Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -934,13 +930,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 26FC0A840875C7B200E6366F /* Build configuration list for PBXNativeTarget "MunkiAdmin" */;
 			buildPhases = (
-				7AF4AA75BBAC90730244EBAE /* Check Pods Manifest.lock */,
+				1DD3C9AE24CACA26F5FFED51 /* [CP] Check Pods Manifest.lock */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				FE145D971488D42200AEA151 /* ShellScript */,
-				F3BAC322BE18AACBBA5781B7 /* Copy Pods Resources */,
-				705F78FDEC822AE290965D47 /* Embed Pods Frameworks */,
+				54F6514855D1097BC243BC67 /* [CP] Embed Pods Frameworks */,
+				E2F60EBBA7C8990A0DBC85F2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1054,29 +1050,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		705F78FDEC822AE290965D47 /* Embed Pods Frameworks */ = {
+		1DD3C9AE24CACA26F5FFED51 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7AF4AA75BBAC90730244EBAE /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1084,14 +1065,29 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F3BAC322BE18AACBBA5781B7 /* Copy Pods Resources */ = {
+		54F6514855D1097BC243BC67 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2F60EBBA7C8990A0DBC85F2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
