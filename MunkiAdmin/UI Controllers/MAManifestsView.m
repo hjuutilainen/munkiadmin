@@ -301,6 +301,13 @@ DDLogLevel ddLogLevel;
     
     //[self.sourceList registerForDraggedTypes:@[draggingType]];
     
+    // The basic recipe for a sidebar. Note that the selectionHighlightStyle is set to NSTableViewSelectionHighlightStyleSourceList in the nib
+    [self.sourceList sizeLastColumnToFit];
+    [self.sourceList setFloatsGroupRows:NO];
+    
+    // NSTableViewRowSizeStyleDefault should be used, unless the user has picked an explicit size. In that case, it should be stored out and re-used.
+    [self.sourceList setRowSizeStyle:NSTableViewRowSizeStyleDefault];
+    
     [self.manifestsListTableView setDelegate:self];
     [self.manifestsListTableView setDataSource:self];
     [self.manifestsListTableView registerForDraggedTypes:@[NSURLPboardType]];
@@ -1191,34 +1198,30 @@ DDLogLevel ddLogLevel;
 }
 
 # pragma mark -
-# pragma mark PXSourceList Data Source methods
+# pragma mark NSOutlineView delegate and data source methods
 
-- (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
     if (!item)
-        return self.sourceListItems.count;
+        return (NSInteger)self.sourceListItems.count;
     
-    return [[item children] count];
+    return (NSInteger)[[item children] count];
 }
 
-- (id)sourceList:(PXSourceList*)aSourceList child:(NSUInteger)index ofItem:(id)item
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
     if (!item)
-        return self.sourceListItems[index];
+        return self.sourceListItems[(NSUInteger)index];
     
-    return [[item children] objectAtIndex:index];
+    return [[item children] objectAtIndex:(NSUInteger)index];
 }
 
-- (BOOL)sourceList:(PXSourceList*)aSourceList isItemExpandable:(id)item
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
     return [item hasChildren];
 }
 
-# pragma mark -
-# pragma mark PXSourceList delegate
-
-
-- (void)sourceListSelectionDidChange:(NSNotification *)notification
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
     if ([self.sourceList selectedRow] >= 0) {
         DDLogVerbose(@"Starting to set predicate...");
@@ -1237,52 +1240,51 @@ DDLogLevel ddLogLevel;
     }
 }
 
-- (BOOL)sourceList:(PXSourceList *)aSourceList isGroupAlwaysExpanded:(id)group
+- (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-    return NO;
-}
-
-- (NSView *)sourceList:(PXSourceList *)aSourceList viewForItem:(id)item
-{
-    if (aSourceList == self.sourceList) {
-        PXSourceListTableCellView *cellView = nil;
-        if ([aSourceList levelForItem:item] == 0)
-            cellView = [aSourceList makeViewWithIdentifier:@"HeaderCell" owner:nil];
-        else
-            cellView = [aSourceList makeViewWithIdentifier:@"MainCell" owner:nil];
+    if (outlineView == self.sourceList) {
         
-        PXSourceListItem *sourceListItem = item;
-        MAManifestsViewSourceListItem *collection = sourceListItem.representedObject;
+        NSTableCellView *view = nil;
         
-        // Only allow us to edit the user created items.
-        BOOL isTitleEditable = [collection isKindOfClass:[MAManifestsViewSourceListItem class]] && collection.type == ManifestSourceItemTypeUserCreated;
-        cellView.textField.editable = isTitleEditable;
-        cellView.textField.selectable = isTitleEditable;
+        if ([outlineView levelForItem:item] == 0) {
+            view = [outlineView makeViewWithIdentifier:@"HeaderCell" owner:nil];
+        } else {
+            view = [outlineView makeViewWithIdentifier:@"MainCell" owner:nil];
+        }
         
-        cellView.textField.stringValue = sourceListItem.title ? sourceListItem.title : [sourceListItem.representedObject title];
-        cellView.imageView.image = [item icon];
-        cellView.badgeView.hidden = YES;
-        //cellView.badgeView.badgeValue = ...;
+        view.textField.stringValue = [item title] ? [item title] : [[item representedObject] title];
+        view.imageView.image = [item icon];
         
-        return cellView;
+        return view;
     } else {
         return nil;
     }
 }
 
-- (BOOL)sourceList:(PXSourceList *)aSourceList shouldShowOutlineCellForItem:(id)item
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldShowOutlineCellForItem:(nonnull id)item
 {
-    /*
-     Don't show disclosure triangle for subitems
-     */
-    if ([aSourceList levelForItem:item] == 0) {
+    return YES;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+    if ([outlineView levelForItem:item] <= 0) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+    if ([outlineView levelForItem:item] <= 0) {
         return YES;
     } else {
         return NO;
     }
 }
 
-- (NSDragOperation)sourceList:(PXSourceList *)sourceList validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+- (NSDragOperation)outlineView:(NSOutlineView *)sourceList validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
 {
     // Deny drag and drop reordering
     if (index != -1) {
@@ -1336,7 +1338,7 @@ DDLogLevel ddLogLevel;
     }
 }
 
-- (BOOL)sourceList:(PXSourceList *)aSourceList acceptDrop:(id<NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
+- (BOOL)outlineView:(NSOutlineView *)aSourceList acceptDrop:(nonnull id<NSDraggingInfo>)info item:(nullable id)proposedParentItem childIndex:(NSInteger)index
 {
     if (aSourceList == self.sourceList) {
         NSArray *dragTypes = [[info draggingPasteboard] types];
