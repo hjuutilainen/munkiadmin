@@ -175,6 +175,21 @@ DDLogLevel ddLogLevel;
     
     BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
     if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:atomicWrites]) {
+        /*
+        Get file properties
+         */
+        NSDate *dateCreated;
+        [newManifest.manifestURL getResourceValue:&dateCreated forKey:NSURLCreationDateKey error:nil];
+        newManifest.manifestDateCreated = dateCreated;
+        
+        NSDate *dateLastOpened;
+        [newManifest.manifestURL getResourceValue:&dateLastOpened forKey:NSURLContentAccessDateKey error:nil];
+        newManifest.manifestDateLastOpened = dateLastOpened;
+        
+        NSDate *dateModified;
+        [newManifest.manifestURL getResourceValue:&dateModified forKey:NSURLContentModificationDateKey error:nil];
+        newManifest.manifestDateModified = dateModified;
+        
         return newManifest;
     } else {
         return nil;

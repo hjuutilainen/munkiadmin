@@ -740,6 +740,15 @@ static dispatch_queue_t serialQueue;
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError *copyError = nil;
         if ([fm copyItemAtURL:manifest.manifestURL toURL:newURL error:&copyError]) {
+            /*
+             Set date attributes of the new item to current date and time.
+             */
+            NSDate *now = [NSDate date];
+            [newURL setResourceValues:@{NSURLCreationDateKey: now, NSURLContentAccessDateKey: now, NSURLContentModificationDateKey: now} error:nil];
+            
+            /*
+             Scan the new item
+             */
             MAManifestScanner *manifestScanner = [[MAManifestScanner alloc] initWithURL:newURL];
             manifestScanner.performFullScan = YES;
             [manifestScanner start];
