@@ -731,6 +731,7 @@ static dispatch_queue_t serialQueue;
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     savePanel.title = @"Save Manifest";
     savePanel.directoryURL = [[manifest manifestURL] URLByDeletingLastPathComponent];
+    [savePanel setNameFieldStringValue:[[manifest manifestURL] lastPathComponent]];
     
     if ([savePanel runModal] == NSFileHandlingPanelOKButton)
     {
