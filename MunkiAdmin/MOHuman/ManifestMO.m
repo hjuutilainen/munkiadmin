@@ -58,6 +58,9 @@
     } else if ([referencingManifestsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"referencingManifests", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([key isEqualToString:@"titleOrDisplayName"]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"title", @"manifestDisplayName", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
     
     return keyPaths;
