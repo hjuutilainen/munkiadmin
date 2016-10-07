@@ -22,7 +22,7 @@ Latest version can be downloaded from the [Releases page](https://github.com/hju
 
 MunkiAdmin requires:
 
-* OS X 10.8 or later
+* macOS 10.8 or later
 * [Munki](http://munki.github.io/munki/) components installed (any recent version)
 
 ### Build from source:
