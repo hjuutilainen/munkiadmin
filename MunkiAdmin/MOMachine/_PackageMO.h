@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class NSObject;
 
+@class NSObject;
+
 @interface PackageMOID : NSManagedObjectID {}
 @end
 
@@ -232,6 +234,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) id packageURL;
 
 @property (nonatomic, strong, nullable) NSString* titleWithVersion;
+
+@property (nonatomic, strong, nullable) id uninstallerItemURL;
 
 @property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *blockingApplications;
 - (nullable NSMutableSet<StringObjectMO*>*)blockingApplicationsSet;
@@ -624,6 +628,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveTitleWithVersion;
 - (void)setPrimitiveTitleWithVersion:(nullable NSString*)value;
 
+- (nullable id)primitiveUninstallerItemURL;
+- (void)setPrimitiveUninstallerItemURL:(nullable id)value;
+
 - (NSMutableSet<StringObjectMO*>*)primitiveBlockingApplications;
 - (void)setPrimitiveBlockingApplications:(NSMutableSet<StringObjectMO*>*)value;
 
@@ -744,6 +751,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)packageInfoURL;
 + (NSString *)packageURL;
 + (NSString *)titleWithVersion;
++ (NSString *)uninstallerItemURL;
 @end
 
 @interface PackageMORelationships: NSObject

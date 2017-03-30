@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F28b" minimumToolsVersion="Automatic">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,7 +11,7 @@
         <relationship name="referencingStringObjects" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalApplication" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="ApplicationProxy" representedClassName="ApplicationProxyMO" syncable="YES">
-        <attribute name="isEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="parentApplication" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Application" inverseName="applicationProxies" inverseEntity="Application" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Catalog" representedClassName="CatalogMO" syncable="YES">
@@ -22,10 +22,10 @@
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="catalogs" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="CatalogInfo" representedClassName="CatalogInfoMO" syncable="YES">
-        <attribute name="indexInManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="isEnabledForManifest" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isEnabledForPackage" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="indexInManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isEnabledForManifest" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isEnabledForPackage" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="catalog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="catalogInfos" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="catalogInfos" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="catalogInfos" inverseEntity="Package" indexed="YES" syncable="YES"/>
@@ -40,7 +40,7 @@
     </entity>
     <entity name="ConditionalItem" representedClassName="ConditionalItemMO" syncable="YES">
         <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ConditionalItem" inverseName="parent" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
         <relationship name="includedManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="includedManifestConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="managedInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="managedInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
@@ -71,16 +71,16 @@
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="iconImage" inverseEntity="Package" syncable="YES"/>
     </entity>
     <entity name="InstallerChoicesItem" representedClassName="InstallerChoicesItemMO" syncable="YES">
-        <attribute name="munki_attributeSetting" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="munki_attributeSetting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_choiceAttribute" optional="YES" attributeType="String" defaultValueString="attribute" syncable="YES"/>
         <attribute name="munki_choiceIdentifier" optional="YES" attributeType="String" defaultValueString="identifier" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="Package" inverseName="installerChoicesItems" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="InstallerEnvironmentVariable" representedClassName="InstallerEnvironmentVariableMO" syncable="YES">
         <attribute name="munki_installer_environment_key" attributeType="String" defaultValueString="NEW_VAR" syncable="YES"/>
         <attribute name="munki_installer_environment_value" optional="YES" attributeType="String" defaultValueString="VALUE" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installerEnvironmentVariables" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="InstallerTypeSourceListItem" representedClassName="InstallerTypeSourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES"/>
@@ -95,7 +95,7 @@
         <attribute name="munki_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version_comparison_key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version_comparison_key_value" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="originalInstallsItem" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="customKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallsItemCustomKey" inverseName="installsItem" inverseEntity="InstallsItemCustomKey" indexed="YES" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installsItems" inverseEntity="Package" indexed="YES" syncable="YES"/>
@@ -112,7 +112,7 @@
         <attribute name="munki_mode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_source_item" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_user" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="itemsToCopy" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="ManagedInstall" representedClassName="ManagedInstallMO" parentEntity="ApplicationProxy" syncable="YES">
@@ -125,11 +125,11 @@
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="managedUpdates" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Manifest" representedClassName="ManifestMO" syncable="YES">
-        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="manifestAdminNotes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="manifestDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="manifestDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="manifestDateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="manifestDateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="manifestDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="manifestDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="manifestDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="manifestParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="manifestURL" attributeType="Transformable" syncable="YES"/>
@@ -172,8 +172,8 @@
         </fetchedProperty>
     </entity>
     <entity name="ManifestInfo" representedClassName="ManifestInfoMO" syncable="YES">
-        <attribute name="isAvailableForEditing" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isEnabledForManifest" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isAvailableForEditing" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isEnabledForManifest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="includedManifests" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="parentManifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="manifestInfos" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
     </entity>
@@ -181,31 +181,31 @@
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="optionalInstalls" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="Package" representedClassName="PackageMO" syncable="YES">
-        <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="munki_apple_item" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hasEmptyBlockingApplications" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hasUnstagedChanges" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_apple_item" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="munki_developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_icon_hash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_icon_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installable_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installcheck_script" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_installer_item_hash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installer_item_location" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_installer_item_size" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="munki_installer_item_size" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_installer_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_maximum_os_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_minimum_munki_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_minimum_os_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_notes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_OnDemand" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_OnDemand" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_package_path" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_PayloadIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postinstall_script" optional="YES" attributeType="String" syncable="YES"/>
@@ -213,37 +213,38 @@
         <attribute name="munki_preinstall_alert_alert_detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_alert_alert_title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_alert_cancel_label" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_preinstall_alert_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_preinstall_alert_enabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_preinstall_alert_ok_label" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preuninstall_alert_alert_detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preuninstall_alert_alert_title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preuninstall_alert_cancel_label" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_preuninstall_alert_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_preuninstall_alert_enabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_preuninstall_alert_ok_label" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preuninstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_receipts" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_RestartAction" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_suppress_bundle_relocation" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_unattended_install" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="munki_unattended_uninstall" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_suppress_bundle_relocation" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_unattended_install" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_unattended_uninstall" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_uninstall_method" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_uninstall_script" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_uninstallable" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_uninstallable" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_uninstallcheck_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_uninstaller_item_location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalPkginfo" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="packageDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="packageDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="packageDateModified" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="packageInfoDateCreated" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="packageInfoDateLastOpened" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="packageInfoDateModified" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="packageDateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="packageDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="packageDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="packageInfoDateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="packageInfoDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="packageInfoDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageInfoParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="packageInfoURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="packageURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="titleWithVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uninstallerItemURL" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="blockingApplications" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="blockingApplicationReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogInfo" inverseName="package" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
         <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packages" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
@@ -264,8 +265,8 @@
         <relationship name="updateFor" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="updateForReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="PackageInfo" representedClassName="PackageInfoMO" syncable="YES">
-        <attribute name="isEnabledForCatalog" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="isEnabledForCatalog" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="catalog" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packageInfos" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="packageInfos" inverseEntity="Package" indexed="YES" syncable="YES"/>
@@ -273,9 +274,9 @@
     <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
         <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="parent" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
@@ -283,17 +284,17 @@
     </entity>
     <entity name="Receipt" representedClassName="ReceiptMO" syncable="YES">
         <attribute name="munki_filename" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_optional" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="munki_optional" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_packageid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="receipts" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="StringObject" representedClassName="StringObjectMO" syncable="YES">
-        <attribute name="indexInNestedManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="indexInNestedManifest" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" defaultValueString="New Item" syncable="YES"/>
         <attribute name="typeString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blockingApplicationReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="blockingApplications" inverseEntity="Package" indexed="YES" syncable="YES"/>
@@ -345,7 +346,7 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="554"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1260"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1275"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>

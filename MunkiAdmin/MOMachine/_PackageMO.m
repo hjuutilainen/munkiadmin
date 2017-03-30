@@ -504,6 +504,8 @@
 
 @dynamic titleWithVersion;
 
+@dynamic uninstallerItemURL;
+
 @dynamic blockingApplications;
 
 - (NSMutableSet<StringObjectMO*>*)blockingApplicationsSet {
@@ -848,6 +850,9 @@
 }
 + (NSString *)titleWithVersion {
 	return @"titleWithVersion";
+}
++ (NSString *)uninstallerItemURL {
+	return @"uninstallerItemURL";
 }
 @end
 

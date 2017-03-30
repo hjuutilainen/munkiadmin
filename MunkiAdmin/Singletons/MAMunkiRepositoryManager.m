@@ -936,6 +936,42 @@ static dispatch_queue_t serialQueue;
         } else {
             [objectsToDelete addObject:aPackage.packageInfoURL];
         }
+        
+        if ((aPackage.uninstallerItemURL != nil) && removeInstallerItem) {
+            /*
+             Check if there are other pkginfos that reference the uninstaller item
+             */
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            [fetchRequest setEntity:[NSEntityDescription entityForName:@"Package" inManagedObjectContext:moc]];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uninstallerItemURL == %@", aPackage.uninstallerItemURL];
+            [fetchRequest setPredicate:predicate];
+            if ([moc countForFetchRequest:fetchRequest error:nil] > 1) {
+                DDLogInfo(@"The uninstaller item is referenced by other packages. Should not remove it...");
+                for (PackageMO *foundPackage in [moc executeFetchRequest:fetchRequest error:nil]) {
+                    if (![foundPackage isEqualTo:aPackage]) {
+                        DDLogInfo(@"Installer item referenced from %@", foundPackage.titleWithVersion);
+                    }
+                }
+            } else {
+                [objectsToDelete addObject:aPackage.uninstallerItemURL];
+            }
+        }
+        
+        /*
+         Check that the files actually exist on disk before trying to remove them
+         */
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSMutableArray *fileURLsNotFoundOndisk = [NSMutableArray new];
+        for (NSURL *fileURL in objectsToDelete) {
+            if (![fm fileExistsAtPath:[fileURL path]]) {
+                DDLogInfo(@"Not trying to remove non-existent file: %@", [fileURL path]);
+                [fileURLsNotFoundOndisk addObject:fileURL];
+            }
+        }
+        if ([fileURLsNotFoundOndisk count] > 0) {
+            [objectsToDelete removeObjectsInArray:fileURLsNotFoundOndisk];
+        }
+        
         [packageGroup removePackagesObject:aPackage];
         [moc deleteObject:aPackage];
     }

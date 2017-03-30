@@ -152,6 +152,11 @@ DDLogLevel ddLogLevel;
                     aNewPackage.packageURL = [[appDelegate pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_installer_item_location];
                 }
                 
+                // Check if we have uninstaller_item_location and expand it to absolute URL
+                if (aNewPackage.munki_uninstaller_item_location != nil) {
+                    aNewPackage.uninstallerItemURL = [[appDelegate pkgsURL] URLByAppendingPathComponent:aNewPackage.munki_uninstaller_item_location];
+                }
+                
                 /*
                  Get the "_metadata" key
                  */
