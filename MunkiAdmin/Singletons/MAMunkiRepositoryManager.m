@@ -1773,7 +1773,7 @@ static dispatch_queue_t serialQueue;
                                 }
                             }
                         }
-                        if (packages) {
+                        if ([packages count] > 0) {
                             DDLogInfo(@"%@", packages);
                             packageURL = [packages sortedArrayUsingSelector:@selector(compare:)][0];
                         }
