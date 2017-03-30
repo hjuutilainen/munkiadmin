@@ -2037,12 +2037,12 @@ DDLogLevel ddLogLevel;
     if (self.currentWholeView == [self.packagesViewController view]) {
         // Packages view
         DDLogVerbose(@"Should focus on packages search");
-        [self.packagesViewController.packagesSearchField becomeFirstResponder];
+        [[self.packagesViewController.packagesSearchField window] makeFirstResponder:self.packagesViewController.packagesSearchField];
     
     } else if (self.currentDetailView == self.catalogsDetailView) {
         // Catalogs view
         DDLogVerbose(@"Should focus on catalogs search");
-        [self.catalogContentSearchField becomeFirstResponder];
+        [[self.catalogContentSearchField window] makeFirstResponder:self.catalogContentSearchField];
     
     } else if (self.currentWholeView == [self.manifestsViewController view]) {
         // Manifests view
