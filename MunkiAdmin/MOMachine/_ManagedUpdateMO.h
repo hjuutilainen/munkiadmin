@@ -1,27 +1,30 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ManagedUpdateMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
+
 #import "ApplicationProxyMO.h"
 
-extern const struct ManagedUpdateMORelationships {
-	__unsafe_unretained NSString *manifest;
-} ManagedUpdateMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ManifestMO;
 
 @interface ManagedUpdateMOID : ApplicationProxyMOID {}
 @end
 
-@interface _ManagedUpdateMO : ApplicationProxyMO {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ManagedUpdateMO : ApplicationProxyMO
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ManagedUpdateMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ManagedUpdateMOID *objectID;
 
-@property (nonatomic, strong) ManifestMO *manifest;
-
-//- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) ManifestMO *manifest;
 
 @end
 
@@ -31,3 +34,9 @@ extern const struct ManagedUpdateMORelationships {
 - (void)setPrimitiveManifest:(ManifestMO*)value;
 
 @end
+
+@interface ManagedUpdateMORelationships: NSObject
++ (NSString *)manifest;
+@end
+
+NS_ASSUME_NONNULL_END

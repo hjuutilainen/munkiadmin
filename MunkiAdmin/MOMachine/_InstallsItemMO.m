@@ -3,32 +3,12 @@
 
 #import "_InstallsItemMO.h"
 
-const struct InstallsItemMOAttributes InstallsItemMOAttributes = {
-	.munki_CFBundleIdentifier = @"munki_CFBundleIdentifier",
-	.munki_CFBundleName = @"munki_CFBundleName",
-	.munki_CFBundleShortVersionString = @"munki_CFBundleShortVersionString",
-	.munki_CFBundleVersion = @"munki_CFBundleVersion",
-	.munki_md5checksum = @"munki_md5checksum",
-	.munki_minosversion = @"munki_minosversion",
-	.munki_path = @"munki_path",
-	.munki_type = @"munki_type",
-	.munki_version_comparison_key = @"munki_version_comparison_key",
-	.munki_version_comparison_key_value = @"munki_version_comparison_key_value",
-	.originalIndex = @"originalIndex",
-	.originalInstallsItem = @"originalInstallsItem",
-};
-
-const struct InstallsItemMORelationships InstallsItemMORelationships = {
-	.customKeys = @"customKeys",
-	.packages = @"packages",
-};
-
 @implementation InstallsItemMOID
 @end
 
 @implementation _InstallsItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc_];
 }
@@ -86,7 +66,7 @@ const struct InstallsItemMORelationships InstallsItemMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -95,17 +75,17 @@ const struct InstallsItemMORelationships InstallsItemMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic originalInstallsItem;
 
 @dynamic customKeys;
 
-- (NSMutableSet*)customKeysSet {
+- (NSMutableSet<InstallsItemCustomKeyMO*>*)customKeysSet {
 	[self willAccessValueForKey:@"customKeys"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"customKeys"];
+	NSMutableSet<InstallsItemCustomKeyMO*> *result = (NSMutableSet<InstallsItemCustomKeyMO*>*)[self mutableSetValueForKey:@"customKeys"];
 
 	[self didAccessValueForKey:@"customKeys"];
 	return result;
@@ -113,14 +93,62 @@ const struct InstallsItemMORelationships InstallsItemMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation InstallsItemMOAttributes 
++ (NSString *)munki_CFBundleIdentifier {
+	return @"munki_CFBundleIdentifier";
+}
++ (NSString *)munki_CFBundleName {
+	return @"munki_CFBundleName";
+}
++ (NSString *)munki_CFBundleShortVersionString {
+	return @"munki_CFBundleShortVersionString";
+}
++ (NSString *)munki_CFBundleVersion {
+	return @"munki_CFBundleVersion";
+}
++ (NSString *)munki_md5checksum {
+	return @"munki_md5checksum";
+}
++ (NSString *)munki_minosversion {
+	return @"munki_minosversion";
+}
++ (NSString *)munki_path {
+	return @"munki_path";
+}
++ (NSString *)munki_type {
+	return @"munki_type";
+}
++ (NSString *)munki_version_comparison_key {
+	return @"munki_version_comparison_key";
+}
++ (NSString *)munki_version_comparison_key_value {
+	return @"munki_version_comparison_key_value";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
++ (NSString *)originalInstallsItem {
+	return @"originalInstallsItem";
+}
+@end
+
+@implementation InstallsItemMORelationships 
++ (NSString *)customKeys {
+	return @"customKeys";
+}
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

@@ -3,25 +3,12 @@
 
 #import "_CatalogInfoMO.h"
 
-const struct CatalogInfoMOAttributes CatalogInfoMOAttributes = {
-	.indexInManifest = @"indexInManifest",
-	.isEnabledForManifest = @"isEnabledForManifest",
-	.isEnabledForPackage = @"isEnabledForPackage",
-	.originalIndex = @"originalIndex",
-};
-
-const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
-	.catalog = @"catalog",
-	.manifest = @"manifest",
-	.package = @"package",
-};
-
 @implementation CatalogInfoMOID
 @end
 
 @implementation _CatalogInfoMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:moc_];
 }
@@ -74,7 +61,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIndexInManifestValue:(int32_t)value_ {
-	[self setIndexInManifest:[NSNumber numberWithInt:value_]];
+	[self setIndexInManifest:@(value_)];
 }
 
 - (int32_t)primitiveIndexInManifestValue {
@@ -83,7 +70,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIndexInManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInManifest:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveIndexInManifest:@(value_)];
 }
 
 @dynamic isEnabledForManifest;
@@ -94,7 +81,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForManifest:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -103,7 +90,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForManifest:@(value_)];
 }
 
 @dynamic isEnabledForPackage;
@@ -114,7 +101,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setIsEnabledForPackageValue:(BOOL)value_ {
-	[self setIsEnabledForPackage:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForPackage:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForPackageValue {
@@ -123,7 +110,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForPackage:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForPackage:@(value_)];
 }
 
 @dynamic originalIndex;
@@ -134,7 +121,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -143,7 +130,7 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic catalog;
@@ -152,5 +139,32 @@ const struct CatalogInfoMORelationships CatalogInfoMORelationships = {
 
 @dynamic package;
 
+@end
+
+@implementation CatalogInfoMOAttributes 
++ (NSString *)indexInManifest {
+	return @"indexInManifest";
+}
++ (NSString *)isEnabledForManifest {
+	return @"isEnabledForManifest";
+}
++ (NSString *)isEnabledForPackage {
+	return @"isEnabledForPackage";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation CatalogInfoMORelationships 
++ (NSString *)catalog {
+	return @"catalog";
+}
++ (NSString *)manifest {
+	return @"manifest";
+}
++ (NSString *)package {
+	return @"package";
+}
 @end
 

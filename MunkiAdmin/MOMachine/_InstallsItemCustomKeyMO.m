@@ -3,21 +3,12 @@
 
 #import "_InstallsItemCustomKeyMO.h"
 
-const struct InstallsItemCustomKeyMOAttributes InstallsItemCustomKeyMOAttributes = {
-	.customKeyName = @"customKeyName",
-	.customKeyValue = @"customKeyValue",
-};
-
-const struct InstallsItemCustomKeyMORelationships InstallsItemCustomKeyMORelationships = {
-	.installsItem = @"installsItem",
-};
-
 @implementation InstallsItemCustomKeyMOID
 @end
 
 @implementation _InstallsItemCustomKeyMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItemCustomKey" inManagedObjectContext:moc_];
 }
@@ -47,5 +38,20 @@ const struct InstallsItemCustomKeyMORelationships InstallsItemCustomKeyMORelatio
 
 @dynamic installsItem;
 
+@end
+
+@implementation InstallsItemCustomKeyMOAttributes 
++ (NSString *)customKeyName {
+	return @"customKeyName";
+}
++ (NSString *)customKeyValue {
+	return @"customKeyValue";
+}
+@end
+
+@implementation InstallsItemCustomKeyMORelationships 
++ (NSString *)installsItem {
+	return @"installsItem";
+}
 @end
 

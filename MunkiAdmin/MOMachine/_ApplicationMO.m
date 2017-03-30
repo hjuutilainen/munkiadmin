@@ -3,26 +3,12 @@
 
 #import "_ApplicationMO.h"
 
-const struct ApplicationMOAttributes ApplicationMOAttributes = {
-	.munki_description = @"munki_description",
-	.munki_display_name = @"munki_display_name",
-	.munki_name = @"munki_name",
-};
-
-const struct ApplicationMORelationships ApplicationMORelationships = {
-	.applicationProxies = @"applicationProxies",
-	.latestPackage = @"latestPackage",
-	.manifests = @"manifests",
-	.packages = @"packages",
-	.referencingStringObjects = @"referencingStringObjects",
-};
-
 @implementation ApplicationMOID
 @end
 
 @implementation _ApplicationMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Application" inManagedObjectContext:moc_];
 }
@@ -54,10 +40,10 @@ const struct ApplicationMORelationships ApplicationMORelationships = {
 
 @dynamic applicationProxies;
 
-- (NSMutableSet*)applicationProxiesSet {
+- (NSMutableSet<ApplicationProxyMO*>*)applicationProxiesSet {
 	[self willAccessValueForKey:@"applicationProxies"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"applicationProxies"];
+	NSMutableSet<ApplicationProxyMO*> *result = (NSMutableSet<ApplicationProxyMO*>*)[self mutableSetValueForKey:@"applicationProxies"];
 
 	[self didAccessValueForKey:@"applicationProxies"];
 	return result;
@@ -67,10 +53,10 @@ const struct ApplicationMORelationships ApplicationMORelationships = {
 
 @dynamic manifests;
 
-- (NSMutableSet*)manifestsSet {
+- (NSMutableSet<ManifestMO*>*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
+	NSMutableSet<ManifestMO*> *result = (NSMutableSet<ManifestMO*>*)[self mutableSetValueForKey:@"manifests"];
 
 	[self didAccessValueForKey:@"manifests"];
 	return result;
@@ -78,10 +64,10 @@ const struct ApplicationMORelationships ApplicationMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
@@ -89,14 +75,44 @@ const struct ApplicationMORelationships ApplicationMORelationships = {
 
 @dynamic referencingStringObjects;
 
-- (NSMutableSet*)referencingStringObjectsSet {
+- (NSMutableSet<StringObjectMO*>*)referencingStringObjectsSet {
 	[self willAccessValueForKey:@"referencingStringObjects"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingStringObjects"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"referencingStringObjects"];
 
 	[self didAccessValueForKey:@"referencingStringObjects"];
 	return result;
 }
 
+@end
+
+@implementation ApplicationMOAttributes 
++ (NSString *)munki_description {
+	return @"munki_description";
+}
++ (NSString *)munki_display_name {
+	return @"munki_display_name";
+}
++ (NSString *)munki_name {
+	return @"munki_name";
+}
+@end
+
+@implementation ApplicationMORelationships 
++ (NSString *)applicationProxies {
+	return @"applicationProxies";
+}
++ (NSString *)latestPackage {
+	return @"latestPackage";
+}
++ (NSString *)manifests {
+	return @"manifests";
+}
++ (NSString *)packages {
+	return @"packages";
+}
++ (NSString *)referencingStringObjects {
+	return @"referencingStringObjects";
+}
 @end
 

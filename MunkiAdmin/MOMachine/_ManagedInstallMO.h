@@ -1,27 +1,30 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ManagedInstallMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
+
 #import "ApplicationProxyMO.h"
 
-extern const struct ManagedInstallMORelationships {
-	__unsafe_unretained NSString *manifest;
-} ManagedInstallMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ManifestMO;
 
 @interface ManagedInstallMOID : ApplicationProxyMOID {}
 @end
 
-@interface _ManagedInstallMO : ApplicationProxyMO {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ManagedInstallMO : ApplicationProxyMO
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ManagedInstallMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ManagedInstallMOID *objectID;
 
-@property (nonatomic, strong) ManifestMO *manifest;
-
-//- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) ManifestMO *manifest;
 
 @end
 
@@ -31,3 +34,9 @@ extern const struct ManagedInstallMORelationships {
 - (void)setPrimitiveManifest:(ManifestMO*)value;
 
 @end
+
+@interface ManagedInstallMORelationships: NSObject
++ (NSString *)manifest;
+@end
+
+NS_ASSUME_NONNULL_END

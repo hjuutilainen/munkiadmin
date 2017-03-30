@@ -3,26 +3,12 @@
 
 #import "_ItemToCopyMO.h"
 
-const struct ItemToCopyMOAttributes ItemToCopyMOAttributes = {
-	.munki_destination_item = @"munki_destination_item",
-	.munki_destination_path = @"munki_destination_path",
-	.munki_group = @"munki_group",
-	.munki_mode = @"munki_mode",
-	.munki_source_item = @"munki_source_item",
-	.munki_user = @"munki_user",
-	.originalIndex = @"originalIndex",
-};
-
-const struct ItemToCopyMORelationships ItemToCopyMORelationships = {
-	.package = @"package",
-};
-
 @implementation ItemToCopyMOID
 @end
 
 @implementation _ItemToCopyMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ItemToCopy" inManagedObjectContext:moc_];
 }
@@ -72,7 +58,7 @@ const struct ItemToCopyMORelationships ItemToCopyMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -81,10 +67,40 @@ const struct ItemToCopyMORelationships ItemToCopyMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic package;
 
+@end
+
+@implementation ItemToCopyMOAttributes 
++ (NSString *)munki_destination_item {
+	return @"munki_destination_item";
+}
++ (NSString *)munki_destination_path {
+	return @"munki_destination_path";
+}
++ (NSString *)munki_group {
+	return @"munki_group";
+}
++ (NSString *)munki_mode {
+	return @"munki_mode";
+}
++ (NSString *)munki_source_item {
+	return @"munki_source_item";
+}
++ (NSString *)munki_user {
+	return @"munki_user";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation ItemToCopyMORelationships 
++ (NSString *)package {
+	return @"package";
+}
 @end
 

@@ -3,26 +3,12 @@
 
 #import "_ReceiptMO.h"
 
-const struct ReceiptMOAttributes ReceiptMOAttributes = {
-	.munki_filename = @"munki_filename",
-	.munki_installed_size = @"munki_installed_size",
-	.munki_name = @"munki_name",
-	.munki_optional = @"munki_optional",
-	.munki_packageid = @"munki_packageid",
-	.munki_version = @"munki_version",
-	.originalIndex = @"originalIndex",
-};
-
-const struct ReceiptMORelationships ReceiptMORelationships = {
-	.package = @"package",
-};
-
 @implementation ReceiptMOID
 @end
 
 @implementation _ReceiptMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Receipt" inManagedObjectContext:moc_];
 }
@@ -72,7 +58,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setMunki_installed_sizeValue:(int64_t)value_ {
-	[self setMunki_installed_size:[NSNumber numberWithLongLong:value_]];
+	[self setMunki_installed_size:@(value_)];
 }
 
 - (int64_t)primitiveMunki_installed_sizeValue {
@@ -81,7 +67,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_ {
-	[self setPrimitiveMunki_installed_size:[NSNumber numberWithLongLong:value_]];
+	[self setPrimitiveMunki_installed_size:@(value_)];
 }
 
 @dynamic munki_name;
@@ -94,7 +80,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setMunki_optionalValue:(BOOL)value_ {
-	[self setMunki_optional:[NSNumber numberWithBool:value_]];
+	[self setMunki_optional:@(value_)];
 }
 
 - (BOOL)primitiveMunki_optionalValue {
@@ -103,7 +89,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveMunki_optionalValue:(BOOL)value_ {
-	[self setPrimitiveMunki_optional:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveMunki_optional:@(value_)];
 }
 
 @dynamic munki_packageid;
@@ -118,7 +104,7 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -127,10 +113,40 @@ const struct ReceiptMORelationships ReceiptMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic package;
 
+@end
+
+@implementation ReceiptMOAttributes 
++ (NSString *)munki_filename {
+	return @"munki_filename";
+}
++ (NSString *)munki_installed_size {
+	return @"munki_installed_size";
+}
++ (NSString *)munki_name {
+	return @"munki_name";
+}
++ (NSString *)munki_optional {
+	return @"munki_optional";
+}
++ (NSString *)munki_packageid {
+	return @"munki_packageid";
+}
++ (NSString *)munki_version {
+	return @"munki_version";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation ReceiptMORelationships 
++ (NSString *)package {
+	return @"package";
+}
 @end
 

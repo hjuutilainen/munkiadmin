@@ -3,16 +3,12 @@
 
 #import "_OptionalInstallMO.h"
 
-const struct OptionalInstallMORelationships OptionalInstallMORelationships = {
-	.manifest = @"manifest",
-};
-
 @implementation OptionalInstallMOID
 @end
 
 @implementation _OptionalInstallMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"OptionalInstall" inManagedObjectContext:moc_];
 }
@@ -38,5 +34,11 @@ const struct OptionalInstallMORelationships OptionalInstallMORelationships = {
 
 @dynamic manifest;
 
+@end
+
+@implementation OptionalInstallMORelationships 
++ (NSString *)manifest {
+	return @"manifest";
+}
 @end
 

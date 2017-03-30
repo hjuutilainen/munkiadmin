@@ -3,45 +3,12 @@
 
 #import "_StringObjectMO.h"
 
-const struct StringObjectMOAttributes StringObjectMOAttributes = {
-	.indexInNestedManifest = @"indexInNestedManifest",
-	.originalIndex = @"originalIndex",
-	.title = @"title",
-	.typeString = @"typeString",
-};
-
-const struct StringObjectMORelationships StringObjectMORelationships = {
-	.blockingApplicationReference = @"blockingApplicationReference",
-	.includedManifestConditionalReference = @"includedManifestConditionalReference",
-	.managedInstallConditionalReference = @"managedInstallConditionalReference",
-	.managedInstallReference = @"managedInstallReference",
-	.managedUninstallConditionalReference = @"managedUninstallConditionalReference",
-	.managedUninstallReference = @"managedUninstallReference",
-	.managedUpdateConditionalReference = @"managedUpdateConditionalReference",
-	.managedUpdateReference = @"managedUpdateReference",
-	.manifestReference = @"manifestReference",
-	.optionalInstallConditionalReference = @"optionalInstallConditionalReference",
-	.optionalInstallReference = @"optionalInstallReference",
-	.originalApplication = @"originalApplication",
-	.originalManifest = @"originalManifest",
-	.originalManifestConditionalReference = @"originalManifestConditionalReference",
-	.originalPackage = @"originalPackage",
-	.requiresReference = @"requiresReference",
-	.supportedArchitectureReference = @"supportedArchitectureReference",
-	.updateForReference = @"updateForReference",
-};
-
-const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
-	.manifestsWithSameTitle = @"manifestsWithSameTitle",
-	.packagesWithSameTitle = @"packagesWithSameTitle",
-};
-
 @implementation StringObjectMOID
 @end
 
 @implementation _StringObjectMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc_];
 }
@@ -84,7 +51,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setIndexInNestedManifestValue:(int32_t)value_ {
-	[self setIndexInNestedManifest:[NSNumber numberWithInt:value_]];
+	[self setIndexInNestedManifest:@(value_)];
 }
 
 - (int32_t)primitiveIndexInNestedManifestValue {
@@ -93,7 +60,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveIndexInNestedManifestValue:(int32_t)value_ {
-	[self setPrimitiveIndexInNestedManifest:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveIndexInNestedManifest:@(value_)];
 }
 
 @dynamic originalIndex;
@@ -104,7 +71,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -113,7 +80,7 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic title;
@@ -160,5 +127,86 @@ const struct StringObjectMOFetchedProperties StringObjectMOFetchedProperties = {
 
 @dynamic packagesWithSameTitle;
 
+@end
+
+@implementation StringObjectMOAttributes 
++ (NSString *)indexInNestedManifest {
+	return @"indexInNestedManifest";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
++ (NSString *)title {
+	return @"title";
+}
++ (NSString *)typeString {
+	return @"typeString";
+}
+@end
+
+@implementation StringObjectMORelationships 
++ (NSString *)blockingApplicationReference {
+	return @"blockingApplicationReference";
+}
++ (NSString *)includedManifestConditionalReference {
+	return @"includedManifestConditionalReference";
+}
++ (NSString *)managedInstallConditionalReference {
+	return @"managedInstallConditionalReference";
+}
++ (NSString *)managedInstallReference {
+	return @"managedInstallReference";
+}
++ (NSString *)managedUninstallConditionalReference {
+	return @"managedUninstallConditionalReference";
+}
++ (NSString *)managedUninstallReference {
+	return @"managedUninstallReference";
+}
++ (NSString *)managedUpdateConditionalReference {
+	return @"managedUpdateConditionalReference";
+}
++ (NSString *)managedUpdateReference {
+	return @"managedUpdateReference";
+}
++ (NSString *)manifestReference {
+	return @"manifestReference";
+}
++ (NSString *)optionalInstallConditionalReference {
+	return @"optionalInstallConditionalReference";
+}
++ (NSString *)optionalInstallReference {
+	return @"optionalInstallReference";
+}
++ (NSString *)originalApplication {
+	return @"originalApplication";
+}
++ (NSString *)originalManifest {
+	return @"originalManifest";
+}
++ (NSString *)originalManifestConditionalReference {
+	return @"originalManifestConditionalReference";
+}
++ (NSString *)originalPackage {
+	return @"originalPackage";
+}
++ (NSString *)requiresReference {
+	return @"requiresReference";
+}
++ (NSString *)supportedArchitectureReference {
+	return @"supportedArchitectureReference";
+}
++ (NSString *)updateForReference {
+	return @"updateForReference";
+}
+@end
+
+@implementation StringObjectMOFetchedProperties 
++ (NSString *)manifestsWithSameTitle {
+	return @"manifestsWithSameTitle";
+}
++ (NSString *)packagesWithSameTitle {
+	return @"packagesWithSameTitle";
+}
 @end
 

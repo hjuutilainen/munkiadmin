@@ -3,16 +3,12 @@
 
 #import "_DeveloperSourceListItemMO.h"
 
-const struct DeveloperSourceListItemMORelationships DeveloperSourceListItemMORelationships = {
-	.developerReference = @"developerReference",
-};
-
 @implementation DeveloperSourceListItemMOID
 @end
 
 @implementation _DeveloperSourceListItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"DeveloperSourceListItem" inManagedObjectContext:moc_];
 }
@@ -38,5 +34,11 @@ const struct DeveloperSourceListItemMORelationships DeveloperSourceListItemMORel
 
 @dynamic developerReference;
 
+@end
+
+@implementation DeveloperSourceListItemMORelationships 
++ (NSString *)developerReference {
+	return @"developerReference";
+}
 @end
 

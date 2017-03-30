@@ -3,22 +3,12 @@
 
 #import "_InstallerEnvironmentVariableMO.h"
 
-const struct InstallerEnvironmentVariableMOAttributes InstallerEnvironmentVariableMOAttributes = {
-	.munki_installer_environment_key = @"munki_installer_environment_key",
-	.munki_installer_environment_value = @"munki_installer_environment_value",
-	.originalIndex = @"originalIndex",
-};
-
-const struct InstallerEnvironmentVariableMORelationships InstallerEnvironmentVariableMORelationships = {
-	.packages = @"packages",
-};
-
 @implementation InstallerEnvironmentVariableMOID
 @end
 
 @implementation _InstallerEnvironmentVariableMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"InstallerEnvironmentVariable" inManagedObjectContext:moc_];
 }
@@ -60,7 +50,7 @@ const struct InstallerEnvironmentVariableMORelationships InstallerEnvironmentVar
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -69,19 +59,37 @@ const struct InstallerEnvironmentVariableMORelationships InstallerEnvironmentVar
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation InstallerEnvironmentVariableMOAttributes 
++ (NSString *)munki_installer_environment_key {
+	return @"munki_installer_environment_key";
+}
++ (NSString *)munki_installer_environment_value {
+	return @"munki_installer_environment_value";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation InstallerEnvironmentVariableMORelationships 
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

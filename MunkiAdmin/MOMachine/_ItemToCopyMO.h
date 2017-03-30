@@ -1,93 +1,71 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ItemToCopyMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct ItemToCopyMOAttributes {
-	__unsafe_unretained NSString *munki_destination_item;
-	__unsafe_unretained NSString *munki_destination_path;
-	__unsafe_unretained NSString *munki_group;
-	__unsafe_unretained NSString *munki_mode;
-	__unsafe_unretained NSString *munki_source_item;
-	__unsafe_unretained NSString *munki_user;
-	__unsafe_unretained NSString *originalIndex;
-} ItemToCopyMOAttributes;
-
-extern const struct ItemToCopyMORelationships {
-	__unsafe_unretained NSString *package;
-} ItemToCopyMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class PackageMO;
 
 @interface ItemToCopyMOID : NSManagedObjectID {}
 @end
 
-@interface _ItemToCopyMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ItemToCopyMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ItemToCopyMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ItemToCopyMOID *objectID;
 
-@property (nonatomic, strong) NSString* munki_destination_item;
+@property (nonatomic, strong, nullable) NSString* munki_destination_item;
 
-//- (BOOL)validateMunki_destination_item:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* munki_destination_path;
 
-@property (nonatomic, strong) NSString* munki_destination_path;
+@property (nonatomic, strong, nullable) NSString* munki_group;
 
-//- (BOOL)validateMunki_destination_path:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* munki_mode;
 
-@property (nonatomic, strong) NSString* munki_group;
+@property (nonatomic, strong, nullable) NSString* munki_source_item;
 
-//- (BOOL)validateMunki_group:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* munki_user;
 
-@property (nonatomic, strong) NSString* munki_mode;
-
-//- (BOOL)validateMunki_mode:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* munki_source_item;
-
-//- (BOOL)validateMunki_source_item:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* munki_user;
-
-//- (BOOL)validateMunki_user:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) PackageMO *package;
-
-//- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) PackageMO *package;
 
 @end
 
 @interface _ItemToCopyMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSString*)primitiveMunki_destination_item;
-- (void)setPrimitiveMunki_destination_item:(NSString*)value;
+- (nullable NSString*)primitiveMunki_destination_item;
+- (void)setPrimitiveMunki_destination_item:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_destination_path;
-- (void)setPrimitiveMunki_destination_path:(NSString*)value;
+- (nullable NSString*)primitiveMunki_destination_path;
+- (void)setPrimitiveMunki_destination_path:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_group;
-- (void)setPrimitiveMunki_group:(NSString*)value;
+- (nullable NSString*)primitiveMunki_group;
+- (void)setPrimitiveMunki_group:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_mode;
-- (void)setPrimitiveMunki_mode:(NSString*)value;
+- (nullable NSString*)primitiveMunki_mode;
+- (void)setPrimitiveMunki_mode:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_source_item;
-- (void)setPrimitiveMunki_source_item:(NSString*)value;
+- (nullable NSString*)primitiveMunki_source_item;
+- (void)setPrimitiveMunki_source_item:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_user;
-- (void)setPrimitiveMunki_user:(NSString*)value;
+- (nullable NSString*)primitiveMunki_user;
+- (void)setPrimitiveMunki_user:(nullable NSString*)value;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -96,3 +74,19 @@ extern const struct ItemToCopyMORelationships {
 - (void)setPrimitivePackage:(PackageMO*)value;
 
 @end
+
+@interface ItemToCopyMOAttributes: NSObject 
++ (NSString *)munki_destination_item;
++ (NSString *)munki_destination_path;
++ (NSString *)munki_group;
++ (NSString *)munki_mode;
++ (NSString *)munki_source_item;
++ (NSString *)munki_user;
++ (NSString *)originalIndex;
+@end
+
+@interface ItemToCopyMORelationships: NSObject
++ (NSString *)package;
+@end
+
+NS_ASSUME_NONNULL_END

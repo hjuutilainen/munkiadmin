@@ -1,16 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to IconImageMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct IconImageMOAttributes {
-	__unsafe_unretained NSString *imageRepresentation;
-	__unsafe_unretained NSString *originalURL;
-} IconImageMOAttributes;
-
-extern const struct IconImageMORelationships {
-	__unsafe_unretained NSString *packages;
-} IconImageMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class PackageMO;
 
@@ -21,29 +20,24 @@ extern const struct IconImageMORelationships {
 @interface IconImageMOID : NSManagedObjectID {}
 @end
 
-@interface _IconImageMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _IconImageMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) IconImageMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) IconImageMOID *objectID;
 
-@property (nonatomic, strong) id imageRepresentation;
+@property (nonatomic, strong, nullable) id imageRepresentation;
 
-//- (BOOL)validateImageRepresentation:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) id originalURL;
 
-@property (nonatomic, strong) id originalURL;
-
-//- (BOOL)validateOriginalURL:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *packages;
-
-- (NSMutableSet*)packagesSet;
+@property (nonatomic, strong, nullable) NSSet<PackageMO*> *packages;
+- (nullable NSMutableSet<PackageMO*>*)packagesSet;
 
 @end
 
 @interface _IconImageMO (PackagesCoreDataGeneratedAccessors)
-- (void)addPackages:(NSSet*)value_;
-- (void)removePackages:(NSSet*)value_;
+- (void)addPackages:(NSSet<PackageMO*>*)value_;
+- (void)removePackages:(NSSet<PackageMO*>*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
 
@@ -51,13 +45,24 @@ extern const struct IconImageMORelationships {
 
 @interface _IconImageMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (id)primitiveImageRepresentation;
-- (void)setPrimitiveImageRepresentation:(id)value;
+- (nullable id)primitiveImageRepresentation;
+- (void)setPrimitiveImageRepresentation:(nullable id)value;
 
-- (id)primitiveOriginalURL;
-- (void)setPrimitiveOriginalURL:(id)value;
+- (nullable id)primitiveOriginalURL;
+- (void)setPrimitiveOriginalURL:(nullable id)value;
 
-- (NSMutableSet*)primitivePackages;
-- (void)setPrimitivePackages:(NSMutableSet*)value;
+- (NSMutableSet<PackageMO*>*)primitivePackages;
+- (void)setPrimitivePackages:(NSMutableSet<PackageMO*>*)value;
 
 @end
+
+@interface IconImageMOAttributes: NSObject 
++ (NSString *)imageRepresentation;
++ (NSString *)originalURL;
+@end
+
+@interface IconImageMORelationships: NSObject
++ (NSString *)packages;
+@end
+
+NS_ASSUME_NONNULL_END

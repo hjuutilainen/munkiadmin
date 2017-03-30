@@ -3,23 +3,12 @@
 
 #import "_InstallerChoicesItemMO.h"
 
-const struct InstallerChoicesItemMOAttributes InstallerChoicesItemMOAttributes = {
-	.munki_attributeSetting = @"munki_attributeSetting",
-	.munki_choiceAttribute = @"munki_choiceAttribute",
-	.munki_choiceIdentifier = @"munki_choiceIdentifier",
-	.originalIndex = @"originalIndex",
-};
-
-const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelationships = {
-	.package = @"package",
-};
-
 @implementation InstallerChoicesItemMOID
 @end
 
 @implementation _InstallerChoicesItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"InstallerChoicesItem" inManagedObjectContext:moc_];
 }
@@ -62,7 +51,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setMunki_attributeSettingValue:(BOOL)value_ {
-	[self setMunki_attributeSetting:[NSNumber numberWithBool:value_]];
+	[self setMunki_attributeSetting:@(value_)];
 }
 
 - (BOOL)primitiveMunki_attributeSettingValue {
@@ -71,7 +60,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_ {
-	[self setPrimitiveMunki_attributeSetting:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveMunki_attributeSetting:@(value_)];
 }
 
 @dynamic munki_choiceAttribute;
@@ -86,7 +75,7 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -95,10 +84,31 @@ const struct InstallerChoicesItemMORelationships InstallerChoicesItemMORelations
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic package;
 
+@end
+
+@implementation InstallerChoicesItemMOAttributes 
++ (NSString *)munki_attributeSetting {
+	return @"munki_attributeSetting";
+}
++ (NSString *)munki_choiceAttribute {
+	return @"munki_choiceAttribute";
+}
++ (NSString *)munki_choiceIdentifier {
+	return @"munki_choiceIdentifier";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation InstallerChoicesItemMORelationships 
++ (NSString *)package {
+	return @"package";
+}
 @end
 

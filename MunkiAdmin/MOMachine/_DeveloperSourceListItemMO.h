@@ -1,27 +1,30 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to DeveloperSourceListItemMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
+
 #import "PackageSourceListItemMO.h"
 
-extern const struct DeveloperSourceListItemMORelationships {
-	__unsafe_unretained NSString *developerReference;
-} DeveloperSourceListItemMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class DeveloperMO;
 
 @interface DeveloperSourceListItemMOID : PackageSourceListItemMOID {}
 @end
 
-@interface _DeveloperSourceListItemMO : PackageSourceListItemMO {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _DeveloperSourceListItemMO : PackageSourceListItemMO
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) DeveloperSourceListItemMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) DeveloperSourceListItemMOID *objectID;
 
-@property (nonatomic, strong) DeveloperMO *developerReference;
-
-//- (BOOL)validateDeveloperReference:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) DeveloperMO *developerReference;
 
 @end
 
@@ -31,3 +34,9 @@ extern const struct DeveloperSourceListItemMORelationships {
 - (void)setPrimitiveDeveloperReference:(DeveloperMO*)value;
 
 @end
+
+@interface DeveloperSourceListItemMORelationships: NSObject
++ (NSString *)developerReference;
+@end
+
+NS_ASSUME_NONNULL_END

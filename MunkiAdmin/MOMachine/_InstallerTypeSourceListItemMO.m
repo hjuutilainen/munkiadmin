@@ -8,7 +8,7 @@
 
 @implementation _InstallerTypeSourceListItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc_];
 }

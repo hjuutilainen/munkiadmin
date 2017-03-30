@@ -3,27 +3,12 @@
 
 #import "_PackageSourceListItemMO.h"
 
-const struct PackageSourceListItemMOAttributes PackageSourceListItemMOAttributes = {
-	.filterPredicate = @"filterPredicate",
-	.icon = @"icon",
-	.isGroupItem = @"isGroupItem",
-	.itemType = @"itemType",
-	.originalIndex = @"originalIndex",
-	.sortDescriptors = @"sortDescriptors",
-	.title = @"title",
-};
-
-const struct PackageSourceListItemMORelationships PackageSourceListItemMORelationships = {
-	.children = @"children",
-	.parent = @"parent",
-};
-
 @implementation PackageSourceListItemMOID
 @end
 
 @implementation _PackageSourceListItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc_];
 }
@@ -70,7 +55,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setIsGroupItemValue:(BOOL)value_ {
-	[self setIsGroupItem:[NSNumber numberWithBool:value_]];
+	[self setIsGroupItem:@(value_)];
 }
 
 - (BOOL)primitiveIsGroupItemValue {
@@ -79,7 +64,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_ {
-	[self setPrimitiveIsGroupItem:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsGroupItem:@(value_)];
 }
 
 @dynamic itemType;
@@ -92,7 +77,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -101,7 +86,7 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic sortDescriptors;
@@ -110,10 +95,10 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 
 @dynamic children;
 
-- (NSMutableSet*)childrenSet {
+- (NSMutableSet<PackageSourceListItemMO*>*)childrenSet {
 	[self willAccessValueForKey:@"children"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"children"];
+	NSMutableSet<PackageSourceListItemMO*> *result = (NSMutableSet<PackageSourceListItemMO*>*)[self mutableSetValueForKey:@"children"];
 
 	[self didAccessValueForKey:@"children"];
 	return result;
@@ -121,5 +106,38 @@ const struct PackageSourceListItemMORelationships PackageSourceListItemMORelatio
 
 @dynamic parent;
 
+@end
+
+@implementation PackageSourceListItemMOAttributes 
++ (NSString *)filterPredicate {
+	return @"filterPredicate";
+}
++ (NSString *)icon {
+	return @"icon";
+}
++ (NSString *)isGroupItem {
+	return @"isGroupItem";
+}
++ (NSString *)itemType {
+	return @"itemType";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
++ (NSString *)sortDescriptors {
+	return @"sortDescriptors";
+}
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation PackageSourceListItemMORelationships 
++ (NSString *)children {
+	return @"children";
+}
++ (NSString *)parent {
+	return @"parent";
+}
 @end
 

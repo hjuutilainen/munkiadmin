@@ -3,23 +3,12 @@
 
 #import "_CatalogMO.h"
 
-const struct CatalogMOAttributes CatalogMOAttributes = {
-	.title = @"title",
-};
-
-const struct CatalogMORelationships CatalogMORelationships = {
-	.catalogInfos = @"catalogInfos",
-	.manifests = @"manifests",
-	.packageInfos = @"packageInfos",
-	.packages = @"packages",
-};
-
 @implementation CatalogMOID
 @end
 
 @implementation _CatalogMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:moc_];
 }
@@ -47,10 +36,10 @@ const struct CatalogMORelationships CatalogMORelationships = {
 
 @dynamic catalogInfos;
 
-- (NSMutableSet*)catalogInfosSet {
+- (NSMutableSet<CatalogInfoMO*>*)catalogInfosSet {
 	[self willAccessValueForKey:@"catalogInfos"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogInfos"];
+	NSMutableSet<CatalogInfoMO*> *result = (NSMutableSet<CatalogInfoMO*>*)[self mutableSetValueForKey:@"catalogInfos"];
 
 	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
@@ -58,10 +47,10 @@ const struct CatalogMORelationships CatalogMORelationships = {
 
 @dynamic manifests;
 
-- (NSMutableSet*)manifestsSet {
+- (NSMutableSet<ManifestMO*>*)manifestsSet {
 	[self willAccessValueForKey:@"manifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifests"];
+	NSMutableSet<ManifestMO*> *result = (NSMutableSet<ManifestMO*>*)[self mutableSetValueForKey:@"manifests"];
 
 	[self didAccessValueForKey:@"manifests"];
 	return result;
@@ -69,10 +58,10 @@ const struct CatalogMORelationships CatalogMORelationships = {
 
 @dynamic packageInfos;
 
-- (NSMutableSet*)packageInfosSet {
+- (NSMutableSet<PackageInfoMO*>*)packageInfosSet {
 	[self willAccessValueForKey:@"packageInfos"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packageInfos"];
+	NSMutableSet<PackageInfoMO*> *result = (NSMutableSet<PackageInfoMO*>*)[self mutableSetValueForKey:@"packageInfos"];
 
 	[self didAccessValueForKey:@"packageInfos"];
 	return result;
@@ -80,14 +69,35 @@ const struct CatalogMORelationships CatalogMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation CatalogMOAttributes 
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation CatalogMORelationships 
++ (NSString *)catalogInfos {
+	return @"catalogInfos";
+}
++ (NSString *)manifests {
+	return @"manifests";
+}
++ (NSString *)packageInfos {
+	return @"packageInfos";
+}
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

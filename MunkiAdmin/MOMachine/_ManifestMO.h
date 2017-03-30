@@ -1,49 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ManifestMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct ManifestMOAttributes {
-	__unsafe_unretained NSString *hasUnstagedChanges;
-	__unsafe_unretained NSString *manifestAdminNotes;
-	__unsafe_unretained NSString *manifestDateCreated;
-	__unsafe_unretained NSString *manifestDateLastOpened;
-	__unsafe_unretained NSString *manifestDateModified;
-	__unsafe_unretained NSString *manifestDisplayName;
-	__unsafe_unretained NSString *manifestParentDirectoryURL;
-	__unsafe_unretained NSString *manifestURL;
-	__unsafe_unretained NSString *manifestUserName;
-	__unsafe_unretained NSString *originalManifest;
-	__unsafe_unretained NSString *title;
-} ManifestMOAttributes;
-
-extern const struct ManifestMORelationships {
-	__unsafe_unretained NSString *applications;
-	__unsafe_unretained NSString *catalogInfos;
-	__unsafe_unretained NSString *catalogs;
-	__unsafe_unretained NSString *conditionalItems;
-	__unsafe_unretained NSString *includedManifests;
-	__unsafe_unretained NSString *includedManifestsFaster;
-	__unsafe_unretained NSString *managedInstalls;
-	__unsafe_unretained NSString *managedInstallsFaster;
-	__unsafe_unretained NSString *managedUninstalls;
-	__unsafe_unretained NSString *managedUninstallsFaster;
-	__unsafe_unretained NSString *managedUpdates;
-	__unsafe_unretained NSString *managedUpdatesFaster;
-	__unsafe_unretained NSString *manifestInfos;
-	__unsafe_unretained NSString *optionalInstalls;
-	__unsafe_unretained NSString *optionalInstallsFaster;
-	__unsafe_unretained NSString *referencingManifests;
-} ManifestMORelationships;
-
-extern const struct ManifestMOFetchedProperties {
-	__unsafe_unretained NSString *allIncludedManifests;
-	__unsafe_unretained NSString *allManagedInstalls;
-	__unsafe_unretained NSString *allManagedUninstalls;
-	__unsafe_unretained NSString *allManagedUpdates;
-	__unsafe_unretained NSString *allOptionalInstalls;
-	__unsafe_unretained NSString *allReferencingManifests;
-} ManifestMOFetchedProperties;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ApplicationMO;
 @class CatalogInfoMO;
@@ -71,11 +37,11 @@ extern const struct ManifestMOFetchedProperties {
 @interface ManifestMOID : NSManagedObjectID {}
 @end
 
-@interface _ManifestMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ManifestMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ManifestMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ManifestMOID *objectID;
 
 @property (nonatomic, strong) NSNumber* hasUnstagedChanges;
 
@@ -83,249 +49,211 @@ extern const struct ManifestMOFetchedProperties {
 - (BOOL)hasUnstagedChangesValue;
 - (void)setHasUnstagedChangesValue:(BOOL)value_;
 
-//- (BOOL)validateHasUnstagedChanges:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* manifestAdminNotes;
 
-@property (nonatomic, strong) NSString* manifestAdminNotes;
+@property (nonatomic, strong, nullable) NSDate* manifestDateCreated;
 
-//- (BOOL)validateManifestAdminNotes:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSDate* manifestDateLastOpened;
 
-@property (nonatomic, strong) NSDate* manifestDateCreated;
+@property (nonatomic, strong, nullable) NSDate* manifestDateModified;
 
-//- (BOOL)validateManifestDateCreated:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* manifestDisplayName;
 
-@property (nonatomic, strong) NSDate* manifestDateLastOpened;
-
-//- (BOOL)validateManifestDateLastOpened:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSDate* manifestDateModified;
-
-//- (BOOL)validateManifestDateModified:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* manifestDisplayName;
-
-//- (BOOL)validateManifestDisplayName:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) id manifestParentDirectoryURL;
-
-//- (BOOL)validateManifestParentDirectoryURL:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) id manifestParentDirectoryURL;
 
 @property (nonatomic, strong) id manifestURL;
 
-//- (BOOL)validateManifestURL:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* manifestUserName;
 
-@property (nonatomic, strong) NSString* manifestUserName;
+@property (nonatomic, strong, nullable) id originalManifest;
 
-//- (BOOL)validateManifestUserName:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* title;
 
-@property (nonatomic, strong) id originalManifest;
+@property (nonatomic, strong, nullable) NSSet<ApplicationMO*> *applications;
+- (nullable NSMutableSet<ApplicationMO*>*)applicationsSet;
 
-//- (BOOL)validateOriginalManifest:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSSet<CatalogInfoMO*> *catalogInfos;
+- (nullable NSMutableSet<CatalogInfoMO*>*)catalogInfosSet;
 
-@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong, nullable) NSSet<CatalogMO*> *catalogs;
+- (nullable NSMutableSet<CatalogMO*>*)catalogsSet;
 
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSSet<ConditionalItemMO*> *conditionalItems;
+- (nullable NSMutableSet<ConditionalItemMO*>*)conditionalItemsSet;
 
-@property (nonatomic, strong) NSSet *applications;
+@property (nonatomic, strong, nullable) NSSet<ManifestInfoMO*> *includedManifests;
+- (nullable NSMutableSet<ManifestInfoMO*>*)includedManifestsSet;
 
-- (NSMutableSet*)applicationsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *includedManifestsFaster;
+- (nullable NSMutableSet<StringObjectMO*>*)includedManifestsFasterSet;
 
-@property (nonatomic, strong) NSSet *catalogInfos;
+@property (nonatomic, strong, nullable) NSSet<ManagedInstallMO*> *managedInstalls;
+- (nullable NSMutableSet<ManagedInstallMO*>*)managedInstallsSet;
 
-- (NSMutableSet*)catalogInfosSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedInstallsFaster;
+- (nullable NSMutableSet<StringObjectMO*>*)managedInstallsFasterSet;
 
-@property (nonatomic, strong) NSSet *catalogs;
+@property (nonatomic, strong, nullable) NSSet<ManagedUninstallMO*> *managedUninstalls;
+- (nullable NSMutableSet<ManagedUninstallMO*>*)managedUninstallsSet;
 
-- (NSMutableSet*)catalogsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedUninstallsFaster;
+- (nullable NSMutableSet<StringObjectMO*>*)managedUninstallsFasterSet;
 
-@property (nonatomic, strong) NSSet *conditionalItems;
+@property (nonatomic, strong, nullable) NSSet<ManagedUpdateMO*> *managedUpdates;
+- (nullable NSMutableSet<ManagedUpdateMO*>*)managedUpdatesSet;
 
-- (NSMutableSet*)conditionalItemsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedUpdatesFaster;
+- (nullable NSMutableSet<StringObjectMO*>*)managedUpdatesFasterSet;
 
-@property (nonatomic, strong) NSSet *includedManifests;
+@property (nonatomic, strong, nullable) NSSet<ManifestInfoMO*> *manifestInfos;
+- (nullable NSMutableSet<ManifestInfoMO*>*)manifestInfosSet;
 
-- (NSMutableSet*)includedManifestsSet;
+@property (nonatomic, strong, nullable) NSSet<OptionalInstallMO*> *optionalInstalls;
+- (nullable NSMutableSet<OptionalInstallMO*>*)optionalInstallsSet;
 
-@property (nonatomic, strong) NSSet *includedManifestsFaster;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *optionalInstallsFaster;
+- (nullable NSMutableSet<StringObjectMO*>*)optionalInstallsFasterSet;
 
-- (NSMutableSet*)includedManifestsFasterSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *referencingManifests;
+- (nullable NSMutableSet<StringObjectMO*>*)referencingManifestsSet;
 
-@property (nonatomic, strong) NSSet *managedInstalls;
+@property (nonatomic, readonly, nullable) NSArray *allIncludedManifests;
 
-- (NSMutableSet*)managedInstallsSet;
+@property (nonatomic, readonly, nullable) NSArray *allManagedInstalls;
 
-@property (nonatomic, strong) NSSet *managedInstallsFaster;
+@property (nonatomic, readonly, nullable) NSArray *allManagedUninstalls;
 
-- (NSMutableSet*)managedInstallsFasterSet;
+@property (nonatomic, readonly, nullable) NSArray *allManagedUpdates;
 
-@property (nonatomic, strong) NSSet *managedUninstalls;
+@property (nonatomic, readonly, nullable) NSArray *allOptionalInstalls;
 
-- (NSMutableSet*)managedUninstallsSet;
-
-@property (nonatomic, strong) NSSet *managedUninstallsFaster;
-
-- (NSMutableSet*)managedUninstallsFasterSet;
-
-@property (nonatomic, strong) NSSet *managedUpdates;
-
-- (NSMutableSet*)managedUpdatesSet;
-
-@property (nonatomic, strong) NSSet *managedUpdatesFaster;
-
-- (NSMutableSet*)managedUpdatesFasterSet;
-
-@property (nonatomic, strong) NSSet *manifestInfos;
-
-- (NSMutableSet*)manifestInfosSet;
-
-@property (nonatomic, strong) NSSet *optionalInstalls;
-
-- (NSMutableSet*)optionalInstallsSet;
-
-@property (nonatomic, strong) NSSet *optionalInstallsFaster;
-
-- (NSMutableSet*)optionalInstallsFasterSet;
-
-@property (nonatomic, strong) NSSet *referencingManifests;
-
-- (NSMutableSet*)referencingManifestsSet;
-
-@property (nonatomic, readonly) NSArray *allIncludedManifests;
-
-@property (nonatomic, readonly) NSArray *allManagedInstalls;
-
-@property (nonatomic, readonly) NSArray *allManagedUninstalls;
-
-@property (nonatomic, readonly) NSArray *allManagedUpdates;
-
-@property (nonatomic, readonly) NSArray *allOptionalInstalls;
-
-@property (nonatomic, readonly) NSArray *allReferencingManifests;
+@property (nonatomic, readonly, nullable) NSArray *allReferencingManifests;
 
 @end
 
 @interface _ManifestMO (ApplicationsCoreDataGeneratedAccessors)
-- (void)addApplications:(NSSet*)value_;
-- (void)removeApplications:(NSSet*)value_;
+- (void)addApplications:(NSSet<ApplicationMO*>*)value_;
+- (void)removeApplications:(NSSet<ApplicationMO*>*)value_;
 - (void)addApplicationsObject:(ApplicationMO*)value_;
 - (void)removeApplicationsObject:(ApplicationMO*)value_;
 
 @end
 
 @interface _ManifestMO (CatalogInfosCoreDataGeneratedAccessors)
-- (void)addCatalogInfos:(NSSet*)value_;
-- (void)removeCatalogInfos:(NSSet*)value_;
+- (void)addCatalogInfos:(NSSet<CatalogInfoMO*>*)value_;
+- (void)removeCatalogInfos:(NSSet<CatalogInfoMO*>*)value_;
 - (void)addCatalogInfosObject:(CatalogInfoMO*)value_;
 - (void)removeCatalogInfosObject:(CatalogInfoMO*)value_;
 
 @end
 
 @interface _ManifestMO (CatalogsCoreDataGeneratedAccessors)
-- (void)addCatalogs:(NSSet*)value_;
-- (void)removeCatalogs:(NSSet*)value_;
+- (void)addCatalogs:(NSSet<CatalogMO*>*)value_;
+- (void)removeCatalogs:(NSSet<CatalogMO*>*)value_;
 - (void)addCatalogsObject:(CatalogMO*)value_;
 - (void)removeCatalogsObject:(CatalogMO*)value_;
 
 @end
 
 @interface _ManifestMO (ConditionalItemsCoreDataGeneratedAccessors)
-- (void)addConditionalItems:(NSSet*)value_;
-- (void)removeConditionalItems:(NSSet*)value_;
+- (void)addConditionalItems:(NSSet<ConditionalItemMO*>*)value_;
+- (void)removeConditionalItems:(NSSet<ConditionalItemMO*>*)value_;
 - (void)addConditionalItemsObject:(ConditionalItemMO*)value_;
 - (void)removeConditionalItemsObject:(ConditionalItemMO*)value_;
 
 @end
 
 @interface _ManifestMO (IncludedManifestsCoreDataGeneratedAccessors)
-- (void)addIncludedManifests:(NSSet*)value_;
-- (void)removeIncludedManifests:(NSSet*)value_;
+- (void)addIncludedManifests:(NSSet<ManifestInfoMO*>*)value_;
+- (void)removeIncludedManifests:(NSSet<ManifestInfoMO*>*)value_;
 - (void)addIncludedManifestsObject:(ManifestInfoMO*)value_;
 - (void)removeIncludedManifestsObject:(ManifestInfoMO*)value_;
 
 @end
 
 @interface _ManifestMO (IncludedManifestsFasterCoreDataGeneratedAccessors)
-- (void)addIncludedManifestsFaster:(NSSet*)value_;
-- (void)removeIncludedManifestsFaster:(NSSet*)value_;
+- (void)addIncludedManifestsFaster:(NSSet<StringObjectMO*>*)value_;
+- (void)removeIncludedManifestsFaster:(NSSet<StringObjectMO*>*)value_;
 - (void)addIncludedManifestsFasterObject:(StringObjectMO*)value_;
 - (void)removeIncludedManifestsFasterObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedInstallsCoreDataGeneratedAccessors)
-- (void)addManagedInstalls:(NSSet*)value_;
-- (void)removeManagedInstalls:(NSSet*)value_;
+- (void)addManagedInstalls:(NSSet<ManagedInstallMO*>*)value_;
+- (void)removeManagedInstalls:(NSSet<ManagedInstallMO*>*)value_;
 - (void)addManagedInstallsObject:(ManagedInstallMO*)value_;
 - (void)removeManagedInstallsObject:(ManagedInstallMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedInstallsFasterCoreDataGeneratedAccessors)
-- (void)addManagedInstallsFaster:(NSSet*)value_;
-- (void)removeManagedInstallsFaster:(NSSet*)value_;
+- (void)addManagedInstallsFaster:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedInstallsFaster:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedInstallsFasterObject:(StringObjectMO*)value_;
 - (void)removeManagedInstallsFasterObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedUninstallsCoreDataGeneratedAccessors)
-- (void)addManagedUninstalls:(NSSet*)value_;
-- (void)removeManagedUninstalls:(NSSet*)value_;
+- (void)addManagedUninstalls:(NSSet<ManagedUninstallMO*>*)value_;
+- (void)removeManagedUninstalls:(NSSet<ManagedUninstallMO*>*)value_;
 - (void)addManagedUninstallsObject:(ManagedUninstallMO*)value_;
 - (void)removeManagedUninstallsObject:(ManagedUninstallMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedUninstallsFasterCoreDataGeneratedAccessors)
-- (void)addManagedUninstallsFaster:(NSSet*)value_;
-- (void)removeManagedUninstallsFaster:(NSSet*)value_;
+- (void)addManagedUninstallsFaster:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedUninstallsFaster:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedUninstallsFasterObject:(StringObjectMO*)value_;
 - (void)removeManagedUninstallsFasterObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedUpdatesCoreDataGeneratedAccessors)
-- (void)addManagedUpdates:(NSSet*)value_;
-- (void)removeManagedUpdates:(NSSet*)value_;
+- (void)addManagedUpdates:(NSSet<ManagedUpdateMO*>*)value_;
+- (void)removeManagedUpdates:(NSSet<ManagedUpdateMO*>*)value_;
 - (void)addManagedUpdatesObject:(ManagedUpdateMO*)value_;
 - (void)removeManagedUpdatesObject:(ManagedUpdateMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManagedUpdatesFasterCoreDataGeneratedAccessors)
-- (void)addManagedUpdatesFaster:(NSSet*)value_;
-- (void)removeManagedUpdatesFaster:(NSSet*)value_;
+- (void)addManagedUpdatesFaster:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedUpdatesFaster:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedUpdatesFasterObject:(StringObjectMO*)value_;
 - (void)removeManagedUpdatesFasterObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ManifestMO (ManifestInfosCoreDataGeneratedAccessors)
-- (void)addManifestInfos:(NSSet*)value_;
-- (void)removeManifestInfos:(NSSet*)value_;
+- (void)addManifestInfos:(NSSet<ManifestInfoMO*>*)value_;
+- (void)removeManifestInfos:(NSSet<ManifestInfoMO*>*)value_;
 - (void)addManifestInfosObject:(ManifestInfoMO*)value_;
 - (void)removeManifestInfosObject:(ManifestInfoMO*)value_;
 
 @end
 
 @interface _ManifestMO (OptionalInstallsCoreDataGeneratedAccessors)
-- (void)addOptionalInstalls:(NSSet*)value_;
-- (void)removeOptionalInstalls:(NSSet*)value_;
+- (void)addOptionalInstalls:(NSSet<OptionalInstallMO*>*)value_;
+- (void)removeOptionalInstalls:(NSSet<OptionalInstallMO*>*)value_;
 - (void)addOptionalInstallsObject:(OptionalInstallMO*)value_;
 - (void)removeOptionalInstallsObject:(OptionalInstallMO*)value_;
 
 @end
 
 @interface _ManifestMO (OptionalInstallsFasterCoreDataGeneratedAccessors)
-- (void)addOptionalInstallsFaster:(NSSet*)value_;
-- (void)removeOptionalInstallsFaster:(NSSet*)value_;
+- (void)addOptionalInstallsFaster:(NSSet<StringObjectMO*>*)value_;
+- (void)removeOptionalInstallsFaster:(NSSet<StringObjectMO*>*)value_;
 - (void)addOptionalInstallsFasterObject:(StringObjectMO*)value_;
 - (void)removeOptionalInstallsFasterObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ManifestMO (ReferencingManifestsCoreDataGeneratedAccessors)
-- (void)addReferencingManifests:(NSSet*)value_;
-- (void)removeReferencingManifests:(NSSet*)value_;
+- (void)addReferencingManifests:(NSSet<StringObjectMO*>*)value_;
+- (void)removeReferencingManifests:(NSSet<StringObjectMO*>*)value_;
 - (void)addReferencingManifestsObject:(StringObjectMO*)value_;
 - (void)removeReferencingManifestsObject:(StringObjectMO*)value_;
 
@@ -339,82 +267,126 @@ extern const struct ManifestMOFetchedProperties {
 - (BOOL)primitiveHasUnstagedChangesValue;
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_;
 
-- (NSString*)primitiveManifestAdminNotes;
-- (void)setPrimitiveManifestAdminNotes:(NSString*)value;
+- (nullable NSString*)primitiveManifestAdminNotes;
+- (void)setPrimitiveManifestAdminNotes:(nullable NSString*)value;
 
-- (NSDate*)primitiveManifestDateCreated;
-- (void)setPrimitiveManifestDateCreated:(NSDate*)value;
+- (nullable NSDate*)primitiveManifestDateCreated;
+- (void)setPrimitiveManifestDateCreated:(nullable NSDate*)value;
 
-- (NSDate*)primitiveManifestDateLastOpened;
-- (void)setPrimitiveManifestDateLastOpened:(NSDate*)value;
+- (nullable NSDate*)primitiveManifestDateLastOpened;
+- (void)setPrimitiveManifestDateLastOpened:(nullable NSDate*)value;
 
-- (NSDate*)primitiveManifestDateModified;
-- (void)setPrimitiveManifestDateModified:(NSDate*)value;
+- (nullable NSDate*)primitiveManifestDateModified;
+- (void)setPrimitiveManifestDateModified:(nullable NSDate*)value;
 
-- (NSString*)primitiveManifestDisplayName;
-- (void)setPrimitiveManifestDisplayName:(NSString*)value;
+- (nullable NSString*)primitiveManifestDisplayName;
+- (void)setPrimitiveManifestDisplayName:(nullable NSString*)value;
 
-- (id)primitiveManifestParentDirectoryURL;
-- (void)setPrimitiveManifestParentDirectoryURL:(id)value;
+- (nullable id)primitiveManifestParentDirectoryURL;
+- (void)setPrimitiveManifestParentDirectoryURL:(nullable id)value;
 
 - (id)primitiveManifestURL;
 - (void)setPrimitiveManifestURL:(id)value;
 
-- (NSString*)primitiveManifestUserName;
-- (void)setPrimitiveManifestUserName:(NSString*)value;
+- (nullable NSString*)primitiveManifestUserName;
+- (void)setPrimitiveManifestUserName:(nullable NSString*)value;
 
-- (id)primitiveOriginalManifest;
-- (void)setPrimitiveOriginalManifest:(id)value;
+- (nullable id)primitiveOriginalManifest;
+- (void)setPrimitiveOriginalManifest:(nullable id)value;
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (nullable NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(nullable NSString*)value;
 
-- (NSMutableSet*)primitiveApplications;
-- (void)setPrimitiveApplications:(NSMutableSet*)value;
+- (NSMutableSet<ApplicationMO*>*)primitiveApplications;
+- (void)setPrimitiveApplications:(NSMutableSet<ApplicationMO*>*)value;
 
-- (NSMutableSet*)primitiveCatalogInfos;
-- (void)setPrimitiveCatalogInfos:(NSMutableSet*)value;
+- (NSMutableSet<CatalogInfoMO*>*)primitiveCatalogInfos;
+- (void)setPrimitiveCatalogInfos:(NSMutableSet<CatalogInfoMO*>*)value;
 
-- (NSMutableSet*)primitiveCatalogs;
-- (void)setPrimitiveCatalogs:(NSMutableSet*)value;
+- (NSMutableSet<CatalogMO*>*)primitiveCatalogs;
+- (void)setPrimitiveCatalogs:(NSMutableSet<CatalogMO*>*)value;
 
-- (NSMutableSet*)primitiveConditionalItems;
-- (void)setPrimitiveConditionalItems:(NSMutableSet*)value;
+- (NSMutableSet<ConditionalItemMO*>*)primitiveConditionalItems;
+- (void)setPrimitiveConditionalItems:(NSMutableSet<ConditionalItemMO*>*)value;
 
-- (NSMutableSet*)primitiveIncludedManifests;
-- (void)setPrimitiveIncludedManifests:(NSMutableSet*)value;
+- (NSMutableSet<ManifestInfoMO*>*)primitiveIncludedManifests;
+- (void)setPrimitiveIncludedManifests:(NSMutableSet<ManifestInfoMO*>*)value;
 
-- (NSMutableSet*)primitiveIncludedManifestsFaster;
-- (void)setPrimitiveIncludedManifestsFaster:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveIncludedManifestsFaster;
+- (void)setPrimitiveIncludedManifestsFaster:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedInstalls;
-- (void)setPrimitiveManagedInstalls:(NSMutableSet*)value;
+- (NSMutableSet<ManagedInstallMO*>*)primitiveManagedInstalls;
+- (void)setPrimitiveManagedInstalls:(NSMutableSet<ManagedInstallMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedInstallsFaster;
-- (void)setPrimitiveManagedInstallsFaster:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedInstallsFaster;
+- (void)setPrimitiveManagedInstallsFaster:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUninstalls;
-- (void)setPrimitiveManagedUninstalls:(NSMutableSet*)value;
+- (NSMutableSet<ManagedUninstallMO*>*)primitiveManagedUninstalls;
+- (void)setPrimitiveManagedUninstalls:(NSMutableSet<ManagedUninstallMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUninstallsFaster;
-- (void)setPrimitiveManagedUninstallsFaster:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedUninstallsFaster;
+- (void)setPrimitiveManagedUninstallsFaster:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUpdates;
-- (void)setPrimitiveManagedUpdates:(NSMutableSet*)value;
+- (NSMutableSet<ManagedUpdateMO*>*)primitiveManagedUpdates;
+- (void)setPrimitiveManagedUpdates:(NSMutableSet<ManagedUpdateMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUpdatesFaster;
-- (void)setPrimitiveManagedUpdatesFaster:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedUpdatesFaster;
+- (void)setPrimitiveManagedUpdatesFaster:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManifestInfos;
-- (void)setPrimitiveManifestInfos:(NSMutableSet*)value;
+- (NSMutableSet<ManifestInfoMO*>*)primitiveManifestInfos;
+- (void)setPrimitiveManifestInfos:(NSMutableSet<ManifestInfoMO*>*)value;
 
-- (NSMutableSet*)primitiveOptionalInstalls;
-- (void)setPrimitiveOptionalInstalls:(NSMutableSet*)value;
+- (NSMutableSet<OptionalInstallMO*>*)primitiveOptionalInstalls;
+- (void)setPrimitiveOptionalInstalls:(NSMutableSet<OptionalInstallMO*>*)value;
 
-- (NSMutableSet*)primitiveOptionalInstallsFaster;
-- (void)setPrimitiveOptionalInstallsFaster:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveOptionalInstallsFaster;
+- (void)setPrimitiveOptionalInstallsFaster:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveReferencingManifests;
-- (void)setPrimitiveReferencingManifests:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveReferencingManifests;
+- (void)setPrimitiveReferencingManifests:(NSMutableSet<StringObjectMO*>*)value;
 
 @end
+
+@interface ManifestMOAttributes: NSObject 
++ (NSString *)hasUnstagedChanges;
++ (NSString *)manifestAdminNotes;
++ (NSString *)manifestDateCreated;
++ (NSString *)manifestDateLastOpened;
++ (NSString *)manifestDateModified;
++ (NSString *)manifestDisplayName;
++ (NSString *)manifestParentDirectoryURL;
++ (NSString *)manifestURL;
++ (NSString *)manifestUserName;
++ (NSString *)originalManifest;
++ (NSString *)title;
+@end
+
+@interface ManifestMORelationships: NSObject
++ (NSString *)applications;
++ (NSString *)catalogInfos;
++ (NSString *)catalogs;
++ (NSString *)conditionalItems;
++ (NSString *)includedManifests;
++ (NSString *)includedManifestsFaster;
++ (NSString *)managedInstalls;
++ (NSString *)managedInstallsFaster;
++ (NSString *)managedUninstalls;
++ (NSString *)managedUninstallsFaster;
++ (NSString *)managedUpdates;
++ (NSString *)managedUpdatesFaster;
++ (NSString *)manifestInfos;
++ (NSString *)optionalInstalls;
++ (NSString *)optionalInstallsFaster;
++ (NSString *)referencingManifests;
+@end
+
+@interface ManifestMOFetchedProperties: NSObject
++ (NSString *)allIncludedManifests;
++ (NSString *)allManagedInstalls;
++ (NSString *)allManagedUninstalls;
++ (NSString *)allManagedUpdates;
++ (NSString *)allOptionalInstalls;
++ (NSString *)allReferencingManifests;
+@end
+
+NS_ASSUME_NONNULL_END

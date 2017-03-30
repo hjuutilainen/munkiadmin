@@ -3,20 +3,12 @@
 
 #import "_ApplicationProxyMO.h"
 
-const struct ApplicationProxyMOAttributes ApplicationProxyMOAttributes = {
-	.isEnabled = @"isEnabled",
-};
-
-const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
-	.parentApplication = @"parentApplication",
-};
-
 @implementation ApplicationProxyMOID
 @end
 
 @implementation _ApplicationProxyMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ApplicationProxy" inManagedObjectContext:moc_];
 }
@@ -54,7 +46,7 @@ const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
 }
 
 - (void)setIsEnabledValue:(BOOL)value_ {
-	[self setIsEnabled:[NSNumber numberWithBool:value_]];
+	[self setIsEnabled:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledValue {
@@ -63,10 +55,22 @@ const struct ApplicationProxyMORelationships ApplicationProxyMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabled:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabled:@(value_)];
 }
 
 @dynamic parentApplication;
 
+@end
+
+@implementation ApplicationProxyMOAttributes 
++ (NSString *)isEnabled {
+	return @"isEnabled";
+}
+@end
+
+@implementation ApplicationProxyMORelationships 
++ (NSString *)parentApplication {
+	return @"parentApplication";
+}
 @end
 

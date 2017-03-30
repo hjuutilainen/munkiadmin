@@ -1,76 +1,63 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to InstallerChoicesItemMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct InstallerChoicesItemMOAttributes {
-	__unsafe_unretained NSString *munki_attributeSetting;
-	__unsafe_unretained NSString *munki_choiceAttribute;
-	__unsafe_unretained NSString *munki_choiceIdentifier;
-	__unsafe_unretained NSString *originalIndex;
-} InstallerChoicesItemMOAttributes;
-
-extern const struct InstallerChoicesItemMORelationships {
-	__unsafe_unretained NSString *package;
-} InstallerChoicesItemMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class PackageMO;
 
 @interface InstallerChoicesItemMOID : NSManagedObjectID {}
 @end
 
-@interface _InstallerChoicesItemMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _InstallerChoicesItemMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) InstallerChoicesItemMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) InstallerChoicesItemMOID *objectID;
 
-@property (nonatomic, strong) NSNumber* munki_attributeSetting;
+@property (nonatomic, strong, nullable) NSNumber* munki_attributeSetting;
 
 @property (atomic) BOOL munki_attributeSettingValue;
 - (BOOL)munki_attributeSettingValue;
 - (void)setMunki_attributeSettingValue:(BOOL)value_;
 
-//- (BOOL)validateMunki_attributeSetting:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* munki_choiceAttribute;
 
-@property (nonatomic, strong) NSString* munki_choiceAttribute;
+@property (nonatomic, strong, nullable) NSString* munki_choiceIdentifier;
 
-//- (BOOL)validateMunki_choiceAttribute:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* munki_choiceIdentifier;
-
-//- (BOOL)validateMunki_choiceIdentifier:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) PackageMO *package;
-
-//- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) PackageMO *package;
 
 @end
 
 @interface _InstallerChoicesItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSNumber*)primitiveMunki_attributeSetting;
-- (void)setPrimitiveMunki_attributeSetting:(NSNumber*)value;
+- (nullable NSNumber*)primitiveMunki_attributeSetting;
+- (void)setPrimitiveMunki_attributeSetting:(nullable NSNumber*)value;
 
 - (BOOL)primitiveMunki_attributeSettingValue;
 - (void)setPrimitiveMunki_attributeSettingValue:(BOOL)value_;
 
-- (NSString*)primitiveMunki_choiceAttribute;
-- (void)setPrimitiveMunki_choiceAttribute:(NSString*)value;
+- (nullable NSString*)primitiveMunki_choiceAttribute;
+- (void)setPrimitiveMunki_choiceAttribute:(nullable NSString*)value;
 
-- (NSString*)primitiveMunki_choiceIdentifier;
-- (void)setPrimitiveMunki_choiceIdentifier:(NSString*)value;
+- (nullable NSString*)primitiveMunki_choiceIdentifier;
+- (void)setPrimitiveMunki_choiceIdentifier:(nullable NSString*)value;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -79,3 +66,16 @@ extern const struct InstallerChoicesItemMORelationships {
 - (void)setPrimitivePackage:(PackageMO*)value;
 
 @end
+
+@interface InstallerChoicesItemMOAttributes: NSObject 
++ (NSString *)munki_attributeSetting;
++ (NSString *)munki_choiceAttribute;
++ (NSString *)munki_choiceIdentifier;
++ (NSString *)originalIndex;
+@end
+
+@interface InstallerChoicesItemMORelationships: NSObject
++ (NSString *)package;
+@end
+
+NS_ASSUME_NONNULL_END

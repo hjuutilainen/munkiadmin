@@ -1,51 +1,55 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to InstallsItemCustomKeyMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct InstallsItemCustomKeyMOAttributes {
-	__unsafe_unretained NSString *customKeyName;
-	__unsafe_unretained NSString *customKeyValue;
-} InstallsItemCustomKeyMOAttributes;
-
-extern const struct InstallsItemCustomKeyMORelationships {
-	__unsafe_unretained NSString *installsItem;
-} InstallsItemCustomKeyMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class InstallsItemMO;
 
 @interface InstallsItemCustomKeyMOID : NSManagedObjectID {}
 @end
 
-@interface _InstallsItemCustomKeyMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _InstallsItemCustomKeyMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) InstallsItemCustomKeyMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) InstallsItemCustomKeyMOID *objectID;
 
-@property (nonatomic, strong) NSString* customKeyName;
+@property (nonatomic, strong, nullable) NSString* customKeyName;
 
-//- (BOOL)validateCustomKeyName:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* customKeyValue;
 
-@property (nonatomic, strong) NSString* customKeyValue;
-
-//- (BOOL)validateCustomKeyValue:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) InstallsItemMO *installsItem;
-
-//- (BOOL)validateInstallsItem:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) InstallsItemMO *installsItem;
 
 @end
 
 @interface _InstallsItemCustomKeyMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSString*)primitiveCustomKeyName;
-- (void)setPrimitiveCustomKeyName:(NSString*)value;
+- (nullable NSString*)primitiveCustomKeyName;
+- (void)setPrimitiveCustomKeyName:(nullable NSString*)value;
 
-- (NSString*)primitiveCustomKeyValue;
-- (void)setPrimitiveCustomKeyValue:(NSString*)value;
+- (nullable NSString*)primitiveCustomKeyValue;
+- (void)setPrimitiveCustomKeyValue:(nullable NSString*)value;
 
 - (InstallsItemMO*)primitiveInstallsItem;
 - (void)setPrimitiveInstallsItem:(InstallsItemMO*)value;
 
 @end
+
+@interface InstallsItemCustomKeyMOAttributes: NSObject 
++ (NSString *)customKeyName;
++ (NSString *)customKeyValue;
+@end
+
+@interface InstallsItemCustomKeyMORelationships: NSObject
++ (NSString *)installsItem;
+@end
+
+NS_ASSUME_NONNULL_END

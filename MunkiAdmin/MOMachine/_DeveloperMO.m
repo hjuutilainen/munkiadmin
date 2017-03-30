@@ -3,21 +3,12 @@
 
 #import "_DeveloperMO.h"
 
-const struct DeveloperMOAttributes DeveloperMOAttributes = {
-	.title = @"title",
-};
-
-const struct DeveloperMORelationships DeveloperMORelationships = {
-	.developerSourceListReference = @"developerSourceListReference",
-	.packages = @"packages",
-};
-
 @implementation DeveloperMOID
 @end
 
 @implementation _DeveloperMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:moc_];
 }
@@ -47,14 +38,29 @@ const struct DeveloperMORelationships DeveloperMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation DeveloperMOAttributes 
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation DeveloperMORelationships 
++ (NSString *)developerSourceListReference {
+	return @"developerSourceListReference";
+}
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

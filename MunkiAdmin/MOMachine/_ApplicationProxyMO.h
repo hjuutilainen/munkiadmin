@@ -1,45 +1,41 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ApplicationProxyMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct ApplicationProxyMOAttributes {
-	__unsafe_unretained NSString *isEnabled;
-} ApplicationProxyMOAttributes;
-
-extern const struct ApplicationProxyMORelationships {
-	__unsafe_unretained NSString *parentApplication;
-} ApplicationProxyMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ApplicationMO;
 
 @interface ApplicationProxyMOID : NSManagedObjectID {}
 @end
 
-@interface _ApplicationProxyMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ApplicationProxyMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ApplicationProxyMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ApplicationProxyMOID *objectID;
 
-@property (nonatomic, strong) NSNumber* isEnabled;
+@property (nonatomic, strong, nullable) NSNumber* isEnabled;
 
 @property (atomic) BOOL isEnabledValue;
 - (BOOL)isEnabledValue;
 - (void)setIsEnabledValue:(BOOL)value_;
 
-//- (BOOL)validateIsEnabled:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) ApplicationMO *parentApplication;
-
-//- (BOOL)validateParentApplication:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) ApplicationMO *parentApplication;
 
 @end
 
 @interface _ApplicationProxyMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSNumber*)primitiveIsEnabled;
-- (void)setPrimitiveIsEnabled:(NSNumber*)value;
+- (nullable NSNumber*)primitiveIsEnabled;
+- (void)setPrimitiveIsEnabled:(nullable NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledValue;
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_;
@@ -48,3 +44,13 @@ extern const struct ApplicationProxyMORelationships {
 - (void)setPrimitiveParentApplication:(ApplicationMO*)value;
 
 @end
+
+@interface ApplicationProxyMOAttributes: NSObject 
++ (NSString *)isEnabled;
+@end
+
+@interface ApplicationProxyMORelationships: NSObject
++ (NSString *)parentApplication;
+@end
+
+NS_ASSUME_NONNULL_END

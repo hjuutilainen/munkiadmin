@@ -1,22 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to PackageSourceListItemMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct PackageSourceListItemMOAttributes {
-	__unsafe_unretained NSString *filterPredicate;
-	__unsafe_unretained NSString *icon;
-	__unsafe_unretained NSString *isGroupItem;
-	__unsafe_unretained NSString *itemType;
-	__unsafe_unretained NSString *originalIndex;
-	__unsafe_unretained NSString *sortDescriptors;
-	__unsafe_unretained NSString *title;
-} PackageSourceListItemMOAttributes;
-
-extern const struct PackageSourceListItemMORelationships {
-	__unsafe_unretained NSString *children;
-	__unsafe_unretained NSString *parent;
-} PackageSourceListItemMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class PackageSourceListItemMO;
 @class PackageSourceListItemMO;
@@ -30,19 +23,15 @@ extern const struct PackageSourceListItemMORelationships {
 @interface PackageSourceListItemMOID : NSManagedObjectID {}
 @end
 
-@interface _PackageSourceListItemMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _PackageSourceListItemMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) PackageSourceListItemMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) PackageSourceListItemMOID *objectID;
 
-@property (nonatomic, strong) id filterPredicate;
+@property (nonatomic, strong, nullable) id filterPredicate;
 
-//- (BOOL)validateFilterPredicate:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) id icon;
-
-//- (BOOL)validateIcon:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) id icon;
 
 @property (nonatomic, strong) NSNumber* isGroupItem;
 
@@ -50,41 +39,28 @@ extern const struct PackageSourceListItemMORelationships {
 - (BOOL)isGroupItemValue;
 - (void)setIsGroupItemValue:(BOOL)value_;
 
-//- (BOOL)validateIsGroupItem:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* itemType;
 
-@property (nonatomic, strong) NSString* itemType;
-
-//- (BOOL)validateItemType:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) id sortDescriptors;
 
-@property (nonatomic, strong) id sortDescriptors;
+@property (nonatomic, strong, nullable) NSString* title;
 
-//- (BOOL)validateSortDescriptors:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSSet<PackageSourceListItemMO*> *children;
+- (nullable NSMutableSet<PackageSourceListItemMO*>*)childrenSet;
 
-@property (nonatomic, strong) NSString* title;
-
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *children;
-
-- (NSMutableSet*)childrenSet;
-
-@property (nonatomic, strong) PackageSourceListItemMO *parent;
-
-//- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) PackageSourceListItemMO *parent;
 
 @end
 
 @interface _PackageSourceListItemMO (ChildrenCoreDataGeneratedAccessors)
-- (void)addChildren:(NSSet*)value_;
-- (void)removeChildren:(NSSet*)value_;
+- (void)addChildren:(NSSet<PackageSourceListItemMO*>*)value_;
+- (void)removeChildren:(NSSet<PackageSourceListItemMO*>*)value_;
 - (void)addChildrenObject:(PackageSourceListItemMO*)value_;
 - (void)removeChildrenObject:(PackageSourceListItemMO*)value_;
 
@@ -92,11 +68,11 @@ extern const struct PackageSourceListItemMORelationships {
 
 @interface _PackageSourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (id)primitiveFilterPredicate;
-- (void)setPrimitiveFilterPredicate:(id)value;
+- (nullable id)primitiveFilterPredicate;
+- (void)setPrimitiveFilterPredicate:(nullable id)value;
 
-- (id)primitiveIcon;
-- (void)setPrimitiveIcon:(id)value;
+- (nullable id)primitiveIcon;
+- (void)setPrimitiveIcon:(nullable id)value;
 
 - (NSNumber*)primitiveIsGroupItem;
 - (void)setPrimitiveIsGroupItem:(NSNumber*)value;
@@ -104,25 +80,42 @@ extern const struct PackageSourceListItemMORelationships {
 - (BOOL)primitiveIsGroupItemValue;
 - (void)setPrimitiveIsGroupItemValue:(BOOL)value_;
 
-- (NSString*)primitiveItemType;
-- (void)setPrimitiveItemType:(NSString*)value;
+- (nullable NSString*)primitiveItemType;
+- (void)setPrimitiveItemType:(nullable NSString*)value;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-- (id)primitiveSortDescriptors;
-- (void)setPrimitiveSortDescriptors:(id)value;
+- (nullable id)primitiveSortDescriptors;
+- (void)setPrimitiveSortDescriptors:(nullable id)value;
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (nullable NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(nullable NSString*)value;
 
-- (NSMutableSet*)primitiveChildren;
-- (void)setPrimitiveChildren:(NSMutableSet*)value;
+- (NSMutableSet<PackageSourceListItemMO*>*)primitiveChildren;
+- (void)setPrimitiveChildren:(NSMutableSet<PackageSourceListItemMO*>*)value;
 
 - (PackageSourceListItemMO*)primitiveParent;
 - (void)setPrimitiveParent:(PackageSourceListItemMO*)value;
 
 @end
+
+@interface PackageSourceListItemMOAttributes: NSObject 
++ (NSString *)filterPredicate;
++ (NSString *)icon;
++ (NSString *)isGroupItem;
++ (NSString *)itemType;
++ (NSString *)originalIndex;
++ (NSString *)sortDescriptors;
++ (NSString *)title;
+@end
+
+@interface PackageSourceListItemMORelationships: NSObject
++ (NSString *)children;
++ (NSString *)parent;
+@end
+
+NS_ASSUME_NONNULL_END

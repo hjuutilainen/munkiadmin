@@ -3,21 +3,12 @@
 
 #import "_IconImageMO.h"
 
-const struct IconImageMOAttributes IconImageMOAttributes = {
-	.imageRepresentation = @"imageRepresentation",
-	.originalURL = @"originalURL",
-};
-
-const struct IconImageMORelationships IconImageMORelationships = {
-	.packages = @"packages",
-};
-
 @implementation IconImageMOID
 @end
 
 @implementation _IconImageMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"IconImage" inManagedObjectContext:moc_];
 }
@@ -47,14 +38,29 @@ const struct IconImageMORelationships IconImageMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation IconImageMOAttributes 
++ (NSString *)imageRepresentation {
+	return @"imageRepresentation";
+}
++ (NSString *)originalURL {
+	return @"originalURL";
+}
+@end
+
+@implementation IconImageMORelationships 
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

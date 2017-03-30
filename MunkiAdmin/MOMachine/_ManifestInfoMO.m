@@ -3,22 +3,12 @@
 
 #import "_ManifestInfoMO.h"
 
-const struct ManifestInfoMOAttributes ManifestInfoMOAttributes = {
-	.isAvailableForEditing = @"isAvailableForEditing",
-	.isEnabledForManifest = @"isEnabledForManifest",
-};
-
-const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
-	.manifest = @"manifest",
-	.parentManifest = @"parentManifest",
-};
-
 @implementation ManifestInfoMOID
 @end
 
 @implementation _ManifestInfoMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ManifestInfo" inManagedObjectContext:moc_];
 }
@@ -61,7 +51,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setIsAvailableForEditingValue:(BOOL)value_ {
-	[self setIsAvailableForEditing:[NSNumber numberWithBool:value_]];
+	[self setIsAvailableForEditing:@(value_)];
 }
 
 - (BOOL)primitiveIsAvailableForEditingValue {
@@ -70,7 +60,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_ {
-	[self setPrimitiveIsAvailableForEditing:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsAvailableForEditing:@(value_)];
 }
 
 @dynamic isEnabledForManifest;
@@ -81,7 +71,7 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setIsEnabledForManifestValue:(BOOL)value_ {
-	[self setIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForManifest:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForManifestValue {
@@ -90,12 +80,30 @@ const struct ManifestInfoMORelationships ManifestInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForManifest:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForManifest:@(value_)];
 }
 
 @dynamic manifest;
 
 @dynamic parentManifest;
 
+@end
+
+@implementation ManifestInfoMOAttributes 
++ (NSString *)isAvailableForEditing {
+	return @"isAvailableForEditing";
+}
++ (NSString *)isEnabledForManifest {
+	return @"isEnabledForManifest";
+}
+@end
+
+@implementation ManifestInfoMORelationships 
++ (NSString *)manifest {
+	return @"manifest";
+}
++ (NSString *)parentManifest {
+	return @"parentManifest";
+}
 @end
 

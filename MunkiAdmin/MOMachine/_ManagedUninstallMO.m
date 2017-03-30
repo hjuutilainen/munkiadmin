@@ -3,16 +3,12 @@
 
 #import "_ManagedUninstallMO.h"
 
-const struct ManagedUninstallMORelationships ManagedUninstallMORelationships = {
-	.manifest = @"manifest",
-};
-
 @implementation ManagedUninstallMOID
 @end
 
 @implementation _ManagedUninstallMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUninstall" inManagedObjectContext:moc_];
 }
@@ -38,5 +34,11 @@ const struct ManagedUninstallMORelationships ManagedUninstallMORelationships = {
 
 @dynamic manifest;
 
+@end
+
+@implementation ManagedUninstallMORelationships 
++ (NSString *)manifest {
+	return @"manifest";
+}
 @end
 

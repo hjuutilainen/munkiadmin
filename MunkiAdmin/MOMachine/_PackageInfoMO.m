@@ -3,23 +3,12 @@
 
 #import "_PackageInfoMO.h"
 
-const struct PackageInfoMOAttributes PackageInfoMOAttributes = {
-	.isEnabledForCatalog = @"isEnabledForCatalog",
-	.originalIndex = @"originalIndex",
-	.title = @"title",
-};
-
-const struct PackageInfoMORelationships PackageInfoMORelationships = {
-	.catalog = @"catalog",
-	.package = @"package",
-};
-
 @implementation PackageInfoMOID
 @end
 
 @implementation _PackageInfoMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"PackageInfo" inManagedObjectContext:moc_];
 }
@@ -62,7 +51,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
+	[self setIsEnabledForCatalog:@(value_)];
 }
 
 - (BOOL)primitiveIsEnabledForCatalogValue {
@@ -71,7 +60,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setPrimitiveIsEnabledForCatalogValue:(BOOL)value_ {
-	[self setPrimitiveIsEnabledForCatalog:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveIsEnabledForCatalog:@(value_)];
 }
 
 @dynamic originalIndex;
@@ -82,7 +71,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -91,7 +80,7 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic title;
@@ -100,5 +89,26 @@ const struct PackageInfoMORelationships PackageInfoMORelationships = {
 
 @dynamic package;
 
+@end
+
+@implementation PackageInfoMOAttributes 
++ (NSString *)isEnabledForCatalog {
+	return @"isEnabledForCatalog";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation PackageInfoMORelationships 
++ (NSString *)catalog {
+	return @"catalog";
+}
++ (NSString *)package {
+	return @"package";
+}
 @end
 

@@ -3,16 +3,12 @@
 
 #import "_ManagedUpdateMO.h"
 
-const struct ManagedUpdateMORelationships ManagedUpdateMORelationships = {
-	.manifest = @"manifest",
-};
-
 @implementation ManagedUpdateMOID
 @end
 
 @implementation _ManagedUpdateMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ManagedUpdate" inManagedObjectContext:moc_];
 }
@@ -38,5 +34,11 @@ const struct ManagedUpdateMORelationships ManagedUpdateMORelationships = {
 
 @dynamic manifest;
 
+@end
+
+@implementation ManagedUpdateMORelationships 
++ (NSString *)manifest {
+	return @"manifest";
+}
 @end
 

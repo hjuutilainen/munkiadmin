@@ -1,20 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to CatalogInfoMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct CatalogInfoMOAttributes {
-	__unsafe_unretained NSString *indexInManifest;
-	__unsafe_unretained NSString *isEnabledForManifest;
-	__unsafe_unretained NSString *isEnabledForPackage;
-	__unsafe_unretained NSString *originalIndex;
-} CatalogInfoMOAttributes;
-
-extern const struct CatalogInfoMORelationships {
-	__unsafe_unretained NSString *catalog;
-	__unsafe_unretained NSString *manifest;
-	__unsafe_unretained NSString *package;
-} CatalogInfoMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class CatalogMO;
 @class ManifestMO;
@@ -23,80 +18,66 @@ extern const struct CatalogInfoMORelationships {
 @interface CatalogInfoMOID : NSManagedObjectID {}
 @end
 
-@interface _CatalogInfoMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _CatalogInfoMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) CatalogInfoMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) CatalogInfoMOID *objectID;
 
-@property (nonatomic, strong) NSNumber* indexInManifest;
+@property (nonatomic, strong, nullable) NSNumber* indexInManifest;
 
 @property (atomic) int32_t indexInManifestValue;
 - (int32_t)indexInManifestValue;
 - (void)setIndexInManifestValue:(int32_t)value_;
 
-//- (BOOL)validateIndexInManifest:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* isEnabledForManifest;
+@property (nonatomic, strong, nullable) NSNumber* isEnabledForManifest;
 
 @property (atomic) BOOL isEnabledForManifestValue;
 - (BOOL)isEnabledForManifestValue;
 - (void)setIsEnabledForManifestValue:(BOOL)value_;
 
-//- (BOOL)validateIsEnabledForManifest:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* isEnabledForPackage;
+@property (nonatomic, strong, nullable) NSNumber* isEnabledForPackage;
 
 @property (atomic) BOOL isEnabledForPackageValue;
 - (BOOL)isEnabledForPackageValue;
 - (void)setIsEnabledForPackageValue:(BOOL)value_;
 
-//- (BOOL)validateIsEnabledForPackage:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) CatalogMO *catalog;
 
-@property (nonatomic, strong) CatalogMO *catalog;
+@property (nonatomic, strong, nullable) ManifestMO *manifest;
 
-//- (BOOL)validateCatalog:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) ManifestMO *manifest;
-
-//- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) PackageMO *package;
-
-//- (BOOL)validatePackage:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) PackageMO *package;
 
 @end
 
 @interface _CatalogInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSNumber*)primitiveIndexInManifest;
-- (void)setPrimitiveIndexInManifest:(NSNumber*)value;
+- (nullable NSNumber*)primitiveIndexInManifest;
+- (void)setPrimitiveIndexInManifest:(nullable NSNumber*)value;
 
 - (int32_t)primitiveIndexInManifestValue;
 - (void)setPrimitiveIndexInManifestValue:(int32_t)value_;
 
-- (NSNumber*)primitiveIsEnabledForManifest;
-- (void)setPrimitiveIsEnabledForManifest:(NSNumber*)value;
+- (nullable NSNumber*)primitiveIsEnabledForManifest;
+- (void)setPrimitiveIsEnabledForManifest:(nullable NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
 
-- (NSNumber*)primitiveIsEnabledForPackage;
-- (void)setPrimitiveIsEnabledForPackage:(NSNumber*)value;
+- (nullable NSNumber*)primitiveIsEnabledForPackage;
+- (void)setPrimitiveIsEnabledForPackage:(nullable NSNumber*)value;
 
 - (BOOL)primitiveIsEnabledForPackageValue;
 - (void)setPrimitiveIsEnabledForPackageValue:(BOOL)value_;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
@@ -111,3 +92,18 @@ extern const struct CatalogInfoMORelationships {
 - (void)setPrimitivePackage:(PackageMO*)value;
 
 @end
+
+@interface CatalogInfoMOAttributes: NSObject 
++ (NSString *)indexInManifest;
++ (NSString *)isEnabledForManifest;
++ (NSString *)isEnabledForPackage;
++ (NSString *)originalIndex;
+@end
+
+@interface CatalogInfoMORelationships: NSObject
++ (NSString *)catalog;
++ (NSString *)manifest;
++ (NSString *)package;
+@end
+
+NS_ASSUME_NONNULL_END

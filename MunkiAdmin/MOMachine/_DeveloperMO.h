@@ -1,16 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to DeveloperMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct DeveloperMOAttributes {
-	__unsafe_unretained NSString *title;
-} DeveloperMOAttributes;
-
-extern const struct DeveloperMORelationships {
-	__unsafe_unretained NSString *developerSourceListReference;
-	__unsafe_unretained NSString *packages;
-} DeveloperMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class DeveloperSourceListItemMO;
 @class PackageMO;
@@ -18,29 +17,24 @@ extern const struct DeveloperMORelationships {
 @interface DeveloperMOID : NSManagedObjectID {}
 @end
 
-@interface _DeveloperMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _DeveloperMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) DeveloperMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) DeveloperMOID *objectID;
 
-@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong, nullable) NSString* title;
 
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) DeveloperSourceListItemMO *developerSourceListReference;
 
-@property (nonatomic, strong) DeveloperSourceListItemMO *developerSourceListReference;
-
-//- (BOOL)validateDeveloperSourceListReference:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *packages;
-
-- (NSMutableSet*)packagesSet;
+@property (nonatomic, strong, nullable) NSSet<PackageMO*> *packages;
+- (nullable NSMutableSet<PackageMO*>*)packagesSet;
 
 @end
 
 @interface _DeveloperMO (PackagesCoreDataGeneratedAccessors)
-- (void)addPackages:(NSSet*)value_;
-- (void)removePackages:(NSSet*)value_;
+- (void)addPackages:(NSSet<PackageMO*>*)value_;
+- (void)removePackages:(NSSet<PackageMO*>*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
 
@@ -48,13 +42,24 @@ extern const struct DeveloperMORelationships {
 
 @interface _DeveloperMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (nullable NSString*)primitiveTitle;
+- (void)setPrimitiveTitle:(nullable NSString*)value;
 
 - (DeveloperSourceListItemMO*)primitiveDeveloperSourceListReference;
 - (void)setPrimitiveDeveloperSourceListReference:(DeveloperSourceListItemMO*)value;
 
-- (NSMutableSet*)primitivePackages;
-- (void)setPrimitivePackages:(NSMutableSet*)value;
+- (NSMutableSet<PackageMO*>*)primitivePackages;
+- (void)setPrimitivePackages:(NSMutableSet<PackageMO*>*)value;
 
 @end
+
+@interface DeveloperMOAttributes: NSObject 
++ (NSString *)title;
+@end
+
+@interface DeveloperMORelationships: NSObject
++ (NSString *)developerSourceListReference;
++ (NSString *)packages;
+@end
+
+NS_ASSUME_NONNULL_END

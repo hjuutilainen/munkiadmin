@@ -3,29 +3,12 @@
 
 #import "_ConditionalItemMO.h"
 
-const struct ConditionalItemMOAttributes ConditionalItemMOAttributes = {
-	.munki_condition = @"munki_condition",
-	.originalIndex = @"originalIndex",
-};
-
-const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
-	.children = @"children",
-	.includedManifests = @"includedManifests",
-	.managedInstalls = @"managedInstalls",
-	.managedUninstalls = @"managedUninstalls",
-	.managedUpdates = @"managedUpdates",
-	.manifest = @"manifest",
-	.optionalInstalls = @"optionalInstalls",
-	.parent = @"parent",
-	.referencingManifests = @"referencingManifests",
-};
-
 @implementation ConditionalItemMOID
 @end
 
 @implementation _ConditionalItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc_];
 }
@@ -65,7 +48,7 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 }
 
 - (void)setOriginalIndexValue:(int32_t)value_ {
-	[self setOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setOriginalIndex:@(value_)];
 }
 
 - (int32_t)primitiveOriginalIndexValue {
@@ -74,15 +57,15 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 }
 
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_ {
-	[self setPrimitiveOriginalIndex:[NSNumber numberWithInt:value_]];
+	[self setPrimitiveOriginalIndex:@(value_)];
 }
 
 @dynamic children;
 
-- (NSMutableSet*)childrenSet {
+- (NSMutableSet<ConditionalItemMO*>*)childrenSet {
 	[self willAccessValueForKey:@"children"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"children"];
+	NSMutableSet<ConditionalItemMO*> *result = (NSMutableSet<ConditionalItemMO*>*)[self mutableSetValueForKey:@"children"];
 
 	[self didAccessValueForKey:@"children"];
 	return result;
@@ -90,10 +73,10 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic includedManifests;
 
-- (NSMutableSet*)includedManifestsSet {
+- (NSMutableSet<StringObjectMO*>*)includedManifestsSet {
 	[self willAccessValueForKey:@"includedManifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"includedManifests"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"includedManifests"];
 
 	[self didAccessValueForKey:@"includedManifests"];
 	return result;
@@ -101,10 +84,10 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic managedInstalls;
 
-- (NSMutableSet*)managedInstallsSet {
+- (NSMutableSet<StringObjectMO*>*)managedInstallsSet {
 	[self willAccessValueForKey:@"managedInstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstalls"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedInstalls"];
 
 	[self didAccessValueForKey:@"managedInstalls"];
 	return result;
@@ -112,10 +95,10 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic managedUninstalls;
 
-- (NSMutableSet*)managedUninstallsSet {
+- (NSMutableSet<StringObjectMO*>*)managedUninstallsSet {
 	[self willAccessValueForKey:@"managedUninstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUninstalls"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedUninstalls"];
 
 	[self didAccessValueForKey:@"managedUninstalls"];
 	return result;
@@ -123,10 +106,10 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic managedUpdates;
 
-- (NSMutableSet*)managedUpdatesSet {
+- (NSMutableSet<StringObjectMO*>*)managedUpdatesSet {
 	[self willAccessValueForKey:@"managedUpdates"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdates"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedUpdates"];
 
 	[self didAccessValueForKey:@"managedUpdates"];
 	return result;
@@ -136,10 +119,10 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic optionalInstalls;
 
-- (NSMutableSet*)optionalInstallsSet {
+- (NSMutableSet<StringObjectMO*>*)optionalInstallsSet {
 	[self willAccessValueForKey:@"optionalInstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstalls"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"optionalInstalls"];
 
 	[self didAccessValueForKey:@"optionalInstalls"];
 	return result;
@@ -149,14 +132,53 @@ const struct ConditionalItemMORelationships ConditionalItemMORelationships = {
 
 @dynamic referencingManifests;
 
-- (NSMutableSet*)referencingManifestsSet {
+- (NSMutableSet<StringObjectMO*>*)referencingManifestsSet {
 	[self willAccessValueForKey:@"referencingManifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingManifests"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"referencingManifests"];
 
 	[self didAccessValueForKey:@"referencingManifests"];
 	return result;
 }
 
+@end
+
+@implementation ConditionalItemMOAttributes 
++ (NSString *)munki_condition {
+	return @"munki_condition";
+}
++ (NSString *)originalIndex {
+	return @"originalIndex";
+}
+@end
+
+@implementation ConditionalItemMORelationships 
++ (NSString *)children {
+	return @"children";
+}
++ (NSString *)includedManifests {
+	return @"includedManifests";
+}
++ (NSString *)managedInstalls {
+	return @"managedInstalls";
+}
++ (NSString *)managedUninstalls {
+	return @"managedUninstalls";
+}
++ (NSString *)managedUpdates {
+	return @"managedUpdates";
+}
++ (NSString *)manifest {
+	return @"manifest";
+}
++ (NSString *)optionalInstalls {
+	return @"optionalInstalls";
+}
++ (NSString *)parent {
+	return @"parent";
+}
++ (NSString *)referencingManifests {
+	return @"referencingManifests";
+}
 @end
 

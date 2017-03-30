@@ -3,20 +3,12 @@
 
 #import "_DirectoryMO.h"
 
-const struct DirectoryMOAttributes DirectoryMOAttributes = {
-	.originalURL = @"originalURL",
-};
-
-const struct DirectoryMOFetchedProperties DirectoryMOFetchedProperties = {
-	.childPackages = @"childPackages",
-};
-
 @implementation DirectoryMOID
 @end
 
 @implementation _DirectoryMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Directory" inManagedObjectContext:moc_];
 }
@@ -44,5 +36,17 @@ const struct DirectoryMOFetchedProperties DirectoryMOFetchedProperties = {
 
 @dynamic childPackages;
 
+@end
+
+@implementation DirectoryMOAttributes 
++ (NSString *)originalURL {
+	return @"originalURL";
+}
+@end
+
+@implementation DirectoryMOFetchedProperties 
++ (NSString *)childPackages {
+	return @"childPackages";
+}
 @end
 

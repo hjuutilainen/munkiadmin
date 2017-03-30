@@ -1,24 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ConditionalItemMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct ConditionalItemMOAttributes {
-	__unsafe_unretained NSString *munki_condition;
-	__unsafe_unretained NSString *originalIndex;
-} ConditionalItemMOAttributes;
-
-extern const struct ConditionalItemMORelationships {
-	__unsafe_unretained NSString *children;
-	__unsafe_unretained NSString *includedManifests;
-	__unsafe_unretained NSString *managedInstalls;
-	__unsafe_unretained NSString *managedUninstalls;
-	__unsafe_unretained NSString *managedUpdates;
-	__unsafe_unretained NSString *manifest;
-	__unsafe_unretained NSString *optionalInstalls;
-	__unsafe_unretained NSString *parent;
-	__unsafe_unretained NSString *referencingManifests;
-} ConditionalItemMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ConditionalItemMO;
 @class StringObjectMO;
@@ -33,113 +24,98 @@ extern const struct ConditionalItemMORelationships {
 @interface ConditionalItemMOID : NSManagedObjectID {}
 @end
 
-@interface _ConditionalItemMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ConditionalItemMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ConditionalItemMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ConditionalItemMOID *objectID;
 
-@property (nonatomic, strong) NSString* munki_condition;
+@property (nonatomic, strong, nullable) NSString* munki_condition;
 
-//- (BOOL)validateMunki_condition:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSSet<ConditionalItemMO*> *children;
+- (nullable NSMutableSet<ConditionalItemMO*>*)childrenSet;
 
-@property (nonatomic, strong) NSSet *children;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *includedManifests;
+- (nullable NSMutableSet<StringObjectMO*>*)includedManifestsSet;
 
-- (NSMutableSet*)childrenSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedInstalls;
+- (nullable NSMutableSet<StringObjectMO*>*)managedInstallsSet;
 
-@property (nonatomic, strong) NSSet *includedManifests;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedUninstalls;
+- (nullable NSMutableSet<StringObjectMO*>*)managedUninstallsSet;
 
-- (NSMutableSet*)includedManifestsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *managedUpdates;
+- (nullable NSMutableSet<StringObjectMO*>*)managedUpdatesSet;
 
-@property (nonatomic, strong) NSSet *managedInstalls;
+@property (nonatomic, strong, nullable) ManifestMO *manifest;
 
-- (NSMutableSet*)managedInstallsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *optionalInstalls;
+- (nullable NSMutableSet<StringObjectMO*>*)optionalInstallsSet;
 
-@property (nonatomic, strong) NSSet *managedUninstalls;
+@property (nonatomic, strong, nullable) ConditionalItemMO *parent;
 
-- (NSMutableSet*)managedUninstallsSet;
-
-@property (nonatomic, strong) NSSet *managedUpdates;
-
-- (NSMutableSet*)managedUpdatesSet;
-
-@property (nonatomic, strong) ManifestMO *manifest;
-
-//- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *optionalInstalls;
-
-- (NSMutableSet*)optionalInstallsSet;
-
-@property (nonatomic, strong) ConditionalItemMO *parent;
-
-//- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *referencingManifests;
-
-- (NSMutableSet*)referencingManifestsSet;
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *referencingManifests;
+- (nullable NSMutableSet<StringObjectMO*>*)referencingManifestsSet;
 
 @end
 
 @interface _ConditionalItemMO (ChildrenCoreDataGeneratedAccessors)
-- (void)addChildren:(NSSet*)value_;
-- (void)removeChildren:(NSSet*)value_;
+- (void)addChildren:(NSSet<ConditionalItemMO*>*)value_;
+- (void)removeChildren:(NSSet<ConditionalItemMO*>*)value_;
 - (void)addChildrenObject:(ConditionalItemMO*)value_;
 - (void)removeChildrenObject:(ConditionalItemMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (IncludedManifestsCoreDataGeneratedAccessors)
-- (void)addIncludedManifests:(NSSet*)value_;
-- (void)removeIncludedManifests:(NSSet*)value_;
+- (void)addIncludedManifests:(NSSet<StringObjectMO*>*)value_;
+- (void)removeIncludedManifests:(NSSet<StringObjectMO*>*)value_;
 - (void)addIncludedManifestsObject:(StringObjectMO*)value_;
 - (void)removeIncludedManifestsObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (ManagedInstallsCoreDataGeneratedAccessors)
-- (void)addManagedInstalls:(NSSet*)value_;
-- (void)removeManagedInstalls:(NSSet*)value_;
+- (void)addManagedInstalls:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedInstalls:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedInstallsObject:(StringObjectMO*)value_;
 - (void)removeManagedInstallsObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (ManagedUninstallsCoreDataGeneratedAccessors)
-- (void)addManagedUninstalls:(NSSet*)value_;
-- (void)removeManagedUninstalls:(NSSet*)value_;
+- (void)addManagedUninstalls:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedUninstalls:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedUninstallsObject:(StringObjectMO*)value_;
 - (void)removeManagedUninstallsObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (ManagedUpdatesCoreDataGeneratedAccessors)
-- (void)addManagedUpdates:(NSSet*)value_;
-- (void)removeManagedUpdates:(NSSet*)value_;
+- (void)addManagedUpdates:(NSSet<StringObjectMO*>*)value_;
+- (void)removeManagedUpdates:(NSSet<StringObjectMO*>*)value_;
 - (void)addManagedUpdatesObject:(StringObjectMO*)value_;
 - (void)removeManagedUpdatesObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (OptionalInstallsCoreDataGeneratedAccessors)
-- (void)addOptionalInstalls:(NSSet*)value_;
-- (void)removeOptionalInstalls:(NSSet*)value_;
+- (void)addOptionalInstalls:(NSSet<StringObjectMO*>*)value_;
+- (void)removeOptionalInstalls:(NSSet<StringObjectMO*>*)value_;
 - (void)addOptionalInstallsObject:(StringObjectMO*)value_;
 - (void)removeOptionalInstallsObject:(StringObjectMO*)value_;
 
 @end
 
 @interface _ConditionalItemMO (ReferencingManifestsCoreDataGeneratedAccessors)
-- (void)addReferencingManifests:(NSSet*)value_;
-- (void)removeReferencingManifests:(NSSet*)value_;
+- (void)addReferencingManifests:(NSSet<StringObjectMO*>*)value_;
+- (void)removeReferencingManifests:(NSSet<StringObjectMO*>*)value_;
 - (void)addReferencingManifestsObject:(StringObjectMO*)value_;
 - (void)removeReferencingManifestsObject:(StringObjectMO*)value_;
 
@@ -147,40 +123,59 @@ extern const struct ConditionalItemMORelationships {
 
 @interface _ConditionalItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSString*)primitiveMunki_condition;
-- (void)setPrimitiveMunki_condition:(NSString*)value;
+- (nullable NSString*)primitiveMunki_condition;
+- (void)setPrimitiveMunki_condition:(nullable NSString*)value;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-- (NSMutableSet*)primitiveChildren;
-- (void)setPrimitiveChildren:(NSMutableSet*)value;
+- (NSMutableSet<ConditionalItemMO*>*)primitiveChildren;
+- (void)setPrimitiveChildren:(NSMutableSet<ConditionalItemMO*>*)value;
 
-- (NSMutableSet*)primitiveIncludedManifests;
-- (void)setPrimitiveIncludedManifests:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveIncludedManifests;
+- (void)setPrimitiveIncludedManifests:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedInstalls;
-- (void)setPrimitiveManagedInstalls:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedInstalls;
+- (void)setPrimitiveManagedInstalls:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUninstalls;
-- (void)setPrimitiveManagedUninstalls:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedUninstalls;
+- (void)setPrimitiveManagedUninstalls:(NSMutableSet<StringObjectMO*>*)value;
 
-- (NSMutableSet*)primitiveManagedUpdates;
-- (void)setPrimitiveManagedUpdates:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveManagedUpdates;
+- (void)setPrimitiveManagedUpdates:(NSMutableSet<StringObjectMO*>*)value;
 
 - (ManifestMO*)primitiveManifest;
 - (void)setPrimitiveManifest:(ManifestMO*)value;
 
-- (NSMutableSet*)primitiveOptionalInstalls;
-- (void)setPrimitiveOptionalInstalls:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveOptionalInstalls;
+- (void)setPrimitiveOptionalInstalls:(NSMutableSet<StringObjectMO*>*)value;
 
 - (ConditionalItemMO*)primitiveParent;
 - (void)setPrimitiveParent:(ConditionalItemMO*)value;
 
-- (NSMutableSet*)primitiveReferencingManifests;
-- (void)setPrimitiveReferencingManifests:(NSMutableSet*)value;
+- (NSMutableSet<StringObjectMO*>*)primitiveReferencingManifests;
+- (void)setPrimitiveReferencingManifests:(NSMutableSet<StringObjectMO*>*)value;
 
 @end
+
+@interface ConditionalItemMOAttributes: NSObject 
++ (NSString *)munki_condition;
++ (NSString *)originalIndex;
+@end
+
+@interface ConditionalItemMORelationships: NSObject
++ (NSString *)children;
++ (NSString *)includedManifests;
++ (NSString *)managedInstalls;
++ (NSString *)managedUninstalls;
++ (NSString *)managedUpdates;
++ (NSString *)manifest;
++ (NSString *)optionalInstalls;
++ (NSString *)parent;
++ (NSString *)referencingManifests;
+@end
+
+NS_ASSUME_NONNULL_END

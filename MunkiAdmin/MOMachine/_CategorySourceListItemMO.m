@@ -3,16 +3,12 @@
 
 #import "_CategorySourceListItemMO.h"
 
-const struct CategorySourceListItemMORelationships CategorySourceListItemMORelationships = {
-	.categoryReference = @"categoryReference",
-};
-
 @implementation CategorySourceListItemMOID
 @end
 
 @implementation _CategorySourceListItemMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"CategorySourceListItem" inManagedObjectContext:moc_];
 }
@@ -38,5 +34,11 @@ const struct CategorySourceListItemMORelationships CategorySourceListItemMORelat
 
 @dynamic categoryReference;
 
+@end
+
+@implementation CategorySourceListItemMORelationships 
++ (NSString *)categoryReference {
+	return @"categoryReference";
+}
 @end
 

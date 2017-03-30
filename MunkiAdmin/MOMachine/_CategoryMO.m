@@ -3,21 +3,12 @@
 
 #import "_CategoryMO.h"
 
-const struct CategoryMOAttributes CategoryMOAttributes = {
-	.title = @"title",
-};
-
-const struct CategoryMORelationships CategoryMORelationships = {
-	.categorySourceListReference = @"categorySourceListReference",
-	.packages = @"packages",
-};
-
 @implementation CategoryMOID
 @end
 
 @implementation _CategoryMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc_];
 }
@@ -47,14 +38,29 @@ const struct CategoryMORelationships CategoryMORelationships = {
 
 @dynamic packages;
 
-- (NSMutableSet*)packagesSet {
+- (NSMutableSet<PackageMO*>*)packagesSet {
 	[self willAccessValueForKey:@"packages"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"packages"];
+	NSMutableSet<PackageMO*> *result = (NSMutableSet<PackageMO*>*)[self mutableSetValueForKey:@"packages"];
 
 	[self didAccessValueForKey:@"packages"];
 	return result;
 }
 
+@end
+
+@implementation CategoryMOAttributes 
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation CategoryMORelationships 
++ (NSString *)categorySourceListReference {
+	return @"categorySourceListReference";
+}
++ (NSString *)packages {
+	return @"packages";
+}
 @end
 

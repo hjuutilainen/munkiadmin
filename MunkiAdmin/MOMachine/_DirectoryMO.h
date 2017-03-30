@@ -1,39 +1,48 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to DirectoryMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
+
 #import "PackageSourceListItemMO.h"
 
-extern const struct DirectoryMOAttributes {
-	__unsafe_unretained NSString *originalURL;
-} DirectoryMOAttributes;
-
-extern const struct DirectoryMOFetchedProperties {
-	__unsafe_unretained NSString *childPackages;
-} DirectoryMOFetchedProperties;
+NS_ASSUME_NONNULL_BEGIN
 
 @class NSObject;
 
 @interface DirectoryMOID : PackageSourceListItemMOID {}
 @end
 
-@interface _DirectoryMO : PackageSourceListItemMO {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _DirectoryMO : PackageSourceListItemMO
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) DirectoryMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) DirectoryMOID *objectID;
 
-@property (nonatomic, strong) id originalURL;
+@property (nonatomic, strong, nullable) id originalURL;
 
-//- (BOOL)validateOriginalURL:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, readonly) NSArray *childPackages;
+@property (nonatomic, readonly, nullable) NSArray *childPackages;
 
 @end
 
 @interface _DirectoryMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (id)primitiveOriginalURL;
-- (void)setPrimitiveOriginalURL:(id)value;
+- (nullable id)primitiveOriginalURL;
+- (void)setPrimitiveOriginalURL:(nullable id)value;
 
 @end
+
+@interface DirectoryMOAttributes: NSObject 
++ (NSString *)originalURL;
+@end
+
+@interface DirectoryMOFetchedProperties: NSObject
++ (NSString *)childPackages;
+@end
+
+NS_ASSUME_NONNULL_END

@@ -3,54 +3,12 @@
 
 #import "_ManifestMO.h"
 
-const struct ManifestMOAttributes ManifestMOAttributes = {
-	.hasUnstagedChanges = @"hasUnstagedChanges",
-	.manifestAdminNotes = @"manifestAdminNotes",
-	.manifestDateCreated = @"manifestDateCreated",
-	.manifestDateLastOpened = @"manifestDateLastOpened",
-	.manifestDateModified = @"manifestDateModified",
-	.manifestDisplayName = @"manifestDisplayName",
-	.manifestParentDirectoryURL = @"manifestParentDirectoryURL",
-	.manifestURL = @"manifestURL",
-	.manifestUserName = @"manifestUserName",
-	.originalManifest = @"originalManifest",
-	.title = @"title",
-};
-
-const struct ManifestMORelationships ManifestMORelationships = {
-	.applications = @"applications",
-	.catalogInfos = @"catalogInfos",
-	.catalogs = @"catalogs",
-	.conditionalItems = @"conditionalItems",
-	.includedManifests = @"includedManifests",
-	.includedManifestsFaster = @"includedManifestsFaster",
-	.managedInstalls = @"managedInstalls",
-	.managedInstallsFaster = @"managedInstallsFaster",
-	.managedUninstalls = @"managedUninstalls",
-	.managedUninstallsFaster = @"managedUninstallsFaster",
-	.managedUpdates = @"managedUpdates",
-	.managedUpdatesFaster = @"managedUpdatesFaster",
-	.manifestInfos = @"manifestInfos",
-	.optionalInstalls = @"optionalInstalls",
-	.optionalInstallsFaster = @"optionalInstallsFaster",
-	.referencingManifests = @"referencingManifests",
-};
-
-const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
-	.allIncludedManifests = @"allIncludedManifests",
-	.allManagedInstalls = @"allManagedInstalls",
-	.allManagedUninstalls = @"allManagedUninstalls",
-	.allManagedUpdates = @"allManagedUpdates",
-	.allOptionalInstalls = @"allOptionalInstalls",
-	.allReferencingManifests = @"allReferencingManifests",
-};
-
 @implementation ManifestMOID
 @end
 
 @implementation _ManifestMO
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc_];
 }
@@ -88,7 +46,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 }
 
 - (void)setHasUnstagedChangesValue:(BOOL)value_ {
-	[self setHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+	[self setHasUnstagedChanges:@(value_)];
 }
 
 - (BOOL)primitiveHasUnstagedChangesValue {
@@ -97,7 +55,7 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 }
 
 - (void)setPrimitiveHasUnstagedChangesValue:(BOOL)value_ {
-	[self setPrimitiveHasUnstagedChanges:[NSNumber numberWithBool:value_]];
+	[self setPrimitiveHasUnstagedChanges:@(value_)];
 }
 
 @dynamic manifestAdminNotes;
@@ -122,10 +80,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic applications;
 
-- (NSMutableSet*)applicationsSet {
+- (NSMutableSet<ApplicationMO*>*)applicationsSet {
 	[self willAccessValueForKey:@"applications"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"applications"];
+	NSMutableSet<ApplicationMO*> *result = (NSMutableSet<ApplicationMO*>*)[self mutableSetValueForKey:@"applications"];
 
 	[self didAccessValueForKey:@"applications"];
 	return result;
@@ -133,10 +91,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic catalogInfos;
 
-- (NSMutableSet*)catalogInfosSet {
+- (NSMutableSet<CatalogInfoMO*>*)catalogInfosSet {
 	[self willAccessValueForKey:@"catalogInfos"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogInfos"];
+	NSMutableSet<CatalogInfoMO*> *result = (NSMutableSet<CatalogInfoMO*>*)[self mutableSetValueForKey:@"catalogInfos"];
 
 	[self didAccessValueForKey:@"catalogInfos"];
 	return result;
@@ -144,10 +102,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic catalogs;
 
-- (NSMutableSet*)catalogsSet {
+- (NSMutableSet<CatalogMO*>*)catalogsSet {
 	[self willAccessValueForKey:@"catalogs"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"catalogs"];
+	NSMutableSet<CatalogMO*> *result = (NSMutableSet<CatalogMO*>*)[self mutableSetValueForKey:@"catalogs"];
 
 	[self didAccessValueForKey:@"catalogs"];
 	return result;
@@ -155,10 +113,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic conditionalItems;
 
-- (NSMutableSet*)conditionalItemsSet {
+- (NSMutableSet<ConditionalItemMO*>*)conditionalItemsSet {
 	[self willAccessValueForKey:@"conditionalItems"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"conditionalItems"];
+	NSMutableSet<ConditionalItemMO*> *result = (NSMutableSet<ConditionalItemMO*>*)[self mutableSetValueForKey:@"conditionalItems"];
 
 	[self didAccessValueForKey:@"conditionalItems"];
 	return result;
@@ -166,10 +124,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic includedManifests;
 
-- (NSMutableSet*)includedManifestsSet {
+- (NSMutableSet<ManifestInfoMO*>*)includedManifestsSet {
 	[self willAccessValueForKey:@"includedManifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"includedManifests"];
+	NSMutableSet<ManifestInfoMO*> *result = (NSMutableSet<ManifestInfoMO*>*)[self mutableSetValueForKey:@"includedManifests"];
 
 	[self didAccessValueForKey:@"includedManifests"];
 	return result;
@@ -177,10 +135,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic includedManifestsFaster;
 
-- (NSMutableSet*)includedManifestsFasterSet {
+- (NSMutableSet<StringObjectMO*>*)includedManifestsFasterSet {
 	[self willAccessValueForKey:@"includedManifestsFaster"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"includedManifestsFaster"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"includedManifestsFaster"];
 
 	[self didAccessValueForKey:@"includedManifestsFaster"];
 	return result;
@@ -188,10 +146,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedInstalls;
 
-- (NSMutableSet*)managedInstallsSet {
+- (NSMutableSet<ManagedInstallMO*>*)managedInstallsSet {
 	[self willAccessValueForKey:@"managedInstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstalls"];
+	NSMutableSet<ManagedInstallMO*> *result = (NSMutableSet<ManagedInstallMO*>*)[self mutableSetValueForKey:@"managedInstalls"];
 
 	[self didAccessValueForKey:@"managedInstalls"];
 	return result;
@@ -199,10 +157,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedInstallsFaster;
 
-- (NSMutableSet*)managedInstallsFasterSet {
+- (NSMutableSet<StringObjectMO*>*)managedInstallsFasterSet {
 	[self willAccessValueForKey:@"managedInstallsFaster"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedInstallsFaster"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedInstallsFaster"];
 
 	[self didAccessValueForKey:@"managedInstallsFaster"];
 	return result;
@@ -210,10 +168,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedUninstalls;
 
-- (NSMutableSet*)managedUninstallsSet {
+- (NSMutableSet<ManagedUninstallMO*>*)managedUninstallsSet {
 	[self willAccessValueForKey:@"managedUninstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUninstalls"];
+	NSMutableSet<ManagedUninstallMO*> *result = (NSMutableSet<ManagedUninstallMO*>*)[self mutableSetValueForKey:@"managedUninstalls"];
 
 	[self didAccessValueForKey:@"managedUninstalls"];
 	return result;
@@ -221,10 +179,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedUninstallsFaster;
 
-- (NSMutableSet*)managedUninstallsFasterSet {
+- (NSMutableSet<StringObjectMO*>*)managedUninstallsFasterSet {
 	[self willAccessValueForKey:@"managedUninstallsFaster"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUninstallsFaster"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedUninstallsFaster"];
 
 	[self didAccessValueForKey:@"managedUninstallsFaster"];
 	return result;
@@ -232,10 +190,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedUpdates;
 
-- (NSMutableSet*)managedUpdatesSet {
+- (NSMutableSet<ManagedUpdateMO*>*)managedUpdatesSet {
 	[self willAccessValueForKey:@"managedUpdates"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdates"];
+	NSMutableSet<ManagedUpdateMO*> *result = (NSMutableSet<ManagedUpdateMO*>*)[self mutableSetValueForKey:@"managedUpdates"];
 
 	[self didAccessValueForKey:@"managedUpdates"];
 	return result;
@@ -243,10 +201,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic managedUpdatesFaster;
 
-- (NSMutableSet*)managedUpdatesFasterSet {
+- (NSMutableSet<StringObjectMO*>*)managedUpdatesFasterSet {
 	[self willAccessValueForKey:@"managedUpdatesFaster"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"managedUpdatesFaster"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"managedUpdatesFaster"];
 
 	[self didAccessValueForKey:@"managedUpdatesFaster"];
 	return result;
@@ -254,10 +212,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic manifestInfos;
 
-- (NSMutableSet*)manifestInfosSet {
+- (NSMutableSet<ManifestInfoMO*>*)manifestInfosSet {
 	[self willAccessValueForKey:@"manifestInfos"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"manifestInfos"];
+	NSMutableSet<ManifestInfoMO*> *result = (NSMutableSet<ManifestInfoMO*>*)[self mutableSetValueForKey:@"manifestInfos"];
 
 	[self didAccessValueForKey:@"manifestInfos"];
 	return result;
@@ -265,10 +223,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic optionalInstalls;
 
-- (NSMutableSet*)optionalInstallsSet {
+- (NSMutableSet<OptionalInstallMO*>*)optionalInstallsSet {
 	[self willAccessValueForKey:@"optionalInstalls"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstalls"];
+	NSMutableSet<OptionalInstallMO*> *result = (NSMutableSet<OptionalInstallMO*>*)[self mutableSetValueForKey:@"optionalInstalls"];
 
 	[self didAccessValueForKey:@"optionalInstalls"];
 	return result;
@@ -276,10 +234,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic optionalInstallsFaster;
 
-- (NSMutableSet*)optionalInstallsFasterSet {
+- (NSMutableSet<StringObjectMO*>*)optionalInstallsFasterSet {
 	[self willAccessValueForKey:@"optionalInstallsFaster"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"optionalInstallsFaster"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"optionalInstallsFaster"];
 
 	[self didAccessValueForKey:@"optionalInstallsFaster"];
 	return result;
@@ -287,10 +245,10 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic referencingManifests;
 
-- (NSMutableSet*)referencingManifestsSet {
+- (NSMutableSet<StringObjectMO*>*)referencingManifestsSet {
 	[self willAccessValueForKey:@"referencingManifests"];
 
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"referencingManifests"];
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"referencingManifests"];
 
 	[self didAccessValueForKey:@"referencingManifests"];
 	return result;
@@ -308,5 +266,113 @@ const struct ManifestMOFetchedProperties ManifestMOFetchedProperties = {
 
 @dynamic allReferencingManifests;
 
+@end
+
+@implementation ManifestMOAttributes 
++ (NSString *)hasUnstagedChanges {
+	return @"hasUnstagedChanges";
+}
++ (NSString *)manifestAdminNotes {
+	return @"manifestAdminNotes";
+}
++ (NSString *)manifestDateCreated {
+	return @"manifestDateCreated";
+}
++ (NSString *)manifestDateLastOpened {
+	return @"manifestDateLastOpened";
+}
++ (NSString *)manifestDateModified {
+	return @"manifestDateModified";
+}
++ (NSString *)manifestDisplayName {
+	return @"manifestDisplayName";
+}
++ (NSString *)manifestParentDirectoryURL {
+	return @"manifestParentDirectoryURL";
+}
++ (NSString *)manifestURL {
+	return @"manifestURL";
+}
++ (NSString *)manifestUserName {
+	return @"manifestUserName";
+}
++ (NSString *)originalManifest {
+	return @"originalManifest";
+}
++ (NSString *)title {
+	return @"title";
+}
+@end
+
+@implementation ManifestMORelationships 
++ (NSString *)applications {
+	return @"applications";
+}
++ (NSString *)catalogInfos {
+	return @"catalogInfos";
+}
++ (NSString *)catalogs {
+	return @"catalogs";
+}
++ (NSString *)conditionalItems {
+	return @"conditionalItems";
+}
++ (NSString *)includedManifests {
+	return @"includedManifests";
+}
++ (NSString *)includedManifestsFaster {
+	return @"includedManifestsFaster";
+}
++ (NSString *)managedInstalls {
+	return @"managedInstalls";
+}
++ (NSString *)managedInstallsFaster {
+	return @"managedInstallsFaster";
+}
++ (NSString *)managedUninstalls {
+	return @"managedUninstalls";
+}
++ (NSString *)managedUninstallsFaster {
+	return @"managedUninstallsFaster";
+}
++ (NSString *)managedUpdates {
+	return @"managedUpdates";
+}
++ (NSString *)managedUpdatesFaster {
+	return @"managedUpdatesFaster";
+}
++ (NSString *)manifestInfos {
+	return @"manifestInfos";
+}
++ (NSString *)optionalInstalls {
+	return @"optionalInstalls";
+}
++ (NSString *)optionalInstallsFaster {
+	return @"optionalInstallsFaster";
+}
++ (NSString *)referencingManifests {
+	return @"referencingManifests";
+}
+@end
+
+@implementation ManifestMOFetchedProperties 
++ (NSString *)allIncludedManifests {
+	return @"allIncludedManifests";
+}
++ (NSString *)allManagedInstalls {
+	return @"allManagedInstalls";
+}
++ (NSString *)allManagedUninstalls {
+	return @"allManagedUninstalls";
+}
++ (NSString *)allManagedUpdates {
+	return @"allManagedUpdates";
+}
++ (NSString *)allOptionalInstalls {
+	return @"allOptionalInstalls";
+}
++ (NSString *)allReferencingManifests {
+	return @"allReferencingManifests";
+}
 @end
 

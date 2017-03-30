@@ -1,17 +1,15 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to ManifestInfoMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct ManifestInfoMOAttributes {
-	__unsafe_unretained NSString *isAvailableForEditing;
-	__unsafe_unretained NSString *isEnabledForManifest;
-} ManifestInfoMOAttributes;
-
-extern const struct ManifestInfoMORelationships {
-	__unsafe_unretained NSString *manifest;
-	__unsafe_unretained NSString *parentManifest;
-} ManifestInfoMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class ManifestMO;
 @class ManifestMO;
@@ -19,19 +17,17 @@ extern const struct ManifestInfoMORelationships {
 @interface ManifestInfoMOID : NSManagedObjectID {}
 @end
 
-@interface _ManifestInfoMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _ManifestInfoMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) ManifestInfoMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) ManifestInfoMOID *objectID;
 
-@property (nonatomic, strong) NSNumber* isAvailableForEditing;
+@property (nonatomic, strong, nullable) NSNumber* isAvailableForEditing;
 
 @property (atomic) BOOL isAvailableForEditingValue;
 - (BOOL)isAvailableForEditingValue;
 - (void)setIsAvailableForEditingValue:(BOOL)value_;
-
-//- (BOOL)validateIsAvailableForEditing:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* isEnabledForManifest;
 
@@ -39,22 +35,16 @@ extern const struct ManifestInfoMORelationships {
 - (BOOL)isEnabledForManifestValue;
 - (void)setIsEnabledForManifestValue:(BOOL)value_;
 
-//- (BOOL)validateIsEnabledForManifest:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) ManifestMO *manifest;
 
-@property (nonatomic, strong) ManifestMO *manifest;
-
-//- (BOOL)validateManifest:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) ManifestMO *parentManifest;
-
-//- (BOOL)validateParentManifest:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) ManifestMO *parentManifest;
 
 @end
 
 @interface _ManifestInfoMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSNumber*)primitiveIsAvailableForEditing;
-- (void)setPrimitiveIsAvailableForEditing:(NSNumber*)value;
+- (nullable NSNumber*)primitiveIsAvailableForEditing;
+- (void)setPrimitiveIsAvailableForEditing:(nullable NSNumber*)value;
 
 - (BOOL)primitiveIsAvailableForEditingValue;
 - (void)setPrimitiveIsAvailableForEditingValue:(BOOL)value_;
@@ -72,3 +62,15 @@ extern const struct ManifestInfoMORelationships {
 - (void)setPrimitiveParentManifest:(ManifestMO*)value;
 
 @end
+
+@interface ManifestInfoMOAttributes: NSObject 
++ (NSString *)isAvailableForEditing;
++ (NSString *)isEnabledForManifest;
+@end
+
+@interface ManifestInfoMORelationships: NSObject
++ (NSString *)manifest;
++ (NSString *)parentManifest;
+@end
+
+NS_ASSUME_NONNULL_END

@@ -1,54 +1,45 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to InstallerEnvironmentVariableMO.h instead.
 
-#import <CoreData/CoreData.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import CoreData;
+#else
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+#endif
 
-extern const struct InstallerEnvironmentVariableMOAttributes {
-	__unsafe_unretained NSString *munki_installer_environment_key;
-	__unsafe_unretained NSString *munki_installer_environment_value;
-	__unsafe_unretained NSString *originalIndex;
-} InstallerEnvironmentVariableMOAttributes;
-
-extern const struct InstallerEnvironmentVariableMORelationships {
-	__unsafe_unretained NSString *packages;
-} InstallerEnvironmentVariableMORelationships;
+NS_ASSUME_NONNULL_BEGIN
 
 @class PackageMO;
 
 @interface InstallerEnvironmentVariableMOID : NSManagedObjectID {}
 @end
 
-@interface _InstallerEnvironmentVariableMO : NSManagedObject {}
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@interface _InstallerEnvironmentVariableMO : NSManagedObject
++ (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) InstallerEnvironmentVariableMOID* objectID;
++ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+@property (nonatomic, readonly, strong) InstallerEnvironmentVariableMOID *objectID;
 
 @property (nonatomic, strong) NSString* munki_installer_environment_key;
 
-//- (BOOL)validateMunki_installer_environment_key:(id*)value_ error:(NSError**)error_;
+@property (nonatomic, strong, nullable) NSString* munki_installer_environment_value;
 
-@property (nonatomic, strong) NSString* munki_installer_environment_value;
-
-//- (BOOL)validateMunki_installer_environment_value:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* originalIndex;
+@property (nonatomic, strong, nullable) NSNumber* originalIndex;
 
 @property (atomic) int32_t originalIndexValue;
 - (int32_t)originalIndexValue;
 - (void)setOriginalIndexValue:(int32_t)value_;
 
-//- (BOOL)validateOriginalIndex:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSSet *packages;
-
-- (NSMutableSet*)packagesSet;
+@property (nonatomic, strong, nullable) NSSet<PackageMO*> *packages;
+- (nullable NSMutableSet<PackageMO*>*)packagesSet;
 
 @end
 
 @interface _InstallerEnvironmentVariableMO (PackagesCoreDataGeneratedAccessors)
-- (void)addPackages:(NSSet*)value_;
-- (void)removePackages:(NSSet*)value_;
+- (void)addPackages:(NSSet<PackageMO*>*)value_;
+- (void)removePackages:(NSSet<PackageMO*>*)value_;
 - (void)addPackagesObject:(PackageMO*)value_;
 - (void)removePackagesObject:(PackageMO*)value_;
 
@@ -59,16 +50,28 @@ extern const struct InstallerEnvironmentVariableMORelationships {
 - (NSString*)primitiveMunki_installer_environment_key;
 - (void)setPrimitiveMunki_installer_environment_key:(NSString*)value;
 
-- (NSString*)primitiveMunki_installer_environment_value;
-- (void)setPrimitiveMunki_installer_environment_value:(NSString*)value;
+- (nullable NSString*)primitiveMunki_installer_environment_value;
+- (void)setPrimitiveMunki_installer_environment_value:(nullable NSString*)value;
 
-- (NSNumber*)primitiveOriginalIndex;
-- (void)setPrimitiveOriginalIndex:(NSNumber*)value;
+- (nullable NSNumber*)primitiveOriginalIndex;
+- (void)setPrimitiveOriginalIndex:(nullable NSNumber*)value;
 
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-- (NSMutableSet*)primitivePackages;
-- (void)setPrimitivePackages:(NSMutableSet*)value;
+- (NSMutableSet<PackageMO*>*)primitivePackages;
+- (void)setPrimitivePackages:(NSMutableSet<PackageMO*>*)value;
 
 @end
+
+@interface InstallerEnvironmentVariableMOAttributes: NSObject 
++ (NSString *)munki_installer_environment_key;
++ (NSString *)munki_installer_environment_value;
++ (NSString *)originalIndex;
+@end
+
+@interface InstallerEnvironmentVariableMORelationships: NSObject
++ (NSString *)packages;
+@end
+
+NS_ASSUME_NONNULL_END
