@@ -1985,7 +1985,8 @@ DDLogLevel ddLogLevel;
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
 		
-		MAMunkiOperation *op = [MAMunkiOperation makecatalogsOperationWithTarget:self.repoURL];
+        NSString *munkitoolsVersion = [MAMunkiRepositoryManager sharedManager].makecatalogsVersion;
+        MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil munkitoolsVersion:munkitoolsVersion];
 		op.delegate = self;
 		[self.operationQueue addOperation:op];
 		[self showProgressPanel];
@@ -2002,7 +2003,8 @@ DDLogLevel ddLogLevel;
     
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
-        MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil];
+        NSString *munkitoolsVersion = [MAMunkiRepositoryManager sharedManager].makecatalogsVersion;
+        MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil munkitoolsVersion:munkitoolsVersion];
         op.delegate = self;
         [self.operationQueue addOperation:op];
         [self showProgressPanel];

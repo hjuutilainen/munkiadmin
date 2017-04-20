@@ -13,16 +13,18 @@
 }
 
 + (id)makecatalogsOperationWithTarget:(NSURL *)target;
++ (id)makecatalogsOperationWithTarget:(NSURL *)target munkitoolsVersion:(NSString *)version;
 + (id)makepkginfoOperationWithSource:(NSURL *)sourceFile;
 + (id)installsItemFromURL:(NSURL *)sourceFile;
 + (id)installsItemFromPath:(NSString *)pathToFile;
-- (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args;
+- (id)initWithCommand:(NSString *)cmd targetURL:(NSURL *)target arguments:(NSArray *)args munkitoolsVersion:(NSString *)version;
 - (NSUserDefaults *)defaults;
 
 @property (strong) NSString *command;
 @property (strong) NSURL *targetURL;
 @property (strong) NSArray *arguments;
 @property (strong) NSDictionary *pkginfoAdditions;
+@property (strong) NSString *munkitoolsVersion;
 @property (weak) id delegate;
 
 @end
