@@ -1978,6 +1978,121 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Writing to the repository
 
+- (void)updateCatalogsInline
+{
+    NSTask *task = [[NSTask alloc] init];
+    NSString *launchPath = [self.defaults stringForKey:@"makecatalogsPath"];
+    task.launchPath = launchPath;
+    
+    NSMutableDictionary *defaultEnv = [[NSMutableDictionary alloc] initWithDictionary:[[NSProcessInfo processInfo] environment]];
+    [defaultEnv setObject:@"YES" forKey:@"NSUnbufferedIO"] ;
+    task.environment = defaultEnv;
+    
+    /*
+     Check the "Disable sanity checks" preference
+     */
+    if ([self.defaults boolForKey:@"makecatalogsForceEnabled"]) {
+        task.arguments = @[@"--force", [self.repoURL path]];
+    } else {
+        task.arguments = @[[self.repoURL path]];
+    }
+    DDLogDebug(@"Running %@ with arguments: %@", task.launchPath, task.arguments);
+    
+    
+    MAMunkiAdmin_AppDelegate * __weak weakSelf = self;
+    
+    __block NSMutableString *standardOutput = [NSMutableString new];
+    task.standardOutput = [NSPipe pipe];
+    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *file) {
+        NSData *data = [file availableData];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        DDLogVerbose(@"%@", string);
+        [standardOutput appendString:string];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (string.length > 0) {
+                [weakSelf setCurrentStatusDescription:string];
+            }
+            
+        });
+    }];
+    
+    __block NSMutableString *standardError = [[NSMutableString alloc] init];
+    task.standardError = [NSPipe pipe];
+    [[task.standardError fileHandleForReading] setReadabilityHandler:^(NSFileHandle *file) {
+        NSData *data = [file availableData];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        DDLogError(@"%@", string);
+        [standardError appendString:string];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf setCurrentStatusDescription:string];
+        });
+    }];
+    
+    [task setTerminationHandler:^(NSTask *aTask) {
+        
+        [aTask.standardOutput fileHandleForReading].readabilityHandler = nil;
+        [aTask.standardError fileHandleForReading].readabilityHandler = nil;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSApp endSheet:weakSelf.progressPanel];
+            [weakSelf.progressPanel close];
+            [weakSelf.progressIndicator stopAnimation:self];
+            [weakSelf postStatusUpdateReadyToReceive:YES];
+            
+            int exitCode = aTask.terminationStatus;
+            if (exitCode == 0) {
+                DDLogDebug(@"makecatalogs succeeded.");
+                
+                /*
+                 Check warnings
+                 */
+                if (standardError.length != 0) {
+                    // Check for warnings in makecatalogs stderr
+                    NSRange range = NSMakeRange(0, standardError.length);
+                    __block NSMutableString *warnings = [NSMutableString new];
+                    [standardError enumerateSubstringsInRange:range
+                                                       options:NSStringEnumerationByParagraphs
+                                                    usingBlock:^(NSString * _Nullable paragraph, NSRange paragraphRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
+                                                        if ([paragraph hasPrefix:@"WARNING: "]) {
+                                                            [warnings appendFormat:@"\n%@", paragraph];
+                                                        }
+                                                    }];
+                    if (warnings.length != 0) {
+                        DDLogDebug(@"makecatalogs produced warnings.");
+                        NSString *description = @"Updating catalogs produced warnings";
+                        NSString *recoverySuggestion = [NSString stringWithFormat:@"%@.", warnings];
+                        NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                                          NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                                          };
+                        NSError *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
+                        [[NSApplication sharedApplication] presentError:error];
+                    }
+                }
+                
+            } else {
+                DDLogError(@"makecatalogs exited with code %i", exitCode);
+                NSString *description = @"Updating catalogs failed";
+                NSString *recoverySuggestion = [NSString stringWithFormat:@"makecatalogs exited with code %i.\n\n%@", exitCode, standardError];
+                NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                                  };
+                NSError *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
+                [[NSApplication sharedApplication] presentError:error];
+            }
+        });
+        
+    }];
+    
+    [NSApp beginSheet:self.progressPanel
+       modalForWindow:self.window modalDelegate:nil
+       didEndSelector:nil contextInfo:nil];
+    self.jobDescription = @"Running makecatalogs";
+    [self.progressIndicator setIndeterminate:YES];
+    [self.progressIndicator startAnimation:self];
+    
+    [task launch];
+}
+
 - (void)updateCatalogs
 {
 	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -1985,11 +2100,15 @@ DDLogLevel ddLogLevel;
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
 		
+        /*
         NSString *munkitoolsVersion = [MAMunkiRepositoryManager sharedManager].makecatalogsVersion;
         MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil munkitoolsVersion:munkitoolsVersion];
 		op.delegate = self;
 		[self.operationQueue addOperation:op];
 		[self showProgressPanel];
+        */
+        
+        [self updateCatalogsInline];
 		
 	} else {
 		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
@@ -2003,11 +2122,16 @@ DDLogLevel ddLogLevel;
     
 	// Run makecatalogs against the current repo
 	if ([self makecatalogsInstalled]) {
+        /*
         NSString *munkitoolsVersion = [MAMunkiRepositoryManager sharedManager].makecatalogsVersion;
         MAMunkiOperation *op = [[MAMunkiOperation alloc] initWithCommand:@"makecatalogs" targetURL:self.repoURL arguments:nil munkitoolsVersion:munkitoolsVersion];
         op.delegate = self;
         [self.operationQueue addOperation:op];
         [self showProgressPanel];
+         */
+        
+        [self updateCatalogsInline];
+        
     } else {
         DDLogError(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makecatalogsPath"]);
         [self alertMunkiToolNotInstalled:@"makecatalogs"];
