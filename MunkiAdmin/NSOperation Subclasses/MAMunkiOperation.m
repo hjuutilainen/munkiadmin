@@ -69,15 +69,11 @@ DDLogLevel ddLogLevel;
     makecatalogsTask.standardError = makecatalogsPipe;
     makecatalogsTask.standardInput = [NSPipe pipe];
     
-    NSString *repoArg;
-    if ([self.munkitoolsVersion compare:@"3" options:NSNumericSearch] == NSOrderedDescending) {
-        DDLogDebug(@"Version of makecatalogs is higher than 3. Should use repo_url argument...");
-        repoArg = [NSString stringWithFormat:@"--repo_url=%@", [self.targetURL filePathURL]];
-        
-    } else {
-        DDLogDebug(@"Version of makecatalogs is less than 3.");
-        repoArg = [self.targetURL path];
-    }
+    NSMutableDictionary *defaultEnv = [[NSMutableDictionary alloc] initWithDictionary:[[NSProcessInfo processInfo] environment]];
+    [defaultEnv setObject:@"YES" forKey:@"NSUnbufferedIO"] ;
+    makecatalogsTask.environment = defaultEnv;
+     
+    NSString *repoArg = [self.targetURL path];
     
     /*
      Check the "Disable sanity checks" preference
@@ -93,7 +89,6 @@ DDLogLevel ddLogLevel;
      Launch the task
      */
 	[makecatalogsTask launch];
-    [makecatalogsTask waitUntilExit];
     
     /*
      Read makecatalogs output
