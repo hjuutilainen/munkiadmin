@@ -765,6 +765,37 @@ static dispatch_queue_t serialQueue;
     return succeeded;
 }
 
+- (BOOL)duplicateManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL
+{
+    BOOL succeeded = NO;
+    
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+        
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *copyError = nil;
+    if ([fm copyItemAtURL:manifest.manifestURL toURL:newURL error:&copyError]) {
+        /*
+         Set date attributes of the new item to current date and time.
+         */
+        NSDate *now = [NSDate date];
+        [newURL setResourceValues:@{NSURLCreationDateKey: now, NSURLContentAccessDateKey: now, NSURLContentModificationDateKey: now} error:nil];
+        
+        /*
+         Scan the new item
+         */
+        MAManifestScanner *manifestScanner = [[MAManifestScanner alloc] initWithURL:newURL];
+        manifestScanner.performFullScan = YES;
+        [manifestScanner start];
+        succeeded = YES;
+    } else {
+        DDLogError(@"Copying failed with error: %@", [copyError description]);
+        [NSApp presentError:copyError];
+    }
+    
+    
+    return succeeded;
+}
+
 - (void)removeManifest:(ManifestMO *)aManifest withReferences:(BOOL)removeReferences
 {
     NSManagedObjectContext *moc = [self appDelegateMoc];

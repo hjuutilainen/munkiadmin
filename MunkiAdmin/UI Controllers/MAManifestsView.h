@@ -10,6 +10,7 @@
 #import "PXSourceList.h"
 
 @class MAManifestEditor;
+@class MAManifestImporter;
 @class ManifestMO;
 @class MARequestStringValueController;
 
@@ -38,6 +39,7 @@
 @property (strong) MAManifestEditor *manifestEditor;
 @property (strong) NSMutableDictionary *openedManifestEditors;
 @property (strong) MARequestStringValueController *requestStringValue;
+@property (strong) MAManifestImporter *manifestImporter;
 
 /*
 - (NSUInteger)sourceList:(PXSourceList*)sourceList numberOfChildrenOfItem:(id)item;

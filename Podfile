@@ -5,6 +5,7 @@ pod 'NSHash', '~> 1.0.1'
 pod 'CocoaLumberjack'
 pod 'PXSourceList', '~> 2.0'
 pod 'DevMateKit'
+pod 'CHCSVParser', '~> 2.1'
 end
 
 post_install do |installer|

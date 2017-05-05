@@ -15,6 +15,7 @@
 #import "MARequestStringValueController.h"
 #import "CocoaLumberjack.h"
 #import "MAManifestEditor.h"
+#import "MAManifestImporter.h"
 
 DDLogLevel ddLogLevel;
 
@@ -319,6 +320,8 @@ DDLogLevel ddLogLevel;
     [self.sourceList setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     self.requestStringValue = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
+    
+    self.manifestImporter = [[MAManifestImporter alloc] initWithWindowNibName:@"MAManifestImporter"];
     
     [self setupFindView];
     
@@ -640,6 +643,23 @@ DDLogLevel ddLogLevel;
 
 #pragma mark -
 #pragma mark Manifest list right-click menu actions
+
+- (void)importManifestsFromFile
+{
+    [self.manifestImporter resetImporterStatus];
+    
+    
+    NSWindow *window = [self.manifestImporter window];
+    NSInteger result = [NSApp runModalForWindow:window];
+    if (result == NSModalResponseOK) {
+        
+    }
+}
+
+- (IBAction)importManifestsFromFileAction:(id)sender
+{
+    [self importManifestsFromFile];
+}
 
 - (void)renameSelectedManifest
 {

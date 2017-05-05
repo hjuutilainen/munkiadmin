@@ -20,6 +20,8 @@
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
 		F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7419090E0E009F6D28 /* DeveloperMO.m */; };
 		F5018E7819090E0E009F6D28 /* DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7619090E0E009F6D28 /* DeveloperSourceListItemMO.m */; };
+		F50282C41EBB28D4009AA6FC /* MAManifestImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = F50282C21EBB28D4009AA6FC /* MAManifestImporter.m */; };
+		F50282C51EBB28D4009AA6FC /* MAManifestImporter.xib in Resources */ = {isa = PBXBuildFile; fileRef = F50282C31EBB28D4009AA6FC /* MAManifestImporter.xib */; };
 		F5063428172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */; };
 		F506342C172FA43C00EF7728 /* MAInstallsItemEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = F506342A172FA43C00EF7728 /* MAInstallsItemEditor.m */; };
 		F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506342B172FA43C00EF7728 /* MAInstallsItemEditor.xib */; };
@@ -207,6 +209,9 @@
 		F5018E7419090E0E009F6D28 /* DeveloperMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperMO.m; sourceTree = "<group>"; };
 		F5018E7519090E0E009F6D28 /* DeveloperSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeveloperSourceListItemMO.h; sourceTree = "<group>"; };
 		F5018E7619090E0E009F6D28 /* DeveloperSourceListItemMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeveloperSourceListItemMO.m; sourceTree = "<group>"; };
+		F50282C11EBB28D4009AA6FC /* MAManifestImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestImporter.h; sourceTree = "<group>"; };
+		F50282C21EBB28D4009AA6FC /* MAManifestImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestImporter.m; sourceTree = "<group>"; };
+		F50282C31EBB28D4009AA6FC /* MAManifestImporter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestImporter.xib; sourceTree = "<group>"; };
 		F5063425172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		F5063426172F9F0300EF7728 /* RSVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		F5063429172FA43C00EF7728 /* MAInstallsItemEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAInstallsItemEditor.h; sourceTree = "<group>"; };
@@ -633,7 +638,7 @@
 			path = "MunkiAdmin/Array Controllers";
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				F5A11C6C195706C6005A39AE /* Warnings.xcconfig */,
@@ -863,6 +868,9 @@
 				F5E4207E1ABC081900E9AEDA /* MAManifestEditor.h */,
 				F5E4207F1ABC081900E9AEDA /* MAManifestEditor.m */,
 				F5E420801ABC081900E9AEDA /* MAManifestEditor.xib */,
+				F50282C11EBB28D4009AA6FC /* MAManifestImporter.h */,
+				F50282C21EBB28D4009AA6FC /* MAManifestImporter.m */,
+				F50282C31EBB28D4009AA6FC /* MAManifestImporter.xib */,
 				F535E99A1AA98F47009842B5 /* MAManifestsView.h */,
 				F535E99B1AA98F47009842B5 /* MAManifestsView.m */,
 				F535E99C1AA98F47009842B5 /* MAManifestsView.xib */,
@@ -966,7 +974,7 @@
 				French,
 				German,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* MunkiAdmin */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1015,6 +1023,7 @@
 				F569D47B19163252002FFF2B /* developerUnknownTemplate.pdf in Resources */,
 				F5EC18341AAEE51800C88669 /* documents.pdf in Resources */,
 				F569D477191630C4002FFF2B /* developerTemplate.pdf in Resources */,
+				F50282C51EBB28D4009AA6FC /* MAManifestImporter.xib in Resources */,
 				F5E401AB1B52779400679B24 /* reloadTemplate2.pdf in Resources */,
 				F5D090981AFF50FD00146522 /* manifestOptionalInstallsTemplate.pdf in Resources */,
 				F5E401AD1B52784500679B24 /* reload2Template.pdf in Resources */,
@@ -1120,6 +1129,7 @@
 				F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				77C8280E06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m in Sources */,
+				F50282C41EBB28D4009AA6FC /* MAManifestImporter.m in Sources */,
 				770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */,
 				F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */,
 				F527FE5810FC766E000B29B6 /* CatalogsArrayController.m in Sources */,

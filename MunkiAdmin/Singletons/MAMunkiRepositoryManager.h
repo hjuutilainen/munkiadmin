@@ -54,6 +54,7 @@
 - (void)copyIconNameFrom:(PackageMO *)source target:(PackageMO *)target inManagedObjectContext:(NSManagedObjectContext *)moc;
 
 - (BOOL)duplicateManifest:(ManifestMO *)manifest;
+- (BOOL)duplicateManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL;
 - (void)moveManifest:(ManifestMO *)manifest toURL:(NSURL *)newURL cascade:(BOOL)shouldCascade;
 - (NSDictionary *)referencingItemsForPackage:(PackageMO *)aPackage;
 

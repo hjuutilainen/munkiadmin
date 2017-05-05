@@ -1,26 +1,29 @@
 PODS:
-  - CocoaLumberjack (3.1.0):
-    - CocoaLumberjack/Default (= 3.1.0)
-    - CocoaLumberjack/Extensions (= 3.1.0)
-  - CocoaLumberjack/Default (3.1.0)
-  - CocoaLumberjack/Extensions (3.1.0):
+  - CHCSVParser (2.1.0)
+  - CocoaLumberjack (3.2.0):
+    - CocoaLumberjack/Default (= 3.2.0)
+    - CocoaLumberjack/Extensions (= 3.2.0)
+  - CocoaLumberjack/Default (3.2.0)
+  - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
   - DevMateKit (1.7.1)
   - NSHash (1.0.2)
   - PXSourceList (2.0.7)
 
 DEPENDENCIES:
+  - CHCSVParser (~> 2.1)
   - CocoaLumberjack
   - DevMateKit
   - NSHash (~> 1.0.1)
   - PXSourceList (~> 2.0)
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: 8311463ddf9ee86a06ef92a071dd656c89244500
+  CHCSVParser: 3bcc7bdb72111a31222e95d57eacceefe4e537e8
+  CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
   DevMateKit: 3ba77083f5faa40266e0d2d70776de2a82c71dd0
   NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
   PXSourceList: 8e37978a5db6c8d8d255f8913603bcea322c6445
 
-PODFILE CHECKSUM: 60afde4de8dffb4021dfe5ecee7cd6a6a2c7ce19
+PODFILE CHECKSUM: 3ea224301f3df1e23fc413310a0815a6cc455f54
 
 COCOAPODS: 1.2.0
