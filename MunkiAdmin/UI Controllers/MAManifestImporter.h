@@ -14,6 +14,12 @@
 
 @property (weak) IBOutlet NSArrayController *manifestsArrayController;
 @property (weak) IBOutlet NSArrayController *manifestsToCreateArrayController;
+@property (weak) IBOutlet NSTableView *previewTableView;
+@property (weak) IBOutlet NSTableColumn *fileNameColumn;
+@property (weak) IBOutlet NSTableColumn *displayNameColumn;
+@property (weak) IBOutlet NSTableColumn *userNameColumn;
+@property (weak) IBOutlet NSTableColumn *notesColumn;
+@property (weak) IBOutlet NSTableColumn *actionColumn;
 
 @property (strong) ManifestMO *templateManifest;
 @property (strong) NSURL *fileURLToImport;

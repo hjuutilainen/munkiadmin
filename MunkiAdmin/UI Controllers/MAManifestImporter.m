@@ -25,12 +25,15 @@ DDLogLevel ddLogLevel;
     [super windowDidLoad];
     
     
-    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName"
+                                                                  ascending:YES
+                                                                   selector:@selector(localizedStandardCompare:)];
     self.manifestsArrayController.sortDescriptors = @[sortByTitle];
     
-    NSSortDescriptor *sortByFileName = [NSSortDescriptor sortDescriptorWithKey:@"fileName" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByFileName = [NSSortDescriptor sortDescriptorWithKey:@"fileName"
+                                                                     ascending:YES
+                                                                      selector:@selector(localizedStandardCompare:)];
     self.manifestsToCreateArrayController.sortDescriptors = @[sortByFileName];
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 - (NSURL *)chooseFile
@@ -54,6 +57,8 @@ DDLogLevel ddLogLevel;
 
 - (void)updateMappings
 {
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
     NSMutableArray *newManifestsToCreate = [NSMutableArray new];
     for (CHCSVOrderedDictionary *object in self.importedObjects) {
         NSMutableDictionary *newManifestDict = [NSMutableDictionary new];
@@ -61,18 +66,54 @@ DDLogLevel ddLogLevel;
         newManifestDict[@"fileName"] = [object valueForKey:self.fileNameMappingSelectedKeyName];
         
         if (self.displayNameMappingEnabled) {
+            //self.displayNameColumn.hidden = NO;
             newManifestDict[@"displayName"] = [object valueForKey:self.displayNameMappingSelectedKeyName];
         }
         if (self.userNameMappingEnabled) {
+            //self.userNameColumn.hidden = NO;
             newManifestDict[@"userName"] = [object valueForKey:self.userNameMappingSelectedKeyName];
         }
         if (self.notesMappingEnabled) {
+            //self.notesColumn.hidden = NO;
             newManifestDict[@"notes"] = [object valueForKey:self.notesMappingSelectedKeyName];
+        }
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@", [object valueForKey:self.fileNameMappingSelectedKeyName]]];
+        if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
+            if (self.shouldUpdateExistingManifests) {
+                ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
+                newManifestDict[@"fileExists"] = @YES;
+                newManifestDict[@"statusString"] = @"No changes";
+                
+                if (self.displayNameMappingEnabled) {
+                    if (![manifest.manifestDisplayName isEqualToString:[object valueForKey:self.displayNameMappingSelectedKeyName]]) {
+                        newManifestDict[@"statusString"] = @"Will be updated";
+                    }
+                }
+                if (self.userNameMappingEnabled) {
+                    if (![manifest.manifestUserName isEqualToString:[object valueForKey:self.userNameMappingSelectedKeyName]]) {
+                        newManifestDict[@"statusString"] = @"Will be updated";
+                    }
+                }
+                if (self.notesMappingEnabled) {
+                    if (![manifest.manifestAdminNotes isEqualToString:[object valueForKey:self.notesMappingSelectedKeyName]]) {
+                        newManifestDict[@"statusString"] = @"Will be updated";
+                    }
+                }
+            } else {
+                newManifestDict[@"statusString"] = @"Not updating, file exists";
+            }
+            
+        } else {
+            newManifestDict[@"fileExists"] = @NO;
+            newManifestDict[@"statusString"] = @"Will be created";
         }
         
         [newManifestsToCreate addObject:newManifestDict];
     }
-    NSLog(@"%@", newManifestsToCreate);
+    DDLogVerbose(@"%@", newManifestsToCreate);
     self.manifestsToCreate = newManifestsToCreate;
 }
 
@@ -85,9 +126,61 @@ DDLogLevel ddLogLevel;
 {
     if ([[sender title] isEqualToString:@"Create Manifests"]) {
         MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+        NSManagedObjectContext *moc = [appDelegate managedObjectContext];
         for (NSDictionary *manifestDict in self.manifestsToCreate) {
+            /*
+             Duplicate the template manifest
+             */
             NSURL *saveURL = [appDelegate.manifestsURL URLByAppendingPathComponent:manifestDict[@"fileName"]];
-            [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+            
+            NSNumber *fileExists = manifestDict[@"fileExists"];
+            if (![fileExists boolValue]) {
+                DDLogDebug(@"Writing new file for manifest %@", saveURL.lastPathComponent);
+                [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+                
+                /*
+                 Fetch the manifest we just created
+                 */
+                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
+                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"manifestURL == %@", saveURL]];
+                if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
+                    ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
+                    if (manifestDict[@"displayName"]) {
+                        manifest.manifestDisplayName = manifestDict[@"displayName"];
+                    }
+                    if (manifestDict[@"userName"]) {
+                        manifest.manifestUserName = manifestDict[@"userName"];
+                    }
+                    if (manifestDict[@"notes"]) {
+                        manifest.manifestAdminNotes = manifestDict[@"notes"];
+                    }
+                    
+                }
+            } else if (self.shouldUpdateExistingManifests) {
+                DDLogDebug(@"Updating existing manifest %@", saveURL.lastPathComponent);
+                /*
+                 Fetch the manifest we just created
+                 */
+                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
+                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"manifestURL == %@", saveURL]];
+                if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
+                    ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
+                    if (manifestDict[@"displayName"]) {
+                        manifest.manifestDisplayName = manifestDict[@"displayName"];
+                    }
+                    if (manifestDict[@"userName"]) {
+                        manifest.manifestUserName = manifestDict[@"userName"];
+                    }
+                    if (manifestDict[@"notes"]) {
+                        manifest.manifestAdminNotes = manifestDict[@"notes"];
+                    }
+                    
+                }
+            } else {
+                DDLogDebug(@"Skipping modifications to existing manifest %@", saveURL.lastPathComponent);
+            }
         }
         
         [[self window] orderOut:self];
@@ -105,11 +198,6 @@ DDLogLevel ddLogLevel;
 
 - (void)resetImporterStatus
 {
-    
-    
-    self.displayNameMappingEnabled = YES;
-    self.userNameMappingEnabled = YES;
-    
     self.fileURLToImport = [self chooseFile];
     
     self.importedObjects = [NSArray arrayWithContentsOfCSVURL:self.fileURLToImport options:(CHCSVParserOptionsUsesFirstLineAsKeys | CHCSVParserOptionsSanitizesFields | CHCSVParserOptionsRecognizesBackslashesAsEscapes)];
