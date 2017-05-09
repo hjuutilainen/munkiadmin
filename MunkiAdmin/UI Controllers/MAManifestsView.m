@@ -646,13 +646,12 @@ DDLogLevel ddLogLevel;
 
 - (void)importManifestsFromFile
 {
-    [self.manifestImporter resetImporterStatus];
-    
-    
-    NSWindow *window = [self.manifestImporter window];
-    NSInteger result = [NSApp runModalForWindow:window];
-    if (result == NSModalResponseOK) {
-        
+    if ([self.manifestImporter resetImporterStatus]) {
+        NSWindow *window = [self.manifestImporter window];
+        NSInteger result = [NSApp runModalForWindow:window];
+        if (result == NSModalResponseOK) {
+            
+        }
     }
 }
 

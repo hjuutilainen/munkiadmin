@@ -20,6 +20,7 @@
 @property (weak) IBOutlet NSTableColumn *userNameColumn;
 @property (weak) IBOutlet NSTableColumn *notesColumn;
 @property (weak) IBOutlet NSTableColumn *actionColumn;
+@property (weak) IBOutlet NSProgressIndicator *progressSpinner;
 
 @property (strong) ManifestMO *templateManifest;
 @property (strong) NSURL *fileURLToImport;
@@ -40,6 +41,6 @@
 - (IBAction)okAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 - (IBAction)changeOptions:(id)sender;
-- (void)resetImporterStatus;
+- (BOOL)resetImporterStatus;
 
 @end

@@ -36,6 +36,12 @@ DDLogLevel ddLogLevel;
     self.manifestsToCreateArrayController.sortDescriptors = @[sortByFileName];
 }
 
+- (void)awakeFromNib
+{
+    [self.window setBackgroundColor:[NSColor whiteColor]];
+    [self.progressSpinner setUsesThreadedAnimation:YES];
+}
+
 - (NSURL *)chooseFile
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
@@ -66,15 +72,12 @@ DDLogLevel ddLogLevel;
         newManifestDict[@"fileName"] = [object valueForKey:self.fileNameMappingSelectedKeyName];
         
         if (self.displayNameMappingEnabled) {
-            //self.displayNameColumn.hidden = NO;
             newManifestDict[@"displayName"] = [object valueForKey:self.displayNameMappingSelectedKeyName];
         }
         if (self.userNameMappingEnabled) {
-            //self.userNameColumn.hidden = NO;
             newManifestDict[@"userName"] = [object valueForKey:self.userNameMappingSelectedKeyName];
         }
         if (self.notesMappingEnabled) {
-            //self.notesColumn.hidden = NO;
             newManifestDict[@"notes"] = [object valueForKey:self.notesMappingSelectedKeyName];
         }
         
@@ -125,18 +128,29 @@ DDLogLevel ddLogLevel;
 - (IBAction)okAction:(id)sender
 {
     if ([[sender title] isEqualToString:@"Create Manifests"]) {
+        self.progressSpinner.hidden = NO;
+        [self.progressSpinner startAnimation:self];
+        
         MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
         NSManagedObjectContext *moc = [appDelegate managedObjectContext];
+        NSInteger numNewManifestsCreated = 0;
+        NSInteger numManifestsModified = 0;
         for (NSDictionary *manifestDict in self.manifestsToCreate) {
-            /*
-             Duplicate the template manifest
-             */
+            
             NSURL *saveURL = [appDelegate.manifestsURL URLByAppendingPathComponent:manifestDict[@"fileName"]];
             
             NSNumber *fileExists = manifestDict[@"fileExists"];
             if (![fileExists boolValue]) {
-                DDLogDebug(@"Writing new file for manifest %@", saveURL.lastPathComponent);
-                [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+                /*
+                 Create a new manifest file
+                 */
+                if (self.templateManifest) {
+                    DDLogDebug(@"Writing new file for manifest %@ based on %@", saveURL.lastPathComponent, self.templateManifest.title);
+                    [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+                } else {
+                    DDLogDebug(@"Writing new file for manifest %@", saveURL.lastPathComponent);
+                    [[MACoreDataManager sharedManager] createManifestWithURL:saveURL inManagedObjectContext:appDelegate.managedObjectContext];
+                }
                 
                 /*
                  Fetch the manifest we just created
@@ -155,12 +169,12 @@ DDLogLevel ddLogLevel;
                     if (manifestDict[@"notes"]) {
                         manifest.manifestAdminNotes = manifestDict[@"notes"];
                     }
-                    
                 }
+                numNewManifestsCreated++;
             } else if (self.shouldUpdateExistingManifests) {
                 DDLogDebug(@"Updating existing manifest %@", saveURL.lastPathComponent);
                 /*
-                 Fetch the manifest we just created
+                 Fetch the existing manifest and update values
                  */
                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                 [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
@@ -176,16 +190,43 @@ DDLogLevel ddLogLevel;
                     if (manifestDict[@"notes"]) {
                         manifest.manifestAdminNotes = manifestDict[@"notes"];
                     }
-                    
                 }
+                numManifestsModified++;
             } else {
                 DDLogDebug(@"Skipping modifications to existing manifest %@", saveURL.lastPathComponent);
             }
         }
         
+        self.progressSpinner.hidden = YES;
+        [self.progressSpinner stopAnimation:self];
+        
         [[self window] orderOut:self];
         [NSApp stopModalWithCode:NSModalResponseOK];
         
+        NSString *modifiedString, *createdString;
+        if (numNewManifestsCreated == 0) {
+            createdString = @"No new manifest files were created";
+        } else if (numNewManifestsCreated == 1) {
+            createdString = @"1 new manifest file was created";
+        } else {
+            createdString = [NSString stringWithFormat:@"%li new manifest files were created", (long)numNewManifestsCreated];
+        }
+        if (numManifestsModified == 0) {
+            modifiedString = @"No manifests were modified";
+        } else if (numManifestsModified == 1) {
+            modifiedString = @"1 manifest was modified";
+        } else {
+            modifiedString = [NSString stringWithFormat:@"%li manifests were modified", (long)numManifestsModified];
+        }
+        
+        NSString *alertText = [NSString stringWithFormat:@"%@. %@.", createdString, modifiedString];
+        
+        NSAlert *importResultsAlert = [NSAlert alertWithMessageText:@"Done creating manifests"
+                                                      defaultButton:@"OK"
+                                                    alternateButton:@""
+                                                        otherButton:@""
+                                          informativeTextWithFormat:@"%@", alertText];
+        [importResultsAlert runModal];
     }
 }
 
@@ -196,9 +237,20 @@ DDLogLevel ddLogLevel;
 }
 
 
-- (void)resetImporterStatus
+- (BOOL)resetImporterStatus
 {
     self.fileURLToImport = [self chooseFile];
+    
+    if (!self.fileURLToImport) {
+        [[self window] orderOut:self];
+        [NSApp stopModalWithCode:NSModalResponseCancel];
+        return NO;
+    }
+    
+    self.window.representedURL = self.fileURLToImport;
+    self.window.title = [NSString stringWithFormat:@"%@", [self.fileURLToImport lastPathComponent]];
+    self.progressSpinner.hidden = YES;
+    [self.progressSpinner stopAnimation:self];
     
     self.importedObjects = [NSArray arrayWithContentsOfCSVURL:self.fileURLToImport options:(CHCSVParserOptionsUsesFirstLineAsKeys | CHCSVParserOptionsSanitizesFields | CHCSVParserOptionsRecognizesBackslashesAsEscapes)];
     
@@ -234,6 +286,8 @@ DDLogLevel ddLogLevel;
     }
     
     [self updateMappings];
+    
+    return YES;
 }
 
 @end
