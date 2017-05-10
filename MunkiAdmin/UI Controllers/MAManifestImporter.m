@@ -111,7 +111,11 @@ DDLogLevel ddLogLevel;
             
         } else {
             newManifestDict[@"fileExists"] = @NO;
-            newManifestDict[@"statusString"] = @"Will be created";
+            if (self.shouldCreateNewManifests) {
+                newManifestDict[@"statusString"] = @"Will be created";
+            } else {
+                newManifestDict[@"statusString"] = @"Will not be created";
+            }
         }
         
         [newManifestsToCreate addObject:newManifestDict];
@@ -141,36 +145,41 @@ DDLogLevel ddLogLevel;
             
             NSNumber *fileExists = manifestDict[@"fileExists"];
             if (![fileExists boolValue]) {
-                /*
-                 Create a new manifest file
-                 */
-                if (self.templateManifest) {
-                    DDLogDebug(@"Writing new file for manifest %@ based on %@", saveURL.lastPathComponent, self.templateManifest.title);
-                    [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+                if (self.shouldCreateNewManifests) {
+                    
+                    /*
+                     Create a new manifest file
+                     */
+                    if (self.templateManifest) {
+                        DDLogDebug(@"Writing new file for manifest %@ based on %@", saveURL.lastPathComponent, self.templateManifest.title);
+                        [[MAMunkiRepositoryManager sharedManager] duplicateManifest:self.templateManifest toURL:saveURL];
+                    } else {
+                        DDLogDebug(@"Writing new file for manifest %@", saveURL.lastPathComponent);
+                        [[MACoreDataManager sharedManager] createManifestWithURL:saveURL inManagedObjectContext:appDelegate.managedObjectContext];
+                    }
+                    
+                    /*
+                     Fetch the manifest we just created
+                     */
+                    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
+                    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"manifestURL == %@", saveURL]];
+                    if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
+                        ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
+                        if (manifestDict[@"displayName"]) {
+                            manifest.manifestDisplayName = manifestDict[@"displayName"];
+                        }
+                        if (manifestDict[@"userName"]) {
+                            manifest.manifestUserName = manifestDict[@"userName"];
+                        }
+                        if (manifestDict[@"notes"]) {
+                            manifest.manifestAdminNotes = manifestDict[@"notes"];
+                        }
+                    }
+                    numNewManifestsCreated++;
                 } else {
-                    DDLogDebug(@"Writing new file for manifest %@", saveURL.lastPathComponent);
-                    [[MACoreDataManager sharedManager] createManifestWithURL:saveURL inManagedObjectContext:appDelegate.managedObjectContext];
+                    DDLogDebug(@"Skipped creating new manifest file %@", saveURL.lastPathComponent);
                 }
-                
-                /*
-                 Fetch the manifest we just created
-                 */
-                NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
-                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"manifestURL == %@", saveURL]];
-                if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
-                    ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
-                    if (manifestDict[@"displayName"]) {
-                        manifest.manifestDisplayName = manifestDict[@"displayName"];
-                    }
-                    if (manifestDict[@"userName"]) {
-                        manifest.manifestUserName = manifestDict[@"userName"];
-                    }
-                    if (manifestDict[@"notes"]) {
-                        manifest.manifestAdminNotes = manifestDict[@"notes"];
-                    }
-                }
-                numNewManifestsCreated++;
             } else if (self.shouldUpdateExistingManifests) {
                 DDLogDebug(@"Updating existing manifest %@", saveURL.lastPathComponent);
                 /*
@@ -179,21 +188,28 @@ DDLogLevel ddLogLevel;
                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                 [fetchRequest setEntity:[NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc]];
                 [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"manifestURL == %@", saveURL]];
+                BOOL didUpdate = NO;
                 if ([moc countForFetchRequest:fetchRequest error:nil] > 0) {
+                    
                     ManifestMO *manifest = [moc executeFetchRequest:fetchRequest error:nil][0];
-                    if (manifestDict[@"displayName"]) {
+                    if (manifestDict[@"displayName"] && ![manifest.manifestDisplayName isEqualToString:manifestDict[@"displayName"]]) {
                         manifest.manifestDisplayName = manifestDict[@"displayName"];
+                        didUpdate = YES;
                     }
-                    if (manifestDict[@"userName"]) {
+                    if (manifestDict[@"userName"] && ![manifest.manifestUserName isEqualToString:manifestDict[@"userName"]]) {
                         manifest.manifestUserName = manifestDict[@"userName"];
+                        didUpdate = YES;
                     }
-                    if (manifestDict[@"notes"]) {
+                    if (manifestDict[@"notes"] && ![manifest.manifestAdminNotes isEqualToString:manifestDict[@"notes"]]) {
                         manifest.manifestAdminNotes = manifestDict[@"notes"];
+                        didUpdate = YES;
                     }
                 }
-                numManifestsModified++;
+                if (didUpdate) {
+                    numManifestsModified++;
+                }
             } else {
-                DDLogDebug(@"Skipping modifications to existing manifest %@", saveURL.lastPathComponent);
+                DDLogDebug(@"Skipped modifications to existing manifest %@", saveURL.lastPathComponent);
             }
         }
         
