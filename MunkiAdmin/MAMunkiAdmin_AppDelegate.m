@@ -1978,6 +1978,13 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Writing to the repository
 
+- (NSString *)cleanMakecatalogsMessage:(NSString *)message
+{
+    NSString *cleanedString = message;
+    cleanedString = [cleanedString stringByReplacingOccurrencesOfString:[self.repoURL path] withString:@""];
+    return [cleanedString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 - (void)updateCatalogsInline
 {
     NSTask *task = [[NSTask alloc] init];
@@ -2006,13 +2013,13 @@ DDLogLevel ddLogLevel;
     [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *file) {
         NSData *data = [file availableData];
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        DDLogVerbose(@"%@", string);
         [standardOutput appendString:string];
+        NSString *cleanedString = [self cleanMakecatalogsMessage:string];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (string.length > 0) {
-                [weakSelf setCurrentStatusDescription:string];
+            if (cleanedString.length > 0) {
+                DDLogVerbose(@"%@", cleanedString);
+                [weakSelf setCurrentStatusDescription:cleanedString];
             }
-            
         });
     }];
     
@@ -2021,10 +2028,11 @@ DDLogLevel ddLogLevel;
     [[task.standardError fileHandleForReading] setReadabilityHandler:^(NSFileHandle *file) {
         NSData *data = [file availableData];
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        DDLogError(@"%@", string);
-        [standardError appendString:string];
+        NSString *cleanedString = [self cleanMakecatalogsMessage:string];
+        DDLogError(@"%@", cleanedString);
+        [standardError appendString:cleanedString];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf setCurrentStatusDescription:string];
+            [weakSelf setCurrentStatusDescription:cleanedString];
         });
     }];
     
@@ -2061,11 +2069,21 @@ DDLogLevel ddLogLevel;
                         DDLogDebug(@"makecatalogs produced warnings.");
                         NSString *description = @"Updating catalogs produced warnings";
                         NSString *recoverySuggestion = [NSString stringWithFormat:@"%@.", warnings];
-                        NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
-                                                          NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
-                                                          };
-                        NSError *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
-                        [[NSApplication sharedApplication] presentError:error];
+                        NSString *alertSuppressionKey = @"makecatalogsWarningsSuppressed";
+                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                        
+                        if ([defaults boolForKey: alertSuppressionKey]) {
+                            DDLogDebug(@"Warnings from makecatalogs suppressed");
+                        } else {
+                            NSAlert *anAlert = [[NSAlert alloc] init];
+                            anAlert.messageText = description;
+                            anAlert.informativeText = recoverySuggestion;
+                            anAlert.showsSuppressionButton = YES;
+                            [anAlert runModal];
+                            if (anAlert.suppressionButton.state == NSOnState) {
+                                [defaults setBool:YES forKey:alertSuppressionKey];
+                            }
+                        }
                     }
                 }
                 
