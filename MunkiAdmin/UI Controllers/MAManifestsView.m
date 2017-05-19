@@ -484,28 +484,26 @@ DDLogLevel ddLogLevel;
     /*
      Machine manifests item
      */
-    MAManifestsViewSourceListItem *machineManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Machine Manifests" identifier:@"machineManifests" type:ManifestSourceItemTypeBuiltin];
+    MAManifestsViewSourceListItem *machineManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Includes Only" identifier:@"machineManifests" type:ManifestSourceItemTypeBuiltin];
     machineManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, hasIncludedManifests]];
     
     /*
      Group manifests item
      */
-    MAManifestsViewSourceListItem *groupManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Group Manifests" identifier:@"groupManifests" type:ManifestSourceItemTypeBuiltin];
+    MAManifestsViewSourceListItem *groupManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Includes And Included" identifier:@"groupManifests" type:ManifestSourceItemTypeBuiltin];
     groupManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, hasIncludedManifests]];
     
     /*
      Profile manifests item
      */
-    MAManifestsViewSourceListItem *installManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Install Manifests" identifier:@"installManifests" type:ManifestSourceItemTypeBuiltin];
+    MAManifestsViewSourceListItem *installManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Included Only" identifier:@"installManifests" type:ManifestSourceItemTypeBuiltin];
     installManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, noIncludedManifests]];
     
     /*
      Self-contained manifests item
      */
-    /*
-    MAManifestsViewSourceListItem *selfContainedManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Self-contained Manifests" identifier:@"selfContainedManifests" type:ManifestSourceItemTypeBuiltin];
+    MAManifestsViewSourceListItem *selfContainedManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"No Includes And Not Included" identifier:@"selfContainedManifests" type:ManifestSourceItemTypeBuiltin];
     selfContainedManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, noIncludedManifests]];
-     */
     
     // Icon images we're going to use in the Source List.
     
@@ -549,7 +547,7 @@ DDLogLevel ddLogLevel;
     }
     
     // Store all of the model objects in an array because each source list item only holds a weak reference to them.
-    self.modelObjects = [@[allManifestsItem, recentlyModifiedItem, machineManifestsItem, groupManifestsItem, installManifestsItem] mutableCopy];
+    self.modelObjects = [@[allManifestsItem, recentlyModifiedItem, machineManifestsItem, groupManifestsItem, installManifestsItem, selfContainedManifestsItem] mutableCopy];
     [self.modelObjects addObjectsFromArray:catalogSourceListItems];
     
     
@@ -563,6 +561,7 @@ DDLogLevel ddLogLevel;
     manifestTypesItem.children = @[[PXSourceListItem itemWithRepresentedObject:machineManifestsItem icon:document],
                                    [PXSourceListItem itemWithRepresentedObject:groupManifestsItem icon:documents],
                                    [PXSourceListItem itemWithRepresentedObject:installManifestsItem icon:documentDownload],
+                                   [PXSourceListItem itemWithRepresentedObject:selfContainedManifestsItem icon:document],
                                    ];
     
     PXSourceListItem *catalogsItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Catalogs"] identifier:nil];
