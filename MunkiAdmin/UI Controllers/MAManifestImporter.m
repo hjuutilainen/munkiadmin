@@ -34,11 +34,11 @@ DDLogLevel ddLogLevel;
                                                                      ascending:YES
                                                                       selector:@selector(localizedStandardCompare:)];
     self.manifestsToCreateArrayController.sortDescriptors = @[sortByFileName];
+    [self.window setBackgroundColor:[NSColor whiteColor]];
 }
 
 - (void)awakeFromNib
 {
-    [self.window setBackgroundColor:[NSColor whiteColor]];
     [self.progressSpinner setUsesThreadedAnimation:YES];
 }
 
