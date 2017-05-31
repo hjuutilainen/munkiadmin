@@ -21,6 +21,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
+#import "MAMunkiImportController.h"
 #import <DevMateKit/DevMateKit.h>
 #import "CocoaLumberjack.h"
 
@@ -492,6 +493,7 @@ DDLogLevel ddLogLevel;
     advancedPackageEditor = [[MAAdvancedPackageEditor alloc] initWithWindowNibName:@"MAAdvancedPackageEditor"];
     pkginfoAssimilator = [[MAPkginfoAssimilator alloc] initWithWindowNibName:@"MAPkginfoAssimilator"];
     self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
+    self.munkiImportController = [[MAMunkiImportController alloc] initWithWindowNibName:@"MAMunkiImportController"];
     
     
     [[self.searchToolbarButton image] setSize:NSMakeSize(18, 18)];
@@ -1941,10 +1943,19 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
 	if ([self makepkginfoInstalled]) {
+        /*
 		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
 		if (filesToAdd) {
 			[self addNewPackagesFromFileURLs:filesToAdd];
 		}
+         */
+        
+        NSWindow *window = [self.munkiImportController window];
+        [self.munkiImportController resetStatus];
+        NSInteger result = [NSApp runModalForWindow:window];
+        if (result == NSModalResponseOK) {
+            
+        }
 	} else {
 		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
         [self alertMunkiToolNotInstalled:@"makepkginfo"];

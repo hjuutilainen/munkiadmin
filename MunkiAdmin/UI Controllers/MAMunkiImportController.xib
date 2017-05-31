@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16G8c" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MAMunkiImportController">
+            <connections>
+                <outlet property="cancelButton" destination="HC6-lS-APR" id="OrC-6K-xnR"/>
+                <outlet property="continueButton" destination="rvc-XP-FpD" id="7Oz-UT-Ffo"/>
+                <outlet property="defaultOptionsView" destination="gtH-eY-nMO" id="yPK-jL-gJf"/>
+                <outlet property="goBackButton" destination="zzs-Jt-sfo" id="5jJ-Ec-sUX"/>
+                <outlet property="placeHolderView" destination="Oom-hn-grQ" id="1WH-hy-soz"/>
+                <outlet property="progressDescription" destination="ia4-vw-T42" id="eBk-5I-aXa"/>
+                <outlet property="progressIndicator" destination="kXd-Pv-I9n" id="qCP-2M-xJn"/>
+                <outlet property="progressView" destination="DFH-2W-0Oq" id="RyH-os-C8M"/>
+                <outlet property="scriptsView" destination="dvh-vX-Vaa" id="8WV-bL-wah"/>
+                <outlet property="startView" destination="z0R-JA-KU5" id="Kyq-0Z-q86"/>
+                <outlet property="startViewImageView" destination="s0a-OI-f7T" id="muU-Wc-v3H"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Import" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <rect key="contentRect" x="196" y="240" width="620" height="440"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <value key="minSize" type="size" width="620" height="440"/>
+            <view key="contentView" wantsLayer="YES" misplaced="YES" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="620" height="440"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView misplaced="YES" id="Oom-hn-grQ" customClass="MASolidBackgroundView">
+                        <rect key="frame" x="20" y="61" width="580" height="359"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </customView>
+                    <button verticalHuggingPriority="750" id="rvc-XP-FpD">
+                        <rect key="frame" x="511" y="13" width="95" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dHa-JI-rGi">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="continueAction:" target="-2" id="jzO-3K-f8h"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="HC6-lS-APR">
+                        <rect key="frame" x="14" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PUt-aN-RVA">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelAction:" target="-2" id="wdF-10-6uI"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="zzs-Jt-sfo">
+                        <rect key="frame" x="416" y="13" width="95" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Go Back" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oA3-Kt-QBp">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="goBackAction:" target="-2" id="sSj-AG-Evg"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="47" y="564"/>
+        </window>
+        <customView misplaced="YES" id="z0R-JA-KU5" userLabel="Start view">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="359"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <customView misplaced="YES" id="Jpf-Oe-eU2">
+                    <rect key="frame" x="111" y="78" width="359" height="203"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="uHM-1Q-WdV">
+                            <rect key="frame" x="18" y="71" width="323" height="24"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drag and drop items here" id="pY4-Fo-Q02">
+                                <font key="font" metaFont="system" size="20"/>
+                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="c2T-6O-TKh">
+                            <rect key="frame" x="87" y="46" width="184" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="or continue for manual import" id="US6-0Z-nLM">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <imageView id="s0a-OI-f7T">
+                            <rect key="frame" x="147" y="119" width="64" height="64"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="NSAddTemplate" id="WT8-Bn-9aC"/>
+                        </imageView>
+                    </subviews>
+                </customView>
+            </subviews>
+            <point key="canvasLocation" x="-76" y="124.5"/>
+        </customView>
+        <customView id="dvh-vX-Vaa" userLabel="Scripts view">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="359"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="GaS-lv-dcT">
+                    <rect key="frame" x="18" y="322" width="115" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Installcheck script" id="O1R-zx-I3T">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="Y4O-o2-mqU">
+                    <rect key="frame" x="20" y="294" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="zrC-yP-ajL">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="fCy-XR-Taj">
+                    <rect key="frame" x="469" y="290" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ct5-cM-0xj">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="pLN-r7-V1E">
+                    <rect key="frame" x="18" y="269" width="132" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Uninstallcheck script" id="fzz-2l-HvF">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="mtX-aN-hQD">
+                    <rect key="frame" x="20" y="241" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="U7L-Io-fUR">
+                        <font key="font" metaFont="smallSystem"/>
+                        <url key="url" string="file://localhost/Applications/"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="avp-Ls-Qf7">
+                    <rect key="frame" x="469" y="237" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="493-on-UcP">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="5Rn-PJ-j4R">
+                    <rect key="frame" x="18" y="216" width="98" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Preinstall script" id="Mvk-Gq-8EQ">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="jvk-xn-MhG">
+                    <rect key="frame" x="20" y="188" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="iCf-z4-d9j">
+                        <font key="font" metaFont="smallSystem"/>
+                        <url key="url" string="file://localhost/Applications/"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="5Kd-aZ-Omv">
+                    <rect key="frame" x="469" y="184" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nkn-Iz-ZU6">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="zcz-4f-E1V">
+                    <rect key="frame" x="18" y="163" width="105" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Postinstall script" id="pga-dD-cgy">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="YAb-TG-pgh">
+                    <rect key="frame" x="20" y="135" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="8vM-iZ-PVr">
+                        <font key="font" metaFont="smallSystem"/>
+                        <url key="url" string="file://localhost/Applications/"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="ENG-ZT-0Sy">
+                    <rect key="frame" x="469" y="131" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GNB-Ux-mHl">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="zCN-ao-uYL">
+                    <rect key="frame" x="18" y="110" width="113" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Preuninstall script" id="K81-Re-RsX">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="Zml-dM-mMd">
+                    <rect key="frame" x="20" y="82" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="iVS-u1-SrR">
+                        <font key="font" metaFont="smallSystem"/>
+                        <url key="url" string="file://localhost/Applications/"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="IOi-fN-fsf">
+                    <rect key="frame" x="469" y="78" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cc3-17-Qfq">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="yR6-hy-mDC">
+                    <rect key="frame" x="18" y="57" width="120" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Postuninstall script" id="8bX-VQ-OhB">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="1am-bT-GcU">
+                    <rect key="frame" x="20" y="29" width="446" height="20"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" id="OdT-7q-kHf">
+                        <font key="font" metaFont="smallSystem"/>
+                        <url key="url" string="file://localhost/Applications/"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.92549019607843142" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                </pathControl>
+                <button verticalHuggingPriority="750" misplaced="YES" id="MkC-CO-YRZ">
+                    <rect key="frame" x="469" y="25" width="96" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CZr-7Z-J7u">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="-76" y="124.5"/>
+        </customView>
+        <customView id="DFH-2W-0Oq" userLabel="Progress view">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="359"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <customView misplaced="YES" id="7KK-yD-VIf">
+                    <rect key="frame" x="20" y="105" width="540" height="150"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="ia4-vw-T42">
+                            <rect key="frame" x="18" y="45" width="504" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Analyzing..." id="IX4-hH-zyg">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" id="kXd-Pv-I9n">
+                            <rect key="frame" x="254" y="70" width="32" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        </progressIndicator>
+                    </subviews>
+                </customView>
+            </subviews>
+            <point key="canvasLocation" x="-76" y="124.5"/>
+        </customView>
+        <customView misplaced="YES" id="gtH-eY-nMO" userLabel="Default Override Options">
+            <rect key="frame" x="0.0" y="0.0" width="580" height="359"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="iAi-1S-f1E">
+                    <rect key="frame" x="204" y="218" width="291" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="dUt-AB-Jgw">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </comboBoxCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.name" previousBinding="Je7-NN-PWp" id="iK2-SW-ZLM"/>
+                        <binding destination="-2" name="contentValues" keyPath="self.nameSuggestions" id="Je7-NN-PWp"/>
+                        <outlet property="nextKeyView" destination="PBe-wY-xiz" id="daX-P2-msG"/>
+                    </connections>
+                </comboBox>
+                <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="dFS-1C-2Bp">
+                    <rect key="frame" x="204" y="246" width="291" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="stQ-bH-c8I">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <objectValues>
+                            <string>Item 1</string>
+                            <string>Item 2</string>
+                            <string>Item 3</string>
+                        </objectValues>
+                    </comboBoxCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.subdirectory" previousBinding="t8w-sR-Ocs" id="omP-vw-66M"/>
+                        <binding destination="-2" name="contentValues" keyPath="self.subdirectorySuggestions" id="t8w-sR-Ocs"/>
+                        <outlet property="nextKeyView" destination="iAi-1S-f1E" id="utb-N4-Isu"/>
+                    </connections>
+                </comboBox>
+                <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="PBe-wY-xiz">
+                    <rect key="frame" x="204" y="190" width="291" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" numberOfVisibleItems="5" id="sUz-AO-gdh">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </comboBoxCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.displayName" previousBinding="2ZA-wS-iAp" id="57f-Dj-i3g"/>
+                        <binding destination="-2" name="contentValues" keyPath="self.displayNameSuggestions" id="2ZA-wS-iAp"/>
+                        <outlet property="nextKeyView" destination="VTw-VJ-JAD" id="gE2-SL-XFP"/>
+                    </connections>
+                </comboBox>
+                <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="8IE-5g-nGJ">
+                    <rect key="frame" x="204" y="134" width="291" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="0m7-XW-hgW">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <objectValues>
+                            <string>Item 1</string>
+                            <string>Item 2</string>
+                            <string>Item 3</string>
+                        </objectValues>
+                    </comboBoxCell>
+                    <connections>
+                        <binding destination="-2" name="contentValues" keyPath="self.restartActionSuggestions" id="0Ky-ZU-tIK"/>
+                        <binding destination="-2" name="value" keyPath="self.restartAction" previousBinding="0Ky-ZU-tIK" id="DMW-Sr-RBP"/>
+                        <outlet property="nextKeyView" destination="ZDC-gE-g9n" id="uvr-xP-PeQ"/>
+                    </connections>
+                </comboBox>
+                <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="ZDC-gE-g9n">
+                    <rect key="frame" x="204" y="106" width="291" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="QFt-0G-VSh">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <objectValues>
+                            <string>Item 1</string>
+                            <string>Item 2</string>
+                            <string>Item 3</string>
+                        </objectValues>
+                    </comboBoxCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.uninstallMethod" id="C58-lS-fw8"/>
+                        <outlet property="nextKeyView" destination="dFS-1C-2Bp" id="92f-rc-O3n"/>
+                    </connections>
+                </comboBox>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="x8T-ih-85v">
+                    <rect key="frame" x="154" y="223" width="44" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Name:" id="3qT-XR-WSp">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="55p-9l-0nC">
+                    <rect key="frame" x="107" y="195" width="91" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Display Name:" id="B2V-bb-MaR">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="dME-lT-edt">
+                    <rect key="frame" x="145" y="167" width="53" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version:" id="AOr-ok-dLz">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="vNn-8r-fvS">
+                    <rect key="frame" x="104" y="139" width="94" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Restart Action:" id="7Z7-oJ-KRg">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="uHt-wp-Uxx">
+                    <rect key="frame" x="87" y="111" width="111" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Uninstall Method:" id="h2Q-pd-uBU">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="eyb-Jk-z37">
+                    <rect key="frame" x="112" y="251" width="86" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Subdirectory:" id="JSF-kD-WVV">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="r2l-xG-7aW">
+                    <rect key="frame" x="104" y="320" width="94" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Item to Import:" id="XQy-gG-6pu">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="NO" id="VTw-VJ-JAD">
+                    <rect key="frame" x="204" y="164" width="288" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Agg-OY-34T">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.version" id="dwv-g3-wzH"/>
+                        <outlet property="nextKeyView" destination="8IE-5g-nGJ" id="CEr-2p-hrz"/>
+                    </connections>
+                </textField>
+                <pathControl verticalHuggingPriority="750" misplaced="YES" allowsExpansionToolTips="YES" id="Wjg-r0-bkN">
+                    <rect key="frame" x="204" y="317" width="288" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <pathCell key="cell" lineBreakMode="truncatingHead" selectable="YES" editable="YES" refusesFirstResponder="YES" alignment="left" placeholderString="Empty" id="KZT-IT-2qO">
+                        <font key="font" metaFont="system"/>
+                        <color key="backgroundColor" red="0.8980392157" green="0.92549019610000005" blue="0.97254901959999995" alpha="1" colorSpace="deviceRGB"/>
+                    </pathCell>
+                    <connections>
+                        <binding destination="-2" name="editable" keyPath="self.nopkg" id="W8v-r7-kW6">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="enabled" keyPath="self.nopkg" previousBinding="W8v-r7-kW6" id="bbH-Sp-48J">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="value" keyPath="self.itemToImport" id="Iah-sC-yBp"/>
+                    </connections>
+                </pathControl>
+                <button misplaced="YES" id="Vl4-NX-QjW">
+                    <rect key="frame" x="202" y="293" width="60" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="nopkg" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pfA-uX-oET">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="self.nopkg" id="FZa-zi-6Pd"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="-427" y="432.5"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="eze-IB-MdV"/>
+    </objects>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+    </resources>
+</document>

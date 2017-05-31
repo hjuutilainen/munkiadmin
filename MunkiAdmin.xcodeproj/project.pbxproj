@@ -45,6 +45,8 @@
 		F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */ = {isa = PBXBuildFile; fileRef = F52989C91276AD9200F836B5 /* packagesMultipleIcon2.png */; };
 		F5299A5A10FB6AB00074CFEA /* PackageArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5299A5910FB6AB00074CFEA /* PackageArrayController.m */; };
 		F53269A3125AF75C00AF967C /* MAPkginfoScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */; };
+		F53464A51EC050A600D93C45 /* MAMunkiImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = F53464A31EC050A600D93C45 /* MAMunkiImportController.m */; };
+		F53464A61EC050A600D93C45 /* MAMunkiImportController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F53464A41EC050A600D93C45 /* MAMunkiImportController.xib */; };
 		F535E99D1AA98F47009842B5 /* MAManifestsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F535E99B1AA98F47009842B5 /* MAManifestsView.m */; };
 		F535E99E1AA98F47009842B5 /* MAManifestsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F535E99C1AA98F47009842B5 /* MAManifestsView.xib */; };
 		F535E9A11AA99570009842B5 /* MAManifestsViewSourceListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F535E9A01AA99570009842B5 /* MAManifestsViewSourceListItem.m */; };
@@ -53,6 +55,7 @@
 		F5529A8415EB41BD0077481C /* manifestIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8015EB41BD0077481C /* manifestIcon_32x32.png */; };
 		F5529A8515EB41BD0077481C /* manifestIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */; };
 		F555BD43125C6AE8000D9DF6 /* MAManifestScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */; };
+		F555C8841ED43B26001DA603 /* MATaskOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F555C8831ED43B26001DA603 /* MATaskOperation.m */; };
 		F55F76491A822A44009356F4 /* MAIconBatchExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = F55F76471A822A44009356F4 /* MAIconBatchExtractor.m */; };
 		F55F764A1A822A44009356F4 /* MAIconBatchExtractor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F55F76481A822A44009356F4 /* MAIconBatchExtractor.xib */; };
 		F5629EE01901A8E5008B6CB9 /* IconImageMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5629EDF1901A8E5008B6CB9 /* IconImageMO.m */; };
@@ -255,6 +258,9 @@
 		F5299A5910FB6AB00074CFEA /* PackageArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageArrayController.m; sourceTree = "<group>"; };
 		F53269A1125AF75C00AF967C /* MAPkginfoScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoScanner.h; sourceTree = "<group>"; };
 		F53269A2125AF75C00AF967C /* MAPkginfoScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoScanner.m; sourceTree = "<group>"; };
+		F53464A21EC050A600D93C45 /* MAMunkiImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAMunkiImportController.h; sourceTree = "<group>"; };
+		F53464A31EC050A600D93C45 /* MAMunkiImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAMunkiImportController.m; sourceTree = "<group>"; };
+		F53464A41EC050A600D93C45 /* MAMunkiImportController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAMunkiImportController.xib; sourceTree = "<group>"; };
 		F535E99A1AA98F47009842B5 /* MAManifestsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestsView.h; sourceTree = "<group>"; };
 		F535E99B1AA98F47009842B5 /* MAManifestsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestsView.m; sourceTree = "<group>"; };
 		F535E99C1AA98F47009842B5 /* MAManifestsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAManifestsView.xib; sourceTree = "<group>"; };
@@ -266,6 +272,8 @@
 		F5529A8115EB41BD0077481C /* manifestIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "manifestIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/manifestIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F555BD41125C6AE8000D9DF6 /* MAManifestScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAManifestScanner.h; sourceTree = "<group>"; };
 		F555BD42125C6AE8000D9DF6 /* MAManifestScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAManifestScanner.m; sourceTree = "<group>"; };
+		F555C8821ED43B26001DA603 /* MATaskOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATaskOperation.h; sourceTree = "<group>"; };
+		F555C8831ED43B26001DA603 /* MATaskOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATaskOperation.m; sourceTree = "<group>"; };
 		F557663C15D2554800F7D2E5 /* MunkiAdmin.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MunkiAdmin.entitlements; path = MunkiAdmin/MunkiAdmin.entitlements; sourceTree = "<group>"; };
 		F55F76461A822A44009356F4 /* MAIconBatchExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAIconBatchExtractor.h; sourceTree = "<group>"; };
 		F55F76471A822A44009356F4 /* MAIconBatchExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAIconBatchExtractor.m; sourceTree = "<group>"; };
@@ -876,6 +884,9 @@
 				F535E99C1AA98F47009842B5 /* MAManifestsView.xib */,
 				F535E99F1AA99570009842B5 /* MAManifestsViewSourceListItem.h */,
 				F535E9A01AA99570009842B5 /* MAManifestsViewSourceListItem.m */,
+				F53464A21EC050A600D93C45 /* MAMunkiImportController.h */,
+				F53464A31EC050A600D93C45 /* MAMunkiImportController.m */,
+				F53464A41EC050A600D93C45 /* MAMunkiImportController.xib */,
 				FE1C6B76145A797D00BC815F /* MAPackageNameEditor.h */,
 				FE1C6B77145A797D00BC815F /* MAPackageNameEditor.m */,
 				FE1C6B7A145A7A0300BC815F /* MAPackageNameEditor.xib */,
@@ -926,6 +937,8 @@
 				FEEBE374145FC5750004791A /* MARelationshipScanner.m */,
 				F5B0A0561A77A530006243E3 /* MAScriptRunner.h */,
 				F5B0A0571A77A530006243E3 /* MAScriptRunner.m */,
+				F555C8821ED43B26001DA603 /* MATaskOperation.h */,
+				F555C8831ED43B26001DA603 /* MATaskOperation.m */,
 			);
 			name = Operations;
 			path = "MunkiAdmin/NSOperation Subclasses";
@@ -1008,6 +1021,7 @@
 				F564874911B504520061B190 /* MAPreferences.xib in Resources */,
 				F59279F01917BC8F0028276C /* tagMultipleTemplate.pdf in Resources */,
 				F5E420821ABC081900E9AEDA /* MAManifestEditor.xib in Resources */,
+				F53464A61EC050A600D93C45 /* MAMunkiImportController.xib in Resources */,
 				F52989CA1276AD9200F836B5 /* packagesMultipleIcon2.png in Resources */,
 				FEDAA474144D50B1005C8B6F /* MAManifestDetailView.xib in Resources */,
 				FEABB24A144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib in Resources */,
@@ -1128,6 +1142,7 @@
 				F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */,
 				F5629EE31901A8F3008B6CB9 /* _IconImageMO.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				F53464A51EC050A600D93C45 /* MAMunkiImportController.m in Sources */,
 				77C8280E06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m in Sources */,
 				F50282C41EBB28D4009AA6FC /* MAManifestImporter.m in Sources */,
 				770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */,
@@ -1160,6 +1175,7 @@
 				F5DFC888129546E400B68F4F /* ManagedUpdateMO.m in Sources */,
 				F5DFC88A129546E400B68F4F /* ManifestInfoMO.m in Sources */,
 				F5DFC88C129546E400B68F4F /* ManifestMO.m in Sources */,
+				F555C8841ED43B26001DA603 /* MATaskOperation.m in Sources */,
 				F5DFC88E129546E400B68F4F /* OptionalInstallMO.m in Sources */,
 				F5DFC890129546E500B68F4F /* PackageInfoMO.m in Sources */,
 				F5DFC892129546E500B68F4F /* PackageMO.m in Sources */,
