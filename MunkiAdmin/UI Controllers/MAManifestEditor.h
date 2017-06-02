@@ -39,6 +39,7 @@
 @property (weak) IBOutlet NSArrayController *managedUninstallsArrayController;
 @property (weak) IBOutlet NSArrayController *managedUpdatesArrayController;
 @property (weak) IBOutlet NSArrayController *optionalInstallsArrayController;
+@property (weak) IBOutlet NSArrayController *featuredItemsArrayController;
 @property (weak) IBOutlet NSArrayController *includedManifestsArrayController;
 @property (weak) IBOutlet NSArrayController *referencingManifestsArrayController;
 @property (weak) IBOutlet NSMenu *referencingManifestsConditionMenu;

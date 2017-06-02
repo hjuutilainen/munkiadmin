@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class CatalogInfoMO;
 @class CatalogMO;
 @class ConditionalItemMO;
+@class StringObjectMO;
 @class ManifestInfoMO;
 @class StringObjectMO;
 @class ManagedInstallMO;
@@ -81,6 +82,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSSet<ConditionalItemMO*> *conditionalItems;
 - (nullable NSMutableSet<ConditionalItemMO*>*)conditionalItemsSet;
 
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *featuredItems;
+- (nullable NSMutableSet<StringObjectMO*>*)featuredItemsSet;
+
 @property (nonatomic, strong, nullable) NSSet<ManifestInfoMO*> *includedManifests;
 - (nullable NSMutableSet<ManifestInfoMO*>*)includedManifestsSet;
 
@@ -116,6 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *referencingManifests;
 - (nullable NSMutableSet<StringObjectMO*>*)referencingManifestsSet;
+
+@property (nonatomic, readonly, nullable) NSArray *allFeaturedItems;
 
 @property (nonatomic, readonly, nullable) NSArray *allIncludedManifests;
 
@@ -160,6 +166,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeConditionalItems:(NSSet<ConditionalItemMO*>*)value_;
 - (void)addConditionalItemsObject:(ConditionalItemMO*)value_;
 - (void)removeConditionalItemsObject:(ConditionalItemMO*)value_;
+
+@end
+
+@interface _ManifestMO (FeaturedItemsCoreDataGeneratedAccessors)
+- (void)addFeaturedItems:(NSSet<StringObjectMO*>*)value_;
+- (void)removeFeaturedItems:(NSSet<StringObjectMO*>*)value_;
+- (void)addFeaturedItemsObject:(StringObjectMO*)value_;
+- (void)removeFeaturedItemsObject:(StringObjectMO*)value_;
 
 @end
 
@@ -309,6 +323,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<ConditionalItemMO*>*)primitiveConditionalItems;
 - (void)setPrimitiveConditionalItems:(NSMutableSet<ConditionalItemMO*>*)value;
 
+- (NSMutableSet<StringObjectMO*>*)primitiveFeaturedItems;
+- (void)setPrimitiveFeaturedItems:(NSMutableSet<StringObjectMO*>*)value;
+
 - (NSMutableSet<ManifestInfoMO*>*)primitiveIncludedManifests;
 - (void)setPrimitiveIncludedManifests:(NSMutableSet<ManifestInfoMO*>*)value;
 
@@ -366,6 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)catalogInfos;
 + (NSString *)catalogs;
 + (NSString *)conditionalItems;
++ (NSString *)featuredItems;
 + (NSString *)includedManifests;
 + (NSString *)includedManifestsFaster;
 + (NSString *)managedInstalls;
@@ -381,6 +399,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface ManifestMOFetchedProperties: NSObject
++ (NSString *)allFeaturedItems;
 + (NSString *)allIncludedManifests;
 + (NSString *)allManagedInstalls;
 + (NSString *)allManagedUninstalls;

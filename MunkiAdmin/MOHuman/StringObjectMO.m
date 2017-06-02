@@ -65,6 +65,19 @@
     [self didChangeValueForKey:@"optionalInstallConditionalReference"];
 }
 
+- (void)setFeaturedItemConditionalReference:(ConditionalItemMO *)featuredItemConditionalReference
+{
+    [self willChangeValueForKey:@"featuredItemConditionalReference"];
+    if (featuredItemConditionalReference) {
+        [self setFeaturedItemReference:nil];
+    } else {
+        [self setFeaturedItemReference:[[self featuredItemConditionalReference] manifest]];
+    }
+    // Set the new value
+    [self setPrimitiveValue:featuredItemConditionalReference forKey:@"featuredItemConditionalReference"];
+    [self didChangeValueForKey:@"featuredItemConditionalReference"];
+}
+
 - (void)setIncludedManifestConditionalReference:(ConditionalItemMO *)includedManifestConditionalReference
 {
     [self willChangeValueForKey:@"includedManifestConditionalReference"];
@@ -137,6 +150,8 @@
         currentManifest = self.managedUpdateReference;
     } else if (self.optionalInstallReference) {
         currentManifest = self.optionalInstallReference;
+    } else if (self.featuredItemReference) {
+        currentManifest = self.featuredItemReference;
     }
     
     /*

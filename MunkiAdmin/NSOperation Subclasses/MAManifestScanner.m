@@ -121,6 +121,15 @@ DDLogLevel ddLogLevel;
                 newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:optionalInstallIndex];
                 [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
             }];
+            NSArray *featuredItems = [(NSDictionary *)obj objectForKey:@"featured_items"];
+            [featuredItems enumerateObjectsWithOptions:0 usingBlock:^(id featuredItemName, NSUInteger featuredItemIndex, BOOL *stopFeaturedItemsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> featured_items item %lu --> Name: %@", manifest.title, (unsigned long)featuredItemIndex, featuredItemName);
+                StringObjectMO *newFeaturedItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newFeaturedItem.title = (NSString *)featuredItemName;
+                newFeaturedItem.typeString = @"featuredItem";
+                newFeaturedItem.originalIndex = [NSNumber numberWithUnsignedInteger:featuredItemIndex];
+                [newConditionalItem addFeaturedItemsObject:newFeaturedItem];
+            }];
             NSArray *includedManifests = [(NSDictionary *)obj objectForKey:@"included_manifests"];
             [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id includedManifestName, NSUInteger includedManifestIndex, BOOL *stopIncludedManifestsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
@@ -343,6 +352,17 @@ DDLogLevel ddLogLevel;
             anOptionalInstall.originalPackage = matchingObject;
         }
     }
+    for (StringObjectMO *featuredItem in currentManifest.featuredItems) {
+        DDLogVerbose(@"%@: linking featured_item object %@", currentManifest.fileName, featuredItem.title);
+        id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link featured_item object: %@", currentManifest.title, featuredItem.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            featuredItem.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            featuredItem.originalPackage = matchingObject;
+        }
+    }
     
     /*
      Link included manifest items
@@ -405,6 +425,17 @@ DDLogLevel ddLogLevel;
                 optionalInstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 optionalInstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *featuredItem in conditionalItem.featuredItems) {
+            DDLogVerbose(@"%@: linking conditional featured_item object %@", currentManifest.fileName, featuredItem.title);
+            id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional featured_item object: %@", currentManifest.title, featuredItem.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                featuredItem.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                featuredItem.originalPackage = matchingObject;
             }
         }
         
@@ -599,6 +630,28 @@ DDLogLevel ddLogLevel;
                         newOptionalInstall.typeString = @"optionalInstall";
                         newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
                         [manifest addOptionalInstallsFasterObject:newOptionalInstall];
+                        
+                    }
+                }];
+                now = [NSDate date];
+                DDLogVerbose(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+                
+                // =================================
+                // Get "featured_items" items
+                // =================================
+                startTime = [NSDate date];
+                NSArray *featuredItems = [manifestInfoDict objectForKey:@"featured_items"];
+                if ([featuredItems count] > 0) {
+                    DDLogVerbose(@"%@: Found %lu featured_items items", self.fileName, (unsigned long)[featuredItems count]);
+                }
+                [featuredItems enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    @autoreleasepool {
+                        DDLogVerbose(@"%@ featured_items item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newFeaturedItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
+                        newFeaturedItem.title = (NSString *)obj;
+                        newFeaturedItem.typeString = @"featuredItem";
+                        newFeaturedItem.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+                        [manifest addFeaturedItemsObject:newFeaturedItem];
                         
                     }
                 }];

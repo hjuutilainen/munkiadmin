@@ -76,6 +76,13 @@
                 [changeDescriptionsForPackage addObject:objectDict];
             }];
             
+        } else if ([referencingKey isEqualToString:@"featuredItems"]) {
+            [referencingObject enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *description = [NSString stringWithFormat:@"%@: featured_items: \"%@\"", obj.featuredItemReference.title, obj.title];
+                NSDictionary *objectDict = @{@"title" : description, @"type" : @"featuredItem", @"icon" : manifestIcon};
+                [changeDescriptionsForPackage addObject:objectDict];
+            }];
+            
         }
         
         else if ([referencingKey isEqualToString:@"conditionalManagedInstalls"]) {
@@ -107,6 +114,14 @@
                 ConditionalItemMO *conditional = obj.optionalInstallConditionalReference;
                 NSString *description = [NSString stringWithFormat:@"%@: condition \"%@\": optional_installs: \"%@\"", conditional.manifest.title, conditional.titleWithParentTitle, obj.title];
                 NSDictionary *objectDict = @{@"title" : description, @"type" : @"optionalInstall", @"icon" : manifestIcon};
+                [changeDescriptionsForPackage addObject:objectDict];
+            }];
+            
+        } else if ([referencingKey isEqualToString:@"conditionalFeaturedItems"]) {
+            [referencingObject enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *conditional = obj.featuredItemConditionalReference;
+                NSString *description = [NSString stringWithFormat:@"%@: condition \"%@\": featured_items: \"%@\"", conditional.manifest.title, conditional.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = @{@"title" : description, @"type" : @"featuredItem", @"icon" : manifestIcon};
                 [changeDescriptionsForPackage addObject:objectDict];
             }];
             
@@ -159,6 +174,13 @@
                 [changeDescriptionsForPackage addObject:objectDict];
             }];
             
+        } else if ([referencingKey isEqualToString:@"featuredItemsWithVersion"]) {
+            [referencingObject enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                NSString *description = [NSString stringWithFormat:@"%@: featured_items: \"%@\"", obj.featuredItemReference.title, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:description, @"title", @"featuredItem", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptionsForPackage addObject:objectDict];
+            }];
+            
         }
         
         else if ([referencingKey isEqualToString:@"conditionalManagedInstallsWithVersion"]) {
@@ -190,6 +212,14 @@
                 ConditionalItemMO *conditional = obj.optionalInstallConditionalReference;
                 NSString *description = [NSString stringWithFormat:@"%@: condition \"%@\": optional_installs: \"%@\"", conditional.manifest.title, conditional.titleWithParentTitle, obj.title];
                 NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:description, @"title", @"optionalInstall", @"type", manifestIcon, @"icon", nil];
+                [changeDescriptionsForPackage addObject:objectDict];
+            }];
+            
+        } else if ([referencingKey isEqualToString:@"conditionalFeaturedItemsWithVersion"]) {
+            [referencingObject enumerateObjectsUsingBlock:^(StringObjectMO *obj, NSUInteger idx, BOOL *stop) {
+                ConditionalItemMO *conditional = obj.featuredItemConditionalReference;
+                NSString *description = [NSString stringWithFormat:@"%@: condition \"%@\": featured_items: \"%@\"", conditional.manifest.title, conditional.titleWithParentTitle, obj.title];
+                NSDictionary *objectDict = [NSDictionary dictionaryWithObjectsAndKeys:description, @"title", @"featuredItem", @"type", manifestIcon, @"icon", nil];
                 [changeDescriptionsForPackage addObject:objectDict];
             }];
             

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16F71b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16G12b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
@@ -674,7 +674,7 @@ Gw
                                                                         <rect key="frame" x="0.0" y="0.0" width="4" height="17"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Gzm-h4-C41">
-                                                                            <font key="font" metaFont="cellTitle"/>
+                                                                            <font key="font" metaFont="system" size="12"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
@@ -689,6 +689,47 @@ Gw
                                                                 </subviews>
                                                                 <connections>
                                                                     <outlet property="textField" destination="AJ1-gT-mD2" id="Czx-fD-AT5"/>
+                                                                </connections>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
+                                                    </tableColumn>
+                                                    <tableColumn identifier="manifestsTableColumnFeaturedItemsCount" editable="NO" width="40" minWidth="40" maxWidth="60" hidden="YES" headerToolTip="Number of featured items" id="mLo-lg-3ca" userLabel="Featured Items Count">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Feat.">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </tableHeaderCell>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="BQX-q9-kjT">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="optionalInstallsCount"/>
+                                                        <tableColumnResizingMask key="resizingMask" userResizable="YES"/>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="LIb-sT-6FI">
+                                                                <rect key="frame" x="1" y="1" width="0.0" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" id="ZB5-RM-K3a">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="97" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="2zb-dj-R6B">
+                                                                            <font key="font" metaFont="system" size="12"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="LIb-sT-6FI" name="value" keyPath="objectValue.featuredItemsCountShortDescription" id="hVZ-EP-h2K">
+                                                                                <dictionary key="options">
+                                                                                    <string key="NSNullPlaceholder">--</string>
+                                                                                </dictionary>
+                                                                            </binding>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                                <connections>
+                                                                    <outlet property="textField" destination="ZB5-RM-K3a" id="iuq-HM-7Ya"/>
                                                                 </connections>
                                                             </tableCellView>
                                                         </prototypeCellViews>

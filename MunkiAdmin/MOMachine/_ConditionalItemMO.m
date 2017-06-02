@@ -71,6 +71,17 @@
 	return result;
 }
 
+@dynamic featuredItems;
+
+- (NSMutableSet<StringObjectMO*>*)featuredItemsSet {
+	[self willAccessValueForKey:@"featuredItems"];
+
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"featuredItems"];
+
+	[self didAccessValueForKey:@"featuredItems"];
+	return result;
+}
+
 @dynamic includedManifests;
 
 - (NSMutableSet<StringObjectMO*>*)includedManifestsSet {
@@ -155,6 +166,9 @@
 @implementation ConditionalItemMORelationships 
 + (NSString *)children {
 	return @"children";
+}
++ (NSString *)featuredItems {
+	return @"featuredItems";
 }
 + (NSString *)includedManifests {
 	return @"includedManifests";

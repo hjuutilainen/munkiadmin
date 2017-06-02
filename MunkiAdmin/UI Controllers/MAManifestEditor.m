@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     MAEditorSectionTagManagedUninstalls,
     MAEditorSectionTagManagedUpdates,
     MAEditorSectionTagOptionalInstalls,
+    MAEditorSectionTagFeaturedItems,
     MAEditorSectionTagIncludedManifests,
     MAEditorSectionTagReferencingManifests,
     MAEditorSectionTagConditions
@@ -89,6 +90,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.managedUpdatesArrayController.sortDescriptors = @[sortByTitle];
     self.managedUninstallsArrayController.sortDescriptors = @[sortByTitle];
     self.optionalInstallsArrayController.sortDescriptors = @[sortByTitle];
+    self.featuredItemsArrayController.sortDescriptors = @[sortByTitle];
     self.includedManifestsArrayController.sortDescriptors = @[sortByTitle];
     
     NSSortDescriptor *sortByReferenceTitle = [NSSortDescriptor sortDescriptorWithKey:@"manifestReference.title" ascending:YES selector:@selector(localizedStandardCompare:)];
@@ -277,6 +279,12 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             }
             break;
         
+        case MAEditorSectionTagFeaturedItems:
+            for (StringObjectMO *selectedItem in selectedItems) {
+                [self.manifestToEdit addFeaturedItemsObject:selectedItem];
+            }
+            break;
+        
         case MAEditorSectionTagIncludedManifests:
             for (ManifestMO *manifestToAdd in [self.selectManifestsWindowController.manifestsArrayController selectedObjects]) {
                 StringObjectMO *manifestToAddAsStringObject = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:manifestToAdd.managedObjectContext];
@@ -370,6 +378,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             existingObjects = self.manifestToEdit.optionalInstallsFaster;
             conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.optionalInstalls"];
             break;
+        
+        case MAEditorSectionTagFeaturedItems:
+            existingObjects = self.manifestToEdit.featuredItems;
+            conditionalObjects = [self.manifestToEdit.conditionalItems valueForKeyPath:@"@distinctUnionOfSets.featuredItems"];
+            break;
             
         default:
             DDLogError(@"addNewItemsAction: tag %ld not handled...", (long)selected.tag);
@@ -431,6 +444,12 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             
         case MAEditorSectionTagOptionalInstalls:
             for (StringObjectMO *selectedItem in [self.optionalInstallsArrayController selectedObjects]) {
+                [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
+            }
+            break;
+        
+        case MAEditorSectionTagFeaturedItems:
+            for (StringObjectMO *selectedItem in [self.featuredItemsArrayController selectedObjects]) {
                 [self.manifestToEdit.managedObjectContext deleteObject:selectedItem];
             }
             break;
@@ -644,6 +663,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSImage *managedUninstallsIcon = [NSImage imageNamed:@"manifestManagedUninstallsTemplate.pdf"];
     NSImage *managedUpdatesIcon = [NSImage imageNamed:@"manifestManagedUpdatesTemplate.pdf"];
     NSImage *optionalInstallsIcon = [NSImage imageNamed:@"manifestOptionalInstallsTemplate.pdf"];
+    NSImage *featuredItemsIcon = [NSImage imageNamed:@"manifestFeaturedItemsTemplate.pdf"];
     NSImage *includedManifestsIcon = [NSImage imageNamed:@"manifestIncludedManifestsTemplate.pdf"];
     NSImage *referencingManifestsIcon = [NSImage imageNamed:@"manifestReferencedManifestsTemplate.pdf"];
     NSImage *conditionsIcon = [NSImage imageNamed:@"manifestConditionsTemplate.pdf"];
@@ -695,6 +715,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [optionalInstallsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.optionalInstallsCountDescription" options:bindOptions];
     optionalInstallsSection.view = self.contentItemsListView;
     [newSourceListItems addObject:optionalInstallsSection];
+    
+    MAManifestEditorSection *featuredItemsSection = [MAManifestEditorSection new];
+    featuredItemsSection.title = @"Featured Items";
+    featuredItemsSection.tag = MAEditorSectionTagFeaturedItems;
+    featuredItemsSection.icon = featuredItemsIcon;
+    [featuredItemsSection bind:@"subtitle" toObject:self withKeyPath:@"manifestToEdit.featuredItemsCountDescription" options:bindOptions];
+    featuredItemsSection.view = self.contentItemsListView;
+    [newSourceListItems addObject:featuredItemsSection];
     
     MAManifestEditorSection *includedManifestsSection = [MAManifestEditorSection new];
     includedManifestsSection.title = @"Included Manifests";
@@ -890,6 +918,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         } else if ([selected.title isEqualToString:@"Optional Installs"]) {
             [self.contentItemsTableView bind:NSContentBinding toObject:self.optionalInstallsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.optionalInstallsArrayController withKeyPath:@"selectionIndexes" options:nil];
+        } else if (selected.tag == MAEditorSectionTagFeaturedItems) {
+            [self.contentItemsTableView bind:NSContentBinding toObject:self.featuredItemsArrayController withKeyPath:@"arrangedObjects" options:nil];
+            [self.contentItemsTableView bind:NSSelectionIndexesBinding toObject:self.featuredItemsArrayController withKeyPath:@"selectionIndexes" options:nil];
         } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
             [self.includedManifestsTableView bind:NSContentBinding toObject:self.includedManifestsArrayController withKeyPath:@"arrangedObjects" options:nil];
             [self.includedManifestsTableView bind:NSSelectionIndexesBinding toObject:self.includedManifestsArrayController withKeyPath:@"selectionIndexes" options:nil];
@@ -926,6 +957,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.managedUpdateConditionalReference" options:nil];
             } else if ([selected.title isEqualToString:@"Optional Installs"]) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.optionalInstallConditionalReference" options:nil];
+            } else if (selected.tag == MAEditorSectionTagFeaturedItems) {
+                [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.featuredItemConditionalReference" options:nil];
             } else if (selected.tag == MAEditorSectionTagIncludedManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.includedManifestConditionalReference" options:nil];
             }

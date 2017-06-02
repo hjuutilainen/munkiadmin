@@ -89,6 +89,10 @@
 
 @dynamic blockingApplicationReference;
 
+@dynamic featuredItemConditionalReference;
+
+@dynamic featuredItemReference;
+
 @dynamic includedManifestConditionalReference;
 
 @dynamic managedInstallConditionalReference;
@@ -147,6 +151,12 @@
 @implementation StringObjectMORelationships 
 + (NSString *)blockingApplicationReference {
 	return @"blockingApplicationReference";
+}
++ (NSString *)featuredItemConditionalReference {
+	return @"featuredItemConditionalReference";
+}
++ (NSString *)featuredItemReference {
+	return @"featuredItemReference";
 }
 + (NSString *)includedManifestConditionalReference {
 	return @"includedManifestConditionalReference";

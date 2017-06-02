@@ -122,6 +122,17 @@
 	return result;
 }
 
+@dynamic featuredItems;
+
+- (NSMutableSet<StringObjectMO*>*)featuredItemsSet {
+	[self willAccessValueForKey:@"featuredItems"];
+
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"featuredItems"];
+
+	[self didAccessValueForKey:@"featuredItems"];
+	return result;
+}
+
 @dynamic includedManifests;
 
 - (NSMutableSet<ManifestInfoMO*>*)includedManifestsSet {
@@ -254,6 +265,8 @@
 	return result;
 }
 
+@dynamic allFeaturedItems;
+
 @dynamic allIncludedManifests;
 
 @dynamic allManagedInstalls;
@@ -317,6 +330,9 @@
 + (NSString *)conditionalItems {
 	return @"conditionalItems";
 }
++ (NSString *)featuredItems {
+	return @"featuredItems";
+}
 + (NSString *)includedManifests {
 	return @"includedManifests";
 }
@@ -356,6 +372,9 @@
 @end
 
 @implementation ManifestMOFetchedProperties 
++ (NSString *)allFeaturedItems {
+	return @"allFeaturedItems";
+}
 + (NSString *)allIncludedManifests {
 	return @"allIncludedManifests";
 }
