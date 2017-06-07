@@ -1271,6 +1271,11 @@ DDLogLevel ddLogLevel;
 	[self createNewManifest];
 }
 
+- (IBAction)importManifestsFromFileAction:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    [self.manifestsViewController importManifestsFromFile];
+}
 
 # pragma mark - Modifying packages
 

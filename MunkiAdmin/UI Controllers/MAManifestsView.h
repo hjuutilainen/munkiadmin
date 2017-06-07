@@ -53,4 +53,7 @@
 - (MAManifestEditor *)editorForManifest:(ManifestMO *)manifest;
 - (void)openEditorForAllSelectedManifests;
 
+- (void)importManifestsFromFile;
+- (IBAction)importManifestsFromFileAction:(id)sender;
+
 @end
