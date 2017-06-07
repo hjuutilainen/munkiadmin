@@ -1942,24 +1942,24 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	
-	if ([self makepkginfoInstalled]) {
-        /*
-		NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
-		if (filesToAdd) {
-			[self addNewPackagesFromFileURLs:filesToAdd];
-		}
-         */
-        
+    if ([self.defaults boolForKey:@"importWithMunkiimport"]) {
         NSWindow *window = [self.munkiImportController window];
         [self.munkiImportController resetStatus];
         NSInteger result = [NSApp runModalForWindow:window];
         if (result == NSModalResponseOK) {
             
         }
-	} else {
-		DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
-        [self alertMunkiToolNotInstalled:@"makepkginfo"];
-	}
+    } else {
+        if ([self makepkginfoInstalled]) {
+            NSArray *filesToAdd = [self chooseFilesForMakepkginfo];
+            if (filesToAdd) {
+                [self addNewPackagesFromFileURLs:filesToAdd];
+            }
+        } else {
+            DDLogDebug(@"Can't find %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"makepkginfoPath"]);
+            [self alertMunkiToolNotInstalled:@"makepkginfo"];
+        }
+    }
 }
 
 
