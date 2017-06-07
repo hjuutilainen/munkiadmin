@@ -830,15 +830,18 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                                @"10.6", @"10.6.8", @"10.6.99",
                                @"10.7", @"10.7.5", @"10.7.99",
                                @"10.8", @"10.8.5", @"10.8.99",
-                               @"10.9", @"10.9.3", @"10.9.99",
+                               @"10.9", @"10.9.5", @"10.9.99",
                                @"10.10", @"10.10.5", @"10.10.99",
-                               @"10.11", @"10.11.3", @"10.11.99"];
+                               @"10.11", @"10.11.6", @"10.11.99",
+                               @"10.12", @"10.12.6", @"10.12.99",
+                               @"10.13", @"10.13.99"];
     self.osVersions = [newOsVersions sortedArrayUsingDescriptors:@[osVersionSorter]];
     
     NSArray *newInstallerTypes = @[@"copy_from_dmg",
                                    @"apple_update_metadata",
                                    @"nopkg",
                                    @"profile",
+                                   @"startosinstall",
                                    @"AdobeSetup",
                                    @"AdobeUberInstaller",
                                    @"AdobeAcrobatUpdater",
