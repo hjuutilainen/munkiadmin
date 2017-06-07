@@ -71,6 +71,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* munki_RestartAction;
 
+@property (nonatomic, strong, nullable) NSNumber* munki_allow_untrusted;
+
+@property (atomic) BOOL munki_allow_untrustedValue;
+- (BOOL)munki_allow_untrustedValue;
+- (void)setMunki_allow_untrustedValue:(BOOL)value_;
+
 @property (nonatomic, strong, nullable) NSNumber* munki_apple_item;
 
 @property (atomic) BOOL munki_apple_itemValue;
@@ -418,6 +424,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveMunki_RestartAction;
 - (void)setPrimitiveMunki_RestartAction:(nullable NSString*)value;
 
+- (nullable NSNumber*)primitiveMunki_allow_untrusted;
+- (void)setPrimitiveMunki_allow_untrusted:(nullable NSNumber*)value;
+
+- (BOOL)primitiveMunki_allow_untrustedValue;
+- (void)setPrimitiveMunki_allow_untrustedValue:(BOOL)value_;
+
 - (nullable NSNumber*)primitiveMunki_apple_item;
 - (void)setPrimitiveMunki_apple_item:(nullable NSNumber*)value;
 
@@ -693,6 +705,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)munki_OnDemand;
 + (NSString *)munki_PayloadIdentifier;
 + (NSString *)munki_RestartAction;
++ (NSString *)munki_allow_untrusted;
 + (NSString *)munki_apple_item;
 + (NSString *)munki_autoremove;
 + (NSString *)munki_description;

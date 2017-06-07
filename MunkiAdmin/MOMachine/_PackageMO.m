@@ -44,6 +44,11 @@
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"munki_allow_untrustedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_allow_untrusted"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"munki_apple_itemValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_apple_item"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -171,6 +176,26 @@
 @dynamic munki_PayloadIdentifier;
 
 @dynamic munki_RestartAction;
+
+@dynamic munki_allow_untrusted;
+
+- (BOOL)munki_allow_untrustedValue {
+	NSNumber *result = [self munki_allow_untrusted];
+	return [result boolValue];
+}
+
+- (void)setMunki_allow_untrustedValue:(BOOL)value_ {
+	[self setMunki_allow_untrusted:@(value_)];
+}
+
+- (BOOL)primitiveMunki_allow_untrustedValue {
+	NSNumber *result = [self primitiveMunki_allow_untrusted];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_allow_untrustedValue:(BOOL)value_ {
+	[self setPrimitiveMunki_allow_untrusted:@(value_)];
+}
 
 @dynamic munki_apple_item;
 
@@ -676,6 +701,9 @@
 }
 + (NSString *)munki_RestartAction {
 	return @"munki_RestartAction";
+}
++ (NSString *)munki_allow_untrusted {
+	return @"munki_allow_untrusted";
 }
 + (NSString *)munki_apple_item {
 	return @"munki_apple_item";

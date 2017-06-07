@@ -289,6 +289,13 @@
                     [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
+            else if ([key isEqualToString:@"munki_allow_untrusted"]) {
+                if (self.munki_allow_untrustedValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                } else {
+                    [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
+                }
+            }
             
             // =====================================================
             // For everything else just write the values as they are
