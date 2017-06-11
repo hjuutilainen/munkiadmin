@@ -26,41 +26,66 @@
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
     
     NSArray *catalogDescriptionKeys = @[@"catalogsDescriptionString", @"catalogStrings"];
-    NSArray *managedInstallsKeys = @[@"managedInstallsStrings", @"managedInstallsCountDescription"];
-    NSArray *managedUninstallsKeys = @[@"managedUninstallsStrings", @"managedUninstallsCountDescription"];
-    NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings", @"managedUpdatesCountDescription"];
-    NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings", @"optionalInstallsCountDescription"];
-    NSArray *featuredItemsKeys = @[@"featuredItemsStrings", @"featuredItemsCountDescription"];
-    NSArray *conditionalsKeys = @[@"conditionalItemsStrings", @"conditionsCountDescription", @"rootConditionalItems"];
-    NSArray *includedManifestsKeys = @[@"includedManifestsStrings", @"includedManifestsCountDescription"];
-    NSArray *referencingManifestsKeys = @[@"referencingManifestsStrings", @"referencingManifestsCountDescription"];
+    NSArray *managedInstallsKeys = @[@"managedInstallsStrings",
+                                     @"managedInstallsCount",
+                                     @"managedInstallsCountDescription",
+                                     @"managedInstallsCountShortDescription"];
+    NSArray *managedUninstallsKeys = @[@"managedUninstallsStrings",
+                                       @"managedUninstallsCount",
+                                       @"managedUninstallsCountDescription",
+                                       @"managedUninstallsCountShortDescription"];
+    NSArray *managedUpdatesKeys = @[@"managedUpdatesStrings",
+                                    @"managedUpdatesCount",
+                                    @"managedUpdatesCountDescription",
+                                    @"managedUpdatesCountShortDescription"];
+    NSArray *optionalInstallsKeys = @[@"optionalInstallsStrings",
+                                      @"optionalInstallsCount",
+                                      @"optionalInstallsCountDescription",
+                                      @"optionalInstallsCountShortDescription"];
+    NSArray *featuredItemsKeys = @[@"featuredItemsStrings",
+                                   @"featuredItemsCount",
+                                   @"featuredItemsCountDescription",
+                                   @"featuredItemsCountShortDescription"];
+    NSArray *conditionalsKeys = @[@"conditionalItemsStrings",
+                                  @"conditionsCount",
+                                  @"conditionsCountDescription",
+                                  @"conditionsCountShortDescription",
+                                  @"rootConditionalItems"];
+    NSArray *includedManifestsKeys = @[@"includedManifestsStrings",
+                                       @"includedManifestsCount",
+                                       @"includedManifestsCountDescription",
+                                       @"includedManifestsCountShortDescription"];
+    NSArray *referencingManifestsKeys = @[@"referencingManifestsStrings",
+                                          @"referencingManifestsCount",
+                                          @"referencingManifestsCountDescription",
+                                          @"referencingManifestsCountShortDescription"];
     
     if ([catalogDescriptionKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"catalogs", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([managedInstallsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstallsFaster", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstallsFaster", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([managedUninstallsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUninstallsFaster", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUninstallsFaster", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([managedUpdatesKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUpdatesFaster", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedUpdatesFaster", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([optionalInstallsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"optionalInstallsFaster", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"optionalInstallsFaster", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([featuredItemsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"featuredItems", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"featuredItems", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([conditionalsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([includedManifestsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"includedManifestsFaster", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"includedManifestsFaster", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([referencingManifestsKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"referencingManifests", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"referencingManifests", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([key isEqualToString:@"titleOrDisplayName"]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"title", @"manifestDisplayName", nil];
