@@ -2107,11 +2107,21 @@ DDLogLevel ddLogLevel;
                 DDLogError(@"makecatalogs exited with code %i", exitCode);
                 NSString *description = @"Updating catalogs failed";
                 NSString *recoverySuggestion = [NSString stringWithFormat:@"makecatalogs exited with code %i.\n\n%@", exitCode, standardError];
-                NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
-                                                  NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
-                                                  };
-                NSError *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Script Error Domain" code:999 userInfo:errorDictionary];
-                [[NSApplication sharedApplication] presentError:error];
+                NSString *alertSuppressionKey = @"makecatalogsErrorsSuppressed";
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                
+                if ([defaults boolForKey: alertSuppressionKey]) {
+                    DDLogDebug(@"Errors from makecatalogs suppressed");
+                } else {
+                    NSAlert *anAlert = [[NSAlert alloc] init];
+                    anAlert.messageText = description;
+                    anAlert.informativeText = recoverySuggestion;
+                    anAlert.showsSuppressionButton = YES;
+                    [anAlert runModal];
+                    if (anAlert.suppressionButton.state == NSOnState) {
+                        [defaults setBool:YES forKey:alertSuppressionKey];
+                    }
+                }
             }
         });
         
