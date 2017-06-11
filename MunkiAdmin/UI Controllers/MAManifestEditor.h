@@ -49,7 +49,7 @@
 @property (weak) IBOutlet NSTreeController *conditionsTreeController;
 @property (strong) IBOutlet NSScrollView *sourceListView;
 @property (strong) NSArray *sourceListItems;
-@property (assign) ManifestMO *manifestToEdit;
+@property (strong) ManifestMO *manifestToEdit;
 @property (strong) MASelectPkginfoItemsWindow *addItemsWindowController;
 @property (strong) MASelectManifestItemsWindow *selectManifestsWindowController;
 @property (strong) MAPredicateEditor *predicateEditor;
