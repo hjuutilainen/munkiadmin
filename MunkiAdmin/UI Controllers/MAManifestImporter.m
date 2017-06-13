@@ -24,6 +24,7 @@ DDLogLevel ddLogLevel;
 - (void)windowDidLoad {
     [super windowDidLoad];
     
+    self.shouldCreateNewManifests = YES;
     
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName"
                                                                   ascending:YES
@@ -106,6 +107,7 @@ DDLogLevel ddLogLevel;
                     }
                 }
             } else {
+                newManifestDict[@"fileExists"] = @YES;
                 newManifestDict[@"statusString"] = @"Not updating, file exists";
             }
             
@@ -253,9 +255,13 @@ DDLogLevel ddLogLevel;
 }
 
 
-- (BOOL)resetImporterStatus
+- (BOOL)updateImporterStatusWithCSVFile:(NSURL *)fileURL
 {
-    self.fileURLToImport = [self chooseFile];
+    if (!fileURL) {
+        self.fileURLToImport = [self chooseFile];
+    } else {
+        self.fileURLToImport = fileURL;
+    }
     
     if (!self.fileURLToImport) {
         [[self window] orderOut:self];
@@ -278,7 +284,7 @@ DDLogLevel ddLogLevel;
         //NSLog(@"%@",self.keyNames);
     }
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@", @"Name"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == %@", @"Name"];
     NSArray *results = [self.keyNames filteredArrayUsingPredicate:predicate];
     if (results.count > 0) {
         self.displayNameMappingSelectedKeyName = results[0];

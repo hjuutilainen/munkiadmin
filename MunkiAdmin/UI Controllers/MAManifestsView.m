@@ -654,7 +654,7 @@ DDLogLevel ddLogLevel;
 
 - (void)importManifestsFromFile
 {
-    if ([self.manifestImporter resetImporterStatus]) {
+    if ([self.manifestImporter updateImporterStatusWithCSVFile:nil]) {
         NSWindow *window = [self.manifestImporter window];
         NSInteger result = [NSApp runModalForWindow:window];
         if (result == NSModalResponseOK) {
@@ -1220,6 +1220,99 @@ DDLogLevel ddLogLevel;
         return FALSE;
     }
 }
+
+- (BOOL)canImportURL:(NSURL *)fileURL
+{
+    NSString *typeIdentifier;
+    [fileURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
+    if ([[NSWorkspace sharedWorkspace] type:typeIdentifier conformsToType:(NSString *)kUTTypePlainText]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
+{
+    NSDragOperation result = NSDragOperationNone;
+    
+    /*
+     Packages table view validations
+     */
+    if (aTableView == self.manifestsListTableView) {
+        /*
+         Check if we have regular files
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+            
+            NSPasteboard *pasteboard = [info draggingPasteboard];
+            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @YES};
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            
+            for (NSURL *uri in urls) {
+                BOOL canImport = [self canImportURL:uri];
+                if (canImport) {
+                    [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
+                    result = NSDragOperationCopy;
+                } else {
+                    result = NSDragOperationNone;
+                }
+            }
+            
+        } else {
+            result = NSDragOperationNone;
+        }
+    }
+    
+    return result;
+}
+
+
+- (BOOL)tableView:(NSTableView *)theTableView acceptDrop:(id <NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
+{
+    
+    if (theTableView == self.manifestsListTableView) {
+        /*
+         Check if we have regular files
+         */
+        NSArray *dragTypes = [[info draggingPasteboard] types];
+        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+            
+            NSPasteboard *pasteboard = [info draggingPasteboard];
+            NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
+            NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @YES};
+            NSArray *urls = [pasteboard readObjectsForClasses:classes options:options];
+            
+            NSMutableArray *temporarySupportedURLs = [[NSMutableArray alloc] init];
+            for (NSURL *uri in urls) {
+                BOOL canImport = [self canImportURL:uri];
+                if (canImport) {
+                    [temporarySupportedURLs addObject:uri];
+                }
+            }
+            NSArray *supportedURLs = [NSArray arrayWithArray:temporarySupportedURLs];
+            if ([self.manifestImporter updateImporterStatusWithCSVFile:supportedURLs[0]]) {
+                NSWindow *window = [self.manifestImporter window];
+                NSInteger result = [NSApp runModalForWindow:window];
+                if (result == NSModalResponseOK) {
+                    
+                }
+            }
+            return YES;
+            
+        } else {
+            return NO;
+        }
+    }
+    
+    else {
+        return NO;
+    }
+    return NO;
+}
+
 
 # pragma mark -
 # pragma mark NSOutlineView delegate and data source methods

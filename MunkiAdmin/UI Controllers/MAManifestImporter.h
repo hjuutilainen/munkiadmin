@@ -41,6 +41,6 @@
 - (IBAction)okAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
 - (IBAction)changeOptions:(id)sender;
-- (BOOL)resetImporterStatus;
+- (BOOL)updateImporterStatusWithCSVFile:(NSURL *)fileURL;
 
 @end
