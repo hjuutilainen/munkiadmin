@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16G12b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16G18a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAManifestEditor">
             <connections>
+                <outlet property="adminNotesTextView" destination="6hz-aH-Wfo" id="bG6-6A-ddd"/>
                 <outlet property="catalogInfosArrayController" destination="QPx-VZ-YQx" id="8tN-fa-TCO"/>
                 <outlet property="catalogInfosTableView" destination="FnU-rn-3Dv" id="u9N-Qb-Zgc"/>
                 <outlet property="conditionalItemsAllArrayController" destination="4hp-Ig-Qph" id="8yL-19-hYy"/>
@@ -189,10 +190,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="378" height="473"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H6F-GY-sVA">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H6F-GY-sVA">
                                 <rect key="frame" x="18" y="422" width="263" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="xR2-j9-T8P">
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="xR2-j9-T8P">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -211,7 +212,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0O-70-Ckz">
-                                <rect key="frame" x="17" y="228" width="63" height="14"/>
+                                <rect key="frame" x="17" y="177" width="63" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Catalogs:" id="I4f-mQ-E6M">
                                     <font key="font" metaFont="smallSystemBold"/>
@@ -220,13 +221,13 @@
                                 </textFieldCell>
                             </textField>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rCw-Ts-Ixf">
-                                <rect key="frame" x="19" y="30" width="340" height="192"/>
+                                <rect key="frame" x="19" y="30" width="340" height="140"/>
                                 <clipView key="contentView" id="Lsh-x5-nQ2">
-                                    <rect key="frame" x="1" y="1" width="338" height="190"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <rect key="frame" x="1" y="1" width="338" height="138"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="FnU-rn-3Dv">
-                                            <rect key="frame" x="0.0" y="0.0" width="338" height="190"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="338" height="138"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -343,7 +344,7 @@
                                             <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                         </dictionary>
                                     </binding>
-                                    <outlet property="nextKeyView" destination="Djy-gx-Fnb" id="AUb-I9-jdD"/>
+                                    <outlet property="nextKeyView" destination="6hz-aH-Wfo" id="yf8-5U-GL3"/>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zqz-jA-jhn">
@@ -383,23 +384,6 @@
                                     <action selector="renameManifestAction:" target="-2" id="4XS-Me-t9T"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djy-gx-Fnb">
-                                <rect key="frame" x="19" y="250" width="340" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" controlSize="small" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bhR-IT-QMC">
-                                    <font key="font" metaFont="smallSystem"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <binding destination="-2" name="value" keyPath="manifestToEdit.manifestAdminNotes" id="HQ0-tj-3KO">
-                                        <dictionary key="options">
-                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                        </dictionary>
-                                    </binding>
-                                    <outlet property="nextKeyView" destination="kjs-hq-Pgd" id="Shw-CJ-VRu"/>
-                                </connections>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc6-BS-U7j">
                                 <rect key="frame" x="17" y="306" width="41" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -409,12 +393,47 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nlf-Rb-XaU">
+                                <rect key="frame" x="19" y="199" width="340" height="101"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <clipView key="contentView" ambiguous="YES" id="dN9-nD-4XA">
+                                    <rect key="frame" x="1" y="1" width="338" height="99"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView ambiguous="YES" importsGraphics="NO" richText="NO" findStyle="bar" incrementalSearchingEnabled="YES" continuousSpellChecking="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="6hz-aH-Wfo">
+                                            <rect key="frame" x="0.0" y="0.0" width="338" height="99"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="338" height="99"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="manifestToEdit.manifestAdminNotes" id="JhY-1j-dgX">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <outlet property="nextKeyView" destination="kjs-hq-Pgd" id="7GX-Xo-fg6"/>
+                                            </connections>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="7ae-Lh-Ji7">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="qqb-hg-0Dv">
+                                    <rect key="frame" x="324" y="1" width="15" height="48"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="rCw-Ts-Ixf" secondAttribute="trailing" constant="16" id="30K-bC-RLU"/>
                         <constraint firstItem="rCw-Ts-Ixf" firstAttribute="leading" secondItem="SSj-cf-Ib2" secondAttribute="leading" constant="16" id="7Rj-sF-vPE"/>
-                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="top" secondItem="SSj-cf-Ib2" secondAttribute="top" constant="249" id="XfI-jM-liG"/>
+                        <constraint firstItem="rCw-Ts-Ixf" firstAttribute="top" secondItem="SSj-cf-Ib2" secondAttribute="top" constant="301" id="XfI-jM-liG"/>
                         <constraint firstAttribute="bottom" secondItem="rCw-Ts-Ixf" secondAttribute="bottom" constant="26" id="eIq-NT-CRY"/>
                         <constraint firstAttribute="width" constant="372" id="iI8-jH-ZWP"/>
                     </constraints>
@@ -689,8 +708,8 @@
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="oXG-15-9Ln" userLabel="All Featured Items">
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.allFeaturedItems" id="N54-FF-FOA"/>
                 <binding destination="-3" name="managedObjectContext" keyPath="delegate.managedObjectContext" id="WxZ-Jp-udF"/>
+                <binding destination="-2" name="contentArray" keyPath="manifestToEdit.allFeaturedItems" id="N54-FF-FOA"/>
             </connections>
         </arrayController>
         <arrayController mode="entity" entityName="StringObject" automaticallyPreparesContent="YES" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="nsI-27-ayZ" userLabel="All Included Manifests">

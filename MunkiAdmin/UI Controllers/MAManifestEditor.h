@@ -48,6 +48,7 @@
 @property (weak) IBOutlet NSOutlineView *conditionsOutlineView;
 @property (weak) IBOutlet NSTreeController *conditionsTreeController;
 @property (strong) IBOutlet NSScrollView *sourceListView;
+@property (unsafe_unretained) IBOutlet NSTextView *adminNotesTextView;
 @property (strong) NSArray *sourceListItems;
 @property (strong) ManifestMO *manifestToEdit;
 @property (strong) MASelectPkginfoItemsWindow *addItemsWindowController;

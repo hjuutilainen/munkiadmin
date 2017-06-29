@@ -77,6 +77,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     [super windowDidLoad];
     
+    [self.adminNotesTextView setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+    
     NSSortDescriptor *sortByCatalogTitle = [NSSortDescriptor sortDescriptorWithKey:@"catalog.title" ascending:YES selector:@selector(localizedStandardCompare:)];
     NSSortDescriptor *sortByIndexInManifest = [NSSortDescriptor sortDescriptorWithKey:@"indexInManifest" ascending:YES selector:@selector(compare:)];
     self.catalogInfosArrayController.sortDescriptors = @[sortByIndexInManifest, sortByCatalogTitle];
