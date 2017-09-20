@@ -47,12 +47,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.delegate = modalDelegate;
     [self.mainTabView selectTabViewItemAtIndex:0];
     
-    // Set the force_install_after_date date picker to use UTC
-    NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    [gregorian setTimeZone:timeZoneUTC];
-    [self.forceInstallDatePicker setCalendar:gregorian];
-    [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
+    [self updateDatePickerTimeZone];
     
     [self setDefaultValuesFromPackage:self.pkginfoToEdit];
     
@@ -768,6 +763,17 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.iconNameSuggestions = newIconNameSuggestions;
 }
 
+- (void)updateDatePickerTimeZone
+{
+    // Set the force_install_after_date date picker to use UTC (don't try to display it in some other time zone)
+    NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithName:@"UTC"];
+    [NSTimeZone setDefaultTimeZone:timeZoneUTC];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [gregorian setTimeZone:timeZoneUTC];
+    [self.forceInstallDatePicker setCalendar:gregorian];
+    [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
+}
+
 
 - (void)windowDidLoad
 {
@@ -853,12 +859,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self updateIconNameComboBoxAutoCompleteList];
     [self.iconNameComboBox setDelegate:self];
     
-    // Set the force_install_after_date date picker to use UTC
-    NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    [gregorian setTimeZone:timeZoneUTC];
-    [self.forceInstallDatePicker setCalendar:gregorian];
-    [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
+    [self updateDatePickerTimeZone];
     
     [self setDefaultValuesFromPackage:self.pkginfoToEdit];
     
