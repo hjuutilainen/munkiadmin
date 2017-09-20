@@ -2690,6 +2690,7 @@ DDLogLevel ddLogLevel;
     }
     _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     [_managedObjectContext setPersistentStoreCoordinator: coordinator];
+    [_managedObjectContext setUndoManager:[[NSUndoManager alloc] init]];
 
     return _managedObjectContext;
 }
