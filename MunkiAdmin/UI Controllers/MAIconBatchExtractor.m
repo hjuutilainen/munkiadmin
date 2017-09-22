@@ -41,68 +41,34 @@ DDLogLevel ddLogLevel;
     //[self resetExtractorStatus];
 }
 
-- (NSImage *)scaleImage:(NSImage *)image toSize:(NSSize)targetSize
+- (NSImage *)resizedImage:(NSImage *)sourceImage toPixelDimensions:(NSSize)newSize
 {
     /*
-     Proportionally scale an image. Taken from:
-     http://theocacao.com/document.page/498
+     Resize to the specified pixel dimensions regardless of current screen DPI
+     https://stackoverflow.com/a/38442746
      */
-    NSImage *sourceImage = image;
-    NSImage *newImage = nil;
     
-    if ([sourceImage isValid])
-    {
-        NSSize imageSize = [sourceImage size];
-        CGFloat width  = imageSize.width;
-        CGFloat height = imageSize.height;
-        
-        CGFloat targetWidth  = targetSize.width;
-        CGFloat targetHeight = targetSize.height;
-        
-        CGFloat scaleFactor  = 0.0;
-        CGFloat scaledWidth  = targetWidth;
-        CGFloat scaledHeight = targetHeight;
-        
-        NSPoint thumbnailPoint = NSZeroPoint;
-        
-        if (!NSEqualSizes(imageSize, targetSize))
-        {
-            
-            CGFloat widthFactor  = targetWidth / width;
-            CGFloat heightFactor = targetHeight / height;
-            
-            if (widthFactor < heightFactor) {
-                scaleFactor = widthFactor;
-            } else {
-                scaleFactor = heightFactor;
-            }
-            
-            scaledWidth  = width  * scaleFactor;
-            scaledHeight = height * scaleFactor;
-            
-            if (widthFactor < heightFactor) {
-                thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
-            } else if (widthFactor > heightFactor) {
-                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-            }
-        }
-        
-        newImage = [[NSImage alloc] initWithSize:targetSize];
-        
-        [newImage lockFocus];
-        
-        NSRect thumbnailRect;
-        thumbnailRect.origin = thumbnailPoint;
-        thumbnailRect.size.width = scaledWidth;
-        thumbnailRect.size.height = scaledHeight;
-        
-        [sourceImage drawInRect:thumbnailRect
-                       fromRect:NSZeroRect
-                      operation:NSCompositeSourceOver
-                       fraction:1.0];
-        
-        [newImage unlockFocus];
-    }
+    if (! sourceImage.isValid) return nil;
+    
+    NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+                                                                    pixelsWide:(NSInteger)newSize.width
+                                                                    pixelsHigh:(NSInteger)newSize.height
+                                                                 bitsPerSample:8
+                                                               samplesPerPixel:4
+                                                                      hasAlpha:YES
+                                                                      isPlanar:NO
+                                                                colorSpaceName:NSCalibratedRGBColorSpace
+                                                                   bytesPerRow:0
+                                                                  bitsPerPixel:0];
+    rep.size = newSize;
+    
+    [NSGraphicsContext saveGraphicsState];
+    [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:rep]];
+    [sourceImage drawInRect:NSMakeRect(0, 0, newSize.width, newSize.height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+    [NSGraphicsContext restoreGraphicsState];
+    
+    NSImage *newImage = [[NSImage alloc] initWithSize:newSize];
+    [newImage addRepresentation:rep];
     return newImage;
 }
 
@@ -186,7 +152,7 @@ DDLogLevel ddLogLevel;
     NSSize newSize = NSMakeSize(512.0, 512.0);
     if (self.resizeOnSave && [image pixelSize].width > newSize.width) {
         DDLogDebug(@"Resizing image to fit 512x512...");
-        imageData = [[self scaleImage:image toSize:newSize] TIFFRepresentation];
+        imageData = [[self resizedImage:image toPixelDimensions:newSize] TIFFRepresentation];
     } else {
         imageData = [image TIFFRepresentation];
     }
