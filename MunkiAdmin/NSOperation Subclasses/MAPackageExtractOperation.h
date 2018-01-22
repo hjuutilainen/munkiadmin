@@ -10,12 +10,12 @@
 
 @interface MAPackageExtractOperation : NSOperation
 
-@property (nonatomic, copy) void (^willStartCallback) ();
-@property (nonatomic, copy) void (^progressCallback) (double progress, NSString *description);
-@property (nonatomic, copy) void (^didExtractHandler) (NSURL *extractURL);
-@property (nonatomic, copy) void (^didFinishCallback) ();
+@property (nonatomic, copy) void (^ _Nullable willStartCallback) ();
+@property (nonatomic, copy) void (^ _Nullable progressCallback) (double progress, NSString * _Nonnull description);
+@property (nonatomic, copy) void (^ _Nullable didExtractHandler) (NSURL * _Nonnull extractURL);
+@property (nonatomic, copy) void (^ _Nullable didFinishCallback) ();
 
-+ (id)extractOperationWithURL:(NSURL *)url;
-- (id)initWithURL:(NSURL *)url;
++ (nullable id)extractOperationWithURL:(nonnull NSURL *)url;
+- (nullable id)initWithURL:(nonnull NSURL *)url;
 
 @end
