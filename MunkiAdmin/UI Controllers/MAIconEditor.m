@@ -166,9 +166,11 @@ DDLogLevel ddLogLevel;
          Create a PNG file from the image (resizing it if necessary)
          */
         NSData *imageData;
-        NSSize newSize = NSMakeSize(512.0, 512.0);
+        NSInteger defaultWidth = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultWidth"];
+        NSInteger defaultHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultHeight"];
+        NSSize newSize = NSMakeSize(defaultWidth, defaultHeight);
         if (self.resizeOnSave && [self.currentImage pixelSize].width > newSize.width) {
-            DDLogDebug(@"Resizing image to fit 512x512...");
+            DDLogDebug(@"Resizing image to fit %lix%li...", (long)defaultWidth, (long)defaultHeight);
             imageData = [[self resizedImage:self.currentImage toPixelDimensions:newSize] TIFFRepresentation];
             //imageData = [[self scaleImage:self.currentImage toSize:newSize] TIFFRepresentation];
         } else {

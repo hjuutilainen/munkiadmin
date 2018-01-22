@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C106a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
-        <plugIn identifier="com.apple.imagekit.ibplugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.imagekit.ibplugin" version="13771"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAIconEditor">
@@ -27,7 +29,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <value key="minSize" type="size" width="500" height="400"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="5" width="531" height="559"/>
+                <rect key="frame" x="0.0" y="0.0" width="531" height="559"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="syJ-27-Pvi">
@@ -38,10 +40,10 @@
                             <binding destination="-2" name="value" keyPath="currentImage" id="zAi-pr-KNE"/>
                         </connections>
                     </imageView>
-                    <box autoresizesSubviews="NO" title="Options" borderType="line" id="hny-x1-hpX">
+                    <box autoresizesSubviews="NO" borderType="line" title="Options" id="hny-x1-hpX">
                         <rect key="frame" x="17" y="57" width="497" height="74"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <view key="contentView">
+                        <view key="contentView" id="vu0-Ao-JCD">
                             <rect key="frame" x="1" y="1" width="495" height="58"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -56,10 +58,10 @@
                                         <binding destination="-2" name="value" keyPath="useInSiblingPackages" id="5Fa-Bf-RU9"/>
                                     </connections>
                                 </button>
-                                <button id="nvA-N8-0hT">
-                                    <rect key="frame" x="16" y="12" width="240" height="18"/>
+                                <button misplaced="YES" id="nvA-N8-0hT">
+                                    <rect key="frame" x="16" y="12" width="102" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Resize image to fit 512x512 pixels" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0CD-hb-uWp">
+                                    <buttonCell key="cell" type="check" title="Resize image" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0CD-hb-uWp">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
@@ -67,10 +69,30 @@
                                         <binding destination="-2" name="value" keyPath="resizeOnSave" id="5zU-yI-cgH"/>
                                     </connections>
                                 </button>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="9mj-i1-o1g">
+                                    <rect key="frame" x="122" y="13" width="209" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="ha5-Xn-P0C">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="viw-mY-hfy" name="displayPatternValue1" keyPath="values.iconResizeDefaultWidth" id="nX0-vY-YjS">
+                                            <dictionary key="options">
+                                                <string key="NSDisplayPattern">(%{value1}@ x %{value2}@ pixels)</string>
+                                            </dictionary>
+                                        </binding>
+                                        <binding destination="viw-mY-hfy" name="displayPatternValue2" keyPath="values.iconResizeDefaultHeight" previousBinding="nX0-vY-YjS" id="AVf-Ix-JFj">
+                                            <dictionary key="options">
+                                                <string key="NSDisplayPattern">(%{value1}@ x %{value2}@ pixels)</string>
+                                            </dictionary>
+                                        </binding>
+                                        <binding destination="-2" name="enabled" keyPath="resizeOnSave" id="fMD-Ss-3rs"/>
+                                    </connections>
+                                </textField>
                             </subviews>
                         </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
                     <button verticalHuggingPriority="750" id="Ic3-0C-4p8">
                         <rect key="frame" x="14" y="13" width="142" height="32"/>
@@ -178,12 +200,12 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" copiesOnScroll="NO" id="LFx-22-tqj">
                             <rect key="frame" x="1" y="1" width="509" height="435"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <ikImageBrowserView autoresizesSubviews="NO" zoomValue="0.46225017309188843" allowsMultipleSelection="NO" allowsEmptySelection="NO" id="gws-PG-aEi">
                                     <rect key="frame" x="0.0" y="0.0" width="509" height="435"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <ikCellsStyle key="cellsStyleMask" none="YES" titled="YES"/>
+                                    <ikCellsStyle key="cellsStyleMask" titled="YES"/>
                                     <autoresizingMask key="contentResizingMask" heightSizable="YES"/>
                                     <size key="cellSize" width="119" height="119"/>
                                     <connections>
@@ -250,5 +272,6 @@ Gw
                 <binding destination="-2" name="contentSet" keyPath="imageBrowserItems" id="HxT-pt-ybA"/>
             </connections>
         </arrayController>
+        <userDefaultsController representsSharedInstance="YES" id="viw-mY-hfy"/>
     </objects>
 </document>
