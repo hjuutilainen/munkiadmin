@@ -1848,17 +1848,19 @@ static dispatch_queue_t serialQueue;
                             packageURL = [packages sortedArrayUsingSelector:@selector(compare:)][0];
                         }
                     }
-                    
-                    MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:packageURL];
-                    [extractOp setProgressCallback:progressHandlerTemp];
-                    
-                    [extractOp setDidExtractHandler:^(NSURL *extractCache) {
-                        NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
-                        [extractedImages addObjectsFromArray:newImages];
-                    }];
-                    
-                    //[extractOp setDidFinishCallback:^{}];
-                    [weakSelf.diskImageQueue addOperation:extractOp];
+                    if (packageURL) {
+                        MAPackageExtractOperation *extractOp = [MAPackageExtractOperation extractOperationWithURL:packageURL];
+                        [extractOp setProgressCallback:progressHandlerTemp];
+                        
+                        [extractOp setDidExtractHandler:^(NSURL *extractCache) {
+                            NSArray *newImages = [self findAllIcnsFilesAtURL:extractCache];
+                            [extractedImages addObjectsFromArray:newImages];
+                        }];
+                        
+                        [weakSelf.diskImageQueue addOperation:extractOp];
+                    } else {
+                        DDLogInfo(@"Error: Did not find any packages in mountpoint %@", mountpoint);
+                    }
                     
                     if (!alreadyMounted) {
                         [mountpointsScanned addObject:mountpoint];
