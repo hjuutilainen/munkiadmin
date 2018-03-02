@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G12b" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17E160e" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -86,15 +86,15 @@
     </entity>
     <entity name="InstallerTypeSourceListItem" representedClassName="InstallerTypeSourceListItemMO" parentEntity="PackageSourceListItem" syncable="YES"/>
     <entity name="InstallsItem" representedClassName="InstallsItemMO" syncable="YES">
-        <attribute name="munki_CFBundleIdentifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_CFBundleName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_CFBundleShortVersionString" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_CFBundleVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_CFBundleIdentifier" optional="YES" attributeType="String" defaultValueString="com.example.MyApp" syncable="YES"/>
+        <attribute name="munki_CFBundleName" optional="YES" attributeType="String" defaultValueString="MyApp" syncable="YES"/>
+        <attribute name="munki_CFBundleShortVersionString" optional="YES" attributeType="String" defaultValueString="1.0" syncable="YES"/>
+        <attribute name="munki_CFBundleVersion" optional="YES" attributeType="String" defaultValueString="1001" syncable="YES"/>
         <attribute name="munki_md5checksum" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_minosversion" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_path" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="munki_version_comparison_key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_path" optional="YES" attributeType="String" defaultValueString="/Applications/MyApp.app" syncable="YES"/>
+        <attribute name="munki_type" optional="YES" attributeType="String" defaultValueString="application" syncable="YES"/>
+        <attribute name="munki_version_comparison_key" optional="YES" attributeType="String" defaultValueString="CFBundleShortVersionString" syncable="YES"/>
         <attribute name="munki_version_comparison_key_value" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="originalInstallsItem" optional="YES" attributeType="Transformable" syncable="YES"/>
