@@ -180,6 +180,20 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 	}
 }
 
+- (IBAction)createNewInstallsItem:(id)sender
+{
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    InstallsItemMO *newInstallsItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallsItem" inManagedObjectContext:moc];
+    newInstallsItem.munki_path = @"/Applications/Application.app";
+    newInstallsItem.munki_type = @"application";
+    newInstallsItem.munki_CFBundleIdentifier = @"com.example.application";
+    newInstallsItem.munki_CFBundleName = @"Application.app";
+    newInstallsItem.munki_CFBundleShortVersionString = @"1.0";
+    newInstallsItem.munki_CFBundleVersion = @"1001";
+    newInstallsItem.munki_version_comparison_key = @"CFBundleShortVersionString";
+    [self.pkginfoToEdit addInstallsItemsObject:newInstallsItem];
+}
+
 
 - (void)createNewCategory
 {

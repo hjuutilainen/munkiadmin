@@ -23,6 +23,7 @@
 
 - (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
+- (IBAction)createNewInstallsItem:(id)sender;
 - (IBAction)renameCurrentPackageAction:(id)sender;
 - (IBAction)createNewCategoryAction:(id)sender;
 - (IBAction)createNewDeveloperAction:(id)sender;
