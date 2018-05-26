@@ -959,8 +959,6 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				FE145D971488D42200AEA151 /* ShellScript */,
-				54F6514855D1097BC243BC67 /* [CP] Embed Pods Frameworks */,
-				E2F60EBBA7C8990A0DBC85F2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1094,42 +1092,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		54F6514855D1097BC243BC67 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-frameworks.sh",
-				"${PODS_ROOT}/DevMateKit/DevMateKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DevMateKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E2F60EBBA7C8990A0DBC85F2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-resources.sh",
-				"${PODS_ROOT}/DevMateKit/DevMateKit.framework",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE145D971488D42200AEA151 /* ShellScript */ = {

@@ -22,7 +22,6 @@
 #import "MACoreDataManager.h"
 #import "ManifestsArrayController.h"
 #import "MAMunkiImportController.h"
-#import <DevMateKit/DevMateKit.h>
 #import "CocoaLumberjack.h"
 
 DDLogLevel ddLogLevel;
@@ -44,11 +43,6 @@ DDLogLevel ddLogLevel;
 {
     NSURL *privacyPolicyURL = [NSURL URLWithString:@"https://github.com/hjuutilainen/munkiadmin/wiki/Privacy-Policy"];
     [[NSWorkspace sharedWorkspace] openURL:privacyPolicyURL];
-}
-
-- (IBAction)showFeedbackDialog:(id)sender
-{
-    [DevMateKit showFeedbackDialog:nil inMode:DMFeedbackIndependentMode];
 }
 
 - (IBAction)findAction:(id)sender
@@ -885,56 +879,6 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-#if DEBUG
-    DDLogError(@"Running in DEBUG mode...");
-#else
-    
-    /*
-     DevMate preference key names
-     */
-    NSString *analyticsPermissionKeyName = @"DevMateAnalyticsPermissionAsked";
-    NSString *analyticsEnabledKeyName = @"DevMateAnalyticsEnabled";
-    NSString *issuesEnabledKeyName = @"DevMateIssuesEnabled";
-    
-    /*
-     Ask permission to send usage data to DevMate
-     */
-    if (![userDefaults boolForKey:analyticsPermissionKeyName]) {
-        DDLogVerbose(@"User has not been asked about analytics. Presenting dialog...");
-        NSAlert *askAnalyticsPermission = [[NSAlert alloc] init];
-        askAnalyticsPermission.messageText = @"Send anonymous system profile?";
-        askAnalyticsPermission.informativeText = @"MunkiAdmin uses DevMate and includes the option to send anonymous system profile every time the app is launched. The information sent to DevMate is not personally identifiable and does not include any information about your munki repository.\n\nDetails included in the profile:\n• MunkiAdmin version\n• OS X version and language\n• CPU and GPU models\n• Machine model\n• The amount of RAM and free disk space\n\n";
-        [askAnalyticsPermission addButtonWithTitle:@"Send"];
-        [askAnalyticsPermission addButtonWithTitle:@"Don't Send"];
-        NSInteger result = [askAnalyticsPermission runModal];
-        if (result == NSAlertFirstButtonReturn) {
-            DDLogVerbose(@"User granted permission to use analytics.");
-            [userDefaults setBool:YES forKey:analyticsEnabledKeyName];
-        } else {
-            DDLogVerbose(@"User did not give permission to use analytics.");
-            [userDefaults setBool:NO forKey:analyticsEnabledKeyName];
-        }
-        
-        [userDefaults setBool:YES forKey:analyticsPermissionKeyName];
-    }
-    
-    /*
-     Send tracking report if allowed
-     */
-    if ([userDefaults boolForKey:analyticsEnabledKeyName]) {
-        DDLogVerbose(@"User has granted permission to use analytics. Sending report...");
-        [DevMateKit sendTrackingReport:nil delegate:nil];
-    }
-    
-    /*
-     Setup DevMate crash reports
-     */
-    if ([userDefaults boolForKey:issuesEnabledKeyName]) {
-        [DevMateKit setupIssuesController:nil reportingUnhandledIssues:YES];
-    }
-    
-#endif
     
     [[MAMunkiRepositoryManager sharedManager] updateMunkiVersions];
     

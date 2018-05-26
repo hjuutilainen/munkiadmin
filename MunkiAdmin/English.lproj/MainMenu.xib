@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16G12b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,7 +22,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="500" height="163"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1322">
+                    <textField verticalHuggingPriority="750" id="1322">
                         <rect key="frame" x="193" y="104" width="250" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingMiddle" sendsActionOnEndEditing="YES" title="--" id="1323">
@@ -34,7 +34,7 @@
                             <binding destination="205" name="value" keyPath="currentStatusDescription" id="1326"/>
                         </connections>
                     </textField>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1756">
+                    <textField verticalHuggingPriority="750" id="1756">
                         <rect key="frame" x="193" y="82" width="250" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingMiddle" sendsActionOnEndEditing="YES" title="--" id="1757">
@@ -64,7 +64,7 @@ Gw
                         <rect key="frame" x="18" y="19" width="347" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1752">
+                    <textField verticalHuggingPriority="750" id="1752">
                         <rect key="frame" x="115" y="104" width="76" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Current Item:" id="1753">
@@ -73,7 +73,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1763">
+                    <textField verticalHuggingPriority="750" id="1763">
                         <rect key="frame" x="141" y="126" width="50" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Status:" id="1764">
@@ -82,7 +82,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1754">
+                    <textField verticalHuggingPriority="750" id="1754">
                         <rect key="frame" x="149" y="82" width="42" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Queue:" id="1755">
@@ -91,7 +91,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1760">
+                    <textField verticalHuggingPriority="750" id="1760">
                         <rect key="frame" x="193" y="126" width="250" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="--" id="1761">
@@ -279,12 +279,6 @@ Gw
                             <menuItem title="Preferences…" keyEquivalent="," id="129">
                                 <connections>
                                     <action selector="openPreferencesAction:" target="205" id="1617"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Check for Updates..." id="Ye6-gb-Nh0">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="checkForUpdates:" target="nrM-PR-mPP" id="9Xj-Y9-9OW"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
@@ -694,12 +688,6 @@ Gw
                                     <action selector="openPrivacyPolicy:" target="205" id="kkw-p8-I1A"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Send Feedback..." id="Nn5-97-Lh1">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="showFeedbackDialog:" target="205" id="DB0-TP-fFp"/>
-                                </connections>
-                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -757,7 +745,6 @@ Gw
                 <real value="250"/>
             </holdingPriorities>
         </splitView>
-        <customObject id="nrM-PR-mPP" customClass="SUUpdater"/>
         <arrayController mode="entity" entityName="Package" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="534" userLabel="All Packages" customClass="PackageArrayController">
             <declaredKeys>
                 <string>munki_display_name</string>
@@ -967,7 +954,7 @@ Gw
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn editable="NO" width="256" minWidth="40" maxWidth="1000" id="935">
+                                    <tableColumn identifier="" editable="NO" width="256" minWidth="40" maxWidth="1000" id="935">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -992,7 +979,7 @@ Gw
                                                             <binding destination="gLF-dN-6d7" name="value" keyPath="objectValue.image" id="zzf-se-f2k"/>
                                                         </connections>
                                                     </imageView>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" id="B67-CU-tTZ">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="B67-CU-tTZ">
                                                         <rect key="frame" x="43" y="19" width="212" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="yVS-Lm-117">
@@ -1004,7 +991,7 @@ Gw
                                                             <binding destination="gLF-dN-6d7" name="value" keyPath="objectValue.title" id="Obm-0M-22y"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" id="QZl-Wm-W8M">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="QZl-Wm-W8M">
                                                         <rect key="frame" x="43" y="4" width="212" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" continuous="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="uXr-Yf-oGS">
@@ -1046,7 +1033,7 @@ Gw
                     <rect key="frame" x="0.0" y="505" width="259" height="38"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="982">
+                        <searchField wantsLayer="YES" verticalHuggingPriority="750" id="982">
                             <rect key="frame" x="20" y="10" width="219" height="19"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="983">
@@ -1075,17 +1062,17 @@ Gw
                     <rect key="frame" x="-1" y="-1" width="766" height="508"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="AjO-cO-g8B">
-                        <rect key="frame" x="1" y="0.0" width="764" height="507"/>
+                        <rect key="frame" x="1" y="0.0" width="764" height="492"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" autosaveColumns="NO" rowHeight="20" headerView="1266" id="845">
-                                <rect key="frame" x="0.0" y="0.0" width="764" height="490"/>
+                                <rect key="frame" x="0.0" y="0.0" width="764.5" height="475"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="40" minWidth="40" maxWidth="40" id="847">
+                                    <tableColumn identifier="" width="40" minWidth="40" maxWidth="40" id="847">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1100,7 +1087,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.isEnabledForCatalog" id="873"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn width="32" minWidth="32" maxWidth="32" id="R0y-Wk-Bvh">
+                                    <tableColumn identifier="" width="32" minWidth="32" maxWidth="32" id="R0y-Wk-Bvh">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1112,7 +1099,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.iconImage.imageRepresentation" id="nzg-bc-f4g"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="206.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
+                                    <tableColumn identifier="" editable="NO" width="207" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1128,7 +1115,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_name" id="892"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="217.015625" minWidth="40" maxWidth="1000" id="848">
+                                    <tableColumn identifier="" editable="NO" width="217.515625" minWidth="40" maxWidth="1000" id="848">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1144,7 +1131,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_display_name" id="891"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="253" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
+                                    <tableColumn identifier="" editable="NO" width="253" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Version">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1164,8 +1151,8 @@ Gw
                             </tableView>
                         </subviews>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="844">
-                        <rect key="frame" x="1" y="491" width="764" height="16"/>
+                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="844">
+                        <rect key="frame" x="1" y="492" width="764" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="843">
@@ -1173,7 +1160,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="1266">
-                        <rect key="frame" x="0.0" y="0.0" width="764" height="17"/>
+                        <rect key="frame" x="0.0" y="0.0" width="764.5" height="17"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
@@ -1181,7 +1168,7 @@ Gw
                     <rect key="frame" x="0.0" y="506" width="764" height="38"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1263">
+                        <searchField wantsLayer="YES" verticalHuggingPriority="750" id="1263">
                             <rect key="frame" x="544" y="10" width="200" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Package Name" usesSingleLineMode="YES" bezelStyle="round" id="1264">
@@ -1230,7 +1217,7 @@ Gw
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn editable="NO" width="256" minWidth="40" maxWidth="1000" id="972">
+                                    <tableColumn identifier="" editable="NO" width="256" minWidth="40" maxWidth="1000" id="972">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1255,7 +1242,7 @@ Gw
                                                             <binding destination="Bp0-yS-cf5" name="value" keyPath="objectValue.image" id="8ds-Hb-YPE"/>
                                                         </connections>
                                                     </imageView>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" id="bkQ-Ns-jTU">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="bkQ-Ns-jTU">
                                                         <rect key="frame" x="43" y="19" width="212" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vC1-Wa-y7n">
@@ -1267,7 +1254,7 @@ Gw
                                                             <binding destination="Bp0-yS-cf5" name="value" keyPath="objectValue.title" id="OSf-2t-yG3"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" id="peq-FS-iDe">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="peq-FS-iDe">
                                                         <rect key="frame" x="43" y="4" width="212" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="G2d-Ym-8xc">
@@ -1305,7 +1292,7 @@ Gw
                     <rect key="frame" x="0.0" y="505" width="259" height="38"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="974">
+                        <searchField wantsLayer="YES" verticalHuggingPriority="750" id="974">
                             <rect key="frame" x="20" y="8" width="219" height="22"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="975">
@@ -1368,7 +1355,7 @@ Gw
                 <binding destination="534" name="contentSet" keyPath="selection.itemsToCopy" id="1820"/>
             </connections>
         </arrayController>
-        <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="1405">
+        <textField verticalHuggingPriority="750" id="1405">
             <rect key="frame" x="0.0" y="0.0" width="350" height="22"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1406">

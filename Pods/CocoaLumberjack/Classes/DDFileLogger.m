@@ -279,13 +279,14 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
 - (BOOL)isLogFile:(NSString *)fileName {
     NSString *appName = [self applicationName];
 
-    BOOL hasProperPrefix = [fileName hasPrefix:appName];
+    // We need to add a space to the name as otherwise we could match applications that have the name prefix.
+    BOOL hasProperPrefix = [fileName hasPrefix:[appName stringByAppendingString:@" "]];
     BOOL hasProperSuffix = [fileName hasSuffix:@".log"];
     
     return (hasProperPrefix && hasProperSuffix);
 }
 
-//if you change formater , then  change sortedLogFileInfos method also accordingly
+// if you change formatter, then change sortedLogFileInfos method also accordingly
 - (NSDateFormatter *)logFileDateFormatter {
     NSMutableDictionary *dictionary = [[NSThread currentThread]
                                        threadDictionary];
@@ -407,7 +408,7 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
             date2 = [[self logFileDateFormatter] dateFromString:stringDate] ?: [obj2 creationDate];
         }
         
-        return [date2 compare:date1];
+        return [date2 compare:date1 ?: [NSDate new]];
     }];
 
 }
@@ -611,7 +612,7 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
     __block unsigned long long result;
 
     dispatch_block_t block = ^{
-        result = _maximumFileSize;
+        result = self->_maximumFileSize;
     };
 
     // The design of this method is taken from the DDAbstractLogger implementation.
@@ -639,7 +640,7 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
 - (void)setMaximumFileSize:(unsigned long long)newMaximumFileSize {
     dispatch_block_t block = ^{
         @autoreleasepool {
-            _maximumFileSize = newMaximumFileSize;
+            self->_maximumFileSize = newMaximumFileSize;
             [self maybeRollLogFileDueToSize];
         }
     };
@@ -668,7 +669,7 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
     __block NSTimeInterval result;
 
     dispatch_block_t block = ^{
-        result = _rollingFrequency;
+        result = self->_rollingFrequency;
     };
 
     // The design of this method is taken from the DDAbstractLogger implementation.
@@ -696,7 +697,7 @@ unsigned long long const kDDDefaultLogFilesDiskQuota   = 20 * 1024 * 1024; // 20
 - (void)setRollingFrequency:(NSTimeInterval)newRollingFrequency {
     dispatch_block_t block = ^{
         @autoreleasepool {
-            _rollingFrequency = newRollingFrequency;
+            self->_rollingFrequency = newRollingFrequency;
             [self maybeRollLogFileDueToAge];
         }
     };
@@ -1037,6 +1038,10 @@ static int exception_count = 0;
 
 - (NSString *)loggerName {
     return @"cocoa.lumberjack.fileLogger";
+}
+
+- (void)flush {
+    [_currentLogFileHandle synchronizeFile];
 }
 
 @end
