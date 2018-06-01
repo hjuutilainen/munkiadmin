@@ -514,11 +514,7 @@
 	for (InstallsItemMO *anInstallsItem in [self.installsItems sortedArrayUsingDescriptors:installsSorters]) {
 		[installs addObject:[anInstallsItem dictValueForSave]];
 	}
-	if ([installs count] == 0) {
-		if ([(NSDictionary *)self.originalPkginfo objectForKey:@"installs"] != nil) {
-			[tmpDict setObject:[NSArray array] forKey:@"installs"];
-		}
-	} else {
+	if ([installs count] > 0) {
 		[tmpDict setObject:installs forKey:@"installs"];
 	}
 	

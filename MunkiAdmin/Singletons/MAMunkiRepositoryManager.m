@@ -2744,6 +2744,7 @@ static dispatch_queue_t serialQueue;
                                   @"installer_type",
                                   @"installer_item_size",
                                   @"installer_item_size",
+                                  @"installs",
                                   @"maximum_os_version",
                                   @"minimum_munki_version",
                                   @"minimum_os_version",
@@ -2801,8 +2802,7 @@ static dispatch_queue_t serialQueue;
          Remove keys that were deleted by user
          */
         for (NSString *aKey in keysToDelete) {
-            if (([infoDictFromPackage valueForKey:aKey] == nil) &&
-                ([infoDictOnDisk valueForKey:aKey] != nil)) {
+            if (([infoDictFromPackage valueForKey:aKey] == nil) && ([infoDictOnDisk valueForKey:aKey] != nil)) {
                 [mergedInfoDict removeObjectForKey:aKey];
             }
         }
