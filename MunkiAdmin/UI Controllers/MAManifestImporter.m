@@ -48,7 +48,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-    openPanel.title = @"Select a CSV file to import";
+    NSString *title = NSLocalizedString(@"Select a CSV file to import", @"");
+    openPanel.title = title;
     openPanel.allowsMultipleSelection = NO;
     openPanel.canChooseDirectories = NO;
     openPanel.canChooseFiles = YES;
@@ -239,12 +240,14 @@ DDLogLevel ddLogLevel;
         
         NSString *alertText = [NSString stringWithFormat:@"%@. %@.", createdString, modifiedString];
         
-        NSAlert *importResultsAlert = [NSAlert alertWithMessageText:@"Done creating manifests"
-                                                      defaultButton:@"OK"
-                                                    alternateButton:@""
-                                                        otherButton:@""
-                                          informativeTextWithFormat:@"%@", alertText];
-        [importResultsAlert runModal];
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+        [alert setMessageText:NSLocalizedString(@"Done creating manifests", @"")];
+        [alert setInformativeText:alertText];
+        [alert setAlertStyle:NSAlertStyleInformational];
+        [alert setShowsSuppressionButton:NO];
+        
+        [alert runModal];
     }
 }
 

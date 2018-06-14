@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14269.12"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MASelectPkginfoItemsWindow">
@@ -21,7 +22,7 @@
                 <outlet property="window" destination="3" id="30"/>
             </connections>
         </customObject>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="3" userLabel="Add items to manifest">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="3" userLabel="Add items to manifest">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="89" y="35" width="470" height="580"/>
@@ -49,7 +50,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="21">
-                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="443"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -125,7 +126,6 @@
                                                         </connections>
                                                     </tableView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="22">
                                                 <rect key="frame" x="1" y="119" width="223" height="15"/>
@@ -136,7 +136,7 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
-                                        <customView id="56" customClass="MAGradientBackgroundView">
+                                        <customView id="56">
                                             <rect key="frame" x="-1" y="444" width="472" height="38"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <subviews>
@@ -182,7 +182,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="16">
-                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="443"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -255,7 +255,6 @@
                                                         </tableColumns>
                                                     </tableView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="15">
                                                 <rect key="frame" x="1" y="119" width="223" height="15"/>
@@ -266,11 +265,11 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                         </scrollView>
-                                        <customView id="52" customClass="MAGradientBackgroundView">
+                                        <customView id="52">
                                             <rect key="frame" x="-1" y="444" width="472" height="38"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <subviews>
-                                                <searchField verticalHuggingPriority="750" id="53">
+                                                <searchField wantsLayer="YES" verticalHuggingPriority="750" id="53">
                                                     <rect key="frame" x="312" y="8" width="140" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="54">
@@ -288,7 +287,7 @@
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Custom" identifier="3" id="45">
-                                <view key="view" id="46" customClass="MAGradientBackgroundView">
+                                <view key="view" id="46">
                                     <rect key="frame" x="0.0" y="0.0" width="470" height="482"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -297,7 +296,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="48">
                                                 <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
@@ -343,19 +342,19 @@ Gw
                             <action selector="cancelAction:" target="-2" id="68"/>
                         </connections>
                     </button>
-                    <customView id="6" customClass="MAGradientBackgroundView">
+                    <customView id="6">
                         <rect key="frame" x="0.0" y="542" width="470" height="38"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <segmentedControl verticalHuggingPriority="750" id="26">
-                                <rect key="frame" x="85" y="6" width="304" height="25"/>
+                            <segmentedControl verticalHuggingPriority="750" misplaced="YES" id="26">
+                                <rect key="frame" x="85" y="7" width="300" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="27">
                                     <font key="font" metaFont="system"/>
                                     <segments>
-                                        <segment label="Grouped" width="100" selected="YES"/>
-                                        <segment label="Individual" width="100" tag="1"/>
-                                        <segment label="Custom" width="100"/>
+                                        <segment label="Grouped" width="98" selected="YES"/>
+                                        <segment label="Individual" width="97" tag="1"/>
+                                        <segment label="Custom" width="97"/>
                                     </segments>
                                 </segmentedCell>
                                 <connections>

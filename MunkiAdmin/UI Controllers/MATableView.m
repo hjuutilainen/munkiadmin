@@ -30,7 +30,7 @@
     
     NSMutableParagraphStyle * aParagraphStyle = [[NSMutableParagraphStyle alloc] init];
 	[aParagraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
-    [aParagraphStyle setAlignment:NSCenterTextAlignment];
+    [aParagraphStyle setAlignment:NSTextAlignmentCenter];
 	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                         [NSColor whiteColor], NSForegroundColorAttributeName,
                                         [NSFont systemFontOfSize:10], NSFontAttributeName,
@@ -59,58 +59,6 @@
     return returnImage;
 }
 
-- (NSImage *)dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset
-{
-    /*
-     Dragging multiple items
-     */
-    if ([dragRows count] > 1) {
-        
-        // Get image references
-        NSImage *iconImage = [NSImage imageNamed:@"packageGroupIcon_32x32"];
-        NSImage *dragImage = [[NSImage alloc] initWithSize:NSMakeSize(iconImage.size.width + 8, iconImage.size.height)];
-        
-        // Start drawing
-        [dragImage lockFocus];
-        
-        // First draw the package group icon
-        NSRect iconRect = NSMakeRect(0, 0, iconImage.size.width, iconImage.size.height);
-        [iconImage drawInRect:iconRect
-                     fromRect:NSZeroRect
-                    operation:NSCompositeSourceOver
-                     fraction:1.0];
-        
-        // Create a custom badge
-        NSString *text = [NSString stringWithFormat:@"%lu", (unsigned long)[dragRows count]];
-        NSImage *badgeImage = [self badgeImageWithText:text];
-        
-        // Figure out where the top right corner of our image is and draw
-        NSRect badgeRect = NSMakeRect(dragImage.size.width - badgeImage.size.width,
-                                      dragImage.size.height - badgeImage.size.height,
-                                      badgeImage.size.width,
-                                      badgeImage.size.height);
-        
-        [badgeImage drawInRect:badgeRect
-                      fromRect:NSZeroRect
-                     operation:NSCompositeSourceOver
-                      fraction:1.0];
-        
-        // Done drawing
-        [dragImage unlockFocus];
-        return dragImage;
-    }
-    
-    /*
-     Dragging a single pkginfo
-     */
-    else {
-        return [NSImage imageNamed:@"packageIcon_32x32"];
-    }
-    
-    return nil;
-}
-
-
 
 /*
  Overridden to change selection when user right-clicks the table
@@ -128,6 +76,7 @@
 }
 
 
+/*
 - (void)textDidEndEditing:(NSNotification *)notification
 {
     if ([[self delegate] respondsToSelector:@selector(tableViewDidEndAllEditing:)]) {
@@ -135,5 +84,6 @@
     }
     [super textDidEndEditing:notification];
 }
+ */
 
 @end

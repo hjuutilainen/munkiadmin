@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14269.12"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MAPkginfoAssimilator">
@@ -14,8 +15,8 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="621" height="523"/>
@@ -57,7 +58,7 @@ Gw
                             <action selector="cancelAction:" target="-2" id="28"/>
                         </connections>
                     </button>
-                    <customView id="17" customClass="MAGradientBackgroundView">
+                    <customView id="17">
                         <rect key="frame" x="0.0" y="425" width="621" height="98"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
@@ -166,10 +167,10 @@ Gw
                             </binding>
                         </connections>
                     </button>
-                    <box autoresizesSubviews="NO" title="General Keys" borderType="line" id="234">
+                    <box autoresizesSubviews="NO" borderType="line" title="General Keys" id="234">
                         <rect key="frame" x="17" y="268" width="587" height="124"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <view key="contentView">
+                        <view key="contentView" id="41I-tF-soj">
                             <rect key="frame" x="1" y="1" width="585" height="108"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -325,12 +326,12 @@ Gw
                                         <font key="font" metaFont="smallSystem"/>
                                     </buttonCell>
                                     <connections>
+                                        <binding destination="-2" name="value" keyPath="assimilate_icon_name" id="RoZ-OR-t2R"/>
                                         <binding destination="-2" name="enabled" keyPath="sourcePkginfo" id="J0E-DS-EnT">
                                             <dictionary key="options">
                                                 <string key="NSValueTransformerName">NSIsNotNil</string>
                                             </dictionary>
                                         </binding>
-                                        <binding destination="-2" name="value" keyPath="assimilate_icon_name" id="RoZ-OR-t2R"/>
                                     </connections>
                                 </button>
                                 <button id="63">
@@ -415,13 +416,11 @@ Gw
                                 </button>
                             </subviews>
                         </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
-                    <box autoresizesSubviews="NO" title="Array Keys" borderType="line" id="235">
+                    <box autoresizesSubviews="NO" borderType="line" title="Array Keys" id="235">
                         <rect key="frame" x="17" y="173" width="587" height="91"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <view key="contentView">
+                        <view key="contentView" id="eIf-5Y-drM">
                             <rect key="frame" x="1" y="1" width="585" height="75"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -689,13 +688,11 @@ IA
                                 </textField>
                             </subviews>
                         </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
-                    <box autoresizesSubviews="NO" title="Script Keys" borderType="line" id="236">
+                    <box autoresizesSubviews="NO" borderType="line" title="Script Keys" id="236">
                         <rect key="frame" x="17" y="57" width="587" height="112"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <view key="contentView">
+                        <view key="contentView" id="a4c-Mm-1TW">
                             <rect key="frame" x="1" y="1" width="585" height="96"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -829,8 +826,6 @@ IA
                                 </button>
                             </subviews>
                         </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
                 </subviews>
             </view>

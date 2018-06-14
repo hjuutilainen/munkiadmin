@@ -17,7 +17,7 @@
 - (id)initWithURL:(NSURL *)src;
 
 @property (nonatomic, copy) void (^progressCallback) (float);
-@property (nonatomic, copy) void (^finishCallback) ();
+@property (nonatomic, copy) void (^finishCallback) (void);
 @property (strong) NSString *currentJobDescription;
 @property (strong) NSString *fileName;
 @property (strong) NSURL *sourceURL;

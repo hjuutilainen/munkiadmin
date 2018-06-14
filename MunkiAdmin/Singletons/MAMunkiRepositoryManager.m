@@ -748,7 +748,8 @@ static dispatch_queue_t serialQueue;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    savePanel.title = @"Save Manifest";
+    NSString *title = NSLocalizedString(@"Save Manifest", @"");
+    savePanel.title = title;
     savePanel.directoryURL = [[manifest manifestURL] URLByDeletingLastPathComponent];
     [savePanel setNameFieldStringValue:[[manifest manifestURL] lastPathComponent]];
     
@@ -2208,8 +2209,10 @@ static dispatch_queue_t serialQueue;
      */
     if (![self runRepositoryPreSaveScript]) {
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Pre-save script failed";
-        alert.informativeText = @"Pre-save script exited with a non-zero code. Save was aborted.";
+        NSString *messageText = NSLocalizedString(@"Pre-save script failed", @"");
+        alert.messageText = messageText;
+        NSString *informativeText = NSLocalizedString(@"Pre-save script exited with a non-zero code. Save was aborted.", @"");
+        alert.informativeText = informativeText;
         [alert runModal];
         *success = NO;
         *pkginfos = NO;
@@ -2399,20 +2402,6 @@ static dispatch_queue_t serialQueue;
             return NO;
         }
         
-        NSString *fileName = [(NSURL *)aManifest.manifestURL lastPathComponent];
-        NSString *sourceDirPath = [[(NSURL *)aManifest.manifestURL path] stringByDeletingLastPathComponent];
-        NSString *destinationPath = [[backupFileURL path] stringByDeletingLastPathComponent];
-        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-        NSInteger tag = 0;
-        if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
-            DDLogError(@"%@: Failed to copy to %@", filename, destinationPath);
-            return NO;
-        } else {
-            DDLogDebug(@"%@: Copied to %@", filename, destinationPath);
-            itemBackedUp = YES;
-        }
-        
-        /*
         NSError *copyError = nil;
         if (![fm copyItemAtURL:aManifest.manifestURL toURL:backupFileURL error:&copyError]) {
             DDLogInfo(@"Failed to copy: %@", [copyError description]);
@@ -2420,7 +2409,6 @@ static dispatch_queue_t serialQueue;
         } else {
             itemBackedUp = YES;
         }
-         */
     } else {
         DDLogError(@"Error: saveStartedDate is nil");
     }
@@ -2450,20 +2438,6 @@ static dispatch_queue_t serialQueue;
             return NO;
         }
         
-        NSString *fileName = [(NSURL *)aPackage.packageInfoURL lastPathComponent];
-        NSString *sourceDirPath = [[(NSURL *)aPackage.packageInfoURL path] stringByDeletingLastPathComponent];
-        NSString *destinationPath = [[backupFileURL path] stringByDeletingLastPathComponent];
-        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-        NSInteger tag = 0;
-        if (![workspace performFileOperation:NSWorkspaceCopyOperation source:sourceDirPath destination:destinationPath files:@[fileName] tag:&tag]) {
-            DDLogError(@"%@: Failed to copy to %@", filename, destinationPath);
-            return NO;
-        } else {
-            DDLogDebug(@"%@: Copied to %@", filename, destinationPath);
-            itemBackedUp = YES;
-        }
-        
-        /*
         NSError *copyError = nil;
         NSURL *packageInfoURL = [(NSURL *)aPackage.packageInfoURL filePathURL];
         if (![fm copyItemAtURL:packageInfoURL toURL:[backupFileURL filePathURL] error:&copyError]) {
@@ -2472,9 +2446,7 @@ static dispatch_queue_t serialQueue;
         } else {
             DDLogInfo(@"Copied %@", packageInfoURL);
             itemBackedUp = YES;
-        }
-         */
-        
+        }        
     } else {
         DDLogError(@"Error: saveStartedDate is nil");
     }

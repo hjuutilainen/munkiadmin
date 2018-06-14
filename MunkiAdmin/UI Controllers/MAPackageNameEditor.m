@@ -255,28 +255,14 @@
     MAMunkiRepositoryManager *repositoryManager = [MAMunkiRepositoryManager sharedManager];
     [repositoryManager renamePackage:self.packageToRename newName:self.changedName cascade:self.shouldRenameAll];
     
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8 or earlier
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSOKButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+    [self.window orderOut:sender];
 }
 
 - (void)cancelAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8 or earlier
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSCancelButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+    [self.window orderOut:sender];
 }
 
 - (void)windowDidLoad

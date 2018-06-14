@@ -8,7 +8,6 @@
 #import <Cocoa/Cocoa.h>
 #import "PackageArrayController.h"
 #import "MAApplicationsArrayController.h"
-#import "MAGradientBackgroundView.h"
 
 @interface MASelectPkginfoItemsWindow : NSWindowController <NSTextFieldDelegate> {
     BOOL shouldHideAddedItems;
@@ -27,9 +26,9 @@
 @property (weak) IBOutlet NSTabView *tabView;
 @property NSInteger currentMode;
 @property (weak) IBOutlet NSTextField *customValueTextField;
-@property (weak) IBOutlet MAGradientBackgroundView *indSearchBgView;
-@property (weak) IBOutlet MAGradientBackgroundView *groupSearchBgView;
-@property (weak) IBOutlet MAGradientBackgroundView *customBgView;
+@property (weak) IBOutlet NSView *indSearchBgView;
+@property (weak) IBOutlet NSView *groupSearchBgView;
+@property (weak) IBOutlet NSView *customBgView;
 
 - (NSArray *)selectionAsStringObjects;
 - (void)updateGroupedSearchPredicate;

@@ -41,14 +41,6 @@
     NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)];
 	[self.manifestsArrayController setSortDescriptors:[NSArray arrayWithObjects:sortByTitle, nil]];
     
-    self.existingSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    
-    self.customValueBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    self.customValueBgView.drawBottomLine = YES;
-    self.customValueBgView.lineColor = [NSColor grayColor];
-    
     /*
      Allow double-clicking items in tableviews
      */
@@ -108,28 +100,14 @@
 
 - (IBAction)cancelAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSCancelButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+    [self.window orderOut:sender];
 }
 
 - (IBAction)addSelectedAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSOKButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+    [self.window orderOut:sender];
 }
 
 

@@ -24,16 +24,16 @@
 	// Reload the table view when catalogs change
 	//[self addObserver:self forKeyPath:@"arrangedObjects.isEnabledForCatalog" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:nil];
 	
-    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"Contextual Menu", @"")];
 	
-	NSMenuItem *enableSelected = [theMenu insertItemWithTitle:@"Enable Selected" 
+    NSMenuItem *enableSelected = [theMenu insertItemWithTitle:NSLocalizedString(@"Enable Selected", @"")
                                                        action:@selector(enableSelected:) 
                                                 keyEquivalent:@"" 
                                                       atIndex:0];
 	enableSelected.tag = 0;
 	[enableSelected setTarget:self];
 	
-	NSMenuItem *disableSelected = [theMenu insertItemWithTitle:@"Disable Selected" 
+    NSMenuItem *disableSelected = [theMenu insertItemWithTitle:NSLocalizedString(@"Disable Selected", @"")
                                                         action:@selector(disableSelected:) 
                                                  keyEquivalent:@"" 
                                                        atIndex:1];
@@ -42,14 +42,14 @@
 	
 	[theMenu insertItem:[NSMenuItem separatorItem] atIndex:2];
 	
-	NSMenuItem *enableAll = [theMenu insertItemWithTitle:@"Enable All" 
+    NSMenuItem *enableAll = [theMenu insertItemWithTitle:NSLocalizedString(@"Enable All", @"")
 												  action:@selector(enableAll:) 
 										   keyEquivalent:@"" 
 												 atIndex:3];
 	enableAll.tag = 3;
 	[enableAll setTarget:self];
 	
-	NSMenuItem *disableAll = [theMenu insertItemWithTitle:@"Disable All" 
+    NSMenuItem *disableAll = [theMenu insertItemWithTitle:NSLocalizedString(@"Disable All", @"") 
 												   action:@selector(disableAll:) 
 											keyEquivalent:@"" 
 												  atIndex:4];

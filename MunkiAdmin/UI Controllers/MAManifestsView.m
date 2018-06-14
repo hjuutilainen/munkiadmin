@@ -355,35 +355,35 @@ DDLogLevel ddLogLevel;
     for (NSTableColumn *column in self.manifestsListTableView.tableColumns) {
         NSMenuItem *menuItem = nil;
         if ([[column identifier] isEqualToString:@"manifestsTableColumnIcon"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Icon"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Icon", @"")
                                             action:@selector(toggleColumn:)
                                      keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedInstallsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Installs"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Managed Installs", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedUpdatesCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Updates"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Managed Updates", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnManagedUninstallsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Managed Uninstalls"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Managed Uninstalls", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnOptionalInstallsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Optional Installs"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Optional Installs", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnFeaturedItemsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Featured Items"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Featured Items", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnIncludedManifestsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Included Manifests"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Included Manifests", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnReferencingManifestsCount"]) {
-            menuItem = [[NSMenuItem alloc] initWithTitle:@"Number of Referencing Manifests"
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Referencing Manifests", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else {
@@ -705,14 +705,12 @@ DDLogLevel ddLogLevel;
             if ([[NSFileManager defaultManager] fileExistsAtPath:[newURL path]]) {
                 DDLogDebug(@"Can't rename. File already exists at path %@", [newURL path]);
                 NSAlert *fileExistsAlert = [[NSAlert alloc] init];
-                fileExistsAlert.messageText = @"File already exists";
-                fileExistsAlert.informativeText = [NSString stringWithFormat:@"MunkiAdmin failed to rename \"%@\" to \"%@\" because a file with that name already exists.", originalFilename, newTitle];
-                [fileExistsAlert addButtonWithTitle:@"OK"];
-                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
-                    [fileExistsAlert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {}];
-                } else {
-                    [fileExistsAlert beginSheetModalForWindow:self.view.window modalDelegate:self didEndSelector:nil contextInfo:nil];
-                }
+                NSString *messageText = NSLocalizedString(@"File already exists", @"");
+                fileExistsAlert.messageText = messageText;
+                NSString * _Nonnull informativeText = [NSString stringWithFormat:NSLocalizedString(@"MunkiAdmin failed to rename \"%@\" to \"%@\" because a file with that name already exists.", @""), originalFilename, newTitle];
+                fileExistsAlert.informativeText = informativeText;
+                [fileExistsAlert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+                [fileExistsAlert beginSheetModalForWindow:self.view.window completionHandler:^(NSModalResponse returnCode) {}];
             }
             
             [repoManager moveManifest:clickedManifest toURL:newURL cascade:YES];
@@ -752,20 +750,20 @@ DDLogLevel ddLogLevel;
     
     // Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Delete"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
     
     NSString *messageText;
     NSString *informativeText;
     if ([selectedManifests count] > 1) {
-        messageText = @"Delete manifests";
+        messageText = NSLocalizedString(@"Delete manifests", @"");
         informativeText = [NSString stringWithFormat:
-                           @"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.",
+                           NSLocalizedString(@"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.", @""),
                            (unsigned long)[selectedManifests count]];
     } else if ([selectedManifests count] == 1) {
-        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [selectedManifests[0] title]];
+        messageText = [NSString stringWithFormat:NSLocalizedString(@"Delete manifest \"%@\"", @""), [selectedManifests[0] title]];
         informativeText = [NSString stringWithFormat:
-                           @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
+                           NSLocalizedString(@"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.", @""),
                            [selectedManifests[0] title]];
     } else {
         DDLogError(@"No manifests selected, can't delete anything...");
@@ -773,7 +771,7 @@ DDLogLevel ddLogLevel;
     }
     [alert setMessageText:messageText];
     [alert setInformativeText:informativeText];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     [alert setShowsSuppressionButton:NO];
     
     NSInteger result = [alert runModal];
@@ -804,7 +802,8 @@ DDLogLevel ddLogLevel;
     savePanel.nameFieldStringValue = newFilename;
     savePanel.directoryURL = appDelegate.manifestsURL;
     savePanel.message = message;
-    savePanel.title = @"Create manifest";
+    NSString *title = NSLocalizedString(@"Create manifest", @"");
+    savePanel.title = title;
     if ([savePanel runModal] == NSFileHandlingPanelOKButton)
     {
         newURL = [savePanel URL];
@@ -1083,7 +1082,7 @@ DDLogLevel ddLogLevel;
 {
     [menu removeAllItems];
     
-    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Enable All Catalogs"
+    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Enable All Catalogs", @"")
                                                                        action:@selector(enableAllCatalogsAction:)
                                                                 keyEquivalent:@""];
     [enableAllCatalogsMenuItem setEnabled:YES];
@@ -1091,7 +1090,7 @@ DDLogLevel ddLogLevel;
     [menu addItem:enableAllCatalogsMenuItem];
     
     
-    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Disable All Catalogs"
+    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Disable All Catalogs", @"")
                                                                         action:@selector(disableAllCatalogsAction:)
                                                                  keyEquivalent:@""];
     
@@ -1543,6 +1542,7 @@ DDLogLevel ddLogLevel;
     NSRect overallFrame = [self.detailViewPlaceHolder frame];
     [predicateEditorSubView setHidden:YES];
     
+    [manifestsListSubView setFrameOrigin:NSMakePoint(0, 0)];
     [manifestsListSubView setFrameSize:NSMakeSize(overallFrame.size.width,overallFrame.size.height)];
     
     [self.manifestsListSplitView display];
@@ -1565,10 +1565,13 @@ DDLogLevel ddLogLevel;
     CGFloat desiredHeight = numRowsInPredEditor * predEditorRowHeight + padding;
     CGFloat dividerThickness = [self.manifestsListSplitView dividerThickness];
     predicateEditorFrame.size.height = desiredHeight;
+    predicateEditorFrame.size.width = overallFrame.size.width;
     manifestsListFrame.size.height = (overallFrame.size.height - predicateEditorFrame.size.height - dividerThickness);
-    predicateEditorFrame.origin.y = manifestsListFrame.size.height + dividerThickness;
+    manifestsListFrame.size.width = overallFrame.size.width;
     
-    [manifestsListSubView setFrameSize:manifestsListFrame.size];
+    manifestsListFrame.origin.y = predicateEditorFrame.size.height + dividerThickness;
+    
+    [manifestsListSubView setFrame:manifestsListFrame];
     [predicateEditorSubView setFrame:predicateEditorFrame];
     
     [self.manifestsListSplitView display];

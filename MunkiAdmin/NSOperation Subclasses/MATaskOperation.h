@@ -13,9 +13,9 @@
     BOOL        finished;
 }
 
-@property (nonatomic, copy) void (^willStartCallback) ();
+@property (nonatomic, copy) void (^willStartCallback) (void);
 @property (nonatomic, copy) void (^progressCallback) (double progress, NSString *description);
-@property (nonatomic, copy) void (^didFinishCallback) ();
+@property (nonatomic, copy) void (^didFinishCallback) (void);
 @property (nonatomic, copy) void (^standardOutputCallback) (NSString *standardOutput);
 @property (nonatomic, copy) void (^standardOutputDataCallback) (NSData *standardOutputData);
 @property (nonatomic, copy) void (^standardErrorCallback) (NSString *standardError);

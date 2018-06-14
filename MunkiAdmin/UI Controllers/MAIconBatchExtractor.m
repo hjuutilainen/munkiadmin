@@ -80,7 +80,7 @@ DDLogLevel ddLogLevel;
     self.numExtractOperationsRunning = 0;
     self.overwriteExisting = NO;
     self.resizeOnSave = YES;
-    self.extractOKButton.title = @"Extract";
+    self.extractOKButton.title = NSLocalizedString(@"Extract", @"");
     self.cancelButton.enabled = YES;
     [self.progressIndicator setIndeterminate:YES];
     
@@ -287,7 +287,7 @@ DDLogLevel ddLogLevel;
              */
             if (self.numExtractOperationsRunning == 0) {
                 self.extractOperationsRunning = NO;
-                self.extractOKButton.title = @"Close";
+                self.extractOKButton.title = NSLocalizedString(@"Close", @"");
                 self.cancelButton.enabled = NO;
             }
         });
@@ -347,11 +347,7 @@ DDLogLevel ddLogLevel;
             if (![fm createDirectoryAtURL:iconsDirectory withIntermediateDirectories:NO attributes:nil error:&dirCreateError]) {
                 DDLogError(@"%@", dirCreateError);
                 NSAlert *alert = [NSAlert alertWithError:dirCreateError];
-                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
-                    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
-                } else {
-                    [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
-                }
+                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
                 return;
             }
         }

@@ -16,7 +16,7 @@
 - (id)initWithMode:(NSInteger)mode;
 
 @property (nonatomic, copy) void (^progressCallback) (float);
-@property (nonatomic, copy) void (^finishCallback) ();
+@property (nonatomic, copy) void (^finishCallback) (void);
 @property NSInteger operationMode;
 @property (strong) NSString *currentJobDescription;
 @property (strong) NSString *fileName;

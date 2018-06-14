@@ -151,12 +151,12 @@ DDLogLevel ddLogLevel;
     return newImage;
 }
 
-- (void)savePanelDidEnd:(NSSavePanel *)sheet returnCode:(NSInteger)returnCode
+- (void)savePanelDidEnd:(NSSavePanel *)sheet returnCode:(NSModalResponse)returnCode
 {
     /*
      Save the actual image
      */
-    if (returnCode == NSOKButton)
+    if (returnCode == NSModalResponseOK)
     {
         MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
         NSManagedObjectContext *moc = [appDelegate managedObjectContext];
@@ -312,28 +312,21 @@ DDLogLevel ddLogLevel;
     if ((![installerType isEqualToString:@"copy_from_dmg"]) && (installerType != nil)) {
         DDLogDebug(@"Installer type %@ not supported...", installerType);
         NSAlert *alert = [[NSAlert alloc] init];
-        alert.messageText = @"Installer type not supported";
-        alert.informativeText = [NSString stringWithFormat:@"MunkiAdmin can not extract icons from \"%@\" items.", installerType];
-        [alert addButtonWithTitle:@"OK"];
-        if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
-            [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
-        } else {
-            [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
-        }
+        NSString *messageText = NSLocalizedString(@"Installer type not supported", @"");
+        alert.messageText = messageText;
+        NSString * _Nonnull informativeText = [NSString stringWithFormat:NSLocalizedString(@"MunkiAdmin can not extract icons from \"%@\" items.", @""), installerType];
+        alert.informativeText = informativeText;
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+        [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
+        
         return;
     }
     
-    if ([NSWindow instancesRespondToSelector:@selector(beginSheet:completionHandler:)]) {
-        [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {}];
-    } else {
-        [NSApp beginSheet:self.progressWindow
-           modalForWindow:[self window] modalDelegate:self
-           didEndSelector:nil contextInfo:nil];
-    }
+    [self.window beginSheet:self.progressWindow completionHandler:^(NSModalResponse returnCode) {}];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressIndicator setIndeterminate:YES];
-        [self.progressDescription setStringValue:@"Starting..."];
+        [self.progressDescription setStringValue:NSLocalizedString(@"Starting...", @"")];
         [self.progressIndicator startAnimation:self];
     });
     
@@ -373,11 +366,10 @@ DDLogLevel ddLogLevel;
                     }];
                 } else {
                     [self.progressWindow orderOut:sender];
-                    [NSApp endSheet:self.progressWindow returnCode:NSOKButton];
-                    
-                    [NSApp beginSheet:self.imageBrowserWindow
-                       modalForWindow:[self window] modalDelegate:self
-                       didEndSelector:@selector(iconBrowserDidEnd:) contextInfo:nil];
+                    [NSApp endSheet:self.progressWindow returnCode:NSModalResponseOK];
+                    [self.window beginSheet:self.imageBrowserWindow completionHandler:^(NSModalResponse returnCode) {
+                        [self iconBrowserDidEnd:self.imageBrowserWindow];
+                    }];
                 }
             }
             
@@ -386,13 +378,10 @@ DDLogLevel ddLogLevel;
              */
             else {
                 NSAlert *alert = [[NSAlert alloc] init];
-                alert.messageText = @"No images found";
-                [alert addButtonWithTitle:@"OK"];
-                if ([NSAlert instancesRespondToSelector:@selector(beginSheetModalForWindow:completionHandler:)]) {
-                    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
-                } else {
-                    [alert beginSheetModalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:nil];
-                }
+                NSString *messageText = NSLocalizedString(@"No images found", @"");
+                alert.messageText = messageText;
+                [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+                [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {}];
             }
             
             /*
@@ -400,13 +389,7 @@ DDLogLevel ddLogLevel;
              */
             
             [self.progressIndicator stopAnimation:self];
-            
-            if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-                [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
-            } else {
-                [self.progressWindow orderOut:sender];
-                [NSApp endSheet:self.progressWindow returnCode:NSOKButton];
-            }
+            [self.window endSheet:self.progressWindow returnCode:NSModalResponseOK];
         });
     } progressHandler:^(double progress, NSString *description) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -446,7 +429,7 @@ DDLogLevel ddLogLevel;
     if ([packageNames count] == 1) {
         filename = [(NSString *)packageNames[0] stringByAppendingPathExtension:@"png"];
     } else {
-        filename = @"New Icon.png";
+        filename = NSLocalizedString(@"New Icon.png", @"");
     }
     [savePanel setNameFieldStringValue:filename];
 	
@@ -513,7 +496,8 @@ DDLogLevel ddLogLevel;
 - (void)chooseSourceImage
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    openPanel.message = @"Choose an image to create an icon or choose any other file to extract its icon.";
+    NSString *message = NSLocalizedString(@"Choose an image to create an icon or choose any other file to extract its icon.", @"");
+    openPanel.message = message;
 	[openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
 		if (result == NSFileHandlingPanelOKButton) {
             [openPanel orderOut:nil];
@@ -537,18 +521,13 @@ DDLogLevel ddLogLevel;
         [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseOK];
     } else {
         [self.imageBrowserWindow orderOut:sender];
-        [NSApp endSheet:self.imageBrowserWindow returnCode:NSOKButton];
+        [NSApp endSheet:self.imageBrowserWindow returnCode:NSModalResponseOK];
     }
 }
 
 - (IBAction)cancelImageBrowserAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseCancel];
-    } else {
-        [self.imageBrowserWindow orderOut:sender];
-        [NSApp endSheet:self.imageBrowserWindow returnCode:NSCancelButton];
-    }
+    [self.window endSheet:self.imageBrowserWindow returnCode:NSModalResponseCancel];
 }
 
 

@@ -123,10 +123,6 @@ DDLogLevel ddLogLevel;
     self.modifiedDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateModified" ascending:YES];
     self.createdDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:YES];
     
-    
-    self.rightPlaceHolder.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]
-                                                                        endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    
     [self.descriptionTextView setFont:[NSFont systemFontOfSize:11.0]];
     [self.notesTextView setFont:[NSFont systemFontOfSize:11.0]];
     
@@ -171,7 +167,7 @@ DDLogLevel ddLogLevel;
     for (NSTableColumn *col in tableColumnsSorted) {
         NSMenuItem *mi = nil;
         if ([[col identifier] isEqualToString:@"packagesTableColumnIcon"]) {
-            mi = [[NSMenuItem alloc] initWithTitle:@"Icon"
+            mi = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Icon", @"")
                                             action:@selector(toggleColumn:)
                                      keyEquivalent:@""];
         } else {
@@ -265,10 +261,12 @@ DDLogLevel ddLogLevel;
     CategoryMO *clickedCategory = clickedObject.categoryReference;
     
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = [NSString stringWithFormat:@"Delete \"%@\"?", clickedObject.title];
-    alert.informativeText = [NSString stringWithFormat:@"Are you sure you want to delete the category \"%@\"? Category reference will be removed from any packages using it.", clickedObject.title];
-    [alert addButtonWithTitle:@"Delete"];
-    [alert addButtonWithTitle:@"Cancel"];
+    NSString * _Nonnull messageText = [NSString stringWithFormat:NSLocalizedString(@"Delete \"%@\"?", @""), clickedObject.title];
+    alert.messageText = messageText;
+    NSString * _Nonnull informativeText = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the category \"%@\"? Category reference will be removed from any packages using it.", @""), clickedObject.title];
+    alert.informativeText = informativeText;
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
     NSInteger result = [alert runModal];
     
     /*
@@ -483,10 +481,12 @@ DDLogLevel ddLogLevel;
     DeveloperMO *clickedDeveloper = clickedObject.developerReference;
     
     NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = [NSString stringWithFormat:@"Delete \"%@\"?", clickedObject.title];
-    alert.informativeText = [NSString stringWithFormat:@"Are you sure you want to delete the developer \"%@\"? The developer will be removed from all referencing pkginfo files.", clickedObject.title];
-    [alert addButtonWithTitle:@"Delete"];
-    [alert addButtonWithTitle:@"Cancel"];
+    NSString * _Nonnull messageText = [NSString stringWithFormat:NSLocalizedString(@"Delete \"%@\"?", @""), clickedObject.title];
+    alert.messageText = messageText;
+    NSString * _Nonnull informativeText = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete the developer \"%@\"? The developer will be removed from all referencing pkginfo files.", @""), clickedObject.title];
+    alert.informativeText = informativeText;
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
     NSInteger result = [alert runModal];
     
     /*
@@ -673,7 +673,7 @@ DDLogLevel ddLogLevel;
     /*
      Create the first menu items
      */
-    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
+    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"New Developer...", @"")
                                                                   action:@selector(createNewDeveloperAndAssignSelectedPackages)
                                                            keyEquivalent:@""];
     createAndAddMenuItem.target = self;
@@ -681,7 +681,7 @@ DDLogLevel ddLogLevel;
     
     [menu addItem:[NSMenuItem separatorItem]];
     
-    NSMenuItem *unknownDeveloperItem = [[NSMenuItem alloc] initWithTitle:@"Unknown"
+    NSMenuItem *unknownDeveloperItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Unknown", @"")
                                                                    action:@selector(assignSelectedPackagesToDeveloperAction:)
                                                             keyEquivalent:@""];
     if ([nilDeveloperPackages count] > 0 && [selectedPackageDevelopers count] == 0) {
@@ -744,7 +744,7 @@ DDLogLevel ddLogLevel;
     /*
      Create the first menu items
      */
-    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+    NSMenuItem *createAndAddMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"New Category...", @"")
                                                                   action:@selector(createNewCategoryAndAddSelectedPackages)
                                                            keyEquivalent:@""];
     createAndAddMenuItem.target = self;
@@ -752,7 +752,7 @@ DDLogLevel ddLogLevel;
     
     [menu addItem:[NSMenuItem separatorItem]];
     
-    NSMenuItem *uncategorizedMenuItem = [[NSMenuItem alloc] initWithTitle:@"Uncategorized"
+    NSMenuItem *uncategorizedMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Uncategorized", @"")
                                                                    action:@selector(addSelectedPackagesToCategoryAction:)
                                                             keyEquivalent:@""];
     if ([nilCategoryPackages count] > 0 && [selectedPackageCategories count] == 0) {
@@ -801,7 +801,7 @@ DDLogLevel ddLogLevel;
 {
     [menu removeAllItems];
     
-    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Enable All Catalogs"
+    NSMenuItem *enableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Enable All Catalogs", @"")
                                                                        action:@selector(enableAllCatalogsAction:)
                                                                 keyEquivalent:@""];
     [enableAllCatalogsMenuItem setEnabled:YES];
@@ -809,7 +809,7 @@ DDLogLevel ddLogLevel;
     [menu addItem:enableAllCatalogsMenuItem];
     
     
-    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:@"Disable All Catalogs"
+    NSMenuItem *disableAllCatalogsMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Disable All Catalogs", @"")
                                                                  action:@selector(disableAllCatalogsAction:)
                                                           keyEquivalent:@""];
     
@@ -914,7 +914,7 @@ DDLogLevel ddLogLevel;
     
     
     
-    NSMenuItem *batchCreateCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Batch Extract Icons..."
+    NSMenuItem *batchCreateCustomMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Batch Extract Icons...", @"")
                                                                  action:@selector(batchExtractIconsAction:)
                                                           keyEquivalent:@""];
     
@@ -923,7 +923,7 @@ DDLogLevel ddLogLevel;
     [menu addItem:batchCreateCustomMenuItem];
     
     
-    NSMenuItem *clearCustomMenuItem = [[NSMenuItem alloc] initWithTitle:@"Clear Custom Icon"
+    NSMenuItem *clearCustomMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Clear Custom Icon", @"")
                                                                  action:@selector(clearCustomIconAction:)
                                                           keyEquivalent:@""];
     
@@ -942,15 +942,15 @@ DDLogLevel ddLogLevel;
      Only visible if option key is down when opening the menu.
      */
     NSEvent *event = [NSApp currentEvent];
-    if (([event modifierFlags] & NSAlternateKeyMask) != 0) {
-        NSMenuItem *updateHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Update Icon Hash"
+    if (([event modifierFlags] & NSEventModifierFlagOption) != 0) {
+        NSMenuItem *updateHashMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Update Icon Hash", @"")
                                                                     action:@selector(updateIconHashAction:)
                                                              keyEquivalent:@""];
         [updateHashMenuItem setEnabled:YES];
         updateHashMenuItem.target = self;
         [menu addItem:updateHashMenuItem];
         
-        NSMenuItem *deleteHashMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Icon Hash"
+        NSMenuItem *deleteHashMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete Icon Hash", @"")
                                                                     action:@selector(deleteIconHashAction:)
                                                              keyEquivalent:@""];
         [deleteHashMenuItem setEnabled:YES];
@@ -963,7 +963,8 @@ DDLogLevel ddLogLevel;
     if ([selectedPackageNames count] == 1) {
         PackageMO *selectedPackage = self.packagesArrayController.selectedObjects[0];
         
-        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:[NSString stringWithFormat:@"Choose Existing Icon for Name \"%@\"...", selectedPackageNames[0]]
+        NSString * _Nonnull chooseIconForNameTitle = [NSString stringWithFormat:NSLocalizedString(@"Choose Existing Icon for Name \"%@\"...", @""), selectedPackageNames[0]];
+        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:chooseIconForNameTitle
                                                                            action:@selector(chooseIconForNameAction:)
                                                                     keyEquivalent:@""];
         
@@ -972,9 +973,9 @@ DDLogLevel ddLogLevel;
         
         NSString *menuItemTitle;
         if ([self.packagesArrayController.selectedObjects count] == 1) {
-            menuItemTitle = [NSString stringWithFormat:@"Choose Existing Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
+            menuItemTitle = [NSString stringWithFormat:NSLocalizedString(@"Choose Existing Icon for Package %@ %@...", @""), selectedPackage.munki_name, selectedPackage.munki_version];
         } else {
-            menuItemTitle = @"Choose Existing Icon for Selected Packages...";
+            menuItemTitle = NSLocalizedString(@"Choose Existing Icon for Selected Packages...", @"");
         }
         NSMenuItem *chooseIconForPackageMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                                               action:@selector(chooseIconForPackageAction:)
@@ -993,9 +994,9 @@ DDLogLevel ddLogLevel;
         [menu addItem:createIconForNameMenuItem];
         
         if ([self.packagesArrayController.selectedObjects count] == 1) {
-            menuItemTitle = [NSString stringWithFormat:@"Create New Icon for Package %@ %@...", selectedPackage.munki_name, selectedPackage.munki_version];
+            menuItemTitle = [NSString stringWithFormat:NSLocalizedString(@"Create New Icon for Package %@ %@...", @""), selectedPackage.munki_name, selectedPackage.munki_version];
         } else {
-            menuItemTitle = @"Create New Icon for Selected Packages...";
+            menuItemTitle = NSLocalizedString(@"Create New Icon for Selected Packages...", @"");
         }
         NSMenuItem *createIconForPackageMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                                               action:@selector(createIconForPackageAction:)
@@ -1004,13 +1005,13 @@ DDLogLevel ddLogLevel;
         createIconForPackageMenuItem.target = self;
         [menu addItem:createIconForPackageMenuItem];
     } else {
-        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Choose Existing Icon for Selected Packages..."
+        NSMenuItem *chooseIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Choose Existing Icon for Selected Packages...", @"")
                                                                            action:@selector(chooseIconForPackageAction:)
                                                                     keyEquivalent:@""];
         
         chooseIconForNameMenuItem.target = self;
         [menu addItem:chooseIconForNameMenuItem];
-        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:@"Create New Icon for Selected Packages..."
+        NSMenuItem *createIconForNameMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Create New Icon for Selected Packages...", @"")
                                                                            action:@selector(createIconForPackageAction:)
                                                                     keyEquivalent:@""];
         
@@ -1047,32 +1048,32 @@ DDLogLevel ddLogLevel;
             /*
              Clicked on category objects
              */
-            NSMenuItem *newCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Category..."
+            NSMenuItem *newCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"New Category...", @"")
                                                                          action:@selector(createNewCategory)
                                                                   keyEquivalent:@""];
             newCategoryMenuItem.target = self;
             [menu addItem:newCategoryMenuItem];
             
-            NSMenuItem *renameCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Category..."
+            NSMenuItem *renameCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rename Category...", @"")
                                                                             action:@selector(renameCategory)
                                                                      keyEquivalent:@""];
             renameCategoryMenuItem.target = self;
             [menu addItem:renameCategoryMenuItem];
             
-            NSMenuItem *deleteCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Category..."
+            NSMenuItem *deleteCategoryMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete Category...", @"")
                                                                             action:@selector(deleteCategory)
                                                                      keyEquivalent:@""];
             deleteCategoryMenuItem.target = self;
             [menu addItem:deleteCategoryMenuItem];
             
             for (NSMenuItem *menuItem in menu.itemArray) {
-                if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Rename Category..."]) {
+                if ([[clickedObject title] isEqualToString:NSLocalizedString(@"Uncategorized", @"")] && [menuItem.title isEqualToString:NSLocalizedString(@"Rename Category...", @"")]) {
                     [menuItem setEnabled:NO];
-                } else if ([[clickedObject title] isEqualToString:@"Uncategorized"] && [menuItem.title isEqualToString:@"Delete Category..."]) {
+                } else if ([[clickedObject title] isEqualToString:NSLocalizedString(@"Uncategorized", @"")] && [menuItem.title isEqualToString:NSLocalizedString(@"Delete Category...", @"")]) {
                     [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Category..."]
-                           || [menuItem.title isEqualToString:@"Rename Category..."]
-                           || [menuItem.title isEqualToString:@"Delete Category..."]) {
+                } else if ([menuItem.title isEqualToString:NSLocalizedString(@"New Category...", @"")]
+                           || [menuItem.title isEqualToString:NSLocalizedString(@"Rename Category...", @"")]
+                           || [menuItem.title isEqualToString:NSLocalizedString(@"Delete Category...", @"")]) {
                     [menuItem setEnabled:YES];
                 } else {
                     [menuItem setEnabled:NO];
@@ -1082,32 +1083,32 @@ DDLogLevel ddLogLevel;
             /*
              Clicked on developer objects
              */
-            NSMenuItem *newDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"New Developer..."
+            NSMenuItem *newDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"New Developer...", @"")
                                                                           action:@selector(createNewDeveloper)
                                                                    keyEquivalent:@""];
             newDeveloperMenuItem.target = self;
             [menu addItem:newDeveloperMenuItem];
             
-            NSMenuItem *renameDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Rename Developer..."
+            NSMenuItem *renameDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Rename Developer...", @"")
                                                                              action:@selector(renameDeveloper)
                                                                       keyEquivalent:@""];
             renameDeveloperMenuItem.target = self;
             [menu addItem:renameDeveloperMenuItem];
             
-            NSMenuItem *deleteDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Developer..."
+            NSMenuItem *deleteDeveloperMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete Developer...", @"")
                                                                             action:@selector(deleteDeveloper)
                                                                      keyEquivalent:@""];
             deleteDeveloperMenuItem.target = self;
             [menu addItem:deleteDeveloperMenuItem];
             
             for (NSMenuItem *menuItem in menu.itemArray) {
-                if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Rename Developer..."]) {
+                if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:NSLocalizedString(@"Rename Developer...", @"")]) {
                     [menuItem setEnabled:NO];
-                } else if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:@"Delete Developer..."]) {
+                } else if ([[clickedObject title] isEqualToString:@"Unknown"] && [menuItem.title isEqualToString:NSLocalizedString(@"Delete Developer...", @"")]) {
                     [menuItem setEnabled:NO];
-                } else if ([menuItem.title isEqualToString:@"New Developer..."]
-                           || [menuItem.title isEqualToString:@"Rename Developer..."]
-                           || [menuItem.title isEqualToString:@"Delete Developer..."]) {
+                } else if ([menuItem.title isEqualToString:NSLocalizedString(@"New Developer...", @"")]
+                           || [menuItem.title isEqualToString:NSLocalizedString(@"Rename Developer...", @"")]
+                           || [menuItem.title isEqualToString:NSLocalizedString(@"Delete Developer...", @"")]) {
                     [menuItem setEnabled:YES];
                 } else {
                     [menuItem setEnabled:NO];
@@ -1242,9 +1243,9 @@ DDLogLevel ddLogLevel;
     } else {
         
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"Move"];
-        [alert addButtonWithTitle:@"Skip"];
-        [alert setMessageText:@"Move installer item?"];
+        [alert addButtonWithTitle:NSLocalizedString(@"Move", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Skip", @"")];
+        [alert setMessageText:NSLocalizedString(@"Move installer item?", @"")];
         [alert setInformativeText:NSLocalizedString(@"MunkiAdmin can move the installer item to a corresponding subdirectory under the pkgs directory. Any missing directories will be created.", @"")];
         [alert setShowsSuppressionButton:YES];
         

@@ -91,25 +91,15 @@
     if (![self.itemToEdit validateForUpdate:&validateError]) {
         [NSApp presentError:validateError];
     } else {
-        if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-            [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-            [self.window orderOut:sender];
-        } else {
-            [self.window orderOut:sender];
-            [NSApp endSheet:self.window returnCode:NSOKButton];
-        }
+        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+        [self.window orderOut:sender];
     }
 }
 
 - (IBAction)cancelAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
-        [self.window orderOut:sender];
-    } else {
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSCancelButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+    [self.window orderOut:sender];
 }
 
 

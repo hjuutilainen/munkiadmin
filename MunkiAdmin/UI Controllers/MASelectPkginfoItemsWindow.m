@@ -117,28 +117,14 @@
 
 - (IBAction)cancelAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8 or earlier
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSCancelButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseCancel];
+    [self.window orderOut:sender];
 }
 
 - (IBAction)addSelectedAction:(id)sender
 {
-    if ([NSWindow instancesRespondToSelector:@selector(endSheet:returnCode:)]) {
-        // 10.9 or later
-        [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
-        [self.window orderOut:sender];
-    } else {
-        // 10.8 or earlier
-        [self.window orderOut:sender];
-        [NSApp endSheet:self.window returnCode:NSOKButton];
-    }
+    [self.window.sheetParent endSheet:self.window returnCode:NSModalResponseOK];
+    [self.window orderOut:sender];
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -159,17 +145,6 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-    self.indSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                       endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    
-    self.groupSearchBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                         endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    
-    self.customBgView.fillGradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0] 
-                                                                    endingColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
-    self.customBgView.drawBottomLine = YES;
-    self.customBgView.lineColor = [NSColor grayColor];
     
     /*
      Allow double-clicking items in tableviews

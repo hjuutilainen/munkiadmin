@@ -21,7 +21,7 @@
     MASelectPkginfoItemsWindow *pkginfoSelector;
 }
 
-- (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
+- (void)installsItemEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object;
 - (IBAction)addInstallsItemFromDiskAction:(id)sender;
 - (IBAction)createNewInstallsItem:(id)sender;
 - (IBAction)renameCurrentPackageAction:(id)sender;

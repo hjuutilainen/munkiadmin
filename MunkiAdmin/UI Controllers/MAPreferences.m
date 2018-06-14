@@ -19,9 +19,9 @@
     
 	NSToolbarItem *generalItem;
     generalItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"General"];
-    [generalItem setPaletteLabel:@"General"];
-    [generalItem setLabel:@"General"];
-    [generalItem setToolTip:@"General preference options."];
+    [generalItem setPaletteLabel:NSLocalizedString(@"General", @"")];
+    [generalItem setLabel:NSLocalizedString(@"General", @"")];
+    [generalItem setToolTip:NSLocalizedString(@"General preference options.", @"")];
     [generalItem setImage:[NSImage imageNamed:NSImageNamePreferencesGeneral]];
     [generalItem setTarget:self];
     [generalItem setAction:@selector(switchViews:)];
@@ -30,9 +30,9 @@
 	
 	NSToolbarItem *munkiItem;
 	munkiItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Munki"];
-    [munkiItem setPaletteLabel:@"Munki"];
-    [munkiItem setLabel:@"Munki"];
-    [munkiItem setToolTip:@"Munki preference options."];
+    [munkiItem setPaletteLabel:NSLocalizedString(@"Munki", @"")];
+    [munkiItem setLabel:NSLocalizedString(@"Munki", @"")];
+    [munkiItem setToolTip:NSLocalizedString(@"Munki preference options.", @"")];
     [munkiItem setImage:[NSImage imageNamed:@"MunkiAdminIcon_32x32"]];
     [munkiItem setTarget:self];
     [munkiItem setAction:@selector(switchViews:)];
@@ -41,9 +41,9 @@
     
     NSToolbarItem *importOptionsItem;
 	importOptionsItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Import Options"];
-    [importOptionsItem setPaletteLabel:@"Import Options"];
-    [importOptionsItem setLabel:@"Import Options"];
-    [importOptionsItem setToolTip:@"Import Options"];
+    [importOptionsItem setPaletteLabel:NSLocalizedString(@"Import Options", @"")];
+    [importOptionsItem setLabel:NSLocalizedString(@"Import Options", @"")];
+    [importOptionsItem setToolTip:NSLocalizedString(@"Import Options", @"")];
     [importOptionsItem setImage:[NSImage imageNamed:@"packageGroupIcon_32x32"]];
     [importOptionsItem setTarget:self];
     [importOptionsItem setAction:@selector(switchViews:)];
@@ -52,9 +52,9 @@
     
     NSToolbarItem *advancedItem;
 	advancedItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Advanced"];
-    [advancedItem setPaletteLabel:@"Advanced"];
-    [advancedItem setLabel:@"Advanced"];
-    [advancedItem setToolTip:@"Advanced options."];
+    [advancedItem setPaletteLabel:NSLocalizedString(@"Advanced", @"")];
+    [advancedItem setLabel:NSLocalizedString(@"Advanced", @"")];
+    [advancedItem setToolTip:NSLocalizedString(@"Advanced options.", @"")];
     [advancedItem setImage:[NSImage imageNamed:NSImageNameAdvanced]];
     [advancedItem setTarget:self];
     [advancedItem setAction:@selector(switchViews:)];
@@ -62,9 +62,9 @@
     
     NSToolbarItem *appearanceItem;
 	appearanceItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"Appearance"];
-    [appearanceItem setPaletteLabel:@"Appearance"];
-    [appearanceItem setLabel:@"Appearance"];
-    [appearanceItem setToolTip:@"Appearance options."];
+    [appearanceItem setPaletteLabel:NSLocalizedString(@"Appearance", @"")];
+    [appearanceItem setLabel:NSLocalizedString(@"Appearance", @"")];
+    [appearanceItem setToolTip:NSLocalizedString(@"Appearance options.", @"")];
     [appearanceItem setImage:[NSImage imageNamed:NSImageNameColorPanel]];
     [appearanceItem setTarget:self];
     [appearanceItem setAction:@selector(switchViews:)];
@@ -115,7 +115,7 @@
 {
     NSString *sender;
     if (item == nil) {
-        sender = @"General";
+        sender = NSLocalizedString(@"General", @"");
         [self.toolbar setSelectedItemIdentifier:sender];
     } else {
         sender = [item label];

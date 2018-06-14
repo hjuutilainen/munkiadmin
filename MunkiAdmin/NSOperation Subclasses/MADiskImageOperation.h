@@ -16,10 +16,10 @@ typedef NS_ENUM(NSInteger, MADiskImageOperationType) {
 
 @interface MADiskImageOperation : NSOperation
 
-@property (nonatomic, copy) void (^willStartCallback) ();
+@property (nonatomic, copy) void (^willStartCallback) (void);
 @property (nonatomic, copy) void (^progressCallback) (double progress, NSString *description);
 @property (nonatomic, copy) void (^didMountHandler) (NSArray *mountPoints, BOOL alreadyMounted);
-@property (nonatomic, copy) void (^didFinishCallback) ();
+@property (nonatomic, copy) void (^didFinishCallback) (void);
 @property BOOL leaveMounted;
 @property MADiskImageOperationType operationType;
 

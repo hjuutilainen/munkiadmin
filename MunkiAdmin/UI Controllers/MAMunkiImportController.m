@@ -149,9 +149,9 @@ DDLogLevel ddLogLevel;
     }
     
     NSUInteger currentIndex = [self.viewArray indexOfObject:self.currentView];
-    self.continueButton.title = @"Continue";
-    self.goBackButton.title = @"Go Back";
-    self.cancelButton.title = @"Cancel";
+    self.continueButton.title = NSLocalizedString(@"Continue", @"");
+    self.goBackButton.title = NSLocalizedString(@"Go Back", @"");
+    self.cancelButton.title = NSLocalizedString(@"Cancel", @"");
     self.cancelButton.enabled = YES;
     
     // Can we go forward
@@ -171,7 +171,7 @@ DDLogLevel ddLogLevel;
     // Are we on the last view
     if ((currentIndex + 1) == self.viewArray.count) {
         self.continueButton.enabled = YES;
-        self.continueButton.title = @"Finish";
+        self.continueButton.title = NSLocalizedString(@"Finish", @"");
     }
 }
 

@@ -117,17 +117,22 @@ DDLogLevel ddLogLevel;
 
 - (void)alertMunkiToolNotInstalled:(NSString *)munkitoolName
 {
-    NSString *alertText = [NSString stringWithFormat:
-                           @"Can't find %@.\n\nMake sure munkitools package is installed and a correct path for %@ is set in MunkiAdmin preferences.",
-                           munkitoolName,
-                           munkitoolName];
+    NSString *informativeText = [NSString stringWithFormat:
+                                 NSLocalizedString(@"Can't find %@.\n\nMake sure munkitools package is installed and a correct path for %@ is set in MunkiAdmin preferences.", @""),
+                                 munkitoolName,
+                                 munkitoolName];
     
-    NSAlert *munkitoolFailedAlert = [NSAlert alertWithMessageText:@"Munkitools error"
-                                                    defaultButton:@"OK"
-                                                  alternateButton:@""
-                                                      otherButton:@""
-                                        informativeTextWithFormat:@"%@", alertText];
-    [munkitoolFailedAlert runModal];
+    // Configure the dialog
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+    
+    NSString *messageText = NSLocalizedString(@"Munkitools error", @"");
+    [alert setMessageText:messageText];
+    [alert setInformativeText:informativeText];
+    [alert setAlertStyle:NSAlertStyleInformational];
+    [alert setShowsSuppressionButton:NO];
+    
+    [alert runModal];
 }
 
 - (BOOL)makepkginfoInstalled
@@ -207,7 +212,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	openPanel.title = @"Select a munki Repository";
+    NSString *title = NSLocalizedString(@"Select a munki Repository", @"");
+    openPanel.title = title;
 	openPanel.allowsMultipleSelection = NO;
 	openPanel.canChooseDirectories = YES;
 	openPanel.canChooseFiles = NO;
@@ -228,7 +234,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	openPanel.title = @"Select a save location";
+    NSString *title = NSLocalizedString(@"Select a save location", @"");
+    openPanel.title = title;
 	openPanel.allowsMultipleSelection = NO;
 	openPanel.canChooseDirectories = YES;
 	openPanel.canChooseFiles = NO;
@@ -253,7 +260,8 @@ DDLogLevel ddLogLevel;
 	openPanel.canChooseDirectories = YES;
 	openPanel.canChooseFiles = NO;
 	openPanel.resolvesAliases = YES;
-    openPanel.prompt = @"Choose";
+    NSString *prompt = NSLocalizedString(@"Choose", @"");
+    openPanel.prompt = prompt;
     openPanel.directoryURL = self.pkgsInfoURL;
 	
 	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
@@ -269,7 +277,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	openPanel.title = @"Select a File";
+    NSString *title = NSLocalizedString(@"Select a File", @"");
+    openPanel.title = title;
 	openPanel.allowsMultipleSelection = NO;
 	openPanel.canChooseDirectories = NO;
 	openPanel.canChooseFiles = YES;
@@ -288,7 +297,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-	openPanel.title = @"Select a File";
+    NSString *title = NSLocalizedString(@"Select Files", @"");
+    openPanel.title = title;
 	openPanel.allowsMultipleSelection = YES;
 	openPanel.canChooseDirectories = NO;
 	openPanel.canChooseFiles = YES;
@@ -309,7 +319,8 @@ DDLogLevel ddLogLevel;
     
 	NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     openPanel.delegate = self;
-	openPanel.title = @"Select a File";
+    NSString *title = NSLocalizedString(@"Select a File", @"");
+    openPanel.title = title;
 	openPanel.allowsMultipleSelection = YES;
 	openPanel.canChooseDirectories = NO;
 	openPanel.canChooseFiles = YES;
@@ -317,8 +328,7 @@ DDLogLevel ddLogLevel;
     openPanel.directoryURL = self.pkgsURL;
     [openPanel setAccessoryView:self.makepkginfoOptionsView];
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
-	{
+	if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
 		return [openPanel URLs];
 	} else {
 		return nil;
@@ -343,10 +353,11 @@ DDLogLevel ddLogLevel;
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	savePanel.nameFieldStringValue = fileName;
     savePanel.directoryURL = self.pkgsURL;
-    savePanel.title = @"Save package";
-    savePanel.message = [NSString stringWithFormat:@"Original item is not in your pkgs directory. It will be copied to the selected destination."];
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
-	{
+    NSString *title = NSLocalizedString(@"Save package", @"");
+    savePanel.title = title;
+    NSString * _Nonnull message = [NSString stringWithFormat:NSLocalizedString(@"Original item is not in your pkgs directory. It will be copied to the selected destination.", @"")];
+    savePanel.message = message;
+	if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
 		return [savePanel URL];
 	} else {
 		return nil;
@@ -368,8 +379,7 @@ DDLogLevel ddLogLevel;
         savePanel.message = message;
     }
     savePanel.title = title;
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
-	{
+	if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
 		return [savePanel URL];
 	} else {
 		return nil;
@@ -395,7 +405,8 @@ DDLogLevel ddLogLevel;
     } else {
         savePanel.directoryURL = self.pkgsInfoURL;
     }
-    savePanel.title = @"Save pkginfo";
+    NSString *title = NSLocalizedString(@"Save pkginfo", @"");
+    savePanel.title = title;
 	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [savePanel URL];
@@ -410,7 +421,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
-	savePanel.nameFieldStringValue = @"New Repository";
+    NSString *defaultName = NSLocalizedString(@"New Repository", @"");
+    savePanel.nameFieldStringValue = defaultName;
 	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
 	{
 		return [savePanel URL];
@@ -467,6 +479,163 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark Application Startup
 
+- (NSToolbarItem *)buttonToolbarItemWithProperties:(NSDictionary *)properties
+{
+    NSString *toolbarItemIdentifier = properties[@"identifier"];
+    NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier:toolbarItemIdentifier];
+    toolbarItem.label = properties[@"label"];
+    toolbarItem.paletteLabel = properties[@"paletteLabel"];
+    NSImage *iconImage = [NSImage imageNamed:properties[@"icon"]];
+    [iconImage setSize:NSMakeSize(16.0, 16.0)];
+    NSButton *button = [[NSButton alloc] init];
+    button.imageScaling = NSImageScaleProportionallyDown;
+    button.frame = NSMakeRect(0, 0, 40, 25);
+    button.title = @"";
+    button.image = iconImage;
+    button.bezelStyle = NSBezelStyleTexturedRounded;
+    toolbarItem.target = self;
+    toolbarItem.view = button;
+    return toolbarItem;
+}
+
+- (void)createMainWindowToolbar
+{
+    NSMutableDictionary *newToolbarItems = [NSMutableDictionary new];
+    NSMutableArray *newToolbarItemIDs = [NSMutableArray new];
+    
+    /*
+     "View Mode" segmented control
+     */
+    NSString *viewModeToolbarItemIdentifier = @"ViewModeGroupToolbarItem";
+    NSToolbarItemGroup *groupItem = [[NSToolbarItemGroup alloc] initWithItemIdentifier:viewModeToolbarItemIdentifier];
+    NSToolbarItem *packagesItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"PackagesToolBarItem"];
+    [packagesItem setLabel:NSLocalizedString(@"Packages", @"")];
+    NSToolbarItem *catalogsItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"CatalogsToolBarItem"];
+    [catalogsItem setLabel:NSLocalizedString(@"Catalogs", @"")];
+    NSToolbarItem *manifestsItem = [[NSToolbarItem alloc] initWithItemIdentifier:@"ManifestsToolBarItem"];
+    [manifestsItem setLabel:NSLocalizedString(@"Manifests", @"")];
+    
+    NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] init];
+    segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
+    segmentedControl.segmentStyle = NSSegmentStyleTexturedRounded;
+    segmentedControl.trackingMode = NSSegmentSwitchTrackingSelectOne;
+    segmentedControl.segmentCount = 3;
+    segmentedControl.target = self;
+    segmentedControl.action = @selector(didSelectSegment:);
+    self.mainSegmentedControl = segmentedControl;
+    
+    NSSize toolbarIconSize = NSMakeSize(18, 18);
+    NSImage *packagesIcon = [NSImage imageNamed:@"appstoreTemplate"];
+    [packagesIcon setSize:toolbarIconSize];
+    NSImage *catalogsIcon = [NSImage imageNamed:@"layersTemplate"];
+    [catalogsIcon setSize:toolbarIconSize];
+    NSImage *manifestsIcon = [NSImage imageNamed:@"document"];
+    [manifestsIcon setTemplate:YES];
+    [manifestsIcon setSize:toolbarIconSize];
+    [segmentedControl setImage:packagesIcon forSegment:0];
+    [segmentedControl setWidth:40 forSegment:0];
+    [segmentedControl setImage:catalogsIcon forSegment:1];
+    [segmentedControl setWidth:40 forSegment:1];
+    [segmentedControl setImage:manifestsIcon forSegment:2];
+    [segmentedControl setWidth:40 forSegment:2];
+    
+    [groupItem setPaletteLabel:NSLocalizedString(@"View Mode", @"")];
+    [groupItem setLabel:NSLocalizedString(@"View", @"")];
+    groupItem.subitems = @[packagesItem, catalogsItem, manifestsItem];
+    groupItem.view = segmentedControl;
+    [newToolbarItems setObject:groupItem forKey:viewModeToolbarItemIdentifier];
+    [newToolbarItemIDs addObject:viewModeToolbarItemIdentifier];
+    
+    NSDictionary *propertiesDict;
+    
+    /*
+     Open button
+     */
+    NSString *openToolbarItemID = @"OpenToolbarItem";
+    propertiesDict = @{@"identifier": openToolbarItemID,
+                       @"label": NSLocalizedString(@"Open", @""),
+                       @"paletteLabel": NSLocalizedString(@"Open Repository", @""),
+                       @"icon": @"folderTemplate"};
+    NSToolbarItem *openToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    openToolbarItem.action = @selector(openRepository:);
+    [newToolbarItems setObject:openToolbarItem forKey:openToolbarItemID];
+    [newToolbarItemIDs addObject:openToolbarItemID];
+    
+    /*
+     Save button
+     */
+    NSString *saveToolbarItemID = @"SaveToolbarItem";
+    propertiesDict = @{@"identifier": saveToolbarItemID,
+                       @"label": NSLocalizedString(@"Save", @""),
+                       @"paletteLabel": NSLocalizedString(@"Save Repository", @""),
+                       @"icon": @"saveTemplate"};
+    NSToolbarItem *saveToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    saveToolbarItem.action = @selector(saveAction:);
+    [newToolbarItems setObject:saveToolbarItem forKey:saveToolbarItemID];
+    [newToolbarItemIDs addObject:saveToolbarItemID];
+    
+    /*
+     Reload button
+     */
+    NSString *reloadToolbarItemIdentifier = @"ReloadToolbarItem";
+    propertiesDict = @{@"identifier": reloadToolbarItemIdentifier,
+                       @"label": NSLocalizedString(@"Reload", @""),
+                       @"paletteLabel": NSLocalizedString(@"Reload Repository", @""),
+                       @"icon": @"reload2Template"};
+    NSToolbarItem *reloadToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    reloadToolbarItem.action = @selector(reloadRepositoryAction:);
+    [newToolbarItems setObject:reloadToolbarItem forKey:reloadToolbarItemIdentifier];
+    [newToolbarItemIDs addObject:reloadToolbarItemIdentifier];
+    
+    /*
+     Properties button
+     */
+    NSString *propertiesToolbarItemIdentifier = @"PropertiesToolbarItem";
+    propertiesDict = @{@"identifier": propertiesToolbarItemIdentifier,
+                       @"label": NSLocalizedString(@"Properties", @""),
+                       @"paletteLabel": NSLocalizedString(@"Properties", @""),
+                       @"icon": @"pen1Template"};
+    NSToolbarItem *propertiesToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    propertiesToolbarItem.action = @selector(getInfoAction:);
+    [newToolbarItems setObject:propertiesToolbarItem forKey:propertiesToolbarItemIdentifier];
+    [newToolbarItemIDs addObject:propertiesToolbarItemIdentifier];
+    
+    /*
+     Make catalogs button
+     */
+    NSString *makeCatalogsToolbarItemIdentifier = @"MakeCatalogsToolbarItem";
+    propertiesDict = @{@"identifier": makeCatalogsToolbarItemIdentifier,
+                       @"label": NSLocalizedString(@"Make", @""),
+                       @"paletteLabel": NSLocalizedString(@"Make Catalogs", @""),
+                       @"icon": @"makecatalogsTemplate"};
+    NSToolbarItem *makeCatalogsToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    makeCatalogsToolbarItem.action = @selector(updateCatalogs:);
+    [newToolbarItems setObject:makeCatalogsToolbarItem forKey:makeCatalogsToolbarItemIdentifier];
+    [newToolbarItemIDs addObject:makeCatalogsToolbarItemIdentifier];
+    
+    /*
+     Search button
+     */
+    NSString *searchToolbarItemIdentifier = @"SearchToolbarItem";
+    propertiesDict = @{@"identifier": searchToolbarItemIdentifier,
+                       @"label": NSLocalizedString(@"Search", @""),
+                       @"paletteLabel": NSLocalizedString(@"Search", @""),
+                       @"icon": @"searchTemplate"};
+    NSToolbarItem *searchToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
+    searchToolbarItem.action = @selector(searchRepositoryAction:);
+    [newToolbarItems setObject:searchToolbarItem forKey:searchToolbarItemIdentifier];
+    [newToolbarItemIDs addObject:searchToolbarItemIdentifier];
+    
+    self.toolbarItems = [newToolbarItems copy];
+    self.toolbarItemIDs = [newToolbarItemIDs copy];
+    
+    NSToolbar *newToolbar = [[NSToolbar alloc] initWithIdentifier:@"mainWindowToolbar"];
+    newToolbar.allowsUserCustomization = YES;
+    newToolbar.autosavesConfiguration = YES;
+    newToolbar.delegate = self;
+    self.window.toolbar = newToolbar;
+}
+
 - (void)awakeFromNib
 {
     [self configureLogging];
@@ -489,26 +658,9 @@ DDLogLevel ddLogLevel;
     self.preferencesController = [[MAPreferences alloc] initWithWindowNibName:@"MAPreferences"];
     self.munkiImportController = [[MAMunkiImportController alloc] initWithWindowNibName:@"MAMunkiImportController"];
     
+    // Create the whole toolbar manually
+    [self createMainWindowToolbar];
     
-    [[self.searchToolbarButton image] setSize:NSMakeSize(18, 18)];
-    [[self.reloadToolbarButton image] setSize:NSMakeSize(18, 18)];
-    
-	// Configure segmented control
-	[self.mainSegmentedControl setSegmentCount:3];
-	
-    NSSize toolbarIconSize = NSMakeSize(18, 18);
-    NSImage *packagesIcon = [NSImage imageNamed:@"appstoreTemplate"];
-	[packagesIcon setSize:toolbarIconSize];
-	NSImage *catalogsIcon = [NSImage imageNamed:@"layersTemplate"];
-    [catalogsIcon setSize:toolbarIconSize];
-	NSImage *manifestsIcon = [NSImage imageNamed:@"document"];
-    [manifestsIcon setTemplate:YES];
-	[manifestsIcon setSize:toolbarIconSize];
-	
-	[self.mainSegmentedControl setImage:packagesIcon forSegment:0];
-	[self.mainSegmentedControl setImage:catalogsIcon forSegment:1];
-	[self.mainSegmentedControl setImage:manifestsIcon forSegment:2];
-	
 	[self.mainTabView setDelegate:self];
 	[self.mainSplitView setDelegate:self];
 	
@@ -1015,9 +1167,9 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-	[NSApp beginSheet:self.progressPanel
-	   modalForWindow:self.window modalDelegate:nil 
-	   didEndSelector:nil contextInfo:nil];
+    [self.window beginSheet:self.progressPanel completionHandler:^(NSModalResponse returnCode) {
+        
+    }];
 	[self.progressIndicator setDoubleValue:0.0];
 	[self.progressIndicator setMaxValue:[self.operationQueue operationCount]];
 	[self.progressIndicator startAnimation:self];
@@ -1138,20 +1290,20 @@ DDLogLevel ddLogLevel;
     
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Delete"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
     
     NSString *messageText;
     NSString *informativeText;
     if ([selectedManifests count] > 1) {
-        messageText = @"Delete manifests";
+        messageText = NSLocalizedString(@"Delete manifests", @"");
         informativeText = [NSString stringWithFormat:
-                           @"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.",
+                           NSLocalizedString(@"Are you sure you want to delete %lu manifests? MunkiAdmin will move the selected manifest files to trash and remove all references to them in other manifests.", @""),
                            (unsigned long)[selectedManifests count]];
     } else if ([selectedManifests count] == 1) {
-        messageText = [NSString stringWithFormat:@"Delete manifest \"%@\"", [selectedManifests[0] title]];
+        messageText = [NSString stringWithFormat:NSLocalizedString(@"Delete manifest \"%@\"", @""), [selectedManifests[0] title]];
         informativeText = [NSString stringWithFormat:
-                           @"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.",
+                           NSLocalizedString(@"Are you sure you want to delete manifest \"%@\"? MunkiAdmin will move the manifest file to trash and remove all references to it in other manifests.", @""),
                            [selectedManifests[0] title]];
     } else {
         DDLogError(@"No manifests selected, can't delete anything...");
@@ -1159,7 +1311,7 @@ DDLogLevel ddLogLevel;
     }
     [alert setMessageText:messageText];
     [alert setInformativeText:informativeText];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     [alert setShowsSuppressionButton:NO];
 	
 	NSInteger result = [alert runModal];
@@ -1184,8 +1336,8 @@ DDLogLevel ddLogLevel;
 {
 	DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    NSString *newFilename = NSLocalizedString(@"new-manifest", nil);
-    NSString *message = NSLocalizedString(@"Choose a location and name for the new manifest. Location should be within your manifests directory.", nil);
+    NSString *newFilename = NSLocalizedString(@"new-manifest", @"");
+    NSString *message = NSLocalizedString(@"Choose a location and name for the new manifest. Location should be within your manifests directory.", @"");
     
     NSURL *newURL = [self showSavePanelForManifestWithTitle:@"Create manifest"
                                                    filename:newFilename
@@ -1223,7 +1375,7 @@ DDLogLevel ddLogLevel;
 
 # pragma mark - Modifying packages
 
-- (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+- (void)packageNameEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
@@ -1234,7 +1386,7 @@ DDLogLevel ddLogLevel;
         [[[self managedObjectContext] undoManager] setActionName:[NSString stringWithFormat:@"Rename to \"%@\"", [self.packageNameEditor.packageToRename munki_name]]];
     }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSModalResponseOK) return;
     [[[self managedObjectContext] undoManager] undo];
 }
 
@@ -1252,11 +1404,9 @@ DDLogLevel ddLogLevel;
     
     self.packageNameEditor.packageToRename = firstSelected;
     [self.packageNameEditor configureRenameOperation];
-    SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
-    [NSApp beginSheet:[self.packageNameEditor window]
-	   modalForWindow:[self window] modalDelegate:self
-	   didEndSelector:endSelector contextInfo:nil];
-    
+    [self.window beginSheet:[self.packageNameEditor window] completionHandler:^(NSModalResponse returnCode) {
+        [self packageNameEditorDidFinish:self.packageNameEditor returnCode:returnCode object:nil];
+    }];
 }
 
 - (IBAction)renameSelectedPackagesAction:sender
@@ -1274,20 +1424,20 @@ DDLogLevel ddLogLevel;
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Delete"];
-    [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:@"Delete Packages"];
+    [alert addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+    [alert setMessageText:NSLocalizedString(@"Delete Packages", @"")];
 	if ([selectedPackages count] == 1) {
 		PackageMO *singlePackage = selectedPackages[0];
 		[alert setInformativeText:[NSString stringWithFormat:
-								   @"Are you sure you want to delete %@ and its packageinfo file from the repository? This cannot be undone.", 
+                                   NSLocalizedString(@"Are you sure you want to delete %@ and its packageinfo file from the repository? This cannot be undone.", @""),
 								   singlePackage.munki_name]];
 	} else {
 		[alert setInformativeText:[NSString stringWithFormat:
-								   @"Are you sure you want to delete %lu packages and their packageinfo files from the repository? This cannot be undone.", 
+                                   NSLocalizedString(@"Are you sure you want to delete %lu packages and their packageinfo files from the repository? This cannot be undone.", @""),
 								   (unsigned long)[selectedPackages count]]];
 	}
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     [alert setShowsSuppressionButton:NO];
 	
 	NSInteger result = [alert runModal];
@@ -1307,15 +1457,15 @@ DDLogLevel ddLogLevel;
 	
 	// Configure the dialog
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Create"];
-    [alert addButtonWithTitle:@"Cancel"];
-    [alert setMessageText:@"New Catalog"];
-    [alert setInformativeText:@"Create a new catalog with title:"];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert addButtonWithTitle:NSLocalizedString(@"Create", @"")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+    [alert setMessageText:NSLocalizedString(@"New Catalog", @"")];
+    [alert setInformativeText:NSLocalizedString(@"Create a new catalog with title:", @"")];
+    [alert setAlertStyle:NSAlertStyleInformational];
     [alert setShowsSuppressionButton:NO];
 	NSRect textRect = NSMakeRect(0, 0, 350, 22);
 	NSTextField *textField=[[NSTextField alloc] initWithFrame:textRect];
-	[textField setStringValue:@"Untitled Catalog"];
+    [textField setStringValue:NSLocalizedString(@"Untitled Catalog", @"")];
     [alert setAccessoryView:textField];
 	
 	// Make the accessory view first responder
@@ -1516,12 +1666,16 @@ DDLogLevel ddLogLevel;
         }
     } else {
         DDLogError(@"makepkginfo failed!");
-        NSAlert *makepkginfoFailedAlert = [NSAlert alertWithMessageText:@"Invalid pkginfo"
-                                                          defaultButton:@"OK"
-                                                        alternateButton:@""
-                                                            otherButton:@""
-                                              informativeTextWithFormat:@"Failed to create a pkginfo."];
-        [makepkginfoFailedAlert runModal];
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+        NSString *messageText = NSLocalizedString(@"Invalid pkginfo", @"");
+        alert.messageText = messageText;
+        NSString *informativeText = NSLocalizedString(@"Failed to create a pkginfo.", @"");
+        alert.informativeText = informativeText;
+        alert.alertStyle = NSAlertStyleInformational;
+        alert.showsSuppressionButton = NO;
+        [alert runModal];
     }
 }
 
@@ -1653,7 +1807,7 @@ DDLogLevel ddLogLevel;
         aPackage.hasUnstagedChangesValue = YES;
     }
     [[[self managedObjectContext] undoManager] endUndoGrouping];
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSModalResponseOK) return;
     [[[self managedObjectContext] undoManager] undo];
 }
 
@@ -1684,7 +1838,7 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
     [[[self managedObjectContext] undoManager] endUndoGrouping];
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSModalResponseOK) return;
     [[[self managedObjectContext] undoManager] undo];
 }
 
@@ -2027,7 +2181,7 @@ DDLogLevel ddLogLevel;
                                                     }];
                     if (warnings.length != 0) {
                         DDLogDebug(@"makecatalogs produced warnings.");
-                        NSString *description = @"Updating catalogs produced warnings";
+                        NSString *description = NSLocalizedString(@"Updating catalogs produced warnings", @"");
                         NSString *recoverySuggestion = [NSString stringWithFormat:@"%@.", warnings];
                         NSString *alertSuppressionKey = @"makecatalogsWarningsSuppressed";
                         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -2049,7 +2203,7 @@ DDLogLevel ddLogLevel;
                 
             } else {
                 DDLogError(@"makecatalogs exited with code %i", exitCode);
-                NSString *description = @"Updating catalogs failed";
+                NSString *description = NSLocalizedString(@"Updating catalogs failed", @"");
                 NSString *recoverySuggestion = [NSString stringWithFormat:@"makecatalogs exited with code %i.\n\n%@", exitCode, standardError];
                 NSString *alertSuppressionKey = @"makecatalogsErrorsSuppressed";
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -2071,9 +2225,9 @@ DDLogLevel ddLogLevel;
         
     }];
     
-    [NSApp beginSheet:self.progressPanel
-       modalForWindow:self.window modalDelegate:nil
-       didEndSelector:nil contextInfo:nil];
+    [self.window beginSheet:self.progressPanel completionHandler:^(NSModalResponse returnCode) {
+        
+    }];
     self.jobDescription = @"Running makecatalogs";
     [self.progressIndicator setIndeterminate:YES];
     [self.progressIndicator startAnimation:self];
@@ -2320,12 +2474,14 @@ DDLogLevel ddLogLevel;
             [self showProgressPanel];
 		} else {
 			DDLogError(@"Not a repo!");
-            NSAlert *notRepoAlert = [NSAlert alertWithMessageText:@"Invalid repository"
-                                                    defaultButton:@"OK"
-                                                  alternateButton:@""
-                                                      otherButton:@""
-                                        informativeTextWithFormat:@"Munki repositories usually contain subdirectories for catalogs, manifests and pkginfo files."];
-            [notRepoAlert runModal];
+            
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:@"OK"];
+            alert.messageText = @"Invalid repository";
+            alert.informativeText = @"Munki repositories usually contain subdirectories for catalogs, manifests and pkginfo files.";
+            alert.alertStyle = NSAlertStyleInformational;
+            alert.showsSuppressionButton = NO;
+            [alert runModal];
 		}
 	}
 }
@@ -2990,6 +3146,40 @@ DDLogLevel ddLogLevel;
 	[right setFrame:rightFrame];
 }
 
+#pragma mark -
+#pragma mark NSToolbar delegates
 
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSToolbarItemIdentifier)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+{
+    NSToolbarItem *toolbarItem = [self.toolbarItems objectForKey:itemIdentifier];
+    return toolbarItem;
+}
+
+- (NSArray<NSToolbarItemIdentifier> *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+{
+    NSMutableArray *identifiers = [NSMutableArray new];
+    [identifiers addObjectsFromArray:self.toolbarItemIDs];
+    [identifiers addObjectsFromArray:@[NSToolbarSpaceItemIdentifier, NSToolbarFlexibleSpaceItemIdentifier]];
+    return identifiers;
+}
+
+- (NSArray<NSToolbarItemIdentifier> *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
+{
+    return @[
+             @"ViewModeGroupToolbarItem",
+             NSToolbarSpaceItemIdentifier,
+             @"OpenToolbarItem",
+             @"SaveToolbarItem",
+             @"ReloadToolbarItem",
+             @"PropertiesToolbarItem",
+             NSToolbarSpaceItemIdentifier,
+             @"SearchToolbarItem"
+             ];
+}
+
+- (NSArray<NSToolbarItemIdentifier> *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
+{
+    return self.toolbarItemIDs;
+}
 
 @end

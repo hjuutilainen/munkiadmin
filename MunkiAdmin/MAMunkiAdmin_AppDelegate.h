@@ -29,7 +29,7 @@
 @class DDFileLogger;
 
 
-@interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate>
+@interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate, NSToolbarDelegate>
 {
     MASelectPkginfoItemsWindow *addItemsWindowController;
     MASelectManifestItemsWindow *selectManifestsWindowController;
@@ -38,6 +38,7 @@
     MAPkginfoAssimilator *pkginfoAssimilator;
 }
 
+@property (assign) NSSegmentedControl *mainSegmentedControl;
 @property (assign) NSView *currentWholeView;
 @property (assign) NSView *currentDetailView;
 @property (assign) NSView *currentSourceView;
@@ -64,6 +65,8 @@
 
 # pragma mark -
 # pragma mark Variable declarations
+@property (strong) NSDictionary *toolbarItems;
+@property (strong) NSArray *toolbarItemIDs;
 @property (strong) NSString *selectedViewDescr;
 @property NSUInteger selectedViewTag;
 @property (strong, readonly) NSUserDefaults *defaults;
@@ -113,7 +116,6 @@
 @property (nonatomic, strong) IBOutlet NSView *manifestsDetailView;
 @property (nonatomic, strong) IBOutlet NSTableView *applicationTableView;
 @property (nonatomic, strong) IBOutlet NSSplitView *mainSplitView;
-@property (nonatomic, strong) IBOutlet NSSegmentedControl *mainSegmentedControl;
 @property (weak) IBOutlet NSSearchField *catalogContentSearchField;
 @property (weak) IBOutlet NSSearchField *catalogsSearchField;
 
@@ -144,7 +146,7 @@
 - (IBAction)duplicateSelectedManifestAction:(id)sender;
 - (IBAction)renameSelectedManifestAction:sender;
 - (IBAction)renameSelectedPackagesAction:sender;
-- (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object;
+- (void)packageNameEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object;
 - (IBAction)deleteSelectedManifestsAction:sender;
 - (IBAction)deleteSelectedPackagesAction:sender;
 - (IBAction)enableAllPackagesForManifestAction:sender;

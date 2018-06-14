@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14269.12"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="1317" userLabel="Progress Panel">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="1317" userLabel="Progress Panel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="347" width="500" height="163"/>
@@ -115,148 +115,10 @@ Gw
             <rect key="contentRect" x="6" y="375" width="1100" height="700"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <value key="minSize" type="size" width="760" height="600"/>
-            <view key="contentView" id="2">
+            <view key="contentView" wantsLayer="YES" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="1100" height="700"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="3AF508A3-5F51-4593-91F5-19D4284CF5DB" displayMode="iconAndLabel" sizeMode="regular" id="583">
-                <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="587"/>
-                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="588"/>
-                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="589"/>
-                    <toolbarItem implicitItemIdentifier="AEEE2978-EEBD-4820-BB0C-955830984CDE" label="View" paletteLabel="View Mode" id="912">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="114" height="25"/>
-                        <size key="maxSize" width="114" height="25"/>
-                        <segmentedControl key="view" verticalHuggingPriority="750" id="910">
-                            <rect key="frame" x="0.0" y="14" width="112" height="25"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <segmentedCell key="cell" state="on" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="911">
-                                <font key="font" metaFont="system"/>
-                                <segments>
-                                    <segment toolTip="Show Packages" width="36" selected="YES">
-                                        <nil key="label"/>
-                                    </segment>
-                                    <segment toolTip="Show Catalogs" width="36" tag="1">
-                                        <nil key="label"/>
-                                    </segment>
-                                    <segment toolTip="Show Manifests" width="36" tag="2">
-                                        <nil key="label"/>
-                                    </segment>
-                                </segments>
-                            </segmentedCell>
-                            <connections>
-                                <action selector="didSelectSegment:" target="205" id="955"/>
-                            </connections>
-                        </segmentedControl>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="NSToolbarSeparatorItem" id="586"/>
-                    <toolbarItem implicitItemIdentifier="NSToolbarCustomizeToolbarItem" id="590"/>
-                    <toolbarItem implicitItemIdentifier="D714B0EA-7734-42FA-A28E-48FBFBBBCE57" label="Open" paletteLabel="Open Repository" toolTip="Open a repository" image="folderTemplate" id="2150">
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="2148">
-                            <rect key="frame" x="28" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="folderTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="2149">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="openRepository:" target="205" id="2151"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="791AC07C-A361-4A5B-994F-4F67AFC4555A" label="Save" paletteLabel="Save Changes to Disk" toolTip="Write modified pkginfo files and manifests to disk. Optionally run makecatalogs." image="saveTemplate" id="2152">
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="2153">
-                            <rect key="frame" x="41" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Button" bezelStyle="texturedRounded" image="saveTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2154">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="saveAction:" target="205" id="2156"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="FE33AF20-D6C2-4C5A-AE95-AB53684A5D2A" label="Reload" paletteLabel="Reload Repository" toolTip="Reload the current repository from disk and discard any unsaved changes" image="reload2Template" id="2157">
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="2158">
-                            <rect key="frame" x="32" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" title="Button" bezelStyle="texturedRounded" image="reload2Template" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2159">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="reloadRepositoryAction:" target="205" id="2161"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="CEEDAFCD-4DC6-4B18-A403-D0A2D8323683" label="Make" paletteLabel="Make Catalogs" toolTip="Run makecatalogs against the current repository" image="makecatalogsTemplate" id="2162">
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="2163">
-                            <rect key="frame" x="23" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="makecatalogsTemplate" imagePosition="overlaps" alignment="left" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2164">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="updateCatalogs:" target="205" id="2170"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="B44DF7BB-2E15-49EE-830C-13E148E0951F" label="Search" paletteLabel="Search" image="searchTemplate" id="RjT-Cv-thS">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="mSr-AA-D5V">
-                            <rect key="frame" x="2" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="searchTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mc2-8N-Wd0">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="searchRepositoryAction:" target="205" id="ecg-6P-8Lx"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="B41F1F3B-9C16-48B5-AE19-915350317580" label="Properties" paletteLabel="Properties" image="pen1Template" id="gxo-0u-LDL">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="30" height="27"/>
-                        <size key="maxSize" width="45" height="32"/>
-                        <button key="view" verticalHuggingPriority="750" id="63G-m6-ISB">
-                            <rect key="frame" x="11" y="14" width="40" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="pen1Template" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BmR-B7-hq0">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="getInfoAction:" target="205" id="rD3-w7-mF6"/>
-                        </connections>
-                    </toolbarItem>
-                </allowedToolbarItems>
-                <defaultToolbarItems>
-                    <toolbarItem reference="912"/>
-                    <toolbarItem reference="588"/>
-                    <toolbarItem reference="2150"/>
-                    <toolbarItem reference="2152"/>
-                    <toolbarItem reference="2157"/>
-                    <toolbarItem reference="gxo-0u-LDL"/>
-                    <toolbarItem reference="588"/>
-                    <toolbarItem reference="RjT-Cv-thS"/>
-                    <toolbarItem reference="589"/>
-                </defaultToolbarItems>
-            </toolbar>
             <connections>
                 <binding destination="205" name="documentEdited" keyPath="managedObjectContext.hasChanges" id="FZS-wR-lXK"/>
                 <outlet property="delegate" destination="205" id="207"/>
@@ -706,7 +568,6 @@ Gw
                 <outlet property="detailViewPlaceHolder" destination="524" id="940"/>
                 <outlet property="installsItemsArrayController" destination="1203" id="2033"/>
                 <outlet property="itemsToCopyArrayController" destination="1819" id="2034"/>
-                <outlet property="mainSegmentedControl" destination="910" id="913"/>
                 <outlet property="mainSplitView" destination="522" id="895"/>
                 <outlet property="makepkginfoOptionsView" destination="2112" id="2115"/>
                 <outlet property="managedInstallsArrayController" destination="1690" id="1748"/>
@@ -714,14 +575,11 @@ Gw
                 <outlet property="managedUpdatesArrayController" destination="1714" id="1750"/>
                 <outlet property="manifestInfosArrayController" destination="1661" id="1683"/>
                 <outlet property="manifestsArrayController" destination="964" id="1588"/>
-                <outlet property="manifestsListView" destination="966" id="978"/>
                 <outlet property="optionalInstallsArrayController" destination="1742" id="1749"/>
                 <outlet property="packageInfosArrayController" destination="869" id="2133"/>
                 <outlet property="progressIndicator" destination="1328" id="1329"/>
                 <outlet property="progressPanel" destination="1317" id="1320"/>
                 <outlet property="receiptsArrayController" destination="1122" id="2097"/>
-                <outlet property="reloadToolbarButton" destination="2158" id="MGh-5s-Tbc"/>
-                <outlet property="searchToolbarButton" destination="mSr-AA-D5V" id="sAV-hq-HDU"/>
                 <outlet property="sourceViewPlaceHolder" destination="523" id="941"/>
                 <outlet property="window" destination="21" id="208"/>
             </connections>
@@ -954,7 +812,7 @@ Gw
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="" editable="NO" width="256" minWidth="40" maxWidth="1000" id="935">
+                                    <tableColumn editable="NO" width="256" minWidth="40" maxWidth="1000" id="935">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1029,7 +887,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <customView id="979" customClass="MAGradientBackgroundView">
+                <customView id="979">
                     <rect key="frame" x="0.0" y="505" width="259" height="38"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
@@ -1072,13 +930,13 @@ Gw
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="" width="40" minWidth="40" maxWidth="40" id="847">
+                                    <tableColumn width="40" minWidth="40" maxWidth="40" id="847">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
-                                        <buttonCell key="dataCell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="only" alignment="left" inset="2" id="872">
+                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="overlaps" alignment="left" inset="2" id="872">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -1087,7 +945,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.isEnabledForCatalog" id="873"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn identifier="" width="32" minWidth="32" maxWidth="32" id="R0y-Wk-Bvh">
+                                    <tableColumn width="32" minWidth="32" maxWidth="32" id="R0y-Wk-Bvh">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1099,7 +957,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.iconImage.imageRepresentation" id="nzg-bc-f4g"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn identifier="" editable="NO" width="207" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
+                                    <tableColumn editable="NO" width="207" minWidth="10" maxWidth="3.4028234663852886e+38" id="885">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1115,7 +973,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_name" id="892"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn identifier="" editable="NO" width="217.515625" minWidth="40" maxWidth="1000" id="848">
+                                    <tableColumn editable="NO" width="217.515625" minWidth="40" maxWidth="1000" id="848">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Display Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1131,7 +989,7 @@ Gw
                                             <binding destination="869" name="value" keyPath="arrangedObjects.package.munki_display_name" id="891"/>
                                         </connections>
                                     </tableColumn>
-                                    <tableColumn identifier="" editable="NO" width="253" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
+                                    <tableColumn editable="NO" width="253" minWidth="10" maxWidth="3.4028234663852886e+38" id="883">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Version">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1164,7 +1022,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
-                <customView id="1262" customClass="MAGradientBackgroundView">
+                <customView id="1262">
                     <rect key="frame" x="0.0" y="506" width="764" height="38"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
@@ -1188,123 +1046,6 @@ Gw
                                     <dictionary key="options">
                                         <string key="NSDisplayName">Package Description</string>
                                         <string key="NSPredicateFormat">package.munki_description contains[cd] $value</string>
-                                    </dictionary>
-                                </binding>
-                            </connections>
-                        </searchField>
-                    </subviews>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="drawBottomLine" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                </customView>
-            </subviews>
-        </customView>
-        <customView id="966" userLabel="Manifests List">
-            <rect key="frame" x="0.0" y="0.0" width="259" height="543"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <subviews>
-                <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="968">
-                    <rect key="frame" x="-1" y="-1" width="261" height="507"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <clipView key="contentView" id="caF-Xq-rCw">
-                        <rect key="frame" x="1" y="1" width="259" height="505"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowHeight="40" viewBased="YES" id="969">
-                                <rect key="frame" x="0.0" y="0.0" width="259" height="505"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
-                                <tableColumns>
-                                    <tableColumn identifier="" editable="NO" width="256" minWidth="40" maxWidth="1000" id="972">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
-                                        </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="973">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                        <prototypeCellViews>
-                                            <tableCellView id="Bp0-yS-cf5">
-                                                <rect key="frame" x="1" y="1" width="256" height="40"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="p48-PK-Yec">
-                                                        <rect key="frame" x="3" y="4" width="32" height="32"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="K1k-Sa-Ksa"/>
-                                                        <connections>
-                                                            <binding destination="Bp0-yS-cf5" name="value" keyPath="objectValue.image" id="8ds-Hb-YPE"/>
-                                                        </connections>
-                                                    </imageView>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="bkQ-Ns-jTU">
-                                                        <rect key="frame" x="43" y="19" width="212" height="17"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vC1-Wa-y7n">
-                                                            <font key="font" metaFont="system"/>
-                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        </textFieldCell>
-                                                        <connections>
-                                                            <binding destination="Bp0-yS-cf5" name="value" keyPath="objectValue.title" id="OSf-2t-yG3"/>
-                                                        </connections>
-                                                    </textField>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="peq-FS-iDe">
-                                                        <rect key="frame" x="43" y="4" width="212" height="14"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="G2d-Ym-8xc">
-                                                            <font key="font" metaFont="smallSystem"/>
-                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        </textFieldCell>
-                                                        <connections>
-                                                            <binding destination="Bp0-yS-cf5" name="value" keyPath="objectValue.manifestContentsDescription" id="1Bz-Vr-4HV"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                            </tableCellView>
-                                        </prototypeCellViews>
-                                    </tableColumn>
-                                </tableColumns>
-                                <connections>
-                                    <binding destination="964" name="content" keyPath="arrangedObjects" id="pVJ-T6-hHq"/>
-                                    <binding destination="964" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="pVJ-T6-hHq" id="aET-j1-4uC"/>
-                                    <outlet property="menu" destination="1579" id="1583"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="970">
-                        <rect key="frame" x="1" y="119" width="223" height="15"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="971">
-                        <rect key="frame" x="224" y="17" width="15" height="102"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
-                <customView id="967" customClass="MAGradientBackgroundView">
-                    <rect key="frame" x="0.0" y="505" width="259" height="38"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <subviews>
-                        <searchField wantsLayer="YES" verticalHuggingPriority="750" id="974">
-                            <rect key="frame" x="20" y="8" width="219" height="22"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="975">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </searchFieldCell>
-                            <connections>
-                                <binding destination="964" name="predicate" keyPath="filterPredicate" id="993">
-                                    <dictionary key="options">
-                                        <string key="NSDisplayName">Title</string>
-                                        <string key="NSPredicateFormat">title contains[cd] $value</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1360,47 +1101,10 @@ Gw
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1406">
                 <font key="font" metaFont="system"/>
-                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
             </textFieldCell>
         </textField>
-        <menu id="1579" userLabel="Manifests List Menu">
-            <items>
-                <menuItem title="Show in Finder" id="ijz-IV-e4J">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="showManifestInFinderAction:" target="205" id="3nB-v7-uR3"/>
-                    </connections>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="OHF-MD-2cz"/>
-                <menuItem title="New Manifest..." id="1584">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="createNewManifestAction:" target="205" id="1590"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Move or Rename Manifest..." id="1580">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="renameSelectedManifestAction:" target="205" id="1586"/>
-                        <binding destination="964" name="enabled" keyPath="canRemove" id="1594"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Duplicate Manifest..." id="2135">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="duplicateSelectedManifestAction:" target="205" id="2136"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Delete Manifest..." id="1581">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="deleteSelectedManifestsAction:" target="205" id="1587"/>
-                        <binding destination="964" name="enabled" keyPath="canRemove" id="1596"/>
-                    </connections>
-                </menuItem>
-            </items>
-        </menu>
         <menu id="1597" userLabel="Packages List Menu">
             <items>
                 <menuItem title="Get Info" id="2137">
@@ -1508,11 +1212,5 @@ Gw
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="folderTemplate" width="52" height="52"/>
-        <image name="makecatalogsTemplate" width="19" height="19"/>
-        <image name="pen1Template" width="52" height="52"/>
-        <image name="reload2Template" width="52" height="52"/>
-        <image name="saveTemplate" width="19" height="19"/>
-        <image name="searchTemplate" width="52" height="52"/>
     </resources>
 </document>

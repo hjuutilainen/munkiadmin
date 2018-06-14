@@ -56,11 +56,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     return self.modalSession;
 }
 
-- (void)packageNameEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+- (void)packageNameEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object
 {
     NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     [[mainContext undoManager] endUndoGrouping];
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSModalResponseOK) return;
     [[mainContext undoManager] undoNestedGroup];
 }
 
@@ -71,10 +71,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [[mainContext undoManager] beginUndoGrouping];
     self.packageNameEditor.packageToRename = self.pkginfoToEdit;
     [self.packageNameEditor configureRenameOperation];
-    SEL endSelector = @selector(packageNameEditorDidFinish:returnCode:object:);
-    [NSApp beginSheet:[self.packageNameEditor window]
-	   modalForWindow:[self window] modalDelegate:self
-	   didEndSelector:endSelector contextInfo:nil];
+    [self.window beginSheet:[self.packageNameEditor window] completionHandler:^(NSModalResponse returnCode) {
+        [self packageNameEditorDidFinish:self.packageNameEditor returnCode:returnCode object:nil];
+    }];
 }
 
 - (IBAction)renameCurrentPackageAction:(id)sender
@@ -82,10 +81,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self renameCurrentPackage];
 }
 
-- (void)addRequiresItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)addRequiresItemSheetDidEnd:(id)sheet returnCode:(NSModalResponse)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-    if (returnCode == NSCancelButton) return;
+    if (returnCode == NSModalResponseCancel) return;
     
     for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
         selectedItem.typeString = @"package";
@@ -95,15 +94,15 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (IBAction)addRequiresItemAction:(id)sender
 {
-    [NSApp beginSheet:[pkginfoSelector window]
-	   modalForWindow:[self window] modalDelegate:self 
-	   didEndSelector:@selector(addRequiresItemSheetDidEnd:returnCode:object:) contextInfo:nil];
+    [self.window beginSheet:pkginfoSelector.window completionHandler:^(NSModalResponse returnCode) {
+        [self addRequiresItemSheetDidEnd:self->pkginfoSelector returnCode:returnCode object:nil];
+    }];
 }
 
-- (void)addUpdateForItemSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)addUpdateForItemSheetDidEnd:(id)sheet returnCode:(NSModalResponse)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-    if (returnCode == NSCancelButton) return;
+    if (returnCode == NSModalResponseCancel) return;
     
     for (StringObjectMO *selectedItem in [pkginfoSelector selectionAsStringObjects]) {
         selectedItem.typeString = @"package";
@@ -113,16 +112,16 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 
 - (IBAction)addUpdateForItem:(id)sender
 {
-    [NSApp beginSheet:[pkginfoSelector window]
-	   modalForWindow:[self window] modalDelegate:self 
-	   didEndSelector:@selector(addUpdateForItemSheetDidEnd:returnCode:object:) contextInfo:nil];
+    [self.window beginSheet:pkginfoSelector.window completionHandler:^(NSModalResponse returnCode) {
+        [self addUpdateForItemSheetDidEnd:self->pkginfoSelector returnCode:returnCode object:nil];
+    }];
 }
 
-- (void)installsItemEditorDidFinish:(id)sender returnCode:(int)returnCode object:(id)object
+- (void)installsItemEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object
 {
     NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
     [[mainContext undoManager] endUndoGrouping];
-    if (returnCode == NSOKButton) return;
+    if (returnCode == NSModalResponseOK) return;
     [[mainContext undoManager] undoNestedGroup];
 }
 
@@ -137,9 +136,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
     [[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext] undoManager] beginUndoGrouping];
     self.installsItemEditor.itemToEdit = selected;
-    [NSApp beginSheet:[self.installsItemEditor window]
-	   modalForWindow:[self window] modalDelegate:self
-	   didEndSelector:@selector(installsItemEditorDidFinish:returnCode:object:) contextInfo:nil];
+    [self.window beginSheet:[self.installsItemEditor window] completionHandler:^(NSModalResponse returnCode) {
+        [self installsItemEditorDidFinish:self.installsItemEditor returnCode:returnCode object:nil];
+    }];
     [self.installsItemEditor updateVersionComparisonKeys];
     
     
@@ -407,7 +406,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
-        [self.delegate packageEditorDidFinish:self returnCode:NSOKButton object:nil];
+        [self.delegate packageEditorDidFinish:self returnCode:NSModalResponseOK object:nil];
     }
 }
 
@@ -420,7 +419,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
-        [self.delegate packageEditorDidFinish:self returnCode:NSCancelButton object:nil];
+        [self.delegate packageEditorDidFinish:self returnCode:NSModalResponseCancel object:nil];
     }
 }
 
@@ -457,10 +456,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     // As a convenience, copy the data as a string too
     NSData *data;
+    /*
     NSString *error;
     data = [NSPropertyListSerialization dataFromPropertyList:items
                                                       format:NSPropertyListXMLFormat_v1_0
                                             errorDescription:&error];
+     */
+    NSError *error = nil;
+    data = [NSPropertyListSerialization dataWithPropertyList:items format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
     if (data) {
         NSString *str = [NSString stringWithUTF8String:[data bytes]];
         [pb setString:str forType:NSStringPboardType];
@@ -678,7 +681,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         NSString *menuItemTitle = [aColumn.headerCell stringValue];
         if ([menuItemTitle isEqualToString:@""]) {
             // Title is empty so this is the icon column
-            menuItemTitle = @"Icon";
+            menuItemTitle = NSLocalizedString(@"Icon", @"");
         }
         NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                               action:@selector(toggleColumn:)
@@ -704,10 +707,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         NSString *menuItemTitle = [aColumn.headerCell stringValue];
         if ([menuItemTitle isEqualToString:@""]) {
             // Title is empty so this is the icon column
-            menuItemTitle = @"Icon";
+            menuItemTitle = NSLocalizedString(@"Icon", @"");
         } else if ([menuItemTitle isEqualToString:@"Opt."]) {
             // Optional check box column
-            menuItemTitle = @"Optional";
+            menuItemTitle = NSLocalizedString(@"Optional", @"");
         }
         NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:menuItemTitle
                                                               action:@selector(toggleColumn:)
@@ -782,7 +785,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     // Set the force_install_after_date date picker to use UTC (don't try to display it in some other time zone)
     NSTimeZone *timeZoneUTC = [NSTimeZone timeZoneWithName:@"UTC"];
     [NSTimeZone setDefaultTimeZone:timeZoneUTC];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     [gregorian setTimeZone:timeZoneUTC];
     [self.forceInstallDatePicker setCalendar:gregorian];
     [self.forceInstallDatePicker setTimeZone:timeZoneUTC];
@@ -981,8 +984,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
          */
         
         NSDate *now = [NSDate date];
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *dateComponents = [gregorian components:( NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:now];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *dateComponents = [gregorian components:( NSCalendarUnitHour | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:now];
         [dateComponents setMinute:0];
         [dateComponents setSecond:0];
         NSDate *normalizedDate = [gregorian dateFromComponents:dateComponents];

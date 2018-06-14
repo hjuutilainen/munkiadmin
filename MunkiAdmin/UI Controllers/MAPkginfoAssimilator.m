@@ -235,7 +235,7 @@ DDLogLevel ddLogLevel;
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(pkginfoAssimilatorDidFinish:returnCode:object:)]) {
-        [self.delegate pkginfoAssimilatorDidFinish:self returnCode:NSOKButton object:nil];
+        [self.delegate pkginfoAssimilatorDidFinish:self returnCode:NSModalResponseOK object:nil];
     }
 }
 
@@ -246,7 +246,7 @@ DDLogLevel ddLogLevel;
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(pkginfoAssimilatorDidFinish:returnCode:object:)]) {
-        [self.delegate pkginfoAssimilatorDidFinish:self returnCode:NSCancelButton object:nil];
+        [self.delegate pkginfoAssimilatorDidFinish:self returnCode:NSModalResponseCancel object:nil];
     }
 }
 

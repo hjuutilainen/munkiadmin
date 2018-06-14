@@ -56,11 +56,13 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 @implementation ItemCellView
 @synthesize detailTextField = _detailTextField;
 @synthesize popupButton = _popupButton;
+
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
-    NSColor *textColor = (backgroundStyle == NSBackgroundStyleDark) ? [NSColor windowBackgroundColor] : [NSColor controlShadowColor];
+    NSColor *textColor = (backgroundStyle == NSBackgroundStyleDark) ? [NSColor selectedTextColor] : [NSColor secondaryLabelColor];
     self.detailTextField.textColor = textColor;
     [super setBackgroundStyle:backgroundStyle];
 }
+
 @end
 
 #pragma mark -
@@ -158,7 +160,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     /*
      Setup the main window
      */
-    [self.window setBackgroundColor:[NSColor whiteColor]];
+    //[self.window setBackgroundColor:[NSColor whiteColor]];
     [self.window bind:@"title" toObject:self withKeyPath:@"manifestToEdit.title" options:nil];
     
     self.currentDetailView = self.generalView;
@@ -186,9 +188,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             }
         }];
     } else {
-        [NSApp beginSheet:[self.selectManifestsWindowController window]
-           modalForWindow:self.window modalDelegate:self
-           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        [self.window beginSheet:[self.selectManifestsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            [self addNewItemSheetDidEnd:[self.selectManifestsWindowController window] returnCode:returnCode contextInfo:nil];
+        }];
     }
     
     NSMutableArray *tempPredicates = [[NSMutableArray alloc] init];
@@ -221,9 +223,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             }
         }];
     } else {
-        [NSApp beginSheet:[self.selectManifestsWindowController window]
-           modalForWindow:self.window modalDelegate:self
-           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        [self.window beginSheet:[self.selectManifestsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            [self addNewItemSheetDidEnd:[self.selectManifestsWindowController window] returnCode:returnCode contextInfo:nil];
+        }];
     }
     
     ManifestMO *selectedManifest = self.manifestToEdit;
@@ -338,7 +340,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
-- (void)addNewItemSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+- (void)addNewItemSheetDidEnd:(NSWindow *)sheet returnCode:(NSModalResponse)returnCode contextInfo:(void *)contextInfo
 {
     DDLogError(@"%@", NSStringFromSelector(_cmd));
     
@@ -414,9 +416,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             }
         }];
     } else {
-        [NSApp beginSheet:[self.addItemsWindowController window]
-           modalForWindow:self.window modalDelegate:self
-           didEndSelector:@selector(addNewItemSheetDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        [self.window beginSheet:[self.addItemsWindowController window] completionHandler:^(NSModalResponse returnCode) {
+            [self addNewItemSheetDidEnd:[self.addItemsWindowController window] returnCode:returnCode contextInfo:nil];
+        }];
     }
 }
 
@@ -478,11 +480,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 }
 
 
-- (void)newPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)newPredicateSheetDidEnd:(id)sheet returnCode:(NSModalResponse)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    if (returnCode == NSCancelButton) return;
+    if (returnCode == NSModalResponseCancel) return;
     
     NSString *thePredicateString = nil;
     if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
@@ -512,11 +514,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [moc refreshObject:selectedManifest mergeChanges:YES];
 }
 
-- (void)editPredicateSheetDidEnd:(id)sheet returnCode:(int)returnCode object:(id)object
+- (void)editPredicateSheetDidEnd:(id)sheet returnCode:(NSModalResponse)returnCode object:(id)object
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    if (returnCode == NSCancelButton) return;
+    if (returnCode == NSModalResponseCancel) return;
     
     NSString *thePredicateString = nil;
     if ([self.predicateEditor.tabView selectedTabViewItem] == self.predicateEditor.predicateEditorTabViewItem) {
@@ -534,11 +536,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
     
-    [NSApp beginSheet:[self.predicateEditor window]
-       modalForWindow:self.window
-        modalDelegate:self
-       didEndSelector:@selector(newPredicateSheetDidEnd:returnCode:object:)
-          contextInfo:nil];
+    [self.window beginSheet:[self.predicateEditor window] completionHandler:^(NSModalResponse returnCode) {
+        [self newPredicateSheetDidEnd:self.predicateEditor returnCode:returnCode object:nil];
+    }];
     
     self.predicateEditor.conditionToEdit = nil;
     [self.predicateEditor resetPredicateToDefault];
@@ -553,12 +553,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     @try {
         NSPredicate *predicateToEdit = [NSPredicate predicateWithFormat:selectedCondition.munki_condition];
         if (predicateToEdit != nil) {
-            
-            [NSApp beginSheet:[self.predicateEditor window]
-               modalForWindow:self.window
-                modalDelegate:self
-               didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
-                  contextInfo:nil];
+            [self.window beginSheet:[self.predicateEditor window] completionHandler:^(NSModalResponse returnCode) {
+                [self editPredicateSheetDidEnd:self.predicateEditor returnCode:returnCode object:nil];
+            }];
             
             self.predicateEditor.conditionToEdit = selectedCondition;
             self.predicateEditor.customPredicateString = selectedCondition.munki_condition;
@@ -567,12 +564,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     }
     @catch (NSException *exception) {
         DDLogError(@"Caught exception while trying to open predicate editor. This usually means that the predicate is valid but the editor can not edit it. Showing the text field editor instead...");
-        
-        [NSApp beginSheet:[self.predicateEditor window]
-           modalForWindow:self.window
-            modalDelegate:self
-           didEndSelector:@selector(editPredicateSheetDidEnd:returnCode:object:)
-              contextInfo:nil];
+        [self.window beginSheet:[self.predicateEditor window] completionHandler:^(NSModalResponse returnCode) {
+            [self editPredicateSheetDidEnd:self.predicateEditor returnCode:returnCode object:nil];
+        }];
         
         [self.predicateEditor resetPredicateToDefault];
         self.predicateEditor.conditionToEdit = selectedCondition;
