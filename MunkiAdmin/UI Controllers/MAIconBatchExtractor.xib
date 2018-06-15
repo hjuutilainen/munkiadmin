@@ -237,11 +237,11 @@
                                 </tableView>
                             </subviews>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.25" horizontal="YES" id="hnO-LU-9tF">
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.25" horizontal="YES" id="hnO-LU-9tF">
                             <rect key="frame" x="1" y="247" width="523" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="CfY-6p-c8S">
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="CfY-6p-c8S">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -330,11 +330,11 @@ Gw
                         <rect key="frame" x="17" y="45" width="531" height="76"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="5fu-jl-5CO">
-                            <rect key="frame" x="1" y="1" width="529" height="60"/>
+                            <rect key="frame" x="3" y="3" width="525" height="58"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <button misplaced="YES" id="Hnt-OG-5Vy">
-                                    <rect key="frame" x="16" y="34" width="109" height="18"/>
+                                    <rect key="frame" x="16" y="32" width="109" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Resize images" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="acC-1b-6Za">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -345,7 +345,7 @@ Gw
                                     </connections>
                                 </button>
                                 <button id="WVp-bF-PCZ">
-                                    <rect key="frame" x="16" y="12" width="240" height="18"/>
+                                    <rect key="frame" x="16" y="10" width="240" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Overwrite existing icons" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="eff-1f-lTJ">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -356,7 +356,7 @@ Gw
                                     </connections>
                                 </button>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="AQI-Ux-hLF">
-                                    <rect key="frame" x="129" y="35" width="209" height="17"/>
+                                    <rect key="frame" x="129" y="33" width="209" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="5UF-Cg-3vj">
                                         <font key="font" metaFont="system"/>
