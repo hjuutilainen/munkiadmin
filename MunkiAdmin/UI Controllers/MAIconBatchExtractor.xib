@@ -21,6 +21,7 @@
             <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="565" height="436"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <value key="minSize" type="size" width="300" height="300"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="565" height="436"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -252,7 +253,7 @@
                             <outlet property="menu" destination="Le4-QT-c02" id="2Mp-b3-sWk"/>
                         </connections>
                     </scrollView>
-                    <customView id="fgw-b0-QGq" customClass="MAGradientButtonBarView">
+                    <customView id="fgw-b0-QGq">
                         <rect key="frame" x="20" y="129" width="525" height="25"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
