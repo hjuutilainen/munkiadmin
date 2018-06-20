@@ -108,7 +108,7 @@
 
 - (NSString *)catalogsDescriptionString
 {
-    NSArray *catalogStrings = [self catalogShortStrings];
+    NSArray *catalogStrings = [self catalogStrings];
     if (catalogStrings) {
         return [catalogStrings componentsJoinedByString:@", "];
     } else {
