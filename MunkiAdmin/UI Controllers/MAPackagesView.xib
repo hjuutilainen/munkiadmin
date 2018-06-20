@@ -632,34 +632,46 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </searchFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="predicate2" keyPath="searchFieldPredicate" previousBinding="hXJ-sV-nD1" id="5Zm-Ih-SK1">
+                                                <binding destination="-2" name="predicate2" keyPath="searchFieldPredicate" previousBinding="BAN-n3-IFR" id="I3L-wE-nXC">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Name</string>
                                                         <string key="NSPredicateFormat">munki_name contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="predicate4" keyPath="searchFieldPredicate" previousBinding="VEB-HC-Llp" id="DCc-mQ-c5W">
-                                                    <dictionary key="options">
-                                                        <string key="NSDisplayName">Description</string>
-                                                        <string key="NSPredicateFormat">munki_description contains[cd] $value</string>
-                                                    </dictionary>
-                                                </binding>
-                                                <binding destination="-2" name="predicate3" keyPath="searchFieldPredicate" previousBinding="5Zm-Ih-SK1" id="VEB-HC-Llp">
+                                                <binding destination="-2" name="predicate3" keyPath="searchFieldPredicate" previousBinding="I3L-wE-nXC" id="o7T-Ec-Oaz">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Display Name</string>
                                                         <string key="NSPredicateFormat">munki_display_name contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="predicate" keyPath="searchFieldPredicate" id="hXJ-sV-nD1">
+                                                <binding destination="-2" name="predicate4" keyPath="searchFieldPredicate" previousBinding="o7T-Ec-Oaz" id="g57-5S-KZY">
                                                     <dictionary key="options">
-                                                        <string key="NSDisplayName">Any</string>
-                                                        <string key="NSPredicateFormat">munki_name contains[cd] $value OR munki_display_name contains[cd] $value OR munki_description contains[cd] $value OR munki_notes contains[cd] $value</string>
+                                                        <string key="NSDisplayName">Description</string>
+                                                        <string key="NSPredicateFormat">munki_description contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="predicate5" keyPath="searchFieldPredicate" previousBinding="DCc-mQ-c5W" id="ueV-9F-cVz">
+                                                <binding destination="-2" name="predicate5" keyPath="searchFieldPredicate" previousBinding="g57-5S-KZY" id="XCh-sT-Ytz">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayName">Admin Notes</string>
                                                         <string key="NSPredicateFormat">munki_notes contains[cd] $value</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="-2" name="predicate6" keyPath="searchFieldPredicate" previousBinding="XCh-sT-Ytz" id="nhe-Ob-R2V">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayName">Any requires item</string>
+                                                        <string key="NSPredicateFormat">SUBQUERY(requirements, $requirement, $requirement.title contains[cd] $value).@count &gt; 0</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="-2" name="predicate7" keyPath="searchFieldPredicate" previousBinding="nhe-Ob-R2V" id="7Am-sB-Qtx">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayName">Any update_for item</string>
+                                                        <string key="NSPredicateFormat">SUBQUERY(updateFor, $update, $update.title contains[cd] $value).@count &gt; 0</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="-2" name="predicate" keyPath="searchFieldPredicate" id="BAN-n3-IFR">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayName">Any</string>
+                                                        <string key="NSPredicateFormat">munki_name contains[cd] $value OR munki_display_name contains[cd] $value OR munki_description contains[cd] $value OR munki_notes contains[cd] $value</string>
                                                     </dictionary>
                                                 </binding>
                                             </connections>
