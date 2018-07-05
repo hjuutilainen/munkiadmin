@@ -22,14 +22,14 @@ Latest version can be downloaded from the [Releases page](https://github.com/hju
 
 MunkiAdmin requires:
 
-* macOS 10.8 or later
+* macOS 10.11 or later
 * [Munki](http://munki.github.io/munki/) components installed (any recent version)
 
 ### Build from source:
 
 Clone, fork or download the source. Open ```MunkiAdmin.xcworkspace``` with Xcode and hit 'Run'. If you're making changes to the data model, you need to use mogenerator to keep NSManagedObject subclasses updated. So in short:
 
-* Xcode 6
+* Xcode
 * Command Line Developer Tools
 * Optional: [mogenerator](http://github.com/rentzsch/mogenerator)
 
