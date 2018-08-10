@@ -63,7 +63,7 @@ DDLogLevel ddLogLevel;
             } else {
                 DDLogError(@"%@: Copy failed with error: %@", filename, [copyError description]);
             }
-            
+            [fm setDelegate:nil];
 		}
 	}
 	@catch(...) {
