@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G12b" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -216,6 +216,7 @@
         <attribute name="munki_PayloadIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postinstall_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_postuninstall_script" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_precache" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_preinstall_alert_alert_detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_alert_alert_title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_preinstall_alert_cancel_label" optional="YES" attributeType="String" syncable="YES"/>
@@ -354,7 +355,7 @@
         <element name="Manifest" positionX="0" positionY="0" width="128" height="584"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1290"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1305"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>

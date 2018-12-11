@@ -151,6 +151,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* munki_postuninstall_script;
 
+@property (nonatomic, strong, nullable) NSNumber* munki_precache;
+
+@property (atomic) BOOL munki_precacheValue;
+- (BOOL)munki_precacheValue;
+- (void)setMunki_precacheValue:(BOOL)value_;
+
 @property (nonatomic, strong, nullable) NSString* munki_preinstall_alert_alert_detail;
 
 @property (nonatomic, strong, nullable) NSString* munki_preinstall_alert_alert_title;
@@ -523,6 +529,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveMunki_postuninstall_script;
 - (void)setPrimitiveMunki_postuninstall_script:(nullable NSString*)value;
 
+- (nullable NSNumber*)primitiveMunki_precache;
+- (void)setPrimitiveMunki_precache:(nullable NSNumber*)value;
+
+- (BOOL)primitiveMunki_precacheValue;
+- (void)setPrimitiveMunki_precacheValue:(BOOL)value_;
+
 - (nullable NSString*)primitiveMunki_preinstall_alert_alert_detail;
 - (void)setPrimitiveMunki_preinstall_alert_alert_detail:(nullable NSString*)value;
 
@@ -731,6 +743,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)munki_package_path;
 + (NSString *)munki_postinstall_script;
 + (NSString *)munki_postuninstall_script;
++ (NSString *)munki_precache;
 + (NSString *)munki_preinstall_alert_alert_detail;
 + (NSString *)munki_preinstall_alert_alert_title;
 + (NSString *)munki_preinstall_alert_cancel_label;

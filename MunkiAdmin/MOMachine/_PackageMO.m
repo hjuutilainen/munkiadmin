@@ -79,6 +79,11 @@
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"munki_precacheValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_precache"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"munki_preinstall_alert_enabledValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_preinstall_alert_enabled"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -354,6 +359,26 @@
 @dynamic munki_postinstall_script;
 
 @dynamic munki_postuninstall_script;
+
+@dynamic munki_precache;
+
+- (BOOL)munki_precacheValue {
+	NSNumber *result = [self munki_precache];
+	return [result boolValue];
+}
+
+- (void)setMunki_precacheValue:(BOOL)value_ {
+	[self setMunki_precache:@(value_)];
+}
+
+- (BOOL)primitiveMunki_precacheValue {
+	NSNumber *result = [self primitiveMunki_precache];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_precacheValue:(BOOL)value_ {
+	[self setPrimitiveMunki_precache:@(value_)];
+}
 
 @dynamic munki_preinstall_alert_alert_detail;
 
@@ -779,6 +804,9 @@
 }
 + (NSString *)munki_postuninstall_script {
 	return @"munki_postuninstall_script";
+}
++ (NSString *)munki_precache {
+	return @"munki_precache";
 }
 + (NSString *)munki_preinstall_alert_alert_detail {
 	return @"munki_preinstall_alert_alert_detail";

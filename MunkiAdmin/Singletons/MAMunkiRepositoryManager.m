@@ -2723,6 +2723,7 @@ static dispatch_queue_t serialQueue;
                                   @"notes",
                                   @"OnDemand",
                                   @"package_path",
+                                  @"precache",
                                   @"preinstall_alert",
                                   @"preinstall_script",
                                   @"preuninstall_alert",
