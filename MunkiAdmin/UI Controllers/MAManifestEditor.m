@@ -98,7 +98,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.includedManifestsArrayController.sortDescriptors = @[sortByTitle];
     
     NSSortDescriptor *sortByReferenceTitle = [NSSortDescriptor sortDescriptorWithKey:@"manifestReference.title" ascending:YES selector:@selector(localizedStandardCompare:)];
-    self.referencingManifestsArrayController.sortDescriptors = @[sortByReferenceTitle];
+    NSSortDescriptor *sortByTitleOrDisplayName = [NSSortDescriptor sortDescriptorWithKey:@"manifestReference.titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.referencingManifestsArrayController.sortDescriptors = @[sortByTitleOrDisplayName, sortByReferenceTitle];
     self.referencingManifestsTableView.target = self;
     self.referencingManifestsTableView.doubleAction = @selector(referencingManifestDoubleClick:);
     
@@ -976,8 +977,17 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             } else if (selected.tag == MAEditorSectionTagReferencingManifests) {
                 [itemCellView.popupButton bind:NSSelectedObjectBinding toObject:itemCellView withKeyPath:@"objectValue.originalManifestConditionalReference" options:nil];
             }
-            
+        } else if ([tableColumn.identifier isEqualToString:@"tableColumnManifestTitle"]) {
+            NSTableCellView *tableCellView = (NSTableCellView *)view;
+            StringObjectMO *current = [self.includedManifestsArrayController.arrangedObjects objectAtIndex:(NSUInteger)row];
+            //[tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.manifestTitleOrDisplayName" options:nil];
+            if (current.originalManifest) {
+                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.originalManifest.titleOrDisplayName" options:nil];
+            } else {
+                //
+            }
         }
+        
     } else if (tableView == self.referencingManifestsTableView) {
         /*
          Create the correct bindings for the condition column
@@ -990,10 +1000,11 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         } else if ([tableColumn.identifier isEqualToString:@"tableColumnManifestTitle"]) {
             NSTableCellView *tableCellView = (NSTableCellView *)view;
             StringObjectMO *current = [self.referencingManifestsArrayController.arrangedObjects objectAtIndex:(NSUInteger)row];
+            //[tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.manifestTitleOrDisplayName" options:nil];
             if (current.manifestReference) {
-                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.manifestReference.title" options:nil];
+                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.manifestReference.titleOrDisplayName" options:nil];
             } else {
-                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.includedManifestConditionalReference.manifest.title" options:nil];
+                [tableCellView.textField bind:NSValueBinding toObject:tableCellView withKeyPath:@"objectValue.includedManifestConditionalReference.manifest.titleOrDisplayName" options:nil];
             }
         }
     }
