@@ -45,8 +45,7 @@ DDLogLevel ddLogLevel;
                                        [NSExpression expressionForKeyPath:@"machine_model"],
                                        [NSExpression expressionForKeyPath:@"munki_version"],
                                        [NSExpression expressionForKeyPath:@"serial_number"],
-                                       [NSExpression expressionForKeyPath:@"os_build_number"],
-                                       [NSExpression expressionForKeyPath:@"os_build_last_component"]];
+                                       [NSExpression expressionForKeyPath:@"os_build_number"]];
     NSArray *simpleOperators = @[
                                  @(NSContainsPredicateOperatorType),
                                  @(NSMatchesPredicateOperatorType),
@@ -82,7 +81,8 @@ DDLogLevel ddLogLevel;
     NSArray *numericLeftExpressions = @[
                                         [NSExpression expressionForKeyPath:@"os_vers_major"],
                                         [NSExpression expressionForKeyPath:@"os_vers_minor"],
-                                        [NSExpression expressionForKeyPath:@"os_vers_patch"]];
+                                        [NSExpression expressionForKeyPath:@"os_vers_patch"],
+                                        [NSExpression expressionForKeyPath:@"os_build_last_component"]];
     NSArray *numericOperators = @[
                                   @(NSGreaterThanPredicateOperatorType),
                                   @(NSGreaterThanOrEqualToPredicateOperatorType),
@@ -148,7 +148,8 @@ DDLogLevel ddLogLevel;
                                  @"%[os_vers_patch]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
                                      @"%[OS Patch Version]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[os_build_number]@ %[is, is not, contains, matches, is like, begins with, ends with]@ %@" : @"%[OS Build Number]@ %[is, is not, contains, matches, is like, begins with, ends with]@ %@",
-                                 @"%[os_build_last_component]@ %[is, is not, contains, matches, is like, begins with, ends with]@ %@" : @"%[OS Build Last Component]@ %[is, is not, contains, matches, is like, begins with, ends with]@ %@",
+                                 @"%[os_build_last_component]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
+                                     @"%[OS Build Last Component]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[ipv4_address]@ %[is, is not, contains, is like, begins with, ends with]@ %@" : @"%[IPv4 address of any interface]@ %[is, is not, contains, is like, begins with, ends with]@ %@",
                                  @"%[catalogs]@ %[is, is not, contains, is like, begins with, ends with]@ %@" : @"%[Catalogs]@ %[is, is not, contains, is like, begins with, ends with]@ %@",
                                  @"%[date]@ %[is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
