@@ -662,7 +662,15 @@ DDLogLevel ddLogLevel;
     appleUpdatesSmartItem.parent = mainTypesItem;
     appleUpdatesSmartItem.originalIndexValue = 40;
     appleUpdatesSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"apple_update_metadata"];
-    
+
+    InstallerTypeSourceListItemMO *startosinstallSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
+    startosinstallSmartItem.title = @"startosinstall";
+    startosinstallSmartItem.icon = smartIcon;
+    startosinstallSmartItem.itemType = @"smart";
+    startosinstallSmartItem.parent = mainTypesItem;
+    startosinstallSmartItem.originalIndexValue = 45;
+    startosinstallSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"startosinstall"];
+
     InstallerTypeSourceListItemMO *configurationProfilesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     configurationProfilesSmartItem.title = @"Configuration Profile";
     configurationProfilesSmartItem.icon = smartIcon;
