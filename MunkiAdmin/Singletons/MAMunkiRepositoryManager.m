@@ -770,6 +770,7 @@ static dispatch_queue_t serialQueue;
              Scan the new item
              */
             MAManifestScanner *manifestScanner = [[MAManifestScanner alloc] initWithURL:newURL];
+            manifestScanner.delegate = [NSApp delegate];
             manifestScanner.performFullScan = YES;
             [manifestScanner start];
             succeeded = YES;
@@ -804,6 +805,7 @@ static dispatch_queue_t serialQueue;
          Scan the new item
          */
         MAManifestScanner *manifestScanner = [[MAManifestScanner alloc] initWithURL:newURL];
+        manifestScanner.delegate = [NSApp delegate];
         manifestScanner.performFullScan = YES;
         [manifestScanner start];
         succeeded = YES;

@@ -392,7 +392,7 @@ static const int BatchSize = 50;
 
 - (void)scanPkginfos
 {
-    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)self.delegate;
     NSManagedObjectContext *privateContext = self.context;
     
     NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:privateContext];
@@ -666,7 +666,7 @@ static const int BatchSize = 50;
 
 - (void)main {
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    self.context.parentContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    self.context.parentContext = [(MAMunkiAdmin_AppDelegate *)self.delegate managedObjectContext];
     self.context.undoManager = nil;
     [self.context performBlockAndWait:^{
         @try {

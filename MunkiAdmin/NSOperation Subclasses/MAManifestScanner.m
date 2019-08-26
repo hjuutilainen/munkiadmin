@@ -457,7 +457,7 @@ DDLogLevel ddLogLevel;
 	@try {
 		@autoreleasepool {
             
-            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)self.delegate;
 			NSManagedObjectContext *privateContext = self.context;
 			self.currentJobDescription = [NSString stringWithFormat:@"Reading manifest %@", self.fileName];
 			

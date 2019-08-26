@@ -72,8 +72,8 @@ DDLogLevel ddLogLevel;
             
 			MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
             MACoreDataManager *coreDataManager = [MACoreDataManager sharedManager];
-            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
             
+            MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)self.delegate;
             NSManagedObjectContext *privateContext = self.context;
             
 			NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:privateContext];
