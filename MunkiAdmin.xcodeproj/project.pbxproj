@@ -93,6 +93,7 @@
 		F5B2996315E78704008BE0EF /* packageIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */; };
 		F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */; };
 		F5B2997015E7959B008BE0EF /* packageGroupIcon_32x32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */; };
+		F5B739CB2313B4F50081CB9E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5B739CA2313B4F50081CB9E /* Images.xcassets */; };
 		F5CD0ACF15EC965600BBC11F /* openRepositoryTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0ACE15EC965600BBC11F /* openRepositoryTemplate.pdf */; };
 		F5CD0AD215EC981500BBC11F /* saveTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */; };
 		F5CD0AD415EC9CB900BBC11F /* makecatalogsTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */; };
@@ -187,7 +188,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0FDB177FE71AD8B3731D7675 /* libPods-MunkiAdmin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MunkiAdmin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		265049FC172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _InstallerEnvironmentVariableMO.h; sourceTree = "<group>"; };
@@ -205,6 +205,8 @@
 		77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAMunkiAdmin_AppDelegate.m; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.m; sourceTree = "<group>"; wrapsLines = 1; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; name = "MunkiAdmin-Info.plist"; path = "MunkiAdmin/MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		90D309206A5862FDEE139612 /* Pods-MunkiAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MunkiAdmin.release.xcconfig"; path = "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.release.xcconfig"; sourceTree = "<group>"; };
+		C2893CCA4CD51290AEE11F6D /* Pods-MunkiAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MunkiAdmin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MunkiAdmin/Pods-MunkiAdmin.debug.xcconfig"; sourceTree = "<group>"; };
 		F5018E6D19090E00009F6D28 /* _DeveloperMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperMO.h; sourceTree = "<group>"; };
 		F5018E6E19090E00009F6D28 /* _DeveloperMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DeveloperMO.m; sourceTree = "<group>"; };
 		F5018E6F19090E00009F6D28 /* _DeveloperSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperSourceListItemMO.h; sourceTree = "<group>"; };
@@ -332,6 +334,8 @@
 		F5B2996115E78704008BE0EF /* packageIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/packageIcon_32x32@2x.png"; sourceTree = "<group>"; };
 		F5B2996D15E7959B008BE0EF /* packageGroupIcon_32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = packageGroupIcon_32x32.png; path = MunkiAdmin/Graphics/packageGroupIcon_32x32.png; sourceTree = "<group>"; };
 		F5B2996E15E7959B008BE0EF /* packageGroupIcon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "packageGroupIcon_32x32@2x.png"; path = "MunkiAdmin/Graphics/packageGroupIcon_32x32@2x.png"; sourceTree = "<group>"; };
+		F5B739CA2313B4F50081CB9E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MunkiAdmin/Images.xcassets; sourceTree = "<group>"; };
+		F5BCEFD22313ACF900ECBFC5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F5CD0ACE15EC965600BBC11F /* openRepositoryTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = openRepositoryTemplate.pdf; path = MunkiAdmin/Graphics/openRepositoryTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD115EC981500BBC11F /* saveTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = saveTemplate.pdf; path = MunkiAdmin/Graphics/saveTemplate.pdf; sourceTree = "<group>"; };
 		F5CD0AD315EC9CB900BBC11F /* makecatalogsTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = makecatalogsTemplate.pdf; path = MunkiAdmin/Graphics/makecatalogsTemplate.pdf; sourceTree = "<group>"; };
@@ -677,6 +681,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F5B739CA2313B4F50081CB9E /* Images.xcassets */,
 				F5674AFE1B314DE90010B6E2 /* appstoreTemplate.pdf */,
 				F5EC182B1AAEE30A00C88669 /* book.pdf */,
 				F5A2CD541AAF358E00A8466E /* calendar_ok.pdf */,
@@ -748,6 +753,8 @@
 		B986459F033535F99279787C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				C2893CCA4CD51290AEE11F6D /* Pods-MunkiAdmin.debug.xcconfig */,
+				90D309206A5862FDEE139612 /* Pods-MunkiAdmin.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -976,18 +983,18 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1100;
 			};
 			buildConfigurationList = 26FC0A880875C7B200E6366F /* Build configuration list for PBXProject "MunkiAdmin" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				Base,
+				en,
+				fr,
+				ja,
+				de,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* MunkiAdmin */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -1049,6 +1056,7 @@
 				F5E401B31B527B0600679B24 /* pen1Template.pdf in Resources */,
 				F5B2996F15E7959B008BE0EF /* packageGroupIcon_32x32.png in Resources */,
 				F5B2997015E7959B008BE0EF /* packageGroupIcon_32x32@2x.png in Resources */,
+				F5B739CB2313B4F50081CB9E /* Images.xcassets in Resources */,
 				F5529A8215EB41BD0077481C /* catalogIcon_32x32.png in Resources */,
 				F5529A8315EB41BD0077481C /* catalogIcon_32x32@2x.png in Resources */,
 				F598BB381EE174FF00299F59 /* manifestFeaturedItemsTemplate.pdf in Resources */,
@@ -1231,7 +1239,7 @@
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				F5BCEFD22313ACF900ECBFC5 /* en */,
 			);
 			name = InfoPlist.strings;
 			path = MunkiAdmin;
@@ -1254,7 +1262,9 @@
 			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1279,7 +1289,9 @@
 			baseConfigurationReference = F5A11C6C195706C6005A39AE /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

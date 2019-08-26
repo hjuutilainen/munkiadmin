@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14897.2" systemVersion="19A536g" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -61,14 +61,14 @@
         <relationship name="developerReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer" inverseName="developerSourceListReference" inverseEntity="Developer" syncable="YES"/>
     </entity>
     <entity name="Directory" representedClassName="DirectoryMO" parentEntity="PackageSourceListItem" syncable="YES">
-        <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="originalURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <fetchedProperty name="childPackages" optional="YES" transient="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="parentURL == $FETCH_SOURCE.originalURL"/>
         </fetchedProperty>
     </entity>
     <entity name="IconImage" representedClassName="IconImageMO" syncable="YES">
-        <attribute name="imageRepresentation" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="originalURL" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="imageRepresentation" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="originalURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="iconImage" inverseEntity="Package" syncable="YES"/>
     </entity>
     <entity name="InstallerChoicesItem" representedClassName="InstallerChoicesItemMO" syncable="YES">
@@ -97,7 +97,7 @@
         <attribute name="munki_version_comparison_key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version_comparison_key_value" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="originalInstallsItem" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="originalInstallsItem" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <relationship name="customKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InstallsItemCustomKey" inverseName="installsItem" inverseEntity="InstallsItemCustomKey" indexed="YES" syncable="YES"/>
         <relationship name="packages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Package" inverseName="installsItems" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
@@ -132,10 +132,10 @@
         <attribute name="manifestDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="manifestDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="manifestDisplayName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="manifestParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="manifestURL" attributeType="Transformable" syncable="YES"/>
+        <attribute name="manifestParentDirectoryURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="manifestURL" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="manifestUserName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalManifest" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="originalManifest" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="applications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Application" inverseName="manifests" inverseEntity="Application" indexed="YES" syncable="YES"/>
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CatalogInfo" inverseName="manifest" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
@@ -240,18 +240,18 @@
         <attribute name="munki_uninstallcheck_script" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_uninstaller_item_location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_version" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalPkginfo" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="originalPkginfo" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="packageDateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageInfoDateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageInfoDateLastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="packageInfoDateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="packageInfoParentDirectoryURL" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="packageInfoURL" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="packageURL" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="packageInfoParentDirectoryURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="packageInfoURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="packageURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="titleWithVersion" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uninstallerItemURL" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uninstallerItemURL" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <relationship name="blockingApplications" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="blockingApplicationReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CatalogInfo" inverseName="package" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
         <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="packages" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
@@ -279,12 +279,12 @@
         <relationship name="package" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="packageInfos" inverseEntity="Package" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="PackageSourceListItem" representedClassName="PackageSourceListItemMO" syncable="YES">
-        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="icon" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="parent" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PackageSourceListItem" inverseName="children" inverseEntity="PackageSourceListItem" indexed="YES" syncable="YES"/>
@@ -341,23 +341,23 @@
         <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
         <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
-        <element name="Directory" positionX="0" positionY="0" width="128" height="89"/>
-        <element name="IconImage" positionX="9" positionY="153" width="128" height="90"/>
+        <element name="Directory" positionX="0" positionY="0" width="128" height="86"/>
+        <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
         <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="118"/>
         <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
         <element name="InstallerTypeSourceListItem" positionX="9" positionY="153" width="128" height="45"/>
-        <element name="InstallsItem" positionX="0" positionY="0" width="128" height="255"/>
+        <element name="InstallsItem" positionX="0" positionY="0" width="128" height="253"/>
         <element name="InstallsItemCustomKey" positionX="0" positionY="0" width="128" height="90"/>
         <element name="ItemToCopy" positionX="0" positionY="0" width="128" height="165"/>
         <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="584"/>
+        <element name="Manifest" positionX="0" positionY="0" width="128" height="581"/>
         <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
         <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1305"/>
+        <element name="Package" positionX="0" positionY="0" width="128" height="1303"/>
         <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StringObject" positionX="0" positionY="0" width="128" height="449"/>
     </elements>
