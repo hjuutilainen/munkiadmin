@@ -1,33 +1,38 @@
 PODS:
   - CHCSVParser (2.1.0)
-  - CocoaLumberjack (3.4.2):
-    - CocoaLumberjack/Default (= 3.4.2)
-    - CocoaLumberjack/Extensions (= 3.4.2)
-  - CocoaLumberjack/Default (3.4.2)
-  - CocoaLumberjack/Extensions (3.4.2):
-    - CocoaLumberjack/Default
+  - CocoaLumberjack (3.5.3):
+    - CocoaLumberjack/Core (= 3.5.3)
+  - CocoaLumberjack/Core (3.5.3)
   - NSHash (1.0.2)
   - PXSourceList (2.0.7)
 
 DEPENDENCIES:
-  - CHCSVParser (~> 2.1)
+  - CHCSVParser (from `https://github.com/davedelong/CHCSVParser.git`)
   - CocoaLumberjack
   - NSHash (~> 1.0.1)
   - PXSourceList (~> 2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - CHCSVParser
     - CocoaLumberjack
     - NSHash
     - PXSourceList
 
+EXTERNAL SOURCES:
+  CHCSVParser:
+    :git: https://github.com/davedelong/CHCSVParser.git
+
+CHECKOUT OPTIONS:
+  CHCSVParser:
+    :commit: 58c701ef9eddaf48b11aa59b48f61f241d7b43f9
+    :git: https://github.com/davedelong/CHCSVParser.git
+
 SPEC CHECKSUMS:
-  CHCSVParser: 3bcc7bdb72111a31222e95d57eacceefe4e537e8
-  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  CHCSVParser: 64da26e2b4ddbf7527f7f03120bf91d83d28f354
+  CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
   NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
   PXSourceList: 8e37978a5db6c8d8d255f8913603bcea322c6445
 
-PODFILE CHECKSUM: 1705d859fae9d23964b65dbc64eacc7bf9316ee1
+PODFILE CHECKSUM: a9525e540a23ba5ae8bb08c391cb2ad036eaf48b
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.5

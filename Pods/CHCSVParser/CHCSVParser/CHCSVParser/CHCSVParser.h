@@ -165,6 +165,12 @@ typedef NS_ENUM(NSInteger, CHCSVErrorCode) {
  */
 @property (readonly) NSUInteger totalBytesRead;
 
+
+/**
+ * This method is unavailable, because there is nothing supplied to parse.
+ */
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The designated initializer
  *
@@ -243,6 +249,11 @@ typedef NS_ENUM(NSInteger, CHCSVErrorCode) {
 @interface CHCSVWriter : NSObject
 
 /**
+ * This method is unavailable, because there is no way to extract the written CSV.
+ */
+- (instancetype)init NS_UNAVAILABLE;
+
+/**
  *  Initializes a @c CHCSVWriter to write to the provided file path. Assumes @c NSUTF8Encoding and the comma delimiter
  *
  *  @param path The path to the CSV file
@@ -289,6 +300,15 @@ typedef NS_ENUM(NSInteger, CHCSVErrorCode) {
 - (void)writeLineOfFields:(id<NSFastEnumeration>)fields;
 
 /**
+ *  Write the contents of an @c NSDictionary as a new line
+ *
+ *  @param dictionary The @c NSDictionary whose values will be written to the output stream.
+ *  Values will be written in the order specified by the first line of fields written to the stream.
+ *  If no lines have been written yet, this method will throw an exception.
+ */
+- (void)writeLineWithDictionary:(NSDictionary *)dictionary;
+
+/**
  *  Write a comment to the stream
  *
  *  If another line is already in progress, it is terminated and a new line is begun.
@@ -333,7 +353,7 @@ typedef NS_OPTIONS(NSUInteger, CHCSVParserOptions) {
      */
     CHCSVParserOptionsTrimsWhitespace = 1 << 3,
     /**
-     *  When you specify this option, instead of gettin an Array of Arrays of Strings,
+     *  When you specify this option, instead of getting an Array of Arrays of Strings,
      *  you get an Array of @c CHCSVOrderedDictionary instances.
      *  If the file only contains a single line, then an empty array is returned.
      */
@@ -353,6 +373,9 @@ typedef NS_OPTIONS(NSUInteger, CHCSVParserOptions) {
  *  An @c NSDictionary subclass that maintains a strong ordering of its key-value pairs
  */
 @interface CHCSVOrderedDictionary : NSDictionary
+
+- (instancetype)initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx;
 - (id)objectAtIndex:(NSUInteger)idx;
