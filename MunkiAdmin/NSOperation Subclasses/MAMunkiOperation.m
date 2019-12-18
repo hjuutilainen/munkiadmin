@@ -70,7 +70,8 @@ DDLogLevel ddLogLevel;
     makecatalogsTask.standardInput = [NSPipe pipe];
     
     NSMutableDictionary *defaultEnv = [[NSMutableDictionary alloc] initWithDictionary:[[NSProcessInfo processInfo] environment]];
-    [defaultEnv setObject:@"YES" forKey:@"NSUnbufferedIO"] ;
+    [defaultEnv setObject:@"YES" forKey:@"NSUnbufferedIO"];
+    [defaultEnv setObject:@"utf-8" forKey:@"PYTHONIOENCODING"];
     makecatalogsTask.environment = defaultEnv;
      
     NSString *repoArg = [self.targetURL path];
@@ -154,6 +155,10 @@ DDLogLevel ddLogLevel;
 	makepkginfoTask.arguments = newArguments;
 	makepkginfoTask.standardOutput = makepkginfoPipe;
     makepkginfoTask.standardError = makepkginfoErrorPipe;
+    
+    NSMutableDictionary *defaultEnv = [[NSMutableDictionary alloc] initWithDictionary:[[NSProcessInfo processInfo] environment]];
+    [defaultEnv setObject:@"utf-8" forKey:@"PYTHONIOENCODING"];
+    makepkginfoTask.environment = defaultEnv;
     
     DDLogDebug(@"Running %@ with arguments: %@", makepkginfoTask.launchPath, makepkginfoTask.arguments);
 	[makepkginfoTask launch];
