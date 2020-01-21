@@ -1418,21 +1418,11 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSTableView delegates
 
-- (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
+- (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
-    if (theTableView == self.packagesTableView) {
-        [thePasteboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
-        NSMutableArray *urls = [NSMutableArray array];
-        [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-            PackageMO *package = [[self.packagesArrayController arrangedObjects] objectAtIndex:idx];
-            [urls addObject:[[package objectID] URIRepresentation]];
-        }];
-        return [thePasteboard writeObjects:urls];
-    } 
-    
-    else {
-        return FALSE;
-    }
+    PackageMO *package = [[self.packagesArrayController arrangedObjects] objectAtIndex:(NSUInteger)row];
+    NSURL *objectURL = [[package objectID] URIRepresentation];
+    return objectURL;
 }
 
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation

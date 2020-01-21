@@ -796,20 +796,14 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 #pragma mark -
 #pragma mark NSTableView Delegate
 
-- (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
+- (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
-    if (theTableView == self.catalogInfosTableView) {
-        [thePasteboard declareTypes:@[NSURLPboardType] owner:self];
-        NSMutableArray *urls = [NSMutableArray array];
-        [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-            CatalogInfoMO *aCatalogInfo = [[self.catalogInfosArrayController arrangedObjects] objectAtIndex:idx];
-            [urls addObject:[[aCatalogInfo objectID] URIRepresentation]];
-        }];
-        return [thePasteboard writeObjects:urls];
-    }
-    
-    else {
-        return FALSE;
+    if (tableView == self.catalogInfosTableView) {
+        CatalogInfoMO *aCatalogInfo = [[self.catalogInfosArrayController arrangedObjects] objectAtIndex:(NSUInteger)row];
+        NSURL *objectURL = [[aCatalogInfo objectID] URIRepresentation];
+        return objectURL;
+    } else {
+        return nil;
     }
 }
 
