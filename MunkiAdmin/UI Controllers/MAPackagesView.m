@@ -1361,6 +1361,9 @@ DDLogLevel ddLogLevel;
         if (([[item representedObject] isKindOfClass:[CategorySourceListItemMO class]])) {
             return NSDragOperationMove;
         }
+        else if (([[item representedObject] isKindOfClass:[DeveloperSourceListItemMO class]])) {
+            return NSDragOperationMove;
+        }
         else if (![targetDir.itemType isEqualToString:@"regular"]) {
             return NSDragOperationNone;
         }
