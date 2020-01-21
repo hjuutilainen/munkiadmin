@@ -1420,9 +1420,13 @@ DDLogLevel ddLogLevel;
 
 - (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
-    PackageMO *package = [[self.packagesArrayController arrangedObjects] objectAtIndex:(NSUInteger)row];
-    NSURL *objectURL = [[package objectID] URIRepresentation];
-    return objectURL;
+    if (tableView == self.packagesTableView) {
+        PackageMO *package = [[self.packagesArrayController arrangedObjects] objectAtIndex:(NSUInteger)row];
+        NSURL *objectURL = [[package objectID] URIRepresentation];
+        return objectURL;
+    } else {
+        return nil;
+    }
 }
 
 - (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation
