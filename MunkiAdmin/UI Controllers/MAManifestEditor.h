@@ -45,6 +45,8 @@
 @property (weak) IBOutlet NSMenu *referencingManifestsConditionMenu;
 @property (weak) IBOutlet NSTableCellView *conditionalsTableCellView;
 @property (weak) IBOutlet NSPopUpButton *conditionalsPopupButton;
+@property (weak) IBOutlet NSMenuItem *conditionTemplatesMenuItem;
+@property (weak) IBOutlet NSMenuItem *conditionsFromOtherManifestsMenuItem;
 @property (weak) IBOutlet NSOutlineView *conditionsOutlineView;
 @property (weak) IBOutlet NSTreeController *conditionsTreeController;
 @property (strong) IBOutlet NSScrollView *sourceListView;

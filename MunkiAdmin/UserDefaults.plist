@@ -259,5 +259,36 @@
 	<integer>350</integer>
 	<key>iconResizeDefaultHeight</key>
 	<integer>350</integer>
+	<key>showBuiltinTemplateConditions</key>
+	<true />
+	<key>showConditionsFromOtherManifests</key>
+	<true />
+	<key>templateConditions</key>
+	<array>
+		<string>os_vers_minor &gt;= 6</string>
+		<string>os_vers_minor &gt;= 7</string>
+		<string>os_vers_minor &gt;= 8</string>
+		<string>os_vers_minor &gt;= 9</string>
+		<string>os_vers_minor &gt;= 10</string>
+		<string>os_vers_minor &gt;= 11</string>
+		<string>os_vers_minor &gt;= 12</string>
+		<string>os_vers_minor &gt;= 13</string>
+		<string>os_vers_minor &gt;= 14</string>
+		<string>os_vers_minor &gt;= 15</string>
+		<string>os_vers_minor &lt;= 6</string>
+		<string>os_vers_minor &lt;= 7</string>
+		<string>os_vers_minor &lt;= 8</string>
+		<string>os_vers_minor &lt;= 9</string>
+		<string>os_vers_minor &lt;= 10</string>
+		<string>os_vers_minor &lt;= 11</string>
+		<string>os_vers_minor &lt;= 12</string>
+		<string>os_vers_minor &lt;= 13</string>
+		<string>os_vers_minor &lt;= 14</string>
+		<string>os_vers_minor &lt;= 15</string>
+		<string>machine_type == "desktop"</string>
+		<string>machine_type != "desktop"</string>
+		<string>machine_type == "laptop"</string>
+		<string>machine_type != "laptop"</string>
+	</array>
 </dict>
 </plist>

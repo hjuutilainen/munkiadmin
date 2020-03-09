@@ -118,7 +118,63 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     self.conditionsOutlineView.target = self;
     self.conditionsOutlineView.doubleAction = @selector(editConditionalItemAction:);
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey:@"showConditionsFromOtherManifests"]) {
+        [[self.conditionsFromOtherManifestsMenuItem submenu] removeAllItems];
+        NSArray *distinctConditions = [[fetchResults valueForKeyPath:@"@distinctUnionOfObjects.munki_condition"] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+        for (NSString *condition in distinctConditions) {
+            NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:condition action:@selector(newConditionFromTemplate:) keyEquivalent:@""];
+            [[self.conditionsFromOtherManifestsMenuItem submenu] addItem:menuItem];
+        }
+    } else {
+        [self.conditionsFromOtherManifestsMenuItem setHidden:YES];
+    }
+    
+    
+    [[self.conditionTemplatesMenuItem submenu] removeAllItems];
+    
+    for (NSString *templateCondition in [defaults arrayForKey:@"templateConditionsUser"]) {
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:templateCondition action:@selector(newConditionFromTemplate:) keyEquivalent:@""];
+        [[self.conditionTemplatesMenuItem submenu] addItem:menuItem];
+    }
+    
+    if ([defaults boolForKey:@"showBuiltinTemplateConditions"]) {
+        [[self.conditionTemplatesMenuItem submenu] addItem:[NSMenuItem separatorItem]];
+        for (NSString *templateCondition in [defaults arrayForKey:@"templateConditions"]) {
+            NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:templateCondition action:@selector(newConditionFromTemplate:) keyEquivalent:@""];
+            [[self.conditionTemplatesMenuItem submenu] addItem:menuItem];
+        }
+    }
+    
     [self setupSourceList];
+}
+
+- (void)newConditionFromTemplate:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    
+    NSString *thePredicateString = [(NSMenuItem *)sender title];
+    
+    NSArray *selectedConditionalItems = [self.conditionsTreeController selectedObjects];
+    ManifestMO *selectedManifest = self.manifestToEdit;
+    NSManagedObjectContext *moc = self.manifestToEdit.managedObjectContext;
+    
+    
+    if ([selectedConditionalItems count] == 0) {
+        ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+        newConditionalItem.munki_condition = thePredicateString;
+        [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+    } else {
+        for (id selectedConditionalItem in selectedConditionalItems) {
+            ConditionalItemMO *newConditionalItem = [NSEntityDescription insertNewObjectForEntityForName:@"ConditionalItem" inManagedObjectContext:moc];
+            newConditionalItem.munki_condition = thePredicateString;
+            [self.manifestToEdit addConditionalItemsObject:newConditionalItem];
+            newConditionalItem.parent = selectedConditionalItem;
+        }
+    }
+    
+    [moc refreshObject:selectedManifest mergeChanges:YES];
 }
 
 - (void)includedManifestDoubleClick:(id)sender
