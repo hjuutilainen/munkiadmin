@@ -26,8 +26,10 @@
 @property (readonly) BOOL repositoryHasPostOpenScript;
 @property (readonly) BOOL repositoryHasPkginfoPreSaveScript;
 @property (readonly) BOOL repositoryHasPkginfoPostSaveScript;
+@property (readonly) BOOL repositoryHasPkginfoCustomScripts;
 @property (readonly) BOOL repositoryHasManifestPreSaveScript;
 @property (readonly) BOOL repositoryHasManifestPostSaveScript;
+@property (readonly) BOOL repositoryHasManifestCustomScripts;
 @property NSUInteger lengthForUniqueCatalogTitles;
 @property (readonly, strong) NSString *makepkginfoVersion;
 @property (readonly, strong) NSString *makecatalogsVersion;
@@ -103,5 +105,7 @@
 - (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL;
 - (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url;
 - (void)updateUniqueCatalogStringLength;
+- (NSArray *)manifestCustomScriptPaths;
+- (BOOL)runManifestCustomScriptAtPath:(NSString *)scriptPath withManifests:(NSArray *)manifests;
 
 @end

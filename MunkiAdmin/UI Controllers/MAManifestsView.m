@@ -968,6 +968,8 @@ DDLogLevel ddLogLevel;
         [self referencingManifestsSubMenuWillOpen:menu];
     } else if (menu == self.includedManifestsSubMenu) {
         [self includedManifestsSubMenuWillOpen:menu];
+    } else if (menu == self.scriptsSubMenu) {
+        [self scriptsSubMenuWillOpen:menu];
     }
 }
 
@@ -975,6 +977,54 @@ DDLogLevel ddLogLevel;
 {
     DDLogVerbose(@"Validating menu item %@", [menuItem title]);
     return YES;
+}
+
+- (void)runManifestCustomScriptMenuItemAction:(id)sender
+{
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    
+    NSMutableArray *selectedManifests = [NSMutableArray new];
+    for (ManifestMO *manifest in self.manifestsArrayController.selectedObjects) {
+        [selectedManifests addObject:manifest];
+    }
+    
+    NSInteger clickedRow = [self.manifestsListTableView clickedRow];
+    if (clickedRow != -1) {
+        ManifestMO *clickedManifest = [[self.manifestsArrayController arrangedObjects] objectAtIndex:(NSUInteger)clickedRow];
+        if (![selectedManifests containsObject:clickedManifest]) {
+            [selectedManifests addObject:clickedManifest];
+        }
+    }
+    
+    NSString *scriptPath = [sender representedObject];
+    [repoManager runManifestCustomScriptAtPath:scriptPath withManifests:[NSArray arrayWithArray:selectedManifests]];
+}
+
+- (void)scriptsSubMenuWillOpen:(NSMenu *)menu
+{
+    [menu removeAllItems];
+    
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    for (NSString *scriptPath in [[repoManager manifestCustomScriptPaths] sortedArrayUsingSelector:@selector(localizedStandardCompare:)]) {
+        NSString *fileNameFull = [scriptPath lastPathComponent];
+        NSError *error = NULL;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^manifest-custom[-\\s]*"
+                                                                               options:NSRegularExpressionCaseInsensitive
+                                                                                 error:&error];
+
+        NSString *output = [regex stringByReplacingMatchesInString:fileNameFull
+                                                        options:0
+                                                          range:NSMakeRange(0, [fileNameFull length])
+                                                   withTemplate:@""];
+        
+        NSMenuItem *newMenuItem = [[NSMenuItem alloc] initWithTitle:output
+                                                             action:nil
+                                                      keyEquivalent:@""];
+        newMenuItem.representedObject = scriptPath;
+        newMenuItem.target = self;
+        newMenuItem.action = @selector(runManifestCustomScriptMenuItemAction:);
+        [menu addItem:newMenuItem];
+    }
 }
 
 

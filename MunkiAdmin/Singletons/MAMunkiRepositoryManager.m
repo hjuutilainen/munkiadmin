@@ -22,9 +22,12 @@ DDLogLevel ddLogLevel;
 
 #define kPkginfoPreSaveScriptName @"pkginfo-presave"
 #define kPkginfoPostSaveScriptName @"pkginfo-postsave"
+#define kPkginfoCustomScriptPrefix @"pkginfo-custom"
 
 #define kManifestPreSaveScriptName @"manifest-presave"
 #define kManifestPostSaveScriptName @"manifest-postsave"
+#define kManifestCustomScriptPrefix @"manifest-custom"
+#define kManifestCustomScriptDirectoryName @"manifest-custom"
 
 #define kRepositoryPreSaveScriptName @"repository-presave"
 #define kRepositoryPostSaveScriptName @"repository-postsave"
@@ -53,8 +56,10 @@ DDLogLevel ddLogLevel;
 @property (readwrite) BOOL repositoryHasPostOpenScript;
 @property (readwrite) BOOL repositoryHasPkginfoPreSaveScript;
 @property (readwrite) BOOL repositoryHasPkginfoPostSaveScript;
+@property (readwrite) BOOL repositoryHasPkginfoCustomScripts;
 @property (readwrite) BOOL repositoryHasManifestPreSaveScript;
 @property (readwrite) BOOL repositoryHasManifestPostSaveScript;
+@property (readwrite) BOOL repositoryHasManifestCustomScripts;
 
 - (void)willStartOperations;
 - (void)willEndOperations;
@@ -1981,6 +1986,11 @@ static dispatch_queue_t serialQueue;
     return [[self repositorySupportDirectory] URLByAppendingPathComponent:@"scripts"];
 }
 
+- (NSURL *)repositoryCustomManifestScriptsDirectory
+{
+    return [[self repositoryScriptsDirectory] URLByAppendingPathComponent:kManifestCustomScriptDirectoryName];
+}
+
 - (NSURL *)applicationFilesDirectory
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -2044,6 +2054,94 @@ static dispatch_queue_t serialQueue;
     return nil;
 }
 
+- (NSArray *)customManifestScriptPaths
+{
+    NSMutableArray *scriptURLs = [NSMutableArray new];
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    /*
+     Look for item with any extension
+     */
+    NSArray *propertiesToGet = @[NSURLIsRegularFileKey, NSURLIsExecutableKey, NSURLNameKey];
+    
+    NSArray *supportDirectories = @[[self repositoryCustomManifestScriptsDirectory]];
+    for (NSURL *supportDir in supportDirectories) {
+        NSArray *dirContents = [fm contentsOfDirectoryAtURL:supportDir
+                                 includingPropertiesForKeys:propertiesToGet
+                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                      error:nil];
+        for (NSURL *item in dirContents) {
+            NSNumber *isRegularFile = nil;
+            [item getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+            if (![isRegularFile boolValue]) {
+                continue;
+            }
+            
+            
+            NSNumber *isExecutable = nil;
+            [item getResourceValue:&isExecutable forKey:NSURLIsExecutableKey error:nil];
+            
+            NSString *fileName = nil;
+            [item getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+            
+            if ([isExecutable boolValue]) {
+                DDLogVerbose(@"Found script with custom path extension: %@", [item path]);
+                [scriptURLs addObject:[item path]];
+            } else {
+                DDLogVerbose(@"Found matching file with custom path extension but it is not executable: %@", [item path]);
+            }
+        }
+    }
+    DDLogVerbose(@"Did not find any custom manifest scripts");
+    return [NSArray arrayWithArray:scriptURLs];
+}
+
+- (NSArray *)scriptPathsForPrefix:(NSString *)prefix
+{
+    NSMutableArray *scriptURLs = [NSMutableArray new];
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    /*
+     Look for item with any extension
+     */
+    NSArray *propertiesToGet = @[NSURLIsRegularFileKey, NSURLIsExecutableKey, NSURLNameKey];
+    
+    NSArray *supportDirectories = @[[self repositoryScriptsDirectory], [self applicationScriptsDirectory]];
+    for (NSURL *supportDir in supportDirectories) {
+        NSArray *dirContents = [fm contentsOfDirectoryAtURL:supportDir
+                                 includingPropertiesForKeys:propertiesToGet
+                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                      error:nil];
+        for (NSURL *item in dirContents) {
+            NSNumber *isRegularFile = nil;
+            [item getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+            if (![isRegularFile boolValue]) {
+                continue;
+            }
+            
+            
+            NSNumber *isExecutable = nil;
+            [item getResourceValue:&isExecutable forKey:NSURLIsExecutableKey error:nil];
+            
+            NSString *fileName = nil;
+            [item getResourceValue:&fileName forKey:NSURLNameKey error:nil];
+            
+            if ([fileName hasPrefix:prefix]) {
+                if ([isExecutable boolValue]) {
+                    DDLogVerbose(@"Found script with custom path extension: %@", [item path]);
+                    [scriptURLs addObject:[item path]];
+                } else {
+                    DDLogVerbose(@"Found matching file with custom path extension but it is not executable: %@", [item path]);
+                }
+            }
+        }
+    }
+    DDLogVerbose(@"Did not find any scripts for prefix: %@", prefix);
+    return [NSArray arrayWithArray:scriptURLs];
+}
+
 - (NSString *)pkginfoPostSaveScriptPath
 {
     return [[self scriptURLForName:kPkginfoPostSaveScriptName] path];
@@ -2054,6 +2152,11 @@ static dispatch_queue_t serialQueue;
     return [[self scriptURLForName:kPkginfoPreSaveScriptName] path];
 }
 
+- (NSArray *)pkginfoCustomScriptPaths
+{
+    return [self scriptPathsForPrefix:kPkginfoCustomScriptPrefix];
+}
+
 - (NSString *)manifestPreSaveScriptPath
 {
     return [[self scriptURLForName:kManifestPreSaveScriptName] path];
@@ -2062,6 +2165,11 @@ static dispatch_queue_t serialQueue;
 - (NSString *)manifestPostSaveScriptPath
 {
     return [[self scriptURLForName:kManifestPostSaveScriptName] path];
+}
+
+- (NSArray *)manifestCustomScriptPaths
+{
+    return [self customManifestScriptPaths];
 }
 
 - (NSString *)repositoryPreSaveScriptPath
@@ -2090,9 +2198,27 @@ static dispatch_queue_t serialQueue;
     
     self.repositoryHasPkginfoPreSaveScript = ([fm fileExistsAtPath:[self pkginfoPreSaveScriptPath]]) ? YES : NO;
     self.repositoryHasPkginfoPostSaveScript = ([fm fileExistsAtPath:[self pkginfoPostSaveScriptPath]]) ? YES : NO;
+    if ([self pkginfoCustomScriptPaths] != nil) {
+        if ([[self pkginfoCustomScriptPaths] count] > 0) {
+            self.repositoryHasPkginfoCustomScripts = YES;
+        } else {
+            self.repositoryHasPkginfoCustomScripts = NO;
+        }
+    } else {
+        self.repositoryHasPkginfoCustomScripts = NO;
+    }
     
     self.repositoryHasManifestPreSaveScript = ([fm fileExistsAtPath:[self manifestPreSaveScriptPath]]) ? YES : NO;
     self.repositoryHasManifestPostSaveScript = ([fm fileExistsAtPath:[self manifestPostSaveScriptPath]]) ? YES : NO;
+    if ([self manifestCustomScriptPaths] != nil) {
+        if ([[self manifestCustomScriptPaths] count] > 0) {
+            self.repositoryHasManifestCustomScripts = YES;
+        } else {
+            self.repositoryHasManifestCustomScripts = NO;
+        }
+    } else {
+        self.repositoryHasManifestCustomScripts = NO;
+    }
     
     self.repositoryHasPreSaveScript = ([fm fileExistsAtPath:[self repositoryPreSaveScriptPath]]) ? YES : NO;
     self.repositoryHasPostSaveScript = ([fm fileExistsAtPath:[self repositoryPostSaveScriptPath]]) ? YES : NO;
@@ -2180,6 +2306,31 @@ static dispatch_queue_t serialQueue;
         }
         if (scriptRunner.terminationStatus != 0) {
             DDLogError(@"Post-save script exited with code %i", scriptRunner.terminationStatus);
+            if (scriptRunner.standardError && [scriptRunner.standardError isEqualToString:@""]) {
+                DDLogError(@"\n%@", scriptRunner.standardError);
+            }
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL)runManifestCustomScriptAtPath:(NSString *)scriptPath withManifests:(NSArray *)manifests
+{
+    for (ManifestMO *manifest in manifests) {
+        DDLogDebug(@"Running manifest custom script: %@", scriptPath);
+        MAScriptRunner *scriptRunner = [MAScriptRunner scriptWithPath:scriptPath];
+        NSArray *arguments = @[
+            [manifest.manifestURL path]
+        ];
+        scriptRunner.arguments = arguments;
+        scriptRunner.currentDirectoryPath = [self.repositoryURL path];
+        [scriptRunner start];
+        if (scriptRunner.standardOutput) {
+            DDLogError(@"\n%@", scriptRunner.standardOutput);
+        }
+        if (scriptRunner.terminationStatus != 0) {
+            DDLogError(@"Manifest custom script %i", scriptRunner.terminationStatus);
             if (scriptRunner.standardError && [scriptRunner.standardError isEqualToString:@""]) {
                 DDLogError(@"\n%@", scriptRunner.standardError);
             }

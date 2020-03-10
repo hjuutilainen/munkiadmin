@@ -26,6 +26,8 @@
 @property (weak) IBOutlet NSMenu *includedManifestsSubMenu;
 @property (weak) IBOutlet NSMenuItem *referencingManifestsSubMenuItem;
 @property (weak) IBOutlet NSMenu *referencingManifestsSubMenu;
+@property (weak) IBOutlet NSMenuItem *scriptsSubMenuItem;
+@property (weak) IBOutlet NSMenu *scriptsSubMenu;
 @property (weak) IBOutlet NSPredicateEditor *manifestsListPredicateEditor;
 @property (weak) IBOutlet NSTableView *manifestsListTableView;
 @property BOOL predicateEditorHidden;
