@@ -38,7 +38,7 @@ DDLogLevel ddLogLevel;
 {
     NSData *sortersFromDefaults = [[NSUserDefaults standardUserDefaults] dataForKey:@"manifestsSortDescriptors"];
     if (sortersFromDefaults) {
-        return [NSUnarchiver unarchiveObjectWithData:sortersFromDefaults];
+        return [NSKeyedUnarchiver unarchiveObjectWithData:sortersFromDefaults];
     } else {
         return @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
     }
@@ -804,7 +804,7 @@ DDLogLevel ddLogLevel;
     savePanel.message = message;
     NSString *title = NSLocalizedString(@"Create manifest", @"");
     savePanel.title = title;
-    if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    if ([savePanel runModal] == NSModalResponseOK)
     {
         newURL = [savePanel URL];
     } else {

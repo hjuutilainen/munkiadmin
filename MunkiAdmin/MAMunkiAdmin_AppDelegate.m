@@ -220,7 +220,7 @@ DDLogLevel ddLogLevel;
 	openPanel.resolvesAliases = YES;
 	openPanel.directoryURL = [self.defaults URLForKey:@"openRepositoryLastDir"];
     
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
 	{
         [self.defaults setURL:[openPanel URLs][0] forKey:@"openRepositoryLastDir"];
 		return [openPanel URLs][0];
@@ -241,7 +241,7 @@ DDLogLevel ddLogLevel;
 	openPanel.canChooseFiles = NO;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
 	{
 		return [openPanel URLs];
 	} else {
@@ -264,7 +264,7 @@ DDLogLevel ddLogLevel;
     openPanel.prompt = prompt;
     openPanel.directoryURL = self.pkgsInfoURL;
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
 	{
 		return [openPanel URLs][0];
 	} else {
@@ -284,7 +284,7 @@ DDLogLevel ddLogLevel;
 	openPanel.canChooseFiles = YES;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
 	{
 		return [openPanel URLs][0];
 	} else {
@@ -304,7 +304,7 @@ DDLogLevel ddLogLevel;
 	openPanel.canChooseFiles = YES;
 	openPanel.resolvesAliases = YES;
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
 	{
 		return [openPanel URLs];
 	} else {
@@ -328,7 +328,7 @@ DDLogLevel ddLogLevel;
     openPanel.directoryURL = self.pkgsURL;
     [openPanel setAccessoryView:self.makepkginfoOptionsView];
 	
-	if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
+    if ([openPanel runModal] == NSModalResponseOK) {
 		return [openPanel URLs];
 	} else {
 		return nil;
@@ -357,7 +357,7 @@ DDLogLevel ddLogLevel;
     savePanel.title = title;
     NSString * _Nonnull message = [NSString stringWithFormat:NSLocalizedString(@"Original item is not in your pkgs directory. It will be copied to the selected destination.", @"")];
     savePanel.message = message;
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
+    if ([savePanel runModal] == NSModalResponseOK) {
 		return [savePanel URL];
 	} else {
 		return nil;
@@ -379,7 +379,7 @@ DDLogLevel ddLogLevel;
         savePanel.message = message;
     }
     savePanel.title = title;
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton) {
+    if ([savePanel runModal] == NSModalResponseOK) {
 		return [savePanel URL];
 	} else {
 		return nil;
@@ -407,7 +407,7 @@ DDLogLevel ddLogLevel;
     }
     NSString *title = NSLocalizedString(@"Save pkginfo", @"");
     savePanel.title = title;
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    if ([savePanel runModal] == NSModalResponseOK)
 	{
 		return [savePanel URL];
 	} else {
@@ -423,7 +423,7 @@ DDLogLevel ddLogLevel;
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
     NSString *defaultName = NSLocalizedString(@"New Repository", @"");
     savePanel.nameFieldStringValue = defaultName;
-	if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    if ([savePanel runModal] == NSModalResponseOK)
 	{
 		return [savePanel URL];
 	} else {
@@ -996,7 +996,7 @@ DDLogLevel ddLogLevel;
      Log to ASL
      */
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logToSyslog"]) {
-        [DDLog addLogger:[DDASLLogger sharedInstance]];
+        [DDLog addLogger:[DDOSLogger sharedInstance]];
     }
     
     /*

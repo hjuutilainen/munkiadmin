@@ -758,7 +758,7 @@ static dispatch_queue_t serialQueue;
     savePanel.directoryURL = [[manifest manifestURL] URLByDeletingLastPathComponent];
     [savePanel setNameFieldStringValue:[[manifest manifestURL] lastPathComponent]];
     
-    if ([savePanel runModal] == NSFileHandlingPanelOKButton)
+    if ([savePanel runModal] == NSModalResponseOK)
     {
         NSURL *newURL = [savePanel URL];
         

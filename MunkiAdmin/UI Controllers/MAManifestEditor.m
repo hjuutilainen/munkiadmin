@@ -810,7 +810,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 {
     NSTextField *textField = [[NSTextField alloc] init];
     [textField setIdentifier:identifier];
-    [[textField cell] setControlSize:NSRegularControlSize];
+    [[textField cell] setControlSize:NSControlSizeRegular];
     [textField setBordered:NO];
     [textField setBezeled:NO];
     [textField setSelectable:YES];
@@ -827,8 +827,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSTextField *textField = [[NSTextField alloc] init];
     [textField setIdentifier:identifier];
     [textField setStringValue:title];
-    [[textField cell] setControlSize:NSRegularControlSize];
-    [textField setAlignment:NSRightTextAlignment];
+    [[textField cell] setControlSize:NSControlSizeRegular];
+    [textField setAlignment:NSTextAlignmentRight];
     [textField setBordered:NO];
     [textField setBezeled:NO];
     [textField setSelectable:NO];

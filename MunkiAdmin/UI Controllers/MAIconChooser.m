@@ -72,7 +72,7 @@
      */
     NSMutableParagraphStyle *paraphStyle = [[NSMutableParagraphStyle alloc] init];
 	[paraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
-	[paraphStyle setAlignment:NSCenterTextAlignment];
+    [paraphStyle setAlignment:NSTextAlignmentCenter];
 	
 	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 	[attributes setObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName];

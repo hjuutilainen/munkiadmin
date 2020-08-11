@@ -67,7 +67,7 @@ DDLogLevel ddLogLevel;
      */
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 	paragraphStyle.lineBreakMode = NSLineBreakByTruncatingMiddle;
-	paragraphStyle.alignment = NSCenterTextAlignment;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
 	
 	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 	attributes[NSFontAttributeName] = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
@@ -143,7 +143,7 @@ DDLogLevel ddLogLevel;
     
     [NSGraphicsContext saveGraphicsState];
     [NSGraphicsContext setCurrentContext:[NSGraphicsContext graphicsContextWithBitmapImageRep:rep]];
-    [sourceImage drawInRect:NSMakeRect(0, 0, newSize.width, newSize.height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+    [sourceImage drawInRect:NSMakeRect(0, 0, newSize.width, newSize.height) fromRect:NSZeroRect operation:NSCompositingOperationCopy fraction:1.0];
     [NSGraphicsContext restoreGraphicsState];
     
     NSImage *newImage = [[NSImage alloc] initWithSize:newSize];
@@ -434,7 +434,7 @@ DDLogLevel ddLogLevel;
     [savePanel setNameFieldStringValue:filename];
 	
     [savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-		if (result == NSFileHandlingPanelOKButton) {
+        if (result == NSModalResponseOK) {
             // Dismiss the sheet before doing anything else
             [savePanel orderOut:nil];
             // Process the save
@@ -499,7 +499,7 @@ DDLogLevel ddLogLevel;
     NSString *message = NSLocalizedString(@"Choose an image to create an icon or choose any other file to extract its icon.", @"");
     openPanel.message = message;
 	[openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-		if (result == NSFileHandlingPanelOKButton) {
+        if (result == NSModalResponseOK) {
             [openPanel orderOut:nil];
             [self openImageURL:[openPanel URL]];
         }

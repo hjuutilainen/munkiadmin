@@ -54,7 +54,7 @@ DDLogLevel ddLogLevel;
     openPanel.canChooseFiles = YES;
     openPanel.resolvesAliases = YES;
     
-    if ([openPanel runModal] == NSFileHandlingPanelOKButton)
+    if ([openPanel runModal] == NSModalResponseOK)
     {
         return [openPanel URLs][0];
     } else {
