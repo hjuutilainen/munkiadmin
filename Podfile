@@ -1,4 +1,4 @@
-platform :osx, '10.11'
+platform :osx, '10.13'
 
 target 'MunkiAdmin' do
 pod 'NSHash', '~> 1.0.1'
