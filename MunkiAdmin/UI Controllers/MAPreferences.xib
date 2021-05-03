@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,21 +20,22 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="328" customClass="MAMunkiRepositoryManager"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" toolbarStyle="preference" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="277" width="540" height="167"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="540" height="167"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
+            <point key="canvasLocation" x="13" y="111"/>
         </window>
         <customView id="4" userLabel="General">
             <rect key="frame" x="0.0" y="0.0" width="540" height="359"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="29">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29">
                     <rect key="frame" x="73" y="293" width="86" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default view:" id="36">
@@ -43,7 +44,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="37">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="37">
                     <rect key="frame" x="71" y="251" width="88" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="When saving:" id="38">
@@ -52,7 +53,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="349">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="349">
                     <rect key="frame" x="75" y="129" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Drag'n drop:" id="350">
@@ -61,7 +62,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" id="30">
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="30">
                     <rect key="frame" x="163" y="287" width="235" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Packages" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="35" id="31">
@@ -79,7 +80,7 @@
                         <binding destination="12" name="selectedIndex" keyPath="values.startupSelectedView" id="117"/>
                     </connections>
                 </popUpButton>
-                <textField verticalHuggingPriority="750" id="118">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="118">
                     <rect key="frame" x="83" y="321" width="76" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On Startup:" id="125">
@@ -88,7 +89,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" id="119">
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="119">
                     <rect key="frame" x="163" y="315" width="235" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Prompt to select a repository" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="123" id="120">
@@ -106,7 +107,7 @@
                         <binding destination="12" name="selectedIndex" keyPath="values.startupWhatToDo" id="127"/>
                     </connections>
                 </popUpButton>
-                <button id="39">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="39">
                     <rect key="frame" x="163" y="210" width="147" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Update catalog files" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="40">
@@ -117,7 +118,7 @@
                         <binding destination="12" name="value" keyPath="values.UpdateCatalogsOnSave" id="47"/>
                     </connections>
                 </button>
-                <button id="Ty4-GS-RZX">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ty4-GS-RZX">
                     <rect key="frame" x="183" y="190" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Disable sanity checks" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="LCh-sQ-L7G">
@@ -129,7 +130,7 @@
                         <binding destination="12" name="value" keyPath="values.makecatalogsForceEnabled" id="m4q-z0-olS"/>
                     </connections>
                 </button>
-                <button id="43">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="43">
                     <rect key="frame" x="163" y="230" width="286" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Write changed manifest files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="44">
@@ -140,7 +141,7 @@
                         <binding destination="12" name="value" keyPath="values.UpdateManifestsOnSave" id="46"/>
                     </connections>
                 </button>
-                <button id="41">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="41">
                     <rect key="frame" x="163" y="250" width="280" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Write changed pkginfo files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="42">
@@ -151,7 +152,7 @@
                         <binding destination="12" name="value" keyPath="values.UpdatePkginfosOnSave" id="45"/>
                     </connections>
                 </button>
-                <button id="351">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="351">
                     <rect key="frame" x="163" y="128" width="320" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Move installer items when moving pkginfo files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="352">
@@ -162,7 +163,7 @@
                         <binding destination="12" name="value" keyPath="values.MoveInstallerItemsWithPkginfos" id="356"/>
                     </connections>
                 </button>
-                <button id="353">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="353">
                     <rect key="frame" x="163" y="108" width="214" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Suppress confirmation dialogs" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="354">
@@ -173,7 +174,7 @@
                         <binding destination="12" name="value" keyPath="values.MoveInstallerItemsWithPkginfosSuppressed" id="357"/>
                     </connections>
                 </button>
-                <button id="KkC-ji-veb">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KkC-ji-veb">
                     <rect key="frame" x="183" y="170" width="227" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Only if pkginfo files were changed" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="0ck-PK-Adk">
@@ -188,11 +189,11 @@
             </subviews>
             <point key="canvasLocation" x="829" y="666.5"/>
         </customView>
-        <customView misplaced="YES" id="6" userLabel="Munki">
+        <customView id="6" userLabel="Munki">
             <rect key="frame" x="0.0" y="0.0" width="540" height="378"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="8">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8">
                     <rect key="frame" x="45" y="338" width="140" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Path to makepkginfo:" id="9">
@@ -201,19 +202,19 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="10">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10">
                     <rect key="frame" x="190" y="336" width="312" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="11">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
                         <binding destination="12" name="value" keyPath="values.makepkginfoPath" id="14"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" id="15">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="15">
                     <rect key="frame" x="35" y="282" width="150" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Path to makecatalogs:" id="18">
@@ -222,19 +223,19 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="16">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="16">
                     <rect key="frame" x="190" y="280" width="312" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="17">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
                         <binding destination="12" name="value" keyPath="values.makecatalogsPath" id="20"/>
                     </connections>
                 </textField>
-                <button id="128">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="128">
                     <rect key="frame" x="188" y="216" width="267" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep managed installs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="129">
@@ -245,7 +246,7 @@
                         <binding destination="12" name="value" keyPath="values.sortManagedInstallsByTitle" id="141"/>
                     </connections>
                 </button>
-                <button id="130">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="130">
                     <rect key="frame" x="188" y="196" width="283" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep managed uninstalls sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="131">
@@ -256,7 +257,7 @@
                         <binding destination="12" name="value" keyPath="values.sortManagedUninstallsByTitle" id="142"/>
                     </connections>
                 </button>
-                <button id="132">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="132">
                     <rect key="frame" x="188" y="176" width="272" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep managed updates sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="133">
@@ -267,7 +268,7 @@
                         <binding destination="12" name="value" keyPath="values.sortManagedUpdatesByTitle" id="143"/>
                     </connections>
                 </button>
-                <button id="134">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="134">
                     <rect key="frame" x="188" y="156" width="260" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep optional installs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="135">
@@ -278,7 +279,7 @@
                         <binding destination="12" name="value" keyPath="values.sortOptionalInstallsByTitle" id="145"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="gPX-TC-oDM">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gPX-TC-oDM">
                     <rect key="frame" x="187" y="30" width="206" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep catalogs sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="qLV-Vu-vLD">
@@ -289,7 +290,7 @@
                         <binding destination="12" name="value" keyPath="values.sortPkginfoCatalogsByTitle" id="McQ-DZ-drl"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" misplaced="YES" id="dLF-Hy-2Bl">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLF-Hy-2Bl">
                     <rect key="frame" x="103" y="31" width="82" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Pkginfo files:" id="C58-hD-tyg">
@@ -298,7 +299,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="138">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="138">
                     <rect key="frame" x="187" y="74" width="285" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="139">
@@ -308,7 +309,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="329">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="329">
                     <rect key="frame" x="237" y="314" width="268" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="--" id="330">
@@ -325,7 +326,7 @@
                         </binding>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" id="335">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="335">
                     <rect key="frame" x="187" y="314" width="48" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version:" id="336">
@@ -334,7 +335,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="337">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="337">
                     <rect key="frame" x="237" y="258" width="268" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="--" id="340">
@@ -351,7 +352,7 @@
                         </binding>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" id="338">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="338">
                     <rect key="frame" x="187" y="258" width="48" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Version:" id="339">
@@ -360,7 +361,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="136">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="136">
                     <rect key="frame" x="118" y="217" width="67" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Manifests:" id="137">
@@ -369,7 +370,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button misplaced="YES" id="hbh-s6-4Na">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbh-s6-4Na">
                     <rect key="frame" x="188" y="136" width="260" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep featured items sorted by name" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="HMk-2Y-hdb">
@@ -388,7 +389,7 @@
             <rect key="frame" x="0.0" y="0.0" width="540" height="266"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <popUpButton verticalHuggingPriority="750" id="mKO-er-SFz">
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mKO-er-SFz">
                     <rect key="frame" x="186" y="222" width="166" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Verbose" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="o9W-oJ-bSb" id="dVS-np-IoA">
@@ -409,7 +410,7 @@
                         <binding destination="12" name="selectedIndex" keyPath="values.logLevel" id="hEc-cF-Wak"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="9wo-UK-vfh">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9wo-UK-vfh">
                     <rect key="frame" x="118" y="228" width="64" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log level:" id="R4W-WF-mGu">
@@ -418,7 +419,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="97T-E1-5M4">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="97T-E1-5M4">
                     <rect key="frame" x="71" y="190" width="111" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Log destinations:" id="PuM-zC-TTF">
@@ -427,7 +428,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="8ew-Qy-exc">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ew-Qy-exc">
                     <rect key="frame" x="186" y="189" width="84" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Log to file" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fkR-zn-AZ1">
@@ -438,7 +439,7 @@
                         <binding destination="12" name="value" keyPath="values.logToFile" id="gsf-Qb-1NB"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="p61-fO-lOl">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p61-fO-lOl">
                     <rect key="frame" x="186" y="169" width="328" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Send log statements to a file in ~/Library/Logs/MunkiAdmin/" id="2sU-a7-Bdm">
@@ -447,7 +448,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="4Fi-8M-piQ">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Fi-8M-piQ">
                     <rect key="frame" x="186" y="145" width="179" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Log to Apple System Log" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="970-3J-BYL">
@@ -458,7 +459,7 @@
                         <binding destination="12" name="value" keyPath="values.logToSyslog" id="XJ9-yp-PFc"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="1sE-7b-xn3">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1sE-7b-xn3">
                     <rect key="frame" x="186" y="111" width="300" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Send log statements to Apple System Log, so they show up on Console.app." id="JCo-Dn-Y72">
@@ -474,7 +475,7 @@
             <rect key="frame" x="0.0" y="0.0" width="540" height="579"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="159">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="159">
                     <rect key="frame" x="90" y="441" width="49" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Owner:" id="180">
@@ -483,7 +484,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="160">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="160">
                     <rect key="frame" x="91" y="297" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="display_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="179">
@@ -495,7 +496,7 @@
                         <binding destination="12" name="enabled" keyPath="values.assimilate_enabled" id="278"/>
                     </connections>
                 </button>
-                <button id="PAx-R0-WA7">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PAx-R0-WA7">
                     <rect key="frame" x="265" y="297" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="icon_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="wf3-lh-tRI">
@@ -507,7 +508,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_icon_name" id="b0G-CN-BeJ"/>
                     </connections>
                 </button>
-                <button id="193">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="193">
                     <rect key="frame" x="73" y="369" width="275" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Assimilate pkginfo properties on import" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="194">
@@ -518,7 +519,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_enabled" id="197"/>
                     </connections>
                 </button>
-                <button id="161">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="161">
                     <rect key="frame" x="91" y="261" width="93" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="description" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="178">
@@ -530,7 +531,7 @@
                         <binding destination="12" name="enabled" keyPath="values.assimilate_enabled" id="281"/>
                     </connections>
                 </button>
-                <button id="162">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="162">
                     <rect key="frame" x="73" y="543" width="233" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Copy package to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="177">
@@ -541,7 +542,7 @@
                         <binding destination="12" name="value" keyPath="values.CopyPkgsToRepo" id="184"/>
                     </connections>
                 </button>
-                <button id="163">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="163">
                     <rect key="frame" x="73" y="469" width="262" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Override items_to_copy default values" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="176">
@@ -552,12 +553,12 @@
                         <binding destination="12" name="value" keyPath="values.items_to_copyUseDefaults" id="188"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" id="164">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="164">
                     <rect key="frame" x="144" y="439" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="175">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -565,7 +566,7 @@
                         <binding destination="12" name="enabled" keyPath="values.items_to_copyUseDefaults" id="191"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" id="165">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="165">
                     <rect key="frame" x="293" y="443" width="48" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Group:" id="174">
@@ -574,12 +575,12 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="166">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="166">
                     <rect key="frame" x="346" y="441" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="173">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -587,7 +588,7 @@
                         <binding destination="12" name="enabled" keyPath="values.items_to_copyUseDefaults" id="190"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" id="167">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="167">
                     <rect key="frame" x="96" y="411" width="43" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Mode:" id="172">
@@ -596,12 +597,12 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="168">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="168">
                     <rect key="frame" x="144" y="409" width="129" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="171">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -609,7 +610,7 @@
                         <binding destination="12" name="enabled" keyPath="values.items_to_copyUseDefaults" id="185"/>
                     </connections>
                 </textField>
-                <button id="169">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="169">
                     <rect key="frame" x="91" y="225" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="maximum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="170">
@@ -621,7 +622,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_maximum_os_version" id="204"/>
                     </connections>
                 </button>
-                <button id="201">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="201">
                     <rect key="frame" x="265" y="207" width="156" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="minimum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="202">
@@ -633,7 +634,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_minimum_os_version" id="203"/>
                     </connections>
                 </button>
-                <button id="205">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="205">
                     <rect key="frame" x="91" y="207" width="181" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="minimum_munki_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="206">
@@ -645,7 +646,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_minimum_munki_version" id="220"/>
                     </connections>
                 </button>
-                <button id="208">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="208">
                     <rect key="frame" x="91" y="243" width="97" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="autoremove" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="209">
@@ -657,7 +658,7 @@
                         <binding destination="12" name="enabled" keyPath="values.assimilate_enabled" id="284"/>
                     </connections>
                 </button>
-                <button id="211">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="211">
                     <rect key="frame" x="265" y="157" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="blocking_applications" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="212">
@@ -669,7 +670,7 @@
                         <binding destination="12" name="enabled" keyPath="values.assimilate_enabled" id="292"/>
                     </connections>
                 </button>
-                <button id="214">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="214">
                     <rect key="frame" x="265" y="189" width="153" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="installable_condition" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="215">
@@ -681,7 +682,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_installable_condition" id="223"/>
                     </connections>
                 </button>
-                <button id="217">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="217">
                     <rect key="frame" x="91" y="71" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="installcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="218">
@@ -693,7 +694,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_installcheck_script" id="224"/>
                     </connections>
                 </button>
-                <button id="226">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="226">
                     <rect key="frame" x="91" y="53" width="123" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="preinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="241">
@@ -705,7 +706,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_preinstall_script" id="308"/>
                     </connections>
                 </button>
-                <button id="227">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="227">
                     <rect key="frame" x="265" y="53" width="130" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="postinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="240">
@@ -717,7 +718,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_postinstall_script" id="309"/>
                     </connections>
                 </button>
-                <button id="228">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="228">
                     <rect key="frame" x="91" y="35" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="preuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="239">
@@ -729,7 +730,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_preuninstall_script" id="310"/>
                     </connections>
                 </button>
-                <button id="229">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="229">
                     <rect key="frame" x="265" y="35" width="146" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="postuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="238">
@@ -741,7 +742,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_postuninstall_script" id="311"/>
                     </connections>
                 </button>
-                <button id="230">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="230">
                     <rect key="frame" x="91" y="139" width="74" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="requires" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="237">
@@ -753,7 +754,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_requires" id="304"/>
                     </connections>
                 </button>
-                <button id="312">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="312">
                     <rect key="frame" x="265" y="139" width="80" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="update_for" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="313">
@@ -765,7 +766,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_update_for" id="324"/>
                     </connections>
                 </button>
-                <button id="316">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="316">
                     <rect key="frame" x="91" y="121" width="136" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="installer_choices_xml" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="319">
@@ -777,7 +778,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_installer_choices_xml" id="325"/>
                     </connections>
                 </button>
-                <button id="344">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="344">
                     <rect key="frame" x="91" y="103" width="99" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="items_to_copy" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="345">
@@ -789,7 +790,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_items_to_copy" id="348"/>
                     </connections>
                 </button>
-                <button id="317">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="317">
                     <rect key="frame" x="265" y="121" width="60" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="installs" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="318">
@@ -801,7 +802,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_installs_items" id="327"/>
                     </connections>
                 </button>
-                <button id="231">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="231">
                     <rect key="frame" x="91" y="157" width="175" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="supported_architectures" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="236">
@@ -813,7 +814,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_supported_architectures" id="306"/>
                     </connections>
                 </button>
-                <button id="253">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="253">
                     <rect key="frame" x="91" y="17" width="131" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="uninstall_method" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="254">
@@ -825,7 +826,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_uninstall_method" id="265"/>
                     </connections>
                 </button>
-                <button id="269">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="269">
                     <rect key="frame" x="91" y="189" width="159" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="uninstaller_item_location" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="270">
@@ -837,7 +838,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_uninstaller_item_location" id="272"/>
                     </connections>
                 </button>
-                <button id="256">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="256">
                     <rect key="frame" x="265" y="17" width="118" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="uninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="257">
@@ -849,7 +850,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_uninstall_script" id="266"/>
                     </connections>
                 </button>
-                <button id="259">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="259">
                     <rect key="frame" x="265" y="225" width="103" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="uninstallable" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="260">
@@ -861,7 +862,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_uninstallable" id="267"/>
                     </connections>
                 </button>
-                <button id="262">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="262">
                     <rect key="frame" x="265" y="71" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="uninstallcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="263">
@@ -873,7 +874,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_uninstallcheck_script" id="268"/>
                     </connections>
                 </button>
-                <button id="232">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="232">
                     <rect key="frame" x="265" y="261" width="139" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="unattended_install" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="235">
@@ -885,7 +886,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_unattended_install" id="302"/>
                     </connections>
                 </button>
-                <button id="233">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="233">
                     <rect key="frame" x="265" y="243" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="unattended_uninstall" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="234">
@@ -897,7 +898,7 @@
                         <binding destination="12" name="value" keyPath="values.assimilate_unattended_uninstall" id="303"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="198">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="198">
                     <rect key="frame" x="90" y="321" width="380" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="199">
@@ -910,7 +911,7 @@
                         <binding destination="12" name="enabled" keyPath="values.debug" id="200"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="273">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="273">
                     <rect key="frame" x="90" y="509" width="380" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="Copy the imported package to repository if it's not located inside the pkgs subdirectory. MunkiAdmin will ask for a location." id="274">
@@ -922,7 +923,7 @@
                         <binding destination="12" name="enabled" keyPath="values.debug" id="275"/>
                     </connections>
                 </textField>
-                <button id="poS-y2-KYw">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="poS-y2-KYw">
                     <rect key="frame" x="91" y="279" width="93" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="category" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="aCg-0w-rwN">
@@ -934,7 +935,7 @@
                         <binding destination="12" name="enabled" keyPath="values.assimilate_enabled" id="0yh-4N-PjO"/>
                     </connections>
                 </button>
-                <button id="cZd-rF-8c8">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZd-rF-8c8">
                     <rect key="frame" x="265" y="279" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="developer" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="kuz-JP-nsZ">
@@ -953,7 +954,7 @@
             <rect key="frame" x="0.0" y="0.0" width="540" height="146"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" id="A9S-H1-xJN">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9S-H1-xJN">
                     <rect key="frame" x="119" y="109" width="111" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Sidebar Sections:" id="YDI-fO-mqF">
@@ -962,7 +963,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="hV4-LD-IWd">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hV4-LD-IWd">
                     <rect key="frame" x="234" y="88" width="112" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Installer Types" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VUb-Vv-1hE">
@@ -973,7 +974,7 @@
                         <binding destination="12" name="value" keyPath="values.sidebarInstallerTypesVisible" id="RQD-pU-tjI"/>
                     </connections>
                 </button>
-                <button id="WvL-jn-tZc">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WvL-jn-tZc">
                     <rect key="frame" x="234" y="68" width="89" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Categories" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6ln-sD-E0e">
@@ -984,7 +985,7 @@
                         <binding destination="12" name="value" keyPath="values.sidebarCategoriesVisible" id="UP1-ny-u3a"/>
                     </connections>
                 </button>
-                <button id="3zH-jS-1nX">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3zH-jS-1nX">
                     <rect key="frame" x="234" y="48" width="176" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Developers with at least:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Eev-7G-9mf">
@@ -995,7 +996,7 @@
                         <binding destination="12" name="value" keyPath="values.sidebarDevelopersVisible" id="tRx-qh-zRb"/>
                     </connections>
                 </button>
-                <button id="UIn-de-2Cy">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UIn-de-2Cy">
                     <rect key="frame" x="234" y="108" width="90" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Directories" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="NR9-FR-2xx">
@@ -1006,7 +1007,7 @@
                         <binding destination="12" name="value" keyPath="values.sidebarDirectoriesVisible" id="Haa-LC-1Og"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" id="oy3-JS-7IC">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oy3-JS-7IC">
                     <rect key="frame" x="256" y="20" width="38" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="ne1-Sf-u0N">
@@ -1015,7 +1016,7 @@
                             <real key="maximum" value="100"/>
                         </numberFormatter>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1023,7 +1024,7 @@
                         <binding destination="12" name="enabled" keyPath="values.sidebarDevelopersVisible" id="s7V-G1-mK7"/>
                     </connections>
                 </textField>
-                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="OQu-EJ-VDv">
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQu-EJ-VDv">
                     <rect key="frame" x="299" y="17" width="19" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="14N-wm-Lgs"/>
@@ -1032,7 +1033,7 @@
                         <binding destination="12" name="enabled" keyPath="values.sidebarDevelopersVisible" id="wUY-vT-g9j"/>
                     </connections>
                 </stepper>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Jrf-vz-m46">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jrf-vz-m46">
                     <rect key="frame" x="321" y="23" width="101" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="package names" id="KCe-7R-QaO">

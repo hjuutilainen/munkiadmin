@@ -58,8 +58,8 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 @synthesize popupButton = _popupButton;
 
 - (void)setBackgroundStyle:(NSBackgroundStyle)backgroundStyle {
-    NSColor *textColor = (backgroundStyle == NSBackgroundStyleDark) ? [NSColor selectedTextColor] : [NSColor secondaryLabelColor];
-    self.detailTextField.textColor = textColor;
+    //NSColor *textColor = (backgroundStyle == NSBackgroundStyleDark) ? [NSColor selectedTextColor] : [NSColor secondaryLabelColor];
+    //self.detailTextField.textColor = textColor;
     [super setBackgroundStyle:backgroundStyle];
 }
 
@@ -993,7 +993,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     [newContentView setFrameOrigin:NSMakePoint(0,0)];
     [newContentView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [newContentView setTranslatesAutoresizingMaskIntoConstraints:YES];
-    [newContentView setAutoresizesSubviews:NO];
+    [newContentView setAutoresizesSubviews:YES];
 }
 
 
