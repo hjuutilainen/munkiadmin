@@ -516,26 +516,30 @@ DDLogLevel ddLogLevel;
     
     // Icon images we're going to use in the Source List.
     
-    NSImage *notepad = [NSImage imageNamed:@"book"];
-    [notepad setTemplate:YES];
+    NSImage *notepad;
+    if (@available(macOS 11.0, *)) {
+        notepad = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Tag icon"];
+    } else {
+        notepad = [NSImage imageNamed:@"text.book.closed"];
+        [notepad setTemplate:YES];
+    }
     
-    NSImage *inbox = [NSImage imageNamed:@"inbox"];
-    [inbox setTemplate:YES];
+    NSImage *inbox;
+    if (@available(macOS 11.0, *)) {
+        inbox = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Tray icon"];
+    } else {
+        inbox = [NSImage imageNamed:@"tray"];
+        [inbox setTemplate:YES];
+    }
     
-    NSImage *calendar = [NSImage imageNamed:@"calendar_ok"];
-    [calendar setTemplate:YES];
+    NSImage *calendar;
+    if (@available(macOS 11.0, *)) {
+        calendar = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Calendar icon"];
+    } else {
+        calendar = [NSImage imageNamed:@"calendar"];
+        [calendar setTemplate:YES];
+    }
     
-    NSImage *folder = [NSImage imageNamed:@"folder"];
-    [folder setTemplate:YES];
-    
-    NSImage *document = [NSImage imageNamed:@"document"];
-    [document setTemplate:YES];
-    
-    NSImage *documents = [NSImage imageNamed:@"documents"];
-    [documents setTemplate:YES];
-    
-    NSImage *documentDownload = [NSImage imageNamed:@"document_download"];
-    [documentDownload setTemplate:YES];
     
     /*
      Catalog items
@@ -566,10 +570,17 @@ DDLogLevel ddLogLevel;
     libraryItem.children = @[[PXSourceListItem itemWithRepresentedObject:allManifestsItem icon:inbox],
                              [PXSourceListItem itemWithRepresentedObject:recentlyModifiedItem icon:calendar]];
     
+    NSImage *document;
+    if (@available(macOS 11.0, *)) {
+        document = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:@"Document icon"];
+    } else {
+        document = [NSImage imageNamed:@"doc"];
+        [document setTemplate:YES];
+    }
     PXSourceListItem *manifestTypesItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Manifest Types"] identifier:nil];
     manifestTypesItem.children = @[[PXSourceListItem itemWithRepresentedObject:machineManifestsItem icon:document],
-                                   [PXSourceListItem itemWithRepresentedObject:groupManifestsItem icon:documents],
-                                   [PXSourceListItem itemWithRepresentedObject:installManifestsItem icon:documentDownload],
+                                   [PXSourceListItem itemWithRepresentedObject:groupManifestsItem icon:document],
+                                   [PXSourceListItem itemWithRepresentedObject:installManifestsItem icon:document],
                                    [PXSourceListItem itemWithRepresentedObject:selfContainedManifestsItem icon:document],
                                    ];
     
@@ -599,7 +610,13 @@ DDLogLevel ddLogLevel;
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
-    NSImage *folderImage = [NSImage imageNamed:@"folder"];
+    NSImage *folderImage;
+    if (@available(macOS 11.0, *)) {
+        folderImage = [NSImage imageWithSystemSymbolName:@"folder" accessibilityDescription:@"Folder"];
+    } else {
+        folderImage = [NSImage imageNamed:@"folder"];
+        [folderImage setTemplate:YES];
+    }
     
     NSString *filename;
     [url getResourceValue:&filename forKey:NSURLNameKey error:nil];

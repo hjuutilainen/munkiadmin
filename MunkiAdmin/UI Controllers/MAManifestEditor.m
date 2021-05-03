@@ -711,16 +711,70 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSDictionary *bindOptions = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSContinuouslyUpdatesValueBindingOption, nil];
     NSMutableArray *newSourceListItems = [NSMutableArray new];
     
-    NSImage *generalIcon = [NSImage imageNamed:@"manifestGeneralTemplate.pdf"];
-    NSImage *managedInstallsIcon = [NSImage imageNamed:@"manifestManagedInstallsTemplate.pdf"];
-    NSImage *managedUninstallsIcon = [NSImage imageNamed:@"manifestManagedUninstallsTemplate.pdf"];
-    NSImage *managedUpdatesIcon = [NSImage imageNamed:@"manifestManagedUpdatesTemplate.pdf"];
-    NSImage *optionalInstallsIcon = [NSImage imageNamed:@"manifestOptionalInstallsTemplate.pdf"];
-    NSImage *featuredItemsIcon = [NSImage imageNamed:@"manifestFeaturedItemsTemplate.pdf"];
-    NSImage *includedManifestsIcon = [NSImage imageNamed:@"manifestIncludedManifestsTemplate.pdf"];
-    NSImage *referencingManifestsIcon = [NSImage imageNamed:@"manifestReferencedManifestsTemplate.pdf"];
-    NSImage *conditionsIcon = [NSImage imageNamed:@"manifestConditionsTemplate.pdf"];
+    NSImage *generalIcon;
+    if (@available(macOS 11.0, *)) {
+        generalIcon = [NSImage imageWithSystemSymbolName:@"doc.text" accessibilityDescription:@"Doc icon"];
+    } else {
+        generalIcon = [NSImage imageNamed:@"doc.text"];
+        [generalIcon setTemplate:YES];
+    }
     
+    NSImage *managedInstallsIcon;
+    if (@available(macOS 11.0, *)) {
+        managedInstallsIcon = [NSImage imageWithSystemSymbolName:@"lock.doc" accessibilityDescription:@"Doc icon"];
+    } else {
+        managedInstallsIcon = [NSImage imageNamed:@"lock.doc"];
+        [managedInstallsIcon setTemplate:YES];
+    }
+    NSImage *managedUninstallsIcon;
+    if (@available(macOS 11.0, *)) {
+        managedUninstallsIcon = [NSImage imageWithSystemSymbolName:@"arrow.up.doc" accessibilityDescription:@"Doc icon"];
+    } else {
+        managedUninstallsIcon = [NSImage imageNamed:@"arrow.up.doc"];
+        [managedUninstallsIcon setTemplate:YES];
+    }
+    NSImage *managedUpdatesIcon;
+    if (@available(macOS 11.0, *)) {
+        managedUpdatesIcon = [NSImage imageWithSystemSymbolName:@"arrow.down.doc" accessibilityDescription:@"Doc icon"];
+    } else {
+        managedUpdatesIcon = [NSImage imageNamed:@"arrow.down.doc"];
+        [managedUpdatesIcon setTemplate:YES];
+    }
+    NSImage *optionalInstallsIcon;
+    if (@available(macOS 11.0, *)) {
+        optionalInstallsIcon = [NSImage imageWithSystemSymbolName:@"cart" accessibilityDescription:@"Doc icon"];
+    } else {
+        optionalInstallsIcon = [NSImage imageNamed:@"cart"];
+        [optionalInstallsIcon setTemplate:YES];
+    }
+    NSImage *featuredItemsIcon;
+    if (@available(macOS 11.0, *)) {
+        featuredItemsIcon = [NSImage imageWithSystemSymbolName:@"star" accessibilityDescription:@"Doc icon"];
+    } else {
+        featuredItemsIcon = [NSImage imageNamed:@"star"];
+        [featuredItemsIcon setTemplate:YES];
+    }
+    NSImage *includedManifestsIcon;
+    if (@available(macOS 11.0, *)) {
+        includedManifestsIcon = [NSImage imageWithSystemSymbolName:@"doc.on.doc" accessibilityDescription:@"Doc icon"];
+    } else {
+        includedManifestsIcon = [NSImage imageNamed:@"doc.on.doc"];
+        [includedManifestsIcon setTemplate:YES];
+    }
+    NSImage *referencingManifestsIcon;
+    if (@available(macOS 11.0, *)) {
+        referencingManifestsIcon = [NSImage imageWithSystemSymbolName:@"doc.on.doc" accessibilityDescription:@"Doc icon"];
+    } else {
+        referencingManifestsIcon = [NSImage imageNamed:@"doc.on.doc"];
+        [referencingManifestsIcon setTemplate:YES];
+    }
+    NSImage *conditionsIcon;
+    if (@available(macOS 11.0, *)) {
+        conditionsIcon = [NSImage imageWithSystemSymbolName:@"arrow.triangle.branch" accessibilityDescription:@"Doc icon"];
+    } else {
+        conditionsIcon = [NSImage imageNamed:@"arrow.triangle.branch"];
+        [conditionsIcon setTemplate:YES];
+    }
     MAManifestEditorSection *generalSection = [MAManifestEditorSection new];
     generalSection.title = @"General";
     generalSection.tag = MAEditorSectionTagGeneral;

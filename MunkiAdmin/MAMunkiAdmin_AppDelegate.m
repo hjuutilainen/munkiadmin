@@ -485,12 +485,20 @@ DDLogLevel ddLogLevel;
     NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier:toolbarItemIdentifier];
     toolbarItem.label = properties[@"label"];
     toolbarItem.paletteLabel = properties[@"paletteLabel"];
-    NSImage *iconImage = [NSImage imageNamed:properties[@"icon"]];
-    [iconImage setSize:NSMakeSize(16.0, 16.0)];
+    
+    NSImage *iconImage;
+    if (@available(macOS 11.0, *)) {
+        iconImage = [NSImage imageWithSystemSymbolName:properties[@"icon"] accessibilityDescription:@"Folder icon"];
+    } else {
+        iconImage = [NSImage imageNamed:properties[@"icon"]];
+        [iconImage setTemplate:YES];
+    }
+    
     NSButton *button = [[NSButton alloc] init];
     button.imageScaling = NSImageScaleProportionallyDown;
-    button.frame = NSMakeRect(0, 0, 40, 25);
+    //button.frame = NSMakeRect(0, 0, 40, 25);
     button.title = @"";
+    button.toolTip = properties[@"paletteLabel"];
     button.image = iconImage;
     button.bezelStyle = NSBezelStyleTexturedRounded;
     toolbarItem.target = self;
@@ -516,7 +524,7 @@ DDLogLevel ddLogLevel;
     [manifestsItem setLabel:NSLocalizedString(@"Manifests", @"")];
     
     NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] init];
-    segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
+    //segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
     segmentedControl.segmentStyle = NSSegmentStyleTexturedRounded;
     segmentedControl.trackingMode = NSSegmentSwitchTrackingSelectOne;
     segmentedControl.segmentCount = 3;
@@ -524,6 +532,7 @@ DDLogLevel ddLogLevel;
     segmentedControl.action = @selector(didSelectSegment:);
     self.mainSegmentedControl = segmentedControl;
     
+    /*
     NSSize toolbarIconSize = NSMakeSize(18, 18);
     NSImage *packagesIcon = [NSImage imageNamed:@"appstoreTemplate"];
     [packagesIcon setSize:toolbarIconSize];
@@ -532,11 +541,34 @@ DDLogLevel ddLogLevel;
     NSImage *manifestsIcon = [NSImage imageNamed:@"document"];
     [manifestsIcon setTemplate:YES];
     [manifestsIcon setSize:toolbarIconSize];
+    */
+    
+    NSImage *packagesIcon;
+    NSImage *catalogsIcon;
+    NSImage *manifestsIcon;
+    if (@available(macOS 11.0, *)) {
+        packagesIcon = [NSImage imageWithSystemSymbolName:@"shippingbox" accessibilityDescription:@"Box icon"];
+        catalogsIcon = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Book icon"];
+        manifestsIcon = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:@"Document icon"];
+    } else {
+        packagesIcon = [NSImage imageNamed:@"shippingbox"];
+        [packagesIcon setTemplate:YES];
+        
+        catalogsIcon = [NSImage imageNamed:@"text.book.closed"];
+        [catalogsIcon setTemplate:YES];
+        
+        manifestsIcon = [NSImage imageNamed:@"doc"];
+        [manifestsIcon setTemplate:YES];
+    }
+    
     [segmentedControl setImage:packagesIcon forSegment:0];
+    [segmentedControl setToolTip:NSLocalizedString(@"Packages", @"") forSegment:0];
     [segmentedControl setWidth:40 forSegment:0];
     [segmentedControl setImage:catalogsIcon forSegment:1];
+    [segmentedControl setToolTip:NSLocalizedString(@"Catalogs", @"") forSegment:1];
     [segmentedControl setWidth:40 forSegment:1];
     [segmentedControl setImage:manifestsIcon forSegment:2];
+    [segmentedControl setToolTip:NSLocalizedString(@"Manifests", @"") forSegment:2];
     [segmentedControl setWidth:40 forSegment:2];
     
     [groupItem setPaletteLabel:NSLocalizedString(@"View Mode", @"")];
@@ -555,7 +587,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": openToolbarItemID,
                        @"label": NSLocalizedString(@"Open", @""),
                        @"paletteLabel": NSLocalizedString(@"Open Repository", @""),
-                       @"icon": @"folderTemplate"};
+                       @"icon": @"folder"};
     NSToolbarItem *openToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     openToolbarItem.action = @selector(openRepository:);
     [newToolbarItems setObject:openToolbarItem forKey:openToolbarItemID];
@@ -568,7 +600,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": saveToolbarItemID,
                        @"label": NSLocalizedString(@"Save", @""),
                        @"paletteLabel": NSLocalizedString(@"Save Repository", @""),
-                       @"icon": @"saveTemplate"};
+                       @"icon": @"square.and.arrow.down"};
     NSToolbarItem *saveToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     saveToolbarItem.action = @selector(saveAction:);
     [newToolbarItems setObject:saveToolbarItem forKey:saveToolbarItemID];
@@ -581,7 +613,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": reloadToolbarItemIdentifier,
                        @"label": NSLocalizedString(@"Reload", @""),
                        @"paletteLabel": NSLocalizedString(@"Reload Repository", @""),
-                       @"icon": @"reload2Template"};
+                       @"icon": @"arrow.clockwise"};
     NSToolbarItem *reloadToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     reloadToolbarItem.action = @selector(reloadRepositoryAction:);
     [newToolbarItems setObject:reloadToolbarItem forKey:reloadToolbarItemIdentifier];
@@ -594,7 +626,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": propertiesToolbarItemIdentifier,
                        @"label": NSLocalizedString(@"Properties", @""),
                        @"paletteLabel": NSLocalizedString(@"Properties", @""),
-                       @"icon": @"pen1Template"};
+                       @"icon": @"square.and.pencil"};
     NSToolbarItem *propertiesToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     propertiesToolbarItem.action = @selector(getInfoAction:);
     [newToolbarItems setObject:propertiesToolbarItem forKey:propertiesToolbarItemIdentifier];
@@ -607,7 +639,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": makeCatalogsToolbarItemIdentifier,
                        @"label": NSLocalizedString(@"Make", @""),
                        @"paletteLabel": NSLocalizedString(@"Make Catalogs", @""),
-                       @"icon": @"makecatalogsTemplate"};
+                       @"icon": @"terminal"};
     NSToolbarItem *makeCatalogsToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     makeCatalogsToolbarItem.action = @selector(updateCatalogs:);
     [newToolbarItems setObject:makeCatalogsToolbarItem forKey:makeCatalogsToolbarItemIdentifier];
@@ -620,7 +652,7 @@ DDLogLevel ddLogLevel;
     propertiesDict = @{@"identifier": searchToolbarItemIdentifier,
                        @"label": NSLocalizedString(@"Search", @""),
                        @"paletteLabel": NSLocalizedString(@"Search", @""),
-                       @"icon": @"searchTemplate"};
+                       @"icon": @"magnifyingglass"};
     NSToolbarItem *searchToolbarItem = [self buttonToolbarItemWithProperties:propertiesDict];
     searchToolbarItem.action = @selector(searchRepositoryAction:);
     [newToolbarItems setObject:searchToolbarItem forKey:searchToolbarItemIdentifier];
@@ -632,6 +664,7 @@ DDLogLevel ddLogLevel;
     NSToolbar *newToolbar = [[NSToolbar alloc] initWithIdentifier:@"mainWindowToolbar"];
     newToolbar.allowsUserCustomization = YES;
     newToolbar.autosavesConfiguration = YES;
+    newToolbar.displayMode = NSToolbarDisplayModeIconOnly;
     newToolbar.delegate = self;
     self.window.toolbar = newToolbar;
 }

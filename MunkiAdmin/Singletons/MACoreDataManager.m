@@ -432,8 +432,18 @@ DDLogLevel ddLogLevel;
     mainDevelopersItem.parent = nil;
     mainDevelopersItem.isGroupItemValue = YES;
     
-    NSImage *developerIcon = [NSImage imageNamed:@"developerTemplate"];
-    NSImage *developerUnknownIcon = [NSImage imageNamed:@"developerUnknownTemplate"];
+    NSImage *developerIcon;
+    NSImage *developerUnknownIcon;
+    if (@available(macOS 11.0, *)) {
+        developerIcon = [NSImage imageWithSystemSymbolName:@"person" accessibilityDescription:@"Person icon"];
+        developerUnknownIcon = [NSImage imageWithSystemSymbolName:@"person" accessibilityDescription:@"Person icon"];
+    } else {
+        developerIcon = [NSImage imageNamed:@"person"];
+        [developerIcon setTemplate:YES];
+        
+        developerUnknownIcon = [NSImage imageNamed:@"person"];
+        [developerUnknownIcon setTemplate:YES];
+    }
     
     DeveloperSourceListItemMO *noDeveloperSmartItem = [self sourceListItemWithTitle:@"Unknown" entityName:@"DeveloperSourceListItem" managedObjectContext:moc];
     noDeveloperSmartItem.itemType = @"smart";
@@ -491,8 +501,18 @@ DDLogLevel ddLogLevel;
     mainCategoriesItem.parent = nil;
     mainCategoriesItem.isGroupItemValue = YES;
     
-    NSImage *categoryMultipleIcon = [NSImage imageNamed:@"tagMultipleTemplate"];
-    NSImage *categoryIcon = [NSImage imageNamed:@"tagTemplate"];
+    NSImage *categoryMultipleIcon;
+    NSImage *categoryIcon;
+    if (@available(macOS 11.0, *)) {
+        categoryMultipleIcon = [NSImage imageWithSystemSymbolName:@"tag.slash" accessibilityDescription:@"Tag icon"];
+        categoryIcon = [NSImage imageWithSystemSymbolName:@"tag" accessibilityDescription:@"Tag slash icon"];
+    } else {
+        categoryMultipleIcon = [NSImage imageNamed:@"tag.slash"];
+        [categoryMultipleIcon setTemplate:YES];
+        
+        categoryIcon = [NSImage imageNamed:@"tag"];
+        [categoryIcon setTemplate:YES];
+    }
     
     CategorySourceListItemMO *noCategoriesSmartItem = [self sourceListItemWithTitle:@"Uncategorized" entityName:@"CategorySourceListItem" managedObjectContext:moc];
     noCategoriesSmartItem.itemType = @"smart";
@@ -557,8 +577,13 @@ DDLogLevel ddLogLevel;
         directoriesGroupItem.isGroupItemValue = YES;
     }
     
-    NSImage *directoryIcon = [NSImage imageNamed:@"folder"];
-    [directoryIcon setTemplate:YES];
+    NSImage *directoryIcon;
+    if (@available(macOS 11.0, *)) {
+        directoryIcon = [NSImage imageWithSystemSymbolName:@"folder" accessibilityDescription:@"Folder icon"];
+    } else {
+        directoryIcon = [NSImage imageNamed:@"folder"];
+        [directoryIcon setTemplate:YES];
+    }
     
     DirectoryMO *basePkgsInfoDirectory = [coreDataManager directoryWithURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] managedObjectContext:moc];
     basePkgsInfoDirectory.title = @"pkgsinfo";
@@ -629,7 +654,13 @@ DDLogLevel ddLogLevel;
     mainTypesItem.parent = nil;
     mainTypesItem.isGroupItemValue = YES;
     
-    NSImage *smartIcon = [NSImage imageNamed:NSImageNameSmartBadgeTemplate];
+    NSImage *smartIcon;
+    if (@available(macOS 11.0, *)) {
+        smartIcon = [NSImage imageWithSystemSymbolName:@"gearshape" accessibilityDescription:@"Gear icon"];
+    } else {
+        smartIcon = [NSImage imageNamed:@"gearshape"];
+        [smartIcon setTemplate:YES];
+    }
     
     InstallerTypeSourceListItemMO *copyFromDmgSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     copyFromDmgSmartItem.title = @"Copy from Disk Image";
@@ -711,10 +742,18 @@ DDLogLevel ddLogLevel;
     newSourceListItem2.parent = nil;
     newSourceListItem2.isGroupItemValue = YES;
     
-    NSImage *allPackagesIcon = [NSImage imageNamed:@"inbox"];
-    [allPackagesIcon setTemplate:YES];
-    NSImage *newPackagesIcon = [NSImage imageNamed:@"calendar_ok"];
-    [newPackagesIcon setTemplate:YES];
+    NSImage *allPackagesIcon;
+    NSImage *newPackagesIcon;
+    if (@available(macOS 11.0, *)) {
+        allPackagesIcon = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Catalog icon"];
+        newPackagesIcon = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Catalog icon"];
+    } else {
+        allPackagesIcon = [NSImage imageNamed:@"tray"];
+        [allPackagesIcon setTemplate:YES];
+        
+        newPackagesIcon = [NSImage imageNamed:@"calendar"];
+        [newPackagesIcon setTemplate:YES];
+    }
     
     PackageSourceListItemMO *allPackagesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"PackageSourceListItem" inManagedObjectContext:moc];
     allPackagesSmartItem.title = @"All Packages";
