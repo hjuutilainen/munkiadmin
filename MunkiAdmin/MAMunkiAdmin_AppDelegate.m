@@ -3178,9 +3178,4 @@ DDLogLevel ddLogLevel;
              ];
 }
 
-- (NSArray<NSToolbarItemIdentifier> *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
-{
-    return self.toolbarItemIDs;
-}
-
 @end
