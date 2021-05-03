@@ -36,12 +36,7 @@ DDLogLevel ddLogLevel;
 
 - (NSArray *)defaultSortDescriptors
 {
-    NSData *sortersFromDefaults = [[NSUserDefaults standardUserDefaults] dataForKey:@"manifestsSortDescriptors"];
-    if (sortersFromDefaults) {
-        return [NSKeyedUnarchiver unarchiveObjectWithData:sortersFromDefaults];
-    } else {
-        return @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
-    }
+    return @[[NSSortDescriptor sortDescriptorWithKey:@"titleOrDisplayName" ascending:YES selector:@selector(localizedStandardCompare:)]];
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
