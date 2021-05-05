@@ -532,17 +532,6 @@ DDLogLevel ddLogLevel;
     segmentedControl.action = @selector(didSelectSegment:);
     self.mainSegmentedControl = segmentedControl;
     
-    /*
-    NSSize toolbarIconSize = NSMakeSize(18, 18);
-    NSImage *packagesIcon = [NSImage imageNamed:@"appstoreTemplate"];
-    [packagesIcon setSize:toolbarIconSize];
-    NSImage *catalogsIcon = [NSImage imageNamed:@"layersTemplate"];
-    [catalogsIcon setSize:toolbarIconSize];
-    NSImage *manifestsIcon = [NSImage imageNamed:@"document"];
-    [manifestsIcon setTemplate:YES];
-    [manifestsIcon setSize:toolbarIconSize];
-    */
-    
     NSImage *packagesIcon;
     NSImage *catalogsIcon;
     NSImage *manifestsIcon;
@@ -559,6 +548,11 @@ DDLogLevel ddLogLevel;
         
         manifestsIcon = [NSImage imageNamed:@"doc"];
         [manifestsIcon setTemplate:YES];
+        
+        NSSize toolbarIconSize = NSMakeSize(18, 18);
+        [packagesIcon setSize:toolbarIconSize];
+        [catalogsIcon setSize:toolbarIconSize];
+        [manifestsIcon setSize:toolbarIconSize];
     }
     
     [segmentedControl setImage:packagesIcon forSegment:0];
