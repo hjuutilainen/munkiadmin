@@ -26,6 +26,7 @@
 @property (weak) IBOutlet NSTableColumn *displayNameColumn;
 @property (weak) IBOutlet NSTableColumn *versionColumn;
 @property (weak) IBOutlet NSTableColumn *catalogsColumn;
+@property (weak) IBOutlet NSTableColumn *architecturesColumn;
 @property (weak) IBOutlet NSTableColumn *descriptionColumn;
 @property (weak) IBOutlet NSTableColumn *adminNotesColumn;
 @property (weak) IBOutlet NSTableColumn *minOSColumn;

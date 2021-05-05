@@ -119,6 +119,7 @@ DDLogLevel ddLogLevel;
     self.minOSColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_minimum_os_version" ascending:YES selector:@selector(localizedStandardCompare:)];
     self.maxOSColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_maximum_os_version" ascending:YES selector:@selector(localizedStandardCompare:)];
     self.catalogsColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"catalogsDescriptionString" ascending:YES selector:@selector(localizedStandardCompare:)];
+    self.architecturesColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"supportedArchitecturesDescriptionString" ascending:YES selector:@selector(localizedStandardCompare:)];
     self.sizeColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"munki_installer_item_size" ascending:YES selector:@selector(compare:)];
     self.modifiedDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateModified" ascending:YES];
     self.createdDateColumn.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"packageInfoDateCreated" ascending:YES];

@@ -106,6 +106,31 @@
 			nil];
 }
 
+- (NSString *)supportedArchitecturesDescriptionString
+{
+    NSArray *architectureStrings = [self supportedArchitecturesStrings];
+    if (architectureStrings) {
+        return [architectureStrings componentsJoinedByString:@", "];
+    } else {
+        return nil;
+    }
+}
+
+- (NSArray *)supportedArchitecturesStrings
+{
+    NSMutableArray *architectures = [NSMutableArray new];
+    
+    for (StringObjectMO *architecture in self.supportedArchitectures) {
+        [architectures addObject:architecture.title];
+    }
+    
+    if ([architectures count] == 0) {
+        return nil;
+    } else {
+        return [architectures sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
 - (NSString *)catalogsDescriptionString
 {
     NSArray *catalogStrings = [self catalogStrings];

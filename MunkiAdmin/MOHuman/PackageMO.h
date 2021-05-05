@@ -11,5 +11,6 @@
 - (NSString *)formattedTitle;
 - (NSArray *)catalogStrings;
 - (NSString *)catalogsDescriptionString;
+- (NSString *)supportedArchitecturesDescriptionString;
 
 @end
