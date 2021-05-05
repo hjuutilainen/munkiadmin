@@ -1035,7 +1035,7 @@ DDLogLevel ddLogLevel;
     /*
      Log to Xcode (if available)
      */
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDOSLogger sharedInstance]];
     
     /*
      Log to ~/Library/Logs/MunkiAdmin/
