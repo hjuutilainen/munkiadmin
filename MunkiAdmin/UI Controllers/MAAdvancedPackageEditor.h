@@ -32,7 +32,7 @@
 - (void)endEditingInWindow;
 - (void)commitChangesToCurrentPackage;
 - (void)setDefaultValuesFromPackage:(PackageMO *)aPackage;
-- (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate;
+- (void)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate;
 
 @property (weak) id delegate;
 @property (weak) PackageMO *pkginfoToEdit;
@@ -41,7 +41,6 @@
 @property (strong) MARequestStringValueController *createNewCategoryController;
 @property (strong) MARequestStringValueController *createNewDeveloperController;
 @property (strong) MAIconEditor *iconEditor;
-@property NSModalSession modalSession;
 @property (weak) IBOutlet NSDatePicker *forceInstallDatePicker;
 @property (weak) IBOutlet NSTabView *mainTabView;
 @property (weak) IBOutlet NSTableView *installsTableView;

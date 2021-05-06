@@ -41,7 +41,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 }
 
 
-- (NSModalSession)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate
+- (void)beginEditSessionWithObject:(PackageMO *)aPackage delegate:(id)modalDelegate
 {
     self.pkginfoToEdit = aPackage;
     self.delegate = modalDelegate;
@@ -51,9 +51,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     [self setDefaultValuesFromPackage:self.pkginfoToEdit];
     
-    self.modalSession = [NSApp beginModalSessionForWindow:self.window];
-    [NSApp runModalSession:self.modalSession];
-    return self.modalSession;
+    [NSApp runModalForWindow:self.window];
 }
 
 - (void)packageNameEditorDidFinish:(id)sender returnCode:(NSModalResponse)returnCode object:(id)object
@@ -402,7 +400,6 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self commitChangesToCurrentPackage];
     
     [[self window] orderOut:sender];
-    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
@@ -415,7 +412,6 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self endEditingInWindow];
     
     [[self window] orderOut:sender];
-    [NSApp endModalSession:self.modalSession];
     [NSApp stopModal];
     
     if ([self.delegate respondsToSelector:@selector(packageEditorDidFinish:returnCode:object:)]) {
