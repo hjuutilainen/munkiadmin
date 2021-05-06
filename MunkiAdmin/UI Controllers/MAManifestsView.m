@@ -392,6 +392,13 @@ DDLogLevel ddLogLevel;
     }
     menu.delegate = self;
     self.manifestsListTableView.headerView.menu = menu;
+    
+    // Hide scripts menu if there are no custom scripts
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    [repoManager updateRepositoryScriptStatus];
+    if (![repoManager repositoryHasManifestCustomScripts]) {
+        self.scriptsSubMenuItem.hidden = YES;
+    }
 }
 
 - (void)toggleColumn:(id)sender

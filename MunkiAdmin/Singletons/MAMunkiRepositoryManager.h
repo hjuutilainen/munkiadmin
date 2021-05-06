@@ -105,6 +105,7 @@
 - (NSString *)relativePathToChildURL:(NSURL *)childURL parentURL:(NSURL *)parentURL;
 - (BOOL)setPermissions:(NSString *)octalAsString forURL:(NSURL *)url;
 - (void)updateUniqueCatalogStringLength;
+- (void)updateRepositoryScriptStatus;
 - (NSArray *)manifestCustomScriptPaths;
 - (BOOL)runManifestCustomScriptAtPath:(NSString *)scriptPath withManifests:(NSArray *)manifests;
 
