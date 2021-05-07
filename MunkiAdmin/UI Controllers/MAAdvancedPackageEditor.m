@@ -354,6 +354,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     } else {
         self.pkginfoToEdit.munki_force_install_after_date = nil;
     }
+    
+    NSManagedObjectContext *mainContext = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    [mainContext refreshObject:self.pkginfoToEdit mergeChanges:YES];
 }
 
 - (void)endEditingInWindow
