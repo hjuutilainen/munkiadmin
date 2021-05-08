@@ -24,7 +24,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="277" width="540" height="167"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1095"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="540" height="167"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -35,17 +35,8 @@
             <rect key="frame" x="0.0" y="0.0" width="540" height="359"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29">
-                    <rect key="frame" x="73" y="293" width="86" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default view:" id="36">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="37">
-                    <rect key="frame" x="71" y="251" width="88" height="17"/>
+                    <rect key="frame" x="71" y="278" width="88" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="When saving:" id="38">
                         <font key="font" metaFont="system"/>
@@ -54,7 +45,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="349">
-                    <rect key="frame" x="75" y="129" width="84" height="17"/>
+                    <rect key="frame" x="75" y="156" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Drag'n drop:" id="350">
                         <font key="font" metaFont="system"/>
@@ -62,24 +53,6 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="30">
-                    <rect key="frame" x="163" y="287" width="235" height="26"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Packages" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="35" id="31">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" title="OtherViews" id="32">
-                            <items>
-                                <menuItem title="Packages" state="on" id="35"/>
-                                <menuItem title="Catalogs" id="34"/>
-                                <menuItem title="Manifests" id="33"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                    <connections>
-                        <binding destination="12" name="selectedIndex" keyPath="values.startupSelectedView" id="117"/>
-                    </connections>
-                </popUpButton>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="118">
                     <rect key="frame" x="83" y="321" width="76" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -108,7 +81,7 @@
                     </connections>
                 </popUpButton>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="39">
-                    <rect key="frame" x="163" y="210" width="147" height="18"/>
+                    <rect key="frame" x="163" y="237" width="147" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Update catalog files" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="40">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -119,7 +92,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ty4-GS-RZX">
-                    <rect key="frame" x="183" y="190" width="155" height="18"/>
+                    <rect key="frame" x="183" y="217" width="155" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Disable sanity checks" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="LCh-sQ-L7G">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -131,7 +104,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="43">
-                    <rect key="frame" x="163" y="230" width="286" height="18"/>
+                    <rect key="frame" x="163" y="257" width="286" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Write changed manifest files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="44">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -142,7 +115,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="41">
-                    <rect key="frame" x="163" y="250" width="280" height="18"/>
+                    <rect key="frame" x="163" y="277" width="280" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Write changed pkginfo files to repository" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="42">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -153,7 +126,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="351">
-                    <rect key="frame" x="163" y="128" width="320" height="18"/>
+                    <rect key="frame" x="163" y="155" width="320" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Move installer items when moving pkginfo files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="352">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -164,7 +137,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="353">
-                    <rect key="frame" x="163" y="108" width="214" height="18"/>
+                    <rect key="frame" x="163" y="135" width="214" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Suppress confirmation dialogs" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="354">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -175,7 +148,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KkC-ji-veb">
-                    <rect key="frame" x="183" y="170" width="227" height="18"/>
+                    <rect key="frame" x="183" y="197" width="227" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Only if pkginfo files were changed" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="0ck-PK-Adk">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>

@@ -511,6 +511,8 @@ DDLogLevel ddLogLevel;
     NSMutableDictionary *newToolbarItems = [NSMutableDictionary new];
     NSMutableArray *newToolbarItemIDs = [NSMutableArray new];
     
+    BOOL showLegacyCatalogsView = [[NSUserDefaults standardUserDefaults] boolForKey:@"showLegacyCatalogsView"];
+    
     /*
      "View Mode" segmented control
      */
@@ -527,7 +529,11 @@ DDLogLevel ddLogLevel;
     //segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
     segmentedControl.segmentStyle = NSSegmentStyleTexturedRounded;
     segmentedControl.trackingMode = NSSegmentSwitchTrackingSelectOne;
-    segmentedControl.segmentCount = 3;
+    if (showLegacyCatalogsView) {
+        segmentedControl.segmentCount = 3;
+    } else {
+        segmentedControl.segmentCount = 2;
+    }
     segmentedControl.target = self;
     segmentedControl.action = @selector(didSelectSegment:);
     self.mainSegmentedControl = segmentedControl;
@@ -558,16 +564,23 @@ DDLogLevel ddLogLevel;
     [segmentedControl setImage:packagesIcon forSegment:0];
     [segmentedControl setToolTip:NSLocalizedString(@"Packages", @"") forSegment:0];
     [segmentedControl setWidth:40 forSegment:0];
-    [segmentedControl setImage:catalogsIcon forSegment:1];
-    [segmentedControl setToolTip:NSLocalizedString(@"Catalogs", @"") forSegment:1];
+    [segmentedControl setImage:manifestsIcon forSegment:1];
+    [segmentedControl setToolTip:NSLocalizedString(@"Manifests", @"") forSegment:1];
     [segmentedControl setWidth:40 forSegment:1];
-    [segmentedControl setImage:manifestsIcon forSegment:2];
-    [segmentedControl setToolTip:NSLocalizedString(@"Manifests", @"") forSegment:2];
-    [segmentedControl setWidth:40 forSegment:2];
+    
+    if (showLegacyCatalogsView) {
+        [segmentedControl setImage:catalogsIcon forSegment:2];
+        [segmentedControl setToolTip:NSLocalizedString(@"Catalogs", @"") forSegment:2];
+        [segmentedControl setWidth:40 forSegment:2];
+    }
     
     [groupItem setPaletteLabel:NSLocalizedString(@"View Mode", @"")];
     [groupItem setLabel:NSLocalizedString(@"View", @"")];
-    groupItem.subitems = @[packagesItem, catalogsItem, manifestsItem];
+    if (showLegacyCatalogsView) {
+        groupItem.subitems = @[packagesItem, manifestsItem, catalogsItem];
+    } else {
+        groupItem.subitems = @[packagesItem, manifestsItem];
+    }
     groupItem.view = segmentedControl;
     [newToolbarItems setObject:groupItem forKey:viewModeToolbarItemIdentifier];
     [newToolbarItemIDs addObject:viewModeToolbarItemIdentifier];
@@ -690,35 +703,14 @@ DDLogLevel ddLogLevel;
     
 	[self.mainTabView setDelegate:self];
 	[self.mainSplitView setDelegate:self];
-	
-	if ([self.defaults integerForKey:@"startupSelectedView"] == 0) {
-		self.selectedViewTag = 0;
-		self.selectedViewDescr = @"Packages";
-        self.currentWholeView = [self.packagesViewController view];
-		[self.mainSegmentedControl setSelectedSegment:0];
-	}
-	else if ([self.defaults integerForKey:@"startupSelectedView"] == 1) {
-		self.selectedViewTag = 1;
-		self.selectedViewDescr = @"Catalogs";
-		self.currentDetailView = self.catalogsDetailView;
-		self.currentSourceView = self.catalogsListView;
-        self.currentWholeView = self.mainSplitView;
-		[self.mainSegmentedControl setSelectedSegment:1];
-	}
-	else if ([self.defaults integerForKey:@"startupSelectedView"] == 2) {
-		self.selectedViewTag = 2;
-        self.selectedViewDescr = @"Manifests";
-        self.currentDetailView = nil;
-        self.currentSourceView = nil;
-        self.currentWholeView = [self.manifestsViewController view];
-		[self.mainSegmentedControl setSelectedSegment:2];
-	}
-	else {
-		self.selectedViewTag = 0;
-		self.selectedViewDescr = @"Packages";
-        self.currentWholeView = [self.packagesViewController view];
-		[self.mainSegmentedControl setSelectedSegment:0];
-	}
+    
+    /*
+     Select the Packages view by default
+     */
+    self.selectedViewTag = 0;
+    self.selectedViewDescr = @"Packages";
+    self.currentWholeView = [self.packagesViewController view];
+    [self.mainSegmentedControl setSelectedSegment:0];
     	
 	[self changeItemView];
 	
@@ -2359,7 +2351,7 @@ DDLogLevel ddLogLevel;
         self.currentDetailView = nil;
         self.currentSourceView = nil;
         self.currentWholeView = [self.manifestsViewController view];
-        [self.mainSegmentedControl setSelectedSegment:2];
+        [self.mainSegmentedControl setSelectedSegment:1];
         [self changeItemView];
         
         PackageMO *selectedPackage = [self.packagesViewController.packagesArrayController selectedObjects][0];
@@ -2972,21 +2964,22 @@ DDLogLevel ddLogLevel;
             }
 			break;
 		case 2:
-			if (self.currentDetailView != self.catalogsDetailView) {
-				self.selectedViewDescr = @"Catalogs";
-                self.currentWholeView = self.mainSplitView;
-				self.currentDetailView = self.catalogsDetailView;
-				self.currentSourceView = self.catalogsListView;
-				[self.mainSegmentedControl setSelectedSegment:1];
-				[self changeItemView];
-			}
-			break;
-        case 3:
             if (self.currentDetailView != [self.manifestsViewController view]) {
                 self.selectedViewDescr = @"Manifests";
                 self.currentDetailView = nil;
                 self.currentSourceView = nil;
                 self.currentWholeView = [self.manifestsViewController view];
+                [self.mainSegmentedControl setSelectedSegment:1];
+                [self changeItemView];
+            }
+			
+			break;
+        case 3:
+            if (self.currentDetailView != self.catalogsDetailView) {
+                self.selectedViewDescr = @"Catalogs";
+                self.currentWholeView = self.mainSplitView;
+                self.currentDetailView = self.catalogsDetailView;
+                self.currentSourceView = self.catalogsListView;
                 [self.mainSegmentedControl setSelectedSegment:2];
                 [self changeItemView];
             }
@@ -3009,21 +3002,31 @@ DDLogLevel ddLogLevel;
             }
 			break;
 		case 1:
-            if (self.currentDetailView != self.catalogsDetailView) {
-				self.selectedViewDescr = @"Catalogs";
-                self.currentWholeView = self.mainSplitView;
-				self.currentDetailView = self.catalogsDetailView;
-				self.currentSourceView = self.catalogsListView;
-				[self changeItemView];
-            }
-			break;
-        case 2:
             if (self.currentDetailView != [self.manifestsViewController view]) {
                 self.selectedViewDescr = @"Manifests";
                 self.currentDetailView = nil;
                 self.currentSourceView = nil;
                 self.currentWholeView = [self.manifestsViewController view];
                 [self changeItemView];
+            }
+			break;
+        case 2:
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"showLegacyCatalogsView"]) {
+                if (self.currentDetailView != self.catalogsDetailView) {
+                    self.selectedViewDescr = @"Catalogs";
+                    self.currentWholeView = self.mainSplitView;
+                    self.currentDetailView = self.catalogsDetailView;
+                    self.currentSourceView = self.catalogsListView;
+                    [self changeItemView];
+                }
+            } else {
+                if (self.currentDetailView != [self.manifestsViewController view]) {
+                    self.selectedViewDescr = @"Manifests";
+                    self.currentDetailView = nil;
+                    self.currentSourceView = nil;
+                    self.currentWholeView = [self.manifestsViewController view];
+                    [self changeItemView];
+                }
             }
             break;
 		default:
