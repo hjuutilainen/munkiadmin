@@ -520,7 +520,7 @@ DDLogLevel ddLogLevel;
     
     NSImage *notepad;
     if (@available(macOS 11.0, *)) {
-        notepad = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Tag icon"];
+        notepad = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Book icon"];
     } else {
         notepad = [NSImage imageNamed:@"text.book.closed"];
         [notepad setTemplate:YES];

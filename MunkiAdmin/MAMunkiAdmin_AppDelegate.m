@@ -488,7 +488,7 @@ DDLogLevel ddLogLevel;
     
     NSImage *iconImage;
     if (@available(macOS 11.0, *)) {
-        iconImage = [NSImage imageWithSystemSymbolName:properties[@"icon"] accessibilityDescription:@"Folder icon"];
+        iconImage = [NSImage imageWithSystemSymbolName:properties[@"icon"] accessibilityDescription:properties[@"icon"]];
     } else {
         iconImage = [NSImage imageNamed:properties[@"icon"]];
         [iconImage setTemplate:YES];

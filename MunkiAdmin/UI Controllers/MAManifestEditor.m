@@ -721,35 +721,35 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     NSImage *managedInstallsIcon;
     if (@available(macOS 11.0, *)) {
-        managedInstallsIcon = [NSImage imageWithSystemSymbolName:@"lock.doc" accessibilityDescription:@"Doc icon"];
+        managedInstallsIcon = [NSImage imageWithSystemSymbolName:@"lock.doc" accessibilityDescription:@"Lock icon"];
     } else {
         managedInstallsIcon = [NSImage imageNamed:@"lock.doc"];
         [managedInstallsIcon setTemplate:YES];
     }
     NSImage *managedUninstallsIcon;
     if (@available(macOS 11.0, *)) {
-        managedUninstallsIcon = [NSImage imageWithSystemSymbolName:@"arrow.up.doc" accessibilityDescription:@"Doc icon"];
+        managedUninstallsIcon = [NSImage imageWithSystemSymbolName:@"arrow.up.doc" accessibilityDescription:@"Arrow up icon"];
     } else {
         managedUninstallsIcon = [NSImage imageNamed:@"arrow.up.doc"];
         [managedUninstallsIcon setTemplate:YES];
     }
     NSImage *managedUpdatesIcon;
     if (@available(macOS 11.0, *)) {
-        managedUpdatesIcon = [NSImage imageWithSystemSymbolName:@"arrow.down.doc" accessibilityDescription:@"Doc icon"];
+        managedUpdatesIcon = [NSImage imageWithSystemSymbolName:@"arrow.down.doc" accessibilityDescription:@"Arrow down icon"];
     } else {
         managedUpdatesIcon = [NSImage imageNamed:@"arrow.down.doc"];
         [managedUpdatesIcon setTemplate:YES];
     }
     NSImage *optionalInstallsIcon;
     if (@available(macOS 11.0, *)) {
-        optionalInstallsIcon = [NSImage imageWithSystemSymbolName:@"cart" accessibilityDescription:@"Doc icon"];
+        optionalInstallsIcon = [NSImage imageWithSystemSymbolName:@"cart" accessibilityDescription:@"Cart icon"];
     } else {
         optionalInstallsIcon = [NSImage imageNamed:@"cart"];
         [optionalInstallsIcon setTemplate:YES];
     }
     NSImage *featuredItemsIcon;
     if (@available(macOS 11.0, *)) {
-        featuredItemsIcon = [NSImage imageWithSystemSymbolName:@"star" accessibilityDescription:@"Doc icon"];
+        featuredItemsIcon = [NSImage imageWithSystemSymbolName:@"star" accessibilityDescription:@"Star icon"];
     } else {
         featuredItemsIcon = [NSImage imageNamed:@"star"];
         [featuredItemsIcon setTemplate:YES];
@@ -770,7 +770,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     }
     NSImage *conditionsIcon;
     if (@available(macOS 11.0, *)) {
-        conditionsIcon = [NSImage imageWithSystemSymbolName:@"arrow.triangle.branch" accessibilityDescription:@"Doc icon"];
+        conditionsIcon = [NSImage imageWithSystemSymbolName:@"arrow.triangle.branch" accessibilityDescription:@"Branch icon"];
     } else {
         conditionsIcon = [NSImage imageNamed:@"arrow.triangle.branch"];
         [conditionsIcon setTemplate:YES];

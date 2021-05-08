@@ -505,7 +505,7 @@ DDLogLevel ddLogLevel;
     NSImage *categoryIcon;
     if (@available(macOS 11.0, *)) {
         categoryMultipleIcon = [NSImage imageWithSystemSymbolName:@"tag.slash" accessibilityDescription:@"Tag icon"];
-        categoryIcon = [NSImage imageWithSystemSymbolName:@"tag" accessibilityDescription:@"Tag slash icon"];
+        categoryIcon = [NSImage imageWithSystemSymbolName:@"tag" accessibilityDescription:@"Tag icon"];
     } else {
         categoryMultipleIcon = [NSImage imageNamed:@"tag.slash"];
         [categoryMultipleIcon setTemplate:YES];
@@ -745,8 +745,8 @@ DDLogLevel ddLogLevel;
     NSImage *allPackagesIcon;
     NSImage *newPackagesIcon;
     if (@available(macOS 11.0, *)) {
-        allPackagesIcon = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Catalog icon"];
-        newPackagesIcon = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Catalog icon"];
+        allPackagesIcon = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Tray icon"];
+        newPackagesIcon = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Calendar icon"];
     } else {
         allPackagesIcon = [NSImage imageNamed:@"tray"];
         [allPackagesIcon setTemplate:YES];
