@@ -486,20 +486,22 @@ DDLogLevel ddLogLevel;
     toolbarItem.label = properties[@"label"];
     toolbarItem.paletteLabel = properties[@"paletteLabel"];
     
+    NSButton *button = [[NSButton alloc] init];
+    button.imageScaling = NSImageScaleProportionallyDown;
+    button.title = @"";
+    button.toolTip = properties[@"paletteLabel"];
+    button.frame = NSMakeRect(0, 0, 40, 25);
+    
     NSImage *iconImage;
     if (@available(macOS 11.0, *)) {
         iconImage = [NSImage imageWithSystemSymbolName:properties[@"icon"] accessibilityDescription:properties[@"icon"]];
     } else {
         iconImage = [NSImage imageNamed:properties[@"icon"]];
         [iconImage setTemplate:YES];
+        [iconImage setSize:NSMakeSize(16.0, 16.0)];
     }
-    
-    NSButton *button = [[NSButton alloc] init];
-    button.imageScaling = NSImageScaleProportionallyDown;
-    //button.frame = NSMakeRect(0, 0, 40, 25);
-    button.title = @"";
-    button.toolTip = properties[@"paletteLabel"];
     button.image = iconImage;
+    
     button.bezelStyle = NSBezelStyleTexturedRounded;
     toolbarItem.target = self;
     toolbarItem.view = button;
