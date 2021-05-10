@@ -2129,14 +2129,20 @@ DDLogLevel ddLogLevel;
     [defaultEnv setObject:@"utf-8" forKey:@"PYTHONIOENCODING"];
     task.environment = defaultEnv;
     
-    /*
-     Check the "Disable sanity checks" preference
-     */
+    NSMutableArray *makecatalogsArgs = [NSMutableArray new];
+    
+    // Check the "Disable sanity checks" preference
     if ([self.defaults boolForKey:@"makecatalogsForceEnabled"]) {
-        task.arguments = @[@"--force", [self.repoURL path]];
-    } else {
-        task.arguments = @[[self.repoURL path]];
+        [makecatalogsArgs addObject:@"--force"];
     }
+    
+    // Skip checking for installer item existence option
+    if ([self.defaults boolForKey:@"makecatalogsSkipPkgCheck"]) {
+        [makecatalogsArgs addObject:@"--skip-pkg-check"];
+    }
+    
+    [makecatalogsArgs addObject:[self.repoURL path]];
+    task.arguments = makecatalogsArgs;
     DDLogDebug(@"Running %@ with arguments: %@", task.launchPath, task.arguments);
     
     
