@@ -60,11 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(nullable NSString*)value;
 
-- (CatalogMO*)primitiveCatalog;
-- (void)setPrimitiveCatalog:(CatalogMO*)value;
+- (nullable CatalogMO*)primitiveCatalog;
+- (void)setPrimitiveCatalog:(nullable CatalogMO*)value;
 
-- (PackageMO*)primitivePackage;
-- (void)setPrimitivePackage:(PackageMO*)value;
+- (nullable PackageMO*)primitivePackage;
+- (void)setPrimitivePackage:(nullable PackageMO*)value;
 
 @end
 

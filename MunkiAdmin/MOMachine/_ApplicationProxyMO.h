@@ -40,8 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)primitiveIsEnabledValue;
 - (void)setPrimitiveIsEnabledValue:(BOOL)value_;
 
-- (ApplicationMO*)primitiveParentApplication;
-- (void)setPrimitiveParentApplication:(ApplicationMO*)value;
+- (nullable ApplicationMO*)primitiveParentApplication;
+- (void)setPrimitiveParentApplication:(nullable ApplicationMO*)value;
 
 @end
 

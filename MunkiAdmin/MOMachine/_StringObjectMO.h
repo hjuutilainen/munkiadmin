@@ -123,65 +123,65 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveTypeString;
 - (void)setPrimitiveTypeString:(nullable NSString*)value;
 
-- (PackageMO*)primitiveBlockingApplicationReference;
-- (void)setPrimitiveBlockingApplicationReference:(PackageMO*)value;
+- (nullable PackageMO*)primitiveBlockingApplicationReference;
+- (void)setPrimitiveBlockingApplicationReference:(nullable PackageMO*)value;
 
-- (ConditionalItemMO*)primitiveFeaturedItemConditionalReference;
-- (void)setPrimitiveFeaturedItemConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveFeaturedItemConditionalReference;
+- (void)setPrimitiveFeaturedItemConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ManifestMO*)primitiveFeaturedItemReference;
-- (void)setPrimitiveFeaturedItemReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveFeaturedItemReference;
+- (void)setPrimitiveFeaturedItemReference:(nullable ManifestMO*)value;
 
-- (ConditionalItemMO*)primitiveIncludedManifestConditionalReference;
-- (void)setPrimitiveIncludedManifestConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveIncludedManifestConditionalReference;
+- (void)setPrimitiveIncludedManifestConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ConditionalItemMO*)primitiveManagedInstallConditionalReference;
-- (void)setPrimitiveManagedInstallConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveManagedInstallConditionalReference;
+- (void)setPrimitiveManagedInstallConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ManifestMO*)primitiveManagedInstallReference;
-- (void)setPrimitiveManagedInstallReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManagedInstallReference;
+- (void)setPrimitiveManagedInstallReference:(nullable ManifestMO*)value;
 
-- (ConditionalItemMO*)primitiveManagedUninstallConditionalReference;
-- (void)setPrimitiveManagedUninstallConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveManagedUninstallConditionalReference;
+- (void)setPrimitiveManagedUninstallConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ManifestMO*)primitiveManagedUninstallReference;
-- (void)setPrimitiveManagedUninstallReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManagedUninstallReference;
+- (void)setPrimitiveManagedUninstallReference:(nullable ManifestMO*)value;
 
-- (ConditionalItemMO*)primitiveManagedUpdateConditionalReference;
-- (void)setPrimitiveManagedUpdateConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveManagedUpdateConditionalReference;
+- (void)setPrimitiveManagedUpdateConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ManifestMO*)primitiveManagedUpdateReference;
-- (void)setPrimitiveManagedUpdateReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManagedUpdateReference;
+- (void)setPrimitiveManagedUpdateReference:(nullable ManifestMO*)value;
 
-- (ManifestMO*)primitiveManifestReference;
-- (void)setPrimitiveManifestReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManifestReference;
+- (void)setPrimitiveManifestReference:(nullable ManifestMO*)value;
 
-- (ConditionalItemMO*)primitiveOptionalInstallConditionalReference;
-- (void)setPrimitiveOptionalInstallConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveOptionalInstallConditionalReference;
+- (void)setPrimitiveOptionalInstallConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (ManifestMO*)primitiveOptionalInstallReference;
-- (void)setPrimitiveOptionalInstallReference:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveOptionalInstallReference;
+- (void)setPrimitiveOptionalInstallReference:(nullable ManifestMO*)value;
 
-- (ApplicationMO*)primitiveOriginalApplication;
-- (void)setPrimitiveOriginalApplication:(ApplicationMO*)value;
+- (nullable ApplicationMO*)primitiveOriginalApplication;
+- (void)setPrimitiveOriginalApplication:(nullable ApplicationMO*)value;
 
-- (ManifestMO*)primitiveOriginalManifest;
-- (void)setPrimitiveOriginalManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveOriginalManifest;
+- (void)setPrimitiveOriginalManifest:(nullable ManifestMO*)value;
 
-- (ConditionalItemMO*)primitiveOriginalManifestConditionalReference;
-- (void)setPrimitiveOriginalManifestConditionalReference:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveOriginalManifestConditionalReference;
+- (void)setPrimitiveOriginalManifestConditionalReference:(nullable ConditionalItemMO*)value;
 
-- (PackageMO*)primitiveOriginalPackage;
-- (void)setPrimitiveOriginalPackage:(PackageMO*)value;
+- (nullable PackageMO*)primitiveOriginalPackage;
+- (void)setPrimitiveOriginalPackage:(nullable PackageMO*)value;
 
-- (PackageMO*)primitiveRequiresReference;
-- (void)setPrimitiveRequiresReference:(PackageMO*)value;
+- (nullable PackageMO*)primitiveRequiresReference;
+- (void)setPrimitiveRequiresReference:(nullable PackageMO*)value;
 
-- (PackageMO*)primitiveSupportedArchitectureReference;
-- (void)setPrimitiveSupportedArchitectureReference:(PackageMO*)value;
+- (nullable PackageMO*)primitiveSupportedArchitectureReference;
+- (void)setPrimitiveSupportedArchitectureReference:(nullable PackageMO*)value;
 
-- (PackageMO*)primitiveUpdateForReference;
-- (void)setPrimitiveUpdateForReference:(PackageMO*)value;
+- (nullable PackageMO*)primitiveUpdateForReference;
+- (void)setPrimitiveUpdateForReference:(nullable PackageMO*)value;
 
 @end
 

@@ -162,14 +162,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<StringObjectMO*>*)primitiveManagedUpdates;
 - (void)setPrimitiveManagedUpdates:(NSMutableSet<StringObjectMO*>*)value;
 
-- (ManifestMO*)primitiveManifest;
-- (void)setPrimitiveManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManifest;
+- (void)setPrimitiveManifest:(nullable ManifestMO*)value;
 
 - (NSMutableSet<StringObjectMO*>*)primitiveOptionalInstalls;
 - (void)setPrimitiveOptionalInstalls:(NSMutableSet<StringObjectMO*>*)value;
 
-- (ConditionalItemMO*)primitiveParent;
-- (void)setPrimitiveParent:(ConditionalItemMO*)value;
+- (nullable ConditionalItemMO*)primitiveParent;
+- (void)setPrimitiveParent:(nullable ConditionalItemMO*)value;
 
 - (NSMutableSet<StringObjectMO*>*)primitiveReferencingManifests;
 - (void)setPrimitiveReferencingManifests:(NSMutableSet<StringObjectMO*>*)value;

@@ -45,8 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(nullable NSString*)value;
 
-- (DeveloperSourceListItemMO*)primitiveDeveloperSourceListReference;
-- (void)setPrimitiveDeveloperSourceListReference:(DeveloperSourceListItemMO*)value;
+- (nullable DeveloperSourceListItemMO*)primitiveDeveloperSourceListReference;
+- (void)setPrimitiveDeveloperSourceListReference:(nullable DeveloperSourceListItemMO*)value;
 
 - (NSMutableSet<PackageMO*>*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet<PackageMO*>*)value;

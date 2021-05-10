@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _OptionalInstallMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (ManifestMO*)primitiveManifest;
-- (void)setPrimitiveManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManifest;
+- (void)setPrimitiveManifest:(nullable ManifestMO*)value;
 
 @end
 

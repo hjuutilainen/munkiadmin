@@ -62,8 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-- (PackageMO*)primitivePackage;
-- (void)setPrimitivePackage:(PackageMO*)value;
+- (nullable PackageMO*)primitivePackage;
+- (void)setPrimitivePackage:(nullable PackageMO*)value;
 
 @end
 

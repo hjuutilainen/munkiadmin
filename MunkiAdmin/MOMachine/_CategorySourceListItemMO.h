@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CategorySourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (CategoryMO*)primitiveCategoryReference;
-- (void)setPrimitiveCategoryReference:(CategoryMO*)value;
+- (nullable CategoryMO*)primitiveCategoryReference;
+- (void)setPrimitiveCategoryReference:(nullable CategoryMO*)value;
 
 @end
 

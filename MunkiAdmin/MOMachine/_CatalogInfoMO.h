@@ -82,14 +82,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (int32_t)primitiveOriginalIndexValue;
 - (void)setPrimitiveOriginalIndexValue:(int32_t)value_;
 
-- (CatalogMO*)primitiveCatalog;
-- (void)setPrimitiveCatalog:(CatalogMO*)value;
+- (nullable CatalogMO*)primitiveCatalog;
+- (void)setPrimitiveCatalog:(nullable CatalogMO*)value;
 
-- (ManifestMO*)primitiveManifest;
-- (void)setPrimitiveManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManifest;
+- (void)setPrimitiveManifest:(nullable ManifestMO*)value;
 
-- (PackageMO*)primitivePackage;
-- (void)setPrimitivePackage:(PackageMO*)value;
+- (nullable PackageMO*)primitivePackage;
+- (void)setPrimitivePackage:(nullable PackageMO*)value;
 
 @end
 

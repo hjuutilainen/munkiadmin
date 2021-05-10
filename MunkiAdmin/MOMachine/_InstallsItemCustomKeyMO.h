@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveCustomKeyValue;
 - (void)setPrimitiveCustomKeyValue:(nullable NSString*)value;
 
-- (InstallsItemMO*)primitiveInstallsItem;
-- (void)setPrimitiveInstallsItem:(InstallsItemMO*)value;
+- (nullable InstallsItemMO*)primitiveInstallsItem;
+- (void)setPrimitiveInstallsItem:(nullable InstallsItemMO*)value;
 
 @end
 

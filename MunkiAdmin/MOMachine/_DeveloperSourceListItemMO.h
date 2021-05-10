@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _DeveloperSourceListItemMO (CoreDataGeneratedPrimitiveAccessors)
 
-- (DeveloperMO*)primitiveDeveloperReference;
-- (void)setPrimitiveDeveloperReference:(DeveloperMO*)value;
+- (nullable DeveloperMO*)primitiveDeveloperReference;
+- (void)setPrimitiveDeveloperReference:(nullable DeveloperMO*)value;
 
 @end
 

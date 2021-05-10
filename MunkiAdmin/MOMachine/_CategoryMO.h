@@ -45,8 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(nullable NSString*)value;
 
-- (CategorySourceListItemMO*)primitiveCategorySourceListReference;
-- (void)setPrimitiveCategorySourceListReference:(CategorySourceListItemMO*)value;
+- (nullable CategorySourceListItemMO*)primitiveCategorySourceListReference;
+- (void)setPrimitiveCategorySourceListReference:(nullable CategorySourceListItemMO*)value;
 
 - (NSMutableSet<PackageMO*>*)primitivePackages;
 - (void)setPrimitivePackages:(NSMutableSet<PackageMO*>*)value;

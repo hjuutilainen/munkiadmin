@@ -55,11 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)primitiveIsEnabledForManifestValue;
 - (void)setPrimitiveIsEnabledForManifestValue:(BOOL)value_;
 
-- (ManifestMO*)primitiveManifest;
-- (void)setPrimitiveManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveManifest;
+- (void)setPrimitiveManifest:(nullable ManifestMO*)value;
 
-- (ManifestMO*)primitiveParentManifest;
-- (void)setPrimitiveParentManifest:(ManifestMO*)value;
+- (nullable ManifestMO*)primitiveParentManifest;
+- (void)setPrimitiveParentManifest:(nullable ManifestMO*)value;
 
 @end
 

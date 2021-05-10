@@ -98,8 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<PackageSourceListItemMO*>*)primitiveChildren;
 - (void)setPrimitiveChildren:(NSMutableSet<PackageSourceListItemMO*>*)value;
 
-- (PackageSourceListItemMO*)primitiveParent;
-- (void)setPrimitiveParent:(PackageSourceListItemMO*)value;
+- (nullable PackageSourceListItemMO*)primitiveParent;
+- (void)setPrimitiveParent:(nullable PackageSourceListItemMO*)value;
 
 @end
 

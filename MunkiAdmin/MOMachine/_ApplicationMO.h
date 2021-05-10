@@ -94,8 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<ApplicationProxyMO*>*)primitiveApplicationProxies;
 - (void)setPrimitiveApplicationProxies:(NSMutableSet<ApplicationProxyMO*>*)value;
 
-- (PackageMO*)primitiveLatestPackage;
-- (void)setPrimitiveLatestPackage:(PackageMO*)value;
+- (nullable PackageMO*)primitiveLatestPackage;
+- (void)setPrimitiveLatestPackage:(nullable PackageMO*)value;
 
 - (NSMutableSet<ManifestMO*>*)primitiveManifests;
 - (void)setPrimitiveManifests:(NSMutableSet<ManifestMO*>*)value;

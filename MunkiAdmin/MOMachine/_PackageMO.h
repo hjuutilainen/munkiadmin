@@ -664,14 +664,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<CatalogMO*>*)primitiveCatalogs;
 - (void)setPrimitiveCatalogs:(NSMutableSet<CatalogMO*>*)value;
 
-- (CategoryMO*)primitiveCategory;
-- (void)setPrimitiveCategory:(CategoryMO*)value;
+- (nullable CategoryMO*)primitiveCategory;
+- (void)setPrimitiveCategory:(nullable CategoryMO*)value;
 
-- (DeveloperMO*)primitiveDeveloper;
-- (void)setPrimitiveDeveloper:(DeveloperMO*)value;
+- (nullable DeveloperMO*)primitiveDeveloper;
+- (void)setPrimitiveDeveloper:(nullable DeveloperMO*)value;
 
-- (IconImageMO*)primitiveIconImage;
-- (void)setPrimitiveIconImage:(IconImageMO*)value;
+- (nullable IconImageMO*)primitiveIconImage;
+- (void)setPrimitiveIconImage:(nullable IconImageMO*)value;
 
 - (NSMutableSet<InstallerChoicesItemMO*>*)primitiveInstallerChoicesItems;
 - (void)setPrimitiveInstallerChoicesItems:(NSMutableSet<InstallerChoicesItemMO*>*)value;
@@ -688,11 +688,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<PackageInfoMO*>*)primitivePackageInfos;
 - (void)setPrimitivePackageInfos:(NSMutableSet<PackageInfoMO*>*)value;
 
-- (ApplicationMO*)primitiveParentApplication;
-- (void)setPrimitiveParentApplication:(ApplicationMO*)value;
+- (nullable ApplicationMO*)primitiveParentApplication;
+- (void)setPrimitiveParentApplication:(nullable ApplicationMO*)value;
 
-- (ApplicationMO*)primitiveParentApplicationFromLatestPackage;
-- (void)setPrimitiveParentApplicationFromLatestPackage:(ApplicationMO*)value;
+- (nullable ApplicationMO*)primitiveParentApplicationFromLatestPackage;
+- (void)setPrimitiveParentApplicationFromLatestPackage:(nullable ApplicationMO*)value;
 
 - (NSMutableSet<ReceiptMO*>*)primitiveReceipts;
 - (void)setPrimitiveReceipts:(NSMutableSet<ReceiptMO*>*)value;
