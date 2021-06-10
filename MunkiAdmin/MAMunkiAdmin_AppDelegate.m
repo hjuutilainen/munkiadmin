@@ -526,7 +526,7 @@ DDLogLevel ddLogLevel;
     [manifestsItem setLabel:NSLocalizedString(@"Manifests", @"")];
     
     NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] init];
-    //segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
+    segmentedControl.frame = NSMakeRect(0, 0, 130, 25);
     segmentedControl.segmentStyle = NSSegmentStyleTexturedRounded;
     segmentedControl.trackingMode = NSSegmentSwitchTrackingSelectOne;
     segmentedControl.segmentCount = 3;
