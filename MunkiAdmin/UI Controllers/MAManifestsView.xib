@@ -803,6 +803,44 @@ Gw
                                                             </tableCellView>
                                                         </prototypeCellViews>
                                                     </tableColumn>
+                                                    <tableColumn identifier="manifestTableColumnDateModified" editable="NO" width="81" minWidth="40" maxWidth="1000" id="Hkf-q0-SCy">
+                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Modified">
+                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                        </tableHeaderCell>
+                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="zOc-4p-hjg">
+                                                            <dateFormatter key="formatter" dateStyle="short" timeStyle="short" id="e50-b2-TfJ"/>
+                                                            <font key="font" metaFont="cellTitle"/>
+                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <outlet property="representedObject" destination="9Wf-Gx-dfK" id="MYr-Eh-Q9l"/>
+                                                            </connections>
+                                                        </textFieldCell>
+                                                        <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="manifestDateModified"/>
+                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                        <prototypeCellViews>
+                                                            <tableCellView id="mig-yw-Bd8">
+                                                                <rect key="frame" x="1046.5" y="1" width="85" height="17"/>
+                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                <subviews>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e6r-fB-ThB">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="17"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="9Wf-Gx-dfK">
+                                                                            <dateFormatter key="formatter" dateStyle="short" timeStyle="short" id="Bdv-4O-yug"/>
+                                                                            <font key="font" metaFont="cellTitle"/>
+                                                                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <connections>
+                                                                            <binding destination="mig-yw-Bd8" name="value" keyPath="objectValue.manifestDateModified" id="I4i-UK-FEd"/>
+                                                                        </connections>
+                                                                    </textField>
+                                                                </subviews>
+                                                            </tableCellView>
+                                                        </prototypeCellViews>
+                                                    </tableColumn>
                                                 </tableColumns>
                                                 <connections>
                                                     <binding destination="rcP-DN-4xO" name="content" keyPath="arrangedObjects" id="epU-j5-hBy"/>
