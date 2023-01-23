@@ -91,9 +91,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* munki_description;
 
+@property (nonatomic, strong, nullable) NSString* munki_description_staged;
+
 @property (nonatomic, strong, nullable) NSString* munki_developer;
 
 @property (nonatomic, strong, nullable) NSString* munki_display_name;
+
+@property (nonatomic, strong, nullable) NSString* munki_display_name_staged;
 
 @property (nonatomic, strong, nullable) NSDate* munki_force_install_after_date;
 
@@ -451,11 +455,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveMunki_description;
 - (void)setPrimitiveMunki_description:(nullable NSString*)value;
 
+- (nullable NSString*)primitiveMunki_description_staged;
+- (void)setPrimitiveMunki_description_staged:(nullable NSString*)value;
+
 - (nullable NSString*)primitiveMunki_developer;
 - (void)setPrimitiveMunki_developer:(nullable NSString*)value;
 
 - (nullable NSString*)primitiveMunki_display_name;
 - (void)setPrimitiveMunki_display_name:(nullable NSString*)value;
+
+- (nullable NSString*)primitiveMunki_display_name_staged;
+- (void)setPrimitiveMunki_display_name_staged:(nullable NSString*)value;
 
 - (nullable NSDate*)primitiveMunki_force_install_after_date;
 - (void)setPrimitiveMunki_force_install_after_date:(nullable NSDate*)value;
@@ -721,8 +731,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)munki_apple_item;
 + (NSString *)munki_autoremove;
 + (NSString *)munki_description;
++ (NSString *)munki_description_staged;
 + (NSString *)munki_developer;
 + (NSString *)munki_display_name;
++ (NSString *)munki_display_name_staged;
 + (NSString *)munki_force_install_after_date;
 + (NSString *)munki_forced_install;
 + (NSString *)munki_forced_uninstall;

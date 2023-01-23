@@ -244,9 +244,13 @@
 
 @dynamic munki_description;
 
+@dynamic munki_description_staged;
+
 @dynamic munki_developer;
 
 @dynamic munki_display_name;
+
+@dynamic munki_display_name_staged;
 
 @dynamic munki_force_install_after_date;
 
@@ -739,11 +743,17 @@
 + (NSString *)munki_description {
 	return @"munki_description";
 }
++ (NSString *)munki_description_staged {
+	return @"munki_description_staged";
+}
 + (NSString *)munki_developer {
 	return @"munki_developer";
 }
 + (NSString *)munki_display_name {
 	return @"munki_display_name";
+}
++ (NSString *)munki_display_name_staged {
+	return @"munki_display_name_staged";
 }
 + (NSString *)munki_force_install_after_date {
 	return @"munki_force_install_after_date";

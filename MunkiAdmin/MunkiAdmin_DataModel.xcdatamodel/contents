@@ -197,8 +197,10 @@
         <attribute name="munki_apple_item" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_autoremove" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_description" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
+        <attribute name="munki_description_staged" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="munki_developer" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="munki_display_name_staged" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_force_install_after_date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_forced_install" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_forced_uninstall" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
