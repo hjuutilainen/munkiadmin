@@ -859,7 +859,9 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                                @"10.13", @"10.13.6", @"10.13.99",
                                @"10.14", @"10.14.6", @"10.14.99",
                                @"10.15", @"10.15.7", @"10.15.99",
-                               @"11.0", @"11.99"];
+                               @"11.0", @"11.7.1", @"11.99",
+                               @"12.0", @"12.6.1", @"12.99",
+                               @"13.0", @"13.99",];
     self.osVersions = [newOsVersions sortedArrayUsingDescriptors:@[osVersionSorter]];
     
     NSArray *newInstallerTypes = @[@"copy_from_dmg",
