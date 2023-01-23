@@ -191,6 +191,7 @@ DDLogLevel ddLogLevel;
                                         [NSExpression expressionForKeyPath:@"managedUninstallsCount"],
                                         [NSExpression expressionForKeyPath:@"managedUpdatesCount"],
                                         [NSExpression expressionForKeyPath:@"optionalInstallsCount"],
+                                        [NSExpression expressionForKeyPath:@"defaultInstallsCount"],
                                         [NSExpression expressionForKeyPath:@"featuredItemsCount"],
                                         [NSExpression expressionForKeyPath:@"includedManifestsCount"],
                                         [NSExpression expressionForKeyPath:@"referencingManifestsCount"],
@@ -225,6 +226,7 @@ DDLogLevel ddLogLevel;
                                  [NSExpression expressionForKeyPath:@"managedUninstallsStrings"],
                                  [NSExpression expressionForKeyPath:@"managedUpdatesStrings"],
                                  [NSExpression expressionForKeyPath:@"optionalInstallsStrings"],
+                                 [NSExpression expressionForKeyPath:@"defaultInstallsStrings"],
                                  [NSExpression expressionForKeyPath:@"featuredItemsStrings"],
                                  [NSExpression expressionForKeyPath:@"includedManifestsStrings"],
                                  [NSExpression expressionForKeyPath:@"referencingManifestsStrings"],
@@ -256,6 +258,8 @@ DDLogLevel ddLogLevel;
                                      @"%[Number of managed updates]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[optionalInstallsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
                                      @"%[Number of optional installs]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
+                                 @"%[defaultInstallsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
+                                     @"%[Number of default installs]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[featuredItemsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
                                      @"%[Number of featured items]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@",
                                  @"%[includedManifestsCount]@ %[is, is not, is greater than, is greater than or equal to, is less than, is less than or equal to]@ %@" :
@@ -270,6 +274,7 @@ DDLogLevel ddLogLevel;
                                  @"%[managedUninstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed uninstalls item]@ %[contains, begins with, ends with]@ %@",
                                  @"%[managedUpdatesStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any managed updates item]@ %[contains, begins with, ends with]@ %@",
                                  @"%[optionalInstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any optional installs item]@ %[contains, begins with, ends with]@ %@",
+                                 @"%[defaultInstallsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any default installs item]@ %[contains, begins with, ends with]@ %@",
                                  @"%[featuredItemsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any featured item]@ %[contains, begins with, ends with]@ %@",
                                  @"%[includedManifestsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any included manifest]@ %[contains, begins with, ends with]@ %@",
                                  @"%[referencingManifestsStrings]@ %[contains, begins with, ends with]@ %@" : @"%[Any referencing manifest]@ %[contains, begins with, ends with]@ %@",
@@ -367,6 +372,10 @@ DDLogLevel ddLogLevel;
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnOptionalInstallsCount"]) {
             menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Optional Installs", @"")
+                                                  action:@selector(toggleColumn:)
+                                           keyEquivalent:@""];
+        } else if ([[column identifier] isEqualToString:@"manifestsTableColumnDefaultInstallsCount"]) {
+            menuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Number of Default Installs", @"")
                                                   action:@selector(toggleColumn:)
                                            keyEquivalent:@""];
         } else if ([[column identifier] isEqualToString:@"manifestsTableColumnFeaturedItemsCount"]) {

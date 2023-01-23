@@ -513,6 +513,7 @@ static dispatch_queue_t serialQueue;
                                    @"managedUninstall",
                                    @"managedUpdate",
                                    @"optionalInstall",
+                                   @"defaultInstall",
                                    @"featuredItem",
                                    @"requires",
                                    @"updateFor"];
@@ -577,6 +578,7 @@ static dispatch_queue_t serialQueue;
     NSMutableArray *managedUninstalls = [[NSMutableArray alloc] init];
     NSMutableArray *managedUpdates = [[NSMutableArray alloc] init];
     NSMutableArray *optionalInstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *defaultInstalls = [[NSMutableArray alloc] init];
     NSMutableArray *featuredItems = [[NSMutableArray alloc] init];
     
     // Manifest conditional items
@@ -584,6 +586,7 @@ static dispatch_queue_t serialQueue;
     NSMutableArray *conditionalManagedUninstalls = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalManagedUpdates = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalOptionalInstalls = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalDefaultInstalls = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalFeaturedItems = [[NSMutableArray alloc] init];
     
     // Pkginfo items
@@ -596,6 +599,7 @@ static dispatch_queue_t serialQueue;
      - managed_uninstalls item in a manifest
      - managed_updates item in a manifest
      - optional_installs item in a manifest
+     - default_installs item in a manifest
      - featured_items item in a manifest
      - any of the above within a condition in a manifest
      - requires item in a pkginfo
@@ -613,6 +617,8 @@ static dispatch_queue_t serialQueue;
             [managedUpdates addObject:aReference];
         } else if (aReference.optionalInstallReference) {
             [optionalInstalls addObject:aReference];
+        } else if (aReference.defaultInstallReference) {
+            [defaultInstalls addObject:aReference];
         } else if (aReference.featuredItemReference) {
             [featuredItems addObject:aReference];
         }
@@ -625,6 +631,8 @@ static dispatch_queue_t serialQueue;
             [conditionalManagedUpdates addObject:aReference];
         } else if (aReference.optionalInstallConditionalReference) {
             [conditionalOptionalInstalls addObject:aReference];
+        } else if (aReference.defaultInstallConditionalReference) {
+            [conditionalDefaultInstalls addObject:aReference];
         } else if (aReference.featuredItemConditionalReference) {
             [conditionalFeaturedItems addObject:aReference];
         }
@@ -640,12 +648,14 @@ static dispatch_queue_t serialQueue;
     if (managedUninstalls) combined[@"managedUninstalls"] = managedUninstalls;
     if (managedUpdates) combined[@"managedUpdates"] = managedUpdates;
     if (optionalInstalls) combined[@"optionalInstalls"] = optionalInstalls;
+    if (defaultInstalls) combined[@"defaultInstalls"] = defaultInstalls;
     if (featuredItems) combined[@"featuredItems"] = featuredItems;
     
     if (conditionalManagedInstalls) combined[@"conditionalManagedInstalls"] = conditionalManagedInstalls;
     if (conditionalManagedUninstalls) combined[@"conditionalManagedUninstalls"] = conditionalManagedUninstalls;
     if (conditionalManagedUpdates) combined[@"conditionalManagedUpdates"] = conditionalManagedUpdates;
     if (conditionalOptionalInstalls) combined[@"conditionalOptionalInstalls"] = conditionalOptionalInstalls;
+    if (conditionalDefaultInstalls) combined[@"conditionalDefaultInstalls"] = conditionalDefaultInstalls;
     if (conditionalFeaturedItems) combined[@"conditionalFeaturedItems"] = conditionalFeaturedItems;
     
     if (requiresItems) combined[@"requiresItems"] = requiresItems;
@@ -669,6 +679,7 @@ static dispatch_queue_t serialQueue;
     NSMutableArray *managedUninstallsWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *managedUpdatesWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *optionalInstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *defaultInstallsWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *featuredItemsWithVersion = [[NSMutableArray alloc] init];
     
     // Manifest conditional items
@@ -676,6 +687,7 @@ static dispatch_queue_t serialQueue;
     NSMutableArray *conditionalManagedUninstallsWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalManagedUpdatesWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalOptionalInstallsWithVersion = [[NSMutableArray alloc] init];
+    NSMutableArray *conditionalDefaultInstallsWithVersion = [[NSMutableArray alloc] init];
     NSMutableArray *conditionalFeaturedItemsWithVersion = [[NSMutableArray alloc] init];
     
     // Pkginfo items
@@ -693,6 +705,8 @@ static dispatch_queue_t serialQueue;
             [managedUpdatesWithVersion addObject:aReference];
         } else if (aReference.optionalInstallReference) {
             [optionalInstallsWithVersion addObject:aReference];
+        } else if (aReference.defaultInstallReference) {
+            [defaultInstallsWithVersion addObject:aReference];
         } else if (aReference.featuredItemReference) {
             [featuredItemsWithVersion addObject:aReference];
         }
@@ -705,6 +719,8 @@ static dispatch_queue_t serialQueue;
             [conditionalManagedUpdatesWithVersion addObject:aReference];
         } else if (aReference.optionalInstallConditionalReference) {
             [conditionalOptionalInstallsWithVersion addObject:aReference];
+        } else if (aReference.defaultInstallConditionalReference) {
+            [conditionalDefaultInstallsWithVersion addObject:aReference];
         } else if (aReference.featuredItemConditionalReference) {
             [conditionalFeaturedItemsWithVersion addObject:aReference];
         }
@@ -720,12 +736,14 @@ static dispatch_queue_t serialQueue;
     if (managedUninstallsWithVersion) combined[@"managedUninstallsWithVersion"] = managedUninstallsWithVersion;
     if (managedUpdatesWithVersion) combined[@"managedUpdatesWithVersion"] = managedUpdatesWithVersion;
     if (optionalInstallsWithVersion) combined[@"optionalInstallsWithVersion"] = optionalInstallsWithVersion;
+    if (defaultInstallsWithVersion) combined[@"defaultInstallsWithVersion"] = defaultInstallsWithVersion;
     if (featuredItemsWithVersion) combined[@"featuredItemsWithVersion"] = featuredItemsWithVersion;
     
     if (conditionalManagedInstallsWithVersion) combined[@"conditionalManagedInstallsWithVersion"] = conditionalManagedInstallsWithVersion;
     if (conditionalManagedUninstallsWithVersion) combined[@"conditionalManagedUninstallsWithVersion"] = conditionalManagedUninstallsWithVersion;
     if (conditionalManagedUpdatesWithVersion) combined[@"conditionalManagedUpdatesWithVersion"] = conditionalManagedUpdatesWithVersion;
     if (conditionalOptionalInstallsWithVersion) combined[@"conditionalOptionalInstallsWithVersion"] = conditionalOptionalInstallsWithVersion;
+    if (conditionalDefaultInstallsWithVersion) combined[@"conditionalDefaultInstallsWithVersion"] = conditionalDefaultInstallsWithVersion;
     if (conditionalFeaturedItemsWithVersion) combined[@"conditionalFeaturedItemsWithVersion"] = conditionalFeaturedItemsWithVersion;
     
     if (requiresItemsWithVersion) combined[@"requiresItemsWithVersion"] = requiresItemsWithVersion;
@@ -1180,6 +1198,7 @@ static dispatch_queue_t serialQueue;
          - managed_uninstalls item in a manifest
          - managed_updates item in a manifest
          - optional_installs item in a manifest
+         - default_installs item in a manifest
          - featured_items item in a manifest
          - requires item in a package
          - update_for item in a package
@@ -1206,6 +1225,10 @@ static dispatch_queue_t serialQueue;
                 ManifestMO *manifest = aReference.optionalInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
+            } else if (aReference.defaultInstallReference) {
+                ManifestMO *manifest = aReference.defaultInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                logMessage = [NSString stringWithFormat:@"Renamed default_installs reference \"%@\" to \"%@\" in manifest %@", oldName, aReference.title, manifest.title];
             } else if (aReference.featuredItemReference) {
                 ManifestMO *manifest = aReference.featuredItemReference;
                 manifest.hasUnstagedChangesValue = YES;
@@ -1233,6 +1256,11 @@ static dispatch_queue_t serialQueue;
                 ManifestMO *manifest = aReference.optionalInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
+            } else if (aReference.defaultInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.defaultInstallConditionalReference;
+                ManifestMO *manifest = aReference.defaultInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                logMessage = [NSString stringWithFormat:@"Renamed default_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldName, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.featuredItemConditionalReference) {
                 ConditionalItemMO *cond = aReference.featuredItemConditionalReference;
                 ManifestMO *manifest = aReference.featuredItemConditionalReference.manifest;
@@ -1276,6 +1304,10 @@ static dispatch_queue_t serialQueue;
                 ManifestMO *manifest = aReference.optionalInstallReference;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
+            } else if (aReference.defaultInstallReference) {
+                ManifestMO *manifest = aReference.defaultInstallReference;
+                manifest.hasUnstagedChangesValue = YES;
+                logMessage = [NSString stringWithFormat:@"Renamed default_installs reference \"%@\" to \"%@\" in manifest %@", oldNameWithVersion, aReference.title, manifest.title];
             } else if (aReference.featuredItemReference) {
                 ManifestMO *manifest = aReference.featuredItemReference;
                 manifest.hasUnstagedChangesValue = YES;
@@ -1302,6 +1334,11 @@ static dispatch_queue_t serialQueue;
                 ManifestMO *manifest = aReference.optionalInstallConditionalReference.manifest;
                 manifest.hasUnstagedChangesValue = YES;
                 logMessage = [NSString stringWithFormat:@"Renamed optional_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
+            } else if (aReference.defaultInstallConditionalReference) {
+                ConditionalItemMO *cond = aReference.defaultInstallConditionalReference;
+                ManifestMO *manifest = aReference.defaultInstallConditionalReference.manifest;
+                manifest.hasUnstagedChangesValue = YES;
+                logMessage = [NSString stringWithFormat:@"Renamed default_installs reference \"%@\" to \"%@\" in manifest %@ under condition \"%@\"", oldNameWithVersion, aReference.title, manifest.title, cond.titleWithParentTitle];
             } else if (aReference.featuredItemConditionalReference) {
                 ConditionalItemMO *cond = aReference.featuredItemConditionalReference;
                 ManifestMO *manifest = aReference.featuredItemConditionalReference.manifest;
@@ -3038,6 +3075,7 @@ static dispatch_queue_t serialQueue;
                                   @"managed_uninstalls",
                                   @"managed_updates",
                                   @"optional_installs",
+                                  @"default_installs",
                                   @"featured_items",
                                   [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestUserNameKey"],
                                   [[NSUserDefaults standardUserDefaults] stringForKey:@"manifestDisplayNameKey"],

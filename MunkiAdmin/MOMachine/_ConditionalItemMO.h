@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class StringObjectMO;
 @class StringObjectMO;
 @class StringObjectMO;
+@class StringObjectMO;
 @class ManifestMO;
 @class StringObjectMO;
 @class ConditionalItemMO;
@@ -41,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSSet<ConditionalItemMO*> *children;
 - (nullable NSMutableSet<ConditionalItemMO*>*)childrenSet;
+
+@property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *defaultInstalls;
+- (nullable NSMutableSet<StringObjectMO*>*)defaultInstallsSet;
 
 @property (nonatomic, strong, nullable) NSSet<StringObjectMO*> *featuredItems;
 - (nullable NSMutableSet<StringObjectMO*>*)featuredItemsSet;
@@ -74,6 +78,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeChildren:(NSSet<ConditionalItemMO*>*)value_;
 - (void)addChildrenObject:(ConditionalItemMO*)value_;
 - (void)removeChildrenObject:(ConditionalItemMO*)value_;
+
+@end
+
+@interface _ConditionalItemMO (DefaultInstallsCoreDataGeneratedAccessors)
+- (void)addDefaultInstalls:(NSSet<StringObjectMO*>*)value_;
+- (void)removeDefaultInstalls:(NSSet<StringObjectMO*>*)value_;
+- (void)addDefaultInstallsObject:(StringObjectMO*)value_;
+- (void)removeDefaultInstallsObject:(StringObjectMO*)value_;
 
 @end
 
@@ -147,6 +159,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSMutableSet<ConditionalItemMO*>*)primitiveChildren;
 - (void)setPrimitiveChildren:(NSMutableSet<ConditionalItemMO*>*)value;
 
+- (NSMutableSet<StringObjectMO*>*)primitiveDefaultInstalls;
+- (void)setPrimitiveDefaultInstalls:(NSMutableSet<StringObjectMO*>*)value;
+
 - (NSMutableSet<StringObjectMO*>*)primitiveFeaturedItems;
 - (void)setPrimitiveFeaturedItems:(NSMutableSet<StringObjectMO*>*)value;
 
@@ -183,6 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ConditionalItemMORelationships: NSObject
 + (NSString *)children;
++ (NSString *)defaultInstalls;
 + (NSString *)featuredItems;
 + (NSString *)includedManifests;
 + (NSString *)managedInstalls;

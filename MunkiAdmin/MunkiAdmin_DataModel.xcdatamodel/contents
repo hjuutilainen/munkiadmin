@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14897.2" systemVersion="19A536g" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -42,6 +42,7 @@
         <attribute name="munki_condition" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ConditionalItem" inverseName="parent" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
+        <relationship name="defaultInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="defaultInstallConditionalReference" inverseEntity="StringObject" syncable="YES"/>
         <relationship name="featuredItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="featuredItemConditionalReference" inverseEntity="StringObject" syncable="YES"/>
         <relationship name="includedManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="includedManifestConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="managedInstalls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="managedInstallConditionalReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
@@ -141,6 +142,7 @@
         <relationship name="catalogInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CatalogInfo" inverseName="manifest" inverseEntity="CatalogInfo" indexed="YES" syncable="YES"/>
         <relationship name="catalogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Catalog" inverseName="manifests" inverseEntity="Catalog" indexed="YES" syncable="YES"/>
         <relationship name="conditionalItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="manifest" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
+        <relationship name="defaultInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="defaultInstallReference" inverseEntity="StringObject" syncable="YES"/>
         <relationship name="featuredItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="featuredItemReference" inverseEntity="StringObject" syncable="YES"/>
         <relationship name="includedManifests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestInfo" inverseName="manifest" inverseEntity="ManifestInfo" indexed="YES" syncable="YES"/>
         <relationship name="includedManifestsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="manifestReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
@@ -154,6 +156,9 @@
         <relationship name="optionalInstalls" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OptionalInstall" inverseName="manifest" inverseEntity="OptionalInstall" indexed="YES" syncable="YES"/>
         <relationship name="optionalInstallsFaster" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StringObject" inverseName="optionalInstallReference" inverseEntity="StringObject" indexed="YES" syncable="YES"/>
         <relationship name="referencingManifests" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StringObject" inverseName="originalManifest" inverseEntity="StringObject" syncable="YES"/>
+        <fetchedProperty name="allDefaultInstalls" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(defaultInstallReference == $FETCH_SOURCE) OR (defaultInstallConditionalReference.manifest == $FETCH_SOURCE)"/>
+        </fetchedProperty>
         <fetchedProperty name="allFeaturedItems" optional="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(featuredItemReference == $FETCH_SOURCE) OR (featuredItemConditionalReference.manifest == $FETCH_SOURCE)"/>
         </fetchedProperty>
@@ -305,6 +310,8 @@
         <attribute name="title" optional="YES" attributeType="String" defaultValueString="New Item" syncable="YES"/>
         <attribute name="typeString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blockingApplicationReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Package" inverseName="blockingApplications" inverseEntity="Package" indexed="YES" syncable="YES"/>
+        <relationship name="defaultInstallConditionalReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="defaultInstalls" inverseEntity="ConditionalItem" syncable="YES"/>
+        <relationship name="defaultInstallReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="defaultInstalls" inverseEntity="Manifest" syncable="YES"/>
         <relationship name="featuredItemConditionalReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="featuredItems" inverseEntity="ConditionalItem" syncable="YES"/>
         <relationship name="featuredItemReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="featuredItems" inverseEntity="Manifest" syncable="YES"/>
         <relationship name="includedManifestConditionalReference" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ConditionalItem" inverseName="includedManifests" inverseEntity="ConditionalItem" indexed="YES" syncable="YES"/>
@@ -331,34 +338,4 @@
             <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="(munki_name == $FETCH_SOURCE.title) OR (titleWithVersion == $FETCH_SOURCE.title)"/>
         </fetchedProperty>
     </entity>
-    <elements>
-        <element name="Application" positionX="0" positionY="0" width="128" height="163"/>
-        <element name="ApplicationProxy" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Catalog" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="CatalogInfo" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="Category" positionX="9" positionY="153" width="128" height="90"/>
-        <element name="CategorySourceListItem" positionX="18" positionY="162" width="128" height="58"/>
-        <element name="ConditionalItem" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="Developer" positionX="9" positionY="153" width="128" height="88"/>
-        <element name="DeveloperSourceListItem" positionX="18" positionY="162" width="128" height="58"/>
-        <element name="Directory" positionX="0" positionY="0" width="128" height="86"/>
-        <element name="IconImage" positionX="9" positionY="153" width="128" height="88"/>
-        <element name="InstallerChoicesItem" positionX="0" positionY="0" width="128" height="118"/>
-        <element name="InstallerEnvironmentVariable" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="InstallerTypeSourceListItem" positionX="9" positionY="153" width="128" height="45"/>
-        <element name="InstallsItem" positionX="0" positionY="0" width="128" height="253"/>
-        <element name="InstallsItemCustomKey" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="ItemToCopy" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="ManagedInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="ManagedUninstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="ManagedUpdate" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Manifest" positionX="0" positionY="0" width="128" height="581"/>
-        <element name="ManifestInfo" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="OptionalInstall" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Package" positionX="0" positionY="0" width="128" height="1303"/>
-        <element name="PackageInfo" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="PackageSourceListItem" positionX="0" positionY="0" width="128" height="178"/>
-        <element name="Receipt" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="StringObject" positionX="0" positionY="0" width="128" height="449"/>
-    </elements>
 </model>

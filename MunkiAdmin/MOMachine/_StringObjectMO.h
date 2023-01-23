@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class ConditionalItemMO;
 @class ManifestMO;
 @class ConditionalItemMO;
+@class ManifestMO;
+@class ConditionalItemMO;
 @class ConditionalItemMO;
 @class ManifestMO;
 @class ConditionalItemMO;
@@ -58,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString* typeString;
 
 @property (nonatomic, strong, nullable) PackageMO *blockingApplicationReference;
+
+@property (nonatomic, strong, nullable) ConditionalItemMO *defaultInstallConditionalReference;
+
+@property (nonatomic, strong, nullable) ManifestMO *defaultInstallReference;
 
 @property (nonatomic, strong, nullable) ConditionalItemMO *featuredItemConditionalReference;
 
@@ -125,6 +131,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable PackageMO*)primitiveBlockingApplicationReference;
 - (void)setPrimitiveBlockingApplicationReference:(nullable PackageMO*)value;
+
+- (nullable ConditionalItemMO*)primitiveDefaultInstallConditionalReference;
+- (void)setPrimitiveDefaultInstallConditionalReference:(nullable ConditionalItemMO*)value;
+
+- (nullable ManifestMO*)primitiveDefaultInstallReference;
+- (void)setPrimitiveDefaultInstallReference:(nullable ManifestMO*)value;
 
 - (nullable ConditionalItemMO*)primitiveFeaturedItemConditionalReference;
 - (void)setPrimitiveFeaturedItemConditionalReference:(nullable ConditionalItemMO*)value;
@@ -194,6 +206,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StringObjectMORelationships: NSObject
 + (NSString *)blockingApplicationReference;
++ (NSString *)defaultInstallConditionalReference;
++ (NSString *)defaultInstallReference;
 + (NSString *)featuredItemConditionalReference;
 + (NSString *)featuredItemReference;
 + (NSString *)includedManifestConditionalReference;

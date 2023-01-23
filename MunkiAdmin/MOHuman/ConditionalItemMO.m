@@ -205,6 +205,23 @@ unichar kSeparatorCharacter = 0x02192;
     }
     
     // =====================
+    // default_installs
+    // =====================
+    NSArray *defaultInstallsSorters;
+    if ([defaults boolForKey:@"sortDefaultInstallsByTitle"]) {
+        defaultInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        defaultInstallsSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
+    if ([conditionalItem.defaultInstalls count] > 0) {
+        NSMutableArray *defaultInstalls = [NSMutableArray arrayWithCapacity:[conditionalItem.defaultInstalls count]];
+        for (StringObjectMO *defaultInstall in [conditionalItem.defaultInstalls sortedArrayUsingDescriptors:defaultInstallsSorters]) {
+            [defaultInstalls addObject:defaultInstall.title];
+        }
+        [tmpDict setObject:defaultInstalls forKey:@"default_installs"];
+    }
+    
+    // =====================
     // featured_items
     // =====================
     NSArray *featuredItemsSorters;

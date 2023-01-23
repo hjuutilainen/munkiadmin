@@ -42,6 +42,10 @@
                                       @"optionalInstallsCount",
                                       @"optionalInstallsCountDescription",
                                       @"optionalInstallsCountShortDescription"];
+    NSArray *defaultInstallsKeys = @[@"defaultInstallsStrings",
+                                   @"defaultInstallsCount",
+                                   @"defaultInstallsCountDescription",
+                                   @"defaultInstallsCountShortDescription"];
     NSArray *featuredItemsKeys = @[@"featuredItemsStrings",
                                    @"featuredItemsCount",
                                    @"featuredItemsCountDescription",
@@ -77,6 +81,9 @@
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([featuredItemsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"featuredItems", @"conditionalItems", nil];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
+    } else if ([defaultInstallsKeys containsObject:key]) {
+        NSSet *affectingKeys = [NSSet setWithObjects:@"defaultInstalls", @"conditionalItems", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     } else if ([conditionalsKeys containsObject:key]) {
         NSSet *affectingKeys = [NSSet setWithObjects:@"conditionalItems", nil];
@@ -167,6 +174,12 @@
     }
     
     for (StringObjectMO *item in self.optionalInstallsFaster) {
+        if (![items containsObject:[item title]]) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (StringObjectMO *item in self.defaultInstalls) {
         if (![items containsObject:[item title]]) {
             [items addObject:[item title]];
         }
@@ -274,6 +287,30 @@
     
     if ([items count] == 0) {
         return nil;
+    } else {
+        return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    }
+}
+
+- (NSArray *)defaultInstallsStrings
+{
+    NSMutableArray *items = [NSMutableArray new];
+    for (StringObjectMO *item in self.defaultInstalls) {
+        if (![items containsObject:[item title]] && [item defaultInstallReference] == self) {
+            [items addObject:[item title]];
+        }
+    }
+    
+    for (ConditionalItemMO *condition in self.conditionalItems) {
+        for (StringObjectMO *item in condition.defaultInstalls) {
+            if (![items containsObject:[item title]] && item.defaultInstallConditionalReference.manifest == self) {
+                [items addObject:[item title]];
+            }
+        }
+    }
+    
+    if ([items count] == 0) {
+        return [NSArray new];
     } else {
         return [items sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
     }
@@ -510,6 +547,42 @@
     }
 }
 
+- (NSNumber *)defaultInstallsCount
+{
+    /*
+    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.defaultInstalls"];
+    NSNumber *numDefaultInstalls = [self valueForKeyPath:@"defaultInstalls.@count"];
+    NSUInteger all = [allConditionalItems count] + [numDefaultInstalls unsignedIntegerValue];
+    */
+    return [NSNumber numberWithUnsignedInteger:[[self defaultInstallsStrings] count]];
+    
+    //return [NSNumber numberWithUnsignedInteger:all];
+}
+
+- (NSString *)defaultInstallsCountShortDescription
+{
+    NSUInteger all = [self.defaultInstallsCount unsignedIntegerValue];
+    if (all == 0) {
+        return nil;
+    } else {
+        return [self.defaultInstallsCount stringValue];
+    }
+}
+
+- (NSString *)defaultInstallsCountDescription
+{
+    NSUInteger all = [self.defaultInstallsCount unsignedIntegerValue];
+    if (all == 0) {
+        return @"No default installs";
+    } else if (all == 1) {
+        return @"1 default install";
+    } else if (all > 1) {
+        return [NSString stringWithFormat:@"%lu default installs", (unsigned long)all];
+    } else {
+        return [NSString stringWithFormat:@""];
+    }
+}
+
 - (NSNumber *)featuredItemsCount
 {
     NSSet *allFeaturedItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.featuredItems"];
@@ -718,6 +791,7 @@
     NSUInteger manUnCount = 0;
     NSUInteger manUpCount = 0;
     NSUInteger optInCount = 0;
+    NSUInteger defInCount = 0;
     NSUInteger featCount = 0;
     NSUInteger incManCount = 0;
     
@@ -726,6 +800,7 @@
         manUnCount += [condition.managedUninstalls count];
         manUpCount += [condition.managedUpdates count];
         optInCount += [condition.optionalInstalls count];
+        defInCount += [condition.defaultInstalls count];
         featCount += [condition.featuredItems count];
         incManCount += [condition.includedManifests count];
     }
@@ -735,6 +810,7 @@
     manUpCount += [self.managedUpdatesFaster count];
     optInCount += [self.optionalInstallsFaster count];
     featCount += [self.featuredItems count];
+    defInCount += [self.defaultInstalls count];
     incManCount += [self.includedManifestsFaster count];
     
     if (manInCount > 0) {
@@ -745,6 +821,9 @@
     }
     if (optInCount > 0) {
         descriptionString = [descriptionString stringByAppendingFormat:@"%lu optional installs, ", (unsigned long)optInCount];
+    }
+    if (defInCount > 0) {
+        descriptionString = [descriptionString stringByAppendingFormat:@"%lu default installs, ", (unsigned long)defInCount];
     }
     if (featCount > 0) {
         descriptionString = [descriptionString stringByAppendingFormat:@"%lu featured items, ", (unsigned long)featCount];
@@ -902,6 +981,27 @@
 			[tmpDict setObject:[NSArray array] forKey:@"optional_installs"];
 		}
 	}
+    
+    /*
+     default_installs
+     */
+    NSArray *defaultInstallsSorters;
+    if ([defaults boolForKey:@"sortDefaultInstallsByTitle"]) {
+        defaultInstallsSorters = [NSArray arrayWithObjects:sortByTitle, sortByIndex, nil];
+    } else {
+        defaultInstallsSorters = [NSArray arrayWithObjects:sortByIndex, sortByTitle, nil];
+    }
+    if ([self.defaultInstalls count] > 0) {
+        NSMutableArray *defaultInstalls = [NSMutableArray arrayWithCapacity:[self.defaultInstalls count]];
+        for (StringObjectMO *defaultInstall in [self.defaultInstalls sortedArrayUsingDescriptors:defaultInstallsSorters]) {
+            [defaultInstalls addObject:defaultInstall.title];
+        }
+        [tmpDict setObject:defaultInstalls forKey:@"default_installs"];
+    } else {
+        if ([(NSDictionary *)self.originalManifest objectForKey:@"default_installs"] != nil) {
+            [tmpDict setObject:[NSArray array] forKey:@"default_installs"];
+        }
+    }
     
     /*
      featured_items

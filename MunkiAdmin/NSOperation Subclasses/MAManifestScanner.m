@@ -658,6 +658,28 @@ DDLogLevel ddLogLevel;
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
                 
+                // =================================
+                // Get "default_installs" items
+                // =================================
+                startTime = [NSDate date];
+                NSArray *defaultInstalls = [manifestInfoDict objectForKey:@"default_installs"];
+                if ([defaultInstalls count] > 0) {
+                    DDLogVerbose(@"%@: Found %lu default_installs items", self.fileName, (unsigned long)[featuredItems count]);
+                }
+                [defaultInstalls enumerateObjectsWithOptions:0 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    @autoreleasepool {
+                        DDLogVerbose(@"%@ default_installs item %lu --> Name: %@", manifest.title, (unsigned long)idx, obj);
+                        StringObjectMO *newDefaultInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:privateContext];
+                        newDefaultInstall.title = (NSString *)obj;
+                        newDefaultInstall.typeString = @"defaultInstall";
+                        newDefaultInstall.originalIndex = [NSNumber numberWithUnsignedInteger:idx];
+                        [manifest addDefaultInstallsObject:newDefaultInstall];
+                        
+                    }
+                }];
+                now = [NSDate date];
+                DDLogVerbose(@"Scanning optional_installs took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
+                
                 
                 // =================================
 				// Get "included_manifests" items

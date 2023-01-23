@@ -71,6 +71,17 @@
 	return result;
 }
 
+@dynamic defaultInstalls;
+
+- (NSMutableSet<StringObjectMO*>*)defaultInstallsSet {
+	[self willAccessValueForKey:@"defaultInstalls"];
+
+	NSMutableSet<StringObjectMO*> *result = (NSMutableSet<StringObjectMO*>*)[self mutableSetValueForKey:@"defaultInstalls"];
+
+	[self didAccessValueForKey:@"defaultInstalls"];
+	return result;
+}
+
 @dynamic featuredItems;
 
 - (NSMutableSet<StringObjectMO*>*)featuredItemsSet {
@@ -166,6 +177,9 @@
 @implementation ConditionalItemMORelationships 
 + (NSString *)children {
 	return @"children";
+}
++ (NSString *)defaultInstalls {
+	return @"defaultInstalls";
 }
 + (NSString *)featuredItems {
 	return @"featuredItems";
