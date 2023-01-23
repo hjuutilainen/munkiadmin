@@ -869,6 +869,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
                                    @"nopkg",
                                    @"profile",
                                    @"startosinstall",
+                                   @"stage_os_installer",
                                    @"AdobeSetup",
                                    @"AdobeUberInstaller",
                                    @"AdobeAcrobatUpdater",

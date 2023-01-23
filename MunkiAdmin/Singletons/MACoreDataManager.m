@@ -701,6 +701,14 @@ DDLogLevel ddLogLevel;
     startosinstallSmartItem.parent = mainTypesItem;
     startosinstallSmartItem.originalIndexValue = 45;
     startosinstallSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"startosinstall"];
+    
+    InstallerTypeSourceListItemMO *stageOSInstallerSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
+    stageOSInstallerSmartItem.title = @"Stage OS Installer";
+    stageOSInstallerSmartItem.icon = smartIcon;
+    stageOSInstallerSmartItem.itemType = @"smart";
+    stageOSInstallerSmartItem.parent = mainTypesItem;
+    stageOSInstallerSmartItem.originalIndexValue = 47;
+    stageOSInstallerSmartItem.filterPredicate = [NSPredicate predicateWithFormat:@"munki_installer_type == %@", @"stage_os_installer"];
 
     InstallerTypeSourceListItemMO *configurationProfilesSmartItem = [NSEntityDescription insertNewObjectForEntityForName:@"InstallerTypeSourceListItem" inManagedObjectContext:moc];
     configurationProfilesSmartItem.title = @"Configuration Profile";
