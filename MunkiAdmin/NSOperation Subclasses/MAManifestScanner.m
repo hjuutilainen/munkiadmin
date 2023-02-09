@@ -121,6 +121,15 @@ DDLogLevel ddLogLevel;
                 newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:optionalInstallIndex];
                 [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
             }];
+            NSArray *defaultInstalls = [(NSDictionary *)obj objectForKey:@"default_installs"];
+            [defaultInstalls enumerateObjectsWithOptions:0 usingBlock:^(id defaultInstallName, NSUInteger defaultInstallIndex, BOOL *stopDefaultInstallsEnum) {
+                DDLogVerbose(@"%@ conditional_item --> default_installs item %lu --> Name: %@", manifest.title, (unsigned long)defaultInstallIndex, defaultInstallName);
+                StringObjectMO *newDefaultInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
+                newDefaultInstall.title = (NSString *)defaultInstallName;
+                newDefaultInstall.typeString = @"defaultInstall";
+                newDefaultInstall.originalIndex = [NSNumber numberWithUnsignedInteger:defaultInstallIndex];
+                [newConditionalItem addDefaultInstallsObject:newDefaultInstall];
+            }];
             NSArray *featuredItems = [(NSDictionary *)obj objectForKey:@"featured_items"];
             [featuredItems enumerateObjectsWithOptions:0 usingBlock:^(id featuredItemName, NSUInteger featuredItemIndex, BOOL *stopFeaturedItemsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> featured_items item %lu --> Name: %@", manifest.title, (unsigned long)featuredItemIndex, featuredItemName);
@@ -352,6 +361,17 @@ DDLogLevel ddLogLevel;
             anOptionalInstall.originalPackage = matchingObject;
         }
     }
+    for (StringObjectMO *aDefaultInstall in currentManifest.defaultInstalls) {
+        DDLogVerbose(@"%@: linking default_install object %@", currentManifest.fileName, aDefaultInstall.title);
+        id matchingObject = [self matchingAppOrPkgForString:aDefaultInstall.title];
+        if (!matchingObject) {
+            DDLogError(@"%@: Error: Could not link default_install object: %@", currentManifest.title, aDefaultInstall.title);
+        } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+            aDefaultInstall.originalApplication = matchingObject;
+        } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+            aDefaultInstall.originalPackage = matchingObject;
+        }
+    }
     for (StringObjectMO *featuredItem in currentManifest.featuredItems) {
         DDLogVerbose(@"%@: linking featured_item object %@", currentManifest.fileName, featuredItem.title);
         id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
@@ -425,6 +445,17 @@ DDLogLevel ddLogLevel;
                 optionalInstall.originalApplication = matchingObject;
             } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                 optionalInstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *defaultInstall in conditionalItem.defaultInstalls) {
+            DDLogVerbose(@"%@: linking conditional default_install object %@", currentManifest.fileName, defaultInstall.title);
+            id matchingObject = [self matchingAppOrPkgForString:defaultInstall.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link conditional default_install object: %@", currentManifest.title, defaultInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                defaultInstall.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                defaultInstall.originalPackage = matchingObject;
             }
         }
         for (StringObjectMO *featuredItem in conditionalItem.featuredItems) {

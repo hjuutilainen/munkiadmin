@@ -253,6 +253,29 @@ static const int BatchSize = 50;
             }
         }
         
+        for (StringObjectMO *aDefaultInstall in currentManifest.defaultInstalls) {
+            DDLogVerbose(@"%@: linking default_install object %@", currentManifest.fileName, aDefaultInstall.title);
+            id matchingObject = [self matchingAppOrPkgForString:aDefaultInstall.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link default_install object: %@", currentManifest.title, aDefaultInstall.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                aDefaultInstall.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                aDefaultInstall.originalPackage = matchingObject;
+            }
+        }
+        for (StringObjectMO *featuredItem in currentManifest.featuredItems) {
+            DDLogVerbose(@"%@: linking featured_item object %@", currentManifest.fileName, featuredItem.title);
+            id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
+            if (!matchingObject) {
+                DDLogError(@"%@: Error: Could not link featured_item object: %@", currentManifest.title, featuredItem.title);
+            } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                featuredItem.originalApplication = matchingObject;
+            } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                featuredItem.originalPackage = matchingObject;
+            }
+        }
+        
         /*
          Link included manifest items
          */
@@ -314,6 +337,28 @@ static const int BatchSize = 50;
                     optionalInstall.originalApplication = matchingObject;
                 } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
                     optionalInstall.originalPackage = matchingObject;
+                }
+            }
+            for (StringObjectMO *defaultInstall in conditionalItem.defaultInstalls) {
+                DDLogVerbose(@"%@: linking conditional default_install object %@", currentManifest.fileName, defaultInstall.title);
+                id matchingObject = [self matchingAppOrPkgForString:defaultInstall.title];
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional default_install object: %@", currentManifest.title, defaultInstall.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    defaultInstall.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    defaultInstall.originalPackage = matchingObject;
+                }
+            }
+            for (StringObjectMO *featuredItem in conditionalItem.featuredItems) {
+                DDLogVerbose(@"%@: linking conditional featured_item object %@", currentManifest.fileName, featuredItem.title);
+                id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
+                if (!matchingObject) {
+                    DDLogError(@"%@: Error: Could not link conditional featured_item object: %@", currentManifest.title, featuredItem.title);
+                } else if ([matchingObject isKindOfClass:[ApplicationMO class]]) {
+                    featuredItem.originalApplication = matchingObject;
+                } else if ([matchingObject isKindOfClass:[PackageMO class]]) {
+                    featuredItem.originalPackage = matchingObject;
                 }
             }
             
