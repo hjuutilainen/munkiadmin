@@ -2926,7 +2926,8 @@ static dispatch_queue_t serialQueue;
                                   @"uninstallcheck_script",
                                   @"uninstaller_item_location",
                                   @"uninstall_script",
-                                  @"version"];
+                                  @"version",
+                                  @"version_script",];
         
         /*
          Determine which keys were removed

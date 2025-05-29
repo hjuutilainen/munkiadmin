@@ -229,6 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* munki_version;
 
+@property (nonatomic, strong, nullable) NSString* munki_version_script;
+
 @property (nonatomic, strong, nullable) id originalPkginfo;
 
 @property (nonatomic, strong, nullable) NSDate* packageDateCreated;
@@ -629,6 +631,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveMunki_version;
 - (void)setPrimitiveMunki_version:(nullable NSString*)value;
 
+- (nullable NSString*)primitiveMunki_version_script;
+- (void)setPrimitiveMunki_version_script:(nullable NSString*)value;
+
 - (nullable id)primitiveOriginalPkginfo;
 - (void)setPrimitiveOriginalPkginfo:(nullable id)value;
 
@@ -778,6 +783,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)munki_uninstallcheck_script;
 + (NSString *)munki_uninstaller_item_location;
 + (NSString *)munki_version;
++ (NSString *)munki_version_script;
 + (NSString *)originalPkginfo;
 + (NSString *)packageDateCreated;
 + (NSString *)packageDateLastOpened;

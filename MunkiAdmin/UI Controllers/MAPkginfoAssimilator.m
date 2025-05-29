@@ -49,7 +49,8 @@ DDLogLevel ddLogLevel;
                                 @"assimilate_postuninstall_script",
                                 @"assimilate_uninstall_method",
                                 @"assimilate_uninstall_script",
-                                @"assimilate_uninstallcheck_script"];
+                                @"assimilate_uninstallcheck_script",
+                                @"assimilate_version_script"];
         
         NSArray *arrayKeys = @[@"assimilate_blocking_applications",
                                @"assimilate_installer_choices_xml",
@@ -88,6 +89,7 @@ DDLogLevel ddLogLevel;
                                 @"assimilate_postinstall_script",
                                 @"assimilate_preuninstall_script",
                                 @"assimilate_postuninstall_script",
+                                @"assimilate_version_script",
                                 @"assimilate_requires",
                                 @"assimilate_supported_architectures",
                                 @"assimilate_unattended_install",

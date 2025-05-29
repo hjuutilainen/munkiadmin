@@ -348,6 +348,16 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         self.pkginfoToEdit.munki_uninstallcheck_script = nil;
     }
     
+    if (self.temp_version_script_enabled) {
+        if (self.temp_version_script) {
+            self.pkginfoToEdit.munki_version_script = self.temp_version_script;
+        } else {
+            self.pkginfoToEdit.munki_version_script = @"";
+        }
+    } else {
+        self.pkginfoToEdit.munki_version_script = nil;
+    }
+    
     
     if (self.temp_force_install_after_date_enabled) {
         self.pkginfoToEdit.munki_force_install_after_date = self.temp_force_install_after_date;
@@ -980,6 +990,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     } else {
         self.temp_uninstallcheck_script_enabled = YES;
         self.temp_uninstallcheck_script = aPackage.munki_uninstallcheck_script;
+    }
+    
+    if (aPackage.munki_version_script == nil) {
+        self.temp_version_script_enabled = NO;
+        self.temp_version_script = @"";
+    } else {
+        self.temp_version_script_enabled = YES;
+        self.temp_version_script = aPackage.munki_version_script;
     }
     
     if (aPackage.munki_force_install_after_date == nil) {

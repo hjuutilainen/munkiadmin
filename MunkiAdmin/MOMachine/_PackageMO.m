@@ -536,6 +536,8 @@
 
 @dynamic munki_version;
 
+@dynamic munki_version_script;
+
 @dynamic originalPkginfo;
 
 @dynamic packageDateCreated;
@@ -883,6 +885,9 @@
 }
 + (NSString *)munki_version {
 	return @"munki_version";
+}
++ (NSString *)munki_version_script {
+	return @"munki_version_script";
 }
 + (NSString *)originalPkginfo {
 	return @"originalPkginfo";
