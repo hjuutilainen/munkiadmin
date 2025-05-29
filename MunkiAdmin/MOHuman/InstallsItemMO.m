@@ -35,7 +35,7 @@
     if (!currentType || [currentType isEqualToString:@""]) {
         valid = NO;
     } else {
-        NSArray *supportedTypes = @[@"application", @"bundle", @"file", @"plist"];
+        NSArray *supportedTypes = @[@"file", @"plist"];
         if ([supportedTypes containsObject:currentType]) {
             /*
              Every known installs item type must also have a path
