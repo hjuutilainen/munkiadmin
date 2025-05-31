@@ -848,6 +848,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.uninstallCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.uninstallCheckScriptTextView.automaticDashSubstitutionEnabled = NO;
     
+    [self.versionScriptTextView setFont:scriptFont];
+    self.versionScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.versionScriptTextView.automaticDashSubstitutionEnabled = NO;
+    
     
     pkginfoSelector = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     

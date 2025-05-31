@@ -56,6 +56,7 @@
 @property (assign) IBOutlet NSTextView *postuninstallScriptTextView;
 @property (assign) IBOutlet NSTextView *installCheckScriptTextView;
 @property (assign) IBOutlet NSTextView *uninstallCheckScriptTextView;
+@property (assign) IBOutlet NSTextView *versionScriptTextView;
 @property (weak) IBOutlet NSArrayController *installsItemsController;
 @property (weak) IBOutlet NSObjectController *pkgController;
 @property (weak) IBOutlet NSArrayController *receiptsArrayController;
