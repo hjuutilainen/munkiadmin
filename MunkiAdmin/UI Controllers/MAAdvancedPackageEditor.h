@@ -52,6 +52,7 @@
 @property (assign) IBOutlet NSTextView *preinstallScriptTextView;
 @property (assign) IBOutlet NSTextView *postinstallScriptTextView;
 @property (assign) IBOutlet NSTextView *uninstallScriptTextView;
+@property (assign) IBOutlet NSTextView *uninstallScriptTextViewInMainTabView;
 @property (assign) IBOutlet NSTextView *preuninstallScriptTextView;
 @property (assign) IBOutlet NSTextView *postuninstallScriptTextView;
 @property (assign) IBOutlet NSTextView *installCheckScriptTextView;

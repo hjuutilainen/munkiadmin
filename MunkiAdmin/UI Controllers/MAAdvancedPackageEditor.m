@@ -832,6 +832,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     self.uninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.uninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
+    [self.uninstallScriptTextViewInMainTabView setFont:scriptFont];
+    self.uninstallScriptTextViewInMainTabView.automaticQuoteSubstitutionEnabled = NO;
+    self.uninstallScriptTextViewInMainTabView.automaticDashSubstitutionEnabled = NO;
+    
     [self.preuninstallScriptTextView setFont:scriptFont];
     self.preuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.preuninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
