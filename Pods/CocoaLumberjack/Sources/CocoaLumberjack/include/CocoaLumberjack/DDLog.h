@@ -1,6 +1,6 @@
 // Software License Agreement (BSD License)
 //
-// Copyright (c) 2010-2021, Deusty, LLC
+// Copyright (c) 2010-2025, Deusty, LLC
 // All rights reserved.
 //
 // Redistribution and use of this software in source and binary forms,
@@ -207,6 +207,20 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  **/
 #define THIS_METHOD       NSStringFromSelector(_cmd)
 
+/**
+ * Makes a declaration "Sendable" in Swift (if supported by the compiler).
+ */
+#ifndef DD_SENDABLE
+#ifdef __has_attribute
+#if __has_attribute(swift_attr)
+#define DD_SENDABLE __attribute__((swift_attr("@Sendable")))
+#endif
+#endif
+#endif
+#ifndef DD_SENDABLE
+#define DD_SENDABLE
+#endif
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
@@ -216,6 +230,7 @@ FOUNDATION_EXTERN NSString * __nullable DDExtractFileNameWithoutExtension(const 
  *  The main class, exposes all logging mechanisms, loggers, ...
  *  For most of the users, this class is hidden behind the logging functions like `DDLogInfo`
  */
+DD_SENDABLE
 @interface DDLog : NSObject
 
 /**
@@ -770,11 +785,13 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
  * The `DDLogMessage` class encapsulates information about the log message.
  * If you write custom loggers or formatters, you will be dealing with objects of this class.
  **/
+DD_SENDABLE
 @interface DDLogMessage : NSObject <NSCopying>
 {
     // Direct accessors to be used only for performance
     @public
     NSString *_message;
+    NSString *_messageFormat;
     DDLogLevel _level;
     DDLogFlag _flag;
     NSInteger _context;
@@ -782,9 +799,9 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
     NSString *_fileName;
     NSString *_function;
     NSUInteger _line;
-    #if DD_LEGACY_MESSAGE_TAG
-    id _tag __attribute__((deprecated("Use _representedObject instead", "_representedObject")));;
-    #endif
+#if DD_LEGACY_MESSAGE_TAG
+    id _tag __attribute__((deprecated("Use _representedObject instead", "_representedObject")));
+#endif
     id _representedObject;
     DDLogMessageOptions _options;
     NSDate * _timestamp;
@@ -813,6 +830,64 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
  * so it makes sense to optimize and skip the unnecessary allocations.
  * However, if you need them to be copied you may use the options parameter to specify this.
  *
+ *  @param messageFormat   the message format
+ *  @param message  the formatted message
+ *  @param level     the log level
+ *  @param flag      the log flag
+ *  @param context   the context (if any is defined)
+ *  @param file      the current file
+ *  @param function  the current function
+ *  @param line      the current code line
+ *  @param tag       potential tag
+ *  @param options   a bitmask which supports DDLogMessageCopyFile and DDLogMessageCopyFunction.
+ *  @param timestamp the log timestamp
+ *
+ *  @return a new instance of a log message model object
+ */
+- (instancetype)initWithFormat:(NSString *)messageFormat
+                     formatted:(NSString *)message
+                         level:(DDLogLevel)level
+                          flag:(DDLogFlag)flag
+                       context:(NSInteger)context
+                          file:(NSString *)file
+                      function:(nullable NSString *)function
+                          line:(NSUInteger)line
+                           tag:(nullable id)tag
+                       options:(DDLogMessageOptions)options
+                     timestamp:(nullable NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
+
+/**
+ *     Convenience initializer taking a `va_list` as arguments to create the formatted message.
+ *
+ *  @param messageFormat   the message format
+ *  @param messageArgs   the message arguments.
+ *  @param level     the log level
+ *  @param flag      the log flag
+ *  @param context   the context (if any is defined)
+ *  @param file      the current file
+ *  @param function  the current function
+ *  @param line      the current code line
+ *  @param tag       potential tag
+ *  @param options   a bitmask which supports DDLogMessageCopyFile and DDLogMessageCopyFunction.
+ *  @param timestamp the log timestamp
+ *
+ *  @return a new instance of a log message model object
+ */
+- (instancetype)initWithFormat:(NSString *)messageFormat
+                          args:(va_list)messageArgs
+                         level:(DDLogLevel)level
+                          flag:(DDLogFlag)flag
+                       context:(NSInteger)context
+                          file:(NSString *)file
+                      function:(nullable NSString *)function
+                          line:(NSUInteger)line
+                           tag:(nullable id)tag
+                       options:(DDLogMessageOptions)options
+                     timestamp:(nullable NSDate *)timestamp;
+
+/**
+ *  Deprecated initialier. See initWithFormat:args:formatted:level:flag:context:file:function:line:tag:options:timestamp:.
+ *
  *  @param message   the message
  *  @param level     the log level
  *  @param flag      the log flag
@@ -835,16 +910,21 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
                            line:(NSUInteger)line
                             tag:(nullable id)tag
                         options:(DDLogMessageOptions)options
-                      timestamp:(nullable NSDate *)timestamp NS_DESIGNATED_INITIALIZER;
+                      timestamp:(nullable NSDate *)timestamp
+__attribute__((deprecated("Use initializer taking unformatted message and args instead", "initWithFormat:formatted:level:flag:context:file:function:line:tag:options:timestamp:")));
 
 /**
  * Read-only properties
  **/
 
 /**
- *  The log message
+ *  The log message.
  */
 @property (readonly, nonatomic) NSString *message;
+/**
+ * The message format. When the deprecated initializer is used, this might be the same as `message`.
+ */
+@property (readonly, nonatomic) NSString *messageFormat;
 @property (readonly, nonatomic) DDLogLevel level;
 @property (readonly, nonatomic) DDLogFlag flag;
 @property (readonly, nonatomic) NSInteger context;
@@ -889,7 +969,7 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
 {
     // Direct accessors to be used only for performance
     @public
-    id <DDLogFormatter> _logFormatter;
+    _Nullable id <DDLogFormatter> _logFormatter;
     dispatch_queue_t _loggerQueue;
 }
 
@@ -901,7 +981,7 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
 /**
  *  Return YES if the current logger uses a global queue for logging
  */
-@property (nonatomic, readonly, getter=isOnGlobalLoggingQueue)  BOOL onGlobalLoggingQueue;
+@property (nonatomic, readonly, getter=isOnGlobalLoggingQueue) BOOL onGlobalLoggingQueue;
 
 /**
  *  Return YES if the current logger uses the internal designated queue for logging
@@ -910,10 +990,27 @@ typedef NS_OPTIONS(NSInteger, DDLogMessageOptions){
 
 @end
 
+#define _DDAbstractLoggerSelectorMessage(msg) [NSStringFromSelector(_cmd) stringByAppendingString:@" " msg]
+// Note: we do not wrap these in any do {...} while 0 construct, because NSAssert does that for us.
+#define DDAbstractLoggerAssertOnGlobalLoggingQueue() \
+NSAssert([self isOnGlobalLoggingQueue], _DDAbstractLoggerSelectorMessage("must only be called on the global logging queue!"))
+#define DDAbstractLoggerAssertOnInternalLoggerQueue() \
+NSAssert([self isOnInternalLoggerQueue], _DDAbstractLoggerSelectorMessage("must only be called on the internal logger queue!"))
+#define DDAbstractLoggerAssertNotOnGlobalLoggingQueue() \
+    NSAssert(![self isOnGlobalLoggingQueue], _DDAbstractLoggerSelectorMessage("must not be called on the global logging queue!"))
+#define DDAbstractLoggerAssertNotOnInternalLoggerQueue() \
+    NSAssert(![self isOnGlobalLoggingQueue], _DDAbstractLoggerSelectorMessage("must not be called on the internal logger queue!"))
+
+#define DDAbstractLoggerAssertLockedPropertyAccess() \
+    DDAbstractLoggerAssertNotOnGlobalLoggingQueue(); \
+    NSAssert(![self isOnInternalLoggerQueue], @"MUST access ivar directly, NOT via self.* syntax.")
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+DD_SENDABLE
 @interface DDLoggerInformation : NSObject
 
 @property (nonatomic, readonly) id <DDLogger> logger;
