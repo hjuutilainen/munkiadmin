@@ -341,4 +341,24 @@
             <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="(munki_name == $FETCH_SOURCE.title) OR (titleWithVersion == $FETCH_SOURCE.title)"/>
         </fetchedProperty>
     </entity>
+    <entity name="ManifestSourceListItem" representedClassName="ManifestSourceListItemMO" syncable="YES">
+        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="parent" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="children" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="ManifestBuiltinSourceListItem" representedClassName="ManifestBuiltinSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ManifestDirectorySourceListItem" representedClassName="ManifestDirectorySourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <attribute name="representedFileURL" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ManifestCatalogSourceListItem" representedClassName="ManifestCatalogSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <relationship name="catalogReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="manifestCatalogSourceListReference" inverseEntity="Catalog" syncable="YES"/>
+    </entity>
 </model>

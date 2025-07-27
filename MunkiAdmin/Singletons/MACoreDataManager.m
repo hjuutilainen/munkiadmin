@@ -866,5 +866,207 @@ static dispatch_queue_t serialQueue;
     return self;
 }
 
+#pragma mark -
+#pragma mark Manifest Source List Configuration
+
+- (void)configureManifestSourceListItems:(NSManagedObjectContext *)moc
+{
+    // Clear existing manifest source list items before creating new ones
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ManifestSourceListItem"];
+    NSArray *existingItems = [moc executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *item in existingItems) {
+        [moc deleteObject:item];
+    }
+    
+    [self configureManifestSourceListBuiltinSection:moc];
+    [self configureManifestSourceListCatalogsSection:moc];
+    [self configureManifestSourceListDirectoriesSection:moc];
+}
+
+- (void)configureManifestSourceListBuiltinSection:(NSManagedObjectContext *)moc
+{
+    NSString *repositoryItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Repository"];
+    ManifestSourceListItemMO *repositoryGroupItem = [self sourceListItemWithTitle:repositoryItemTitle entityName:@"ManifestSourceListItem" managedObjectContext:moc];
+    repositoryGroupItem.originalIndexValue = 0;
+    repositoryGroupItem.parent = nil;
+    repositoryGroupItem.isGroupItemValue = YES;
+    
+    NSString *manifestTypesItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Manifest Types"];
+    ManifestSourceListItemMO *manifestTypesGroupItem = [self sourceListItemWithTitle:manifestTypesItemTitle entityName:@"ManifestSourceListItem" managedObjectContext:moc];
+    manifestTypesGroupItem.originalIndexValue = 1;
+    manifestTypesGroupItem.parent = nil;
+    manifestTypesGroupItem.isGroupItemValue = YES;
+    
+    // Repository section items
+    NSImage *inboxIcon, *calendarIcon, *documentIcon;
+    if (@available(macOS 11.0, *)) {
+        inboxIcon = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Tray icon"];
+        calendarIcon = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Calendar icon"];
+        documentIcon = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:@"Document icon"];
+    } else {
+        inboxIcon = [NSImage imageNamed:@"tray"];
+        [inboxIcon setTemplate:YES];
+        calendarIcon = [NSImage imageNamed:@"calendar"];
+        [calendarIcon setTemplate:YES];
+        documentIcon = [NSImage imageNamed:@"doc"];
+        [documentIcon setTemplate:YES];
+    }
+    
+    // All Manifests
+    ManifestBuiltinSourceListItemMO *allManifestsItem = [self sourceListItemWithTitle:@"All Manifests" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    allManifestsItem.identifier = @"allManifests";
+    allManifestsItem.itemType = @"builtin";
+    allManifestsItem.icon = inboxIcon;
+    allManifestsItem.parent = repositoryGroupItem;
+    allManifestsItem.originalIndexValue = 10;
+    allManifestsItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
+    
+    // Recently Modified
+    ManifestBuiltinSourceListItemMO *recentlyModifiedItem = [self sourceListItemWithTitle:@"Recently Modified" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    recentlyModifiedItem.identifier = @"recentlyModified";
+    recentlyModifiedItem.itemType = @"builtin";
+    recentlyModifiedItem.icon = calendarIcon;
+    recentlyModifiedItem.parent = repositoryGroupItem;
+    recentlyModifiedItem.originalIndexValue = 20;
+    NSDate *now = [NSDate date];
+    NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+    dayComponent.day = -7;
+    NSDate *sevenDaysAgo = [[NSCalendar currentCalendar] dateByAddingComponents:dayComponent toDate:now options:0];
+    NSPredicate *recentlyModifiedPredicate = [NSPredicate predicateWithFormat:@"manifestDateModified >= %@", sevenDaysAgo];
+    recentlyModifiedItem.filterPredicate = recentlyModifiedPredicate;
+    
+    // Manifest Types section items
+    NSPredicate *noReferencingManifests = [NSPredicate predicateWithFormat:@"referencingManifests.@count = 0"];
+    NSPredicate *hasReferencingManifests = [NSPredicate predicateWithFormat:@"referencingManifests.@count > 0"];
+    NSPredicate *hasIncludedManifests = [NSPredicate predicateWithFormat:@"includedManifestsFaster.@count > 0 OR (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count != 0)"];
+    NSPredicate *noIncludedManifests = [NSPredicate predicateWithFormat:@"(includedManifestsFaster.@count == 0) AND (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count == 0)"];
+    
+    // Includes Only
+    ManifestBuiltinSourceListItemMO *machineManifestsItem = [self sourceListItemWithTitle:@"Includes Only" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    machineManifestsItem.identifier = @"machineManifests";
+    machineManifestsItem.itemType = @"builtin";
+    machineManifestsItem.icon = documentIcon;
+    machineManifestsItem.parent = manifestTypesGroupItem;
+    machineManifestsItem.originalIndexValue = 10;
+    machineManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, hasIncludedManifests]];
+    
+    // Includes And Included
+    ManifestBuiltinSourceListItemMO *groupManifestsItem = [self sourceListItemWithTitle:@"Includes And Included" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    groupManifestsItem.identifier = @"groupManifests";
+    groupManifestsItem.itemType = @"builtin";
+    groupManifestsItem.icon = documentIcon;
+    groupManifestsItem.parent = manifestTypesGroupItem;
+    groupManifestsItem.originalIndexValue = 20;
+    groupManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, hasIncludedManifests]];
+    
+    // Included Only
+    ManifestBuiltinSourceListItemMO *installManifestsItem = [self sourceListItemWithTitle:@"Included Only" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    installManifestsItem.identifier = @"installManifests";
+    installManifestsItem.itemType = @"builtin";
+    installManifestsItem.icon = documentIcon;
+    installManifestsItem.parent = manifestTypesGroupItem;
+    installManifestsItem.originalIndexValue = 30;
+    installManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, noIncludedManifests]];
+    
+    // No Includes And Not Included
+    ManifestBuiltinSourceListItemMO *selfContainedManifestsItem = [self sourceListItemWithTitle:@"No Includes And Not Included" entityName:@"ManifestBuiltinSourceListItem" managedObjectContext:moc];
+    selfContainedManifestsItem.identifier = @"selfContainedManifests";
+    selfContainedManifestsItem.itemType = @"builtin";
+    selfContainedManifestsItem.icon = documentIcon;
+    selfContainedManifestsItem.parent = manifestTypesGroupItem;
+    selfContainedManifestsItem.originalIndexValue = 40;
+    selfContainedManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, noIncludedManifests]];
+}
+
+- (void)configureManifestSourceListCatalogsSection:(NSManagedObjectContext *)moc
+{
+    NSString *catalogsItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Catalogs"];
+    ManifestSourceListItemMO *catalogsGroupItem = [self sourceListItemWithTitle:catalogsItemTitle entityName:@"ManifestSourceListItem" managedObjectContext:moc];
+    catalogsGroupItem.originalIndexValue = 2;
+    catalogsGroupItem.parent = nil;
+    catalogsGroupItem.isGroupItemValue = YES;
+    
+    NSImage *notepadIcon;
+    if (@available(macOS 11.0, *)) {
+        notepadIcon = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Book icon"];
+    } else {
+        notepadIcon = [NSImage imageNamed:@"text.book.closed"];
+        [notepadIcon setTemplate:YES];
+    }
+    
+    // Fetch all catalogs and create source list items
+    NSEntityDescription *catalogEntityDescr = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
+    NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    [fetchForCatalogs setSortDescriptors:@[sortByTitle]];
+    [fetchForCatalogs setEntity:catalogEntityDescr];
+    NSUInteger numFoundCatalogs = [moc countForFetchRequest:fetchForCatalogs error:nil];
+    if (numFoundCatalogs != 0) {
+        NSArray *allCatalogs = [moc executeFetchRequest:fetchForCatalogs error:nil];
+        [allCatalogs enumerateObjectsUsingBlock:^(CatalogMO *catalog, NSUInteger idx, BOOL *stop) {
+            ManifestCatalogSourceListItemMO *catalogSourceListItem = [self sourceListItemWithTitle:catalog.title entityName:@"ManifestCatalogSourceListItem" managedObjectContext:moc];
+            catalogSourceListItem.itemType = @"catalog";
+            catalogSourceListItem.icon = notepadIcon;
+            catalogSourceListItem.parent = catalogsGroupItem;
+            catalogSourceListItem.originalIndexValue = (int32_t)(10 + idx);
+            catalogSourceListItem.filterPredicate = [NSPredicate predicateWithFormat:@"ANY catalogStrings == %@", catalog.title];
+            catalogSourceListItem.catalogReference = catalog;
+        }];
+    }
+}
+
+- (void)configureManifestSourceListDirectoriesSection:(NSManagedObjectContext *)moc
+{
+    NSString *directoriesItemTitle = [self uppercaseOrCapitalizedHeaderString:@"Directories"];
+    ManifestSourceListItemMO *directoriesGroupItem = [self sourceListItemWithTitle:directoriesItemTitle entityName:@"ManifestSourceListItem" managedObjectContext:moc];
+    directoriesGroupItem.originalIndexValue = 3;
+    directoriesGroupItem.parent = nil;
+    directoriesGroupItem.isGroupItemValue = YES;
+    
+    NSURL *mainManifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
+    if (mainManifestsURL) {
+        [self createManifestDirectoryItemForURL:mainManifestsURL parentItem:directoriesGroupItem context:moc];
+    }
+}
+
+- (ManifestDirectorySourceListItemMO *)createManifestDirectoryItemForURL:(NSURL *)url parentItem:(ManifestSourceListItemMO *)parentItem context:(NSManagedObjectContext *)moc
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
+    
+    NSImage *folderImage;
+    if (@available(macOS 11.0, *)) {
+        folderImage = [NSImage imageWithSystemSymbolName:@"folder" accessibilityDescription:@"Folder"];
+    } else {
+        folderImage = [NSImage imageNamed:@"folder"];
+        [folderImage setTemplate:YES];
+    }
+    
+    NSString *filename;
+    [url getResourceValue:&filename forKey:NSURLNameKey error:nil];
+    ManifestDirectorySourceListItemMO *directoryItem = [self sourceListItemWithTitle:filename entityName:@"ManifestDirectorySourceListItem" managedObjectContext:moc];
+    directoryItem.itemType = @"directory";
+    directoryItem.icon = folderImage;
+    directoryItem.parent = parentItem;
+    directoryItem.originalIndexValue = 10;
+    directoryItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", url];
+    directoryItem.representedFileURLValue = url;
+    
+    // Add subdirectories
+    NSArray *contents = [fm contentsOfDirectoryAtURL:url includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) error:nil];
+    NSInteger childIndex = 10;
+    for (NSURL *contentURL in contents) {
+        NSNumber *isDir;
+        [contentURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
+        if ([isDir boolValue]) {
+            ManifestDirectorySourceListItemMO *childItem = [self createManifestDirectoryItemForURL:contentURL parentItem:directoryItem context:moc];
+            childItem.originalIndexValue = (int32_t)childIndex;
+            childIndex += 10;
+            
+        }
+    }
+    
+    return directoryItem;
+}
 
 @end

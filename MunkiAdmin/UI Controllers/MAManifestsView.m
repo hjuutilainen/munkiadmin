@@ -7,7 +7,6 @@
 //
 
 #import "MAManifestsView.h"
-#import "MAManifestsViewSourceListItem.h"
 #import "DataModelHeaders.h"
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
@@ -28,8 +27,6 @@ DDLogLevel ddLogLevel;
 #define DEFAULT_PREDICATE @"titleOrDisplayName contains[cd] ''"
 
 @interface MAManifestsView ()
-@property (strong, nonatomic) NSMutableArray *modelObjects;
-@property (strong, nonatomic) NSMutableArray *sourceListItems;
 @end
 
 @implementation MAManifestsView
@@ -330,10 +327,23 @@ DDLogLevel ddLogLevel;
     
     [self setupFindView];
     
-    //[self updateSourceListData];
-    
     [self configureSplitView];
     [self configureSourceList];
+    
+    // Add observer for sidebar tree controller content changes
+    [self.manifestSourceListTreeController addObserver:self
+                                             forKeyPath:@"arrangedObjects"
+                                                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                                                context:NULL];
+    
+    /*
+     Configure sorting
+     */
+    NSSortDescriptor *sortByTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)];
+    NSSortDescriptor *sortByIndex = [NSSortDescriptor sortDescriptorWithKey:@"originalIndex" ascending:YES selector:@selector(compare:)];
+    [self.manifestSourceListTreeController setSortDescriptors:@[sortByIndex, sortByTitle]];
+    
+    
     
     [self.manifestsListTableView setTarget:self];
     [self.manifestsListTableView setDoubleAction:@selector(didDoubleClickManifest:)];
@@ -341,11 +351,6 @@ DDLogLevel ddLogLevel;
     
     self.predicateEditorHidden = YES;
 
-    [self.sourceList reloadData];
-    [self.sourceList expandItem:nil expandChildren:YES];
-    [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
-    //[self.sourceList setNeedsDisplay:YES];
-    
     [self setDetailView:self.manifestsListView];
     
     /*
@@ -419,16 +424,15 @@ DDLogLevel ddLogLevel;
 - (void)updateSourceListData
 {
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
-    self.sourceListItems = [NSMutableArray new];
-    self.modelObjects = [NSMutableArray new];
     
-    [self setUpDataModel];
+    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
+    [[MACoreDataManager sharedManager] configureManifestSourceListItems:moc];
     
     self.manifestsArrayController.sortDescriptors = self.defaultSortDescriptors;
     
-    [self.sourceList reloadData];
-    [self.sourceList expandItem:nil expandChildren:YES];
-    [self.sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+    [self.manifestSourceListTreeController rearrangeObjects];
+    
+    
 }
 
 - (void)configureSourceList
@@ -460,152 +464,6 @@ DDLogLevel ddLogLevel;
 # pragma mark - 
 # pragma mark Data Model
 
-- (void)setUpDataModel
-{
-    DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
-    
-    /*
-     Predicates
-     */
-    NSPredicate *noReferencingManifests     = [NSPredicate predicateWithFormat:@"referencingManifests.@count = 0"];
-    NSPredicate *hasReferencingManifests    = [NSPredicate predicateWithFormat:@"referencingManifests.@count > 0"];
-    NSPredicate *hasIncludedManifests       = [NSPredicate predicateWithFormat:@"includedManifestsFaster.@count > 0 OR (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count != 0)"];
-    NSPredicate *noIncludedManifests        = [NSPredicate predicateWithFormat:@"(includedManifestsFaster.@count == 0) AND (SUBQUERY(conditionalItems, $x, $x.includedManifests.@count > 0).@count == 0)"];
-    
-    //NSPredicate *noManagedInstalls        = [NSPredicate predicateWithFormat:@"allManagedInstalls.@count == 0"];
-    //NSPredicate *hasManagedInstalls         = [NSPredicate predicateWithFormat:@"(managedInstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedInstalls.@count > 0).@count != 0)"];
-    
-    //NSPredicate *noManagedUninstalls      = [NSPredicate predicateWithFormat:@"allManagedUninstalls.@count == 0"];
-    //NSPredicate *hasManagedUninstalls       = [NSPredicate predicateWithFormat:@"(managedUninstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedUninstalls.@count > 0).@count != 0)"];
-    
-    //NSPredicate *noOptionalInstalls       = [NSPredicate predicateWithFormat:@"allOptionalInstalls.@count == 0"];
-    //NSPredicate *hasOptionalInstalls        = [NSPredicate predicateWithFormat:@"(optionalInstallsFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.optionalInstalls.@count > 0).@count != 0)"];
-    
-    //NSPredicate *noManagedUpdates         = [NSPredicate predicateWithFormat:@"allManagedUpdates.@count == 0"];
-    //NSPredicate *hasManagedUpdates          = [NSPredicate predicateWithFormat:@"(managedUpdatesFaster.@count > 0) OR (SUBQUERY(conditionalItems, $x, $x.managedUpdates.@count > 0).@count != 0)"];
-    
-    /*
-     All Manifests item
-     */
-    MAManifestsViewSourceListItem *allManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"All Manifests" identifier:@"allManifests" type:ManifestSourceItemTypeBuiltin];
-    allManifestsItem.filterPredicate = [NSPredicate predicateWithValue:TRUE];
-    
-    /*
-     Recently modified item
-     */
-    MAManifestsViewSourceListItem *recentlyModifiedItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Recently Modified" identifier:@"recentlyModified" type:ManifestSourceItemTypeBuiltin];
-    NSDate *now = [NSDate date];
-    NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
-    dayComponent.day = -7;
-    NSDate *sevenDaysAgo = [[NSCalendar currentCalendar] dateByAddingComponents:dayComponent toDate:now options:0];
-    NSPredicate *recentlyModifiedPredicate = [NSPredicate predicateWithFormat:@"manifestDateModified >= %@", sevenDaysAgo];
-    recentlyModifiedItem.filterPredicate = recentlyModifiedPredicate;
-    
-    /*
-     Machine manifests item
-     */
-    MAManifestsViewSourceListItem *machineManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Includes Only" identifier:@"machineManifests" type:ManifestSourceItemTypeBuiltin];
-    machineManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, hasIncludedManifests]];
-    
-    /*
-     Group manifests item
-     */
-    MAManifestsViewSourceListItem *groupManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Includes And Included" identifier:@"groupManifests" type:ManifestSourceItemTypeBuiltin];
-    groupManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, hasIncludedManifests]];
-    
-    /*
-     Profile manifests item
-     */
-    MAManifestsViewSourceListItem *installManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"Included Only" identifier:@"installManifests" type:ManifestSourceItemTypeBuiltin];
-    installManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[hasReferencingManifests, noIncludedManifests]];
-    
-    /*
-     Self-contained manifests item
-     */
-    MAManifestsViewSourceListItem *selfContainedManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:@"No Includes And Not Included" identifier:@"selfContainedManifests" type:ManifestSourceItemTypeBuiltin];
-    selfContainedManifestsItem.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[noReferencingManifests, noIncludedManifests]];
-    
-    // Icon images we're going to use in the Source List.
-    
-    NSImage *notepad;
-    if (@available(macOS 11.0, *)) {
-        notepad = [NSImage imageWithSystemSymbolName:@"text.book.closed" accessibilityDescription:@"Book icon"];
-    } else {
-        notepad = [NSImage imageNamed:@"text.book.closed"];
-        [notepad setTemplate:YES];
-    }
-    
-    NSImage *inbox;
-    if (@available(macOS 11.0, *)) {
-        inbox = [NSImage imageWithSystemSymbolName:@"tray" accessibilityDescription:@"Tray icon"];
-    } else {
-        inbox = [NSImage imageNamed:@"tray"];
-        [inbox setTemplate:YES];
-    }
-    
-    NSImage *calendar;
-    if (@available(macOS 11.0, *)) {
-        calendar = [NSImage imageWithSystemSymbolName:@"calendar" accessibilityDescription:@"Calendar icon"];
-    } else {
-        calendar = [NSImage imageNamed:@"calendar"];
-        [calendar setTemplate:YES];
-    }
-    
-    
-    /*
-     Catalog items
-     */
-    NSManagedObjectContext *moc = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] managedObjectContext];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entityDescription];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedStandardCompare:)]]];
-    NSArray *fetchResults = [moc executeFetchRequest:fetchRequest error:nil];
-    NSMutableArray *catalogItems = [NSMutableArray new];
-    NSMutableArray *catalogSourceListItems = [NSMutableArray new];
-    for (CatalogMO *catalog in fetchResults) {
-        MAManifestsViewSourceListItem *item = [MAManifestsViewSourceListItem collectionWithTitle:catalog.title identifier:catalog.title type:ManifestSourceItemTypeBuiltin];
-        item.filterPredicate = [NSPredicate predicateWithFormat:@"ANY catalogStrings == %@", catalog.title];
-        [catalogSourceListItems addObject:item];
-        [catalogItems addObject:[PXSourceListItem itemWithRepresentedObject:item icon:notepad]];
-    }
-    
-    // Store all of the model objects in an array because each source list item only holds a weak reference to them.
-    self.modelObjects = [@[allManifestsItem, recentlyModifiedItem, machineManifestsItem, groupManifestsItem, installManifestsItem, selfContainedManifestsItem] mutableCopy];
-    [self.modelObjects addObjectsFromArray:catalogSourceListItems];
-    
-    
-    
-    // Set up our Source List data model used in the Source List data source methods.
-    PXSourceListItem *libraryItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Repository"] identifier:nil];
-    libraryItem.children = @[[PXSourceListItem itemWithRepresentedObject:allManifestsItem icon:inbox],
-                             [PXSourceListItem itemWithRepresentedObject:recentlyModifiedItem icon:calendar]];
-    
-    NSImage *document;
-    if (@available(macOS 11.0, *)) {
-        document = [NSImage imageWithSystemSymbolName:@"doc" accessibilityDescription:@"Document icon"];
-    } else {
-        document = [NSImage imageNamed:@"doc"];
-        [document setTemplate:YES];
-    }
-    PXSourceListItem *manifestTypesItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Manifest Types"] identifier:nil];
-    manifestTypesItem.children = @[[PXSourceListItem itemWithRepresentedObject:machineManifestsItem icon:document],
-                                   [PXSourceListItem itemWithRepresentedObject:groupManifestsItem icon:document],
-                                   [PXSourceListItem itemWithRepresentedObject:installManifestsItem icon:document],
-                                   [PXSourceListItem itemWithRepresentedObject:selfContainedManifestsItem icon:document],
-                                   ];
-    
-    PXSourceListItem *catalogsItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Catalogs"] identifier:nil];
-    catalogsItem.children = [NSArray arrayWithArray:catalogItems];
-    
-    PXSourceListItem *directoriesItem = [self directoriesItem];
-    
-    [self.sourceListItems addObject:libraryItem];
-    [self.sourceListItems addObject:manifestTypesItem];
-    [self.sourceListItems addObject:catalogsItem];
-    [self.sourceListItems addObject:directoriesItem];
-}
-
 - (NSString *)uppercaseOrCapitalizedHeaderString:(NSString *)headerTitle
 {
     if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9) {
@@ -615,57 +473,6 @@ DDLogLevel ddLogLevel;
         /* 10.10 or later system */
         return [headerTitle capitalizedString];
     }
-}
-
-- (PXSourceListItem *)itemForURL:(NSURL *)url modelObjects:(NSMutableArray *)modelObjects
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
-    NSImage *folderImage;
-    if (@available(macOS 11.0, *)) {
-        folderImage = [NSImage imageWithSystemSymbolName:@"folder" accessibilityDescription:@"Folder"];
-    } else {
-        folderImage = [NSImage imageNamed:@"folder"];
-        [folderImage setTemplate:YES];
-    }
-    
-    NSString *filename;
-    [url getResourceValue:&filename forKey:NSURLNameKey error:nil];
-    MAManifestsViewSourceListItem *mainManifestsItem = [MAManifestsViewSourceListItem collectionWithTitle:filename identifier:filename type:ManifestSourceItemTypeFolder];
-    mainManifestsItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", url];
-    mainManifestsItem.representedFileURL = url;
-    [modelObjects addObject:mainManifestsItem];
-    PXSourceListItem *item = [PXSourceListItem itemWithRepresentedObject:mainManifestsItem icon:folderImage];
-    
-    NSArray *contents = [fm contentsOfDirectoryAtURL:url includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) error:nil];
-    for (NSURL *contentURL in contents) {
-        NSNumber *isDir;
-        [contentURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
-        if ([isDir boolValue]) {
-            PXSourceListItem *contentItem = [self itemForURL:contentURL modelObjects:modelObjects];
-            [item addChildItem:contentItem];
-        }
-    }
-    return item;
-}
-
-
-- (PXSourceListItem *)directoriesItem
-{
-    NSURL *mainManifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
-    PXSourceListItem *directoriesItem = [PXSourceListItem itemWithTitle:[self uppercaseOrCapitalizedHeaderString:@"Directories"] identifier:nil];
-    
-    if (!mainManifestsURL) {
-        return directoriesItem;
-    }
-    
-    NSMutableArray *newChildren = [NSMutableArray new];
-    NSMutableArray *newRepresentedObjects = [NSMutableArray new];
-    [newChildren addObject:[self itemForURL:mainManifestsURL modelObjects:newRepresentedObjects]];
-    
-    directoriesItem.children = [NSArray arrayWithArray:newChildren];
-    [self.modelObjects addObjectsFromArray:newRepresentedObjects];
-    return directoriesItem;
 }
 
 - (void)removeDetailViewSubviews
@@ -1388,36 +1195,17 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSOutlineView delegate and data source methods
 
-- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
-{
-    if (!item)
-        return (NSInteger)self.sourceListItems.count;
-    
-    return (NSInteger)[[item children] count];
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
-{
-    if (!item)
-        return self.sourceListItems[(NSUInteger)index];
-    
-    return [[item children] objectAtIndex:(NSUInteger)index];
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
-{
-    return [item hasChildren];
-}
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-    if ([self.sourceList selectedRow] >= 0) {
+    NSArray *selectedSourceListItems = [self.manifestSourceListTreeController selectedObjects];
+    if ([selectedSourceListItems count] > 0) {
         DDLogVerbose(@"Starting to set predicate...");
-        id selectedItem = [self.sourceList itemAtRow:[self.sourceList selectedRow]];
-        NSPredicate *productFilter = [(MAManifestsViewSourceListItem *)[selectedItem representedObject] filterPredicate];
+        ManifestSourceListItemMO *selectedItem = [selectedSourceListItems objectAtIndex:0];
+        NSPredicate *productFilter = selectedItem.filterPredicate;
         self.selectedSourceListFilterPredicate = productFilter;
         
-        NSArray *productSortDescriptors = [(MAManifestsViewSourceListItem *)[selectedItem representedObject] sortDescriptors];
+        NSArray *productSortDescriptors = selectedItem.sortDescriptors;
         
         if (productSortDescriptors != nil) {
             [self.manifestsArrayController setSortDescriptors:productSortDescriptors];
@@ -1433,15 +1221,16 @@ DDLogLevel ddLogLevel;
     if (outlineView == self.sourceList) {
         
         NSTableCellView *view = nil;
+        ManifestSourceListItemMO *sourceListItem = [item representedObject];
         
-        if ([outlineView levelForItem:item] == 0) {
+        if (sourceListItem.isGroupItemValue) {
             view = [outlineView makeViewWithIdentifier:@"HeaderCell" owner:nil];
         } else {
             view = [outlineView makeViewWithIdentifier:@"MainCell" owner:nil];
         }
         
-        view.textField.stringValue = [item title] ? [item title] : [[item representedObject] title];
-        view.imageView.image = [item icon];
+        view.textField.stringValue = sourceListItem.title;
+        view.imageView.image = sourceListItem.icon;
         
         return view;
     } else {
@@ -1456,20 +1245,14 @@ DDLogLevel ddLogLevel;
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
-    if ([outlineView levelForItem:item] <= 0) {
-        return NO;
-    } else {
-        return YES;
-    }
+    ManifestSourceListItemMO *sourceListItem = [item representedObject];
+    return !sourceListItem.isGroupItemValue;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-    if ([outlineView levelForItem:item] <= 0) {
-        return YES;
-    } else {
-        return NO;
-    }
+    ManifestSourceListItemMO *sourceListItem = [item representedObject];
+    return sourceListItem.isGroupItemValue;
 }
 
 - (NSDragOperation)outlineView:(NSOutlineView *)sourceList validateDrop:(id<NSDraggingInfo>)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
@@ -1482,13 +1265,10 @@ DDLogLevel ddLogLevel;
     if (sourceList == self.sourceList) {
         
         /*
-         Only allow dropping on regular folders
+         Only allow dropping on directory items
          */
-        if ([[item representedObject] isKindOfClass:[MAManifestsViewSourceListItem class]]) {
-            MAManifestsViewSourceListItem *targetDir = [item representedObject];
-            if (targetDir.type != ManifestSourceItemTypeFolder) {
-                return NSDragOperationNone;
-            }
+        if ([[item representedObject] isKindOfClass:[ManifestDirectorySourceListItemMO class]]) {
+            // Allow dropping on directory items
         } else {
             return NSDragOperationNone;
         }
@@ -1532,9 +1312,9 @@ DDLogLevel ddLogLevel;
         NSArray *dragTypes = [[info draggingPasteboard] types];
         if ([dragTypes containsObject:NSURLPboardType]) {
             
-            if ([[proposedParentItem representedObject] isKindOfClass:[MAManifestsViewSourceListItem class]]) {
+            if ([[proposedParentItem representedObject] isKindOfClass:[ManifestDirectorySourceListItemMO class]]) {
                 
-                MAManifestsViewSourceListItem *targetDir = [proposedParentItem representedObject];
+                ManifestDirectorySourceListItemMO *targetDir = (ManifestDirectorySourceListItemMO *)[proposedParentItem representedObject];
                 
                 NSPasteboard *pasteboard = [info draggingPasteboard];
                 NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
@@ -1545,7 +1325,7 @@ DDLogLevel ddLogLevel;
                     NSManagedObjectID *objectID = [[moc persistentStoreCoordinator] managedObjectIDForURIRepresentation:uri];
                     ManifestMO *droppedManifest = (ManifestMO *)[moc objectRegisteredForID:objectID];
                     NSString *currentFileName = [[droppedManifest manifestURL] lastPathComponent];
-                    NSURL *targetURL = [targetDir.representedFileURL URLByAppendingPathComponent:currentFileName];
+                    NSURL *targetURL = [targetDir.representedFileURLValue URLByAppendingPathComponent:currentFileName];
                     if ([[droppedManifest manifestURL] isEqualTo:targetURL]) {
                         DDLogError(@"Error. Dropped to same folder %@", [targetURL path]);
                     }
@@ -1776,6 +1556,40 @@ DDLogLevel ddLogLevel;
             [topView setFrame:topFrame];
             [bottomView setFrame:bottomFrame];
         }
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if (object == self.manifestSourceListTreeController && [keyPath isEqualToString:@"arrangedObjects"]) {
+        DDLogVerbose(@"Sidebar tree controller content changed");
+        // React to sidebar content changes here
+        // You can access the new/old values through the change dictionary
+        // NSArray *newObjects = change[NSKeyValueChangeNewKey];
+        // NSArray *oldObjects = change[NSKeyValueChangeOldKey];
+        
+        // Perform any necessary updates when sidebar content changes
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.sourceList reloadData];
+            
+            // Auto-expand all groups and select the first data item
+            [self.sourceList expandItem:nil expandChildren:YES];
+            
+            // Select "All Manifests" by default (should be at index 1 after the Repository header)
+            NSIndexSet *selectionIndexes = [NSIndexSet indexSetWithIndex:1];
+            [self.sourceList selectRowIndexes:selectionIndexes byExtendingSelection:NO];
+        });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+- (void)dealloc
+{
+    @try {
+        [self.manifestSourceListTreeController removeObserver:self forKeyPath:@"arrangedObjects"];
+    } @catch (NSException *exception) {
+        DDLogError(@"Exception removing observer: %@", exception.reason);
     }
 }
 

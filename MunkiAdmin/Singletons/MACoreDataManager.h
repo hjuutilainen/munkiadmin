@@ -14,6 +14,10 @@
 @class InstallsItemMO;
 @class CategoryMO;
 @class DeveloperMO;
+@class ManifestSourceListItemMO;
+@class ManifestDirectorySourceListItemMO;
+@class ManifestBuiltinSourceListItemMO;
+@class ManifestCatalogSourceListItemMO;
 
 @interface MACoreDataManager : NSObject {
     
@@ -41,5 +45,10 @@
 - (void)configureSourceListCategoriesSection:(NSManagedObjectContext *)moc;
 - (void)configureSourceListRepositorySection:(NSManagedObjectContext *)moc;
 - (void)configureSourceListInstallerTypesSection:(NSManagedObjectContext *)moc;
+- (void)configureManifestSourceListItems:(NSManagedObjectContext *)moc;
+- (void)configureManifestSourceListBuiltinSection:(NSManagedObjectContext *)moc;
+- (void)configureManifestSourceListDirectoriesSection:(NSManagedObjectContext *)moc;
+- (void)configureManifestSourceListCatalogsSection:(NSManagedObjectContext *)moc;
+- (ManifestDirectorySourceListItemMO *)createManifestDirectoryItemForURL:(NSURL *)url parentItem:(ManifestSourceListItemMO *)parentItem context:(NSManagedObjectContext *)moc;
 
 @end
