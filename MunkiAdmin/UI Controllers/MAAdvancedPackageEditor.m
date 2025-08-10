@@ -821,38 +821,47 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     
     // Configure the script text views
     [self.preinstallScriptTextView setFont:scriptFont];
+    [self.preinstallScriptTextView setTextColor:[NSColor controlTextColor]];
     self.preinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.preinstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.postinstallScriptTextView setFont:scriptFont];
+    [self.postinstallScriptTextView setTextColor:[NSColor controlTextColor]];
     self.postinstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.postinstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.uninstallScriptTextView setFont:scriptFont];
+    [self.uninstallScriptTextView setTextColor:[NSColor controlTextColor]];
     self.uninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.uninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.uninstallScriptTextViewInMainTabView setFont:scriptFont];
+    [self.uninstallScriptTextViewInMainTabView setTextColor:[NSColor controlTextColor]];
     self.uninstallScriptTextViewInMainTabView.automaticQuoteSubstitutionEnabled = NO;
     self.uninstallScriptTextViewInMainTabView.automaticDashSubstitutionEnabled = NO;
     
     [self.preuninstallScriptTextView setFont:scriptFont];
+    [self.preuninstallScriptTextView setTextColor:[NSColor controlTextColor]];
     self.preuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.preuninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.postuninstallScriptTextView setFont:scriptFont];
+    [self.postuninstallScriptTextView setTextColor:[NSColor controlTextColor]];
     self.postuninstallScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.postuninstallScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.installCheckScriptTextView setFont:scriptFont];
+    [self.installCheckScriptTextView setTextColor:[NSColor controlTextColor]];
     self.installCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.installCheckScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.uninstallCheckScriptTextView setFont:scriptFont];
+    [self.uninstallCheckScriptTextView setTextColor:[NSColor controlTextColor]];
     self.uninstallCheckScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.uninstallCheckScriptTextView.automaticDashSubstitutionEnabled = NO;
     
     [self.versionScriptTextView setFont:scriptFont];
+    [self.versionScriptTextView setTextColor:[NSColor controlTextColor]];
     self.versionScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.versionScriptTextView.automaticDashSubstitutionEnabled = NO;
     
