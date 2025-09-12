@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24112" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24127" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24112"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24127"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -861,6 +861,7 @@ Gw
                                                 <connections>
                                                     <binding destination="rcP-DN-4xO" name="content" keyPath="arrangedObjects" id="s5s-jO-yXJ"/>
                                                     <binding destination="rcP-DN-4xO" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="s5s-jO-yXJ" id="IbV-n4-Awo"/>
+                                                    <binding destination="rcP-DN-4xO" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="IbV-n4-Awo" id="anY-28-Vcc"/>
                                                     <outlet property="dataSource" destination="-2" id="x2B-bH-unx"/>
                                                     <outlet property="delegate" destination="-2" id="OOy-38-p6V"/>
                                                     <outlet property="menu" destination="NDC-iy-hCu" id="y34-1o-pBo"/>
@@ -1003,6 +1004,6 @@ Gw
         <userDefaultsController representsSharedInstance="YES" id="2cT-x8-gJ1"/>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="20" height="20"/>
+        <image name="NSActionTemplate" width="19" height="19"/>
     </resources>
 </document>
