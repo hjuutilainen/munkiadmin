@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24127" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14269.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24127"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,12 +20,12 @@
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="621" height="523"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2056" height="1289"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="621" height="523"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" id="5">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5">
                         <rect key="frame" x="525" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6">
@@ -44,7 +44,7 @@ DQ
                             </binding>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="9">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9">
                         <rect key="frame" x="443" y="13" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="10">
@@ -58,11 +58,11 @@ Gw
                             <action selector="cancelAction:" target="-2" id="28"/>
                         </connections>
                     </button>
-                    <customView id="17">
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17">
                         <rect key="frame" x="0.0" y="425" width="621" height="98"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" id="29">
+                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29">
                                 <rect key="frame" x="89" y="60" width="111" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Source Package:" id="30">
@@ -71,12 +71,12 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <popUpButton verticalHuggingPriority="750" id="31">
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31">
                                 <rect key="frame" x="202" y="54" width="296" height="26"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="34" id="32">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
+                                    <font key="font" metaFont="message"/>
                                     <menu key="menu" title="OtherViews" id="33">
                                         <items>
                                             <menuItem title="Item 1" state="on" id="34"/>
@@ -103,7 +103,7 @@ Gw
                                     </binding>
                                 </connections>
                             </popUpButton>
-                            <textField verticalHuggingPriority="750" id="95">
+                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="95">
                                 <rect key="frame" x="89" y="20" width="111" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Target Package:" id="96">
@@ -112,7 +112,7 @@ Gw
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="97">
+                            <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="97">
                                 <rect key="frame" x="211" y="20" width="287" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="98">
@@ -126,7 +126,7 @@ Gw
                             </textField>
                         </subviews>
                     </customView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="93">
+                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="93">
                         <rect key="frame" x="18" y="400" width="585" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Copy the following keys and values from source package to target package:" id="94">
@@ -135,7 +135,7 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" id="202">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="202">
                         <rect key="frame" x="121" y="13" width="102" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Enable All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="203">
@@ -151,7 +151,7 @@ Gw
                             </binding>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="204">
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="204">
                         <rect key="frame" x="14" y="13" width="107" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Disable All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="205">
@@ -167,15 +167,15 @@ Gw
                             </binding>
                         </connections>
                     </button>
-                    <box autoresizesSubviews="NO" borderType="line" title="General Keys" id="234">
+                    <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="General Keys" translatesAutoresizingMaskIntoConstraints="NO" id="234">
                         <rect key="frame" x="17" y="268" width="587" height="124"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="41I-tF-soj">
-                            <rect key="frame" x="1" y="1" width="585" height="108"/>
+                            <rect key="frame" x="0.0" y="0.0" width="587" height="112"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button id="47">
-                                    <rect key="frame" x="209" y="83" width="108" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="47">
+                                    <rect key="frame" x="209" y="87" width="108" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="display_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="90">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -190,8 +190,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="48">
-                                    <rect key="frame" x="409" y="83" width="93" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="48">
+                                    <rect key="frame" x="409" y="87" width="93" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="description" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="89">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -206,8 +206,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="49">
-                                    <rect key="frame" x="209" y="11" width="159" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="49">
+                                    <rect key="frame" x="209" y="15" width="159" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="maximum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="88">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -222,8 +222,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="50">
-                                    <rect key="frame" x="15" y="11" width="156" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="50">
+                                    <rect key="frame" x="15" y="15" width="156" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="minimum_os_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="87">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -238,8 +238,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="51">
-                                    <rect key="frame" x="409" y="11" width="159" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51">
+                                    <rect key="frame" x="409" y="15" width="159" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="minimum_munki_version" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="86">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -254,8 +254,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="52">
-                                    <rect key="frame" x="15" y="29" width="97" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="52">
+                                    <rect key="frame" x="15" y="33" width="97" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="autoremove" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="85">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -270,8 +270,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="jR1-gY-fJi">
-                                    <rect key="frame" x="209" y="65" width="97" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jR1-gY-fJi">
+                                    <rect key="frame" x="209" y="69" width="97" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="category" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="l3f-kf-CX7">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -286,8 +286,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="ere-t9-uRK">
-                                    <rect key="frame" x="409" y="65" width="97" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ere-t9-uRK">
+                                    <rect key="frame" x="409" y="69" width="97" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="developer" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="a7o-9y-d9m">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -302,8 +302,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="54">
-                                    <rect key="frame" x="409" y="29" width="153" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="54">
+                                    <rect key="frame" x="409" y="33" width="153" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="installable_condition" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="83">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -318,8 +318,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="mEN-3h-7eX">
-                                    <rect key="frame" x="15" y="65" width="80" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mEN-3h-7eX">
+                                    <rect key="frame" x="15" y="69" width="80" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="icon_name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="eBm-t9-C5G">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -334,8 +334,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="63">
-                                    <rect key="frame" x="209" y="29" width="156" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="63">
+                                    <rect key="frame" x="209" y="33" width="156" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="uninstaller_item_location" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="74">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -350,8 +350,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="65">
-                                    <rect key="frame" x="409" y="47" width="90" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="65">
+                                    <rect key="frame" x="409" y="51" width="90" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="uninstallable" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="72">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -366,8 +366,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="67">
-                                    <rect key="frame" x="15" y="47" width="121" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="67">
+                                    <rect key="frame" x="15" y="51" width="121" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="unattended_install" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="70">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -382,8 +382,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="68">
-                                    <rect key="frame" x="209" y="47" width="134" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="68">
+                                    <rect key="frame" x="209" y="51" width="134" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="unattended_uninstall" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="69">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -398,8 +398,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="105">
-                                    <rect key="frame" x="15" y="83" width="57" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="105">
+                                    <rect key="frame" x="15" y="87" width="57" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="name" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="106">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -417,15 +417,15 @@ Gw
                             </subviews>
                         </view>
                     </box>
-                    <box autoresizesSubviews="NO" borderType="line" title="Array Keys" id="235">
+                    <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Array Keys" translatesAutoresizingMaskIntoConstraints="NO" id="235">
                         <rect key="frame" x="17" y="173" width="587" height="91"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="eIf-5Y-drM">
-                            <rect key="frame" x="1" y="1" width="585" height="75"/>
+                            <rect key="frame" x="0.0" y="0.0" width="587" height="79"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button id="223">
-                                    <rect key="frame" x="209" y="31" width="136" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="223">
+                                    <rect key="frame" x="209" y="35" width="136" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="installer_choices_xml" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="224">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -440,8 +440,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="53">
-                                    <rect key="frame" x="209" y="50" width="138" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="53">
+                                    <rect key="frame" x="209" y="54" width="138" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="blocking_applications" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="84">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -456,8 +456,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="61">
-                                    <rect key="frame" x="15" y="50" width="152" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61">
+                                    <rect key="frame" x="15" y="54" width="152" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="supported_architectures" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="76">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -472,8 +472,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="219">
-                                    <rect key="frame" x="409" y="49" width="80" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="219">
+                                    <rect key="frame" x="409" y="53" width="80" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="update_for" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="220">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -488,8 +488,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="227">
-                                    <rect key="frame" x="409" y="30" width="60" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="227">
+                                    <rect key="frame" x="409" y="34" width="60" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="installs" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="228">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -504,8 +504,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="60">
-                                    <rect key="frame" x="15" y="31" width="66" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="60">
+                                    <rect key="frame" x="15" y="35" width="66" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="requires" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="77">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -520,8 +520,8 @@ Gw
                                         </binding>
                                     </connections>
                                 </button>
-                                <textField verticalHuggingPriority="750" id="338">
-                                    <rect key="frame" x="166" y="52" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="338">
+                                    <rect key="frame" x="166" y="56" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="339">
                                         <font key="font" metaFont="smallSystem"/>
@@ -544,8 +544,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="343">
-                                    <rect key="frame" x="80" y="33" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="343">
+                                    <rect key="frame" x="80" y="37" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="344">
                                         <font key="font" metaFont="smallSystem"/>
@@ -565,8 +565,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="348">
-                                    <rect key="frame" x="344" y="33" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="348">
+                                    <rect key="frame" x="344" y="37" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="349">
                                         <font key="font" metaFont="smallSystem"/>
@@ -586,8 +586,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="353">
-                                    <rect key="frame" x="346" y="52" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="353">
+                                    <rect key="frame" x="346" y="56" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="354">
                                         <font key="font" metaFont="smallSystem"/>
@@ -607,8 +607,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="356">
-                                    <rect key="frame" x="488" y="51" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="356">
+                                    <rect key="frame" x="488" y="55" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="357">
                                         <font key="font" metaFont="smallSystem"/>
@@ -628,8 +628,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="359">
-                                    <rect key="frame" x="468" y="32" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="359">
+                                    <rect key="frame" x="468" y="36" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="360">
                                         <font key="font" metaFont="smallSystem"/>
@@ -649,8 +649,8 @@ IA
                                         </binding>
                                     </connections>
                                 </textField>
-                                <button id="403">
-                                    <rect key="frame" x="15" y="12" width="95" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="403">
+                                    <rect key="frame" x="15" y="16" width="95" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="items to copy" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="406">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -665,8 +665,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <textField verticalHuggingPriority="750" id="404">
-                                    <rect key="frame" x="109" y="14" width="38" height="14"/>
+                                <textField focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="404">
+                                    <rect key="frame" x="109" y="18" width="38" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0)" id="405">
                                         <font key="font" metaFont="smallSystem"/>
@@ -689,15 +689,15 @@ IA
                             </subviews>
                         </view>
                     </box>
-                    <box autoresizesSubviews="NO" borderType="line" title="Script Keys" id="236">
+                    <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Script Keys" translatesAutoresizingMaskIntoConstraints="NO" id="236">
                         <rect key="frame" x="17" y="57" width="587" height="112"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <view key="contentView" id="a4c-Mm-1TW">
-                            <rect key="frame" x="1" y="1" width="585" height="96"/>
+                            <rect key="frame" x="0.0" y="0.0" width="587" height="100"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button id="55">
-                                    <rect key="frame" x="96" y="71" width="139" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="55">
+                                    <rect key="frame" x="15" y="75" width="139" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="installcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="82">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -712,8 +712,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="66">
-                                    <rect key="frame" x="333" y="71" width="155" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="66">
+                                    <rect key="frame" x="209" y="75" width="155" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="uninstallcheck_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="71">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -728,8 +728,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="56">
-                                    <rect key="frame" x="96" y="51" width="123" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="56">
+                                    <rect key="frame" x="15" y="55" width="123" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="preinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="81">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -744,8 +744,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="57">
-                                    <rect key="frame" x="333" y="51" width="130" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="57">
+                                    <rect key="frame" x="209" y="55" width="130" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="postinstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="80">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -760,8 +760,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="64">
-                                    <rect key="frame" x="333" y="11" width="118" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="64">
+                                    <rect key="frame" x="209" y="15" width="118" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="uninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="73">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -776,8 +776,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="58">
-                                    <rect key="frame" x="96" y="31" width="139" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="58">
+                                    <rect key="frame" x="15" y="35" width="139" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="preuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="79">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -792,8 +792,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="59">
-                                    <rect key="frame" x="333" y="31" width="146" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="59">
+                                    <rect key="frame" x="209" y="35" width="146" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="postuninstall_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="78">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -808,8 +808,8 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
-                                <button id="62">
-                                    <rect key="frame" x="96" y="11" width="131" height="18"/>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="62">
+                                    <rect key="frame" x="15" y="15" width="131" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="uninstall_method" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="75">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -824,6 +824,22 @@ IA
                                         </binding>
                                     </connections>
                                 </button>
+                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oIi-hX-Nls">
+                                    <rect key="frame" x="409" y="75" width="118" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="version_script" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="Ubp-4v-efi">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <binding destination="-2" name="enabled" keyPath="sourcePkginfo" id="7EE-Kz-49D">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">NSIsNotNil</string>
+                                            </dictionary>
+                                        </binding>
+                                        <binding destination="-2" name="value" keyPath="assimilate_version_script" id="CvG-JO-YYR"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                     </box>
@@ -832,6 +848,7 @@ IA
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
+            <point key="canvasLocation" x="140" y="143"/>
         </window>
         <arrayController mode="entity" entityName="Package" editable="NO" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="37" userLabel="All Packages">
             <connections>

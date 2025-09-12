@@ -69,6 +69,7 @@
 @property BOOL assimilate_uninstall_method;
 @property BOOL assimilate_uninstall_script;
 @property BOOL assimilate_uninstallcheck_script;
+@property BOOL assimilate_version_script;
 
 
 @end
