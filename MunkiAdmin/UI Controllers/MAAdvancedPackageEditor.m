@@ -195,11 +195,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 - (void)createNewCategory
 {
     [self.createNewCategoryController setDefaultValues];
-    self.createNewCategoryController.windowTitleText = @"New Category";
-    self.createNewCategoryController.titleText = @"New Category";
-    self.createNewCategoryController.okButtonTitle = @"Create";
-    self.createNewCategoryController.labelText = @"Name:";
-    self.createNewCategoryController.descriptionText = @"Enter name for new category. The category is written in to the pkginfo files and empty categories will not be saved when MunkiAdmin quits.";
+    self.createNewCategoryController.windowTitleText = NSLocalizedString(@"New Category", @"");
+    self.createNewCategoryController.titleText = NSLocalizedString(@"New Category", @"");
+    self.createNewCategoryController.okButtonTitle = NSLocalizedString(@"Create", @"");
+    self.createNewCategoryController.labelText = NSLocalizedString(@"Name:", @"");
+    self.createNewCategoryController.descriptionText = NSLocalizedString(@"Enter name for new category. The category is written in to the pkginfo files and empty categories will not be saved when MunkiAdmin quits.", @"");
     NSWindow *window = [self.createNewCategoryController window];
     NSInteger result = [NSApp runModalForWindow:window];
     
@@ -232,11 +232,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 - (void)createNewDeveloper
 {
     [self.createNewDeveloperController setDefaultValues];
-    self.createNewDeveloperController.windowTitleText = @"New Developer";
-    self.createNewDeveloperController.titleText = @"New Developer";
-    self.createNewDeveloperController.okButtonTitle = @"Create";
-    self.createNewDeveloperController.labelText = @"Name:";
-    self.createNewDeveloperController.descriptionText = @"Enter name for new developer. The developer is written in to the pkginfo files and empty developers will not be saved when MunkiAdmin quits.";
+    self.createNewDeveloperController.windowTitleText = NSLocalizedString(@"New Developer", @"");
+    self.createNewDeveloperController.titleText = NSLocalizedString(@"New Developer", @"");
+    self.createNewDeveloperController.okButtonTitle = NSLocalizedString(@"Create", @"");
+    self.createNewDeveloperController.labelText = NSLocalizedString(@"Name:", @"");
+    self.createNewDeveloperController.descriptionText = NSLocalizedString(@"Enter name for new developer. The developer is written in to the pkginfo files and empty developers will not be saved when MunkiAdmin quits.", @"");
     NSWindow *window = [self.createNewDeveloperController window];
     NSInteger result = [NSApp runModalForWindow:window];
     
