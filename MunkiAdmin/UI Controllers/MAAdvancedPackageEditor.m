@@ -957,65 +957,81 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     if (aPackage.munki_postinstall_script == nil) {
         self.temp_postinstall_script_enabled = NO;
         self.temp_postinstall_script = @"";
+        [self.postinstallScriptTabViewItem setLabel:NSLocalizedString(@"Post-install", @"")];
     } else {
         self.temp_postinstall_script_enabled = YES;
         self.temp_postinstall_script = aPackage.munki_postinstall_script;
+        [self.postinstallScriptTabViewItem setLabel:NSLocalizedString(@"Post-install*", @"")];
     }
     
     if (aPackage.munki_postuninstall_script == nil) {
         self.temp_postuninstall_script_enabled = NO;
         self.temp_postuninstall_script = @"";
+        [self.postuninstallScriptTabViewItem setLabel:NSLocalizedString(@"Post-uninstall", @"")];
     } else {
         self.temp_postuninstall_script_enabled = YES;
         self.temp_postuninstall_script = aPackage.munki_postuninstall_script;
+        [self.postuninstallScriptTabViewItem setLabel:NSLocalizedString(@"Post-uninstall*", @"")];
     }
     
     if (aPackage.munki_preinstall_script == nil) {
         self.temp_preinstall_script_enabled = NO;
         self.temp_preinstall_script = @"";
+        [self.preinstallScriptTabViewItem setLabel:NSLocalizedString(@"Pre-install", @"")];
     } else {
         self.temp_preinstall_script_enabled = YES;
         self.temp_preinstall_script = aPackage.munki_preinstall_script;
+        [self.preinstallScriptTabViewItem setLabel:NSLocalizedString(@"Pre-install*", @"")];
     }
     
     if (aPackage.munki_preuninstall_script == nil) {
         self.temp_preuninstall_script_enabled = NO;
         self.temp_preuninstall_script = @"";
+        [self.preuninstallScriptTabViewItem setLabel:NSLocalizedString(@"Pre-uninstall", @"")];
     } else {
         self.temp_preuninstall_script_enabled = YES;
         self.temp_preuninstall_script = aPackage.munki_preuninstall_script;
+        [self.preuninstallScriptTabViewItem setLabel:NSLocalizedString(@"Pre-uninstall*", @"")];
     }
     
     if (aPackage.munki_uninstall_script == nil) {
         self.temp_uninstall_script_enabled = NO;
         self.temp_uninstall_script = @"";
+        [self.uninstallScriptTabViewItem setLabel:NSLocalizedString(@"Uninstall", @"")];
     } else {
         self.temp_uninstall_script_enabled = YES;
         self.temp_uninstall_script = aPackage.munki_uninstall_script;
+        [self.uninstallScriptTabViewItem setLabel:NSLocalizedString(@"Uninstall*", @"")];
     }
     
     if (aPackage.munki_installcheck_script == nil) {
         self.temp_installcheck_script_enabled = NO;
         self.temp_installcheck_script = @"";
+        [self.installCheckScriptTabViewItem setLabel:NSLocalizedString(@"Install Check", @"")];
     } else {
         self.temp_installcheck_script_enabled = YES;
         self.temp_installcheck_script = aPackage.munki_installcheck_script;
+        [self.installCheckScriptTabViewItem setLabel:NSLocalizedString(@"Install Check*", @"")];
     }
     
     if (aPackage.munki_uninstallcheck_script == nil) {
         self.temp_uninstallcheck_script_enabled = NO;
         self.temp_uninstallcheck_script = @"";
+        [self.uninstallCheckScriptTabViewItem setLabel:NSLocalizedString(@"Uninstall Check", @"")];
     } else {
         self.temp_uninstallcheck_script_enabled = YES;
         self.temp_uninstallcheck_script = aPackage.munki_uninstallcheck_script;
+        [self.uninstallCheckScriptTabViewItem setLabel:NSLocalizedString(@"Uninstall Check*", @"")];
     }
     
     if (aPackage.munki_version_script == nil) {
         self.temp_version_script_enabled = NO;
         self.temp_version_script = @"";
+        [self.versionScriptTabViewItem setLabel:NSLocalizedString(@"Version", @"")];
     } else {
         self.temp_version_script_enabled = YES;
         self.temp_version_script = aPackage.munki_version_script;
+        [self.versionScriptTabViewItem setLabel:NSLocalizedString(@"Version*", @"")];
     }
     
     if (aPackage.munki_force_install_after_date == nil) {

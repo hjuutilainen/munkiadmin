@@ -14,6 +14,7 @@
                 <outlet property="categoriesArrayController" destination="6zC-Y4-FUt" id="P4l-67-JY2"/>
                 <outlet property="developersArrayController" destination="XpN-Ef-8Wo" id="S4X-cp-8fb"/>
                 <outlet property="iconNameComboBox" destination="kZr-VX-uc0" id="hYg-la-3UP"/>
+                <outlet property="installCheckScriptTabViewItem" destination="tDT-DW-Lun" id="JfH-hI-xGk"/>
                 <outlet property="installCheckScriptTextView" destination="otK-CI-6rb" id="Cnr-FZ-O9b"/>
                 <outlet property="installerChoicesArrayController" destination="1385" id="1404"/>
                 <outlet property="installerChoicesXMLTableView" destination="1370" id="1675"/>
@@ -23,19 +24,26 @@
                 <outlet property="itemsToCopyArrayController" destination="516" id="527"/>
                 <outlet property="itemsToCopyTableView" destination="1293" id="1674"/>
                 <outlet property="mainTabView" destination="4" id="351"/>
+                <outlet property="postinstallScriptTabViewItem" destination="KtO-dC-nvE" id="pWt-A8-7fE"/>
                 <outlet property="postinstallScriptTextView" destination="z1e-aT-ZPZ" id="ePu-3S-Mqr"/>
+                <outlet property="postuninstallScriptTabViewItem" destination="17v-wI-vyK" id="i4n-6o-0aN"/>
                 <outlet property="postuninstallScriptTextView" destination="nbi-ay-zeU" id="htY-k6-lkP"/>
+                <outlet property="preinstallScriptTabViewItem" destination="9uQ-fR-Pq6" id="n26-WB-6MX"/>
                 <outlet property="preinstallScriptTextView" destination="ELg-FA-dM2" id="R3c-Ps-8zx"/>
+                <outlet property="preuninstallScriptTabViewItem" destination="43V-Jx-SDI" id="NlT-HZ-Hek"/>
                 <outlet property="preuninstallScriptTextView" destination="Uul-U8-vo6" id="dUU-6A-iCM"/>
                 <outlet property="receiptsArrayController" destination="494" id="526"/>
                 <outlet property="receiptsTableView" destination="1155" id="1671"/>
                 <outlet property="requiresArrayController" destination="548" id="589"/>
                 <outlet property="supportedArchitecturesArrayController" destination="1268" id="1403"/>
                 <outlet property="supportedArchitecturesTableView" destination="1333" id="1677"/>
+                <outlet property="uninstallCheckScriptTabViewItem" destination="sDJ-pS-oOY" id="FZa-VJ-hhr"/>
                 <outlet property="uninstallCheckScriptTextView" destination="bpD-Wv-Z3K" id="DfA-BA-fm8"/>
+                <outlet property="uninstallScriptTabViewItem" destination="A5A-S2-8Ji" id="uOo-ud-2Yx"/>
                 <outlet property="uninstallScriptTextView" destination="QbT-Y8-SL6" id="UNH-OY-wBQ"/>
                 <outlet property="uninstallScriptTextViewInMainTabView" destination="878" id="U51-tk-RcP"/>
                 <outlet property="updateForArrayController" destination="559" id="590"/>
+                <outlet property="versionScriptTabViewItem" destination="Waa-G3-DPb" id="eqG-MJ-ew5"/>
                 <outlet property="versionScriptTextView" destination="QSC-EI-8lf" id="71h-Yt-kdv"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
