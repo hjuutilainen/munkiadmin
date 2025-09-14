@@ -15,91 +15,238 @@
 
 - (void)setManagedInstallConditionalReference:(ConditionalItemMO *)managedInstallConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self managedInstallConditionalReference];
+    ManifestMO *currentManifestReference = [self managedInstallReference];
+
     [self willChangeValueForKey:@"managedInstallConditionalReference"];
+
     if (managedInstallConditionalReference) {
-        [self setManagedInstallReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setManagedInstallReference:nil];
+        }
     } else {
-        [self setManagedInstallReference:[[self managedInstallConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"managedInstallConditionalReference"];
+            // Explicitly remove from the old conditional's managed installs
+            [oldConditionalReference removeManagedInstallsObject:self];
+            // Then set the regular reference
+            [self setManagedInstallReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:managedInstallConditionalReference forKey:@"managedInstallConditionalReference"];
+        [self didChangeValueForKey:@"managedInstallConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:managedInstallConditionalReference forKey:@"managedInstallConditionalReference"];
     [self didChangeValueForKey:@"managedInstallConditionalReference"];
 }
 
 - (void)setManagedUninstallConditionalReference:(ConditionalItemMO *)managedUninstallConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self managedUninstallConditionalReference];
+    ManifestMO *currentManifestReference = [self managedUninstallReference];
+
     [self willChangeValueForKey:@"managedUninstallConditionalReference"];
+
     if (managedUninstallConditionalReference) {
-        [self setManagedUninstallReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setManagedUninstallReference:nil];
+        }
     } else {
-        [self setManagedUninstallReference:[[self managedUninstallConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"managedUninstallConditionalReference"];
+            // Explicitly remove from the old conditional's managed uninstalls
+            [oldConditionalReference removeManagedUninstallsObject:self];
+            // Then set the regular reference
+            [self setManagedUninstallReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:managedUninstallConditionalReference forKey:@"managedUninstallConditionalReference"];
+        [self didChangeValueForKey:@"managedUninstallConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:managedUninstallConditionalReference forKey:@"managedUninstallConditionalReference"];
     [self didChangeValueForKey:@"managedUninstallConditionalReference"];
 }
 
 - (void)setManagedUpdateConditionalReference:(ConditionalItemMO *)managedUpdateConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self managedUpdateConditionalReference];
+    ManifestMO *currentManifestReference = [self managedUpdateReference];
+
     [self willChangeValueForKey:@"managedUpdateConditionalReference"];
+
     if (managedUpdateConditionalReference) {
-        [self setManagedUpdateReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setManagedUpdateReference:nil];
+        }
     } else {
-        [self setManagedUpdateReference:[[self managedUpdateConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"managedUpdateConditionalReference"];
+            // Explicitly remove from the old conditional's managed updates
+            [oldConditionalReference removeManagedUpdatesObject:self];
+            // Then set the regular reference
+            [self setManagedUpdateReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:managedUpdateConditionalReference forKey:@"managedUpdateConditionalReference"];
+        [self didChangeValueForKey:@"managedUpdateConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:managedUpdateConditionalReference forKey:@"managedUpdateConditionalReference"];
     [self didChangeValueForKey:@"managedUpdateConditionalReference"];
 }
 
 - (void)setOptionalInstallConditionalReference:(ConditionalItemMO *)optionalInstallConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self optionalInstallConditionalReference];
+    ManifestMO *currentManifestReference = [self optionalInstallReference];
+
     [self willChangeValueForKey:@"optionalInstallConditionalReference"];
+
     if (optionalInstallConditionalReference) {
-        [self setOptionalInstallReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setOptionalInstallReference:nil];
+        }
     } else {
-        [self setOptionalInstallReference:[[self optionalInstallConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"optionalInstallConditionalReference"];
+            // Explicitly remove from the old conditional's optional installs
+            [oldConditionalReference removeOptionalInstallsObject:self];
+            // Then set the regular reference
+            [self setOptionalInstallReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:optionalInstallConditionalReference forKey:@"optionalInstallConditionalReference"];
+        [self didChangeValueForKey:@"optionalInstallConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:optionalInstallConditionalReference forKey:@"optionalInstallConditionalReference"];
     [self didChangeValueForKey:@"optionalInstallConditionalReference"];
 }
 
 - (void)setDefaultInstallConditionalReference:(ConditionalItemMO *)defaultInstallConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self defaultInstallConditionalReference];
+    ManifestMO *currentManifestReference = [self defaultInstallReference];
+
     [self willChangeValueForKey:@"defaultInstallConditionalReference"];
+
     if (defaultInstallConditionalReference) {
-        [self setDefaultInstallReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setDefaultInstallReference:nil];
+        }
     } else {
-        [self setDefaultInstallReference:[[self defaultInstallConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"defaultInstallConditionalReference"];
+            // Explicitly remove from the old conditional's default installs
+            [oldConditionalReference removeDefaultInstallsObject:self];
+            // Then set the regular reference
+            [self setDefaultInstallReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:defaultInstallConditionalReference forKey:@"defaultInstallConditionalReference"];
+        [self didChangeValueForKey:@"defaultInstallConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:defaultInstallConditionalReference forKey:@"defaultInstallConditionalReference"];
     [self didChangeValueForKey:@"defaultInstallConditionalReference"];
 }
 
 - (void)setFeaturedItemConditionalReference:(ConditionalItemMO *)featuredItemConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self featuredItemConditionalReference];
+    ManifestMO *currentManifestReference = [self featuredItemReference];
+
     [self willChangeValueForKey:@"featuredItemConditionalReference"];
+
     if (featuredItemConditionalReference) {
-        [self setFeaturedItemReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setFeaturedItemReference:nil];
+        }
     } else {
-        [self setFeaturedItemReference:[[self featuredItemConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"featuredItemConditionalReference"];
+            // Explicitly remove from the old conditional's featured items
+            [oldConditionalReference removeFeaturedItemsObject:self];
+            // Then set the regular reference
+            [self setFeaturedItemReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:featuredItemConditionalReference forKey:@"featuredItemConditionalReference"];
+        [self didChangeValueForKey:@"featuredItemConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:featuredItemConditionalReference forKey:@"featuredItemConditionalReference"];
     [self didChangeValueForKey:@"featuredItemConditionalReference"];
 }
 
 - (void)setIncludedManifestConditionalReference:(ConditionalItemMO *)includedManifestConditionalReference
 {
+    // Get the current state before changing anything
+    ConditionalItemMO *oldConditionalReference = [self includedManifestConditionalReference];
+    ManifestMO *currentManifestReference = [self manifestReference];
+
     [self willChangeValueForKey:@"includedManifestConditionalReference"];
+
     if (includedManifestConditionalReference) {
-        [self setManifestReference:nil];
+        // Moving to conditional: clear regular reference
+        if (currentManifestReference) {
+            [self setManifestReference:nil];
+        }
     } else {
-        [self setManifestReference:[[self includedManifestConditionalReference] manifest]];
+        // Moving back to regular: clear conditional reference first, then set regular
+        if (oldConditionalReference) {
+            // First, set the conditional reference to nil to break the relationship
+            [self setPrimitiveValue:nil forKey:@"includedManifestConditionalReference"];
+            // Explicitly remove from the old conditional's included manifests
+            [oldConditionalReference removeIncludedManifestsObject:self];
+            // Then set the regular reference
+            [self setManifestReference:[oldConditionalReference manifest]];
+        }
+        // Set the new conditional reference (which is nil in this case)
+        [self setPrimitiveValue:includedManifestConditionalReference forKey:@"includedManifestConditionalReference"];
+        [self didChangeValueForKey:@"includedManifestConditionalReference"];
+        return; // Early return to avoid setting the value twice
     }
-    // Set the new value
+
+    // Set the new conditional reference
     [self setPrimitiveValue:includedManifestConditionalReference forKey:@"includedManifestConditionalReference"];
     [self didChangeValueForKey:@"includedManifestConditionalReference"];
 }

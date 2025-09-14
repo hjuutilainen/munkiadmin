@@ -421,10 +421,12 @@
 
 - (NSNumber *)managedInstallsCount
 {
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedInstalls"];
-    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedInstallsFaster.@count"];
-    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allManagedInstalls count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingManagedInstallsCount
+{
+    return [NSSet setWithObjects:@"allManagedInstalls", nil];
 }
 
 - (NSString *)managedInstallsCountShortDescription
@@ -453,10 +455,12 @@
 
 - (NSNumber *)managedUninstallsCount
 {
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUninstalls"];
-    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUninstallsFaster.@count"];
-    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allManagedUninstalls count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingManagedUninstallsCount
+{
+    return [NSSet setWithObjects:@"allManagedUninstalls", nil];
 }
 
 - (NSString *)managedUninstallsCountShortDescription
@@ -485,10 +489,12 @@
 
 - (NSNumber *)managedUpdatesCount
 {
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.managedUpdates"];
-    NSNumber *numManagedInstalls = [self valueForKeyPath:@"managedUpdatesFaster.@count"];
-    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allManagedUpdates count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingManagedUpdatesCount
+{
+    return [NSSet setWithObjects:@"allManagedUpdates", nil];
 }
 
 - (NSString *)managedUpdatesCountShortDescription
@@ -517,10 +523,12 @@
 
 - (NSNumber *)optionalInstallsCount
 {
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.optionalInstalls"];
-    NSNumber *numManagedInstalls = [self valueForKeyPath:@"optionalInstallsFaster.@count"];
-    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allOptionalInstalls count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingOptionalInstallsCount
+{
+    return [NSSet setWithObjects:@"allOptionalInstalls", nil];
 }
 
 - (NSString *)optionalInstallsCountShortDescription
@@ -549,14 +557,12 @@
 
 - (NSNumber *)defaultInstallsCount
 {
-    /*
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.defaultInstalls"];
-    NSNumber *numDefaultInstalls = [self valueForKeyPath:@"defaultInstalls.@count"];
-    NSUInteger all = [allConditionalItems count] + [numDefaultInstalls unsignedIntegerValue];
-    */
-    return [NSNumber numberWithUnsignedInteger:[[self defaultInstallsStrings] count]];
-    
-    //return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allDefaultInstalls count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingDefaultInstallsCount
+{
+    return [NSSet setWithObjects:@"allDefaultInstalls", nil];
 }
 
 - (NSString *)defaultInstallsCountShortDescription
@@ -585,10 +591,12 @@
 
 - (NSNumber *)featuredItemsCount
 {
-    NSSet *allFeaturedItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.featuredItems"];
-    NSNumber *numFeaturedItems = [self valueForKeyPath:@"featuredItems.@count"];
-    NSUInteger all = [allFeaturedItems count] + [numFeaturedItems unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allFeaturedItems count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingFeaturedItemsCount
+{
+    return [NSSet setWithObjects:@"allFeaturedItems", nil];
 }
 
 - (NSString *)featuredItemsCountShortDescription
@@ -617,10 +625,12 @@
 
 - (NSNumber *)includedManifestsCount
 {
-    NSSet *allConditionalItems = [self valueForKeyPath:@"conditionalItems.@distinctUnionOfSets.includedManifests"];
-    NSNumber *numManagedInstalls = [self valueForKeyPath:@"includedManifestsFaster.@count"];
-    NSUInteger all = [allConditionalItems count] + [numManagedInstalls unsignedIntegerValue];
-    return [NSNumber numberWithUnsignedInteger:all];
+    return [NSNumber numberWithUnsignedInteger:[self.allIncludedManifests count]];
+}
+
++ (NSSet *)keyPathsForValuesAffectingIncludedManifestsCount
+{
+    return [NSSet setWithObjects:@"allIncludedManifests", nil];
 }
 
 - (NSString *)includedManifestsCountShortDescription
