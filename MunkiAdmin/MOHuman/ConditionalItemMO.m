@@ -19,7 +19,7 @@ unichar kSeparatorCharacter = 0x02192;
      */
     NSArray *catalogDescriptionKeys = @[@"containedItemsCountDescriptionShort", @"containedItemsCountDescriptionLong"];
     if ([catalogDescriptionKeys containsObject:key]) {
-        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstalls", @"managedUninstalls", @"optionalInstalls", @"managedUpdates", @"includedManifests", nil];
+        NSSet *affectingKeys = [NSSet setWithObjects:@"managedInstalls", @"managedUninstalls", @"optionalInstalls", @"managedUpdates", @"defaultInstalls", @"includedManifests", nil];
         keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
 	
@@ -48,6 +48,7 @@ unichar kSeparatorCharacter = 0x02192;
     NSNumber *numOptionalInstalls = [self valueForKeyPath:@"optionalInstalls.@count"];
     NSNumber *numFeaturedItems = [self valueForKeyPath:@"featuredItems.@count"];
     NSNumber *numManagedUpdates = [self valueForKeyPath:@"managedUpdates.@count"];
+    NSNumber *numDefaultInstalls = [self valueForKeyPath:@"defaultInstalls.@count"];
     NSNumber *numIncludedManifests = [self valueForKeyPath:@"includedManifests.@count"];
     
     NSInteger sum = (numManagedInstalls.integerValue +
@@ -55,9 +56,10 @@ unichar kSeparatorCharacter = 0x02192;
                      numManagedUpdates.integerValue +
                      numOptionalInstalls.integerValue +
                      numFeaturedItems.integerValue +
+                     numDefaultInstalls.integerValue +
                      numIncludedManifests.integerValue);
     if (sum == 0) {
-        return @"Condition contains no managed installs, uninstalls, updates, optional installs, featured items or included manifests.";
+        return @"Condition contains no managed installs, uninstalls, updates, optional installs, featured items, default installs or included manifests.";
     }
     
     if (numManagedInstalls.integerValue > 0) {
@@ -71,6 +73,9 @@ unichar kSeparatorCharacter = 0x02192;
     }
     if (numFeaturedItems.integerValue > 0) {
         longDescription = [longDescription stringByAppendingFormat:@"%li featured items\n", numFeaturedItems.integerValue];
+    }
+    if (numDefaultInstalls.integerValue > 0) {
+        longDescription = [longDescription stringByAppendingFormat:@"%li default installs\n", numDefaultInstalls.integerValue];
     }
     if (numManagedUpdates.integerValue > 0) {
         longDescription = [longDescription stringByAppendingFormat:@"%li managed updates\n", numManagedUpdates.integerValue];
@@ -92,6 +97,7 @@ unichar kSeparatorCharacter = 0x02192;
     NSNumber *numOptionalInstalls = [self valueForKeyPath:@"optionalInstalls.@count"];
     NSNumber *numFeaturedItems = [self valueForKeyPath:@"featuredItems.@count"];
     NSNumber *numManagedUpdates = [self valueForKeyPath:@"managedUpdates.@count"];
+    NSNumber *numDefaultInstalls = [self valueForKeyPath:@"defaultInstalls.@count"];
     NSNumber *numIncludedManifests = [self valueForKeyPath:@"includedManifests.@count"];
     
     NSInteger sum = (numManagedInstalls.integerValue +
@@ -99,6 +105,7 @@ unichar kSeparatorCharacter = 0x02192;
                      numManagedUpdates.integerValue +
                      numOptionalInstalls.integerValue +
                      numFeaturedItems.integerValue +
+                     numDefaultInstalls.integerValue +
                      numIncludedManifests.integerValue);
     
     if (sum == 0) {
