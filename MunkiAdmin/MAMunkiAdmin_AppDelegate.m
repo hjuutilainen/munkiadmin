@@ -2493,9 +2493,9 @@ DDLogLevel ddLogLevel;
 			DDLogError(@"Not a repo!");
             
             NSAlert *alert = [[NSAlert alloc] init];
-            [alert addButtonWithTitle:@"OK"];
-            alert.messageText = @"Invalid repository";
-            alert.informativeText = @"Munki repositories usually contain subdirectories for catalogs, manifests and pkginfo files.";
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+            alert.messageText = NSLocalizedString(@"Invalid repository", @"");
+            alert.informativeText = NSLocalizedString(@"Munki repositories usually contain subdirectories for catalogs, manifests and pkginfo files.", @"");
             alert.alertStyle = NSAlertStyleInformational;
             alert.showsSuppressionButton = NO;
             [alert runModal];
