@@ -12,6 +12,15 @@
 
 @implementation ManifestMO
 
+@synthesize cachedManagedInstallsCount;
+@synthesize cachedManagedUninstallsCount;
+@synthesize cachedManagedUpdatesCount;
+@synthesize cachedOptionalInstallsCount;
+@synthesize cachedDefaultInstallsCount;
+@synthesize cachedFeaturedItemsCount;
+@synthesize cachedIncludedManifestsCount;
+@synthesize cachedReferencingManifestsCount;
+
 - (NSString *)fileName
 {
     NSString *tempFileName = nil;
@@ -421,12 +430,23 @@
 
 - (NSNumber *)managedInstallsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allManagedInstalls count]];
+    // Check if we have a cached value
+    if (!self.cachedManagedInstallsCount) {
+        NSUInteger count = [self.managedInstallsFaster count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.managedInstalls count];
+        }
+
+        self.cachedManagedInstallsCount = @(count);
+    }
+    return self.cachedManagedInstallsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingManagedInstallsCount
 {
-    return [NSSet setWithObjects:@"allManagedInstalls", nil];
+    return [NSSet setWithObjects:@"managedInstallsFaster", @"conditionalItems", nil];
 }
 
 - (NSString *)managedInstallsCountShortDescription
@@ -455,12 +475,23 @@
 
 - (NSNumber *)managedUninstallsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allManagedUninstalls count]];
+    // Check if we have a cached value
+    if (!self.cachedManagedUninstallsCount) {
+        NSUInteger count = [self.managedUninstallsFaster count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.managedUninstalls count];
+        }
+
+        self.cachedManagedUninstallsCount = @(count);
+    }
+    return self.cachedManagedUninstallsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingManagedUninstallsCount
 {
-    return [NSSet setWithObjects:@"allManagedUninstalls", nil];
+    return [NSSet setWithObjects:@"managedUninstallsFaster", @"conditionalItems", nil];
 }
 
 - (NSString *)managedUninstallsCountShortDescription
@@ -489,12 +520,23 @@
 
 - (NSNumber *)managedUpdatesCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allManagedUpdates count]];
+    // Check if we have a cached value
+    if (!self.cachedManagedUpdatesCount) {
+        NSUInteger count = [self.managedUpdatesFaster count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.managedUpdates count];
+        }
+
+        self.cachedManagedUpdatesCount = @(count);
+    }
+    return self.cachedManagedUpdatesCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingManagedUpdatesCount
 {
-    return [NSSet setWithObjects:@"allManagedUpdates", nil];
+    return [NSSet setWithObjects:@"managedUpdatesFaster", @"conditionalItems", nil];
 }
 
 - (NSString *)managedUpdatesCountShortDescription
@@ -523,12 +565,23 @@
 
 - (NSNumber *)optionalInstallsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allOptionalInstalls count]];
+    // Check if we have a cached value
+    if (!self.cachedOptionalInstallsCount) {
+        NSUInteger count = [self.optionalInstallsFaster count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.optionalInstalls count];
+        }
+
+        self.cachedOptionalInstallsCount = @(count);
+    }
+    return self.cachedOptionalInstallsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingOptionalInstallsCount
 {
-    return [NSSet setWithObjects:@"allOptionalInstalls", nil];
+    return [NSSet setWithObjects:@"optionalInstallsFaster", @"conditionalItems", nil];
 }
 
 - (NSString *)optionalInstallsCountShortDescription
@@ -557,12 +610,23 @@
 
 - (NSNumber *)defaultInstallsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allDefaultInstalls count]];
+    // Check if we have a cached value
+    if (!self.cachedDefaultInstallsCount) {
+        NSUInteger count = [self.defaultInstalls count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.defaultInstalls count];
+        }
+
+        self.cachedDefaultInstallsCount = @(count);
+    }
+    return self.cachedDefaultInstallsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingDefaultInstallsCount
 {
-    return [NSSet setWithObjects:@"allDefaultInstalls", nil];
+    return [NSSet setWithObjects:@"defaultInstalls", @"conditionalItems", nil];
 }
 
 - (NSString *)defaultInstallsCountShortDescription
@@ -591,12 +655,23 @@
 
 - (NSNumber *)featuredItemsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allFeaturedItems count]];
+    // Check if we have a cached value
+    if (!self.cachedFeaturedItemsCount) {
+        NSUInteger count = [self.featuredItems count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.featuredItems count];
+        }
+
+        self.cachedFeaturedItemsCount = @(count);
+    }
+    return self.cachedFeaturedItemsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingFeaturedItemsCount
 {
-    return [NSSet setWithObjects:@"allFeaturedItems", nil];
+    return [NSSet setWithObjects:@"featuredItems", @"conditionalItems", nil];
 }
 
 - (NSString *)featuredItemsCountShortDescription
@@ -625,12 +700,23 @@
 
 - (NSNumber *)includedManifestsCount
 {
-    return [NSNumber numberWithUnsignedInteger:[self.allIncludedManifests count]];
+    // Check if we have a cached value
+    if (!self.cachedIncludedManifestsCount) {
+        NSUInteger count = [self.includedManifestsFaster count];
+
+        // Add conditional items count
+        for (ConditionalItemMO *condition in self.conditionalItems) {
+            count += [condition.includedManifests count];
+        }
+
+        self.cachedIncludedManifestsCount = @(count);
+    }
+    return self.cachedIncludedManifestsCount;
 }
 
 + (NSSet *)keyPathsForValuesAffectingIncludedManifestsCount
 {
-    return [NSSet setWithObjects:@"allIncludedManifests", nil];
+    return [NSSet setWithObjects:@"includedManifestsFaster", @"conditionalItems", nil];
 }
 
 - (NSString *)includedManifestsCountShortDescription
@@ -659,9 +745,13 @@
 
 - (NSNumber *)referencingManifestsCount
 {
-    NSSet *manifestStringObjects = [self.referencingManifests filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
-    NSUInteger all = [manifestStringObjects count];
-    return [NSNumber numberWithUnsignedInteger:all];
+    // Check if we have a cached value
+    if (!self.cachedReferencingManifestsCount) {
+        NSSet *manifestStringObjects = [self.referencingManifests filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"typeString == %@", @"includedManifest"]];
+        NSUInteger count = [manifestStringObjects count];
+        self.cachedReferencingManifestsCount = @(count);
+    }
+    return self.cachedReferencingManifestsCount;
 }
 
 - (NSString *)referencingManifestsCountShortDescription
@@ -1073,6 +1163,77 @@
 	
 	return infoDictInMemory;
 }
+
+- (void)invalidateCountCaches
+{
+    // Send KVO notifications that count properties will change
+    [self willChangeValueForKey:@"managedInstallsCount"];
+    [self willChangeValueForKey:@"managedUninstallsCount"];
+    [self willChangeValueForKey:@"managedUpdatesCount"];
+    [self willChangeValueForKey:@"optionalInstallsCount"];
+    [self willChangeValueForKey:@"defaultInstallsCount"];
+    [self willChangeValueForKey:@"featuredItemsCount"];
+    [self willChangeValueForKey:@"includedManifestsCount"];
+    [self willChangeValueForKey:@"referencingManifestsCount"];
+
+    // Also send notifications for the description properties that the UI bindings use
+    [self willChangeValueForKey:@"managedInstallsCountDescription"];
+    [self willChangeValueForKey:@"managedUninstallsCountDescription"];
+    [self willChangeValueForKey:@"managedUpdatesCountDescription"];
+    [self willChangeValueForKey:@"optionalInstallsCountDescription"];
+    [self willChangeValueForKey:@"defaultInstallsCountDescription"];
+    [self willChangeValueForKey:@"featuredItemsCountDescription"];
+    [self willChangeValueForKey:@"includedManifestsCountDescription"];
+    [self willChangeValueForKey:@"referencingManifestsCountDescription"];
+    [self willChangeValueForKey:@"conditionsCountDescription"];
+
+    // Clear the cached values - this will cause the count properties to recalculate
+    self.cachedManagedInstallsCount = nil;
+    self.cachedManagedUninstallsCount = nil;
+    self.cachedManagedUpdatesCount = nil;
+    self.cachedOptionalInstallsCount = nil;
+    self.cachedDefaultInstallsCount = nil;
+    self.cachedFeaturedItemsCount = nil;
+    self.cachedIncludedManifestsCount = nil;
+    self.cachedReferencingManifestsCount = nil;
+
+    // Send KVO notifications that count properties have changed
+    [self didChangeValueForKey:@"managedInstallsCount"];
+    [self didChangeValueForKey:@"managedUninstallsCount"];
+    [self didChangeValueForKey:@"managedUpdatesCount"];
+    [self didChangeValueForKey:@"optionalInstallsCount"];
+    [self didChangeValueForKey:@"defaultInstallsCount"];
+    [self didChangeValueForKey:@"featuredItemsCount"];
+    [self didChangeValueForKey:@"includedManifestsCount"];
+    [self didChangeValueForKey:@"referencingManifestsCount"];
+
+    // Send notifications that description properties have changed
+    [self didChangeValueForKey:@"managedInstallsCountDescription"];
+    [self didChangeValueForKey:@"managedUninstallsCountDescription"];
+    [self didChangeValueForKey:@"managedUpdatesCountDescription"];
+    [self didChangeValueForKey:@"optionalInstallsCountDescription"];
+    [self didChangeValueForKey:@"defaultInstallsCountDescription"];
+    [self didChangeValueForKey:@"featuredItemsCountDescription"];
+    [self didChangeValueForKey:@"includedManifestsCountDescription"];
+    [self didChangeValueForKey:@"referencingManifestsCountDescription"];
+    [self didChangeValueForKey:@"conditionsCountDescription"];
+}
+
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self invalidateCountCaches];
+}
+
+- (void)willSave
+{
+    [super willSave];
+    if ([self isUpdated]) {
+        [self invalidateCountCaches];
+    }
+}
+
 
 
 @end

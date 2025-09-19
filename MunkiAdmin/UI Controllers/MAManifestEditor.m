@@ -177,6 +177,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     }
     
     [moc refreshObject:selectedManifest mergeChanges:YES];
+    
+    // Invalidate count caches since we added conditional items
+    [selectedManifest invalidateCountCaches];
 }
 
 - (void)includedManifestDoubleClick:(id)sender
@@ -386,6 +389,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
             break;
     }
     
+    // Invalidate count caches since we added items
+    [self.manifestToEdit invalidateCountCaches];
+    
     // Need to refresh fetched properties
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
     
@@ -402,6 +408,10 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         [self.manifestToEdit.managedObjectContext deleteObject:anIncludedManifest];
         [self.manifestToEdit.managedObjectContext refreshObject:originalManifest mergeChanges:YES];
     }
+
+    // Invalidate count caches since we removed included manifests
+    [selectedManifest invalidateCountCaches];
+
     [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 
@@ -553,6 +563,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     }
     
     [self.manifestToEdit.managedObjectContext refreshObject:self.manifestToEdit mergeChanges:YES];
+    
+    // Invalidate count caches since we removed items
+    [self.manifestToEdit invalidateCountCaches];
 }
 
 
@@ -588,6 +601,9 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     }
     
     [moc refreshObject:selectedManifest mergeChanges:YES];
+
+    // Invalidate count caches since we added conditional items
+    [selectedManifest invalidateCountCaches];
 }
 
 - (void)editPredicateSheetDidEnd:(id)sheet returnCode:(NSModalResponse)returnCode object:(id)object
@@ -664,6 +680,10 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     for (ConditionalItemMO *aConditionalItem in [self.conditionsTreeController selectedObjects]) {
         [self.manifestToEdit.managedObjectContext deleteObject:aConditionalItem];
     }
+    
+    // Invalidate count caches since we removed conditional items
+    [self.manifestToEdit invalidateCountCaches];
+    
     [self.manifestToEdit.managedObjectContext refreshObject:selectedManifest mergeChanges:YES];
 }
 

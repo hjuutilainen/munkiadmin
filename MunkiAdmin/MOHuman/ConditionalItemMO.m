@@ -1,5 +1,6 @@
 #import "ConditionalItemMO.h"
 #import "StringObjectMO.h"
+#import "ManifestMO.h"
 
 unichar kSeparatorCharacter = 0x02192;
 
@@ -277,6 +278,26 @@ unichar kSeparatorCharacter = 0x02192;
 {
 	NSDictionary *returnDict = [NSDictionary dictionaryWithDictionary:[self singleLevelDictionary:self]];
 	return returnDict;
+}
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self invalidateManifestCountCaches];
+}
+
+- (void)willSave
+{
+    [super willSave];
+    if ([self isUpdated] || [self isInserted] || [self isDeleted]) {
+        [self invalidateManifestCountCaches];
+    }
+}
+
+- (void)invalidateManifestCountCaches
+{
+    // Invalidate cache for the manifest this conditional item belongs to
+    [[self manifest] invalidateCountCaches];
 }
 
 

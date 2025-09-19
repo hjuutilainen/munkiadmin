@@ -8,4 +8,6 @@
 @property (weak, readonly) NSImage *image;
 @property (weak, readonly) NSString *subtitle;
 
+- (void)invalidateManifestCountCaches;
+
 @end

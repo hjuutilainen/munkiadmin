@@ -19,6 +19,17 @@
 @property (readonly) NSNumber *referencingManifestsCount;
 @property (readonly) NSNumber *conditionsCount;
 
+// Cached count properties to avoid expensive fetched property queries
+@property (strong, nonatomic) NSNumber *cachedManagedInstallsCount;
+@property (strong, nonatomic) NSNumber *cachedManagedUninstallsCount;
+@property (strong, nonatomic) NSNumber *cachedManagedUpdatesCount;
+@property (strong, nonatomic) NSNumber *cachedOptionalInstallsCount;
+@property (strong, nonatomic) NSNumber *cachedDefaultInstallsCount;
+@property (strong, nonatomic) NSNumber *cachedFeaturedItemsCount;
+@property (strong, nonatomic) NSNumber *cachedIncludedManifestsCount;
+@property (strong, nonatomic) NSNumber *cachedReferencingManifestsCount;
+
 - (NSArray *)rootConditionalItems;
+- (void)invalidateCountCaches;
 
 @end

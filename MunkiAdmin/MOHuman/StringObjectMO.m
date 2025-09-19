@@ -414,5 +414,42 @@
     return [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
 }
 
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self invalidateManifestCountCaches];
+}
+
+- (void)willSave
+{
+    [super willSave];
+    if ([self isUpdated] || [self isInserted] || [self isDeleted]) {
+        [self invalidateManifestCountCaches];
+    }
+}
+
+- (void)invalidateManifestCountCaches
+{
+    // Invalidate cache for any manifest this string object is related to
+
+    // Direct manifest references
+    [[self managedInstallReference] invalidateCountCaches];
+    [[self managedUninstallReference] invalidateCountCaches];
+    [[self managedUpdateReference] invalidateCountCaches];
+    [[self optionalInstallReference] invalidateCountCaches];
+    [[self defaultInstallReference] invalidateCountCaches];
+    [[self featuredItemReference] invalidateCountCaches];
+    [[self manifestReference] invalidateCountCaches];
+
+    // Conditional manifest references (via conditional items)
+    [[[self managedInstallConditionalReference] manifest] invalidateCountCaches];
+    [[[self managedUninstallConditionalReference] manifest] invalidateCountCaches];
+    [[[self managedUpdateConditionalReference] manifest] invalidateCountCaches];
+    [[[self optionalInstallConditionalReference] manifest] invalidateCountCaches];
+    [[[self defaultInstallConditionalReference] manifest] invalidateCountCaches];
+    [[[self featuredItemConditionalReference] manifest] invalidateCountCaches];
+    [[[self includedManifestConditionalReference] manifest] invalidateCountCaches];
+}
+
 
 @end

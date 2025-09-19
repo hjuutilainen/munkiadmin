@@ -4,4 +4,5 @@
 - (NSString *)titleWithParentTitle;
 - (NSDictionary *)dictValue;
 - (NSDictionary *)dictValueForSave;
+- (void)invalidateManifestCountCaches;
 @end
