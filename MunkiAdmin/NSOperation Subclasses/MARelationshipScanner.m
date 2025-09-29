@@ -710,6 +710,8 @@ static const int BatchSize = 50;
 
 
 - (void)main {
+    NSDate *relationshipScanStartTime = [NSDate date];
+    
     self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     self.context.parentContext = [(MAMunkiAdmin_AppDelegate *)self.delegate managedObjectContext];
     self.context.undoManager = nil;
@@ -732,6 +734,10 @@ static const int BatchSize = 50;
             // Do not rethrow exceptions.
         }
     }];
+    
+    NSTimeInterval relationshipScanTime = [[NSDate date] timeIntervalSinceDate:relationshipScanStartTime];
+    NSString *scanType = (self.operationMode == 0) ? @"package" : @"manifest";
+    DDLogDebug(@"Relationship scanning (%@) completed in %.2f ms", scanType, relationshipScanTime * 1000.0);
 }
 
 @end
