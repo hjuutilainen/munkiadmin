@@ -460,6 +460,44 @@ static const int BatchSize = 50;
     //[getPackages setRelationshipKeyPathsForPrefetching:[NSArray arrayWithObjects:@"packageInfos", @"catalogInfos", @"packages", nil]];
     self.allCatalogs = [privateContext executeFetchRequest:getAllCatalogs error:nil];
     
+    // Pre-populate catalog lookup dictionary for fast lookups
+    NSMutableDictionary *catalogsByTitle = [NSMutableDictionary dictionaryWithCapacity:20];
+    for (CatalogMO *catalog in self.allCatalogs) {
+        [catalogsByTitle setObject:catalog forKey:catalog.title];
+    }
+    
+    // Pre-cache IconImageMO objects to eliminate Core Data queries and image processing
+    NSURL *iconsDirectoryURL = [appDelegate iconsURL];
+    NSArray *iconFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:iconsDirectoryURL
+                                                       includingPropertiesForKeys:nil
+                                                                          options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                            error:nil];
+    NSMutableDictionary *iconImageCache = [NSMutableDictionary dictionaryWithCapacity:[iconFiles count]];
+    
+    for (NSURL *iconURL in iconFiles) {
+        NSString *iconFileName = [iconURL lastPathComponent];
+        IconImageMO *cachedIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
+        [iconImageCache setObject:cachedIcon forKey:iconFileName];
+    }
+    
+    // Pre-populate developer lookup dictionary for fast lookups
+    NSFetchRequest *getAllDevelopers = [[NSFetchRequest alloc] init];
+    [getAllDevelopers setEntity:developerEntityDescr];
+    NSArray *allDevelopers = [privateContext executeFetchRequest:getAllDevelopers error:nil];
+    NSMutableDictionary *developersByTitle = [NSMutableDictionary dictionaryWithCapacity:50];
+    for (DeveloperMO *developer in allDevelopers) {
+        [developersByTitle setObject:developer forKey:developer.title];
+    }
+    
+    // Pre-populate category lookup dictionary for fast lookups
+    NSFetchRequest *getAllCategories = [[NSFetchRequest alloc] init];
+    [getAllCategories setEntity:categoryEntityDescr];
+    NSArray *allCategories = [privateContext executeFetchRequest:getAllCategories error:nil];
+    NSMutableDictionary *categoriesByTitle = [NSMutableDictionary dictionaryWithCapacity:30];
+    for (CategoryMO *category in allCategories) {
+        [categoriesByTitle setObject:category forKey:category.title];
+    }
+    
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
     [getApplications setEntity:applicationEntityDescr];
     self.allApplications = [privateContext executeFetchRequest:getApplications error:nil];
@@ -524,24 +562,19 @@ static const int BatchSize = 50;
         DDLogVerbose(@"%@: Looping through catalogs key in the original pkginfo...", currentPackage.titleWithVersion);
         [catalogsFromPkginfo enumerateObjectsUsingBlock:^(id catalogObject, NSUInteger catalogIndex, BOOL *stopCatalogEnum) {
             
-            NSFetchRequest *fetchForCatalogs = [[NSFetchRequest alloc] init];
-            [fetchForCatalogs setEntity:catalogEntityDescr];
-            
-            NSPredicate *catalogTitlePredicate = [NSPredicate predicateWithFormat:@"title == %@", catalogObject];
-            [fetchForCatalogs setPredicate:catalogTitlePredicate];
-            
-            NSUInteger numFoundCatalogs = [privateContext countForFetchRequest:fetchForCatalogs error:nil];
-            
+            // Use dictionary lookup instead of expensive Core Data queries
+            CatalogMO *existingCatalog = [catalogsByTitle objectForKey:catalogObject];
             
             // There is an item in catalogs array which does not
             // yet have it's own CatalogMO object.
             // Create it and add dependencies for it
             
-            if (numFoundCatalogs == 0) {
+            if (existingCatalog == nil) {
                 DDLogVerbose(@"%@: Should be enabled for new catalog %@", currentPackage.titleWithVersion, catalogObject);
                 CatalogMO *aNewCatalog = [NSEntityDescription insertNewObjectForEntityForName:@"Catalog" inManagedObjectContext:privateContext];
                 aNewCatalog.title = catalogObject;
                 [aNewCatalog addPackagesObject:currentPackage];
+                [catalogsByTitle setObject:aNewCatalog forKey:catalogObject];
                 CatalogInfoMO *newCatalogInfo = [NSEntityDescription insertNewObjectForEntityForName:@"CatalogInfo" inManagedObjectContext:privateContext];
                 newCatalogInfo.package = currentPackage;
                 newCatalogInfo.catalog.title = aNewCatalog.title;
@@ -561,7 +594,7 @@ static const int BatchSize = 50;
             // Use the first one and create dependencies if needed
             
             else {
-                CatalogMO *foundCatalog = [[privateContext executeFetchRequest:fetchForCatalogs error:nil] objectAtIndex:0];
+                CatalogMO *foundCatalog = existingCatalog;
                 
                 if (![[currentPackage.catalogInfos valueForKeyPath:@"catalog.title"] containsObject:catalogObject]) {
                     DDLogVerbose(@"%@: Should be enabled for existing catalog %@", currentPackage.titleWithVersion, foundCatalog.title);
@@ -589,46 +622,31 @@ static const int BatchSize = 50;
          use a default icon (which is the icon for .pkg file type).
          */
         if ((currentPackage.munki_icon_name != nil) && (![currentPackage.munki_icon_name isEqualToString:@""])) {
-            NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_icon_name];
-            if ([[iconURL pathExtension] isEqualToString:@""]) {
-                iconURL = [iconURL URLByAppendingPathExtension:@"png"];
+            NSString *iconFileName = currentPackage.munki_icon_name;
+            if ([[iconFileName pathExtension] isEqualToString:@""]) {
+                iconFileName = [iconFileName stringByAppendingPathExtension:@"png"];
             }
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
-                currentPackage.iconImage = icon;
-            } else {
-                currentPackage.iconImage = defaultIcon;
-            }
+            IconImageMO *icon = [iconImageCache objectForKey:iconFileName];
+            currentPackage.iconImage = icon ? icon : defaultIcon;
         } else {
-            NSURL *iconURL = [[appDelegate iconsURL] URLByAppendingPathComponent:currentPackage.munki_name];
-            iconURL = [iconURL URLByAppendingPathExtension:@"png"];
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[iconURL path]]) {
-                IconImageMO *icon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
-                currentPackage.iconImage = icon;
-            } else {
-                currentPackage.iconImage = defaultIcon;
-            }
+            NSString *iconFileName = [currentPackage.munki_name stringByAppendingPathExtension:@"png"];
+            IconImageMO *icon = [iconImageCache objectForKey:iconFileName];
+            currentPackage.iconImage = icon ? icon : defaultIcon;
         }
         
         /*
          Deal with the package category
          */
         if ([originalPkginfo objectForKey:@"category"] != nil) {
-            NSFetchRequest *fetchForCategory = [[NSFetchRequest alloc] init];
-            [fetchForCategory setEntity:categoryEntityDescr];
-            
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"category"]];
-            [fetchForCategory setPredicate:predicate];
-            
-            NSUInteger numFoundCategories = [privateContext countForFetchRequest:fetchForCategory error:nil];
-            CategoryMO *category = nil;
-            if (numFoundCategories > 0) {
-                category = [[privateContext executeFetchRequest:fetchForCategory error:nil] objectAtIndex:0];
+            NSString *categoryTitle = [originalPkginfo objectForKey:@"category"];
+            CategoryMO *category = [categoriesByTitle objectForKey:categoryTitle];
+            if (category) {
                 [category addPackagesObject:currentPackage];
             } else {
                 category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:privateContext];
-                category.title = [originalPkginfo objectForKey:@"category"];
+                category.title = categoryTitle;
                 [category addPackagesObject:currentPackage];
+                [categoriesByTitle setObject:category forKey:categoryTitle];
             }
         }
         
@@ -636,21 +654,15 @@ static const int BatchSize = 50;
          Deal with the package developer
          */
         if ([originalPkginfo objectForKey:@"developer"] != nil) {
-            NSFetchRequest *fetchForDeveloper = [[NSFetchRequest alloc] init];
-            [fetchForDeveloper setEntity:developerEntityDescr];
-            
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == %@", [originalPkginfo objectForKey:@"developer"]];
-            [fetchForDeveloper setPredicate:predicate];
-            
-            NSUInteger numFoundDevelopers = [privateContext countForFetchRequest:fetchForDeveloper error:nil];
-            DeveloperMO *developer = nil;
-            if (numFoundDevelopers > 0) {
-                developer = [[privateContext executeFetchRequest:fetchForDeveloper error:nil] objectAtIndex:0];
+            NSString *developerTitle = [originalPkginfo objectForKey:@"developer"];
+            DeveloperMO *developer = [developersByTitle objectForKey:developerTitle];
+            if (developer) {
                 [developer addPackagesObject:currentPackage];
             } else {
                 developer = [NSEntityDescription insertNewObjectForEntityForName:@"Developer" inManagedObjectContext:privateContext];
-                developer.title = [originalPkginfo objectForKey:@"developer"];
+                developer.title = developerTitle;
                 [developer addPackagesObject:currentPackage];
+                [developersByTitle setObject:developer forKey:developerTitle];
             }
         }
         
