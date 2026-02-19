@@ -17,6 +17,8 @@
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
 #import "CocoaLumberjack.h"
+#import <YAMLFrameworkOrdered/YAMLSerialization.h>
+#import <YAMLFrameworkOrdered/M13OrderedDictionary.h>
 
 DDLogLevel ddLogLevel;
 
@@ -49,6 +51,9 @@ DDLogLevel ddLogLevel;
 @property (readwrite, strong) NSDate *saveStartedDate;
 
 @property (readwrite, strong) NSURL *repositoryURL;
+
+// YAML parsing cache to avoid re-parsing files
+@property (strong, nonatomic) NSMutableDictionary *yamlParseCache;
 
 @property (readwrite) BOOL repositoryHasPreSaveScript;
 @property (readwrite) BOOL repositoryHasPostSaveScript;
@@ -119,6 +124,7 @@ static dispatch_queue_t serialQueue;
             self.diskImageQueue.maxConcurrentOperationCount = 1;
             self.lengthForUniqueCatalogTitles = 1;
             self.makecatalogsRunNeeded = NO;
+            self.yamlParseCache = [NSMutableDictionary dictionary];
         }
     });
     
@@ -2716,7 +2722,7 @@ static dispatch_queue_t serialQueue;
     DDLogDebug(@"%@: Writing new pkginfo to disk...", filename);
     BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
     DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
-    if ([plist writeToURL:(NSURL *)aPackage.packageInfoURL atomically:atomicWrites]) {
+    if ([self writeDictionary:plist toURLSupportingYAML:(NSURL *)aPackage.packageInfoURL atomically:atomicWrites]) {
         aPackage.originalPkginfo = plist;
         
         /*
@@ -2802,7 +2808,7 @@ static dispatch_queue_t serialQueue;
     DDLogDebug(@"%@: Writing new manifest to disk...", filename);
     BOOL atomicWrites = [defaults boolForKey:@"atomicWrites"];
     DDLogDebug(@"%@: Should write atomically: %@", filename, atomicWrites ? @"YES" : @"NO");
-    if ([plist writeToURL:(NSURL *)aManifest.manifestURL atomically:atomicWrites]) {
+    if ([self writeDictionary:plist toURLSupportingYAML:(NSURL *)aManifest.manifestURL atomically:atomicWrites]) {
         aManifest.originalManifest = plist;
         
         /*
@@ -2873,7 +2879,7 @@ static dispatch_queue_t serialQueue;
         /*
          Read the current pkginfo from disk
          */
-		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
+        NSDictionary *infoDictOnDisk = [self dictionaryWithContentsOfURLSupportingYAML:(NSURL *)aPackage.packageInfoURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
         /*
@@ -3055,7 +3061,7 @@ static dispatch_queue_t serialQueue;
         /*
          Read the current manifest file from disk
          */
-        NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aManifest.manifestURL];
+        NSDictionary *infoDictOnDisk = [self dictionaryWithContentsOfURLSupportingYAML:(NSURL *)aManifest.manifestURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
         /*
@@ -3536,6 +3542,711 @@ static dispatch_queue_t serialQueue;
 - (NSUserDefaults *)defaults
 {
 	return [NSUserDefaults standardUserDefaults];
+}
+
+#pragma mark - YAML Support Methods
+
+// Global flag to control YAML parsing during scanning
+static BOOL _isCurrentlyScanning = NO;
+
++ (void)setYAMLScanningMode:(BOOL)scanning {
+    _isCurrentlyScanning = scanning;
+}
+
++ (BOOL)isYAMLScanningMode {
+    return _isCurrentlyScanning;
+}
+
+- (BOOL)isYAMLFile:(NSURL *)fileURL
+{
+    NSString *extension = [[[fileURL pathExtension] lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    return [extension isEqualToString:@"yaml"] || [extension isEqualToString:@"yml"];
+}
+
+- (NSDictionary *)resolveYAMLPlaceholder:(NSDictionary *)dict fromURL:(NSURL *)fileURL
+{
+    if ([dict objectForKey:@"_yaml_placeholder"]) {
+        // This is a placeholder, force actual YAML parsing
+        NSString *filePath = [dict objectForKey:@"_file_path"];
+        if (filePath) {
+            NSURL *actualURL = [NSURL fileURLWithPath:filePath];
+            // Temporarily disable scanning mode to force parsing
+            BOOL wasScanning = _isCurrentlyScanning;
+            _isCurrentlyScanning = NO;
+            NSDictionary *result = [self dictionaryWithContentsOfURLSupportingYAML:actualURL];
+            _isCurrentlyScanning = wasScanning;
+            return result;
+        }
+    }
+    return dict;
+}
+
+- (NSDictionary *)dictionaryWithContentsOfURLSupportingYAML:(NSURL *)fileURL
+{
+    NSLog(@"[YAML-DEBUG] dictionaryWithContentsOfURLSupportingYAML called for: %@", [fileURL lastPathComponent]);
+    if ([self isYAMLFile:fileURL]) {
+        NSString *filename = [fileURL lastPathComponent];
+        NSLog(@"[YAML-DEBUG] File IS a YAML file: %@", filename);
+        
+        // Check if file exists first
+        if (![[NSFileManager defaultManager] fileExistsAtPath:[fileURL path]]) {
+            NSLog(@"[YAML-DEBUG] File does not exist: %@", filename);
+            return nil;
+        }
+        
+        NSLog(@"[YAML-DEBUG] About to call parseYAMLFileNatively for: %@", filename);
+        // Parse YAML using native LibYAML-based parser (fast!)
+        NSDictionary *result = [self parseYAMLFileNatively:fileURL];
+        if (result) {
+            NSLog(@"[YAML-DEBUG] Successfully parsed YAML file: %@ with %lu keys", filename, (unsigned long)[result count]);
+            return result;
+        }
+        
+        // If native parsing fails, fall back to placeholder
+        NSLog(@"[YAML-DEBUG] YAML parsing failed, using placeholder for: %@", filename);
+        
+        // Detect if this is a manifest file (in manifests directory) and return appropriate structure
+        NSString *filePath = [fileURL path];
+        if ([filePath containsString:@"/manifests/"]) {
+            // Return manifest-like placeholder structure
+            return @{
+                @"name": [filename stringByDeletingPathExtension],
+                @"display_name": [filename stringByDeletingPathExtension],
+                @"managed_installs": @[],
+                @"managed_uninstalls": @[],
+                @"managed_updates": @[],
+                @"optional_installs": @[],
+                @"default_installs": @[],
+                @"featured_items": @[],
+                @"conditional_items": @[],
+                @"catalogs": @[],
+                @"included_manifests": @[],
+                @"_yaml_file": @YES,
+                @"_file_path": filePath,
+                @"_yaml_placeholder": @"To view actual content, use external YAML editor"
+            };
+        } else {
+            // Return package info-like placeholder structure
+            return @{
+                @"name": [filename stringByDeletingPathExtension],
+                @"display_name": [filename stringByDeletingPathExtension],
+                @"version": @"1.0",
+                @"catalogs": @[],
+                @"category": @"",
+                @"developer": @"",
+                @"description": @"",
+                @"_yaml_file": @YES,
+                @"_file_path": filePath,
+                @"_yaml_placeholder": @"To view actual content, use external YAML editor"
+            };
+        }
+        
+    } else {
+        // Use the standard plist reading method
+        return [NSDictionary dictionaryWithContentsOfURL:fileURL];
+    }
+}
+
+- (BOOL)writeDictionary:(NSDictionary *)dictionary toURLSupportingYAML:(NSURL *)fileURL atomically:(BOOL)atomically
+{
+    NSString *filename = [fileURL lastPathComponent];
+    NSString *extension = [[fileURL pathExtension] lowercaseString];
+    
+    DDLogInfo(@"=== YAML SAVE DEBUG ===");
+    DDLogInfo(@"File: %@", filename);
+    DDLogInfo(@"Extension: %@", extension);
+    DDLogInfo(@"isYAMLFile result: %@", [self isYAMLFile:fileURL] ? @"YES" : @"NO");
+    
+    if ([self isYAMLFile:fileURL]) {
+        DDLogInfo(@"Attempting to write as YAML file: %@", filename);
+        
+        // Try to write as YAML using Python bridge
+        BOOL success = [self writeYAMLFileUsingPythonBridge:dictionary toURL:fileURL];
+        if (success) {
+            DDLogInfo(@"Successfully wrote YAML file: %@", filename);
+            return YES;
+        }
+        
+        // If Python bridge fails, log warning and fall back to plist
+        DDLogWarn(@"YAML writing failed for: %@, falling back to plist format", filename);
+        return [dictionary writeToURL:fileURL atomically:atomically];
+    } else {
+        DDLogInfo(@"Writing as standard plist file: %@", filename);
+        // Use the standard plist writing method
+        return [dictionary writeToURL:fileURL atomically:atomically];
+    }
+}
+
+// MARK: - YAML Native Parser Methods
+
+- (NSDictionary *)parseYAMLFileNatively:(NSURL *)fileURL
+{
+    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+    NSString *fileName = [fileURL lastPathComponent];
+    
+    NSLog(@"[YAML-DEBUG] Starting native YAML parse for: %@", fileName);
+    
+    @try {
+        NSError *readError = nil;
+        NSData *yamlData = [NSData dataWithContentsOfURL:fileURL options:0 error:&readError];
+        
+        if (!yamlData || readError) {
+            NSLog(@"[YAML-DEBUG] Failed to read YAML file %@: %@", fileName, readError.localizedDescription);
+            return nil;
+        }
+        
+        NSLog(@"[YAML-DEBUG] Read %lu bytes from YAML file: %@", (unsigned long)[yamlData length], fileName);
+        
+        // Parse YAML using LibYAML-based framework
+        // IMPORTANT: YAMLFrameworkOrdered REQUIRES kYAMLReadOptionStringScalars - it's the only supported option!
+        // The library returns nil (and crashes on objectAtIndex:0) if this option is not set.
+        // All scalar values will be strings, so we convert them to proper types after parsing.
+        NSError *parseError = nil;
+        id yamlObject = [YAMLSerialization objectWithYAMLData:yamlData
+                                                      options:kYAMLReadOptionStringScalars
+                                                        error:&parseError];
+        
+        NSLog(@"[YAML-DEBUG] Parsed YAML file %@, result class: %@, parseError: %@", fileName, NSStringFromClass([yamlObject class]), parseError);
+        
+        if (parseError) {
+            NSLog(@"[YAML-DEBUG] Parse error for YAML file %@: %@", fileName, parseError.localizedDescription);
+            return nil;
+        }
+        
+        if (!yamlObject) {
+            NSLog(@"[YAML-DEBUG] YAML parsing returned nil for file: %@", fileName);
+            return nil;
+        }
+        
+        // YAMLSerialization returns an NSArray of YAML documents.
+        // Munki files are single-document, so extract the first document.
+        if ([yamlObject isKindOfClass:[NSArray class]]) {
+            NSArray *yamlDocuments = (NSArray *)yamlObject;
+            NSLog(@"[YAML-DEBUG] YAML object is NSArray with %lu documents for: %@", (unsigned long)[yamlDocuments count], fileName);
+            if ([yamlDocuments count] > 0) {
+                yamlObject = [yamlDocuments firstObject];
+                NSLog(@"[YAML-DEBUG] Unwrapped first document, class: %@ for: %@", NSStringFromClass([yamlObject class]), fileName);
+            } else {
+                NSLog(@"[YAML-DEBUG] YAML documents array is empty for: %@", fileName);
+                return nil;
+            }
+        }
+        
+        // YAMLSerialization returns M13OrderedDictionary (or M13MutableOrderedDictionary) which
+        // is NOT a subclass of NSDictionary - it's an NSObject subclass. We need to check for both.
+        NSDictionary *resultDict = nil;
+        
+        if ([yamlObject isKindOfClass:[NSDictionary class]]) {
+            NSLog(@"[YAML-DEBUG] YAML object is NSDictionary for: %@", fileName);
+            resultDict = (NSDictionary *)yamlObject;
+        } else if ([yamlObject isKindOfClass:[M13OrderedDictionary class]]) {
+            NSLog(@"[YAML-DEBUG] YAML object is M13OrderedDictionary for: %@, converting...", fileName);
+            // Convert M13OrderedDictionary to NSDictionary
+            M13OrderedDictionary *orderedDict = (M13OrderedDictionary *)yamlObject;
+            resultDict = [self convertM13OrderedDictionaryToNSDictionary:orderedDict];
+            NSLog(@"[YAML-DEBUG] Converted M13OrderedDictionary to NSDictionary with %lu keys for: %@", (unsigned long)[resultDict count], fileName);
+        } else {
+            NSLog(@"[YAML-DEBUG] YAML file %@ did not parse to a dictionary, got: %@", fileName, NSStringFromClass([yamlObject class]));
+            return nil;
+        }
+        
+        // Convert YAML string scalars to proper Cocoa types (booleans, integers)
+        // YAMLFrameworkOrdered with kYAMLReadOptionStringScalars returns all scalars as strings
+        NSLog(@"[YAML-DEBUG] Converting string scalars to proper types for: %@", fileName);
+        resultDict = [self convertYAMLStringScalarsToProperTypes:resultDict];
+        
+        CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - startTime) * 1000.0;
+        NSLog(@"[YAML-DEBUG] Native YAML parse completed for %@ in %.2f ms with %lu keys", fileName, elapsed, (unsigned long)[resultDict count]);
+        
+        // Log all keys and their values for debugging
+        NSLog(@"[YAML-DEBUG] Keys in parsed result for %@:", fileName);
+        for (NSString *key in resultDict) {
+            id value = resultDict[key];
+            NSLog(@"[YAML-DEBUG]   %@ = %@ (%@)", key, value, NSStringFromClass([value class]));
+        }
+        
+        return resultDict;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"[YAML-DEBUG] Exception parsing YAML file %@: %@", fileName, exception.reason);
+        return nil;
+    }
+}
+
+// Helper method to recursively convert M13OrderedDictionary to NSDictionary
+- (NSDictionary *)convertM13OrderedDictionaryToNSDictionary:(M13OrderedDictionary *)orderedDict
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[orderedDict count]];
+    
+    for (id key in orderedDict) {
+        id value = orderedDict[key];
+        
+        if ([value isKindOfClass:[M13OrderedDictionary class]]) {
+            // Recursively convert nested ordered dictionaries
+            result[key] = [self convertM13OrderedDictionaryToNSDictionary:value];
+        } else if ([value isKindOfClass:[NSArray class]]) {
+            // Convert arrays that might contain ordered dictionaries
+            result[key] = [self convertArrayContainingOrderedDictionaries:value];
+        } else {
+            result[key] = value;
+        }
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:result];
+}
+
+// Helper method to convert arrays that might contain M13OrderedDictionary objects
+- (NSArray *)convertArrayContainingOrderedDictionaries:(NSArray *)array
+{
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:[array count]];
+    
+    for (id item in array) {
+        if ([item isKindOfClass:[M13OrderedDictionary class]]) {
+            [result addObject:[self convertM13OrderedDictionaryToNSDictionary:item]];
+        } else if ([item isKindOfClass:[NSArray class]]) {
+            [result addObject:[self convertArrayContainingOrderedDictionaries:item]];
+        } else {
+            [result addObject:item];
+        }
+    }
+    
+    return [NSArray arrayWithArray:result];
+}
+
+// Helper method to convert YAML string scalars to their proper Cocoa types
+// YAMLFrameworkOrdered with kYAMLReadOptionStringScalars returns all scalars as NSString
+// We need to convert them back to NSNumber (for booleans and integers) and keep strings as-is
+- (NSDictionary *)convertYAMLStringScalarsToProperTypes:(NSDictionary *)dict
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[dict count]];
+    
+    // Define known boolean keys in Munki pkginfo
+    // IMPORTANT: Only include keys whose Core Data attribute type is Boolean (NSNumber).
+    // Do NOT include RestartAction (String), force_install_after_date (Date), etc.
+    NSSet *booleanKeys = [NSSet setWithArray:@[
+        @"autoremove",
+        @"unattended_install",
+        @"unattended_uninstall",
+        @"installer_item_hash_missing",
+        @"installable_condition_disabled",
+        @"suppress_bundle_relocation",
+        @"uninstallable",
+        @"installer_item_location_valid",
+        @"OnDemand",
+        @"precache"
+    ]];
+    
+    // Keys that are String type in Core Data but may look like booleans in YAML.
+    // These must NOT be auto-detected as booleans.
+    NSSet *stringKeys = [NSSet setWithArray:@[
+        @"RestartAction",
+        @"uninstall_method",
+        @"installer_type",
+        @"category",
+        @"developer",
+        @"description",
+        @"display_name",
+        @"name",
+        @"version",
+        @"minimum_os_version",
+        @"maximum_os_version"
+    ]];
+    
+    // Keys that are Date type in Core Data — parse ISO 8601 strings to NSDate.
+    NSSet *dateKeys = [NSSet setWithArray:@[
+        @"force_install_after_date"
+    ]];
+    
+    // Define known integer keys in Munki pkginfo.
+    // Also includes attributeSetting from installer_choices_xml items (values 0 or 1).
+    NSSet *integerKeys = [NSSet setWithArray:@[
+        @"installed_size",
+        @"installer_item_size",
+        @"minimum_os_version_numeric",
+        @"maximum_os_version_numeric",
+        @"attributeSetting"
+    ]];
+    
+    for (NSString *key in dict) {
+        id value = dict[key];
+        
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            // Recursively convert nested dictionaries
+            result[key] = [self convertYAMLStringScalarsToProperTypes:value];
+        } else if ([value isKindOfClass:[NSArray class]]) {
+            // Convert arrays that might contain dictionaries with string scalars
+            result[key] = [self convertArrayWithYAMLStringScalars:value];
+        } else if ([value isKindOfClass:[NSString class]]) {
+            NSString *stringValue = (NSString *)value;
+            
+            // Check if this is a known boolean key
+            if ([booleanKeys containsObject:key]) {
+                result[key] = [NSNumber numberWithBool:[self boolFromYAMLString:stringValue]];
+            }
+            // Check if this is a known integer key
+            else if ([integerKeys containsObject:key]) {
+                result[key] = [NSNumber numberWithInteger:[stringValue integerValue]];
+            }
+            // Skip auto-detection for known string keys (String type in Core Data)
+            else if ([stringKeys containsObject:key]) {
+                result[key] = value;
+            }
+            // Convert known date keys from ISO 8601 string to NSDate
+            else if ([dateKeys containsObject:key]) {
+                NSISO8601DateFormatter *isoFormatter = [[NSISO8601DateFormatter alloc] init];
+                NSDate *date = [isoFormatter dateFromString:stringValue];
+                if (date) {
+                    result[key] = date;
+                } else {
+                    // Fallback: try with fractional seconds
+                    isoFormatter.formatOptions |= NSISO8601DateFormatWithFractionalSeconds;
+                    date = [isoFormatter dateFromString:stringValue];
+                    if (date) {
+                        result[key] = date;
+                    } else {
+                        DDLogWarn(@"[YAML] Could not parse date string '%@' for key '%@', keeping as string", stringValue, key);
+                        result[key] = value;
+                    }
+                }
+            }
+            // Auto-detect boolean strings (true/false, yes/no) for unknown keys
+            else if ([stringValue caseInsensitiveCompare:@"true"] == NSOrderedSame ||
+                     [stringValue caseInsensitiveCompare:@"yes"] == NSOrderedSame) {
+                result[key] = @YES;
+            }
+            else if ([stringValue caseInsensitiveCompare:@"false"] == NSOrderedSame ||
+                     [stringValue caseInsensitiveCompare:@"no"] == NSOrderedSame) {
+                result[key] = @NO;
+            }
+            // Keep other strings as-is
+            else {
+                result[key] = value;
+            }
+        } else {
+            // Keep other types as-is
+            result[key] = value;
+        }
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:result];
+}
+
+// Helper method to convert arrays that might contain dictionaries with YAML string scalars
+- (NSArray *)convertArrayWithYAMLStringScalars:(NSArray *)array
+{
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:[array count]];
+    
+    for (id item in array) {
+        if ([item isKindOfClass:[NSDictionary class]]) {
+            [result addObject:[self convertYAMLStringScalarsToProperTypes:item]];
+        } else if ([item isKindOfClass:[NSArray class]]) {
+            [result addObject:[self convertArrayWithYAMLStringScalars:item]];
+        } else {
+            [result addObject:item];
+        }
+    }
+    
+    return [NSArray arrayWithArray:result];
+}
+
+// Helper to convert YAML boolean strings to BOOL
+- (BOOL)boolFromYAMLString:(NSString *)string
+{
+    NSString *lower = [string lowercaseString];
+    return [lower isEqualToString:@"true"] || [lower isEqualToString:@"yes"] || [lower isEqualToString:@"1"];
+}
+
+// MARK: - YAML Python Bridge Methods (Deprecated - kept for fallback)
+
+- (NSDictionary *)parseYAMLFileUsingPythonBridge:(NSURL *)fileURL
+{
+    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+    NSString *fileName = [fileURL lastPathComponent];
+    
+    DDLogInfo(@"[PERF] Starting YAML parse for: %@", fileName);
+    
+    // Find the yaml_bridge.py script in the app bundle
+    // Check Contents/Resources/ first, then fall back to Contents/Resources/Scripts/
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *scriptPath = [bundlePath stringByAppendingPathComponent:@"Contents/Resources/yaml_bridge.py"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:scriptPath]) {
+        scriptPath = [bundlePath stringByAppendingPathComponent:@"Contents/Resources/Scripts/yaml_bridge.py"];
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:scriptPath]) {
+        DDLogError(@"yaml_bridge.py script not found in Resources/ or Resources/Scripts/");
+        return nil;
+    }
+    
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/python3"];
+    [task setArguments:@[scriptPath, [fileURL path]]];
+    
+    NSPipe *outputPipe = [NSPipe pipe];
+    NSPipe *errorPipe = [NSPipe pipe];
+    [task setStandardOutput:outputPipe];
+    [task setStandardError:errorPipe];
+    
+    NSFileHandle *outputFile = [outputPipe fileHandleForReading];
+    NSFileHandle *errorFile = [errorPipe fileHandleForReading];
+    
+    @try {
+        [task launch];
+        
+        // Reduced timeout for Python bridge - 10 seconds (was 30)
+        dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC);
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [task waitUntilExit];
+            dispatch_semaphore_signal(semaphore);
+        });
+        
+        if (dispatch_semaphore_wait(semaphore, timeout) != 0) {
+            DDLogWarn(@"YAML conversion timed out (10s) for file: %@", fileName);
+            [task terminate];
+            [outputFile closeFile];
+            [errorFile closeFile];
+            return nil;
+        }
+        
+        NSData *outputData = [outputFile readDataToEndOfFile];
+        NSData *errorData = [errorFile readDataToEndOfFile];
+        [outputFile closeFile];
+        [errorFile closeFile];
+        
+        int exitStatus = [task terminationStatus];
+        
+        if (exitStatus != 0) {
+            if ([errorData length] > 0) {
+                NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+                DDLogDebug(@"YAML conversion failed for %@: %@", fileName, errorString);
+            }
+            return nil;
+        }
+        
+        if (!outputData || [outputData length] == 0) {
+            DDLogDebug(@"No data returned from yaml_bridge for file: %@", fileName);
+            return nil;
+        }
+        
+        // Parse JSON output from yaml_bridge.py
+        NSError *jsonError;
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:outputData
+                                                        options:0
+                                                          error:&jsonError];
+        if (jsonError) {
+            DDLogDebug(@"Failed to parse JSON from yaml_bridge output for %@: %@", fileName, jsonError.localizedDescription);
+            return nil;
+        }
+        
+        if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+            CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - startTime) * 1000.0;
+            DDLogInfo(@"[PERF] Successfully converted YAML in %.1fms: %@", elapsed, fileName);
+            return (NSDictionary *)jsonObject;
+        } else {
+            CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - startTime) * 1000.0;
+            DDLogDebug(@"[PERF] YAML conversion failed after %.1fms - non-dictionary object for: %@", elapsed, fileName);
+            return nil;
+        }
+    }
+    @catch (NSException *exception) {
+        CFAbsoluteTime elapsed = (CFAbsoluteTimeGetCurrent() - startTime) * 1000.0;
+        DDLogWarn(@"[PERF] Exception in YAML parsing after %.1fms for %@: %@", elapsed, fileName, exception.reason);
+        return nil;
+    }
+}
+
+// Helper method to convert M13OrderedDictionary to a structure that preserves key order
+- (id)convertToOrderPreservingStructure:(id)object
+{
+    if ([object isKindOfClass:[M13OrderedDictionary class]]) {
+        M13OrderedDictionary *orderedDict = (M13OrderedDictionary *)object;
+        NSMutableDictionary *result = [NSMutableDictionary dictionary];
+        
+        // Store the ordered keys in a special "__ordered_keys__" array
+        result[@"__ordered_keys__"] = [orderedDict allKeys];
+        
+        // Convert each value recursively
+        for (id key in [orderedDict allKeys]) {
+            id value = [orderedDict objectForKey:key];
+            result[key] = [self convertToOrderPreservingStructure:value];
+        }
+        
+        return result;
+    }
+    else if ([object isKindOfClass:[NSDictionary class]]) {
+        // Handle regular dictionaries (convert values recursively)
+        NSMutableDictionary *result = [NSMutableDictionary dictionary];
+        for (id key in object) {
+            result[key] = [self convertToOrderPreservingStructure:object[key]];
+        }
+        return result;
+    }
+    else if ([object isKindOfClass:[NSArray class]]) {
+        // Handle arrays (convert elements recursively)
+        NSMutableArray *result = [NSMutableArray array];
+        for (id item in object) {
+            [result addObject:[self convertToOrderPreservingStructure:item]];
+        }
+        return result;
+    }
+    else {
+        // For other types (strings, numbers, etc.), return as-is
+        return object;
+    }
+}
+
+- (BOOL)writeYAMLFileUsingPythonBridge:(NSDictionary *)dictionary toURL:(NSURL *)fileURL
+{
+    DDLogInfo(@"=== YAML BRIDGE WRITE DEBUG ===");
+    DDLogInfo(@"Target file: %@", [fileURL path]);
+    
+    // Convert dictionary to order-preserving structure
+    id orderPreservingDict = [self convertToOrderPreservingStructure:dictionary];
+    
+    // Create a temporary JSON file with the dictionary content
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:orderPreservingDict options:NSJSONWritingPrettyPrinted error:&error];
+    if (error) {
+        DDLogError(@"Failed to serialize dictionary to JSON: %@", error.localizedDescription);
+        return NO;
+    }
+    
+    DDLogInfo(@"JSON serialization successful, size: %lu bytes", (unsigned long)[jsonData length]);
+    
+    NSString *tempDir = NSTemporaryDirectory();
+    NSString *tempFileName = [NSString stringWithFormat:@"munkiadmin_temp_%@.json", [[NSUUID UUID] UUIDString]];
+    NSString *tempFilePath = [tempDir stringByAppendingPathComponent:tempFileName];
+    
+    if (![jsonData writeToFile:tempFilePath atomically:YES]) {
+        DDLogError(@"Failed to write temporary JSON file");
+        return NO;
+    }
+    
+    DDLogInfo(@"Temporary JSON file written: %@", tempFilePath);
+    
+    // Find the YAML bridge script
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *scriptPath = [bundlePath stringByAppendingPathComponent:@"Contents/Resources/yaml_bridge.py"];
+    
+    DDLogInfo(@"Looking for script at: %@", scriptPath);
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:scriptPath]) {
+        DDLogWarn(@"Script not found in bundle, trying fallback location");
+        NSString *munkiAdminDir = [bundlePath stringByDeletingLastPathComponent];
+        munkiAdminDir = [munkiAdminDir stringByDeletingLastPathComponent];
+        scriptPath = [munkiAdminDir stringByAppendingPathComponent:@"MunkiAdmin/Scripts/yaml_bridge.py"];
+        DDLogInfo(@"Trying fallback path: %@", scriptPath);
+    }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:scriptPath]) {
+        DDLogError(@"YAML bridge script not found");
+        [[NSFileManager defaultManager] removeItemAtPath:tempFilePath error:nil];
+        return NO;
+    }
+    
+    DDLogInfo(@"Found YAML bridge script at: %@", scriptPath);
+    
+    // Convert JSON to YAML using Python bridge
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/python3"];
+    [task setArguments:@[scriptPath, tempFilePath, @"yaml"]];
+    
+    NSPipe *pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    [task setStandardError:pipe];
+    
+    NSFileHandle *file = [pipe fileHandleForReading];
+    
+    BOOL success = NO;
+    @try {
+        DDLogInfo(@"Launching Python task...");
+        [task launch];
+        [task waitUntilExit];
+        
+        int exitStatus = [task terminationStatus];
+        DDLogInfo(@"Python task completed with exit status: %d", exitStatus);
+        
+        if (exitStatus == 0) {
+            NSData *yamlData = [file readDataToEndOfFile];
+            DDLogInfo(@"YAML data received, size: %lu bytes", (unsigned long)[yamlData length]);
+            if (yamlData && [yamlData length] > 0) {
+                success = [yamlData writeToURL:fileURL atomically:YES];
+                DDLogInfo(@"YAML file write success: %@", success ? @"YES" : @"NO");
+            } else {
+                DDLogError(@"No YAML data received from Python script");
+            }
+        } else {
+            NSData *errorData = [file readDataToEndOfFile];
+            NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+            DDLogError(@"Python script failed with exit status %d, error: %@", exitStatus, errorString);
+        }
+        
+        [file closeFile];
+    }
+    @catch (NSException *exception) {
+        DDLogError(@"Exception in YAML writing: %@", exception.reason);
+    }
+    
+    // Clean up temporary file
+    [[NSFileManager defaultManager] removeItemAtPath:tempFilePath error:nil];
+    
+    return success;
+}
+
+#pragma mark - File Format Preferences
+
+- (NSString *)preferredPkginfoFileExtension
+{
+    // Check user defaults for preferred format
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *preferredFormat = [defaults stringForKey:@"defaultPkginfoFormat"];
+    
+    if ([preferredFormat isEqualToString:@"yaml"]) {
+        return @"yaml";
+    } else if ([preferredFormat isEqualToString:@"plist"]) {
+        return @"plist";
+    }
+    
+    // Auto-detect based on existing files in the repository
+    MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)[NSApp delegate];
+    NSURL *pkgsInfoURL = [appDelegate pkgsInfoURL];
+    
+    if (pkgsInfoURL) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:pkgsInfoURL
+                                                   includingPropertiesForKeys:nil
+                                                                      options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                 errorHandler:nil];
+        
+        NSUInteger yamlCount = 0;
+        NSUInteger plistCount = 0;
+        NSUInteger maxSamples = 50; // Limit sampling for performance
+        NSUInteger sampleCount = 0;
+        
+        for (NSURL *fileURL in enumerator) {
+            if (sampleCount >= maxSamples) break;
+            
+            NSString *extension = [[fileURL pathExtension] lowercaseString];
+            if ([extension isEqualToString:@"yaml"] || [extension isEqualToString:@"yml"]) {
+                yamlCount++;
+                sampleCount++;
+            } else if ([extension isEqualToString:@"plist"]) {
+                plistCount++;
+                sampleCount++;
+            }
+        }
+        
+        // If YAML files are more common or equal, prefer YAML
+        if (yamlCount >= plistCount && yamlCount > 0) {
+            return @"yaml";
+        }
+    }
+    
+    // Default to plist if no preference is set and no files detected
+    return @"plist";
 }
 
 @end

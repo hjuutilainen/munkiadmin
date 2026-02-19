@@ -787,7 +787,8 @@ DDLogLevel ddLogLevel;
      */
     NSURL *saveURL = [saveDirectory URLByAppendingPathComponent:safeFilenameHint];
     BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
-    BOOL saved = [pkginfo writeToURL:saveURL atomically:atomicWrites];
+    MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+    BOOL saved = [repoManager writeDictionary:pkginfo toURLSupportingYAML:saveURL atomically:atomicWrites];
     if (!saved) {
         DDLogError(@"Error: Failed to write %@...", [saveURL path]);
         return NO;
@@ -822,7 +823,6 @@ DDLogLevel ddLogLevel;
         
         // Run the assimilator
         if ([self.defaults boolForKey:@"assimilate_enabled"]) {
-            MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
             [repoManager assimilatePackageWithPreviousVersion:createdPkg keys:repoManager.pkginfoAssimilateKeysForAuto];
         }
     }
@@ -1623,14 +1623,18 @@ DDLogLevel ddLogLevel;
         NSString *version = pkginfoPlist[@"version"];
         NSString *newBaseName = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
         NSString *newNameAndVersion = [NSString stringWithFormat:@"%@-%@", newBaseName, version];
-        NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:@"plist"];
+        
+        // Use preferred file extension instead of hardcoded plist
+        MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+        NSString *preferredExtension = [repoManager preferredPkginfoFileExtension];
+        NSString *newPkginfoTitle = [newNameAndVersion stringByAppendingPathExtension:preferredExtension];
         
         // Ask the user to save
         NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
         
         // Write the pkginfo to disk and add it to our datastore
         BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
-        BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:atomicWrites];
+        BOOL saved = [repoManager writeDictionary:pkginfoPlist toURLSupportingYAML:newPkginfoURL atomically:atomicWrites];
         if (saved) {
             
             // Rescan the main pkginfo dir for any newly created directories
@@ -1658,8 +1662,6 @@ DDLogLevel ddLogLevel;
                 
                 // Select the newly created package
                 [[self.packagesViewController packagesArrayController] setSelectedObjects:@[createdPkg]];
-                
-                MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
                 
                 // Run the assimilator
                 if ([self.defaults boolForKey:@"assimilate_enabled"]) {
@@ -2663,8 +2665,13 @@ DDLogLevel ddLogLevel;
 				manifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
 				manifest.title = manifestRelativePath;
 				manifest.manifestURL = [aManifestFile URLByResolvingSymlinksInPath];
-                manifest.manifestParentDirectoryURL = [aManifestFile URLByDeletingLastPathComponent];
-			}
+                NSURL *parentDir = [aManifestFile URLByDeletingLastPathComponent];
+                manifest.manifestParentDirectoryURL = parentDir;
+                NSString *parentRelative = [[MAMunkiRepositoryManager sharedManager] relativePathToChildURL:parentDir parentURL:self.manifestsURL];
+                DDLogInfo(@"[SCAN] Created: %@ | Parent URL: %@ | Parent relative: %@", manifestRelativePath, [parentDir path], parentRelative);
+			} else {
+                DDLogVerbose(@"[SCAN] Skipping existing: %@", manifestRelativePath);
+            }
 			
 		}
 	}

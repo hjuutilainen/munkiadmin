@@ -1,0 +1,234 @@
+# MunkiAdmin User Defaults Configuration
+# This file contains default preferences for MunkiAdmin
+# You can modify these values to customize the application behavior
+
+# Manifest metadata key mappings
+manifestUserNameKey: user
+manifestDisplayNameKey: display_name
+manifestAdminNotesKey: notes
+
+# Package and installer item handling
+MoveInstallerItemsWithPkginfos: true
+MoveInstallerItemsWithPkginfosSuppressed: false
+addPackageLastDir: "/"
+CopyAppDescriptionToPackages: true
+CopyPkgsToRepo: true
+
+# Debug and logging settings
+debug: false
+debugLogAllProperties: false
+logLevel: 3  # 3 = Info level
+logToSyslog: false
+logToFile: true
+maximumNumberOfLogFiles: 7
+
+# Import settings
+importWithMunkiimport: false
+
+# Array sorting preferences - these control the order of items in manifest arrays
+sortManagedInstallsByTitle: true
+sortManagedUpdatesByTitle: true
+sortManagedUninstallsByTitle: true
+sortOptionalInstallsByTitle: true
+sortFeaturedItemsByTitle: true
+
+# Pkginfo array sorting preferences - control ordering in package info files
+sortPkginfoCatalogsByTitle: false  # false = original order, true = alphabetical
+
+# File operation settings
+atomicWrites: true
+backupPkginfosBeforeWriting: true
+backupManifestsBeforeWriting: true
+backupKeepDays: 30
+
+# Update behavior
+UpdateCatalogsOnSave: true
+UpdateManifestsOnSave: true
+UpdatePkginfosOnSave: true
+
+# Package import behavior
+UseExistingDescriptionForPackages: true
+UseExistingDisplayNameForPackages: true
+UseExistingMinOSVersionForPackages: true
+
+# File permissions for items_to_copy
+items_to_copyGroup: admin
+items_to_copyMode: og-w
+items_to_copyOwner: root
+items_to_copyUseDefaults: false
+
+# Munki tools paths
+makecatalogsPath: /usr/local/munki/makecatalogs
+makecatalogsForceEnabled: false
+makecatalogsOnlyIfNeeded: false
+makecatalogsSkipPkgCheck: false
+makepkginfoPath: /usr/local/munki/makepkginfo
+
+# UI preferences
+openRepositoryLastDir: "/"
+startupSelectedView: 0
+startupWhatToDo: 1
+sidebarDeveloperMinimumNumberOfPackageNames: 1
+sidebarInstallerTypesVisible: true
+sidebarCategoriesVisible: true
+sidebarDevelopersVisible: true
+sidebarDirectoriesVisible: true
+
+# Icon handling
+iconResizeDefaultWidth: 350
+iconResizeDefaultHeight: 350
+
+# Template conditions display
+showBuiltinTemplateConditions: true
+showConditionsFromOtherManifests: true
+
+# Assimilation preferences (when importing packages)
+assimilate_enabled: true
+assimilate_autoremove: true
+assimilate_blocking_applications: true
+assimilate_category: true
+assimilate_description: true
+assimilate_developer: true
+assimilate_display_name: true
+assimilate_icon_hash: true
+assimilate_icon_name: true
+assimilate_installable_condition: true
+assimilate_installcheck_script: true
+assimilate_installer_choices_xml: true
+assimilate_installs_items: false
+assimilate_items_to_copy: false
+assimilate_maximum_os_version: true
+assimilate_minimum_munki_version: true
+assimilate_minimum_os_version: true
+assimilate_name: false
+assimilate_pre_scripts: true
+assimilate_preinstall_script: true
+assimilate_postinstall_script: true
+assimilate_preuninstall_script: true
+assimilate_postuninstall_script: true
+assimilate_post_scripts: true
+assimilate_receipts: false
+assimilate_requires: true
+assimilate_supported_architectures: true
+assimilate_unattended_install: true
+assimilate_unattended_uninstall: true
+assimilate_uninstall_method: true
+assimilate_uninstall_script: true
+assimilate_uninstallable: true
+assimilate_uninstallcheck_script: true
+assimilate_uninstaller_item_location: true
+assimilate_update_for: true
+assimilate_version_script: true
+
+# Predefined key arrays for different pkginfo sections
+installsKeys:
+  - CFBundleIdentifier
+  - CFBundleName
+  - CFBundleShortVersionString
+  - CFBundleVersion
+  - md5checksum
+  - minosversion
+  - path
+  - type
+  - version_comparison_key
+
+itemsToCopyKeys:
+  - destination_path
+  - group
+  - mode
+  - source_item
+  - user
+  - destination_item
+
+pkginfoBasicKeys:
+  - allow_untrusted
+  - apple_item
+  - autoremove
+  - description
+  - display_name
+  - force_install_after_date
+  - forced_install
+  - forced_uninstall
+  - icon_hash
+  - icon_name
+  - installable_condition
+  - installcheck_script
+  - installed_size
+  - installer_item_hash
+  - installer_item_location
+  - installer_item_size
+  - installer_type
+  - maximum_os_version
+  - minimum_munki_version
+  - minimum_os_version
+  - name
+  - notes
+  - OnDemand
+  - package_path
+  - PayloadIdentifier
+  - postinstall_script
+  - postuninstall_script
+  - precache
+  - preinstall_script
+  - preuninstall_script
+  - RestartAction
+  - suppress_bundle_relocation
+  - unattended_install
+  - unattended_uninstall
+  - uninstall_method
+  - uninstall_script
+  - uninstallable
+  - uninstallcheck_script
+  - uninstaller_item_location
+  - version
+  - version_script
+
+pkginfoArrayKeys:
+  - blocking_applications
+  - catalogs
+  - installer_choices_xml
+  - installs
+  - items_to_copy
+  - receipts
+  - requires
+  - supported_architectures
+  - update_for
+
+receiptKeys:
+  - filename
+  - installed_size
+  - packageid
+  - name
+  - version
+  - optional
+
+installerChoicesKeys:
+  - attributeSetting
+  - choiceAttribute
+  - choiceIdentifier
+
+# Template conditions for conditional items
+templateConditions:
+  - "os_vers_minor <= 13 AND os_vers_major == 10"
+  - "os_vers_minor <= 14 AND os_vers_major == 10"
+  - "os_vers_minor <= 15 AND os_vers_major == 10"
+  - "(os_vers_minor >= 9 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 10 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 11 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 12 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 13 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 14 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "(os_vers_minor >= 15 AND os_vers_major == 10) OR os_vers_major >= 11"
+  - "os_vers_major >= 11"
+  - "os_vers_major >= 12"
+  - "os_vers_major >= 13"
+  - "os_vers_major >= 14"
+  - "os_vers_major >= 15"
+  - "os_vers_major >= 26"
+  - "machine_type == \"desktop\""
+  - "machine_type != \"desktop\""
+  - "machine_type == \"laptop\""
+  - "machine_type != \"laptop\""
+  - "arch == \"arm64\""
+  - "arch == \"x86_64\""
+  - "ANY catalogs CONTAINS \"testing\""

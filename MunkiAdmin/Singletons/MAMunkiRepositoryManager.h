@@ -109,4 +109,12 @@
 - (NSArray *)manifestCustomScriptPaths;
 - (BOOL)runManifestCustomScriptAtPath:(NSString *)scriptPath withManifests:(NSArray *)manifests;
 
+// YAML support methods
+- (BOOL)isYAMLFile:(NSURL *)fileURL;
+- (NSDictionary *)dictionaryWithContentsOfURLSupportingYAML:(NSURL *)fileURL;
+- (BOOL)writeDictionary:(NSDictionary *)dictionary toURLSupportingYAML:(NSURL *)fileURL atomically:(BOOL)atomically;
+
+// File format preferences
+- (NSString *)preferredPkginfoFileExtension;
+
 @end

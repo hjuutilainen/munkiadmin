@@ -15,6 +15,21 @@ profile
 # Python
 .pyc
 
+# Environment Variables (contains sensitive credentials)
+.env
+
+# Testing and Debug Files
+test_*.py
+test_*.sh
+*_test.py
+*_debug.*
+fix_*.py
+debug_*.py
+temp_*.py
+*_batch.py
+MunkiAdmin_Debug.app
+MunkiAdmin_Test.app
+*.debug
 
 # <https://github.com/github/gitignore/blob/master/Objective-C.gitignore>
 # Xcode
@@ -35,4 +50,9 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# CocoaPods - Third-party source files
+Pods/Headers/
+Pods/LibYAML/
+Pods/YAMLFrameworkOrdered/
 

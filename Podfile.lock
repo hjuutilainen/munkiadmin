@@ -3,17 +3,23 @@ PODS:
   - CocoaLumberjack (3.9.0):
     - CocoaLumberjack/Core (= 3.9.0)
   - CocoaLumberjack/Core (3.9.0)
+  - LibYAML (0.1.4)
   - NSHash (1.0.2)
+  - YAMLFrameworkOrdered (0.0.2):
+    - LibYAML (~> 0.1.4)
 
 DEPENDENCIES:
   - CHCSVParser (from `https://github.com/davedelong/CHCSVParser.git`)
   - CocoaLumberjack
   - NSHash (~> 1.0.1)
+  - YAMLFrameworkOrdered (~> 0.0.2)
 
 SPEC REPOS:
   trunk:
     - CocoaLumberjack
+    - LibYAML
     - NSHash
+    - YAMLFrameworkOrdered
 
 EXTERNAL SOURCES:
   CHCSVParser:
@@ -27,8 +33,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   CHCSVParser: 64da26e2b4ddbf7527f7f03120bf91d83d28f354
   CocoaLumberjack: 5644158777912b7de7469fa881f8a3f259c2512a
+  LibYAML: 3af2c5adf3a40dff936d087aa6a77edc10036bc5
   NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
+  YAMLFrameworkOrdered: c731c914aeb04b196575a9c0aa6cb772a23a505d
 
-PODFILE CHECKSUM: 94c404a2ade3e810a9ed23a55d9dff333f279b31
+PODFILE CHECKSUM: 54fcdc128695490d9906cd7c749084325263a19a
 
 COCOAPODS: 1.16.2

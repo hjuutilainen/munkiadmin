@@ -175,6 +175,7 @@ DDLogLevel ddLogLevel;
     [getManifests setIncludesSubentities:NO];
     NSArray *manifests = [moc executeFetchRequest:getManifests error:nil];
     
+    // Exact match first
     NSPredicate *titlePredicate = [NSPredicate predicateWithFormat:@"title == %@", title];
     NSUInteger foundIndex = [manifests indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         return [titlePredicate evaluateWithObject:obj];
@@ -182,9 +183,29 @@ DDLogLevel ddLogLevel;
     
     if (foundIndex != NSNotFound) {
         return [manifests objectAtIndex:foundIndex];
-    } else {
-        return nil;
     }
+    
+    // Flexible matching: try with/without .yaml/.yml extension
+    NSArray *alternates = nil;
+    NSString *ext = [title pathExtension];
+    if ([ext isEqualToString:@"yaml"] || [ext isEqualToString:@"yml"]) {
+        alternates = @[[title stringByDeletingPathExtension]];
+    } else {
+        alternates = @[[title stringByAppendingPathExtension:@"yaml"],
+                       [title stringByAppendingPathExtension:@"yml"]];
+    }
+    
+    for (NSString *alt in alternates) {
+        NSPredicate *altPredicate = [NSPredicate predicateWithFormat:@"title == %@", alt];
+        NSUInteger altIndex = [manifests indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [altPredicate evaluateWithObject:obj];
+        }];
+        if (altIndex != NSNotFound) {
+            return [manifests objectAtIndex:altIndex];
+        }
+    }
+    
+    return nil;
 }
 
 - (id)matchingAppOrPkgForString:(NSString *)aString
@@ -215,6 +236,23 @@ DDLogLevel ddLogLevel;
      Try to get a managed object ID for this title, this is a broken reference if it doesn't exist!
      */
     ManifestMOID *manifestID = [self.allManifestsByTitle objectForKey:title];
+    
+    // Flexible matching: try with/without .yaml/.yml extension
+    if (!manifestID) {
+        NSString *ext = [title pathExtension];
+        if ([ext isEqualToString:@"yaml"] || [ext isEqualToString:@"yml"]) {
+            // Title has extension, try without it
+            NSString *stripped = [title stringByDeletingPathExtension];
+            manifestID = [self.allManifestsByTitle objectForKey:stripped];
+        } else {
+            // Title has no YAML extension, try appending .yaml then .yml
+            manifestID = [self.allManifestsByTitle objectForKey:[title stringByAppendingPathExtension:@"yaml"]];
+            if (!manifestID) {
+                manifestID = [self.allManifestsByTitle objectForKey:[title stringByAppendingPathExtension:@"yml"]];
+            }
+        }
+    }
+    
     if (manifestID) {
         
         /*
@@ -502,7 +540,10 @@ DDLogLevel ddLogLevel;
              * Read the manifest dictionary from disk
              */
             DDLogVerbose(@"%@: Reading file from disk", self.fileName);
-			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
+            
+            // Use YAML-aware reading method  
+            MAMunkiRepositoryManager *repoManager = [MAMunkiRepositoryManager sharedManager];
+			NSDictionary *manifestInfoDict = [repoManager dictionaryWithContentsOfURLSupportingYAML:self.sourceURL];
 			if (manifestInfoDict != nil) {
                 
                 /*

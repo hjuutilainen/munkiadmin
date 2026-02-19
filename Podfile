@@ -4,4 +4,5 @@ target 'MunkiAdmin' do
 pod 'NSHash', '~> 1.0.1'
 pod 'CocoaLumberjack'
 pod 'CHCSVParser', :git => 'https://github.com/davedelong/CHCSVParser.git'
+pod 'YAMLFrameworkOrdered', '~> 0.0.2'
 end

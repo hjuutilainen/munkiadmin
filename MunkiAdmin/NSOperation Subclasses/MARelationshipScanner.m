@@ -89,6 +89,23 @@ static const int BatchSize = 50;
      Try to get a managed object ID for this title, this is a broken reference if it doesn't exist!
      */
     ManifestMOID *manifestID = [self.allManifestsByTitle objectForKey:title];
+    
+    // Flexible matching: try with/without .yaml/.yml extension
+    if (!manifestID) {
+        NSString *ext = [title pathExtension];
+        if ([ext isEqualToString:@"yaml"] || [ext isEqualToString:@"yml"]) {
+            // Title has extension, try without it
+            NSString *stripped = [title stringByDeletingPathExtension];
+            manifestID = [self.allManifestsByTitle objectForKey:stripped];
+        } else {
+            // Title has no YAML extension, try appending .yaml then .yml
+            manifestID = [self.allManifestsByTitle objectForKey:[title stringByAppendingPathExtension:@"yaml"]];
+            if (!manifestID) {
+                manifestID = [self.allManifestsByTitle objectForKey:[title stringByAppendingPathExtension:@"yml"]];
+            }
+        }
+    }
+    
     if (manifestID) {
         
         /*
@@ -437,6 +454,7 @@ static const int BatchSize = 50;
 
 - (void)scanPkginfos
 {
+    
     MAMunkiAdmin_AppDelegate *appDelegate = (MAMunkiAdmin_AppDelegate *)self.delegate;
     NSManagedObjectContext *privateContext = self.context;
     

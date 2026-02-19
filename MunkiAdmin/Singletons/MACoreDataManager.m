@@ -1025,6 +1025,7 @@ static dispatch_queue_t serialQueue;
     
     NSURL *mainManifestsURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL];
     if (mainManifestsURL) {
+        DDLogInfo(@"[DIRTREE] Creating directory tree for: %@", [mainManifestsURL path]);
         [self createManifestDirectoryItemForURL:mainManifestsURL parentItem:directoriesGroupItem context:moc];
     }
 }
@@ -1044,17 +1045,35 @@ static dispatch_queue_t serialQueue;
     
     NSString *filename;
     [url getResourceValue:&filename forKey:NSURLNameKey error:nil];
-    ManifestDirectorySourceListItemMO *directoryItem = [self sourceListItemWithTitle:filename entityName:@"ManifestDirectorySourceListItem" managedObjectContext:moc];
-    directoryItem.itemType = @"directory";
-    directoryItem.icon = folderImage;
-    directoryItem.parent = parentItem;
-    directoryItem.originalIndexValue = 10;
-    directoryItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", url];
-    directoryItem.representedFileURLValue = url;
+    
+    // Check if a directory item with this URL already exists
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"ManifestDirectorySourceListItem" inManagedObjectContext:moc]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"representedFileURL == %@", [url absoluteString]]];
+    NSArray *existingItems = [moc executeFetchRequest:fetchRequest error:nil];
+    
+    ManifestDirectorySourceListItemMO *directoryItem;
+    if (existingItems && [existingItems count] > 0) {
+        // Reuse existing directory item
+        directoryItem = [existingItems objectAtIndex:0];
+        DDLogVerbose(@"[DIRTREE] Reusing existing dir item: %@ | FilterURL: %@", filename, [url path]);
+    } else {
+        // Create new directory item
+        directoryItem = [NSEntityDescription insertNewObjectForEntityForName:@"ManifestDirectorySourceListItem" inManagedObjectContext:moc];
+        directoryItem.title = filename;
+        directoryItem.itemType = @"directory";
+        directoryItem.icon = folderImage;
+        directoryItem.parent = parentItem;
+        directoryItem.originalIndexValue = 10;
+        directoryItem.filterPredicate = [NSPredicate predicateWithFormat:@"manifestParentDirectoryURL == %@", url];
+        directoryItem.representedFileURLValue = url;
+        DDLogInfo(@"[DIRTREE] Created dir item: %@ | FilterURL: %@", filename, [url path]);
+    }
     
     // Add subdirectories
     NSArray *contents = [fm contentsOfDirectoryAtURL:url includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) error:nil];
     NSInteger childIndex = 10;
+    NSInteger childCount = 0;
     for (NSURL *contentURL in contents) {
         NSNumber *isDir;
         [contentURL getResourceValue:&isDir forKey:NSURLIsDirectoryKey error:nil];
@@ -1062,8 +1081,12 @@ static dispatch_queue_t serialQueue;
             ManifestDirectorySourceListItemMO *childItem = [self createManifestDirectoryItemForURL:contentURL parentItem:directoryItem context:moc];
             childItem.originalIndexValue = (int32_t)childIndex;
             childIndex += 10;
-            
+            childCount++;
         }
+    }
+    
+    if (childCount > 0) {
+        DDLogInfo(@"[DIRTREE] %@ has %ld children. Actual children count: %lu", filename, (long)childCount, (unsigned long)[[directoryItem children] count]);
     }
     
     return directoryItem;
