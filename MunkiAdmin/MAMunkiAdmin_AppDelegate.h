@@ -29,6 +29,29 @@
 @class DDFileLogger;
 
 
+// Controls the row height and font size of the main Packages and Manifests
+// tables. Stored as an integer index in NSUserDefaults under the
+// "mainTableRowSize" key. The default value (0) preserves the historical
+// appearance; larger values are intended for use on high-resolution displays.
+NS_INLINE CGFloat MAMainTableFontSizeForRowSize(NSInteger rowSize) {
+    switch (rowSize) {
+        case 1:  return 13.0;
+        case 2:  return 16.0;
+        case 3:  return 19.0;
+        default: return [NSFont smallSystemFontSize];
+    }
+}
+
+NS_INLINE CGFloat MAMainTableRowHeightForRowSize(NSInteger rowSize) {
+    switch (rowSize) {
+        case 1:  return 20.0;
+        case 2:  return 26.0;
+        case 3:  return 32.0;
+        default: return 17.0;
+    }
+}
+
+
 @interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate, NSToolbarDelegate>
 {
     MASelectPkginfoItemsWindow *addItemsWindowController;
@@ -163,6 +186,7 @@
 - (IBAction)startPkginfoAssimilatorAction:(id)sender;
 - (IBAction)openCurrentLogFileAction:(id)sender;
 - (IBAction)findAction:(id)sender;
+- (IBAction)changeMainTableRowSize:(id)sender;
 
 # pragma mark -
 # pragma mark Helper methods

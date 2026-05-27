@@ -52,6 +52,23 @@ DDLogLevel ddLogLevel;
     }
 }
 
+- (IBAction)changeMainTableRowSize:(id)sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    NSInteger newSize = [(NSMenuItem *)sender tag];
+    [[NSUserDefaults standardUserDefaults] setInteger:newSize forKey:@"mainTableRowSize"];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    if ([menuItem action] == @selector(changeMainTableRowSize:)) {
+        NSInteger currentSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"mainTableRowSize"];
+        [menuItem setState:([menuItem tag] == currentSize) ? NSControlStateValueOn : NSControlStateValueOff];
+        return YES;
+    }
+    return YES;
+}
+
 - (IBAction)openCurrentLogFileAction:(id)sender
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
