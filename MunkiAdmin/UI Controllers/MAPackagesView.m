@@ -126,6 +126,16 @@ DDLogLevel ddLogLevel;
     
     [self.descriptionTextView setFont:[NSFont systemFontOfSize:11.0]];
     [self.notesTextView setFont:[NSFont systemFontOfSize:11.0]];
+
+    /*
+     Observe the user-controlled row size for the packages table and apply
+     the current value on launch.
+     */
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.mainTableRowSize"
+                                                                 options:0
+                                                                 context:NULL];
+    [self applyMainTableRowSize];
     
     /*
      Configure the main triple split view (sourcelist | packagelist | info)
@@ -1422,6 +1432,48 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSTableView delegates
 
+- (void)applyFontToRowView:(NSTableRowView *)rowView
+{
+    NSInteger rowSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"mainTableRowSize"];
+    NSFont *font = [NSFont systemFontOfSize:MAMainTableFontSizeForRowSize(rowSize)];
+    CGFloat rowHeight = MAMainTableRowHeightForRowSize(rowSize);
+    for (NSInteger col = 0; col < rowView.numberOfColumns; col++) {
+        NSView *cellView = [rowView viewAtColumn:col];
+        for (NSView *subview in cellView.subviews) {
+            if ([subview isKindOfClass:[NSTextField class]]) {
+                NSTextField *textField = (NSTextField *)subview;
+                [textField setFont:font];
+                // The xib pins text fields to a fixed 17pt height with
+                // flexibleMinY autoresizing, so they don't grow with the
+                // cell. Set the height explicitly to the current row height
+                // so larger fonts aren't clipped and so toggling back to a
+                // smaller size doesn't leave the field oversized.
+                NSRect frame = textField.frame;
+                frame.origin.y = 0;
+                frame.size.height = rowHeight;
+                textField.frame = frame;
+            }
+        }
+    }
+}
+
+- (void)applyMainTableRowSize
+{
+    NSInteger rowSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"mainTableRowSize"];
+    self.packagesTableView.rowSizeStyle = NSTableViewRowSizeStyleCustom;
+    self.packagesTableView.rowHeight = MAMainTableRowHeightForRowSize(rowSize);
+    [self.packagesTableView enumerateAvailableRowViewsUsingBlock:^(NSTableRowView *rowView, NSInteger row) {
+        [self applyFontToRowView:rowView];
+    }];
+}
+
+- (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
+{
+    if (tableView == self.packagesTableView) {
+        [self applyFontToRowView:rowView];
+    }
+}
+
 - (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
     if (tableView == self.packagesTableView) {
@@ -1629,6 +1681,24 @@ DDLogLevel ddLogLevel;
         
         [top setFrame:topFrame];
         [bottom setFrame:bottomFrame];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"values.mainTableRowSize"]) {
+        [self applyMainTableRowSize];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+- (void)dealloc
+{
+    @try {
+        [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.mainTableRowSize"];
+    } @catch (NSException *exception) {
+        DDLogError(@"Exception removing observer: %@", exception.reason);
     }
 }
 

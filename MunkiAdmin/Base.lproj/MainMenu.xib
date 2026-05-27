@@ -481,6 +481,33 @@ Gw
                                     <action selector="runToolbarCustomizationPalette:" target="-1" id="343"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="rs-sep-001"/>
+                            <menuItem title="Row Size" id="rs-submenu-root">
+                                <menu key="submenu" title="Row Size" id="rs-submenu-menu">
+                                    <items>
+                                        <menuItem title="Small" tag="0" id="rs-size-small">
+                                            <connections>
+                                                <action selector="changeMainTableRowSize:" target="205" id="rs-action-small"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Medium" tag="1" id="rs-size-medium">
+                                            <connections>
+                                                <action selector="changeMainTableRowSize:" target="205" id="rs-action-medium"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Large" tag="2" id="rs-size-large">
+                                            <connections>
+                                                <action selector="changeMainTableRowSize:" target="205" id="rs-action-large"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Extra Large" tag="3" id="rs-size-xlarge">
+                                            <connections>
+                                                <action selector="changeMainTableRowSize:" target="205" id="rs-action-xlarge"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

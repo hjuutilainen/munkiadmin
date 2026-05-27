@@ -335,6 +335,16 @@ DDLogLevel ddLogLevel;
                                              forKeyPath:@"arrangedObjects"
                                                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                                 context:NULL];
+
+    /*
+     Observe the user-controlled row size for the manifests table and apply
+     the current value on launch.
+     */
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+                                                              forKeyPath:@"values.mainTableRowSize"
+                                                                 options:0
+                                                                 context:NULL];
+    [self applyMainTableRowSize];
     
     /*
      Configure sorting
@@ -1081,11 +1091,53 @@ DDLogLevel ddLogLevel;
 # pragma mark -
 # pragma mark NSTableView delegate
 
+- (void)applyFontToRowView:(NSTableRowView *)rowView
+{
+    NSInteger rowSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"mainTableRowSize"];
+    NSFont *font = [NSFont systemFontOfSize:MAMainTableFontSizeForRowSize(rowSize)];
+    CGFloat rowHeight = MAMainTableRowHeightForRowSize(rowSize);
+    for (NSInteger col = 0; col < rowView.numberOfColumns; col++) {
+        NSView *cellView = [rowView viewAtColumn:col];
+        for (NSView *subview in cellView.subviews) {
+            if ([subview isKindOfClass:[NSTextField class]]) {
+                NSTextField *textField = (NSTextField *)subview;
+                [textField setFont:font];
+                // The xib pins text fields to a fixed 17pt height with
+                // flexibleMinY autoresizing, so they don't grow with the
+                // cell. Set the height explicitly to the current row height
+                // so larger fonts aren't clipped and so toggling back to a
+                // smaller size doesn't leave the field oversized.
+                NSRect frame = textField.frame;
+                frame.origin.y = 0;
+                frame.size.height = rowHeight;
+                textField.frame = frame;
+            }
+        }
+    }
+}
+
+- (void)applyMainTableRowSize
+{
+    NSInteger rowSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"mainTableRowSize"];
+    self.manifestsListTableView.rowSizeStyle = NSTableViewRowSizeStyleCustom;
+    self.manifestsListTableView.rowHeight = MAMainTableRowHeightForRowSize(rowSize);
+    [self.manifestsListTableView enumerateAvailableRowViewsUsingBlock:^(NSTableRowView *rowView, NSInteger row) {
+        [self applyFontToRowView:rowView];
+    }];
+}
+
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSString *identifier = [tableColumn identifier];
     NSView *cellView = [tableView makeViewWithIdentifier:identifier owner:nil];
     return cellView;
+}
+
+- (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
+{
+    if (tableView == self.manifestsListTableView) {
+        [self applyFontToRowView:rowView];
+    }
 }
 
 - (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
@@ -1561,6 +1613,10 @@ DDLogLevel ddLogLevel;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
+    if ([keyPath isEqualToString:@"values.mainTableRowSize"]) {
+        [self applyMainTableRowSize];
+        return;
+    }
     if (object == self.manifestSourceListTreeController && [keyPath isEqualToString:@"arrangedObjects"]) {
         DDLogVerbose(@"Sidebar tree controller content changed");
         // React to sidebar content changes here
@@ -1588,6 +1644,11 @@ DDLogLevel ddLogLevel;
 {
     @try {
         [self.manifestSourceListTreeController removeObserver:self forKeyPath:@"arrangedObjects"];
+    } @catch (NSException *exception) {
+        DDLogError(@"Exception removing observer: %@", exception.reason);
+    }
+    @try {
+        [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.mainTableRowSize"];
     } @catch (NSException *exception) {
         DDLogError(@"Exception removing observer: %@", exception.reason);
     }
