@@ -2488,33 +2488,7 @@ DDLogLevel ddLogLevel;
             
         NSTimeInterval setupTime = [[NSDate date] timeIntervalSinceDate:repoLoadStartTime];
             DDLogDebug(@"Repository setup completed in %.2f ms", setupTime * 1000.0);
-            
-            // Count files to process for performance baseline
-            NSFileManager *fm = [NSFileManager defaultManager];
-            NSDirectoryEnumerator *pkginfoEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-            NSDirectoryEnumerator *manifestEnum = [fm enumeratorAtURL:self.manifestsURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-            NSDirectoryEnumerator *catalogEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
-            
-            NSUInteger pkginfoCount = 0, manifestCount = 0, catalogCount = 0;
-            for (NSURL *url in pkginfoEnum) {
-                NSNumber *isRegularFile;
-                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
-                if ([isRegularFile boolValue]) pkginfoCount++;
-            }
-            for (NSURL *url in manifestEnum) {
-                NSNumber *isRegularFile;
-                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
-                if ([isRegularFile boolValue]) manifestCount++;
-            }
-            for (NSURL *url in catalogEnum) {
-                NSNumber *isRegularFile;
-                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
-                if ([isRegularFile boolValue]) catalogCount++;
-            }
-            
-            DDLogDebug(@"Repository contains: %lu packages, %lu manifests, %lu catalogs", 
-                      (unsigned long)pkginfoCount, (unsigned long)manifestCount, (unsigned long)catalogCount);
-            
+
 			[self scanCurrentRepoForCatalogFiles];
             [self scanCurrentRepoForPackages];
 			[self scanCurrentRepoForManifests];
