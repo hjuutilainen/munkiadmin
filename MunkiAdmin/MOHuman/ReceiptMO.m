@@ -43,6 +43,7 @@
     if (self.munki_name != nil) [tmpDict setObject:self.munki_name forKey:@"name"];
 	if (self.munki_packageid != nil) [tmpDict setObject:self.munki_packageid forKey:@"packageid"];
 	if (self.munki_version != nil) [tmpDict setObject:self.munki_version forKey:@"version"];
+    if (self.munki_minimum_os_version != nil) [tmpDict setObject:self.munki_minimum_os_version forKey:@"minimum_os_version"];
 	if (self.munki_installed_size != nil) [tmpDict setObject:self.munki_installed_size forKey:@"installed_size"];
     if (self.munki_optional != nil) {
         if (self.munki_optionalValue) {

@@ -70,6 +70,8 @@
 	[self setPrimitiveMunki_installed_size:@(value_)];
 }
 
+@dynamic munki_minimum_os_version;
+
 @dynamic munki_name;
 
 @dynamic munki_optional;
@@ -126,6 +128,9 @@
 }
 + (NSString *)munki_installed_size {
 	return @"munki_installed_size";
+}
++ (NSString *)munki_minimum_os_version {
+	return @"munki_minimum_os_version";
 }
 + (NSString *)munki_name {
 	return @"munki_name";

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="25201" systemVersion="26A5388g" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="ApplicationMO" syncable="YES">
         <attribute name="munki_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_display_name" optional="YES" attributeType="String" syncable="YES"/>
@@ -181,11 +181,31 @@
             <fetchRequest name="fetchedPropertyFetchRequest" entity="StringObject" predicateString="(originalManifest == $FETCH_SOURCE) OR (originalManifestConditionalReference.manifest == $FETCH_SOURCE)"/>
         </fetchedProperty>
     </entity>
+    <entity name="ManifestBuiltinSourceListItem" representedClassName="ManifestBuiltinSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ManifestCatalogSourceListItem" representedClassName="ManifestCatalogSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <relationship name="catalogReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" syncable="YES"/>
+    </entity>
+    <entity name="ManifestDirectorySourceListItem" representedClassName="ManifestDirectorySourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
+        <attribute name="representedFileURL" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="ManifestInfo" representedClassName="ManifestInfoMO" syncable="YES">
         <attribute name="isAvailableForEditing" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isEnabledForManifest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="includedManifests" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
         <relationship name="parentManifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="manifestInfos" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="ManifestSourceListItem" representedClassName="ManifestSourceListItemMO" syncable="YES">
+        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="parent" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="children" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="OptionalInstall" representedClassName="OptionalInstallMO" parentEntity="ApplicationProxy" syncable="YES">
         <relationship name="manifest" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Manifest" inverseName="optionalInstalls" inverseEntity="Manifest" indexed="YES" syncable="YES"/>
@@ -300,6 +320,7 @@
     <entity name="Receipt" representedClassName="ReceiptMO" syncable="YES">
         <attribute name="munki_filename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_installed_size" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="munki_minimum_os_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="munki_optional" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="munki_packageid" optional="YES" attributeType="String" syncable="YES"/>
@@ -340,25 +361,5 @@
         <fetchedProperty name="packagesWithSameTitle" optional="YES" transient="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="Package" predicateString="(munki_name == $FETCH_SOURCE.title) OR (titleWithVersion == $FETCH_SOURCE.title)"/>
         </fetchedProperty>
-    </entity>
-    <entity name="ManifestSourceListItem" representedClassName="ManifestSourceListItemMO" syncable="YES">
-        <attribute name="filterPredicate" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
-        <attribute name="icon" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
-        <attribute name="isGroupItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="sortDescriptors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="parent" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
-        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ManifestSourceListItem" inverseName="children" inverseEntity="ManifestSourceListItem" indexed="YES" syncable="YES"/>
-    </entity>
-    <entity name="ManifestBuiltinSourceListItem" representedClassName="ManifestBuiltinSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="ManifestDirectorySourceListItem" representedClassName="ManifestDirectorySourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
-        <attribute name="representedFileURL" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="ManifestCatalogSourceListItem" representedClassName="ManifestCatalogSourceListItemMO" parentEntity="ManifestSourceListItem" syncable="YES">
-        <relationship name="catalogReference" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Catalog" inverseName="manifestCatalogSourceListReference" inverseEntity="Catalog" syncable="YES"/>
     </entity>
 </model>

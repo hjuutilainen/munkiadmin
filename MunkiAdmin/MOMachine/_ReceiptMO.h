@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (int64_t)munki_installed_sizeValue;
 - (void)setMunki_installed_sizeValue:(int64_t)value_;
 
+@property (nonatomic, strong, nullable) NSString* munki_minimum_os_version;
+
 @property (nonatomic, strong, nullable) NSString* munki_name;
 
 @property (nonatomic, strong, nullable) NSNumber* munki_optional;
@@ -63,6 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (int64_t)primitiveMunki_installed_sizeValue;
 - (void)setPrimitiveMunki_installed_sizeValue:(int64_t)value_;
 
+- (nullable NSString*)primitiveMunki_minimum_os_version;
+- (void)setPrimitiveMunki_minimum_os_version:(nullable NSString*)value;
+
 - (nullable NSString*)primitiveMunki_name;
 - (void)setPrimitiveMunki_name:(nullable NSString*)value;
 
@@ -92,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ReceiptMOAttributes: NSObject 
 + (NSString *)munki_filename;
 + (NSString *)munki_installed_size;
++ (NSString *)munki_minimum_os_version;
 + (NSString *)munki_name;
 + (NSString *)munki_optional;
 + (NSString *)munki_packageid;
