@@ -11,6 +11,7 @@
 #import "MAMunkiAdmin_AppDelegate.h"
 #import "MAMunkiRepositoryManager.h"
 #import "CocoaLumberjack.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 DDLogLevel ddLogLevel;
 
@@ -463,21 +464,37 @@ static const int BatchSize = 50;
     // Pre-populate catalog lookup dictionary for fast lookups
     NSMutableDictionary *catalogsByTitle = [NSMutableDictionary dictionaryWithCapacity:20];
     for (CatalogMO *catalog in self.allCatalogs) {
-        [catalogsByTitle setObject:catalog forKey:catalog.title];
+        if (catalog.title != nil) {
+            [catalogsByTitle setObject:catalog forKey:catalog.title];
+        }
     }
     
-    // Pre-cache IconImageMO objects to eliminate Core Data queries and image processing
+    // Pre-cache IconImageMO objects to eliminate Core Data queries and image processing.
+    // Icons may live in subdirectories under the icons folder, so this needs to recurse
+    // and key the cache by the path relative to the icons directory (matching munki_icon_name).
     NSURL *iconsDirectoryURL = [appDelegate iconsURL];
-    NSArray *iconFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:iconsDirectoryURL
-                                                       includingPropertiesForKeys:nil
-                                                                          options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                                            error:nil];
-    NSMutableDictionary *iconImageCache = [NSMutableDictionary dictionaryWithCapacity:[iconFiles count]];
-    
-    for (NSURL *iconURL in iconFiles) {
-        NSString *iconFileName = [iconURL lastPathComponent];
+    NSDirectoryEnumerator *iconsEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:iconsDirectoryURL
+                                                                    includingPropertiesForKeys:@[NSURLIsRegularFileKey]
+                                                                                       options:(NSDirectoryEnumerationSkipsHiddenFiles | NSDirectoryEnumerationSkipsPackageDescendants)
+                                                                                  errorHandler:nil];
+    NSMutableDictionary *iconImageCache = [NSMutableDictionary dictionary];
+    NSUInteger iconsDirectoryPathLength = [[iconsDirectoryURL path] length];
+
+    for (NSURL *iconURL in iconsEnumerator) {
+        NSNumber *isRegularFile = nil;
+        [iconURL getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+        if (![isRegularFile boolValue]) {
+            continue;
+        }
+        UTType *iconFileType = [UTType typeWithFilenameExtension:[iconURL pathExtension]];
+        if (![iconFileType conformsToType:UTTypeImage]) {
+            continue;
+        }
+        NSString *iconRelativePath = [[iconURL path] substringFromIndex:(iconsDirectoryPathLength + 1)];
         IconImageMO *cachedIcon = [[MAMunkiRepositoryManager sharedManager] createIconImageFromURL:iconURL managedObjectContext:privateContext];
-        [iconImageCache setObject:cachedIcon forKey:iconFileName];
+        if (cachedIcon != nil) {
+            [iconImageCache setObject:cachedIcon forKey:iconRelativePath];
+        }
     }
     
     // Pre-populate developer lookup dictionary for fast lookups
@@ -486,7 +503,9 @@ static const int BatchSize = 50;
     NSArray *allDevelopers = [privateContext executeFetchRequest:getAllDevelopers error:nil];
     NSMutableDictionary *developersByTitle = [NSMutableDictionary dictionaryWithCapacity:50];
     for (DeveloperMO *developer in allDevelopers) {
-        [developersByTitle setObject:developer forKey:developer.title];
+        if (developer.title != nil) {
+            [developersByTitle setObject:developer forKey:developer.title];
+        }
     }
     
     // Pre-populate category lookup dictionary for fast lookups
@@ -495,7 +514,9 @@ static const int BatchSize = 50;
     NSArray *allCategories = [privateContext executeFetchRequest:getAllCategories error:nil];
     NSMutableDictionary *categoriesByTitle = [NSMutableDictionary dictionaryWithCapacity:30];
     for (CategoryMO *category in allCategories) {
-        [categoriesByTitle setObject:category forKey:category.title];
+        if (category.title != nil) {
+            [categoriesByTitle setObject:category forKey:category.title];
+        }
     }
     
     NSFetchRequest *getApplications = [[NSFetchRequest alloc] init];
