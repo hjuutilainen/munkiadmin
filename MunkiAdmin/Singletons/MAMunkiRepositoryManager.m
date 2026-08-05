@@ -68,6 +68,7 @@ DDLogLevel ddLogLevel;
 - (void)setupMappings;
 - (BOOL)runRepositoryPreSaveScript;
 - (BOOL)runRepositoryPostSaveScript;
+- (void)markOwnerAsModifiedForReferencingStringObject:(StringObjectMO *)aReference;
 
 @end
 
@@ -903,6 +904,46 @@ static dispatch_queue_t serialQueue;
     [moc processPendingChanges];
 }
 
+/*
+ A StringObjectMO reference belongs to either a manifest (directly, or via a
+ conditional item) or a package ("requires"/"update_for"). Deleting the
+ reference itself doesn't mark its owner as changed, so callers that delete
+ references must call this first or the owner will never get written back
+ to disk.
+ */
+- (void)markOwnerAsModifiedForReferencingStringObject:(StringObjectMO *)aReference
+{
+    if (aReference.managedInstallReference) {
+        aReference.managedInstallReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.managedUninstallReference) {
+        aReference.managedUninstallReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.managedUpdateReference) {
+        aReference.managedUpdateReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.optionalInstallReference) {
+        aReference.optionalInstallReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.defaultInstallReference) {
+        aReference.defaultInstallReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.featuredItemReference) {
+        aReference.featuredItemReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.managedInstallConditionalReference) {
+        aReference.managedInstallConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.managedUninstallConditionalReference) {
+        aReference.managedUninstallConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.managedUpdateConditionalReference) {
+        aReference.managedUpdateConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.optionalInstallConditionalReference) {
+        aReference.optionalInstallConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.defaultInstallConditionalReference) {
+        aReference.defaultInstallConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.featuredItemConditionalReference) {
+        aReference.featuredItemConditionalReference.manifest.hasUnstagedChangesValue = YES;
+    } else if (aReference.requiresReference) {
+        aReference.requiresReference.hasUnstagedChangesValue = YES;
+    } else if (aReference.updateForReference) {
+        aReference.updateForReference.hasUnstagedChangesValue = YES;
+    }
+}
+
 - (void)removePackages:(NSArray *)packages withInstallerItem:(BOOL)removeInstallerItem withReferences:(BOOL)removeReferences
 {
     NSManagedObjectContext *moc = [self appDelegateMoc];
@@ -942,15 +983,17 @@ static dispatch_queue_t serialQueue;
             NSArray *referencingObjects = [self referencingPackageStringObjectsWithTitle:name];
             DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], name);
             for (StringObjectMO *aReference in referencingObjects) {
+                [self markOwnerAsModifiedForReferencingStringObject:aReference];
                 [moc deleteObject:aReference];
             }
-            
+
             /*
              Remove versioned references too
              */
             NSArray *referencingObjectsWithVersion = [self referencingPackageStringObjectsWithTitle:nameWithVersion];
             DDLogInfo(@"Removing %li references with name: \"%@\"", (unsigned long)[referencingObjects count], nameWithVersion);
             for (StringObjectMO *aReference in referencingObjectsWithVersion) {
+                [self markOwnerAsModifiedForReferencingStringObject:aReference];
                 [moc deleteObject:aReference];
             }
             
