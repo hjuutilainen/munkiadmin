@@ -27,6 +27,8 @@
 DDLogLevel ddLogLevel;
 
 #define kMunkiAdminStatusChangeName @"MunkiAdminDidChangeStatus"
+#define kRecentRepositoryURLsDefaultsKey @"recentRepositoryURLs"
+#define kMaxRecentRepositories 10
 
 @implementation MAMunkiAdmin_AppDelegate
 
@@ -228,6 +230,106 @@ DDLogLevel ddLogLevel;
 		return nil;
 	}
 }
+
+
+# pragma mark -
+# pragma mark Recent repositories
+
+- (NSArray<NSURL *> *)recentRepositoryURLs
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray<NSString *> *recentPaths = [self.defaults arrayForKey:kRecentRepositoryURLsDefaultsKey];
+    NSMutableArray<NSURL *> *existingURLs = [NSMutableArray arrayWithCapacity:[recentPaths count]];
+    for (NSString *path in recentPaths) {
+        BOOL isDirectory = NO;
+        if ([fm fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory) {
+            [existingURLs addObject:[NSURL fileURLWithPath:path]];
+        }
+    }
+    return existingURLs;
+}
+
+- (void)addURLToRecentRepositories:(NSURL *)url
+{
+    NSString *path = [url relativePath];
+    if (!path) {
+        return;
+    }
+
+    NSMutableArray<NSString *> *recentPaths = [NSMutableArray arrayWithArray:[self.defaults arrayForKey:kRecentRepositoryURLsDefaultsKey]];
+    [recentPaths removeObject:path];
+    [recentPaths insertObject:path atIndex:0];
+    while ([recentPaths count] > kMaxRecentRepositories) {
+        [recentPaths removeLastObject];
+    }
+    [self.defaults setObject:recentPaths forKey:kRecentRepositoryURLsDefaultsKey];
+}
+
+- (void)removeURLFromRecentRepositories:(NSURL *)url
+{
+    NSMutableArray<NSString *> *recentPaths = [NSMutableArray arrayWithArray:[self.defaults arrayForKey:kRecentRepositoryURLsDefaultsKey]];
+    [recentPaths removeObject:[url relativePath]];
+    [self.defaults setObject:recentPaths forKey:kRecentRepositoryURLsDefaultsKey];
+}
+
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    if (menu != self.recentRepositoriesMenu) {
+        return;
+    }
+
+    [menu removeAllItems];
+
+    NSArray<NSURL *> *recentURLs = [self recentRepositoryURLs];
+    if ([recentURLs count] == 0) {
+        NSMenuItem *emptyItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"No Recent Repositories", @"") action:nil keyEquivalent:@""];
+        [emptyItem setEnabled:NO];
+        [menu addItem:emptyItem];
+    } else {
+        for (NSURL *url in recentURLs) {
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:[url lastPathComponent] action:@selector(openRecentRepositoryAction:) keyEquivalent:@""];
+            item.representedObject = url;
+            item.toolTip = [url relativePath];
+            item.target = self;
+            [menu addItem:item];
+        }
+    }
+
+    [menu addItem:[NSMenuItem separatorItem]];
+
+    NSMenuItem *clearItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Clear Menu", @"") action:@selector(clearRecentRepositoriesAction:) keyEquivalent:@""];
+    clearItem.target = self;
+    clearItem.enabled = ([recentURLs count] > 0);
+    [menu addItem:clearItem];
+}
+
+- (IBAction)openRecentRepositoryAction:sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+
+    NSURL *url = [sender representedObject];
+    BOOL isDirectory = NO;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[url relativePath] isDirectory:&isDirectory] || !isDirectory) {
+        [self removeURLFromRecentRepositories:url];
+
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
+        alert.messageText = NSLocalizedString(@"Repository not found", @"");
+        alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"The repository at \"%@\" could not be found. It has been removed from the recent repositories list.", @""), [url relativePath]];
+        alert.alertStyle = NSAlertStyleWarning;
+        [alert runModal];
+        return;
+    }
+
+    [self selectRepoAtURL:url];
+}
+
+- (IBAction)clearRecentRepositoriesAction:sender
+{
+    DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
+    [self.defaults setObject:@[] forKey:kRecentRepositoryURLsDefaultsKey];
+}
+
 
 - (NSArray *)chooseFolderForSave
 {
@@ -694,6 +796,7 @@ DDLogLevel ddLogLevel;
     
 	[self.mainTabView setDelegate:self];
 	[self.mainSplitView setDelegate:self];
+    self.recentRepositoriesMenu.delegate = self;
     
     /*
      Select the Packages view by default
@@ -2485,7 +2588,8 @@ DDLogLevel ddLogLevel;
             self.iconsURL = [[self.repoURL URLByAppendingPathComponent:@"icons"] URLByResolvingSymlinksInPath];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
-            
+            [self addURLToRecentRepositories:self.repoURL];
+
         NSTimeInterval setupTime = [[NSDate date] timeIntervalSinceDate:repoLoadStartTime];
             DDLogDebug(@"Repository setup completed in %.2f ms", setupTime * 1000.0);
 

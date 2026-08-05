@@ -29,7 +29,7 @@
 @class DDFileLogger;
 
 
-@interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate, NSToolbarDelegate>
+@interface MAMunkiAdmin_AppDelegate : NSObject <NSApplicationDelegate, NSTabViewDelegate, NSSplitViewDelegate, NSOpenSavePanelDelegate, NSToolbarDelegate, NSMenuDelegate>
 {
     MASelectPkginfoItemsWindow *addItemsWindowController;
     MASelectManifestItemsWindow *selectManifestsWindowController;
@@ -118,6 +118,7 @@
 @property (nonatomic, strong) IBOutlet NSSplitView *mainSplitView;
 @property (weak) IBOutlet NSSearchField *catalogContentSearchField;
 @property (weak) IBOutlet NSSearchField *catalogsSearchField;
+@property (weak) IBOutlet NSMenu *recentRepositoriesMenu;
 
 # pragma mark -
 # pragma mark Core data specific declarations
@@ -132,6 +133,8 @@
 - (IBAction)cancelOperationsAction:sender;
 - (IBAction)writeChangesToDisk:sender;
 - (IBAction)openRepository:sender;
+- (IBAction)openRecentRepositoryAction:sender;
+- (IBAction)clearRecentRepositoriesAction:sender;
 - (IBAction)reloadRepositoryAction:sender;
 - (IBAction)updateCatalogs:sender;
 - (IBAction)createNewRepository:sender;

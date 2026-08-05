@@ -205,6 +205,13 @@ Gw
                                     <action selector="openRepository:" target="205" id="702"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Open Recent Repository" id="RR1-en-Mnu">
+                                <menu key="submenu" title="Open Recent Repository" id="RR1-en-Sub">
+                                    <items>
+                                        <menuItem title="No Recent Repositories" enabled="NO" id="RR1-en-Emp"/>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Import Items..." keyEquivalent="I" id="900">
                                 <connections>
                                     <action selector="addNewPackage:" target="205" id="901"/>
@@ -583,6 +590,7 @@ Gw
                 <outlet property="progressIndicator" destination="1328" id="1329"/>
                 <outlet property="progressPanel" destination="1317" id="1320"/>
                 <outlet property="receiptsArrayController" destination="1122" id="2097"/>
+                <outlet property="recentRepositoriesMenu" destination="RR1-en-Sub" id="RR1-en-Out"/>
                 <outlet property="sourceViewPlaceHolder" destination="523" id="941"/>
                 <outlet property="window" destination="21" id="208"/>
             </connections>
