@@ -15,7 +15,7 @@
 #import "MAManifestScanner.h"
 #import "MAScriptRunner.h"
 #import "NSImage+PixelSize.h"
-#import <NSHash/NSData+NSHash.h>
+#import <CommonCrypto/CommonDigest.h>
 #import "CocoaLumberjack.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
@@ -1488,12 +1488,11 @@ static dispatch_queue_t serialQueue;
 
 - (NSString *)calculateSHA256HashForData:(NSData *)data
 {
-    NSData *sha256Data = [data SHA256];
-    NSUInteger dataLength = [sha256Data length];
-    NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:dataLength*2];
-    const unsigned char *dataBytes = [sha256Data bytes];
-    for (NSUInteger idx = 0; idx < dataLength; ++idx) {
-        [iconSHA256HashString appendFormat:@"%02x", dataBytes[idx]];
+    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(data.bytes, (CC_LONG)data.length, digest);
+    NSMutableString *iconSHA256HashString = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+    for (NSUInteger idx = 0; idx < CC_SHA256_DIGEST_LENGTH; ++idx) {
+        [iconSHA256HashString appendFormat:@"%02x", digest[idx]];
     }
     return iconSHA256HashString;
 }

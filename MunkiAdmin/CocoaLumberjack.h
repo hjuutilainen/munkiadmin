@@ -9,6 +9,6 @@
 #ifndef MunkiAdmin_CocoaLumberjack_h
 #define MunkiAdmin_CocoaLumberjack_h
 
-#import <CocoaLumberjack/CocoaLumberjack.h>
+@import CocoaLumberjack;
 extern DDLogLevel ddLogLevel;
 #endif

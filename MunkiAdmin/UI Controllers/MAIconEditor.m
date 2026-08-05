@@ -11,7 +11,6 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MAImageBrowserItem.h"
 #import "NSImage+PixelSize.h"
-#import <NSHash/NSData+NSHash.h>
 #import "CocoaLumberjack.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
