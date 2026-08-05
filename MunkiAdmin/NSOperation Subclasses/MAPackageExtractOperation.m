@@ -8,6 +8,7 @@
 
 #import "MAPackageExtractOperation.h"
 #import "CocoaLumberjack.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 DDLogLevel ddLogLevel;
 
@@ -132,7 +133,6 @@ DDLogLevel ddLogLevel;
     }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:url
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
                                                              options:0
@@ -152,7 +152,7 @@ DDLogLevel ddLogLevel;
                            forKey:NSURLTypeIdentifierKey
                             error:nil];
         //DDLogDebug(@"%@ %@", typeIdentifier, fileURL);
-        if ([workspace type:typeIdentifier conformsToType:type]) {
+        if ([[UTType typeWithIdentifier:typeIdentifier] conformsToType:[UTType typeWithIdentifier:type]]) {
             [foundURLs addObject:fileURL];
         }
     }

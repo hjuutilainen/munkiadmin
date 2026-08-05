@@ -13,6 +13,7 @@
 #import "MACoreDataManager.h"
 #import "MARequestStringValueController.h"
 #import "CocoaLumberjack.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #import "MAManifestEditor.h"
 #import "MAManifestImporter.h"
 
@@ -313,12 +314,12 @@ DDLogLevel ddLogLevel;
     
     [self.manifestsListTableView setDelegate:self];
     [self.manifestsListTableView setDataSource:self];
-    [self.manifestsListTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.manifestsListTableView registerForDraggedTypes:@[NSPasteboardTypeURL]];
     [self.manifestsListTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     [self.sourceList setDelegate:self];
     [self.sourceList setDataSource:self];
-    [self.sourceList registerForDraggedTypes:@[NSURLPboardType]];
+    [self.sourceList registerForDraggedTypes:@[NSPasteboardTypeURL]];
     [self.sourceList setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     self.requestStringValue = [[MARequestStringValueController alloc] initWithWindowNibName:@"MARequestStringValueController"];
@@ -793,7 +794,7 @@ DDLogLevel ddLogLevel;
     if (menu == self.manifestsListTableView.headerView.menu) {
         for (NSMenuItem *mi in menu.itemArray) {
             NSTableColumn *col = [mi representedObject];
-            [mi setState:col.isHidden ? NSOffState : NSOnState];
+            [mi setState:col.isHidden ? NSControlStateValueOff : NSControlStateValueOn];
         }
     } else if (menu == self.manifestsListMenu) {
         [self manifestsListMenuWillOpen:menu];
@@ -1042,7 +1043,7 @@ DDLogLevel ddLogLevel;
              Selecting this menu item should remove manifests from catalog.
              */
             catalogItem.action = @selector(removeSelectedManifestsFromCatalogAction:);
-            catalogItem.state = NSOnState;
+            catalogItem.state = NSControlStateValueOn;
             
         } else if (numEnabled == 0) {
             /*
@@ -1050,7 +1051,7 @@ DDLogLevel ddLogLevel;
              Selecting this menu item should add manifests to this catalog.
              */
             catalogItem.action = @selector(addSelectedManifestsToCatalogAction:);
-            catalogItem.state = NSOffState;
+            catalogItem.state = NSControlStateValueOff;
             
         } else {
             /*
@@ -1072,7 +1073,7 @@ DDLogLevel ddLogLevel;
             catalogItem.toolTip = toolTip;
             
             catalogItem.action = @selector(addSelectedManifestsToCatalogAction:);
-            catalogItem.state = NSMixedState;
+            catalogItem.state = NSControlStateValueMixed;
         }
         
     }
@@ -1103,7 +1104,7 @@ DDLogLevel ddLogLevel;
 {
     NSString *typeIdentifier;
     [fileURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
-    if ([[NSWorkspace sharedWorkspace] type:typeIdentifier conformsToType:(NSString *)kUTTypePlainText]) {
+    if ([[UTType typeWithIdentifier:typeIdentifier] conformsToType:UTTypePlainText]) {
         return YES;
     } else {
         return NO;
@@ -1122,7 +1123,7 @@ DDLogLevel ddLogLevel;
          Check if we have regular files
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeFileURL]) {
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
@@ -1156,7 +1157,7 @@ DDLogLevel ddLogLevel;
          Check if we have regular files
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeFileURL]) {
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
@@ -1277,7 +1278,7 @@ DDLogLevel ddLogLevel;
          Check if we even have a supported type in pasteboard
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if (![dragTypes containsObject:NSURLPboardType]) {
+        if (![dragTypes containsObject:NSPasteboardTypeURL]) {
             return NSDragOperationNone;
         }
         
@@ -1310,7 +1311,7 @@ DDLogLevel ddLogLevel;
 {
     if (aSourceList == self.sourceList) {
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSURLPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeURL]) {
             
             if ([[proposedParentItem representedObject] isKindOfClass:[ManifestDirectorySourceListItemMO class]]) {
                 
@@ -1414,7 +1415,7 @@ DDLogLevel ddLogLevel;
     CGFloat predEditorRowHeight = [self.manifestsListPredicateEditor rowHeight];
     NSInteger numRowsInPredEditor = [self.manifestsListPredicateEditor numberOfRows];
     int padding = 32;
-    CGFloat desiredHeight = numRowsInPredEditor * predEditorRowHeight + padding;
+    CGFloat desiredHeight = (CGFloat)numRowsInPredEditor * predEditorRowHeight + padding;
     CGFloat dividerThickness = [self.manifestsListSplitView dividerThickness];
     predicateEditorFrame.size.height = desiredHeight;
     predicateEditorFrame.size.width = overallFrame.size.width;
@@ -1443,17 +1444,6 @@ DDLogLevel ddLogLevel;
 - (BOOL)splitView:(NSSplitView *)splitView shouldHideDividerAtIndex:(NSInteger)dividerIndex
 {
     if (splitView == self.manifestsListSplitView) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-- (BOOL)splitView:(NSSplitView *)splitView shouldCollapseSubview:(NSView *)subview forDoubleClickOnDividerAtIndex:(NSInteger)dividerIndex
-{
-    if (splitView == self.mainSplitView) {
-        return NO;
-    } else if (splitView == self.manifestsListSplitView && subview == [self.manifestsListSplitView subviews][0]) {
         return YES;
     } else {
         return NO;

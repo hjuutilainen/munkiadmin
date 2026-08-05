@@ -451,7 +451,8 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSData *archivedItems = [pb dataForType:pboardType];
     
     // Unarchive
-    NSArray *itemsFromPasteboard = [NSKeyedUnarchiver unarchiveObjectWithData:archivedItems];
+    NSSet *allowedClasses = [NSSet setWithObjects:[NSArray class], [NSDictionary class], [NSString class], [NSNumber class], [NSNull class], [NSDate class], [NSData class], nil];
+    NSArray *itemsFromPasteboard = [NSKeyedUnarchiver unarchivedObjectOfClasses:allowedClasses fromData:archivedItems error:nil];
     return itemsFromPasteboard;
 }
 
@@ -459,9 +460,10 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 {
     // Copy the data to pasteboard
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSArray *pb_types = [NSArray arrayWithObjects:pboardType, NSStringPboardType, nil];
+    NSArray *pb_types = [NSArray arrayWithObjects:pboardType, NSPasteboardTypeString, nil];
     [pb declareTypes:pb_types owner:nil];
-    [pb setData:[NSKeyedArchiver archivedDataWithRootObject:items] forType:pboardType];
+    NSData *archivedItems = [NSKeyedArchiver archivedDataWithRootObject:items requiringSecureCoding:YES error:nil];
+    [pb setData:archivedItems forType:pboardType];
     
     // As a convenience, copy the data as a string too
     NSData *data;
@@ -475,7 +477,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     data = [NSPropertyListSerialization dataWithPropertyList:items format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
     if (data) {
         NSString *str = [NSString stringWithUTF8String:[data bytes]];
-        [pb setString:str forType:NSStringPboardType];
+        [pb setString:str forType:NSPasteboardTypeString];
     }
 }
 
@@ -620,14 +622,14 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     }
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
+- (nullable id<NSPasteboardWriting>)tableView:(NSTableView *)aTableView pasteboardWriterForRow:(NSInteger)row
 {
     if (aTableView == self.installsTableView) {
         NSArray *selectedObjects = [[self.installsItemsController selectedObjects] valueForKeyPath:@"dictValueForSave"];
         [self copyItems:selectedObjects forType:installsPboardType];
-        return YES;
+        return [NSString string];
     }
-    return NO;
+    return nil;
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id < NSDraggingInfo >)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
@@ -654,7 +656,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSPasteboard *pasteboard = [info draggingPasteboard];
     
     if (aTableView == self.installsTableView) {
-        if ([[pasteboard types] containsObject:NSURLPboardType]) {
+        if ([[pasteboard types] containsObject:NSPasteboardTypeURL]) {
             // The drop should always target the whole table view
             [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
             return NSDragOperationCopy;
@@ -674,7 +676,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
 {
 	for (NSMenuItem *mi in menu.itemArray) {
 		NSTableColumn *col = [mi representedObject];
-		[mi setState:col.isHidden ? NSOffState : NSOnState];
+		[mi setState:col.isHidden ? NSControlStateValueOff : NSControlStateValueOn];
 	}
 }
 
@@ -702,7 +704,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     installsItemsHeaderMenu.delegate = self;
     self.installsTableView.headerView.menu = installsItemsHeaderMenu;
     
-    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSURLPboardType, nil]];
+    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeURL, nil]];
     [self.installsTableView setDelegate:self];
     [self.installsTableView setDataSource:self];
     

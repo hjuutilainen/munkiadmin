@@ -59,7 +59,7 @@ DDLogLevel ddLogLevel;
         DDLogVerbose(@"Current Log File Info: %@", self.currentFileLogger.currentLogFileInfo);
         NSString *currentLogFilePath = self.currentFileLogger.currentLogFileInfo.filePath;
         if ([[NSFileManager defaultManager] fileExistsAtPath:currentLogFilePath]) {
-            [[NSWorkspace sharedWorkspace] openFile:currentLogFilePath];
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:currentLogFilePath]];
         } else {
             DDLogError(@"Error: File not found %@", currentLogFilePath);
         }
@@ -1181,7 +1181,7 @@ DDLogLevel ddLogLevel;
         
     }];
 	[self.progressIndicator setDoubleValue:0.0];
-	[self.progressIndicator setMaxValue:[self.operationQueue operationCount]];
+	[self.progressIndicator setMaxValue:(double)[self.operationQueue operationCount]];
 	[self.progressIndicator startAnimation:self];
 	[self startOperationTimer];
 }
@@ -2211,7 +2211,7 @@ DDLogLevel ddLogLevel;
                             anAlert.informativeText = recoverySuggestion;
                             anAlert.showsSuppressionButton = YES;
                             [anAlert runModal];
-                            if (anAlert.suppressionButton.state == NSOnState) {
+                            if (anAlert.suppressionButton.state == NSControlStateValueOn) {
                                 [defaults setBool:YES forKey:alertSuppressionKey];
                             }
                         }
@@ -2233,7 +2233,7 @@ DDLogLevel ddLogLevel;
                     anAlert.informativeText = recoverySuggestion;
                     anAlert.showsSuppressionButton = YES;
                     [anAlert runModal];
-                    if (anAlert.suppressionButton.state == NSOnState) {
+                    if (anAlert.suppressionButton.state == NSControlStateValueOn) {
                         [defaults setBool:YES forKey:alertSuppressionKey];
                     }
                 }
@@ -3093,7 +3093,7 @@ DDLogLevel ddLogLevel;
         CGFloat x = (bounds.size.width-32)/2;
         CGFloat y = (bounds.size.height-32)/2;
         NSProgressIndicator* busyGear = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(x, y, 32, 32)];
-        [busyGear setStyle:NSProgressIndicatorSpinningStyle];
+        [busyGear setStyle:NSProgressIndicatorStyleSpinning];
         [busyGear startAnimation:self];
         [self.detailViewPlaceHolder addSubview:busyGear];
         //[detailViewPlaceHolder display];
@@ -3132,11 +3132,6 @@ DDLogLevel ddLogLevel;
 #pragma mark NSSplitView delegates
 
 - (BOOL)splitView:(NSSplitView *)splitView canCollapseSubview:(NSView *)subview
-{
-	return NO;
-}
-
-- (BOOL)splitView:(NSSplitView *)splitView shouldCollapseSubview:(NSView *)subview forDoubleClickOnDividerAtIndex:(NSInteger)dividerIndex
 {
 	return NO;
 }

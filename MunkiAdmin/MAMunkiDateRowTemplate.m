@@ -37,7 +37,7 @@
              Configure the date picker to show time controls and set time zone to GMT
              */
             NSDatePicker *datePicker = view;
-            NSDatePickerElementFlags flags = (NSYearMonthDayDatePickerElementFlag | NSHourMinuteSecondDatePickerElementFlag);
+            NSDatePickerElementFlags flags = (NSDatePickerElementFlagYearMonthDay | NSDatePickerElementFlagHourMinuteSecond);
             [datePicker setDatePickerElements:flags];
             [datePicker setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
             [datePicker sizeToFit];

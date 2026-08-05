@@ -1,4 +1,5 @@
 #import "ItemToCopyMO.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @implementation ItemToCopyMO
 
@@ -30,7 +31,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
         return [wp iconForFile:fullPath];
     } else {
-        return [wp iconForFileType:[fullPath pathExtension]];
+        return [wp iconForContentType:[UTType typeWithFilenameExtension:[fullPath pathExtension]]];
     }
 }
 

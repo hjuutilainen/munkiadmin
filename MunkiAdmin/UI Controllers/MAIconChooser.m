@@ -192,6 +192,10 @@
 
 
 
+// IKImageBrowserView is deprecated in favor of NSCollectionView (macOS 10.14+).
+// Suppressed for now; migrating this is a separate follow-up task.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)imageBrowserSelectionDidChange:(IKImageBrowserView *)aBrowser
 {
     //NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -205,7 +209,8 @@
 - (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasDoubleClickedAtIndex:(NSUInteger)index
 {
     [self chooseAction:self];
-    
+
 }
+#pragma clang diagnostic pop
 
 @end

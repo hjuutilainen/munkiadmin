@@ -227,7 +227,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     
     self.currentDetailView = self.generalView;
     
-    [self.catalogInfosTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.catalogInfosTableView registerForDraggedTypes:@[NSPasteboardTypeURL]];
     [self.catalogInfosTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     
     [self.conditionsOutlineView registerForDraggedTypes:@[MAConditionalItemType]];
@@ -1006,7 +1006,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
     NSPasteboard *draggingPasteboard = [draggingInfo draggingPasteboard];
     if (theTableView == self.catalogInfosTableView) {
         NSArray *dragTypes = [draggingPasteboard types];
-        if ([dragTypes containsObject:NSURLPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeURL]) {
             
             NSPasteboard *pasteboard = draggingPasteboard;
             NSArray *classes = @[[NSURL class]];
@@ -1185,14 +1185,15 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard
 {
     [pboard declareTypes:[NSArray arrayWithObject:MAConditionalItemType] owner:self];
-    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"]] forType:MAConditionalItemType];
+    NSData *archivedIndexPaths = [NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"] requiringSecureCoding:YES error:nil];
+    [pboard setData:archivedIndexPaths forType:MAConditionalItemType];
     return YES;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index
 {
     
-    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:MAConditionalItemType]];
+    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSIndexPath class], nil] fromData:[[info draggingPasteboard] dataForType:MAConditionalItemType] error:nil];
     
     NSMutableArray *draggedNodes = [NSMutableArray array];
     for (NSIndexPath *indexPath in droppedIndexPaths) {
@@ -1230,7 +1231,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         return NSDragOperationNone;
     }
     
-    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:MAConditionalItemType]];
+    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSIndexPath class], nil] fromData:[[info draggingPasteboard] dataForType:MAConditionalItemType] error:nil];
     for (NSIndexPath *indexPath in draggedIndexPaths) {
         id treeRoot = [self.conditionsTreeController arrangedObjects];
         NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];

@@ -17,6 +17,7 @@
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
 #import "CocoaLumberjack.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 DDLogLevel ddLogLevel;
 
@@ -1422,7 +1423,7 @@ static dispatch_queue_t serialQueue;
         } else {
             DDLogVerbose(@"Creating new icon object for pkg file type");
             newIconImage.originalURL = nil;
-            NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+            NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForContentType:[UTType typeWithFilenameExtension:@"pkg"]];
             newIconImage.imageRepresentation = pkgicon;
         }
         
@@ -1458,7 +1459,7 @@ static dispatch_queue_t serialQueue;
      Create a default icon for packages without a custom icon
      */
     IconImageMO *defaultIcon = [self createIconImageFromURL:nil managedObjectContext:moc];
-    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+    NSImage *pkgicon = [[NSWorkspace sharedWorkspace] iconForContentType:[UTType typeWithFilenameExtension:@"pkg"]];
     defaultIcon.imageRepresentation = pkgicon;
     defaultIcon.originalURL = nil;
     
@@ -1582,8 +1583,7 @@ static dispatch_queue_t serialQueue;
      if missing. Most of the files should have it already if used in any pkginfos.
      */
     NSURL *directoryURL = [(MAMunkiAdmin_AppDelegate *)[NSApp delegate] iconsURL];
-    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-    
+
     NSArray *keys = @[NSURLTypeIdentifierKey, NSURLLocalizedNameKey];
     
     NSDirectoryEnumerator *dirEnum;
@@ -1608,7 +1608,7 @@ static dispatch_queue_t serialQueue;
         /*
          If this is an image file, create an IconImage object.
          */
-        if ([workspace type:typeIdentifier conformsToType:@"public.image"]) {
+        if ([[UTType typeWithIdentifier:typeIdentifier] conformsToType:UTTypeImage]) {
             [self createIconImageFromURL:url managedObjectContext:[self appDelegateMoc]];
         }
     }
@@ -1863,7 +1863,6 @@ static dispatch_queue_t serialQueue;
                         NSMutableArray *packages = [NSMutableArray array];
                         
                         // Enumerate the dirEnumerator results
-                        NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
                         for (NSURL *theURL in dirEnumerator) {
                             // Skip any subdirectories
                             NSNumber *isDirectory = nil;
@@ -1876,13 +1875,14 @@ static dispatch_queue_t serialQueue;
                                 NSString *typeIdentifier;
                                 [theURL getResourceValue:&typeIdentifier forKey:NSURLTypeIdentifierKey error:nil];
                                 //DDLogInfo(@"%@ %@", typeIdentifier, theURL);
-                                if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package-archive"]) {
+                                UTType *theURLType = [UTType typeWithIdentifier:typeIdentifier];
+                                if ([theURLType conformsToType:[UTType typeWithIdentifier:@"com.apple.installer-package-archive"]]) {
                                     // Flat package
                                     [packages addObject:theURL];
-                                } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-package"]) {
+                                } else if ([theURLType conformsToType:[UTType typeWithIdentifier:@"com.apple.installer-package"]]) {
                                     // Bundle package (.pkg)
                                     [packages addObject:theURL];
-                                } else if ([workspace type:typeIdentifier conformsToType:@"com.apple.installer-meta-package"]) {
+                                } else if ([theURLType conformsToType:[UTType typeWithIdentifier:@"com.apple.installer-meta-package"]]) {
                                     // Bundle package (.mpkg)
                                     [packages addObject:theURL];
                                 }
@@ -1971,7 +1971,6 @@ static dispatch_queue_t serialQueue;
 - (NSArray *)findAllIcnsFilesAtURL:(NSURL *)mountpointURL
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:mountpointURL
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey, NSURLTypeIdentifierKey]
                                                              options:0
@@ -1990,7 +1989,7 @@ static dispatch_queue_t serialQueue;
         [fileURL getResourceValue:&typeIdentifier
                            forKey:NSURLTypeIdentifierKey
                             error:nil];
-        if ([workspace type:typeIdentifier conformsToType:@"com.apple.icns"]) {
+        if ([[UTType typeWithIdentifier:typeIdentifier] conformsToType:[UTType typeWithIdentifier:@"com.apple.icns"]]) {
             DDLogInfo(@"Found com.apple.icns file: %@", [fileURL path]);
             NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
             [image setSize:[image pixelSize]];

@@ -5,6 +5,7 @@
 #import "ManifestMO.h"
 #import "CatalogMO.h"
 #import "IconImageMO.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @implementation StringObjectMO
 
@@ -411,7 +412,7 @@
         return iconImage.imageRepresentation;
     }
     
-    return [[NSWorkspace sharedWorkspace] iconForFileType:@"pkg"];
+    return [[NSWorkspace sharedWorkspace] iconForContentType:[UTType typeWithFilenameExtension:@"pkg"]];
 }
 
 - (void)awakeFromInsert

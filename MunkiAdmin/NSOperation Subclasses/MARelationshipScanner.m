@@ -377,7 +377,7 @@ static const int BatchSize = 50;
          
         
         if (idx % progressGranularity == 0) {
-            double percentage = (idx / (float)[self.allManifests count]) * 100.0;
+            double percentage = ((double)idx / (double)[self.allManifests count]) * 100.0;
             self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
         }
         if (idx % BatchSize == 0) {
@@ -655,7 +655,7 @@ static const int BatchSize = 50;
         }
         
         if (idx % progressGranularity == 0) {
-            double percentage = (idx / (float)[self.allPackages count]) * 100.0;
+            double percentage = ((double)idx / (double)[self.allPackages count]) * 100.0;
             self.currentJobDescription = [NSString stringWithFormat:@"Processing: (%1.0f%% done)", percentage];
         }
         if (idx % BatchSize == 0) {

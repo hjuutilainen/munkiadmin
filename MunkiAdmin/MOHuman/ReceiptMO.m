@@ -1,11 +1,12 @@
 #import "ReceiptMO.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @implementation ReceiptMO
 
 - (NSImage *)iconImage
 {
     NSWorkspace *wp = [NSWorkspace sharedWorkspace];
-    return [wp iconForFileType:@"pkg"];
+    return [wp iconForContentType:[UTType typeWithFilenameExtension:@"pkg"]];
 }
 
 

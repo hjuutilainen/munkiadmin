@@ -25,6 +25,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D9CC2761A2950C429337757A /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5294A6EE080B6ADF14CF0DD5 /* UniformTypeIdentifiers.framework */; };
 		F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E6E19090E00009F6D28 /* _DeveloperMO.m */; };
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
 		F5018E7719090E0E009F6D28 /* DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7419090E0E009F6D28 /* DeveloperMO.m */; };
@@ -195,6 +196,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiAdmin_Prefix.pch; path = MunkiAdmin/MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
+		5294A6EE080B6ADF14CF0DD5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* MAMunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAMunkiAdmin_AppDelegate.h; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
@@ -461,6 +463,7 @@
 				F5DCC1FE266F3D0200621F6F /* CoreData.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				411A24A7E834B7CEC95AC01F /* libPods-MunkiAdmin.a in Frameworks */,
+				D9CC2761A2950C429337757A /* UniformTypeIdentifiers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,7 +630,7 @@
 			path = "MunkiAdmin/Array Controllers";
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* MunkiAdmin */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				F5A11C6C195706C6005A39AE /* Warnings.xcconfig */,
@@ -689,6 +692,7 @@
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 				0FDB177FE71AD8B3731D7675 /* libPods-MunkiAdmin.a */,
+				5294A6EE080B6ADF14CF0DD5 /* UniformTypeIdentifiers.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -940,7 +944,7 @@
 				Base,
 				en,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* MunkiAdmin */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1218,7 +1222,7 @@
 				GCC_PREFIX_HEADER = MunkiAdmin/MunkiAdmin_Prefix.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/MunkiAdmin/MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hjuutilainen.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MunkiAdmin;
 				SDKROOT = macosx;
@@ -1245,7 +1249,7 @@
 				GCC_PREFIX_HEADER = MunkiAdmin/MunkiAdmin_Prefix.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/MunkiAdmin/MunkiAdmin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hjuutilainen.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MunkiAdmin;
 				SDKROOT = macosx;

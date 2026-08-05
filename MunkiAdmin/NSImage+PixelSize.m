@@ -60,7 +60,7 @@
 
 - (NSSize)pixelSize
 {
-    return NSMakeSize(self.pixelsWide, self.pixelsHigh);
+    return NSMakeSize((CGFloat)self.pixelsWide, (CGFloat)self.pixelsHigh);
 }
 
 @end

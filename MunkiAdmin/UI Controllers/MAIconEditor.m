@@ -13,6 +13,7 @@
 #import "NSImage+PixelSize.h"
 #import <NSHash/NSData+NSHash.h>
 #import "CocoaLumberjack.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 DDLogLevel ddLogLevel;
 
@@ -168,7 +169,7 @@ DDLogLevel ddLogLevel;
         NSData *imageData;
         NSInteger defaultWidth = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultWidth"];
         NSInteger defaultHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultHeight"];
-        NSSize newSize = NSMakeSize(defaultWidth, defaultHeight);
+        NSSize newSize = NSMakeSize((CGFloat)defaultWidth, (CGFloat)defaultHeight);
         if (self.resizeOnSave && [self.currentImage pixelSize].width > newSize.width) {
             DDLogDebug(@"Resizing image to fit %lix%li...", (long)defaultWidth, (long)defaultHeight);
             imageData = [[self resizedImage:self.currentImage toPixelDimensions:newSize] TIFFRepresentation];
@@ -177,7 +178,7 @@ DDLogLevel ddLogLevel;
             imageData = [self.currentImage TIFFRepresentation];
         }
         NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:imageData];
-        NSData *pngData = [rep representationUsingType:NSPNGFileType properties:@{}];
+        NSData *pngData = [rep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
         NSError *writeError;
         if (![pngData writeToURL:[sheet URL] options:NSDataWritingAtomic error:&writeError]) {
             DDLogError(@"%@", writeError);
@@ -477,7 +478,7 @@ DDLogLevel ddLogLevel;
     /*
      If the user gave us an image file, use it as is.
      */
-    if ([[NSWorkspace sharedWorkspace] type:typeIdentifier conformsToType:@"public.image"]) {
+    if ([[UTType typeWithIdentifier:typeIdentifier] conformsToType:UTTypeImage]) {
         NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
         NSImageRep *bestRepresentation = [image bestRepresentationForRect:NSMakeRect(0, 0, 1024.0, 1024.0) context:nil hints:nil];
         [image setSize:[bestRepresentation size]];
@@ -531,6 +532,10 @@ DDLogLevel ddLogLevel;
 }
 
 
+// IKImageBrowserView is deprecated in favor of NSCollectionView (macOS 10.14+).
+// Suppressed for now; migrating this is a separate follow-up task.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)imageBrowserSelectionDidChange:(IKImageBrowserView *)aBrowser
 {
     //DDLogDebug(@"%@", NSStringFromSelector(_cmd));
@@ -544,7 +549,8 @@ DDLogLevel ddLogLevel;
 - (void)imageBrowser:(IKImageBrowserView *)aBrowser cellWasDoubleClickedAtIndex:(NSUInteger)index
 {
     [self chooseImageFromImageBrowserAction:self];
-    
+
 }
+#pragma clang diagnostic pop
 
 @end

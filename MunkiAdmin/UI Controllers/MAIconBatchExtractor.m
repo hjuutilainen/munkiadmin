@@ -151,7 +151,7 @@ DDLogLevel ddLogLevel;
     NSData *imageData;
     NSInteger defaultWidth = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultWidth"];
     NSInteger defaultHeight = [[NSUserDefaults standardUserDefaults] integerForKey:@"iconResizeDefaultHeight"];
-    NSSize newSize = NSMakeSize(defaultWidth, defaultHeight);
+    NSSize newSize = NSMakeSize((CGFloat)defaultWidth, (CGFloat)defaultHeight);
     if (self.resizeOnSave && [image pixelSize].width > newSize.width) {
         DDLogDebug(@"Resizing image to fit %lix%li...", (long)defaultWidth, (long)defaultHeight);
         imageData = [[self resizedImage:image toPixelDimensions:newSize] TIFFRepresentation];
@@ -159,7 +159,7 @@ DDLogLevel ddLogLevel;
         imageData = [image TIFFRepresentation];
     }
     NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:imageData];
-    NSData *pngData = [rep representationUsingType:NSPNGFileType properties:@{}];
+    NSData *pngData = [rep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
     NSError *writeError;
     if (![pngData writeToURL:saveURL options:NSDataWritingAtomic error:&writeError]) {
         DDLogError(@"%@", writeError);

@@ -12,7 +12,12 @@
 
 @interface MAIconChooser : NSWindowController
 
+// IKImageBrowserView is deprecated in favor of NSCollectionView (macOS 10.14+).
+// Suppressed for now; migrating this is a separate follow-up task.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @property (weak) IBOutlet IKImageBrowserView *imageBrowserView;
+#pragma clang diagnostic pop
 @property (weak) IBOutlet NSArrayController *imagesArrayController;
 @property (strong) NSArray *packagesToEdit;
 @property double imageBrowserViewZoom;

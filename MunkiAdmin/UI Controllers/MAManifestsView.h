@@ -13,7 +13,7 @@
 @class ManifestMO;
 @class MARequestStringValueController;
 
-@interface MAManifestsView : NSViewController <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDataSource, NSTableViewDelegate, NSSplitViewDelegate, NSMenuDelegate>
+@interface MAManifestsView : NSViewController <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDataSource, NSTableViewDelegate, NSSplitViewDelegate, NSMenuDelegate, NSMenuItemValidation>
 
 @property (weak) IBOutlet NSOutlineView *sourceList;
 @property (weak) IBOutlet NSTreeController *manifestSourceListTreeController;

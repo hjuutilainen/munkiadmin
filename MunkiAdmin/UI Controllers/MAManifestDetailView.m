@@ -25,10 +25,10 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 
 - (void)awakeFromNib
 {
-    [self.nestedManifestsTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.nestedManifestsTableView registerForDraggedTypes:@[NSPasteboardTypeURL]];
 	[self.nestedManifestsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
 
-    [self.catalogsTableView registerForDraggedTypes:@[NSURLPboardType]];
+    [self.catalogsTableView registerForDraggedTypes:@[NSPasteboardTypeURL]];
     [self.catalogsTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
 
     [self.conditionsOutlineView registerForDraggedTypes:@[ConditionalItemType]];
@@ -85,7 +85,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 - (BOOL)tableView:(NSTableView *)theTableView writeRowsWithIndexes:(NSIndexSet *)theRowIndexes toPasteboard:(NSPasteboard*)thePasteboard
 {
     if (theTableView == self.nestedManifestsTableView) {
-        [thePasteboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
+        [thePasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURL] owner:self];
         NSMutableArray *urls = [NSMutableArray array];
         [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
             StringObjectMO *aNestedManifest = [[self.includedManifestsController arrangedObjects] objectAtIndex:idx];
@@ -93,7 +93,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
         }];
         return [thePasteboard writeObjects:urls];
     } else if (theTableView == self.catalogsTableView) {
-        [thePasteboard declareTypes:[NSArray arrayWithObject:NSURLPboardType] owner:self];
+        [thePasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeURL] owner:self];
         NSMutableArray *urls = [NSMutableArray array];
         [theRowIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
             CatalogInfoMO *aCatalogInfo = [[self.catalogsController arrangedObjects] objectAtIndex:idx];
@@ -194,7 +194,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
     NSPasteboard *draggingPasteboard = [draggingInfo draggingPasteboard];
     if (theTableView == self.nestedManifestsTableView) {
         NSArray *dragTypes = [draggingPasteboard types];
-        if ([dragTypes containsObject:NSURLPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeURL]) {
             
             NSPasteboard *pasteboard = draggingPasteboard;
             NSArray *classes = @[[NSURL class]];
@@ -215,7 +215,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
         return YES;
     } else if (theTableView == self.catalogsTableView) {
         NSArray *dragTypes = [draggingPasteboard types];
-        if ([dragTypes containsObject:NSURLPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeURL]) {
             
             NSPasteboard *pasteboard = draggingPasteboard;
             NSArray *classes = @[[NSURL class]];
@@ -247,13 +247,14 @@ NSString *ConditionalItemType = @"ConditionalItemType";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
     [pboard declareTypes:[NSArray arrayWithObject:ConditionalItemType] owner:self];
-    [pboard setData:[NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"]] forType:ConditionalItemType];
+    NSData *archivedIndexPaths = [NSKeyedArchiver archivedDataWithRootObject:[items valueForKey:@"indexPath"] requiringSecureCoding:YES error:nil];
+    [pboard setData:archivedIndexPaths forType:ConditionalItemType];
     return YES;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)proposedParentItem childIndex:(NSInteger)index {
     
-    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+    NSArray *droppedIndexPaths = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSIndexPath class], nil] fromData:[[info draggingPasteboard] dataForType:ConditionalItemType] error:nil];
 	
 	NSMutableArray *draggedNodes = [NSMutableArray array];
 	for (NSIndexPath *indexPath in droppedIndexPaths) {
@@ -290,7 +291,7 @@ NSString *ConditionalItemType = @"ConditionalItemType";
         return NSDragOperationNone;
     }
         
-    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:ConditionalItemType]];
+    NSArray *draggedIndexPaths = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSIndexPath class], nil] fromData:[[info draggingPasteboard] dataForType:ConditionalItemType] error:nil];
     for (NSIndexPath *indexPath in draggedIndexPaths) {
         id treeRoot = [self.conditionsTreeController arrangedObjects];
         NSTreeNode *node = [treeRoot descendantNodeAtIndexPath:indexPath];

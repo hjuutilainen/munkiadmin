@@ -85,10 +85,10 @@ DDLogLevel ddLogLevel;
     
     [self.packagesTableView setDelegate:self];
     [self.packagesTableView setDataSource:self];
-    [self.packagesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+    [self.packagesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeURL]];
 	[self.packagesTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
-    
-    [self.directoriesOutlineView registerForDraggedTypes:[NSArray arrayWithObject:NSURLPboardType]];
+
+    [self.directoriesOutlineView registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeURL]];
     [self.directoriesOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
     [self.directoriesOutlineView setDelegate:self];
     
@@ -686,11 +686,11 @@ DDLogLevel ddLogLevel;
                                                                    action:@selector(assignSelectedPackagesToDeveloperAction:)
                                                             keyEquivalent:@""];
     if ([nilDeveloperPackages count] > 0 && [selectedPackageDevelopers count] == 0) {
-        unknownDeveloperItem.state = NSOnState;
+        unknownDeveloperItem.state = NSControlStateValueOn;
     } else if ([nilDeveloperPackages count] > 0 && [selectedPackageDevelopers count] > 0) {
-        unknownDeveloperItem.state = NSMixedState;
+        unknownDeveloperItem.state = NSControlStateValueMixed;
     } else {
-        unknownDeveloperItem.state = NSOffState;
+        unknownDeveloperItem.state = NSControlStateValueOff;
     }
     
     unknownDeveloperItem.target = self;
@@ -712,14 +712,14 @@ DDLogLevel ddLogLevel;
         developerItem.representedObject = developer;
         if ([selectedPackageDevelopers count] == 1 && [developer.title isEqualToString:selectedPackageDevelopers[0]]) {
             if ([nilDeveloperPackages count] > 0) {
-                developerItem.state = NSMixedState;
+                developerItem.state = NSControlStateValueMixed;
             } else {
-                developerItem.state = NSOnState;
+                developerItem.state = NSControlStateValueOn;
             }
         } else if ([selectedPackageDevelopers count] > 1 && [selectedPackageDevelopers containsObject:developer.title]) {
-            developerItem.state = NSMixedState;
+            developerItem.state = NSControlStateValueMixed;
         } else {
-            developerItem.state = NSOffState;
+            developerItem.state = NSControlStateValueOff;
         }
         
         developerItem.target = self;
@@ -757,11 +757,11 @@ DDLogLevel ddLogLevel;
                                                                    action:@selector(addSelectedPackagesToCategoryAction:)
                                                             keyEquivalent:@""];
     if ([nilCategoryPackages count] > 0 && [selectedPackageCategories count] == 0) {
-        uncategorizedMenuItem.state = NSOnState;
+        uncategorizedMenuItem.state = NSControlStateValueOn;
     } else if ([nilCategoryPackages count] > 0 && [selectedPackageCategories count] > 0) {
-        uncategorizedMenuItem.state = NSMixedState;
+        uncategorizedMenuItem.state = NSControlStateValueMixed;
     } else {
-        uncategorizedMenuItem.state = NSOffState;
+        uncategorizedMenuItem.state = NSControlStateValueOff;
     }
     
     uncategorizedMenuItem.target = self;
@@ -783,14 +783,14 @@ DDLogLevel ddLogLevel;
         categoryItem.representedObject = category;
         if ([selectedPackageCategories count] == 1 && [category.title isEqualToString:selectedPackageCategories[0]]) {
             if ([nilCategoryPackages count] > 0) {
-                categoryItem.state = NSMixedState;
+                categoryItem.state = NSControlStateValueMixed;
             } else {
-                categoryItem.state = NSOnState;
+                categoryItem.state = NSControlStateValueOn;
             }
         } else if ([selectedPackageCategories count] > 1 && [selectedPackageCategories containsObject:category.title]) {
-            categoryItem.state = NSMixedState;
+            categoryItem.state = NSControlStateValueMixed;
         } else {
-            categoryItem.state = NSOffState;
+            categoryItem.state = NSControlStateValueOff;
         }
         
         categoryItem.target = self;
@@ -863,7 +863,7 @@ DDLogLevel ddLogLevel;
              Selecting this menu item should remove packages from catalog.
              */
             catalogItem.action = @selector(removeSelectedPackagesFromCatalogAction:);
-            catalogItem.state = NSOnState;
+            catalogItem.state = NSControlStateValueOn;
         
         } else if (numEnabled == 0) {
             /*
@@ -871,7 +871,7 @@ DDLogLevel ddLogLevel;
              Selecting this menu item should add packages to this catalog.
              */
             catalogItem.action = @selector(addSelectedPackagesToCatalogAction:);
-            catalogItem.state = NSOffState;
+            catalogItem.state = NSControlStateValueOff;
         
         } else {
             /*
@@ -893,7 +893,7 @@ DDLogLevel ddLogLevel;
             catalogItem.toolTip = toolTip;
             
             catalogItem.action = @selector(addSelectedPackagesToCatalogAction:);
-            catalogItem.state = NSMixedState;
+            catalogItem.state = NSControlStateValueMixed;
         }
     }
 }
@@ -1030,7 +1030,7 @@ DDLogLevel ddLogLevel;
     if (menu == self.packagesTableView.headerView.menu) {
         for (NSMenuItem *mi in menu.itemArray) {
             NSTableColumn *col = [mi representedObject];
-            [mi setState:col.isHidden ? NSOffState : NSOnState];
+            [mi setState:col.isHidden ? NSControlStateValueOff : NSControlStateValueOn];
         }
     }
     
@@ -1258,7 +1258,7 @@ DDLogLevel ddLogLevel;
             shouldMove = NO;
         }
         
-        if ([[alert suppressionButton] state] == NSOnState) {
+        if ([[alert suppressionButton] state] == NSControlStateValueOn) {
             // Suppress this alert from now on.
             [defaults setBool:YES forKey:moveConfirmationSuppressed];
             [defaults setBool:shouldMove forKey:moveDefaultsKey];
@@ -1272,7 +1272,7 @@ DDLogLevel ddLogLevel;
 {
     if (outlineView == self.directoriesOutlineView) {
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSURLPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeURL]) {
             
             if ([[proposedParentItem representedObject] isKindOfClass:[DirectoryMO class]]) {
             
@@ -1373,7 +1373,7 @@ DDLogLevel ddLogLevel;
          Check if we even have a supported type in pasteboard
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if (![dragTypes containsObject:NSURLPboardType]) {
+        if (![dragTypes containsObject:NSPasteboardTypeURL]) {
             return NSDragOperationNone;
         }
         
@@ -1411,8 +1411,8 @@ DDLogLevel ddLogLevel;
     /*
      User selected a path component from one of the path controls, show it in Finder.
      */
-    NSPathComponentCell *clickedCell = [(NSPathControl *)sender clickedPathComponentCell];
-    NSURL *clickedURL = [clickedCell URL];
+    NSPathControlItem *clickedItem = [(NSPathControl *)sender clickedPathItem];
+    NSURL *clickedURL = [clickedItem URL];
     if (clickedURL != nil) {
         [[NSWorkspace sharedWorkspace] selectFile:[clickedURL relativePath] inFileViewerRootedAtPath:@""];
     }
@@ -1445,7 +1445,7 @@ DDLogLevel ddLogLevel;
          Check if we have regular files
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeFileURL]) {
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
@@ -1479,7 +1479,7 @@ DDLogLevel ddLogLevel;
          Check if we have regular files
          */
         NSArray *dragTypes = [[info draggingPasteboard] types];
-        if ([dragTypes containsObject:NSFilenamesPboardType]) {
+        if ([dragTypes containsObject:NSPasteboardTypeFileURL]) {
             
             NSPasteboard *pasteboard = [info draggingPasteboard];
             NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
