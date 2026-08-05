@@ -2447,6 +2447,8 @@ DDLogLevel ddLogLevel;
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
 	DDLogDebug(@"Opening repository at %@", [newURL path]);
     
+    NSDate *repoLoadStartTime = [NSDate date];
+    
     [self stopObservingObjectsForChanges];
     [[self.managedObjectContext undoManager] disableUndoRegistration];
     [self disableAllBindings];
@@ -2483,6 +2485,35 @@ DDLogLevel ddLogLevel;
             self.iconsURL = [[self.repoURL URLByAppendingPathComponent:@"icons"] URLByResolvingSymlinksInPath];
             
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
+            
+        NSTimeInterval setupTime = [[NSDate date] timeIntervalSinceDate:repoLoadStartTime];
+            DDLogDebug(@"Repository setup completed in %.2f ms", setupTime * 1000.0);
+            
+            // Count files to process for performance baseline
+            NSFileManager *fm = [NSFileManager defaultManager];
+            NSDirectoryEnumerator *pkginfoEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+            NSDirectoryEnumerator *manifestEnum = [fm enumeratorAtURL:self.manifestsURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+            NSDirectoryEnumerator *catalogEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:@[NSURLIsRegularFileKey] options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+            
+            NSUInteger pkginfoCount = 0, manifestCount = 0, catalogCount = 0;
+            for (NSURL *url in pkginfoEnum) {
+                NSNumber *isRegularFile;
+                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+                if ([isRegularFile boolValue]) pkginfoCount++;
+            }
+            for (NSURL *url in manifestEnum) {
+                NSNumber *isRegularFile;
+                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+                if ([isRegularFile boolValue]) manifestCount++;
+            }
+            for (NSURL *url in catalogEnum) {
+                NSNumber *isRegularFile;
+                [url getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:nil];
+                if ([isRegularFile boolValue]) catalogCount++;
+            }
+            
+            DDLogDebug(@"Repository contains: %lu packages, %lu manifests, %lu catalogs", 
+                      (unsigned long)pkginfoCount, (unsigned long)manifestCount, (unsigned long)catalogCount);
             
 			[self scanCurrentRepoForCatalogFiles];
             [self scanCurrentRepoForPackages];
@@ -2540,6 +2571,7 @@ DDLogLevel ddLogLevel;
      Scan the current repo for already existing pkginfo files
      and create a new Package object for each of them
 	*/
+    NSDate *packageScanStartTime = [NSDate date];
 	DDLogDebug(@"Scanning selected repo for packages");
 	
     /*
@@ -2584,6 +2616,9 @@ DDLogLevel ddLogLevel;
 	}
     
     [self.operationQueue addOperation:packageRelationships];
+    
+    NSTimeInterval packageScanTime = [[NSDate date] timeIntervalSinceDate:packageScanStartTime];
+    DDLogDebug(@"Package scanning setup completed in %.2f ms", packageScanTime * 1000.0);
 }
 
 - (void)scanCurrentRepoForCatalogFiles
@@ -2592,6 +2627,7 @@ DDLogLevel ddLogLevel;
      Scan the current repo for already existing catalog files
      and create a new Catalog object for each of them
      */
+    NSDate *catalogScanStartTime = [NSDate date];
 	DDLogDebug(@"Scanning selected repo for catalogs");
 	
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
@@ -2624,6 +2660,9 @@ DDLogLevel ddLogLevel;
 			}
 		}
 	}
+    
+    NSTimeInterval catalogScanTime = [[NSDate date] timeIntervalSinceDate:catalogScanStartTime];
+    DDLogDebug(@"Catalog scanning completed in %.2f ms", catalogScanTime * 1000.0);
 }
 
 
@@ -2633,6 +2672,7 @@ DDLogLevel ddLogLevel;
 	 Scan the current repo for already existing manifest files
 	 and create a new Manifest object for each of them
      */
+    NSDate *manifestScanStartTime = [NSDate date];
 	DDLogDebug(@"Scanning selected repo for manifests");
 	
 	NSArray *keysToget = @[NSURLNameKey, NSURLIsDirectoryKey];
@@ -2703,6 +2743,9 @@ DDLogLevel ddLogLevel;
     }];
     [startObservingChangesOp addDependency:saveMainContext];
     [self.operationQueue addOperation:startObservingChangesOp];
+    
+    NSTimeInterval manifestScanTime = [[NSDate date] timeIntervalSinceDate:manifestScanStartTime];
+    DDLogDebug(@"Manifest scanning setup completed in %.2f ms", manifestScanTime * 1000.0);
 }
 
 
