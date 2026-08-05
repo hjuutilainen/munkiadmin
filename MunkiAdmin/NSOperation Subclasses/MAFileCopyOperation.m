@@ -36,7 +36,13 @@ DDLogLevel ddLogLevel;
 -(void)main {
 	@try {
 		@autoreleasepool {
-            NSFileManager *fm = [NSFileManager defaultManager];
+            /*
+             Use a dedicated instance rather than +defaultManager. Apple's
+             docs call out that the shared instance's delegate isn't safe to
+             mutate from background operations - concurrent imports were
+             stomping on each other's delegate and crashing.
+             */
+            NSFileManager *fm = [[NSFileManager alloc] init];
             [fm setDelegate:self];
             NSString *filename = [self.targetURL lastPathComponent];
             NSError *copyError = nil;
