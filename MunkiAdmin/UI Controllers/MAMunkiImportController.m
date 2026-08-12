@@ -33,7 +33,7 @@ DDLogLevel ddLogLevel;
     
     self.progressIndicator.usesThreadedAnimation = YES;
     
-    [self.window registerForDraggedTypes:@[NSPasteboardTypeURL]];
+    [self.window registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
     [self.startViewImageView unregisterDraggedTypes];
     
     [self resetStatus];
@@ -66,7 +66,7 @@ DDLogLevel ddLogLevel;
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
     NSPasteboard *pboard = [sender draggingPasteboard];
-    if ([[pboard types] containsObject:NSPasteboardTypeURL]) {
+    if ([[pboard types] containsObject:NSPasteboardTypeFileURL]) {
         return NSDragOperationCopy;
     }
     return NSDragOperationNone;
@@ -83,11 +83,9 @@ DDLogLevel ddLogLevel;
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
     NSPasteboard *pboard = [sender draggingPasteboard];
     
-    if ( [[pboard types] containsObject:NSPasteboardTypeURL] ) {
-        //NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-        
+    if ( [[pboard types] containsObject:NSPasteboardTypeFileURL] ) {
         NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-        NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @NO};
+        NSDictionary *options = @{NSPasteboardURLReadingFileURLsOnlyKey : @YES};
         NSArray *urls = [pboard readObjectsForClasses:classes options:options];
         for (NSURL *uri in urls) {
             DDLogDebug(@"%@", uri);

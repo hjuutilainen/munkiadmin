@@ -656,7 +656,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     NSPasteboard *pasteboard = [info draggingPasteboard];
     
     if (aTableView == self.installsTableView) {
-        if ([[pasteboard types] containsObject:NSPasteboardTypeURL]) {
+        if ([[pasteboard types] containsObject:NSPasteboardTypeFileURL]) {
             // The drop should always target the whole table view
             [aTableView setDropRow:-1 dropOperation:NSTableViewDropOn];
             return NSDragOperationCopy;
@@ -704,7 +704,7 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     installsItemsHeaderMenu.delegate = self;
     self.installsTableView.headerView.menu = installsItemsHeaderMenu;
     
-    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeURL, nil]];
+    [self.installsTableView registerForDraggedTypes:[NSArray arrayWithObjects:NSPasteboardTypeFileURL, nil]];
     [self.installsTableView setDelegate:self];
     [self.installsTableView setDataSource:self];
     
