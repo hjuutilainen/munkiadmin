@@ -597,7 +597,10 @@ DDLogLevel ddLogLevel;
     NSArray *keysToget = [NSArray arrayWithObjects:NSURLNameKey, NSURLLocalizedNameKey, NSURLIsDirectoryKey, nil];
 	NSFileManager *fm = [NSFileManager defaultManager];
     
-	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] pkgsInfoURL] includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:^BOOL(NSURL *url, NSError *error) {
+        DDLogError(@"Failed to enumerate %@: %@", [url path], [error localizedDescription]);
+        return YES;
+    }];
 	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
 		NSNumber *isDir;

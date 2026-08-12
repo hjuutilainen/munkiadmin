@@ -1115,7 +1115,7 @@ DDLogLevel ddLogLevel;
     /*
      Log to Xcode (if available)
      */
-    [DDLog addLogger:[DDOSLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
     
     /*
      Log to ~/Library/Logs/MunkiAdmin/
@@ -1203,6 +1203,22 @@ DDLogLevel ddLogLevel;
 		[self.progressPanel close];
 		[self.progressIndicator stopAnimation:self];
         [self postStatusUpdateReadyToReceive:YES];
+
+        /*
+         If this queue drain was for a repository scan, log a summary.
+         repoScanStartTime is only set by -selectRepoAtURL: and cleared
+         here so unrelated queue drains (saves, imports, ...) don't
+         re-trigger this.
+         */
+        if (self.repoScanStartTime != nil) {
+            NSTimeInterval scanDuration = [[NSDate date] timeIntervalSinceDate:self.repoScanStartTime];
+            NSUInteger packageCount = [[self allObjectsForEntity:@"Package"] count];
+            NSUInteger applicationCount = [[self allObjectsForEntity:@"Application"] count];
+            NSUInteger manifestCount = [[self allObjectsForEntity:@"Manifest"] count];
+            NSUInteger catalogCount = [[self allObjectsForEntity:@"Catalog"] count];
+            DDLogInfo(@"Repository scan completed in %.2f s: %lu packages (%lu applications), %lu manifests, %lu catalogs", scanDuration, (unsigned long)packageCount, (unsigned long)applicationCount, (unsigned long)manifestCount, (unsigned long)catalogCount);
+            self.repoScanStartTime = nil;
+        }
 	}
 	
 	else {
@@ -1903,7 +1919,7 @@ DDLogLevel ddLogLevel;
 - (void)mergeChanges:(NSNotification*)notification
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-    DDLogError(@"### Error: mergeChanges notification received: %@", [notification description]);
+    DDLogDebug(@"mergeChanges notification received: %@", [notification description]);
     
 	NSAssert([NSThread mainThread], @"Not on the main thread");
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
@@ -2548,37 +2564,37 @@ DDLogLevel ddLogLevel;
 - (void)selectRepoAtURL:(NSURL *)newURL
 {
     DDLogVerbose(@"%@", NSStringFromSelector(_cmd));
-	DDLogDebug(@"Opening repository at %@", [newURL path]);
-    
+	DDLogInfo(@"Opening repository at %@", [newURL path]);
+
     NSDate *repoLoadStartTime = [NSDate date];
-    
+
     [self stopObservingObjectsForChanges];
     [[self.managedObjectContext undoManager] disableUndoRegistration];
     [self disableAllBindings];
-    
+
     /*
      This is much faster than deleting everything individually
      */
     if (![self resetPersistentStore]) {
         return;
     }
-    
-    
+
+
     NSError *dirReadError = nil;
 	NSArray *selectedDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[newURL relativePath] error:&dirReadError];
-	
+
 	if (selectedDirContents == nil) {
+		DDLogError(@"Could not read contents of %@: %@", [newURL path], [dirReadError localizedDescription]);
 		NSAlert *theAlert = [NSAlert alertWithError:dirReadError];
 		[theAlert runModal];
 	} else {
-		BOOL isRepo = NO;
+		NSMutableArray *missingRepoContents = [NSMutableArray array];
 		for (NSString *repoItem in self.defaultRepoContents) {
 			if (![selectedDirContents containsObject:repoItem]) {
-				isRepo = NO;
-			} else {
-				isRepo = YES;
+				[missingRepoContents addObject:repoItem];
 			}
 		}
+		BOOL isRepo = ([missingRepoContents count] == 0);
 		if (isRepo) {
 			self.repoURL = [newURL URLByResolvingSymlinksInPath];
 			self.pkgsURL = [[self.repoURL URLByAppendingPathComponent:@"pkgs"] URLByResolvingSymlinksInPath];
@@ -2586,21 +2602,22 @@ DDLogLevel ddLogLevel;
 			self.catalogsURL = [[self.repoURL URLByAppendingPathComponent:@"catalogs"] URLByResolvingSymlinksInPath];
 			self.manifestsURL = [[self.repoURL URLByAppendingPathComponent:@"manifests"] URLByResolvingSymlinksInPath];
             self.iconsURL = [[self.repoURL URLByAppendingPathComponent:@"icons"] URLByResolvingSymlinksInPath];
-            
+
             [self.defaults setURL:self.repoURL forKey:@"selectedRepositoryPath"];
             [self addURLToRecentRepositories:self.repoURL];
 
         NSTimeInterval setupTime = [[NSDate date] timeIntervalSinceDate:repoLoadStartTime];
             DDLogDebug(@"Repository setup completed in %.2f ms", setupTime * 1000.0);
 
+            self.repoScanStartTime = repoLoadStartTime;
 			[self scanCurrentRepoForCatalogFiles];
             [self scanCurrentRepoForPackages];
 			[self scanCurrentRepoForManifests];
-			
+
             [self showProgressPanel];
 		} else {
-			DDLogError(@"Not a repo!");
-            
+			DDLogError(@"Not a repo: %@ is missing required subdirectories: %@", [newURL path], [missingRepoContents componentsJoinedByString:@", "]);
+
             NSAlert *alert = [[NSAlert alloc] init];
             [alert addButtonWithTitle:NSLocalizedString(@"OK", @"")];
             alert.messageText = NSLocalizedString(@"Invalid repository", @"");
@@ -2673,7 +2690,10 @@ DDLogLevel ddLogLevel;
     MARelationshipScanner *packageRelationships = [MARelationshipScanner pkginfoScanner];
     packageRelationships.delegate = self;
 
-	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *pkgsInfoDirEnum = [fm enumeratorAtURL:self.pkgsInfoURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:^BOOL(NSURL *url, NSError *error) {
+        DDLogError(@"Failed to enumerate %@: %@", [url path], [error localizedDescription]);
+        return YES;
+    }];
 	for (NSURL *anURL in pkgsInfoDirEnum)
 	{
 		NSNumber *isRegularFile;
@@ -2713,7 +2733,10 @@ DDLogLevel ddLogLevel;
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Catalog" inManagedObjectContext:moc];
 	
-	NSDirectoryEnumerator *catalogsDirEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *catalogsDirEnum = [fm enumeratorAtURL:self.catalogsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:^BOOL(NSURL *url, NSError *error) {
+        DDLogError(@"Failed to enumerate %@: %@", [url path], [error localizedDescription]);
+        return YES;
+    }];
 	for (NSURL *aCatalogFile in catalogsDirEnum)
 	{
 		NSNumber *isDir;
@@ -2759,7 +2782,10 @@ DDLogLevel ddLogLevel;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Manifest" inManagedObjectContext:moc];
 	
 	
-	NSDirectoryEnumerator *manifestsDirEnum = [fm enumeratorAtURL:self.manifestsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:nil];
+	NSDirectoryEnumerator *manifestsDirEnum = [fm enumeratorAtURL:self.manifestsURL includingPropertiesForKeys:keysToget options:(NSDirectoryEnumerationSkipsPackageDescendants | NSDirectoryEnumerationSkipsHiddenFiles) errorHandler:^BOOL(NSURL *url, NSError *error) {
+        DDLogError(@"Failed to enumerate %@: %@", [url path], [error localizedDescription]);
+        return YES;
+    }];
 	for (NSURL *aManifestFile in manifestsDirEnum)
 	{
 		NSNumber *isDir;
