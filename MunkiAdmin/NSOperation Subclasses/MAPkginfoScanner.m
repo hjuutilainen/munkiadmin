@@ -11,6 +11,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "MACoreDataManager.h"
 #import "CocoaLumberjack.h"
+#import "NSDictionary+MAPlistValidation.h"
 
 DDLogLevel ddLogLevel;
 
@@ -174,7 +175,7 @@ DDLogLevel ddLogLevel;
                  Get the "_metadata" key
                  */
                 DDLogVerbose(@"%@: Reading _metadata...", self.fileName);
-                NSDictionary *munki_metadata = [self.sourceDict objectForKey:@"_metadata"];
+                NSDictionary *munki_metadata = [self.sourceDict ma_validatedDictionaryForKey:@"_metadata" context:self.fileName];
                 __block NSDate *pkginfoDateCreatedFromMetadata = nil;
                 [munki_metadata enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
                     DDLogVerbose(@"%@: _metadata --> %@: %@", self.fileName, key, obj);
@@ -258,7 +259,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "receipts" items
                  */
-				NSArray *itemReceipts = [self.sourceDict objectForKey:@"receipts"];
+				NSArray *itemReceipts = [self.sourceDict ma_validatedArrayForKey:@"receipts" context:self.fileName];
                 if ([itemReceipts count] > 0) {
                     DDLogVerbose(@"%@: Found %lu receipt items", self.fileName, (unsigned long)[itemReceipts count]);
                 }
@@ -281,7 +282,7 @@ DDLogLevel ddLogLevel;
 				/*
                  Get the "installs" items
                  */
-				NSArray *installItems = [self.sourceDict objectForKey:@"installs"];
+				NSArray *installItems = [self.sourceDict ma_validatedArrayForKey:@"installs" context:self.fileName];
                 if ([installItems count] > 0) {
                     DDLogVerbose(@"%@: Found %lu installs items", self.fileName, (unsigned long)[installItems count]);
                 }
@@ -303,7 +304,7 @@ DDLogLevel ddLogLevel;
 				/*
                  Get the "items_to_copy" items
                  */
-				NSArray *itemsToCopy = [self.sourceDict objectForKey:@"items_to_copy"];
+				NSArray *itemsToCopy = [self.sourceDict ma_validatedArrayForKey:@"items_to_copy" context:self.fileName];
                 if ([itemsToCopy count] > 0) {
                     DDLogVerbose(@"%@: Found %lu items_to_copy items", self.fileName, (unsigned long)[itemsToCopy count]);
                 }
@@ -330,7 +331,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "installer_choices_xml" items
                  */
-				NSArray *installerChoices = [self.sourceDict objectForKey:@"installer_choices_xml"];
+				NSArray *installerChoices = [self.sourceDict ma_validatedArrayForKey:@"installer_choices_xml" context:self.fileName];
                 if ([installerChoices count] > 0) {
                     DDLogVerbose(@"%@: Found %lu installer_choices_xml items", self.fileName, (unsigned long)[installerChoices count]);
                 }
@@ -353,7 +354,7 @@ DDLogLevel ddLogLevel;
 				/*
                  Get the "catalogs" items
                  */
-				NSArray *catalogs = [self.sourceDict objectForKey:@"catalogs"];
+				NSArray *catalogs = [self.sourceDict ma_validatedArrayForKey:@"catalogs" context:self.fileName];
                 if ([catalogs count] > 0) {
                     DDLogVerbose(@"%@: Found %lu catalog items", self.fileName, (unsigned long)[catalogs count]);
                 }
@@ -373,7 +374,7 @@ DDLogLevel ddLogLevel;
 				/*
                  Get the "requires" items
                  */
-				NSArray *requires = [self.sourceDict objectForKey:@"requires"];
+				NSArray *requires = [self.sourceDict ma_validatedArrayForKey:@"requires" context:self.fileName];
                 if ([requires count] > 0) {
                     DDLogVerbose(@"%@: Found %lu requires items", self.fileName, (unsigned long)[requires count]);
                 }
@@ -389,7 +390,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "update_for" items
                  */
-				NSArray *update_for = [self.sourceDict objectForKey:@"update_for"];
+				NSArray *update_for = [self.sourceDict ma_validatedArrayForKey:@"update_for" context:self.fileName];
                 if ([update_for count] > 0) {
                     DDLogVerbose(@"%@: Found %lu update_for items", self.fileName, (unsigned long)[update_for count]);
                 }
@@ -405,7 +406,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "blocking_applications" items
                  */
-				NSArray *blocking_applications = [self.sourceDict objectForKey:@"blocking_applications"];
+				NSArray *blocking_applications = [self.sourceDict ma_validatedArrayForKey:@"blocking_applications" context:self.fileName];
                 if ([blocking_applications count] > 0) {
                     DDLogVerbose(@"%@: Found %lu blocking_applications", self.fileName, (unsigned long)[blocking_applications count]);
                 }
@@ -428,7 +429,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "supported_architectures" items
                  */
-				NSArray *supported_architectures = [self.sourceDict objectForKey:@"supported_architectures"];
+				NSArray *supported_architectures = [self.sourceDict ma_validatedArrayForKey:@"supported_architectures" context:self.fileName];
                 if ([supported_architectures count] > 0) {
                     DDLogVerbose(@"%@: Found %lu supported_architectures items", self.fileName, (unsigned long)[supported_architectures count]);
                 }
@@ -444,7 +445,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "installer_environment" items
                  */
-				NSDictionary *installer_environment = [self.sourceDict objectForKey:@"installer_environment"];
+				NSDictionary *installer_environment = [self.sourceDict ma_validatedDictionaryForKey:@"installer_environment" context:self.fileName];
                 if ([installer_environment count] > 0) {
                     DDLogVerbose(@"%@: Found %lu installer_environment items", self.fileName, (unsigned long)[installer_environment count]);
                 }
@@ -459,7 +460,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "preinstall_alert" item
                  */
-                NSDictionary *preinstallAlert = [self.sourceDict objectForKey:@"preinstall_alert"];
+                NSDictionary *preinstallAlert = [self.sourceDict ma_validatedDictionaryForKey:@"preinstall_alert" context:self.fileName];
                 if (preinstallAlert) {
                     DDLogVerbose(@"%@: Found preinstall_alert", self.fileName);
                     aNewPackage.munki_preinstall_alert_enabledValue = YES;
@@ -489,7 +490,7 @@ DDLogLevel ddLogLevel;
                 /*
                  Get the "preuninstall_alert" item
                  */
-                NSDictionary *preuninstallAlert = [self.sourceDict objectForKey:@"preuninstall_alert"];
+                NSDictionary *preuninstallAlert = [self.sourceDict ma_validatedDictionaryForKey:@"preuninstall_alert" context:self.fileName];
                 if (preuninstallAlert) {
                     DDLogVerbose(@"%@: Found preuninstall_alert", self.fileName);
                     aNewPackage.munki_preuninstall_alert_enabledValue = YES;

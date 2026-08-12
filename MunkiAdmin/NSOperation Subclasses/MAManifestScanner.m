@@ -10,6 +10,7 @@
 #import "MAMunkiRepositoryManager.h"
 #import "DataModelHeaders.h"
 #import "CocoaLumberjack.h"
+#import "NSDictionary+MAPlistValidation.h"
 
 DDLogLevel ddLogLevel;
 
@@ -85,7 +86,7 @@ DDLogLevel ddLogLevel;
                 DDLogVerbose(@"%@ conditional_item %lu --> Condition: %@", manifest.title, (unsigned long)idx, condition);
             }
             
-            NSArray *managedInstalls = [(NSDictionary *)obj objectForKey:@"managed_installs"];
+            NSArray *managedInstalls = [(NSDictionary *)obj ma_validatedArrayForKey:@"managed_installs" context:manifest.title];
             [managedInstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedInstallName, NSUInteger managedInstallIndex, BOOL *stopManagedInstallsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> managed_installs item %lu --> Name: %@", manifest.title, (unsigned long)managedInstallIndex, managedInstallName);
                 StringObjectMO *newManagedInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -94,7 +95,7 @@ DDLogLevel ddLogLevel;
                 newManagedInstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedInstallIndex];
                 [newConditionalItem addManagedInstallsObject:newManagedInstall];
             }];
-            NSArray *managedUninstalls = [(NSDictionary *)obj objectForKey:@"managed_uninstalls"];
+            NSArray *managedUninstalls = [(NSDictionary *)obj ma_validatedArrayForKey:@"managed_uninstalls" context:manifest.title];
             [managedUninstalls enumerateObjectsWithOptions:0 usingBlock:^(id managedUninstallName, NSUInteger managedUninstallIndex, BOOL *stopManagedUninstallsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> managed_uninstalls item %lu --> Name: %@", manifest.title, (unsigned long)managedUninstallIndex, managedUninstallName);
                 StringObjectMO *newManagedUninstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -103,7 +104,7 @@ DDLogLevel ddLogLevel;
                 newManagedUninstall.originalIndex = [NSNumber numberWithUnsignedInteger:managedUninstallIndex];
                 [newConditionalItem addManagedUninstallsObject:newManagedUninstall];
             }];
-            NSArray *managedUpdates = [(NSDictionary *)obj objectForKey:@"managed_updates"];
+            NSArray *managedUpdates = [(NSDictionary *)obj ma_validatedArrayForKey:@"managed_updates" context:manifest.title];
             [managedUpdates enumerateObjectsWithOptions:0 usingBlock:^(id managedUpdateName, NSUInteger managedUpdateIndex, BOOL *stopManagedUpdatesEnum) {
                 DDLogVerbose(@"%@ conditional_item --> managed_updates item %lu --> Name: %@", manifest.title, (unsigned long)managedUpdateIndex, managedUpdateName);
                 StringObjectMO *newManagedUpdate = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -112,7 +113,7 @@ DDLogLevel ddLogLevel;
                 newManagedUpdate.originalIndex = [NSNumber numberWithUnsignedInteger:managedUpdateIndex];
                 [newConditionalItem addManagedUpdatesObject:newManagedUpdate];
             }];
-            NSArray *optionalInstalls = [(NSDictionary *)obj objectForKey:@"optional_installs"];
+            NSArray *optionalInstalls = [(NSDictionary *)obj ma_validatedArrayForKey:@"optional_installs" context:manifest.title];
             [optionalInstalls enumerateObjectsWithOptions:0 usingBlock:^(id optionalInstallName, NSUInteger optionalInstallIndex, BOOL *stopOptionalInstallsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> optional_installs item %lu --> Name: %@", manifest.title, (unsigned long)optionalInstallIndex, optionalInstallName);
                 StringObjectMO *newOptionalInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -121,7 +122,7 @@ DDLogLevel ddLogLevel;
                 newOptionalInstall.originalIndex = [NSNumber numberWithUnsignedInteger:optionalInstallIndex];
                 [newConditionalItem addOptionalInstallsObject:newOptionalInstall];
             }];
-            NSArray *defaultInstalls = [(NSDictionary *)obj objectForKey:@"default_installs"];
+            NSArray *defaultInstalls = [(NSDictionary *)obj ma_validatedArrayForKey:@"default_installs" context:manifest.title];
             [defaultInstalls enumerateObjectsWithOptions:0 usingBlock:^(id defaultInstallName, NSUInteger defaultInstallIndex, BOOL *stopDefaultInstallsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> default_installs item %lu --> Name: %@", manifest.title, (unsigned long)defaultInstallIndex, defaultInstallName);
                 StringObjectMO *newDefaultInstall = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -130,7 +131,7 @@ DDLogLevel ddLogLevel;
                 newDefaultInstall.originalIndex = [NSNumber numberWithUnsignedInteger:defaultInstallIndex];
                 [newConditionalItem addDefaultInstallsObject:newDefaultInstall];
             }];
-            NSArray *featuredItems = [(NSDictionary *)obj objectForKey:@"featured_items"];
+            NSArray *featuredItems = [(NSDictionary *)obj ma_validatedArrayForKey:@"featured_items" context:manifest.title];
             [featuredItems enumerateObjectsWithOptions:0 usingBlock:^(id featuredItemName, NSUInteger featuredItemIndex, BOOL *stopFeaturedItemsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> featured_items item %lu --> Name: %@", manifest.title, (unsigned long)featuredItemIndex, featuredItemName);
                 StringObjectMO *newFeaturedItem = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -139,7 +140,7 @@ DDLogLevel ddLogLevel;
                 newFeaturedItem.originalIndex = [NSNumber numberWithUnsignedInteger:featuredItemIndex];
                 [newConditionalItem addFeaturedItemsObject:newFeaturedItem];
             }];
-            NSArray *includedManifests = [(NSDictionary *)obj objectForKey:@"included_manifests"];
+            NSArray *includedManifests = [(NSDictionary *)obj ma_validatedArrayForKey:@"included_manifests" context:manifest.title];
             [includedManifests enumerateObjectsWithOptions:0 usingBlock:^(id includedManifestName, NSUInteger includedManifestIndex, BOOL *stopIncludedManifestsEnum) {
                 DDLogVerbose(@"%@ conditional_item --> included_manifests item %lu --> Name: %@", manifest.title, (unsigned long)includedManifestIndex, includedManifestName);
                 StringObjectMO *newIncludedManifest = [NSEntityDescription insertNewObjectForEntityForName:@"StringObject" inManagedObjectContext:moc];
@@ -155,7 +156,7 @@ DDLogLevel ddLogLevel;
             }];
             
             // If there are nested conditional items, loop through them with this same function
-            NSArray *conditionalItems = [(NSDictionary *)obj objectForKey:@"conditional_items"];
+            NSArray *conditionalItems = [(NSDictionary *)obj ma_validatedArrayForKey:@"conditional_items" context:manifest.title];
             if (conditionalItems) {
                 @autoreleasepool {
                     [self conditionalItemsFrom:conditionalItems parent:newConditionalItem manifest:manifest context:moc];
@@ -584,7 +585,7 @@ DDLogLevel ddLogLevel;
 				// Get "managed_installs" items
 				// =================================
                 NSDate *startTime = [NSDate date];
-                NSArray *managedInstalls = [manifestInfoDict objectForKey:@"managed_installs"];
+                NSArray *managedInstalls = [manifestInfoDict ma_validatedArrayForKey:@"managed_installs" context:self.fileName];
                 if ([managedInstalls count] > 0) {
                     DDLogVerbose(@"%@: Found %lu managed_installs items", self.fileName, (unsigned long)[managedInstalls count]);
                 }
@@ -607,7 +608,7 @@ DDLogLevel ddLogLevel;
 				// Get "managed_uninstalls" items
 				// =================================
                 startTime = [NSDate date];
-                NSArray *managedUninstalls = [manifestInfoDict objectForKey:@"managed_uninstalls"];
+                NSArray *managedUninstalls = [manifestInfoDict ma_validatedArrayForKey:@"managed_uninstalls" context:self.fileName];
                 if ([managedUninstalls count] > 0) {
                     DDLogVerbose(@"%@: Found %lu managed_uninstalls items", self.fileName, (unsigned long)[managedUninstalls count]);
                 }
@@ -630,7 +631,7 @@ DDLogLevel ddLogLevel;
 				// Get "managed_updates" items
 				// =================================
                 startTime = [NSDate date];
-                NSArray *managedUpdates = [manifestInfoDict objectForKey:@"managed_updates"];
+                NSArray *managedUpdates = [manifestInfoDict ma_validatedArrayForKey:@"managed_updates" context:self.fileName];
                 if ([managedUpdates count] > 0) {
                     DDLogVerbose(@"%@: Found %lu managed_updates items", self.fileName, (unsigned long)[managedUpdates count]);
                 }
@@ -653,7 +654,7 @@ DDLogLevel ddLogLevel;
 				// Get "optional_installs" items
 				// =================================
                 startTime = [NSDate date];
-                NSArray *optionalInstalls = [manifestInfoDict objectForKey:@"optional_installs"];
+                NSArray *optionalInstalls = [manifestInfoDict ma_validatedArrayForKey:@"optional_installs" context:self.fileName];
                 if ([optionalInstalls count] > 0) {
                     DDLogVerbose(@"%@: Found %lu optional_installs items", self.fileName, (unsigned long)[optionalInstalls count]);
                 }
@@ -675,7 +676,7 @@ DDLogLevel ddLogLevel;
                 // Get "featured_items" items
                 // =================================
                 startTime = [NSDate date];
-                NSArray *featuredItems = [manifestInfoDict objectForKey:@"featured_items"];
+                NSArray *featuredItems = [manifestInfoDict ma_validatedArrayForKey:@"featured_items" context:self.fileName];
                 if ([featuredItems count] > 0) {
                     DDLogVerbose(@"%@: Found %lu featured_items items", self.fileName, (unsigned long)[featuredItems count]);
                 }
@@ -697,7 +698,7 @@ DDLogLevel ddLogLevel;
                 // Get "default_installs" items
                 // =================================
                 startTime = [NSDate date];
-                NSArray *defaultInstalls = [manifestInfoDict objectForKey:@"default_installs"];
+                NSArray *defaultInstalls = [manifestInfoDict ma_validatedArrayForKey:@"default_installs" context:self.fileName];
                 if ([defaultInstalls count] > 0) {
                     DDLogVerbose(@"%@: Found %lu default_installs items", self.fileName, (unsigned long)[featuredItems count]);
                 }
@@ -720,7 +721,7 @@ DDLogLevel ddLogLevel;
 				// Get "included_manifests" items
 				// =================================
                 startTime = [NSDate date];
-				NSArray *includedManifests = [manifestInfoDict objectForKey:@"included_manifests"];
+				NSArray *includedManifests = [manifestInfoDict ma_validatedArrayForKey:@"included_manifests" context:self.fileName];
                 if ([includedManifests count] > 0) {
                     DDLogVerbose(@"%@: Found %lu included_manifests items", self.fileName, (unsigned long)[includedManifests count]);
                 }
@@ -748,7 +749,7 @@ DDLogLevel ddLogLevel;
 				// Get "conditional_items"
 				// =================================
                 startTime = [NSDate date];
-				NSArray *conditionalItems = [manifestInfoDict objectForKey:@"conditional_items"];
+				NSArray *conditionalItems = [manifestInfoDict ma_validatedArrayForKey:@"conditional_items" context:self.fileName];
                 [self conditionalItemsFrom:conditionalItems parent:nil manifest:manifest context:privateContext];
                 now = [NSDate date];
                 DDLogVerbose(@"Scanning conditional_items took %lf (ms)", [now timeIntervalSinceDate:startTime] * 1000.0);
