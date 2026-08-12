@@ -84,7 +84,11 @@ DDLogLevel ddLogLevel;
 			if (self.sourceURL != nil) {
                 self.currentJobDescription = [NSString stringWithFormat:@"Reading file %@", self.fileName];
                 DDLogVerbose(@"%@: Reading file from disk", self.fileName);
-                self.sourceDict = [[NSDictionary alloc] initWithContentsOfURL:self.sourceURL];
+                NSError *readError = nil;
+                self.sourceDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL error:&readError];
+                if ((self.sourceDict == nil) && (readError != nil)) {
+                    DDLogError(@"%@: Failed to read pkginfo: %@", self.fileName, [readError localizedDescription]);
+                }
 			}
 			
 			if (self.sourceDict != nil) {
@@ -111,9 +115,18 @@ DDLogLevel ddLogLevel;
                         //DDLogVerbose(@"%@ --> %@: nil (skipped)", self.fileName, key);
                     }
 				}];
-                
-                
-                
+
+                /*
+                 A pkginfo without a name or version is broken and munki
+                 will not be able to use it. Flag it so it gets noticed.
+                 */
+                if (aNewPackage.munki_name == nil) {
+                    DDLogError(@"%@: Missing required 'name' key", self.fileName);
+                }
+                if (aNewPackage.munki_version == nil) {
+                    DDLogError(@"%@: Missing required 'version' key", self.fileName);
+                }
+
                 /*
                  Additional steps for deprecated forced_install
                  */
@@ -539,7 +552,7 @@ DDLogLevel ddLogLevel;
 				
 				
 			} else {
-				DDLogError(@"Can't read pkginfo file %@", [self.sourceURL relativePath]);
+				DDLogError(@"%@: No usable pkginfo dictionary, skipping", self.fileName);
 			}
             
             // Save the context
@@ -561,8 +574,9 @@ DDLogLevel ddLogLevel;
             }
 		}
 	}
-	@catch(...) {
-		DDLogError(@"Error: Caught exception while reading pkginfo %@", self.fileName);
+	@catch(NSException *exception) {
+		DDLogError(@"%@: Caught exception while reading pkginfo: %@ - %@", self.fileName, exception.name, exception.reason);
+		DDLogDebug(@"%@: %@", self.fileName, [exception.callStackSymbols componentsJoinedByString:@"\n"]);
 	}
 }
 

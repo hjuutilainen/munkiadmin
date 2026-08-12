@@ -224,10 +224,10 @@ DDLogLevel ddLogLevel;
         if (manifest) {
             DDLogVerbose(@"Found existing manifest with title '%@'", title);
         } else {
-            DDLogError(@"Error: Could not find manifest with title '%@'", title);
+            DDLogError(@"Could not resolve manifest with title '%@' to a live object", title);
         }
     } else {
-        DDLogError(@"Error: Could not find manifest with title '%@'", title);
+        DDLogError(@"Could not find any manifest with title '%@' - referenced but does not exist", title);
     }
     return manifest;
 }
@@ -478,7 +478,7 @@ DDLogLevel ddLogLevel;
                 DDLogVerbose(@"%@: linking conditional included_manifest object %@ to original manifest %@", currentManifest.fileName, includedManifest.title, originalManifest.title);
                 includedManifest.originalManifest = originalManifest;
             } else {
-                DDLogError(@"%@: could not link conditional included_manifest object: %@", currentManifest.title, includedManifest.title);
+                DDLogError(@"%@: Error: Could not link conditional included_manifest object: %@", currentManifest.title, includedManifest.title);
             }
         }
     }
@@ -502,7 +502,11 @@ DDLogLevel ddLogLevel;
              * Read the manifest dictionary from disk
              */
             DDLogVerbose(@"%@: Reading file from disk", self.fileName);
-			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL];
+			NSError *readError = nil;
+			NSDictionary *manifestInfoDict = [NSDictionary dictionaryWithContentsOfURL:self.sourceURL error:&readError];
+			if ((manifestInfoDict == nil) && (readError != nil)) {
+                DDLogError(@"%@: Failed to read manifest: %@", self.fileName, [readError localizedDescription]);
+            }
 			if (manifestInfoDict != nil) {
                 
                 /*
@@ -757,7 +761,7 @@ DDLogLevel ddLogLevel;
                 }
 				
 			} else {
-				DDLogError(@"Can't read manifest file %@", [self.sourceURL relativePath]);
+				DDLogError(@"%@: No usable manifest dictionary, skipping", self.fileName);
 			}
 			
 			// Save the context
@@ -779,8 +783,9 @@ DDLogLevel ddLogLevel;
             }
 		}
 	}
-	@catch(...) {
-		DDLogError(@"Error: Caught exception while reading manifest %@", self.fileName);
+	@catch(NSException *exception) {
+		DDLogError(@"%@: Caught exception while reading manifest: %@ - %@", self.fileName, exception.name, exception.reason);
+		DDLogDebug(@"%@: %@", self.fileName, [exception.callStackSymbols componentsJoinedByString:@"\n"]);
 	}
 }
 
