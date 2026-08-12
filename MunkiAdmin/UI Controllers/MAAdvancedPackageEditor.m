@@ -357,8 +357,18 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     } else {
         self.pkginfoToEdit.munki_version_script = nil;
     }
-    
-    
+
+    if (self.temp_blocking_applications_quit_script_enabled) {
+        if (self.temp_blocking_applications_quit_script) {
+            self.pkginfoToEdit.munki_blocking_applications_quit_script = self.temp_blocking_applications_quit_script;
+        } else {
+            self.pkginfoToEdit.munki_blocking_applications_quit_script = @"";
+        }
+    } else {
+        self.pkginfoToEdit.munki_blocking_applications_quit_script = nil;
+    }
+
+
     if (self.temp_force_install_after_date_enabled) {
         self.pkginfoToEdit.munki_force_install_after_date = self.temp_force_install_after_date;
     } else {
@@ -866,8 +876,13 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     [self.versionScriptTextView setTextColor:[NSColor controlTextColor]];
     self.versionScriptTextView.automaticQuoteSubstitutionEnabled = NO;
     self.versionScriptTextView.automaticDashSubstitutionEnabled = NO;
-    
-    
+
+    [self.blockingApplicationsQuitScriptTextView setFont:scriptFont];
+    [self.blockingApplicationsQuitScriptTextView setTextColor:[NSColor controlTextColor]];
+    self.blockingApplicationsQuitScriptTextView.automaticQuoteSubstitutionEnabled = NO;
+    self.blockingApplicationsQuitScriptTextView.automaticDashSubstitutionEnabled = NO;
+
+
     pkginfoSelector = [[MASelectPkginfoItemsWindow alloc] initWithWindowNibName:@"MASelectPkginfoItemsWindow"];
     
     NSSortDescriptor *osVersionSorter = [NSSortDescriptor sortDescriptorWithKey:nil
@@ -1035,7 +1050,17 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
         self.temp_version_script = aPackage.munki_version_script;
         [self.versionScriptTabViewItem setLabel:NSLocalizedString(@"Version*", @"")];
     }
-    
+
+    if (aPackage.munki_blocking_applications_quit_script == nil) {
+        self.temp_blocking_applications_quit_script_enabled = NO;
+        self.temp_blocking_applications_quit_script = @"";
+        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit Script", @"")];
+    } else {
+        self.temp_blocking_applications_quit_script_enabled = YES;
+        self.temp_blocking_applications_quit_script = aPackage.munki_blocking_applications_quit_script;
+        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit Script*", @"")];
+    }
+
     if (aPackage.munki_force_install_after_date == nil) {
         
         /*

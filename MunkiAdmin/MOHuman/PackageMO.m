@@ -300,6 +300,12 @@
                     [tmpDict setValue:(id)kCFBooleanFalse forKey:obj];
                 }
             }
+            else if ([key isEqualToString:@"munki_blocking_applications_manual_quit_only"]) {
+                // Default is false, so omit the key entirely rather than writing <false/>
+                if (self.munki_blocking_applications_manual_quit_onlyValue) {
+                    [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];
+                }
+            }
             else if ([key isEqualToString:@"munki_OnDemand"]) {
                 if (self.munki_OnDemandValue) {
                     [tmpDict setValue:(id)kCFBooleanTrue forKey:obj];

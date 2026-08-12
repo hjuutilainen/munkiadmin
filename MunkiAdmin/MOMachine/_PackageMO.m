@@ -59,6 +59,11 @@
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"munki_blocking_applications_manual_quit_onlyValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"munki_blocking_applications_manual_quit_only"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"munki_forced_installValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"munki_forced_install"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -241,6 +246,28 @@
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_ {
 	[self setPrimitiveMunki_autoremove:@(value_)];
 }
+
+@dynamic munki_blocking_applications_manual_quit_only;
+
+- (BOOL)munki_blocking_applications_manual_quit_onlyValue {
+	NSNumber *result = [self munki_blocking_applications_manual_quit_only];
+	return [result boolValue];
+}
+
+- (void)setMunki_blocking_applications_manual_quit_onlyValue:(BOOL)value_ {
+	[self setMunki_blocking_applications_manual_quit_only:@(value_)];
+}
+
+- (BOOL)primitiveMunki_blocking_applications_manual_quit_onlyValue {
+	NSNumber *result = [self primitiveMunki_blocking_applications_manual_quit_only];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMunki_blocking_applications_manual_quit_onlyValue:(BOOL)value_ {
+	[self setPrimitiveMunki_blocking_applications_manual_quit_only:@(value_)];
+}
+
+@dynamic munki_blocking_applications_quit_script;
 
 @dynamic munki_description;
 
@@ -741,6 +768,12 @@
 }
 + (NSString *)munki_autoremove {
 	return @"munki_autoremove";
+}
++ (NSString *)munki_blocking_applications_manual_quit_only {
+	return @"munki_blocking_applications_manual_quit_only";
+}
++ (NSString *)munki_blocking_applications_quit_script {
+	return @"munki_blocking_applications_quit_script";
 }
 + (NSString *)munki_description {
 	return @"munki_description";

@@ -66,6 +66,8 @@
 @property (assign) IBOutlet NSTextView *uninstallCheckScriptTextView;
 @property (assign) IBOutlet NSTabViewItem *versionScriptTabViewItem;
 @property (assign) IBOutlet NSTextView *versionScriptTextView;
+@property (assign) IBOutlet NSTabViewItem *blockingApplicationsQuitScriptTabViewItem;
+@property (assign) IBOutlet NSTextView *blockingApplicationsQuitScriptTextView;
 @property (weak) IBOutlet NSArrayController *installsItemsController;
 @property (weak) IBOutlet NSObjectController *pkgController;
 @property (weak) IBOutlet NSArrayController *receiptsArrayController;
@@ -91,6 +93,7 @@
 @property BOOL                  temp_uninstallcheck_script_enabled;
 @property BOOL                  temp_version_script_enabled;
 @property BOOL                  temp_blocking_applications_include_empty;
+@property BOOL                  temp_blocking_applications_quit_script_enabled;
 @property (strong) NSDate      *temp_force_install_after_date;
 @property (strong) NSString    *temp_postinstall_script;
 @property (strong) NSString    *temp_postuninstall_script;
@@ -100,6 +103,7 @@
 @property (strong) NSString    *temp_installcheck_script;
 @property (strong) NSString    *temp_uninstallcheck_script;
 @property (strong) NSString    *temp_version_script;
+@property (strong) NSString    *temp_blocking_applications_quit_script;
 @property (strong) NSArray     *osVersions;
 @property (strong) NSArray     *installerTypes;
 @property (strong) NSArray     *iconNameSuggestions;

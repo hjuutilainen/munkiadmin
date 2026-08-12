@@ -2930,6 +2930,7 @@ static dispatch_queue_t serialQueue;
         NSSet *newKeysSet = [NSSet setWithArray:sortedPackageKeys];
         NSArray *keysToDelete = @[@"allow_untrusted",
                                   @"blocking_applications",
+                                  @"blocking_applications_manual_quit_only",
                                   @"category",
                                   @"description",
                                   @"developer",

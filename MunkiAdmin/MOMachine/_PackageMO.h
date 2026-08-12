@@ -89,6 +89,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)munki_autoremoveValue;
 - (void)setMunki_autoremoveValue:(BOOL)value_;
 
+@property (nonatomic, strong, nullable) NSNumber* munki_blocking_applications_manual_quit_only;
+
+@property (atomic) BOOL munki_blocking_applications_manual_quit_onlyValue;
+- (BOOL)munki_blocking_applications_manual_quit_onlyValue;
+- (void)setMunki_blocking_applications_manual_quit_onlyValue:(BOOL)value_;
+
+@property (nonatomic, strong, nullable) NSString* munki_blocking_applications_quit_script;
+
 @property (nonatomic, strong, nullable) NSString* munki_description;
 
 @property (nonatomic, strong, nullable) NSString* munki_description_staged;
@@ -454,6 +462,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)primitiveMunki_autoremoveValue;
 - (void)setPrimitiveMunki_autoremoveValue:(BOOL)value_;
 
+- (nullable NSNumber*)primitiveMunki_blocking_applications_manual_quit_only;
+- (void)setPrimitiveMunki_blocking_applications_manual_quit_only:(nullable NSNumber*)value;
+
+- (BOOL)primitiveMunki_blocking_applications_manual_quit_onlyValue;
+- (void)setPrimitiveMunki_blocking_applications_manual_quit_onlyValue:(BOOL)value_;
+
+- (nullable NSString*)primitiveMunki_blocking_applications_quit_script;
+- (void)setPrimitiveMunki_blocking_applications_quit_script:(nullable NSString*)value;
+
 - (nullable NSString*)primitiveMunki_description;
 - (void)setPrimitiveMunki_description:(nullable NSString*)value;
 
@@ -735,6 +752,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)munki_allow_untrusted;
 + (NSString *)munki_apple_item;
 + (NSString *)munki_autoremove;
++ (NSString *)munki_blocking_applications_manual_quit_only;
++ (NSString *)munki_blocking_applications_quit_script;
 + (NSString *)munki_description;
 + (NSString *)munki_description_staged;
 + (NSString *)munki_developer;
