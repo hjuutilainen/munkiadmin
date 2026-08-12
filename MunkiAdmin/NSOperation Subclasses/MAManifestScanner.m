@@ -268,13 +268,13 @@ DDLogLevel ddLogLevel;
     NSDictionary *originalManifestDict = (NSDictionary *)currentManifest.originalManifest;
     
     
-    NSArray *existingCatalogTitles = [[currentManifest.catalogInfos valueForKeyPath:@"catalog.title"] allObjects];
+    NSSet *existingCatalogTitles = [currentManifest.catalogInfos valueForKeyPath:@"catalog.title"];
     NSArray *newCatalogTitles = [self.allCatalogs valueForKeyPath:@"title"];
-    
+
     // Loop through all known catalog objects and configure
     // them for this manifest
-    
-    if (![existingCatalogTitles isEqualToArray:newCatalogTitles]) {
+
+    if (![existingCatalogTitles isEqualToSet:[NSSet setWithArray:newCatalogTitles]]) {
         
         // Delete the old catalogs
         for (CatalogInfoMO *aCatInfo in currentManifest.catalogInfos) {
