@@ -2792,6 +2792,14 @@ static dispatch_queue_t serialQueue;
         return YES;
     } else {
         DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aPackage.packageInfoURL path]);
+        NSString *description = @"Failed to write pkginfo";
+        NSString *recoverySuggestion = [NSString stringWithFormat:@"MunkiAdmin was unable to write the pkginfo file \"%@\". Its contents might not be a valid property list.", [(NSURL *)aPackage.packageInfoURL path]];
+        NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                          NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                          NSFilePathErrorKey: [(NSURL *)aPackage.packageInfoURL path]};
+        if (error != NULL) {
+            *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Write Error Domain" code:998 userInfo:errorDictionary];
+        }
         return NO;
     }
 }
@@ -2875,6 +2883,14 @@ static dispatch_queue_t serialQueue;
         return YES;
     } else {
         DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aManifest.manifestURL path]);
+        NSString *description = @"Failed to write manifest";
+        NSString *recoverySuggestion = [NSString stringWithFormat:@"MunkiAdmin was unable to write the manifest file \"%@\". Its contents might not be a valid property list.", [(NSURL *)aManifest.manifestURL path]];
+        NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
+                                          NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion,
+                                          NSFilePathErrorKey: [(NSURL *)aManifest.manifestURL path]};
+        if (error != NULL) {
+            *error = [[NSError alloc] initWithDomain:@"MunkiAdmin Write Error Domain" code:998 userInfo:errorDictionary];
+        }
         return NO;
     }
 }
