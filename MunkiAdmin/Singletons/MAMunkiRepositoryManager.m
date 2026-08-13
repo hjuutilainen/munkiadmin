@@ -69,6 +69,7 @@ DDLogLevel ddLogLevel;
 - (BOOL)runRepositoryPreSaveScript;
 - (BOOL)runRepositoryPostSaveScript;
 - (void)markOwnerAsModifiedForReferencingStringObject:(StringObjectMO *)aReference;
+- (NSDictionary *)ma_existingPlistAtURL:(NSURL *)url;
 
 @end
 
@@ -2439,6 +2440,7 @@ static dispatch_queue_t serialQueue;
      Only continue if the script exited with 0
      */
     if (![self runRepositoryPreSaveScript]) {
+        DDLogError(@"Repository pre-save script failed, aborting save...");
         NSAlert *alert = [[NSAlert alloc] init];
         NSString *messageText = NSLocalizedString(@"Pre-save script failed", @"");
         alert.messageText = messageText;
@@ -2708,6 +2710,24 @@ static dispatch_queue_t serialQueue;
     return [[self applicationSupportDirectory] URLByAppendingPathComponent:@"manifests backups"];
 }
 
+/*
+ Reads the plist currently on disk at url, ahead of merging it with the
+ in-memory values before a save. Returns nil both when the file simply
+ doesn't exist yet (expected for a newly created package/manifest that
+ hasn't been written before) and when it exists but fails to parse -
+ only the latter is logged, since a merge that silently treats an
+ unreadable file's contents as empty would drop any custom keys it had.
+ */
+- (NSDictionary *)ma_existingPlistAtURL:(NSURL *)url
+{
+    NSError *readError = nil;
+    NSDictionary *plistOnDisk = [NSDictionary dictionaryWithContentsOfURL:url error:&readError];
+    if ((plistOnDisk == nil) && (readError != nil) && (readError.code != NSFileReadNoSuchFileError)) {
+        DDLogError(@"%@: Existing file could not be read, its contents will be treated as empty when merging: %@", [url lastPathComponent], [readError localizedDescription]);
+    }
+    return plistOnDisk;
+}
+
 - (BOOL)writePackagePropertyList:(NSDictionary *)plist forPackage:(PackageMO *)aPackage error:(NSError **)error
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -2828,11 +2848,11 @@ static dispatch_queue_t serialQueue;
             DDLogVerbose(@"%@", preSave.standardOutput);
         }
         if (preSave.terminationStatus != 0) {
-            DDLogError(@"%@", preSave.standardError);
-            
+            DDLogError(@"%@: Pre-save script failed...", filename);
             NSString *description = @"Pre-save script failed";
             NSString *recoverySuggestion = [NSString stringWithFormat:@"Pre-save script for manifest \"%@\" exited with code %i.", [(NSURL *)aManifest.manifestURL path], preSave.terminationStatus];
             if (preSave.standardError) {
+                DDLogError(@"%@", preSave.standardError);
                 recoverySuggestion = [recoverySuggestion stringByAppendingFormat:@"\n\n%@", preSave.standardError];
             }
             NSDictionary *errorDictionary = @{NSLocalizedDescriptionKey: description,
@@ -2876,10 +2896,13 @@ static dispatch_queue_t serialQueue;
                 DDLogVerbose(@"%@", postSave.standardOutput);
             }
             if (postSave.terminationStatus != 0) {
-                DDLogError(@"%@", postSave.standardError);
+                DDLogError(@"%@: Post-save script failed...", filename);
+                if (postSave.standardError) {
+                    DDLogError(@"%@", postSave.standardError);
+                }
             }
         }
-        
+
         return YES;
     } else {
         DDLogError(@"%@: Error: Failed to write %@", filename, [(NSURL *)aManifest.manifestURL path]);
@@ -2930,7 +2953,7 @@ static dispatch_queue_t serialQueue;
         /*
          Read the current pkginfo from disk
          */
-		NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aPackage.packageInfoURL];
+		NSDictionary *infoDictOnDisk = [self ma_existingPlistAtURL:(NSURL *)aPackage.packageInfoURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
         /*
@@ -3112,7 +3135,7 @@ static dispatch_queue_t serialQueue;
         /*
          Read the current manifest file from disk
          */
-        NSDictionary *infoDictOnDisk = [NSDictionary dictionaryWithContentsOfURL:(NSURL *)aManifest.manifestURL];
+        NSDictionary *infoDictOnDisk = [self ma_existingPlistAtURL:(NSURL *)aManifest.manifestURL];
 		NSArray *sortedOriginalKeys = [[infoDictOnDisk allKeys] sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
         
         /*
@@ -3191,7 +3214,7 @@ static dispatch_queue_t serialQueue;
 		if (![sortedOriginalKeys isEqualToArray:sortedMergedKeys]) {
 			DDLogDebug(@"%@: Keys differ. Should write new manifest...", filename);
             if (![self writeManifestPropertyList:mergedManifestDict forManifest:aManifest error:&writeError]) {
-                DDLogDebug(@"%@: Failed to write manifest to disk...", filename);
+                DDLogError(@"%@: Failed to write manifest to disk...", filename);
                 [[NSApplication sharedApplication] presentError:writeError];
                 successfullySaved = NO;
                 break;
@@ -3211,7 +3234,7 @@ static dispatch_queue_t serialQueue;
             if (![mergedManifestDict isEqualToDictionary:infoDictOnDisk]) {
 				DDLogDebug(@"%@: Values differ. Should write new manifest...", filename);
                 if (![self writeManifestPropertyList:mergedManifestDict forManifest:aManifest error:&writeError]) {
-                    DDLogDebug(@"%@: Failed to write manifest to disk...", filename);
+                    DDLogError(@"%@: Failed to write manifest to disk...", filename);
                     [[NSApplication sharedApplication] presentError:writeError];
                     successfullySaved = NO;
                     break;

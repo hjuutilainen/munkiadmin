@@ -189,9 +189,11 @@ DDLogLevel ddLogLevel;
         NSDate *dateModified;
         [newManifest.manifestURL getResourceValue:&dateModified forKey:NSURLContentModificationDateKey error:nil];
         newManifest.manifestDateModified = dateModified;
-        
+
         return newManifest;
     } else {
+        DDLogError(@"Failed to write new manifest to %@", [newManifest.manifestURL path]);
+        [moc deleteObject:newManifest];
         return nil;
     }
 }
@@ -201,16 +203,18 @@ DDLogLevel ddLogLevel;
     if ((title == nil) || (moc == nil)) {
         return nil;
     }
-    
+
     ManifestMO *newManifest = [NSEntityDescription insertNewObjectForEntityForName:@"Manifest" inManagedObjectContext:moc];
     newManifest.title = title;
     newManifest.manifestURL = (NSURL *)[[(MAMunkiAdmin_AppDelegate *)[NSApp delegate] manifestsURL] URLByAppendingPathComponent:title];
     newManifest.originalManifest = [NSDictionary dictionary];
-    
+
     BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
     if ([(NSDictionary *)newManifest.originalManifest writeToURL:newManifest.manifestURL atomically:atomicWrites]) {
         return newManifest;
     } else {
+        DDLogError(@"Failed to write new manifest to %@", [newManifest.manifestURL path]);
+        [moc deleteObject:newManifest];
         return nil;
     }
 }

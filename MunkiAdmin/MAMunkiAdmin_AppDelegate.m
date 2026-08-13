@@ -1746,12 +1746,16 @@ DDLogLevel ddLogLevel;
         
         // Ask the user to save
         NSURL *newPkginfoURL = [self showSavePanelForPkginfo:newPkginfoTitle];
-        
+        if (newPkginfoURL == nil) {
+            DDLogDebug(@"User cancelled the pkginfo save panel");
+            return;
+        }
+
         // Write the pkginfo to disk and add it to our datastore
         BOOL atomicWrites = [[NSUserDefaults standardUserDefaults] boolForKey:@"atomicWrites"];
         BOOL saved = [pkginfoPlist writeToURL:newPkginfoURL atomically:atomicWrites];
         if (saved) {
-            
+
             // Rescan the main pkginfo dir for any newly created directories
             [[MACoreDataManager sharedManager] configureSourceListDirectoriesSection:self.managedObjectContext];
             
@@ -1790,8 +1794,10 @@ DDLogLevel ddLogLevel;
             else {
                 // Found multiple matches for a single URL
             }
-            
-            
+
+
+        } else {
+            DDLogError(@"Failed to write new pkginfo to %@", [newPkginfoURL path]);
         }
     } else {
         DDLogError(@"makepkginfo failed!");
@@ -2834,7 +2840,10 @@ DDLogLevel ddLogLevel;
     NSBlockOperation *saveMainContext = [NSBlockOperation blockOperationWithBlock:^{
         [self.managedObjectContext performBlockAndWait:^{
             [self.managedObjectContext commitEditing];
-            [self.managedObjectContext save:nil];
+            NSError *saveError = nil;
+            if (![self.managedObjectContext save:&saveError]) {
+                DDLogError(@"Failed to save the managed object context after scanning: %@", saveError);
+            }
             [[self.managedObjectContext undoManager] enableUndoRegistration];
         }];
     }];
@@ -2990,6 +2999,7 @@ DDLogLevel ddLogLevel;
     }
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
+        DDLogError(@"Failed to save the managed object context: %@", error);
         [[NSApplication sharedApplication] presentError:error];
     } else {
         /*
@@ -3015,7 +3025,7 @@ DDLogLevel ddLogLevel;
                         [self updateCatalogs];
                         repoManager.makecatalogsRunNeeded = NO;
                     } else {
-                        DDLogError(@"Skipped makecatalogs since no pkginfos were changed...");
+                        DDLogDebug(@"Skipped makecatalogs since no pkginfos were changed...");
                     }
                 } else {
                     [self updateCatalogs];
@@ -3026,10 +3036,13 @@ DDLogLevel ddLogLevel;
             /*
              Save the in-memory context once more because we've modified the unstaged boolean values.
              */
-            [[self managedObjectContext] save:nil];
-            
+            NSError *unstagedSaveError = nil;
+            if (![[self managedObjectContext] save:&unstagedSaveError]) {
+                DDLogError(@"Failed to save the managed object context after clearing unstaged changes: %@", unstagedSaveError);
+            }
+
         } else {
-            
+            DDLogError(@"Repository save aborted, changes were not written to disk");
         }
     }
     
