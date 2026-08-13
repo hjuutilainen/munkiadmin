@@ -1216,7 +1216,7 @@ DDLogLevel ddLogLevel;
             NSUInteger applicationCount = [[self allObjectsForEntity:@"Application"] count];
             NSUInteger manifestCount = [[self allObjectsForEntity:@"Manifest"] count];
             NSUInteger catalogCount = [[self allObjectsForEntity:@"Catalog"] count];
-            DDLogInfo(@"Repository scan completed in %.2f s: %lu packages (%lu applications), %lu manifests, %lu catalogs", scanDuration, (unsigned long)packageCount, (unsigned long)applicationCount, (unsigned long)manifestCount, (unsigned long)catalogCount);
+            DDLogInfo(@"Repository scan completed in %.2f s: %lu packages (%lu unique names), %lu manifests, %lu catalogs", scanDuration, (unsigned long)packageCount, (unsigned long)applicationCount, (unsigned long)manifestCount, (unsigned long)catalogCount);
             self.repoScanStartTime = nil;
         }
 	}

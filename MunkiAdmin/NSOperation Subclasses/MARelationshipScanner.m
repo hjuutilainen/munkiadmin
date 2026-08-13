@@ -19,6 +19,7 @@ static const int BatchSize = 50;
 
 @interface MARelationshipScanner ()
 @property (nonatomic, strong) NSManagedObjectContext *context;
+- (void)detectIncludedManifestCyclesStartingAt:(ManifestMO *)manifest path:(NSMutableOrderedSet<ManifestMO *> *)path visited:(NSMutableSet<NSManagedObjectID *> *)visited;
 @end
 
 @implementation MARelationshipScanner
@@ -107,6 +108,45 @@ static const int BatchSize = 50;
     return manifest;
 }
 
+/*
+ Depth-first walk of the included_manifests graph (including manifests
+ referenced only from inside conditional_items), looking for a manifest
+ that is already part of the current inclusion path. `visited` records
+ manifests whose entire subtree has already been explored so shared
+ (non-circular) includes aren't re-walked from every entry point.
+ */
+- (void)detectIncludedManifestCyclesStartingAt:(ManifestMO *)manifest path:(NSMutableOrderedSet<ManifestMO *> *)path visited:(NSMutableSet<NSManagedObjectID *> *)visited
+{
+    NSUInteger cycleStartIndex = [path indexOfObject:manifest];
+    if (cycleStartIndex != NSNotFound) {
+        NSArray<ManifestMO *> *cycleManifests = [[path array] subarrayWithRange:NSMakeRange(cycleStartIndex, [path count] - cycleStartIndex)];
+        NSArray<NSString *> *cycleTitles = [[cycleManifests valueForKeyPath:@"title"] arrayByAddingObject:manifest.title];
+        DDLogError(@"%@: Error: Circular included_manifests reference detected: %@", manifest.title, [cycleTitles componentsJoinedByString:@" -> "]);
+        return;
+    }
+    if ([visited containsObject:manifest.objectID]) {
+        return;
+    }
+
+    [path addObject:manifest];
+
+    for (StringObjectMO *stringObject in manifest.includedManifestsFaster) {
+        if (stringObject.originalManifest) {
+            [self detectIncludedManifestCyclesStartingAt:stringObject.originalManifest path:path visited:visited];
+        }
+    }
+    for (ConditionalItemMO *conditionalItem in manifest.conditionalItems) {
+        for (StringObjectMO *stringObject in conditionalItem.includedManifests) {
+            if (stringObject.originalManifest) {
+                [self detectIncludedManifestCyclesStartingAt:stringObject.originalManifest path:path visited:visited];
+            }
+        }
+    }
+
+    [path removeObject:manifest];
+    [visited addObject:manifest.objectID];
+}
+
 - (void)scanManifests
 {
     NSManagedObjectContext *privateContext = self.context;
@@ -184,17 +224,17 @@ static const int BatchSize = 50;
                 [aCatalog addCatalogInfosObject:newCatalogInfo];
                 
                 if (catalogs == nil) {
-                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
+                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.title, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = NO;
                     newCatalogInfo.originalIndexValue = 0;
                     newCatalogInfo.indexInManifestValue = 0;
                 } else if ([catalogs containsObject:catalogTitle]) {
-                    DDLogVerbose(@"%@: catalog %@ --> enabled", currentManifest.fileName, aCatalog.title);
+                    DDLogVerbose(@"%@: catalog %@ --> enabled", currentManifest.title, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = YES;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
                     newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:[catalogs indexOfObject:catalogTitle]];
                 } else {
-                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.fileName, aCatalog.title);
+                    DDLogVerbose(@"%@: catalog %@ --> disabled", currentManifest.title, aCatalog.title);
                     newCatalogInfo.isEnabledForManifestValue = NO;
                     newCatalogInfo.originalIndex = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
                     newCatalogInfo.indexInManifest = [NSNumber numberWithUnsignedInteger:([catalogs count] + 1)];
@@ -210,7 +250,7 @@ static const int BatchSize = 50;
          */
         
         for (StringObjectMO *aManagedInstall in currentManifest.managedInstallsFaster) {
-            DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.fileName, aManagedInstall.title);
+            DDLogVerbose(@"%@: linking managed_install object %@", currentManifest.title, aManagedInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedInstall.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link managed_install object: %@", currentManifest.title, aManagedInstall.title);
@@ -221,7 +261,7 @@ static const int BatchSize = 50;
             }
         }
         for (StringObjectMO *aManagedUninstall in currentManifest.managedUninstallsFaster) {
-            DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.fileName, aManagedUninstall.title);
+            DDLogVerbose(@"%@: linking managed_uninstall object %@", currentManifest.title, aManagedUninstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUninstall.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link managed_uninstall object: %@", currentManifest.title, aManagedUninstall.title);
@@ -232,7 +272,7 @@ static const int BatchSize = 50;
             }
         }
         for (StringObjectMO *aManagedUpdate in currentManifest.managedUpdatesFaster) {
-            DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.fileName, aManagedUpdate.title);
+            DDLogVerbose(@"%@: linking managed_update object %@", currentManifest.title, aManagedUpdate.title);
             id matchingObject = [self matchingAppOrPkgForString:aManagedUpdate.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link managed_update object: %@", currentManifest.title, aManagedUpdate.title);
@@ -243,7 +283,7 @@ static const int BatchSize = 50;
             }
         }
         for (StringObjectMO *anOptionalInstall in currentManifest.optionalInstallsFaster) {
-            DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.fileName, anOptionalInstall.title);
+            DDLogVerbose(@"%@: linking optional_install object %@", currentManifest.title, anOptionalInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:anOptionalInstall.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link optional_install object: %@", currentManifest.title, anOptionalInstall.title);
@@ -255,7 +295,7 @@ static const int BatchSize = 50;
         }
         
         for (StringObjectMO *aDefaultInstall in currentManifest.defaultInstalls) {
-            DDLogVerbose(@"%@: linking default_install object %@", currentManifest.fileName, aDefaultInstall.title);
+            DDLogVerbose(@"%@: linking default_install object %@", currentManifest.title, aDefaultInstall.title);
             id matchingObject = [self matchingAppOrPkgForString:aDefaultInstall.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link default_install object: %@", currentManifest.title, aDefaultInstall.title);
@@ -266,7 +306,7 @@ static const int BatchSize = 50;
             }
         }
         for (StringObjectMO *featuredItem in currentManifest.featuredItems) {
-            DDLogVerbose(@"%@: linking featured_item object %@", currentManifest.fileName, featuredItem.title);
+            DDLogVerbose(@"%@: linking featured_item object %@", currentManifest.title, featuredItem.title);
             id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
             if (!matchingObject) {
                 DDLogError(@"%@: Error: Could not link featured_item object: %@", currentManifest.title, featuredItem.title);
@@ -281,11 +321,11 @@ static const int BatchSize = 50;
          Link included manifest items
          */
         for (StringObjectMO *stringObject in currentManifest.includedManifestsFaster) {
-            DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.fileName, stringObject.title);
+            DDLogVerbose(@"%@: linking included_manifest object %@", currentManifest.title, stringObject.title);
             
             ManifestMO *originalManifest = [self matchingManifestForString:stringObject.title];
             if (originalManifest) {
-                DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.fileName, stringObject.title, originalManifest.title);
+                DDLogVerbose(@"%@: linking included_manifest object %@ to original manifest %@", currentManifest.title, stringObject.title, originalManifest.title);
                 stringObject.originalManifest = originalManifest;
             } else {
                 DDLogError(@"%@: Error: Could not link included_manifest object: %@", currentManifest.title, stringObject.title);
@@ -297,7 +337,7 @@ static const int BatchSize = 50;
          */
         for (ConditionalItemMO *conditionalItem in currentManifest.conditionalItems) {
             for (StringObjectMO *managedInstall in conditionalItem.managedInstalls) {
-                DDLogVerbose(@"%@: linking conditional managed_install object %@", currentManifest.fileName, managedInstall.title);
+                DDLogVerbose(@"%@: linking conditional managed_install object %@", currentManifest.title, managedInstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedInstall.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional managed_install object: %@", currentManifest.title, managedInstall.title);
@@ -308,7 +348,7 @@ static const int BatchSize = 50;
                 }
             }
             for (StringObjectMO *managedUninstall in conditionalItem.managedUninstalls) {
-                DDLogVerbose(@"%@: linking conditional managed_uninstall object %@", currentManifest.fileName, managedUninstall.title);
+                DDLogVerbose(@"%@: linking conditional managed_uninstall object %@", currentManifest.title, managedUninstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedUninstall.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional managed_uninstall object: %@", currentManifest.title, managedUninstall.title);
@@ -319,7 +359,7 @@ static const int BatchSize = 50;
                 }
             }
             for (StringObjectMO *managedUpdate in conditionalItem.managedUpdates) {
-                DDLogVerbose(@"%@: linking conditional managed_update object %@", currentManifest.fileName, managedUpdate.title);
+                DDLogVerbose(@"%@: linking conditional managed_update object %@", currentManifest.title, managedUpdate.title);
                 id matchingObject = [self matchingAppOrPkgForString:managedUpdate.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional managed_update object: %@", currentManifest.title, managedUpdate.title);
@@ -330,7 +370,7 @@ static const int BatchSize = 50;
                 }
             }
             for (StringObjectMO *optionalInstall in conditionalItem.optionalInstalls) {
-                DDLogVerbose(@"%@: linking conditional optional_install object %@", currentManifest.fileName, optionalInstall.title);
+                DDLogVerbose(@"%@: linking conditional optional_install object %@", currentManifest.title, optionalInstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:optionalInstall.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional optional_install object: %@", currentManifest.title, optionalInstall.title);
@@ -341,7 +381,7 @@ static const int BatchSize = 50;
                 }
             }
             for (StringObjectMO *defaultInstall in conditionalItem.defaultInstalls) {
-                DDLogVerbose(@"%@: linking conditional default_install object %@", currentManifest.fileName, defaultInstall.title);
+                DDLogVerbose(@"%@: linking conditional default_install object %@", currentManifest.title, defaultInstall.title);
                 id matchingObject = [self matchingAppOrPkgForString:defaultInstall.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional default_install object: %@", currentManifest.title, defaultInstall.title);
@@ -352,7 +392,7 @@ static const int BatchSize = 50;
                 }
             }
             for (StringObjectMO *featuredItem in conditionalItem.featuredItems) {
-                DDLogVerbose(@"%@: linking conditional featured_item object %@", currentManifest.fileName, featuredItem.title);
+                DDLogVerbose(@"%@: linking conditional featured_item object %@", currentManifest.title, featuredItem.title);
                 id matchingObject = [self matchingAppOrPkgForString:featuredItem.title];
                 if (!matchingObject) {
                     DDLogError(@"%@: Error: Could not link conditional featured_item object: %@", currentManifest.title, featuredItem.title);
@@ -364,11 +404,11 @@ static const int BatchSize = 50;
             }
             
             for (StringObjectMO *includedManifest in conditionalItem.includedManifests) {
-                DDLogVerbose(@"%@: linking conditional included_manifest object %@", currentManifest.fileName, includedManifest.title);
+                DDLogVerbose(@"%@: linking conditional included_manifest object %@", currentManifest.title, includedManifest.title);
                 
                 ManifestMO *originalManifest = [self matchingManifestForString:includedManifest.title];
                 if (originalManifest) {
-                    DDLogVerbose(@"%@: linking conditional included_manifest object %@ to original manifest %@", currentManifest.fileName, includedManifest.title, originalManifest.title);
+                    DDLogVerbose(@"%@: linking conditional included_manifest object %@ to original manifest %@", currentManifest.title, includedManifest.title, originalManifest.title);
                     includedManifest.originalManifest = originalManifest;
                 } else {
                     DDLogError(@"%@: Error: Could not link conditional included_manifest object: %@", currentManifest.title, includedManifest.title);
@@ -385,7 +425,22 @@ static const int BatchSize = 50;
             [privateContext save:nil];
         }
     }];
-    
+
+    /*
+     Now that every manifest has been linked to its included manifests
+     above, walk the inclusion graph looking for circular
+     included_manifests references (e.g. A includes B includes A),
+     which munki would otherwise recurse into infinitely at run time.
+     */
+    NSMutableSet<NSManagedObjectID *> *visitedManifests = [NSMutableSet setWithCapacity:[self.allManifests count]];
+    for (ManifestMO *manifest in self.allManifests) {
+        if ([visitedManifests containsObject:manifest.objectID]) {
+            continue;
+        }
+        NSMutableOrderedSet<ManifestMO *> *inclusionPath = [NSMutableOrderedSet orderedSet];
+        [self detectIncludedManifestCyclesStartingAt:manifest path:inclusionPath visited:visitedManifests];
+    }
+
     /*
      Update the number of characters we need to display unique catalog titles
      */
