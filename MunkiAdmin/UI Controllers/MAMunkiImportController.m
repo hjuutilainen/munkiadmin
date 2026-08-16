@@ -372,7 +372,7 @@ DDLogLevel ddLogLevel;
         [standardOutFull appendString:standardOutput];
         NSString *cleanedString = [self cleanMakecatalogsMessage:standardOutput];
         if (cleanedString.length > 0) {
-            DDLogError(@"%@", cleanedString);
+            DDLogInfo(@"%@", cleanedString);
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.progressDescription.stringValue = cleanedString;
             });
@@ -389,7 +389,7 @@ DDLogLevel ddLogLevel;
             int exitCode = task.terminationStatus;
             if (exitCode == 0) {
                 DDLogDebug(@"%@ succeeded.", task.launchPath);
-                DDLogError(@"%@", standardOutFull);
+                DDLogVerbose(@"%@", standardOutFull);
             } else {
                 DDLogError(@"%@", standardErrorFull);
             }
