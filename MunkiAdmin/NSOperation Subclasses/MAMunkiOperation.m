@@ -240,8 +240,9 @@ DDLogLevel ddLogLevel;
             
 		}
 	}
-	@catch(...) {
-		DDLogDebug(@"Caught exception while running %@", self.command);
+	@catch(NSException *exception) {
+		DDLogError(@"%@: Caught exception while running: %@ - %@", self.command, exception.name, exception.reason);
+		DDLogDebug(@"%@: %@", self.command, [exception.callStackSymbols componentsJoinedByString:@"\n"]);
 	}
 }
 

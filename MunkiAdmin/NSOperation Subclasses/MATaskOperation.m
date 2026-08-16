@@ -139,8 +139,15 @@ DDLogLevel ddLogLevel;
 
         [self completeOperation];
     }
-    @catch(...) {
-        // Do not rethrow exceptions.
+    @catch(NSException *exception) {
+        DDLogError(@"%@: Caught exception while running task: %@ - %@", self.launchPath, exception.name, exception.reason);
+        DDLogDebug(@"%@: %@", self.launchPath, [exception.callStackSymbols componentsJoinedByString:@"\n"]);
+        /*
+         completeOperation may not have run yet if the exception was thrown
+         before the task launched - without this the operation would never
+         leave the queue's isExecuting state.
+         */
+        [self completeOperation];
     }
 }
 

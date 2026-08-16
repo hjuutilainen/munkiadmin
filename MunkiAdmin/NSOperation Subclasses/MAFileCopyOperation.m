@@ -72,8 +72,9 @@ DDLogLevel ddLogLevel;
             [fm setDelegate:nil];
 		}
 	}
-	@catch(...) {
-		// Do not rethrow exceptions.
+	@catch(NSException *exception) {
+		DDLogError(@"%@: Caught exception while copying: %@ - %@", self.fileName, exception.name, exception.reason);
+		DDLogDebug(@"%@: %@", self.fileName, [exception.callStackSymbols componentsJoinedByString:@"\n"]);
 	}
 }
 
