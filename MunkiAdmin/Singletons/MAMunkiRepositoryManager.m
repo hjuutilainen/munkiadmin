@@ -2637,15 +2637,16 @@ static dispatch_queue_t serialQueue;
         
         NSError *copyError = nil;
         if (![fm copyItemAtURL:aManifest.manifestURL toURL:backupFileURL error:&copyError]) {
-            DDLogInfo(@"Failed to copy: %@", [copyError description]);
+            DDLogError(@"%@: Failed to copy backup: %@", filename, [copyError description]);
             return NO;
         } else {
+            DDLogInfo(@"%@: Backed up to %@", filename, backupFileURL);
             itemBackedUp = YES;
         }
     } else {
-        DDLogError(@"Error: saveStartedDate is nil");
+        DDLogError(@"%@: Cannot create backup, saveStartedDate is nil", filename);
     }
-    
+
     return itemBackedUp;
 }
 
@@ -2674,14 +2675,14 @@ static dispatch_queue_t serialQueue;
         NSError *copyError = nil;
         NSURL *packageInfoURL = [(NSURL *)aPackage.packageInfoURL filePathURL];
         if (![fm copyItemAtURL:packageInfoURL toURL:[backupFileURL filePathURL] error:&copyError]) {
-            DDLogInfo(@"Failed to copy: %@", [copyError description]);
+            DDLogError(@"%@: Failed to copy backup: %@", filename, [copyError description]);
             return NO;
         } else {
-            DDLogInfo(@"Copied %@", packageInfoURL);
+            DDLogInfo(@"%@: Backed up to %@", filename, backupFileURL);
             itemBackedUp = YES;
-        }        
+        }
     } else {
-        DDLogError(@"Error: saveStartedDate is nil");
+        DDLogError(@"%@: Cannot create backup, saveStartedDate is nil", filename);
     }
     
     return itemBackedUp;
@@ -2738,7 +2739,9 @@ static dispatch_queue_t serialQueue;
      */
     if ([defaults boolForKey:@"backupPkginfosBeforeWriting"]) {
         DDLogDebug(@"%@: Backing up...", filename);
-        [self backupPackage:aPackage];
+        if (![self backupPackage:aPackage]) {
+            DDLogWarn(@"%@: Backup failed, continuing to write without a backup", filename);
+        }
     }
     
     /*
@@ -2834,7 +2837,9 @@ static dispatch_queue_t serialQueue;
      */
     if ([defaults boolForKey:@"backupManifestsBeforeWriting"]) {
         DDLogDebug(@"%@: Backing up...", filename);
-        [self backupManifest:aManifest];
+        if (![self backupManifest:aManifest]) {
+            DDLogWarn(@"%@: Backup failed, continuing to write without a backup", filename);
+        }
     }
     
     /*
