@@ -89,6 +89,7 @@ DDLogLevel ddLogLevel;
     if (status == 0) {
         return TRUE;
     } else {
+        DDLogError(@"/usr/bin/ditto exited with code %i while extracting %@", status, sourcePath);
         return FALSE;
     }
 }
@@ -111,6 +112,7 @@ DDLogLevel ddLogLevel;
     if (status == 0) {
         return TRUE;
     } else {
+        DDLogError(@"/usr/sbin/pkgutil exited with code %i while expanding %@", status, sourcePath);
         return FALSE;
     }
 }
