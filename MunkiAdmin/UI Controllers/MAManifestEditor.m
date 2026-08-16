@@ -655,7 +655,7 @@ typedef NS_ENUM(NSInteger, MAEditorSectionTag) {
         }
     }
     @catch (NSException *exception) {
-        DDLogError(@"Caught exception while trying to open predicate editor. This usually means that the predicate is valid but the editor can not edit it. Showing the text field editor instead...");
+        DDLogError(@"Caught exception while trying to open predicate editor: %@ - %@. This usually means that the predicate is valid but the editor can not edit it. Showing the text field editor instead...", exception.name, exception.reason);
         [self.window beginSheet:[self.predicateEditor window] completionHandler:^(NSModalResponse returnCode) {
             [self editPredicateSheetDidEnd:self.predicateEditor returnCode:returnCode object:nil];
         }];
