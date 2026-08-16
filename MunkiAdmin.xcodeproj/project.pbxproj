@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11518FB4F4CD903551C5FD92 /* MAPackagesTableCellView-Architectures.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6B7578FFE2F0C8554A87DC1 /* MAPackagesTableCellView-Architectures.xib */; };
 		12CB1DBFE37A0DE3CAB2902C /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 209B7D3ED26F758916C9A68C /* CHCSVParser.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		175C8CFCDF4300802613C0DA /* MAPackagesTableCellView-Catalogs.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8FF0E7EC9AA6659243C76169 /* MAPackagesTableCellView-Catalogs.xib */; };
+		1D47562DEF4AA9A3CAC4E7A3 /* MAPackagesTableCellView-MinOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0EE0AD6D8BCE196428CAF3A /* MAPackagesTableCellView-MinOS.xib */; };
+		1FE02DE720C9F708A87190FB /* MAPackagesTableCellView-Version.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D6D70DE58BCDFCC588C53C4 /* MAPackagesTableCellView-Version.xib */; };
+		2494DEC6CCAA0A2C615EF556 /* MAPackagesTableCellView-DateCreated.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0DAD6730220C8FEFCB651A /* MAPackagesTableCellView-DateCreated.xib */; };
 		262703CE2E34BA9000F13146 /* ManifestDirectorySourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 262703CB2E34BA9000F13146 /* ManifestDirectorySourceListItemMO.m */; };
 		262703CF2E34BA9000F13146 /* ManifestSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 262703CD2E34BA9000F13146 /* ManifestSourceListItemMO.m */; };
 		262703D02E34BA9000F13146 /* ManifestBuiltinSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 262703C72E34BA9000F13146 /* ManifestBuiltinSourceListItemMO.m */; };
@@ -20,12 +25,21 @@
 		26504A00172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FD172C1FFD00EA67CA /* _InstallerEnvironmentVariableMO.m */; };
 		26504A01172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 265049FF172C1FFD00EA67CA /* InstallerEnvironmentVariableMO.m */; };
 		2F7446990DB6B7EA00F9684A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F7446970DB6B7EA00F9684A /* MainMenu.xib */; };
+		4A59E0A97BAE717B39E63519 /* MAPackagesTableCellView-DisplayName.xib in Resources */ = {isa = PBXBuildFile; fileRef = 666D17D7771D98BEAD4ED240 /* MAPackagesTableCellView-DisplayName.xib */; };
+		6D987E04DB69BBF9A24F2842 /* MAPackagesTableCellView-Notes.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59A9F9A523EA3CB5266D96D8 /* MAPackagesTableCellView-Notes.xib */; };
 		770B37ED0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */; };
 		77C8280E06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77C8280C06725ACE000B614F /* MAMunkiAdmin_AppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		8F69DBC8F05EC7C9493C5D99 /* MAPackagesTableCellView-DateModified.xib in Resources */ = {isa = PBXBuildFile; fileRef = 479E95D3DB6BB4E23D34F70A /* MAPackagesTableCellView-DateModified.xib */; };
+		A1EF360931BFED0C675E085E /* MAPackagesTableCellView-Name.xib in Resources */ = {isa = PBXBuildFile; fileRef = 154D66F11326C274074950B5 /* MAPackagesTableCellView-Name.xib */; };
+		A619613AB76DDDD30AF01260 /* MAPackagesTableCellView-MaxOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DEFEA691927147B932822B /* MAPackagesTableCellView-MaxOS.xib */; };
+		C5D1D2C6631A6932931F2E97 /* NSDictionary+MAPlistValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = A77CB09C012F984C8C4323E2 /* NSDictionary+MAPlistValidation.m */; };
 		D9CC2761A2950C429337757A /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5294A6EE080B6ADF14CF0DD5 /* UniformTypeIdentifiers.framework */; };
+		DA8879FA56E5D3AF32A19376 /* MAPackagesTableCellView-Icon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C53C192A06CE97DD3D1F6A50 /* MAPackagesTableCellView-Icon.xib */; };
+		DE879E5BD6FEF053CF6CD825 /* MAPackagesTableCellView-Description.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0390E8C66317A0F26FBB22 /* MAPackagesTableCellView-Description.xib */; };
+		E950A276AB9EB6BC4EC7DB69 /* MAPackagesTableCellView-InstallerSize.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6D50BDD64768D36B95CA7A8 /* MAPackagesTableCellView-InstallerSize.xib */; };
 		E99DB7FCDD99EA3FF36E2ED2 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = E42F3B6B3271612047545065 /* CocoaLumberjack */; };
 		F5018E7119090E00009F6D28 /* _DeveloperMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E6E19090E00009F6D28 /* _DeveloperMO.m */; };
 		F5018E7219090E00009F6D28 /* _DeveloperSourceListItemMO.m in Sources */ = {isa = PBXBuildFile; fileRef = F5018E7019090E00009F6D28 /* _DeveloperSourceListItemMO.m */; };
@@ -80,7 +94,6 @@
 		F565BC9D193719E1006884CA /* MADiskImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F565BC9C193719E1006884CA /* MADiskImageOperation.m */; };
 		F56AC79A166F2F0200FD5438 /* MAMunkiRepositoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F56AC799166F2F0200FD5438 /* MAMunkiRepositoryManager.m */; };
 		F574C5581990DB3400646FF7 /* NSImage+PixelSize.m in Sources */ = {isa = PBXBuildFile; fileRef = F574C5571990DB3400646FF7 /* NSImage+PixelSize.m */; };
-		C5D1D2C6631A6932931F2E97 /* NSDictionary+MAPlistValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = A77CB09C012F984C8C4323E2 /* NSDictionary+MAPlistValidation.m */; };
 		F5836986166C9147003E1442 /* MAPkginfoAssimilator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */; };
 		F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */; };
 		F58548161906F643001E4527 /* MARequestStringValueController.m in Sources */ = {isa = PBXBuildFile; fileRef = F58548141906F643001E4527 /* MARequestStringValueController.m */; };
@@ -171,6 +184,7 @@
 
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		154D66F11326C274074950B5 /* MAPackagesTableCellView-Name.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Name.xib"; sourceTree = "<group>"; };
 		209B7D3ED26F758916C9A68C /* CHCSVParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CHCSVParser.m; path = CHCSVParser.m; sourceTree = "<group>"; };
 		262703C62E34BA9000F13146 /* ManifestBuiltinSourceListItemMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManifestBuiltinSourceListItemMO.h; sourceTree = "<group>"; };
 		262703C72E34BA9000F13146 /* ManifestBuiltinSourceListItemMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManifestBuiltinSourceListItemMO.m; sourceTree = "<group>"; };
@@ -198,7 +212,13 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MunkiAdmin_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MunkiAdmin_Prefix.pch; path = MunkiAdmin/MunkiAdmin_Prefix.pch; sourceTree = "<group>"; };
+		3F1AC828FEA461BB981EDFCE /* NSDictionary+MAPlistValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MAPlistValidation.h"; path = "MunkiAdmin/NSDictionary+MAPlistValidation.h"; sourceTree = "<group>"; };
+		43DEFEA691927147B932822B /* MAPackagesTableCellView-MaxOS.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-MaxOS.xib"; sourceTree = "<group>"; };
+		479E95D3DB6BB4E23D34F70A /* MAPackagesTableCellView-DateModified.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-DateModified.xib"; sourceTree = "<group>"; };
 		5294A6EE080B6ADF14CF0DD5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		59A9F9A523EA3CB5266D96D8 /* MAPackagesTableCellView-Notes.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Notes.xib"; sourceTree = "<group>"; };
+		666D17D7771D98BEAD4ED240 /* MAPackagesTableCellView-DisplayName.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-DisplayName.xib"; sourceTree = "<group>"; };
+		6D6D70DE58BCDFCC588C53C4 /* MAPackagesTableCellView-Version.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Version.xib"; sourceTree = "<group>"; };
 		770B37EC0679A11B001EADE2 /* MunkiAdmin_DataModel.xcdatamodel */ = {isa = PBXFileReference; comments = xmod; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = MunkiAdmin_DataModel.xcdatamodel; path = MunkiAdmin/MunkiAdmin_DataModel.xcdatamodel; sourceTree = "<group>"; };
 		77C82804067257F0000B614F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		77C8280B06725ACE000B614F /* MAMunkiAdmin_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAMunkiAdmin_AppDelegate.h; path = MunkiAdmin/MAMunkiAdmin_AppDelegate.h; sourceTree = "<group>"; };
@@ -207,6 +227,14 @@
 		87ABA3988386A90F253A0E7F /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE.txt; path = LICENSE.txt; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MunkiAdmin-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.xml; fileEncoding = 4; name = "MunkiAdmin-Info.plist"; path = "MunkiAdmin/MunkiAdmin-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MunkiAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunkiAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FF0E7EC9AA6659243C76169 /* MAPackagesTableCellView-Catalogs.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Catalogs.xib"; sourceTree = "<group>"; };
+		A77CB09C012F984C8C4323E2 /* NSDictionary+MAPlistValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MAPlistValidation.m"; path = "MunkiAdmin/NSDictionary+MAPlistValidation.m"; sourceTree = "<group>"; };
+		B0EE0AD6D8BCE196428CAF3A /* MAPackagesTableCellView-MinOS.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-MinOS.xib"; sourceTree = "<group>"; };
+		C53C192A06CE97DD3D1F6A50 /* MAPackagesTableCellView-Icon.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Icon.xib"; sourceTree = "<group>"; };
+		CA0390E8C66317A0F26FBB22 /* MAPackagesTableCellView-Description.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Description.xib"; sourceTree = "<group>"; };
+		CA0DAD6730220C8FEFCB651A /* MAPackagesTableCellView-DateCreated.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-DateCreated.xib"; sourceTree = "<group>"; };
+		D6D50BDD64768D36B95CA7A8 /* MAPackagesTableCellView-InstallerSize.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-InstallerSize.xib"; sourceTree = "<group>"; };
+		E6B7578FFE2F0C8554A87DC1 /* MAPackagesTableCellView-Architectures.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = "MAPackagesTableCellView-Architectures.xib"; sourceTree = "<group>"; };
 		F5018E6D19090E00009F6D28 /* _DeveloperMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperMO.h; sourceTree = "<group>"; };
 		F5018E6E19090E00009F6D28 /* _DeveloperMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DeveloperMO.m; sourceTree = "<group>"; };
 		F5018E6F19090E00009F6D28 /* _DeveloperSourceListItemMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DeveloperSourceListItemMO.h; sourceTree = "<group>"; };
@@ -301,8 +329,6 @@
 		F56AC7A4166F307300FD5438 /* DataModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModelHeaders.h; path = MunkiAdmin/DataModelHeaders.h; sourceTree = "<group>"; };
 		F574C5561990DB3400646FF7 /* NSImage+PixelSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+PixelSize.h"; path = "MunkiAdmin/NSImage+PixelSize.h"; sourceTree = "<group>"; };
 		F574C5571990DB3400646FF7 /* NSImage+PixelSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+PixelSize.m"; path = "MunkiAdmin/NSImage+PixelSize.m"; sourceTree = "<group>"; };
-		3F1AC828FEA461BB981EDFCE /* NSDictionary+MAPlistValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MAPlistValidation.h"; path = "MunkiAdmin/NSDictionary+MAPlistValidation.h"; sourceTree = "<group>"; };
-		A77CB09C012F984C8C4323E2 /* NSDictionary+MAPlistValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MAPlistValidation.m"; path = "MunkiAdmin/NSDictionary+MAPlistValidation.m"; sourceTree = "<group>"; };
 		F5836983166C9147003E1442 /* MAPkginfoAssimilator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPkginfoAssimilator.h; sourceTree = "<group>"; };
 		F5836984166C9147003E1442 /* MAPkginfoAssimilator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPkginfoAssimilator.m; sourceTree = "<group>"; };
 		F5836985166C9147003E1442 /* MAPkginfoAssimilator.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MAPkginfoAssimilator.xib; sourceTree = "<group>"; };
@@ -889,6 +915,19 @@
 				FEABB249144EB3AF0006BDE8 /* MASelectPkginfoItemsWindow.xib */,
 				FE0EAC5814FE4D02003C55E9 /* MATableView.h */,
 				FE0EAC5914FE4D02003C55E9 /* MATableView.m */,
+				C53C192A06CE97DD3D1F6A50 /* MAPackagesTableCellView-Icon.xib */,
+				154D66F11326C274074950B5 /* MAPackagesTableCellView-Name.xib */,
+				666D17D7771D98BEAD4ED240 /* MAPackagesTableCellView-DisplayName.xib */,
+				CA0390E8C66317A0F26FBB22 /* MAPackagesTableCellView-Description.xib */,
+				59A9F9A523EA3CB5266D96D8 /* MAPackagesTableCellView-Notes.xib */,
+				6D6D70DE58BCDFCC588C53C4 /* MAPackagesTableCellView-Version.xib */,
+				8FF0E7EC9AA6659243C76169 /* MAPackagesTableCellView-Catalogs.xib */,
+				E6B7578FFE2F0C8554A87DC1 /* MAPackagesTableCellView-Architectures.xib */,
+				B0EE0AD6D8BCE196428CAF3A /* MAPackagesTableCellView-MinOS.xib */,
+				43DEFEA691927147B932822B /* MAPackagesTableCellView-MaxOS.xib */,
+				D6D50BDD64768D36B95CA7A8 /* MAPackagesTableCellView-InstallerSize.xib */,
+				479E95D3DB6BB4E23D34F70A /* MAPackagesTableCellView-DateModified.xib */,
+				CA0DAD6730220C8FEFCB651A /* MAPackagesTableCellView-DateCreated.xib */,
 			);
 			name = "UI Controllers";
 			path = "MunkiAdmin/UI Controllers";
@@ -1017,6 +1056,19 @@
 				F525FB99165E165000DFF1B2 /* MunkiAdminIcon_32x32.png in Resources */,
 				F5836987166C9147003E1442 /* MAPkginfoAssimilator.xib in Resources */,
 				F506342D172FA43C00EF7728 /* MAInstallsItemEditor.xib in Resources */,
+				DA8879FA56E5D3AF32A19376 /* MAPackagesTableCellView-Icon.xib in Resources */,
+				A1EF360931BFED0C675E085E /* MAPackagesTableCellView-Name.xib in Resources */,
+				4A59E0A97BAE717B39E63519 /* MAPackagesTableCellView-DisplayName.xib in Resources */,
+				DE879E5BD6FEF053CF6CD825 /* MAPackagesTableCellView-Description.xib in Resources */,
+				6D987E04DB69BBF9A24F2842 /* MAPackagesTableCellView-Notes.xib in Resources */,
+				1FE02DE720C9F708A87190FB /* MAPackagesTableCellView-Version.xib in Resources */,
+				175C8CFCDF4300802613C0DA /* MAPackagesTableCellView-Catalogs.xib in Resources */,
+				11518FB4F4CD903551C5FD92 /* MAPackagesTableCellView-Architectures.xib in Resources */,
+				1D47562DEF4AA9A3CAC4E7A3 /* MAPackagesTableCellView-MinOS.xib in Resources */,
+				A619613AB76DDDD30AF01260 /* MAPackagesTableCellView-MaxOS.xib in Resources */,
+				E950A276AB9EB6BC4EC7DB69 /* MAPackagesTableCellView-InstallerSize.xib in Resources */,
+				8F69DBC8F05EC7C9493C5D99 /* MAPackagesTableCellView-DateModified.xib in Resources */,
+				2494DEC6CCAA0A2C615EF556 /* MAPackagesTableCellView-DateCreated.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

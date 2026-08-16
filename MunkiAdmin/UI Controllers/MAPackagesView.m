@@ -71,6 +71,37 @@ DDLogLevel ddLogLevel;
 }
 
 
+- (void)registerPackagesTableViewCellNibs
+{
+    /*
+     packagesTableColumn cell prototypes used to be embedded directly in this
+     view's own nib, which meant every reuse-queue miss reloaded this whole
+     nib (File's Owner is this view controller) instead of just the cell.
+     Registering each one from its own lightweight nib (File's Owner is a
+     plain NSObject) lets AppKit dequeue/reuse cells cheaply instead.
+     */
+    NSDictionary<NSString *, NSString *> *nibNamesByColumnIdentifier = @{
+        @"packagesTableColumnIcon": @"MAPackagesTableCellView-Icon",
+        @"packagesTableColumnName": @"MAPackagesTableCellView-Name",
+        @"packagesTableColumnDisplayName": @"MAPackagesTableCellView-DisplayName",
+        @"packagesTableColumnDescription": @"MAPackagesTableCellView-Description",
+        @"packagesTableColumnNotes": @"MAPackagesTableCellView-Notes",
+        @"packagesTableColumnVersion": @"MAPackagesTableCellView-Version",
+        @"packagesTableColumnCatalogs": @"MAPackagesTableCellView-Catalogs",
+        @"packagesTableColumnArchitectures": @"MAPackagesTableCellView-Architectures",
+        @"packagesTableColumnMinOS": @"MAPackagesTableCellView-MinOS",
+        @"packagesTableColumnMaxOS": @"MAPackagesTableCellView-MaxOS",
+        @"packagesTableColumnInstallerSize": @"MAPackagesTableCellView-InstallerSize",
+        @"packagesTableColumnDateModified": @"MAPackagesTableCellView-DateModified",
+        @"packagesTableColumnDateCreated": @"MAPackagesTableCellView-DateCreated",
+    };
+    NSBundle *cellNibBundle = [NSBundle bundleForClass:[self class]];
+    [nibNamesByColumnIdentifier enumerateKeysAndObjectsUsingBlock:^(NSString *columnIdentifier, NSString *nibName, BOOL *stop) {
+        NSNib *nib = [[NSNib alloc] initWithNibNamed:nibName bundle:cellNibBundle];
+        [self.packagesTableView registerNib:nib forIdentifier:columnIdentifier];
+    }];
+}
+
 - (void)awakeFromNib
 {
     DDLogVerbose(@"%s", __PRETTY_FUNCTION__);
@@ -87,6 +118,8 @@ DDLogLevel ddLogLevel;
     [self.packagesTableView setDataSource:self];
     [self.packagesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeURL]];
 	[self.packagesTableView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
+
+    [self registerPackagesTableViewCellNibs];
 
     [self.directoriesOutlineView registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeURL]];
     [self.directoriesOutlineView setDraggingSourceOperationMask:NSDragOperationCopy forLocal:NO];
@@ -1421,6 +1454,17 @@ DDLogLevel ddLogLevel;
 
 # pragma mark -
 # pragma mark NSTableView delegates
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    if (tableView != self.packagesTableView) {
+        return nil;
+    }
+    NSTableCellView *view = (NSTableCellView *)[tableView makeViewWithIdentifier:tableColumn.identifier owner:nil];
+    NSArray *arrangedObjects = [self.packagesArrayController arrangedObjects];
+    view.objectValue = (row >= 0 && row < (NSInteger)arrangedObjects.count) ? arrangedObjects[(NSUInteger)row] : nil;
+    return view;
+}
 
 - (id<NSPasteboardWriting>)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
 {
