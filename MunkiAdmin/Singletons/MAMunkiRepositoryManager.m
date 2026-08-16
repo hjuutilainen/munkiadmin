@@ -444,8 +444,9 @@ static dispatch_queue_t serialQueue;
     NSURL *currentURL = (NSURL *)manifest.manifestURL;
     NSString *oldTitle = manifest.title;
     
-    if (![[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:nil]) {
-        DDLogError(@"Failed to rename manifest on disk");
+    NSError *moveError = nil;
+    if (![[NSFileManager defaultManager] moveItemAtURL:currentURL toURL:newURL error:&moveError]) {
+        DDLogError(@"%@: Failed to rename manifest on disk: %@", oldTitle, [moveError description]);
         return;
     }
     
@@ -1947,7 +1948,7 @@ static dispatch_queue_t serialQueue;
                         
                         [weakSelf.diskImageQueue addOperation:extractOp];
                     } else {
-                        DDLogInfo(@"Error: Did not find any packages in mountpoint %@", mountpoint);
+                        DDLogWarn(@"Did not find any packages in mountpoint %@, skipping icon extraction", mountpoint);
                     }
                     
                     if (!alreadyMounted) {
