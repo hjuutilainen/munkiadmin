@@ -1113,9 +1113,14 @@ DDLogLevel ddLogLevel;
     }
     
     /*
-     Log to Xcode (if available)
+     Log to Xcode (if available). Xcode reads from the unified logging
+     system directly, so DDOSLogger is used here instead of DDTTYLogger to
+     avoid CocoaLumberjack's warning about DDTTYLogger being redundant when
+     DDOSLogger is available.
      */
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    if (![[DDLog allLoggers] containsObject:[DDOSLogger sharedInstance]]) {
+        [DDLog addLogger:[DDOSLogger sharedInstance]];
+    }
     
     /*
      Log to ~/Library/Logs/MunkiAdmin/
