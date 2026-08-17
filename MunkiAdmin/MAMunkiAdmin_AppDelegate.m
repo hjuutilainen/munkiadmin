@@ -1127,6 +1127,11 @@ DDLogLevel ddLogLevel;
      */
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"logToFile"]) {
         DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+        NSDateFormatter *fileLogDateFormatter = [[NSDateFormatter alloc] init];
+        fileLogDateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        fileLogDateFormatter.timeZone = [NSTimeZone localTimeZone];
+        fileLogDateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"; // ISO 8601, local time
+        fileLogger.logFormatter = [[DDLogFileFormatterDefault alloc] initWithDateFormatter:fileLogDateFormatter];
         fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
         fileLogger.maximumFileSize = 1024 * 1024 * 10; // rolling based solely on rollingFrequency above
         NSNumber *maximumNumberOfLogFiles = [[NSUserDefaults standardUserDefaults] objectForKey:@"maximumNumberOfLogFiles"];
