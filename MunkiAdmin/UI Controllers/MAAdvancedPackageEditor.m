@@ -1054,11 +1054,11 @@ NSString *stringObjectPboardType = @"stringObjectPboardType";
     if (aPackage.munki_blocking_applications_quit_script == nil) {
         self.temp_blocking_applications_quit_script_enabled = NO;
         self.temp_blocking_applications_quit_script = @"";
-        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit Script", @"")];
+        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit", @"")];
     } else {
         self.temp_blocking_applications_quit_script_enabled = YES;
         self.temp_blocking_applications_quit_script = aPackage.munki_blocking_applications_quit_script;
-        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit Script*", @"")];
+        [self.blockingApplicationsQuitScriptTabViewItem setLabel:NSLocalizedString(@"Quit*", @"")];
     }
 
     if (aPackage.munki_force_install_after_date == nil) {
